@@ -1,0 +1,28 @@
+Copyright: © 2013 WebSharks, Inc. (coded in the USA)
+<mailto:support@websharks-inc.com> <http://www.websharks-inc.com>
+
+This WordPress® plugin is comprised of two parts:
+
+(1) All PHP code (and many of the CSS/JavaScript libraries listed below) are licensed under the GPL license, as is WordPress® itself. See: <http://www.gnu.org/licenses/gpl-2.0.html> — attached as [gpl.txt].
+
+(2) All other parts of this plugin; including, but not limited to: some plugin-specific CSS (files inside `/client-s/css/`), some plugin-specific JavaScript (files inside `/client-s/js`), some images (files inside `/client-s/images`), and the overall design; are licensed according to the license purchased. See: <http://www.websharks-inc.com/r/quick-cache-pro/>
+
+Unless you have our prior written consent, you must NOT directly or indirectly license, sub-license, sell, resell, or provide for free; part (2) of this plugin; or make an offer to do any of these things. All of these things are strictly prohibited with part (2) of this plugin.
+
+#### Credits / Additional Acknowledgments
+
+* Software designed for WordPress®.
+	- GPL License <http://codex.wordpress.org/GPL>
+	- WordPress® <http://wordpress.org>
+
+* Some JavaScript extensions require jQuery.
+	- GPL-Compatible License <http://jquery.org/license>
+	- jQuery <http://jquery.com/>
+
+* CSS framework and some JavaScript functionality provided by Bootstrap.
+	- GPL-Compatible License <http://getbootstrap.com/getting-started/#license-faqs>
+	- Bootstrap <http://getbootstrap.com/>
+
+* Icons provided by Font Awesome.
+	- GPL-Compatible License <http://fortawesome.github.io/Font-Awesome/license/>
+	- Font Awesome <http://fortawesome.github.io/Font-Awesome/>

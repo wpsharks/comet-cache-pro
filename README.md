@@ -1,4 +1,3 @@
-Quick-Cache-Pro
-===============
+## Quick Cache (Pro)
 
-Quick Cache (Pro Upgrade)
+Caching plugin for WordPress®.
