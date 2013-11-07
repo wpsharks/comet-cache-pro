@@ -17,7 +17,7 @@ namespace quick_cache // Root namespace.
 		if(!defined('WPINC')) // MUST have WordPress.
 			exit('Do NOT access this file directly: '.basename(__FILE__));
 
-		if(is_admin() && class_exists('\\'.__NAMESPACE__.'\\plugin'))
+		if(class_exists('\\'.__NAMESPACE__.'\\plugin'))
 			return add_action('all_admin_notices', function () // Do NOT load in this case.
 				{
 					echo '<div class="error"><p>'.
