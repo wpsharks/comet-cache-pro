@@ -16,6 +16,7 @@ Menu page styles.
 {
 	font-size     : 14px;
 	padding       : 25px;
+	min-width     : 800px;
 	margin        : 25px 25px 25px 5px;
 
 	border-radius : 5px;
@@ -48,6 +49,8 @@ Menu page styles.
 	font-size     : 90%;
 	color         : #EEEEEE;
 	background    : #222222;
+	overflow-x    : auto;
+	max-width     : 100%;
 
 	border-radius : 5px;
 	padding       : 10px;
@@ -314,9 +317,9 @@ Panel styles.
 }
 .pro-preview .plugin-menu-page-panel-heading:after
 {
-	content      : 'pro' !important;
 	font-variant : small-caps !important;
 	font-family  : sans-serif !important;
+	content      : 'pro version only' !important;
 }
 .plugin-menu-page-panel-body
 {

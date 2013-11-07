@@ -1,13 +1,13 @@
 <?php
 /*
-Version: 131031
+Version: 131108
 Text Domain: quick-cache
 Plugin Name: Quick Cache (Pro)
 
 Author: s2Member® / WebSharks, Inc.
 Author URI: http://www.s2member.com
 
-Plugin URI: http://www.s2member.com/kb/quick-cache-plugin
+Plugin URI: http://www.websharks-inc.com/r/quick-cache-pro/
 Description: WordPress advanced cache plugin; speed without compromise!
 
 Speed up your site ~ BIG Time! - If you care about the speed of your site, Quick Cache is a plugin that you absolutely MUST have installed :-)
@@ -19,7 +19,7 @@ namespace quick_cache // Root namespace.
 
 		class plugin // Base plugin class.
 		{
-			public $version = '131031'; // See: `readme.txt` file.
+			public $version = '131108'; // See: `readme.txt` file.
 			public $text_domain = ''; // Defined by class constructor.
 			public $default_options = array(); // Defined @ setup.
 			public $options = array(); // Defined @ setup.
