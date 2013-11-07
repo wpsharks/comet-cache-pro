@@ -20,7 +20,7 @@ namespace quick_cache // Root namespace.
 		if(class_exists('\\'.__NAMESPACE__.'\\plugin'))
 			return add_action('all_admin_notices', function () // Do NOT load in this case.
 				{
-					echo '<div class="error"><p>'.
+					echo '<div class="error"><p>'. // Running multiple versions of this plugin at same time.
 					     __('Please disable the LITE version of Quick Cache before you activate the PRO version.',
 					        str_replace('_', '-', __NAMESPACE__)).'</p></div>';
 				});
