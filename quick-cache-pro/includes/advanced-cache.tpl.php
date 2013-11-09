@@ -206,7 +206,7 @@ namespace quick_cache // Root namespace.
 					else if(!empty($_COOKIE['wp-postpass_'.COOKIEHASH]) && is_string($_COOKIE['wp-postpass_'.COOKIEHASH]))
 						$md5_4 = md5(stripslashes($_COOKIE['wp-postpass_'.COOKIEHASH]));
 
-					else return; // Do NOT invalidate. Should not happen; but there's nothing we can do.
+					else return; // Do NOT invalidate. Should not happen; but there's nothing we can do? TODO
 
 					foreach((array)glob(QUICK_CACHE_DIR.'/qc-c-*-*-*-'.$md5_4, GLOB_NOSORT) as $_file) if($_file && is_file($_file))
 						if(!unlink($_file)) // If file deletion fails; stop here w/ exception.
@@ -231,7 +231,7 @@ namespace quick_cache // Root namespace.
 					else if(!empty($_COOKIE['wp-postpass_'.COOKIEHASH]) && is_string($_COOKIE['wp-postpass_'.COOKIEHASH]))
 						$this->md5_4 = $this->user_token = md5(stripslashes($_COOKIE['wp-postpass_'.COOKIEHASH]));
 
-					else return; // Do NOT cache. Should not happen; but there's nothing we can do in this rare scenario.
+					else return; // Do NOT cache. Should not happen; but there's nothing we can do in this rare scenario? TODO
 
 					$this->cache_file .= '-'.$this->md5_4; // Create a user-specific cache in this case (very dynamic).
 
