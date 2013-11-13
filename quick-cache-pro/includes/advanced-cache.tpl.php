@@ -102,6 +102,12 @@ namespace quick_cache // Root namespace.
 					if(!$this->is_like_user_logged_in())
 						return; // Nothing to do.
 
+					if(!empty($_REQUEST[__NAMESPACE__]['clear_cache']))
+						return; // Site owner is clearing cache now.
+
+					if(!empty($_REQUEST[__NAMESPACE__]['ajax_clear_cache']))
+						return; // Site owner is clearing cache now.
+
 					if($this->is_post_put_del_request())
 						$this->postload['invalidate_when_logged_in'] = TRUE;
 
