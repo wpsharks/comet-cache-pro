@@ -35,6 +35,8 @@ namespace quick_cache // Root namespace.
 							$this->text_domain = str_replace('_', '-', __NAMESPACE__);
 
 							add_action('after_setup_theme', array($this, 'setup'));
+							register_activation_hook(__FILE__, array($this, 'activate'));
+							register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 						}
 
 					public function setup()
@@ -789,8 +791,6 @@ namespace quick_cache // Root namespace.
 					}
 
 				$GLOBALS[__NAMESPACE__] = new plugin(); // New plugin instance.
-				register_activation_hook(__FILE__, array($GLOBALS[__NAMESPACE__], 'activate'));
-				register_deactivation_hook(__FILE__, array($GLOBALS[__NAMESPACE__], 'deactivate'));
 			}
 		else add_action('all_admin_notices', function () // Do NOT load in this case.
 			{
