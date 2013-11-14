@@ -46,6 +46,8 @@ namespace quick_cache // Root namespace.
 							load_plugin_textdomain($this->text_domain);
 
 							$this->default_options = array( // Default options.
+								'version'                     => $this->version,
+
 								'crons_setup'                 => '0', // `0` or timestamp.
 
 								'enable'                      => '0', // `0|1`.
