@@ -108,6 +108,9 @@ namespace quick_cache // Root namespace.
 							add_action('init', array($this, 'check_advanced_cache'));
 							add_action('wp_loaded', array($this, 'actions'));
 
+							add_action('admin_init', array($this, 'check_version'));
+							add_action('admin_init', array($this, 'rewrite_notice'));
+
 							add_action('admin_bar_menu', array($this, 'admin_bar_menu'));
 							add_action('wp_head', array($this, 'admin_bar_meta_tags'), 0);
 							add_action('wp_enqueue_scripts', array($this, 'admin_bar_styles'));
@@ -182,6 +185,38 @@ namespace quick_cache // Root namespace.
 							$this->add_wp_cache_to_wp_config();
 							$this->add_advanced_cache();
 							$this->auto_clear_cache();
+						}
+
+					public function check_version()
+						{
+							if(version_compare($this->options['version'], $this->version, '>='))
+								return; // Nothing to do in this case.
+
+							$this->options['version'] = $this->version;
+							update_option(__NAMESPACE__.'_options', $this->options);
+
+							if(!$this->options['enable'])
+								return; // Nothing more to do.
+
+							$this->add_wp_cache_to_wp_config();
+							$this->add_advanced_cache();
+							$this->auto_clear_cache();
+
+							$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+							$notices[] = __('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... clearing cache... all done :-)', $this->text_domain);
+							update_option(__NAMESPACE__.'_notices', $notices);
+						}
+
+					public function rewrite_notice()
+						{
+							if(!get_option('ws_plugin__qcache_configured'))
+								return; // Nothing to do in this case.
+
+							delete_option('ws_plugin__qcache_configured'); // One-time only.
+
+							$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+							$notices[] = __('<strong>Quick Cache:</strong> this version is a <strong>complete rewrite</strong> :-) Please review your Quick Cache options carefully!', $this->text_domain);
+							update_option(__NAMESPACE__.'_notices', $notices);
 						}
 
 					public function deactivate()
