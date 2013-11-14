@@ -294,7 +294,7 @@ namespace quick_cache // Root namespace.
 								return; // Nothing to do.
 
 							$vars = array( // Dynamic JS vars.
-								'ajaxURL'  => site_url('/wp-load.php'),
+								'ajaxURL'  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
 								'_wpnonce' => wp_create_nonce());
 
 							$vars = apply_filters(__METHOD__, $vars, get_defined_vars());
