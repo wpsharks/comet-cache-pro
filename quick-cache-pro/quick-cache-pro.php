@@ -166,15 +166,14 @@ namespace quick_cache // Root namespace.
 								}
 							add_action('_cron_'.__NAMESPACE__.'_cleanup', array($this, 'purge_cache'));
 
-							register_activation_hook(__FILE__, array($this, 'activate'));
-							register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-
 							do_action('after__'.__METHOD__, get_defined_vars());
 							do_action(__METHOD__.'_complete', get_defined_vars());
 						}
 
 					public function activate()
 						{
+							$this->setup(); // Setup routines.
+
 							if(!$this->options['enable'])
 								return; // Nothing to do.
 
@@ -790,6 +789,8 @@ namespace quick_cache // Root namespace.
 					}
 
 				$GLOBALS[__NAMESPACE__] = new plugin(); // New plugin instance.
+				register_activation_hook(__FILE__, array($GLOBALS[__NAMESPACE__], 'activate'));
+				register_deactivation_hook(__FILE__, array($GLOBALS[__NAMESPACE__], 'deactivate'));
 			}
 		else add_action('all_admin_notices', function () // Do NOT load in this case.
 			{
