@@ -53,6 +53,7 @@ namespace quick_cache // Root namespace.
 								'enable'                      => '0', // `0|1`.
 								'debugging_enable'            => '1', // `0|1`.
 								'admin_bar_enable'            => '1', // `0|1`.
+								'cache_clear_s2clean_enable'  => '0', // `0|1`.
 								'allow_browser_cache'         => '0', // `0|1`.
 
 								'cache_dir'                   => '/wp-content/cache', // Relative to `ABSPATH`.
@@ -403,7 +404,7 @@ namespace quick_cache // Root namespace.
 							unset($_error); // Housekeeping.
 						}
 
-					public function clear_cache()
+					public function clear_cache($manually = FALSE)
 						{
 							$counter = 0; // Initialize.
 

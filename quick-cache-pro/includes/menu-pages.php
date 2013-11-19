@@ -147,6 +147,13 @@ namespace quick_cache // Root namespace.
 					echo '            <option value="1"'.selected(plugin()->options['change_notifications_enable'], '1', FALSE).'>'.__('Yes, enable Quick Cache notifications in the Dashboard when changes are detected &amp; the cache is cleared.', plugin()->text_domain).'</option>'."\n";
 					echo '            <option value="0"'.selected(plugin()->options['change_notifications_enable'], '0', FALSE).'>'.__('No, I don\'t want to know (don\'t really care) what Quick Cache is doing behind-the-scene.', plugin()->text_domain).'</option>'."\n";
 					echo '         </select></p>'."\n";
+					echo '      <hr />'."\n";
+					echo '      <h3>'.__('Running the <a href="http://www.websharks-inc.com/product/s2clean/" target="_blank">s2Clean Theme</a> by WebSharks?', plugin()->text_domain).'</h3>'."\n";
+					echo '      <p>'.__('If s2Clean is installed, Quick Cache can be configured to clear the Markdown cache (if you\'ve enabled Markdown processing with s2Clean). The s2Clean Markdown cache is only cleared when you manually clear the cache (with Quick Cache); and only if you enable this option here. Note: s2Clean\'s Markdown cache is extremely dynamic. Just like the rest of your site, s2Clean caches do NOT need to be cleared away at all, as this happens automatically when your content changes. However, some developers find this feature useful while developing their site; just to force a refresh under certain circumstances.', plugin()->text_domain).'</p>'."\n";
+					echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cache_clear_s2clean_enable]">'."\n";
+					echo '            <option value="1"'.selected(plugin()->options['cache_clear_s2clean_enable'], '1', FALSE).'>'.__('Yes, if the s2Clean theme is installed; also clear s2Clean-related caches.', plugin()->text_domain).'</option>'."\n";
+					echo '            <option value="0"'.selected(plugin()->options['cache_clear_s2clean_enable'], '0', FALSE).'>'.__('No, I don\'t use s2Clean; or, I don\'t want s2Clean-related caches cleared.', plugin()->text_domain).'</option>'."\n";
+					echo '         </select></p>'."\n";
 					echo '   </div>'."\n";
 
 					echo '</div>'."\n";

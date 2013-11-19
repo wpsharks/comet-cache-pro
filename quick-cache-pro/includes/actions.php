@@ -21,7 +21,10 @@ namespace quick_cache // Root namespace.
 					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 						return; // Unauthenticated POST data.
 
-					$counter = plugin()->clear_cache(); // Counter.
+					if(plugin()->options['cache_clear_s2clean_enable'])
+						if(function_exists('s2clean')) s2clean()->md_cache_clear();
+
+					$counter = plugin()->clear_cache(TRUE); // Counter.
 
 					$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
 					$query_args  = array('page' => __NAMESPACE__, __NAMESPACE__.'__cache_cleared' => '1');
@@ -38,10 +41,14 @@ namespace quick_cache // Root namespace.
 					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 						return; // Unauthenticated POST data.
 
-					$counter = plugin()->clear_cache(); // Counter.
+					if(plugin()->options['cache_clear_s2clean_enable'])
+						if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
+
+					$counter = plugin()->clear_cache(TRUE); // Counter.
 
 					$response = sprintf(__('<p><strong>Cleared a total of <code>%1$s</code> cache files.</strong></p>', plugin()->text_domain), $counter);
 					$response .= __('<p>Cache reset for this site; recreation will occur automatically over time.</p>', plugin()->text_domain);
+					if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', plugin()->text_domain), $s2clean_counter);
 
 					exit($response); // JavaScript will take it from here.
 				}
