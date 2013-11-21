@@ -1,6 +1,6 @@
 <?php
 /*
-Version: 131108
+Version: 131121
 Text Domain: quick-cache
 Plugin Name: Quick Cache (Pro)
 
@@ -21,7 +21,7 @@ namespace quick_cache // Root namespace.
 			{
 				class plugin // Base plugin class.
 				{
-					public $version = '131108'; // See: `readme.txt` file.
+					public $version = '131121'; // See: `readme.txt` file.
 					public $text_domain = ''; // Defined by class constructor.
 					public $default_options = array(); // Defined @ setup.
 					public $options = array(); // Defined @ setup.
