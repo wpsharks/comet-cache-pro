@@ -204,7 +204,10 @@ If your installation of Apache does not have `mod_deflate` installed. You can al
 
 Copyright: © 2013 [WebSharks, Inc.](http://www.websharks-inc.com/bizdev/) (coded in the USA)
 
-Released under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl-2.0.html).
+1. All PHP code (and integrated HTML) in this software have been released under a [GPL license](http://www.gnu.org/licenses/gpl-3.0.html); just like WordPress® itself. You can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation.
+2. With the exception of any Additional Acknowledgments (as detailed below); all other parts of this software; including (but not limited to) application-specific CSS/JavaScript/images, the overall design, and all support-related services and documentation; are licensed commerically and should NOT be redistributed. See: <http://www.websharks-inc.com/product/quick-cache/>
+
+Unless you have our prior written consent, you must NOT directly or indirectly license, sub-license, sell, resell, or provide for free; part (2) of this software; or make an offer to do any of these things. All of these things are strictly prohibited with part (2) of this software.
 
 = Credits / Additional Acknowledgments =
 
