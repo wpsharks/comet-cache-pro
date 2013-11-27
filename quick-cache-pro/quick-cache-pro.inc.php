@@ -1,17 +1,4 @@
 <?php
-/*
-Version: 131121
-Text Domain: quick-cache
-Plugin Name: Quick Cache (Pro)
-
-Author: s2Member® / WebSharks, Inc.
-Author URI: http://www.s2member.com
-
-Plugin URI: http://www.websharks-inc.com/product/quick-cache/
-Description: WordPress advanced cache plugin; speed without compromise!
-
-Speed up your site (BIG time!) — Quick Cache provides reliable page caching for WordPress. Easy-to-use (very simple installation).
-*/
 namespace quick_cache // Root namespace.
 	{
 		if(!defined('WPINC')) // MUST have WordPress.
