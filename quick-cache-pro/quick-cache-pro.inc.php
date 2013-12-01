@@ -136,6 +136,7 @@ namespace quick_cache // Root namespace.
 							add_action('comment_post', array($this, 'auto_purge_comment_post_cache'));
 							add_action('edit_comment', array($this, 'auto_purge_comment_post_cache'));
 							add_action('delete_comment', array($this, 'auto_purge_comment_post_cache'));
+							add_action('wp_set_comment_status', array($this, 'auto_purge_comment_post_cache'));
 
 							add_action('profile_update', array($this, 'auto_purge_user_cache_a1'));
 							add_filter('add_user_metadata', array($this, 'auto_purge_user_cache_fa2'), 10, 2);
