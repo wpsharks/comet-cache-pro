@@ -44,6 +44,7 @@ namespace quick_cache // Root namespace.
 								'debugging_enable'              => '1', // `0|1`.
 								'admin_bar_enable'              => '1', // `0|1`.
 								'cache_clear_s2clean_enable'    => '0', // `0|1`.
+								'cache_clear_eval_code'         => '', // PHP code.
 								'cache_purge_home_page_enable'  => '1', // `0|1`.
 								'cache_purge_posts_page_enable' => '1', // `0|1`.
 								'allow_browser_cache'           => '0', // `0|1`.
