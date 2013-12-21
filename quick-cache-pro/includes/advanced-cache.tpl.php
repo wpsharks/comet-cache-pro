@@ -152,7 +152,7 @@ namespace quick_cache // Root namespace.
 
 					if(preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php[?$]/', $_SERVER['REQUEST_URI'])) return;
 					if(is_admin() || preg_match('/\/wp-admin[\/?$]/', $_SERVER['REQUEST_URI'])) return;
-					if(is_multisite() && preg_match('/\/files[\/?$])/', $_SERVER['REQUEST_URI'])) return;
+					if(is_multisite() && preg_match('/\/files[\/?$]/', $_SERVER['REQUEST_URI'])) return;
 
 					if(!QUICK_CACHE_WHEN_LOGGED_IN && $this->is_like_user_logged_in()) return;
 
