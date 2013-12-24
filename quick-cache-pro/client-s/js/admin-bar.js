@@ -32,24 +32,40 @@
 				$('#' + plugin.namespace + '-ajax-response') // Animate.
 					.animate({'top': '-100%'}, 200, plugin.removeAJAXResponse);
 			};
+		plugin.wipeCache = function()
+			{
+				var postVars = {}; // HTTP post vars.
+				postVars[plugin.namespace] = {ajax_wipe_cache: '1'};
+				postVars['_wpnonce'] = plugin.vars._wpnonce;
+
+				var $wipe = $('#wp-admin-bar-' + plugin.namespace + '-wipe > a');
+				plugin.removeAJAXResponse(), $wipe.parent().addClass('wiping'), $wipe.attr('disabled', 'disabled'),
+					$.post(plugin.vars.ajaxURL, postVars, function(data)
+					{
+						plugin.removeAJAXResponse(), $wipe.parent().removeClass('wiping'), $wipe.removeAttr('disabled');
+						var $response = $('<div id="' + plugin.namespace + '-ajax-response" class="' + plugin.namespace + '-wipe">' + data + '</div>');
+						$('body').append($response), plugin.showAJAXResponse();
+					});
+			};
 		plugin.clearCache = function()
 			{
 				var postVars = {}; // HTTP post vars.
-				postVars[plugin.namespace] = {ajax_clear_cache: {clear: 'site'}};
+				postVars[plugin.namespace] = {ajax_clear_cache: '1'};
 				postVars['_wpnonce'] = plugin.vars._wpnonce;
 
-				var $clear = $('#wp-admin-bar-' + plugin.namespace + ' > a');
+				var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
 				plugin.removeAJAXResponse(), $clear.parent().addClass('clearing'), $clear.attr('disabled', 'disabled'),
 					$.post(plugin.vars.ajaxURL, postVars, function(data)
 					{
 						plugin.removeAJAXResponse(), $clear.parent().removeClass('clearing'), $clear.removeAttr('disabled');
-						var $response = $('<div id="' + plugin.namespace + '-ajax-response">' + data + '</div>');
+						var $response = $('<div id="' + plugin.namespace + '-ajax-response" class="' + plugin.namespace + '-clear">' + data + '</div>');
 						$('body').append($response), plugin.showAJAXResponse();
 					});
 			};
 		plugin.onReady = function() // DOM ready event handler.
 			{
-				$('#wp-admin-bar-' + plugin.namespace + ' > a').on('click', plugin.clearCache);
+				$('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
+				$('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
 				$document.on('click', '#' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
 			};
 		$document.ready(plugin.onReady); // On DOM ready.

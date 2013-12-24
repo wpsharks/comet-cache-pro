@@ -13,6 +13,59 @@ namespace quick_cache // Root namespace.
 						if(method_exists($this, $action)) $this->{$action}($args);
 				}
 
+			public function wipe_cache($args)
+				{
+					if(!current_user_can(plugin()->network_cap))
+						return; // Nothing to do.
+
+					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
+						return; // Unauthenticated POST data.
+
+					$counter = plugin()->wipe_cache(TRUE); // Counter.
+
+					if(plugin()->options['cache_clear_s2clean_enable'])
+						if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
+
+					if(plugin()->options['cache_clear_eval_code']) // Custom code?
+						{
+							ob_start(); // Buffer output from PHP code.
+							eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+							$eval_output = ob_get_clean();
+						}
+					$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
+					$query_args  = array('page' => __NAMESPACE__, __NAMESPACE__.'__cache_wiped' => '1');
+					$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
+
+					wp_redirect($redirect_to).exit(); // All done :-)
+				}
+
+			public function ajax_wipe_cache($args)
+				{
+					if(!current_user_can(plugin()->network_cap))
+						return; // Nothing to do.
+
+					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
+						return; // Unauthenticated POST data.
+
+					$counter = plugin()->wipe_cache(TRUE); // Counter.
+
+					if(plugin()->options['cache_clear_s2clean_enable'])
+						if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
+
+					if(plugin()->options['cache_clear_eval_code']) // Custom code?
+						{
+							ob_start(); // Buffer output from PHP code.
+							eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+							$eval_output = ob_get_clean();
+						}
+					$response = sprintf(__('<p><strong>Wiped a total of <code>%1$s</code> cache files.</strong></p>', plugin()->text_domain), $counter);
+					$response .= __('<p>Cache wiped for all sites; recreation will occur automatically over time.</p>', plugin()->text_domain);
+					if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', plugin()->text_domain), $s2clean_counter);
+					if(!empty($eval_output)) $response .= $eval_output; // Custom output (perhaps even multiple messages).
+
+					exit($response); // JavaScript will take it from here.
+				}
+
 			public function clear_cache($args)
 				{
 					if(!current_user_can(plugin()->cap))
@@ -21,11 +74,17 @@ namespace quick_cache // Root namespace.
 					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 						return; // Unauthenticated POST data.
 
-					if(plugin()->options['cache_clear_s2clean_enable'])
-						if(function_exists('s2clean')) s2clean()->md_cache_clear();
-
 					$counter = plugin()->clear_cache(TRUE); // Counter.
 
+					if(plugin()->options['cache_clear_s2clean_enable'])
+						if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
+
+					if(plugin()->options['cache_clear_eval_code']) // Custom code?
+						{
+							ob_start(); // Buffer output from PHP code.
+							eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+							$eval_output = ob_get_clean();
+						}
 					$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
 					$query_args  = array('page' => __NAMESPACE__, __NAMESPACE__.'__cache_cleared' => '1');
 					$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
@@ -53,7 +112,7 @@ namespace quick_cache // Root namespace.
 							$eval_output = ob_get_clean();
 						}
 					$response = sprintf(__('<p><strong>Cleared a total of <code>%1$s</code> cache files.</strong></p>', plugin()->text_domain), $counter);
-					$response .= __('<p>Cache reset for this site; recreation will occur automatically over time.</p>', plugin()->text_domain);
+					$response .= __('<p>Cache cleared for this site; recreation will occur automatically over time.</p>', plugin()->text_domain);
 					if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', plugin()->text_domain), $s2clean_counter);
 					if(!empty($eval_output)) $response .= $eval_output; // Custom output (perhaps even multiple messages).
 

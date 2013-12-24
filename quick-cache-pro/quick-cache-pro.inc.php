@@ -14,6 +14,7 @@ namespace quick_cache // Root namespace.
 					public $text_domain = ''; // Defined by class constructor.
 					public $default_options = array(); // Defined @ setup.
 					public $options = array(); // Defined @ setup.
+					public $network_cap = ''; // Defined @ setup.
 					public $cap = ''; // Defined @ setup.
 
 					public function __construct() // Constructor.
@@ -101,7 +102,8 @@ namespace quick_cache // Root namespace.
 							$this->options         = array_merge($this->default_options, $options); // This considers old options also.
 							$this->options         = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
 
-							$this->cap = apply_filters(__METHOD__.'__cap', 'activate_plugins');
+							$this->network_cap = apply_filters(__METHOD__.'__network_cap', 'manage_network_plugins');
+							$this->cap         = apply_filters(__METHOD__.'__cap', 'activate_plugins');
 
 							add_action('init', array($this, 'check_advanced_cache'));
 							add_action('init', array($this, 'check_blog_paths'));
@@ -204,6 +206,7 @@ namespace quick_cache // Root namespace.
 
 							$this->options['version'] = $this->version;
 							update_option(__NAMESPACE__.'_options', $this->options);
+							if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
 
 							if($this->options['enable']) // Only if enabled.
 								{
@@ -211,10 +214,10 @@ namespace quick_cache // Root namespace.
 									$this->add_advanced_cache();
 									$this->update_blog_paths();
 								}
-							$this->clear_cache(); // Always clear the cache in this scenario.
+							$this->wipe_cache(); // Always wipe the cache in this scenario.
 
 							$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-							$notices[] = __('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... clearing cache... all done :-)', $this->text_domain);
+							$notices[] = __('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', $this->text_domain);
 							update_option(__NAMESPACE__.'_notices', $notices);
 						}
 
@@ -291,7 +294,16 @@ namespace quick_cache // Root namespace.
 							if(!current_user_can($this->cap) || !is_admin_bar_showing())
 								return; // Nothing to do.
 
-							$wp_admin_bar->add_node(array('parent' => 'top-secondary', 'id' => __NAMESPACE__, 'title' => __('Clear Cache', $this->text_domain), 'href' => '#', 'meta' => array('title' => __('Powered by Quick Cache!', $this->text_domain), 'class' => __NAMESPACE__, 'tabindex' => -1)));
+							if(is_multisite() && current_user_can($this->network_cap)) // Allow network administrators to wipe the entire cache on a multisite network.
+								$wp_admin_bar->add_node(array('parent' => 'top-secondary', 'id' => __NAMESPACE__.'-wipe', 'title' => __('Wipe', $this->text_domain), 'href' => '#',
+								                              'meta'   => array('title' => __('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', $this->text_domain),
+								                                                'class' => __NAMESPACE__, 'tabindex' => -1)));
+
+							$wp_admin_bar->add_node(array('parent' => 'top-secondary', 'id' => __NAMESPACE__.'-clear', 'title' => __('Clear Cache', $this->text_domain), 'href' => '#',
+							                              'meta'   => array('title' => ((is_multisite() && current_user_can($this->network_cap))
+									                              ? __('Clear Cache (Start Fresh); affects the current site only.', $this->text_domain)
+									                              : __('Clear Cache (Start Fresh)', $this->text_domain)),
+							                                                'class' => __NAMESPACE__, 'tabindex' => -1)));
 						}
 
 					public function admin_bar_meta_tags()
@@ -372,7 +384,7 @@ namespace quick_cache // Root namespace.
 					public function add_network_menu_pages()
 						{
 							add_menu_page(__('Quick Cache', $this->text_domain), // Menu page for plugin options/config.
-							              __('Quick Cache', $this->text_domain), $this->cap, __NAMESPACE__, array($this, 'menu_page_options'),
+							              __('Quick Cache', $this->text_domain), $this->network_cap, __NAMESPACE__, array($this, 'menu_page_options'),
 							              $this->url('/client-s/images/menu-icon.png'));
 						}
 
@@ -413,6 +425,29 @@ namespace quick_cache // Root namespace.
 							if(current_user_can($this->cap)) foreach($errors as $_error)
 								echo apply_filters(__METHOD__.'__error', '<div class="error"><p>'.$_error.'</p></div>', get_defined_vars());
 							unset($_error); // Housekeeping.
+						}
+
+					public function wipe_cache($manually = FALSE)
+						{
+							$counter = 0; // Initialize.
+
+							$cache_dir = ABSPATH.$this->options['cache_dir'];
+
+							if(!is_dir($cache_dir) || !($opendir = opendir($cache_dir)))
+								return $counter; // Nothing we can do.
+
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation
+							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
+
+							while(($_file = $_basename = readdir($opendir)) !== FALSE && ($_file = $cache_dir.'/'.$_file))
+								if(is_file($_file) && strpos($_basename, 'qc-c-') === 0) // No further conditions when wiping the cache.
+									if(!unlink($_file)) throw new \exception(sprintf(__('Unable to wipe: `%1$s`.', $this->text_domain), $_file));
+									else $counter++; // Increment counter for each file we wipe.
+
+							unset($_file, $_basename); // Just a little housekeeping.
+							closedir($opendir); // Housekeeping.
+
+							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
 					public function clear_cache($manually = FALSE)
@@ -483,6 +518,25 @@ namespace quick_cache // Root namespace.
 							unset($_file, $_basename); // Just a little housekeeping.
 							closedir($opendir); // Housekeeping.
 
+							return apply_filters(__METHOD__, $counter, get_defined_vars());
+						}
+
+					public function auto_wipe_cache()
+						{
+							$counter = 0; // Initialize.
+
+							if(!$this->options['enable'])
+								return $counter; // Nothing to do.
+
+							$counter = $this->wipe_cache();
+
+							if($counter && $this->options['change_notifications_enable'] && is_admin())
+								{
+									$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+									$notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+									             __('<strong>Quick Cache:</strong> detected significant changes. Found cache files (auto-wiping).', $this->text_domain);
+									update_option(__NAMESPACE__.'_notices', $notices);
+								}
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 

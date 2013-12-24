@@ -1,7 +1,8 @@
 /*
 Admin Bar.
 */
-#wp-admin-bar-quick_cache > a:after
+#wp-admin-bar-quick_cache-wipe > a:after,
+#wp-admin-bar-quick_cache-clear > a:after
 {
 	content        : ' ';
 	width          : 16px;
@@ -12,9 +13,17 @@ Admin Bar.
 	vertical-align : middle;
 	margin         : -3px 0 0 5px;
 	display        : inline-block;
-	background     : url('../images/clear.png');
 }
-#wp-admin-bar-quick_cache.clearing > a:after
+#wp-admin-bar-quick_cache-wipe > a:after
+{
+	background : url('../images/wipe.png');
+}
+#wp-admin-bar-quick_cache-clear > a:after
+{
+	background : url('../images/clear.png');
+}
+#wp-admin-bar-quick_cache-wipe.wiping > a:after,
+#wp-admin-bar-quick_cache-clear.clearing > a:after
 {
 	background        : url('../images/spinner.png');
 	-webkit-animation : quick_cache_spinner 1s infinite linear;
@@ -24,7 +33,8 @@ Admin Bar.
 /*
 AJAX Responses.
 */
-#quick_cache-ajax-response
+#quick_cache-ajax-response.quick_cache-wipe,
+#quick_cache-ajax-response.quick_cache-clear
 {
 	top                 : -100%;
 	left                : 50%;
@@ -42,13 +52,20 @@ AJAX Responses.
 	border-radius       : 4px;
 	border              : 1px solid #EEEEEE;
 	box-shadow          : 0 0 5px 0 #000000 inset, 0 0 100px 10px rgba(0, 0, 0, 0.3);
-	background          : #333333 url('../images/clear-response.png') no-repeat 5px 5px;
 
 	outline             : none;
 	cursor              : pointer;
 	-webkit-user-select : none;
 	-moz-user-select    : none;
 	user-select         : none;
+}
+#quick_cache-ajax-response.quick_cache-wipe
+{
+	background : #333333 url('../images/wipe-response.png') no-repeat 5px 5px;
+}
+#quick_cache-ajax-response.quick_cache-clear
+{
+	background : #333333 url('../images/clear-response.png') no-repeat 5px 5px;
 }
 #quick_cache-ajax-response:before
 {
