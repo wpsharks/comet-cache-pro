@@ -569,6 +569,9 @@ namespace quick_cache // Root namespace.
 							if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 								return $counter; // Nothing to do.
 
+							if ( get_post_status ( $id ) == 'auto-draft' )
+								return $counter; // Nothing to do.
+
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
