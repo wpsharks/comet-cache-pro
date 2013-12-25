@@ -2,7 +2,7 @@
 /*
 Version: 131224
 Text Domain: quick-cache
-Plugin Name: Quick Cache (Pro)
+Plugin Name: Quick Cache Pro
 Network: true
 
 Author: s2Member® / WebSharks, Inc.

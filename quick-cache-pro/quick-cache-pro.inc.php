@@ -14,6 +14,7 @@ namespace quick_cache // Root namespace.
 					public $text_domain = ''; // Defined by class constructor.
 					public $default_options = array(); // Defined @ setup.
 					public $options = array(); // Defined @ setup.
+					public $update_cap = ''; // Defined @ setup.
 					public $network_cap = ''; // Defined @ setup.
 					public $cap = ''; // Defined @ setup.
 
@@ -63,7 +64,10 @@ namespace quick_cache // Root namespace.
 								'version_salt'                  => '', // Any string value.
 
 								'change_notifications_enable'   => '1', // `0|1`.
-								'uninstall_on_deactivation'     => '0' // `0|1`.
+								'uninstall_on_deactivation'     => '0', // `0|1`.
+
+								'update_sync_username'          => '', 'update_sync_password' => '',
+								'update_sync_version_check'     => '1', 'last_update_sync_version_check' => '0'
 							); // Default options are merged with those defined by the site owner.
 							$options               = (is_array($options = get_option(__NAMESPACE__.'_options'))) ? $options : array();
 							if(is_multisite() && is_array($site_options = get_site_option(__NAMESPACE__.'_options')))
@@ -102,6 +106,7 @@ namespace quick_cache // Root namespace.
 							$this->options         = array_merge($this->default_options, $options); // This considers old options also.
 							$this->options         = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
 
+							$this->update_cap  = apply_filters(__METHOD__.'__update_cap', 'update_plugins');
 							$this->network_cap = apply_filters(__METHOD__.'__network_cap', 'manage_network_plugins');
 							$this->cap         = apply_filters(__METHOD__.'__cap', 'activate_plugins');
 
@@ -111,6 +116,7 @@ namespace quick_cache // Root namespace.
 
 							add_action('admin_init', array($this, 'check_version'));
 							add_action('admin_init', array($this, 'rewrite_notice'));
+							add_action('admin_init', array($this, 'check_update_sync_version'));
 
 							add_action('admin_bar_menu', array($this, 'admin_bar_menu'));
 							add_action('wp_head', array($this, 'admin_bar_meta_tags'), 0);
@@ -125,6 +131,7 @@ namespace quick_cache // Root namespace.
 
 							add_action('all_admin_notices', array($this, 'all_admin_notices'));
 							add_action('all_admin_notices', array($this, 'all_admin_errors'));
+
 							add_action('network_admin_menu', array($this, 'add_network_menu_pages'));
 							add_action('admin_menu', array($this, 'add_menu_pages'));
 
@@ -160,6 +167,8 @@ namespace quick_cache // Root namespace.
 							add_action('delete_link', array($this, 'auto_clear_cache'));
 
 							add_filter('enable_live_network_counts', array($this, 'update_blog_paths'));
+
+							add_filter('pre_site_transient_update_plugins', array($this, 'pre_site_transient_update_plugins'));
 
 							if((integer)$this->options['crons_setup'] < 1382523750)
 								{
@@ -383,17 +392,31 @@ namespace quick_cache // Root namespace.
 
 					public function add_network_menu_pages()
 						{
-							add_menu_page(__('Quick Cache', $this->text_domain), // Menu page for plugin options/config.
-							              __('Quick Cache', $this->text_domain), $this->network_cap, __NAMESPACE__, array($this, 'menu_page_options'),
+							add_menu_page(__('Quick Cache', $this->text_domain), __('Quick Cache', $this->text_domain),
+							              $this->network_cap, __NAMESPACE__, array($this, 'menu_page_options'),
 							              $this->url('/client-s/images/menu-icon.png'));
+
+							add_submenu_page(__NAMESPACE__, __('Plugin Options', $this->text_domain), __('Plugin Options', $this->text_domain),
+							                 $this->network_cap, __NAMESPACE__, array($this, 'menu_page_options'));
+
+							if(current_user_can($this->network_cap)) // Multi-layer security here.
+								add_submenu_page(__NAMESPACE__, __('Plugin Updater', $this->text_domain), __('Plugin Updater', $this->text_domain),
+								                 $this->update_cap, __NAMESPACE__.'-update-sync', array($this, 'menu_page_update_sync'));
 						}
 
 					public function add_menu_pages()
 						{
-							if(!is_multisite()) // Multisite networks must use the network administrative area.
-								add_menu_page(__('Quick Cache', $this->text_domain), // Menu page for plugin options/config.
-								              __('Quick Cache', $this->text_domain), $this->cap, __NAMESPACE__, array($this, 'menu_page_options'),
-								              $this->url('/client-s/images/menu-icon.png'));
+							if(is_multisite()) return; // Multisite networks MUST use network admin area.
+
+							add_menu_page(__('Quick Cache', $this->text_domain), __('Quick Cache', $this->text_domain),
+							              $this->cap, __NAMESPACE__, array($this, 'menu_page_options'),
+							              $this->url('/client-s/images/menu-icon.png'));
+
+							add_submenu_page(__NAMESPACE__, __('Plugin Options', $this->text_domain), __('Plugin Options', $this->text_domain),
+							                 $this->cap, __NAMESPACE__, array($this, 'menu_page_options'));
+
+							add_submenu_page(__NAMESPACE__, __('Plugin Updater', $this->text_domain), __('Plugin Updater', $this->text_domain),
+							                 $this->update_cap, __NAMESPACE__.'-update-sync', array($this, 'menu_page_update_sync'));
 						}
 
 					public function menu_page_options()
@@ -403,28 +426,131 @@ namespace quick_cache // Root namespace.
 							$menu_pages->options();
 						}
 
+					public function menu_page_update_sync()
+						{
+							require_once dirname(__FILE__).'/includes/menu-pages.php';
+							$menu_pages = new menu_pages();
+							$menu_pages->update_sync();
+						}
+
+					public function check_update_sync_version()
+						{
+							if(!$this->options['update_sync_version_check'])
+								return; // Functionality is disabled here.
+
+							if(!current_user_can($this->update_cap)) return; // Nothing to do.
+
+							if($this->options['last_update_sync_version_check'] >= strtotime('-1 hour'))
+								return; // No reason to keep checking on this.
+
+							$this->options['last_update_sync_version_check'] = time(); // Update; checking now.
+							update_option(__NAMESPACE__.'_options', $this->options); // Save this option value now.
+							if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
+
+							$update_sync_url       = 'https://www.websharks-inc.com/products/update-sync.php';
+							$update_sync_post_vars = array('data' => array('slug'    => str_replace('_', '-', __NAMESPACE__).'-pro',
+							                                               'version' => 'latest-stable', 'version_check_only' => '1'));
+
+							$update_sync_response = wp_remote_post($update_sync_url, array('body' => $update_sync_post_vars));
+							$update_sync_response = json_decode(wp_remote_retrieve_body($update_sync_response), TRUE);
+
+							if(empty($update_sync_response['version']) || version_compare($this->version, $update_sync_response['version'], '>='))
+								return; // Current version is the latest stable version. Nothing more to do here.
+
+							$update_sync_page = self_admin_url('/admin.php'); // Page that initiates an update.
+							$update_sync_page = add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync')), $update_sync_page);
+
+							$notices                                   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+							$notices['persistent-update-sync-version'] = // This creates a persistent notice; e.g. it must be cleared away by the site owner.
+								sprintf(__('<strong>Quick Cache Pro:</strong> a new version is now available. Please <a href="%1$s">upgrade to v%2$s</a>.', $this->text_domain),
+								        $update_sync_page, $update_sync_response['version']);
+							update_option(__NAMESPACE__.'_notices', $notices);
+						}
+
+					public function pre_site_transient_update_plugins($transient)
+						{
+							if(!is_admin() || $GLOBALS['pagenow'] !== 'update.php')
+								return $transient; // Nothing to do here.
+
+							$_r = array_map('trim', stripslashes_deep($_REQUEST));
+
+							if(empty($_r['action']) || $_r['action'] !== 'upgrade-plugin')
+								return $transient; // Nothing to do here.
+
+							if(!current_user_can($this->update_cap)) return $transient; // Nothing to do here.
+
+							if(empty($_r['_wpnonce']) || !wp_verify_nonce((string)$_r['_wpnonce'], 'upgrade-plugin_'.plugin_basename($this->file)))
+								return $transient; // Nothing to do here.
+
+							if(empty($_r[__NAMESPACE__.'__update_version']) || !($update_version = (string)$_r[__NAMESPACE__.'__update_version']))
+								return $transient; // Nothing to do here.
+
+							if(empty($_r[__NAMESPACE__.'__update_zip']) || !($update_zip = base64_decode((string)$_r[__NAMESPACE__.'__update_zip'])))
+								return $transient; // Nothing to do here.
+
+							if(!is_object($transient)) $transient = new \stdClass();
+
+							$transient->last_checked                           = time();
+							$transient->checked[plugin_basename($this->file)]  = $this->version;
+							$transient->response[plugin_basename($this->file)] = (object)array(
+								'id'          => 0, 'slug' => basename($this->file, '.php'),
+								'url'         => add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync')),
+								                               self_admin_url('/admin.php')),
+								'new_version' => $update_version, 'package' => $update_zip);
+
+							return $transient; // Nodified now.
+						}
+
 					public function all_admin_notices()
 						{
-							$notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-							if($notices) delete_option(__NAMESPACE__.'_notices'); // Process one-time only.
+							if(($notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array()))
+								{
+									$notices = $updated_notices = array_unique($notices); // De-dupe.
 
-							$notices = array_unique($notices); // Don't show dupes.
+									foreach(array_keys($updated_notices) as $_key) if(strpos($_key, 'persistent-') !== 0)
+										unset($updated_notices[$_key]); // Leave persistent notices; ditch others.
+									unset($_key); // Housekeeping after updating notices.
 
-							if(current_user_can($this->cap)) foreach($notices as $_notice)
-								echo apply_filters(__METHOD__.'__notice', '<div class="updated"><p>'.$_notice.'</p></div>', get_defined_vars());
-							unset($_notice); // Housekeeping.
+									update_option(__NAMESPACE__.'_notices', $updated_notices);
+								}
+							if(current_user_can($this->cap)) foreach($notices as $_key => $_notice)
+								{
+									$_dismiss = ''; // Initialize empty string; e.g. reset value on each pass.
+									if(strpos($_key, 'persistent-') === 0) // A dismissal link is needed in this case?
+										{
+											$_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
+											$_dismiss     = add_query_arg(urlencode_deep(array(__NAMESPACE__ => array('dismiss_notice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
+											$_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', $this->text_domain).'</a>';
+										}
+									echo apply_filters(__METHOD__.'__notice', '<div class="updated"><p>'.$_notice.$_dismiss.'</p></div>', get_defined_vars());
+								}
+							unset($_key, $_notice, $_dismiss_css, $_dismiss); // Housekeeping.
 						}
 
 					public function all_admin_errors()
 						{
-							$errors = (is_array($errors = get_option(__NAMESPACE__.'_errors'))) ? $errors : array();
-							if($errors) delete_option(__NAMESPACE__.'_errors'); // Process one-time only.
+							if(($errors = (is_array($errors = get_option(__NAMESPACE__.'_errors'))) ? $errors : array()))
+								{
+									$errors = $updated_errors = array_unique($errors); // De-dupe.
 
-							$errors = array_unique($errors); // Don't show dupes.
+									foreach(array_keys($updated_errors) as $_key) if(strpos($_key, 'persistent-') !== 0)
+										unset($updated_errors[$_key]); // Leave persistent errors; ditch others.
+									unset($_key); // Housekeeping after updating notices.
 
-							if(current_user_can($this->cap)) foreach($errors as $_error)
-								echo apply_filters(__METHOD__.'__error', '<div class="error"><p>'.$_error.'</p></div>', get_defined_vars());
-							unset($_error); // Housekeeping.
+									update_option(__NAMESPACE__.'_errors', $updated_errors);
+								}
+							if(current_user_can($this->cap)) foreach($errors as $_key => $_error)
+								{
+									$_dismiss = ''; // Initialize empty string; e.g. reset value on each pass.
+									if(strpos($_key, 'persistent-') === 0) // A dismissal link is needed in this case?
+										{
+											$_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
+											$_dismiss     = add_query_arg(urlencode_deep(array(__NAMESPACE__ => array('dismiss_error' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
+											$_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', $this->text_domain).'</a>';
+										}
+									echo apply_filters(__METHOD__.'__error', '<div class="error"><p>'.$_error.$_dismiss.'</p></div>', get_defined_vars());
+								}
+							unset($_key, $_error, $_dismiss_css, $_dismiss); // Housekeeping.
 						}
 
 					public function wipe_cache($manually = FALSE)
@@ -569,7 +695,7 @@ namespace quick_cache // Root namespace.
 							if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 								return $counter; // Nothing to do.
 
-							if ( get_post_status ( $id ) == 'auto-draft' )
+							if(get_post_status($id) == 'auto-draft')
 								return $counter; // Nothing to do.
 
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
