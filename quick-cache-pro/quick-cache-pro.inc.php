@@ -56,6 +56,7 @@ namespace quick_cache // Root namespace.
 
 								'when_logged_in'                => '0', // `0|1|postload`.
 								'get_requests'                  => '0', // `0|1`.
+								'feeds_enable'                  => '0', // `0|1`.
 
 								'exclude_uris'                  => '', // Empty string or line-delimited patterns.
 								'exclude_refs'                  => '', // Empty string or line-delimited patterns.
