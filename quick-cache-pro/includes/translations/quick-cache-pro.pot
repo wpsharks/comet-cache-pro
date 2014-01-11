@@ -1,10 +1,10 @@
-# Copyright (C) 2014 Quick Cache (Pro)
-# This file is distributed under the same license as the Quick Cache (Pro) package.
+# Copyright (C) 2014 Quick Cache Pro
+# This file is distributed under the same license as the Quick Cache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quick Cache (Pro) 131224\n"
+"Project-Id-Version: Quick Cache Pro 140104\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/quick-cache-pro\n"
-"POT-Creation-Date: 2014-01-08 05:40:19+00:00\n"
+"POT-Creation-Date: 2014-01-11 10:54:14+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -43,73 +43,77 @@ msgid ""
 "<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>"
 msgstr ""
 
+#: includes/actions.php:275
+msgid "Unknown error. Please wait 15 minutes and try again."
+msgstr ""
+
 #. translators: This string is actually NOT translatable because the `__()`
 #. function is not available at this point in the processing.
-#: includes/advanced-cache.tpl.php:223
+#: includes/advanced-cache.tpl.php:226
 msgid ""
 "Quick Cache fully functional :-) Cache file served for (%1$s) in %2$s "
 "seconds, on: %3$s."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:251
+#: includes/advanced-cache.tpl.php:254
 msgid "Unable to invalidate: `%1$s`."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:289
+#: includes/advanced-cache.tpl.php:292
 msgid ""
 "Quick Cache fully functional :-) Cache file served for (%1$s; user token: "
 "%2$s) in %3$s seconds, on: %4$s."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:309
+#: includes/advanced-cache.tpl.php:312
 msgid ""
 "Unable to cache already-compressed output. Please use `mod_deflate` w/ "
 "Apache; or use `zlib.output_compression` in your `php.ini` file. Quick Cache "
 "is NOT compatible with `ob_gzhandler()` and others like this."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:344
+#: includes/advanced-cache.tpl.php:347
 msgid ""
 "Cache directory not writable. Quick Cache needs this directory please: `"
 "%1$s`. Set permissions to `755` or higher; `777` might be needed in some "
 "cases."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:349
+#: includes/advanced-cache.tpl.php:352
 msgid "Quick Cache file built for (%1$s%2$s) in %3$s seconds, on: %4$s."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:350
+#: includes/advanced-cache.tpl.php:353
 msgid "user token: %1$s"
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:351
+#: includes/advanced-cache.tpl.php:354
 msgid ""
 "This Quick Cache file will auto-expire (and be rebuilt) on: %1$s (based on "
 "your configured expiration time)."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:358
+#: includes/advanced-cache.tpl.php:361
 msgid ""
 "Quick Cache: failed to write cache file for: `%1$s`; possible permissions "
 "issue (or race condition), please check your cache directory: `%2$s`."
 msgstr ""
 
-#: includes/advanced-cache.tpl.php:472
+#: includes/advanced-cache.tpl.php:489
 msgid "Invalid hook."
 msgstr ""
 
-#: includes/menu-pages.php:17 quick-cache-pro.inc.php:299
+#: includes/menu-pages.php:17 quick-cache-pro.inc.php:310
 msgid ""
 "Wipe Cache (Start Fresh); clears the cache for all sites in this network at "
 "once!"
 msgstr ""
 
-#: includes/menu-pages.php:19 quick-cache-pro.inc.php:298
+#: includes/menu-pages.php:19 quick-cache-pro.inc.php:309
 msgid "Wipe"
 msgstr ""
 
-#: includes/menu-pages.php:21 quick-cache-pro.inc.php:305
+#: includes/menu-pages.php:21 quick-cache-pro.inc.php:316
 msgid "Clear Cache (Start Fresh)"
 msgstr ""
 
@@ -131,33 +135,42 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: includes/menu-pages.php:30
+#: includes/menu-pages.php:30 includes/menu-pages.php:451
 msgid "All Panels"
 msgstr ""
 
-#: includes/menu-pages.php:39
+#: includes/menu-pages.php:36
+msgid "Pro Updater"
+msgstr ""
+
+#: includes/menu-pages.php:37 includes/menu-pages.php:458
+msgid "Newsletter (Subscribe)"
+msgstr ""
+
+#: includes/menu-pages.php:40 quick-cache-pro.inc.php:401
+#: quick-cache-pro.inc.php:417
 msgid "Plugin Options"
 msgstr ""
 
-#: includes/menu-pages.php:46
+#: includes/menu-pages.php:47
 msgid "Options updated successfully."
 msgstr ""
 
-#: includes/menu-pages.php:52
+#: includes/menu-pages.php:53
 msgid "Default options successfully restored."
 msgstr ""
 
-#: includes/menu-pages.php:58
+#: includes/menu-pages.php:59
 msgid ""
 "Cache wiped across all sites; recreation will occur automatically over time."
 msgstr ""
 
-#: includes/menu-pages.php:64
+#: includes/menu-pages.php:65
 msgid ""
 "Cache cleared for this site; recreation will occur automatically over time."
 msgstr ""
 
-#: includes/menu-pages.php:70
+#: includes/menu-pages.php:71
 msgid ""
 "Failed to update your <code>/wp-config.php</code> file automatically. Please "
 "add the following line to your <code>/wp-config.php</code> file (right after "
@@ -165,7 +178,7 @@ msgid ""
 "\"><code>&lt;?php<br />define('WP_CACHE', TRUE);</code></pre>"
 msgstr ""
 
-#: includes/menu-pages.php:76
+#: includes/menu-pages.php:77
 msgid ""
 "Failed to update your <code>/wp-config.php</code> file automatically. Please "
 "remove the following line from your <code>/wp-config.php</code> file, or set "
@@ -173,7 +186,7 @@ msgid ""
 "\"><code>define('WP_CACHE', TRUE);</code></pre>"
 msgstr ""
 
-#: includes/menu-pages.php:83
+#: includes/menu-pages.php:84
 msgid ""
 "Failed to update your <code>/wp-content/advanced-cache.php</code> file. "
 "Cannot write stat file: <code>%1$s/qc-advanced-cache</code>. Please be sure "
@@ -182,7 +195,7 @@ msgid ""
 "code>). Once you've done this, please try again."
 msgstr ""
 
-#: includes/menu-pages.php:84
+#: includes/menu-pages.php:85
 msgid ""
 "Failed to update your <code>/wp-content/advanced-cache.php</code> file. Most "
 "likely a permissions error. Please create an empty file here: <code>/wp-"
@@ -191,30 +204,30 @@ msgid ""
 "code>). Once you've done this, please try again."
 msgstr ""
 
-#: includes/menu-pages.php:90
+#: includes/menu-pages.php:91
 msgid ""
 "Failed to remove your <code>/wp-content/advanced-cache.php</code> file. Most "
 "likely a permissions error. Please delete (or empty the contents of) this "
 "file: <code>/wp-content/advanced-cache.php</code>."
 msgstr ""
 
-#: includes/menu-pages.php:96
+#: includes/menu-pages.php:97
 msgid "Quick Cache is currently disabled; please review options below."
 msgstr ""
 
-#: includes/menu-pages.php:104
+#: includes/menu-pages.php:105
 msgid "Enable/Disable"
 msgstr ""
 
-#: includes/menu-pages.php:109
+#: includes/menu-pages.php:110
 msgid "Yes, enable Quick Cache!"
 msgstr ""
 
-#: includes/menu-pages.php:109
+#: includes/menu-pages.php:110
 msgid "No, disable."
 msgstr ""
 
-#: includes/menu-pages.php:111
+#: includes/menu-pages.php:112
 msgid ""
 "<strong>HUGE Time-Saver:</strong> Approx. 95% of all WordPress sites running "
 "Quick Cache, simply enable it here; and that's it :-) <strong>No further "
@@ -227,11 +240,11 @@ msgid ""
 "tune things later if you deem necessary."
 msgstr ""
 
-#: includes/menu-pages.php:114
+#: includes/menu-pages.php:115
 msgid "How Can I Tell Quick Cache is Working?"
 msgstr ""
 
-#: includes/menu-pages.php:115
+#: includes/menu-pages.php:116
 msgid ""
 "First of all, please make sure that you've enabled Quick Cache here; then "
 "scroll down to the bottom of this page and click \"Save All Changes\". All "
@@ -240,7 +253,7 @@ msgid ""
 "later and fine-tune things the way you like them."
 msgstr ""
 
-#: includes/menu-pages.php:116
+#: includes/menu-pages.php:117
 msgid ""
 "Once Quick Cache has been enabled, <strong>you'll need to log out (and/or "
 "clear browser cookies)</strong>. By default, cache files are NOT served to "
@@ -249,7 +262,7 @@ msgid ""
 "to a comment lately); please clear your browser cookies before testing."
 msgstr ""
 
-#: includes/menu-pages.php:117
+#: includes/menu-pages.php:118
 msgid ""
 "<strong>To verify that Quick Cache is working</strong>, navigate your site "
 "like a normal visitor would. Right-click on any page (choose View Source), "
@@ -260,24 +273,24 @@ msgid ""
 "faster over time!"
 msgstr ""
 
-#: includes/menu-pages.php:119
+#: includes/menu-pages.php:120
 msgid ""
 "Yes, enable notes in the source code so I can see it's working (recommended)."
 msgstr ""
 
-#: includes/menu-pages.php:120
+#: includes/menu-pages.php:121
 msgid "No, I don't want my source code to contain any of these notes."
 msgstr ""
 
-#: includes/menu-pages.php:129
+#: includes/menu-pages.php:130
 msgid "Deactivation Safeguards"
 msgstr ""
 
-#: includes/menu-pages.php:134
+#: includes/menu-pages.php:135
 msgid "Uninstall on Deactivation; or Safeguard Options?"
 msgstr ""
 
-#: includes/menu-pages.php:135
+#: includes/menu-pages.php:136
 msgid ""
 "<strong>Tip:</strong> By default, if you deactivate Quick Cache from the "
 "plugins menu in WordPress; nothing is lost. However, if you want to "
@@ -288,25 +301,25 @@ msgid ""
 "It erases itself from existence completely."
 msgstr ""
 
-#: includes/menu-pages.php:137
+#: includes/menu-pages.php:138
 msgid ""
 "If I deactivate Quick Cache please safeguard my options and the cache "
 "(recommended)."
 msgstr ""
 
-#: includes/menu-pages.php:138
+#: includes/menu-pages.php:139
 msgid "Yes, uninstall (completely erase) Quick Cache on deactivation."
 msgstr ""
 
-#: includes/menu-pages.php:147
+#: includes/menu-pages.php:148
 msgid "Clearing the Cache"
 msgstr ""
 
-#: includes/menu-pages.php:151
+#: includes/menu-pages.php:152
 msgid "Clearing the Cache (Manually)"
 msgstr ""
 
-#: includes/menu-pages.php:153
+#: includes/menu-pages.php:154
 msgid ""
 "Once Quick Cache is enabled, you will find this new option in your WordPress "
 "Admin Bar (see screenshot on right). Clicking this button will clear the "
@@ -314,7 +327,7 @@ msgid ""
 "as often as you wish)."
 msgstr ""
 
-#: includes/menu-pages.php:154
+#: includes/menu-pages.php:155
 msgid ""
 "Depending on the structure of your site, there could be many reasons to "
 "clear the cache. However, the most common reasons are related to Post/Page "
@@ -324,22 +337,22 @@ msgid ""
 "refresh)."
 msgstr ""
 
-#: includes/menu-pages.php:156
+#: includes/menu-pages.php:157
 msgid ""
 "Yes, enable the &quot;Clear Cache&quot; button in the WordPress admin bar."
 msgstr ""
 
-#: includes/menu-pages.php:157
+#: includes/menu-pages.php:158
 msgid "No, I don't intend to clear the cache manually; exclude from admin bar."
 msgstr ""
 
-#: includes/menu-pages.php:159
+#: includes/menu-pages.php:160
 msgid ""
 "Running the <a href=\"http://www.websharks-inc.com/product/s2clean/\" target="
 "\"_blank\">s2Clean Theme</a> by WebSharks?"
 msgstr ""
 
-#: includes/menu-pages.php:160
+#: includes/menu-pages.php:161
 msgid ""
 "If s2Clean is installed, Quick Cache can be configured to clear the Markdown "
 "cache too (if you've enabled Markdown processing with s2Clean). The s2Clean "
@@ -351,21 +364,21 @@ msgid ""
 "while developing their site; just to force a refresh."
 msgstr ""
 
-#: includes/menu-pages.php:162
+#: includes/menu-pages.php:163
 msgid ""
 "Yes, if the s2Clean theme is installed; also clear s2Clean-related caches."
 msgstr ""
 
-#: includes/menu-pages.php:163
+#: includes/menu-pages.php:164
 msgid ""
 "No, I don't use s2Clean; or, I don't want s2Clean-related caches cleared."
 msgstr ""
 
-#: includes/menu-pages.php:165
+#: includes/menu-pages.php:166
 msgid "Process Other Custom PHP Code?"
 msgstr ""
 
-#: includes/menu-pages.php:166
+#: includes/menu-pages.php:167
 msgid ""
 "If you have other custom routines you'd like to process when the cache is "
 "cleared manually, please type your custom PHP code here. The PHP code that "
@@ -379,17 +392,17 @@ msgid ""
 "www.php.net/manual/en/memcache.flush.php\" target=\"_blank\">memcache</a>)."
 msgstr ""
 
-#: includes/menu-pages.php:168
+#: includes/menu-pages.php:169
 msgid ""
 "<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo '&lt;p&gt;"
 "Also cleared APC cache.&lt;/p&gt;'; ?&gt;</code>"
 msgstr ""
 
-#: includes/menu-pages.php:170
+#: includes/menu-pages.php:171
 msgid "Purging the Cache (Automatically)"
 msgstr ""
 
-#: includes/menu-pages.php:172
+#: includes/menu-pages.php:173
 msgid ""
 "This is built into the Quick Cache plugin; e.g. this functionality is "
 "\"always on\". If you edit a Post/Page (or delete one), Quick Cache will "
@@ -403,23 +416,23 @@ msgid ""
 "disabled below."
 msgstr ""
 
-#: includes/menu-pages.php:174
+#: includes/menu-pages.php:175
 msgid ""
 "Yes, enable Quick Cache notifications in the Dashboard when changes are "
 "detected &amp; one or more cache files are purged automatically."
 msgstr ""
 
-#: includes/menu-pages.php:175
+#: includes/menu-pages.php:176
 msgid ""
 "No, I don't want to know (don't really care) what Quick Cache is doing "
 "behind-the-scene."
 msgstr ""
 
-#: includes/menu-pages.php:177
+#: includes/menu-pages.php:178
 msgid "Auto-Purge Designated \"Home Page\" Too?"
 msgstr ""
 
-#: includes/menu-pages.php:178
+#: includes/menu-pages.php:179
 msgid ""
 "On many sites, the Home Page (aka: the Front Page) offers an archive view of "
 "all Posts (or even Pages). Therefore, if a single Post/Page is changed in "
@@ -428,22 +441,22 @@ msgid ""
 "\"Home Page\"?"
 msgstr ""
 
-#: includes/menu-pages.php:180
+#: includes/menu-pages.php:181
 msgid ""
 "Yes, if any single Post/Page is purged/reset; also purge the \"Home Page\"."
 msgstr ""
 
-#: includes/menu-pages.php:181
+#: includes/menu-pages.php:182
 msgid ""
 "No, my Home Page does not provide a list of Posts/Pages; e.g. this is not "
 "necessary."
 msgstr ""
 
-#: includes/menu-pages.php:183
+#: includes/menu-pages.php:184
 msgid "Auto-Purge Designated \"Posts Page\" Too?"
 msgstr ""
 
-#: includes/menu-pages.php:184
+#: includes/menu-pages.php:185
 msgid ""
 "On many sites, the Posts Page (aka: the Blog Page) offers an archive view of "
 "all Posts (or even Pages). Therefore, if a single Post/Page is changed in "
@@ -452,28 +465,28 @@ msgid ""
 "\"Posts Page\"?"
 msgstr ""
 
-#: includes/menu-pages.php:186
+#: includes/menu-pages.php:187
 msgid ""
 "Yes, if any single Post/Page is purged/reset; also purge the \"Posts Page\"."
 msgstr ""
 
-#: includes/menu-pages.php:187
+#: includes/menu-pages.php:188
 msgid ""
 "No, I don't use a separate Posts Page; e.g. my Home Page IS my Posts Page."
 msgstr ""
 
-#: includes/menu-pages.php:196
+#: includes/menu-pages.php:197
 msgid "Directory / Expiration Time"
 msgstr ""
 
-#: includes/menu-pages.php:200
+#: includes/menu-pages.php:201
 msgid ""
 "Cache Directory (Must be Writable; e.g. <a href=\"http://codex.wordpress.org/"
 "Changing_File_Permissions\" target=\"_blank\">Permissions</a> <code>755</"
 "code> or Higher)"
 msgstr ""
 
-#: includes/menu-pages.php:201
+#: includes/menu-pages.php:202
 msgid ""
 "This is where Quick Cache will store the cached version of your site. If "
 "you're not sure how to deal with directory permissions, don't worry too much "
@@ -482,11 +495,11 @@ msgid ""
 "setup automatically. In most cases there is nothing more you need to do."
 msgstr ""
 
-#: includes/menu-pages.php:205
+#: includes/menu-pages.php:206
 msgid "Automatic Expiration Time (Max Age)"
 msgstr ""
 
-#: includes/menu-pages.php:206
+#: includes/menu-pages.php:207
 msgid ""
 "If you don't update your site much, you could set this to <code>6 months</"
 "code> and optimize everything even further. The longer the Cache Expiration "
@@ -496,7 +509,7 @@ msgid ""
 "ground."
 msgstr ""
 
-#: includes/menu-pages.php:207
+#: includes/menu-pages.php:208
 msgid ""
 "Keep in mind that your Expiration Time is only one part of the big picture. "
 "Quick Cache will also purge the cache automatically as changes are made to "
@@ -506,7 +519,7 @@ msgid ""
 "that a cache file could ever possibly live."
 msgstr ""
 
-#: includes/menu-pages.php:208
+#: includes/menu-pages.php:209
 msgid ""
 "All of that being said, you could set this to just <code>60 seconds</code> "
 "and you would still see huge differences in speed and performance. If you're "
@@ -519,7 +532,7 @@ msgid ""
 "class=\"fa fa-smile-o\"></i>."
 msgstr ""
 
-#: includes/menu-pages.php:210
+#: includes/menu-pages.php:211
 msgid ""
 "<strong>Tip:</strong> the value that you specify here MUST be compatible "
 "with PHP's <a href=\"http://php.net/manual/en/function.strtotime.php\" "
@@ -528,7 +541,7 @@ msgid ""
 "<code>7 days</code>, <code>6 months</code>, <code>1 year</code>."
 msgstr ""
 
-#: includes/menu-pages.php:211
+#: includes/menu-pages.php:212
 msgid ""
 "<strong>Note:</strong> Quick Cache will never serve a cache file that is "
 "older than what you specify here (even if one exists in your cache "
@@ -538,22 +551,22 @@ msgid ""
 "up over time, creating a potential storage issue."
 msgstr ""
 
-#: includes/menu-pages.php:219
+#: includes/menu-pages.php:220
 msgid "Client-Side Cache"
 msgstr ""
 
-#: includes/menu-pages.php:224
+#: includes/menu-pages.php:225
 msgid "Allow Double-Caching In The Client-Side Browser?"
 msgstr ""
 
-#: includes/menu-pages.php:225
+#: includes/menu-pages.php:226
 msgid ""
 "Recommended setting: <code>No</code> (for membership sites, very important). "
 "Otherwise, <code>Yes</code> would be better (if users do NOT log in/out of "
 "your site)."
 msgstr ""
 
-#: includes/menu-pages.php:226
+#: includes/menu-pages.php:227
 msgid ""
 "Quick Cache handles content delivery through its ability to communicate with "
 "a browser using PHP. If you allow a browser to (cache) the caching system "
@@ -568,7 +581,7 @@ msgid ""
 "will work to prevent this issue."
 msgstr ""
 
-#: includes/menu-pages.php:227
+#: includes/menu-pages.php:228
 msgid ""
 "All of that being said, if all you care about is blazing fast speed and "
 "users don't log in/out of your site (only you do); you can safely set this "
@@ -577,15 +590,15 @@ msgid ""
 "option is feasible."
 msgstr ""
 
-#: includes/menu-pages.php:229
+#: includes/menu-pages.php:230
 msgid "No, prevent a client-side browser cache (safest option)."
 msgstr ""
 
-#: includes/menu-pages.php:230
+#: includes/menu-pages.php:231
 msgid "Yes, I will allow a client-side browser cache of pages on the site."
 msgstr ""
 
-#: includes/menu-pages.php:232
+#: includes/menu-pages.php:233
 msgid ""
 "<strong>Tip:</strong> Setting this to <code>No</code> is highly recommended "
 "when running a membership plugin like <a href=\"http://wordpress.org/plugins/"
@@ -597,14 +610,14 @@ msgid ""
 "plugin, you should NOT allow a client-side browser cache."
 msgstr ""
 
-#: includes/menu-pages.php:233
+#: includes/menu-pages.php:234
 msgid ""
 "<strong>Tip:</strong> Setting this to <code>No</code> will NOT impact static "
 "content; e.g. CSS, JS, images, or other media. This setting pertains only to "
 "dynamic PHP scripts which produce content generated by WordPress."
 msgstr ""
 
-#: includes/menu-pages.php:234
+#: includes/menu-pages.php:235
 msgid ""
 "<strong>Advanced Tip:</strong> if you have this set to <code>No</code>, but "
 "you DO want to allow a few special URLs to be cached by the browser; you can "
@@ -614,15 +627,15 @@ msgid ""
 "headers to the browser."
 msgstr ""
 
-#: includes/menu-pages.php:242
+#: includes/menu-pages.php:243
 msgid "Logged-In Users"
 msgstr ""
 
-#: includes/menu-pages.php:247
+#: includes/menu-pages.php:248
 msgid "Caching Enabled for Logged-In Users &amp; Comment Authors?"
 msgstr ""
 
-#: includes/menu-pages.php:248
+#: includes/menu-pages.php:249
 msgid ""
 "This should almost ALWAYS be set to <code>No</code>. Most sites will NOT "
 "want to cache content generated while a user is logged-in. Doing so could "
@@ -634,7 +647,7 @@ msgid ""
 "you're doing."
 msgstr ""
 
-#: includes/menu-pages.php:250
+#: includes/menu-pages.php:251
 msgid ""
 "<strong>Exception (Membership Sites):</strong> If you run a site with many "
 "users and the majority of your traffic comes from users who ARE logged-in, "
@@ -654,25 +667,25 @@ msgid ""
 "users), the disk overhead is neglible."
 msgstr ""
 
-#: includes/menu-pages.php:252
+#: includes/menu-pages.php:253
 msgid ""
 "No, do NOT cache; or serve a cache file when a user is logged-in (safest "
 "option)."
 msgstr ""
 
-#: includes/menu-pages.php:253
+#: includes/menu-pages.php:254
 msgid ""
 "Yes, and maintain a separate cache for each user (recommended for membership "
 "sites)."
 msgstr ""
 
-#: includes/menu-pages.php:254
+#: includes/menu-pages.php:255
 msgid ""
 "Yes, but DON'T maintain a separate cache for each user (I know what I'm "
 "doing)."
 msgstr ""
 
-#: includes/menu-pages.php:256
+#: includes/menu-pages.php:257
 msgid ""
 "<strong>Note:</strong> For most sites, the majority of their traffic (if not "
 "all of their traffic) comes from visitors who are not logged in, so "
@@ -682,7 +695,7 @@ msgid ""
 "they view should remain very dynamic in this scenario."
 msgstr ""
 
-#: includes/menu-pages.php:257
+#: includes/menu-pages.php:258
 msgid ""
 "<strong>Note:</strong> This setting includes some users who AREN'T actually "
 "logged into the system, but who HAVE authored comments recently. Quick Cache "
@@ -694,15 +707,15 @@ msgid ""
 "who gain access to password-protected Posts/Pages are also included."
 msgstr ""
 
-#: includes/menu-pages.php:265
+#: includes/menu-pages.php:266
 msgid "GET Requests"
 msgstr ""
 
-#: includes/menu-pages.php:270
+#: includes/menu-pages.php:271
 msgid "Caching Enabled for GET (Query String) Requests?"
 msgstr ""
 
-#: includes/menu-pages.php:271
+#: includes/menu-pages.php:272
 msgid ""
 "This should almost ALWAYS be set to <code>No</code>. UNLESS, you're using "
 "unfriendly Permalinks. In other words, if all of your URLs contain a query "
@@ -715,16 +728,16 @@ msgid ""
 "head :-)"
 msgstr ""
 
-#: includes/menu-pages.php:273
+#: includes/menu-pages.php:274
 msgid ""
 "No, do NOT cache (or serve a cache file) when a query string is present."
 msgstr ""
 
-#: includes/menu-pages.php:274
+#: includes/menu-pages.php:275
 msgid "Yes, I would like to cache URLs that contain a query string."
 msgstr ""
 
-#: includes/menu-pages.php:276
+#: includes/menu-pages.php:277
 msgid ""
 "<strong>Note:</strong> POST requests (i.e. forms with <code>method=&quot;"
 "post&quot;</code>) are always excluded from the cache, which is the way it "
@@ -738,7 +751,7 @@ msgid ""
 "the server itself."
 msgstr ""
 
-#: includes/menu-pages.php:277
+#: includes/menu-pages.php:278
 msgid ""
 "<strong>Advanced Tip:</strong> If you are NOT caching GET requests "
 "(recommended), but you DO want to allow some special URLs that include query "
@@ -747,15 +760,48 @@ msgid ""
 "particular URL, even though it contains query string arguments."
 msgstr ""
 
-#: includes/menu-pages.php:285
+#: includes/menu-pages.php:286
+msgid "RSS, RDF, and Atom Feeds"
+msgstr ""
+
+#: includes/menu-pages.php:291
+msgid "Caching Enabled for RSS, RDF, Atom Feeds?"
+msgstr ""
+
+#: includes/menu-pages.php:292
+msgid ""
+"This should almost ALWAYS be set to <code>No</code>. UNLESS, you're sure "
+"that you want to cache your feeds. If you use a web feed management provider "
+"like Google® Feedburner and you set this option to <code>Yes</code>, you may "
+"experience delays in the detection of new posts."
+msgstr ""
+
+#: includes/menu-pages.php:294
+msgid "No, do NOT cache (or serve a cache file) when displaying a feed."
+msgstr ""
+
+#: includes/menu-pages.php:295
+msgid "Yes, I would like to cache feed URLs."
+msgstr ""
+
+#: includes/menu-pages.php:297
+msgid ""
+"<strong>Note:</strong> This option affects all feeds served by WordPress, "
+"including the site feed, the site comment feed, post-specific comment feeds, "
+"author feeds, search feeds, and category and tag feeds. See also: <a href="
+"\"http://codex.wordpress.org/WordPress_Feeds\" target=\"_blank\">WordPress "
+"Feeds</a>."
+msgstr ""
+
+#: includes/menu-pages.php:305
 msgid "URI Exclusion Patterns"
 msgstr ""
 
-#: includes/menu-pages.php:289
+#: includes/menu-pages.php:309
 msgid "Don't Cache These Special URI Exclusion Patterns?"
 msgstr ""
 
-#: includes/menu-pages.php:290
+#: includes/menu-pages.php:310
 msgid ""
 "Sometimes there are certain cases where a particular file, or a particular "
 "group of files, should never be cached. This is where you will enter those "
@@ -770,7 +816,7 @@ msgid ""
 "length)."
 msgstr ""
 
-#: includes/menu-pages.php:292
+#: includes/menu-pages.php:312
 msgid ""
 "<strong>Tip:</strong> let's use this example URL: <code>http://www.example."
 "com/post/example-post-123</code>. To exclude this URL, you would put this "
@@ -780,22 +826,22 @@ msgid ""
 "word fragment."
 msgstr ""
 
-#: includes/menu-pages.php:293 includes/menu-pages.php:309
-#: includes/menu-pages.php:325
+#: includes/menu-pages.php:313 includes/menu-pages.php:329
+#: includes/menu-pages.php:345
 msgid ""
 "<strong>Note:</strong> please remember that your entries here should be "
 "formatted as a line-delimited list; e.g. one exclusion pattern per line."
 msgstr ""
 
-#: includes/menu-pages.php:301
+#: includes/menu-pages.php:321
 msgid "HTTP Referrer Exclusion Patterns"
 msgstr ""
 
-#: includes/menu-pages.php:305
+#: includes/menu-pages.php:325
 msgid "Don't Cache These Special HTTP Referrer Exclusion Patterns?"
 msgstr ""
 
-#: includes/menu-pages.php:306
+#: includes/menu-pages.php:326
 msgid ""
 "Sometimes there are special cases where a particular referring URL (or "
 "referring domain) that sends you traffic; or even a particular group of "
@@ -810,7 +856,7 @@ msgid ""
 "characters in length)."
 msgstr ""
 
-#: includes/menu-pages.php:308
+#: includes/menu-pages.php:328
 msgid ""
 "<strong>Tip:</strong> let's use this example URL: <code>http://www.referring-"
 "domain.com/search/?q=search+terms</code>. To exclude this referring URL, you "
@@ -820,15 +866,15 @@ msgid ""
 "that word fragment."
 msgstr ""
 
-#: includes/menu-pages.php:317
+#: includes/menu-pages.php:337
 msgid "User-Agent Exclusion Patterns"
 msgstr ""
 
-#: includes/menu-pages.php:321
+#: includes/menu-pages.php:341
 msgid "Don't Cache These Special User-Agent Exclusion Patterns?"
 msgstr ""
 
-#: includes/menu-pages.php:322
+#: includes/menu-pages.php:342
 msgid ""
 "Sometimes there are special cases when a particular user-agent (e.g. a "
 "specific browser or a specific type of device); should be shown a page on "
@@ -842,7 +888,7 @@ msgid ""
 "or more characters in length)."
 msgstr ""
 
-#: includes/menu-pages.php:324
+#: includes/menu-pages.php:344
 msgid ""
 "<strong>Tip:</strong> if you wanted to exclude iPhones put this line into "
 "the field above: <code>iPhone;*AppleWebKit</code>. Or, you could also just "
@@ -852,17 +898,17 @@ msgid ""
 "exclude iOS devices (or any mobile device for that matter)."
 msgstr ""
 
-#: includes/menu-pages.php:333
+#: includes/menu-pages.php:353
 msgid "GZIP Compression"
 msgstr ""
 
-#: includes/menu-pages.php:338
+#: includes/menu-pages.php:358
 msgid ""
 "<a href=\"https://developers.google.com/speed/articles/gzip\" target=\"_blank"
 "\">GZIP Compression</a> (Optional; Highly Recommended)"
 msgstr ""
 
-#: includes/menu-pages.php:339
+#: includes/menu-pages.php:359
 msgid ""
 "You don't have to use an <code>.htaccess</code> file to enjoy the "
 "performance enhancements provided by this plugin; caching is handled "
@@ -872,7 +918,7 @@ msgid ""
 "htaccess</code> file to accomplish that part."
 msgstr ""
 
-#: includes/menu-pages.php:340
+#: includes/menu-pages.php:360
 msgid ""
 "Quick Cache fully supports GZIP compression on its output. However, it does "
 "not handle GZIP compression directly. We purposely left GZIP compression out "
@@ -883,7 +929,7 @@ msgid ""
 "enable GZIP at the server level and cover all the bases!"
 msgstr ""
 
-#: includes/menu-pages.php:341
+#: includes/menu-pages.php:361
 msgid ""
 "If you want to enable GZIP, create an <code>.htaccess</code> file in your "
 "WordPress® installation directory, and put the following few lines in it. "
@@ -894,11 +940,11 @@ msgid ""
 "about GZIP Compression</a>."
 msgstr ""
 
-#: includes/menu-pages.php:352
+#: includes/menu-pages.php:372
 msgid "MD5 Version Salt"
 msgstr ""
 
-#: includes/menu-pages.php:357
+#: includes/menu-pages.php:377
 msgid ""
 "<i class=\"fa fa-flask\"></i> <span style=\"display:inline-block; "
 "padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;\"><span "
@@ -906,7 +952,7 @@ msgid ""
 "for VERY advanced users only..."
 msgstr ""
 
-#: includes/menu-pages.php:358
+#: includes/menu-pages.php:378
 msgid ""
 "Quick Cache stores its cache files using an md5() hash of the PROTOCOL://"
 "HOST/URI that it's caching. If you want to build these hash strings out of "
@@ -918,7 +964,7 @@ msgid ""
 "['my_cookie']</code>."
 msgstr ""
 
-#: includes/menu-pages.php:359
+#: includes/menu-pages.php:379
 msgid ""
 "This would create multiple cached versions of each page; based on the value "
 "of <code>$_COOKIE['my_cookie']</code>. If <code>$_COOKIE['my_cookie']</code> "
@@ -930,7 +976,7 @@ msgid ""
 "with this version (i.e. w/ this Version Salt)."
 msgstr ""
 
-#: includes/menu-pages.php:360
+#: includes/menu-pages.php:380
 msgid ""
 "A Version Salt can be a single variable like <code>$_COOKIE['my_cookie']</"
 "code>, or it can be a combination of multiple variables, like <code>$_COOKIE"
@@ -942,13 +988,13 @@ msgid ""
 "be created for iPhones."
 msgstr ""
 
-#: includes/menu-pages.php:362
+#: includes/menu-pages.php:382
 msgid ""
 "Create An MD5 Version Salt For Quick Cache? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "
 "<span style=\"font-size:90%; opacity:0.5;\">150% OPTIONAL</span>"
 msgstr ""
 
-#: includes/menu-pages.php:364
+#: includes/menu-pages.php:384
 msgid ""
 "<a href=\"http://php.net/manual/en/language.variables.superglobals.php\" "
 "target=\"_blank\">Super Globals</a> work here; <a href=\"http://codex."
@@ -958,7 +1004,7 @@ msgid ""
 "or <code>DB_HOST</code>."
 msgstr ""
 
-#: includes/menu-pages.php:365
+#: includes/menu-pages.php:385
 msgid ""
 "<strong>Important:</strong> your Version Salt is scanned for PHP syntax "
 "errors via <a href=\"http://phpcodechecker.com/\" target=\"_blank"
@@ -966,15 +1012,15 @@ msgid ""
 "a notice in the Dashboard."
 msgstr ""
 
-#: includes/menu-pages.php:373
+#: includes/menu-pages.php:393
 msgid "Theme/Plugin Developers"
 msgstr ""
 
-#: includes/menu-pages.php:378
+#: includes/menu-pages.php:398
 msgid "Developing a Theme or Plugin for WordPress?"
 msgstr ""
 
-#: includes/menu-pages.php:379
+#: includes/menu-pages.php:399
 msgid ""
 "<strong>Tip:</strong> Quick Cache can be disabled temporarily. If you're a "
 "theme/plugin developer, you can set a flag within your PHP code to disable "
@@ -986,11 +1032,11 @@ msgid ""
 "is the last thing to run before script execution ends."
 msgstr ""
 
-#: includes/menu-pages.php:381
+#: includes/menu-pages.php:401
 msgid "Writing \"Advanced Cache\" Plugins Specifically for Quick Cache"
 msgstr ""
 
-#: includes/menu-pages.php:382
+#: includes/menu-pages.php:402
 msgid ""
 "Theme/plugin developers can take advantage of the Quick Cache plugin "
 "architecture by creating PHP files inside this special directory: <code>/wp-"
@@ -1002,7 +1048,7 @@ msgid ""
 "respository at WordPress.org."
 msgstr ""
 
-#: includes/menu-pages.php:383
+#: includes/menu-pages.php:403
 msgid ""
 "<strong>Why does Quick Cache have it's own plugin architecture?</strong> "
 "WordPress loads the <code>advanced-cache.php</code> drop-in file (for "
@@ -1012,128 +1058,216 @@ msgid ""
 "<code>add_filter()</code>, <code>apply_filters()</code>."
 msgstr ""
 
-#: includes/menu-pages.php:391
+#: includes/menu-pages.php:411
 msgid "Import/Export Options"
 msgstr ""
 
-#: includes/menu-pages.php:396
+#: includes/menu-pages.php:416
 msgid "Import Options from Another Quick Cache Installation?"
 msgstr ""
 
-#: includes/menu-pages.php:397
+#: includes/menu-pages.php:417
 msgid ""
 "Upload your <code>%1$s-options.json</code> file and click \"Save All Changes"
 "\" below. The options provided by your import file will override any that "
 "exist currently."
 msgstr ""
 
-#: includes/menu-pages.php:400
+#: includes/menu-pages.php:420
 msgid "Export Existing Options from this Quick Cache Installation?"
 msgstr ""
 
-#: includes/menu-pages.php:403
+#: includes/menu-pages.php:423
 msgid "%1$s-options.json"
 msgstr ""
 
-#: includes/menu-pages.php:404
+#: includes/menu-pages.php:424
 msgid ""
 "Download your existing options and import them all into another Quick Cache "
 "installation; saves time on future installs."
 msgstr ""
 
-#: includes/menu-pages.php:410
+#: includes/menu-pages.php:435
 msgid "Save All Changes"
 msgstr ""
 
-#: quick-cache-pro.inc.php:220
+#: includes/menu-pages.php:449 includes/menu-pages.php:512
+msgid "Update Now"
+msgstr ""
+
+#: includes/menu-pages.php:457
+msgid "Options"
+msgstr ""
+
+#: includes/menu-pages.php:461 quick-cache-pro.inc.php:405
+#: quick-cache-pro.inc.php:420
+msgid "Plugin Updater"
+msgstr ""
+
+#: includes/menu-pages.php:476
+msgid "Update Credentials"
+msgstr ""
+
+#: includes/menu-pages.php:481
+msgid "WebSharks™ Authentication"
+msgstr ""
+
+#: includes/menu-pages.php:482
+msgid ""
+"From this page you can update to the latest version of Quick Cache Pro for "
+"WordPress. Quick Cache Pro is a premium product available for purchase @ <a "
+"href=\"http://www.websharks-inc.com/product/%1$s/\" target=\"_blank"
+"\">websharks-inc.com</a>. In order to connect with our update servers, we "
+"ask that you supply your account login details for <a href=\"http://www."
+"websharks-inc.com/product/%1$s/\" target=\"_blank\">websharks-inc.com</a>. "
+"This will authenticate your copy of Quick Cache Pro; providing you with "
+"access to the latest version. You only need to enter these credentials once. "
+"Quick Cache Pro will save them in your WordPress database; making future "
+"upgrades even easier. <i class=\"fa fa-smile-o\"></i>"
+msgstr ""
+
+#: includes/menu-pages.php:484
+msgid "WebSharks™ Username"
+msgstr ""
+
+#: includes/menu-pages.php:486
+msgid "WebSharks™ Password"
+msgstr ""
+
+#: includes/menu-pages.php:495
+msgid "Update Notifier"
+msgstr ""
+
+#: includes/menu-pages.php:500
+msgid "WebSharks™ Update Notifier"
+msgstr ""
+
+#: includes/menu-pages.php:501
+msgid ""
+"When a new version of Quick Cache Pro becomes available, WebSharks™ can "
+"display a notification in your WordPress Dashboard prompting you to return "
+"to this page and perform an upgrade. Would you like this functionality "
+"enabled or disabled?"
+msgstr ""
+
+#: includes/menu-pages.php:504
+msgid ""
+"Yes, display a notification in my WordPress Dashboard when a new version is "
+"available."
+msgstr ""
+
+#: includes/menu-pages.php:505
+msgid ""
+"No, do not display any Quick Cache update notifications in my WordPress "
+"Dashboard."
+msgstr ""
+
+#: quick-cache-pro.inc.php:230
 msgid ""
 "<strong>Quick Cache:</strong> detected a new version of itself. Recompiling "
 "w/ latest version... wiping the cache... all done :-)"
 msgstr ""
 
-#: quick-cache-pro.inc.php:232
+#: quick-cache-pro.inc.php:231
+msgid ""
+"<strong>Quick Cache Feature Notice:</strong> This version of Quick Cache "
+"adds new options for Feed caching. Feed caching is now disabled by default. "
+"If you wish to enable feed caching, please visit the Quick Cache options "
+"panel."
+msgstr ""
+
+#: quick-cache-pro.inc.php:243
 msgid ""
 "<strong>Quick Cache:</strong> this version is a <strong>complete rewrite</"
 "strong> :-) Please review your Quick Cache options carefully!"
 msgstr ""
 
-#: quick-cache-pro.inc.php:302
+#: quick-cache-pro.inc.php:313
 msgid "Clear Cache"
 msgstr ""
 
-#: quick-cache-pro.inc.php:304
+#: quick-cache-pro.inc.php:315
 msgid "Clear Cache (Start Fresh); affects the current site only."
 msgstr ""
 
-#: quick-cache-pro.inc.php:386 quick-cache-pro.inc.php:387
-#: quick-cache-pro.inc.php:394 quick-cache-pro.inc.php:395
+#: quick-cache-pro.inc.php:397 quick-cache-pro.inc.php:413
 msgid "Quick Cache"
 msgstr ""
 
-#: quick-cache-pro.inc.php:444
+#: quick-cache-pro.inc.php:467
+msgid ""
+"<strong>Quick Cache Pro:</strong> a new version is now available. Please <a "
+"href=\"%1$s\">upgrade to v%2$s</a>."
+msgstr ""
+
+#: quick-cache-pro.inc.php:525 quick-cache-pro.inc.php:551
+msgid "dismiss &times;"
+msgstr ""
+
+#: quick-cache-pro.inc.php:572
 msgid "Unable to wipe: `%1$s`."
 msgstr ""
 
-#: quick-cache-pro.inc.php:491
+#: quick-cache-pro.inc.php:619
 msgid "Unable to clear: `%1$s`."
 msgstr ""
 
-#: quick-cache-pro.inc.php:515
+#: quick-cache-pro.inc.php:643
 msgid "Unable to purge: `%1$s`."
 msgstr ""
 
-#: quick-cache-pro.inc.php:537
+#: quick-cache-pro.inc.php:665
 msgid ""
 "<strong>Quick Cache:</strong> detected significant changes. Found cache "
 "files (auto-wiping)."
 msgstr ""
 
-#: quick-cache-pro.inc.php:556
+#: quick-cache-pro.inc.php:684
 msgid ""
 "<strong>Quick Cache:</strong> detected changes. Found cache files for this "
 "site (auto-clearing)."
 msgstr ""
 
-#: quick-cache-pro.inc.php:592
+#: quick-cache-pro.inc.php:720
 msgid "Post"
 msgstr ""
 
-#: quick-cache-pro.inc.php:597 quick-cache-pro.inc.php:636
-#: quick-cache-pro.inc.php:687 quick-cache-pro.inc.php:745
+#: quick-cache-pro.inc.php:725 quick-cache-pro.inc.php:764
+#: quick-cache-pro.inc.php:815 quick-cache-pro.inc.php:873
 msgid "Unable to auto-purge: `%1$s`."
 msgstr ""
 
-#: quick-cache-pro.inc.php:605
+#: quick-cache-pro.inc.php:733
 msgid ""
 "<strong>Quick Cache:</strong> detected changes. Found cache file(s) for %1$s "
 "ID: <code>%2$s</code> (auto-purging)."
 msgstr ""
 
-#: quick-cache-pro.inc.php:644
+#: quick-cache-pro.inc.php:772
 msgid ""
 "<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the "
 "designated \"Home Page\" (auto-purging)."
 msgstr ""
 
-#: quick-cache-pro.inc.php:695
+#: quick-cache-pro.inc.php:823
 msgid ""
 "<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the "
 "designated \"Posts Page\" (auto-purging)."
 msgstr ""
 
-#: quick-cache-pro.inc.php:753
+#: quick-cache-pro.inc.php:881
 msgid ""
 "<strong>Quick Cache:</strong> detected changes. Found cache files for user "
 "ID: <code>%1$s</code> (auto-purging)."
 msgstr ""
 
-#: quick-cache-pro.inc.php:925
+#: quick-cache-pro.inc.php:1053
 msgid ""
 "<strong>Quick Cache</strong>: ignoring your Version Salt; it seems to "
 "contain PHP syntax errors."
 msgstr ""
 
-#: quick-cache-pro.inc.php:1067
+#: quick-cache-pro.inc.php:1195
 msgid ""
 "Please disable the LITE version of Quick Cache before you activate the PRO "
 "version."
@@ -1146,7 +1280,7 @@ msgid ""
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Quick Cache (Pro)"
+msgid "Quick Cache Pro"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
