@@ -245,6 +245,97 @@ namespace quick_cache // Root namespace.
 					header('Content-Disposition: attachment; filename="'.$file_name.'"');
 					exit($export); // Deliver the export file.
 				}
+
+			public function update_sync($args)
+				{
+					if(!current_user_can(plugin()->update_cap))
+						return; // Nothing to do.
+
+					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
+						return; // Unauthenticated POST data.
+
+					$args = array_map('trim', stripslashes_deep((array)$args));
+
+					if(empty($args['username'])) $args['username'] = plugin()->options['update_sync_username'];
+					if(empty($args['password'])) $args['password'] = plugin()->options['update_sync_password'];
+					if(!isset($args['version_check'])) $args['version_check'] = plugin()->options['update_sync_version_check'];
+
+					$update_sync_url       = 'https://www.websharks-inc.com/products/update-sync.php';
+					$update_sync_post_vars = array('data' => array('slug'     => str_replace('_', '-', __NAMESPACE__).'-pro', 'version' => 'latest-stable',
+					                                               'username' => $args['username'], 'password' => $args['password']));
+
+					$update_sync_response = wp_remote_post($update_sync_url, array('body' => $update_sync_post_vars));
+					$update_sync_response = json_decode(wp_remote_retrieve_body($update_sync_response), TRUE);
+
+					if(!is_array($update_sync_response) || !empty($update_sync_response['error'])
+					   || empty($update_sync_response['version']) || empty($update_sync_response['zip'])
+					) // Report errors in all of these cases. Redirect errors to `update-sync` page.
+						{
+							if(!empty($update_sync_response['error'])) $error = $update_sync_response['error'];
+							else $error = __('Unknown error. Please wait 15 minutes and try again.', plugin()->text_domain);
+
+							$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
+							$query_args  = array('page' => __NAMESPACE__.'-update-sync', __NAMESPACE__.'__error' => $error);
+							$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
+
+							wp_redirect($redirect_to).exit(); // Done; with errors.
+						}
+					plugin()->options['update_sync_username']           = $args['username']; // Update username.
+					plugin()->options['update_sync_password']           = $args['password']; // Update password.
+					plugin()->options['update_sync_version_check']      = $args['version_check']; // Check version?
+					plugin()->options['last_update_sync_version_check'] = time(); // Update this; we just checked :-)
+					update_option(__NAMESPACE__.'_options', plugin()->options); // Save each of these options.
+					if(is_multisite()) update_site_option(__NAMESPACE__.'_options', plugin()->options);
+
+					$notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+					unset($notices['persistent-update-sync-version']); // Dismiss this notice.
+					update_option(__NAMESPACE__.'_notices', $notices); // Update notices.
+
+					$redirect_to = self_admin_url('/update.php'); // Runs update routines in WordPress.
+					$query_args  = array('action'                         => 'upgrade-plugin', 'plugin' => plugin_basename(plugin()->file),
+					                     '_wpnonce'                       => wp_create_nonce('upgrade-plugin_'.plugin_basename(plugin()->file)),
+					                     __NAMESPACE__.'__update_version' => $update_sync_response['version'],
+					                     __NAMESPACE__.'__update_zip'     => base64_encode($update_sync_response['zip']));
+					$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
+
+					wp_redirect($redirect_to).exit(); // All done :-)
+				}
+
+			public function dismiss_notice($args)
+				{
+					if(!current_user_can(plugin()->cap))
+						return; // Nothing to do.
+
+					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
+						return; // Unauthenticated POST data.
+
+					$args = array_map('trim', stripslashes_deep((array)$args));
+					if(empty($args['key'])) return; // Nothing to dismiss.
+
+					$notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+					unset($notices[$args['key']]); // Dismiss this notice.
+					update_option(__NAMESPACE__.'_notices', $notices);
+
+					wp_redirect(remove_query_arg(__NAMESPACE__)).exit();
+				}
+
+			public function dismiss_error($args)
+				{
+					if(!current_user_can(plugin()->cap))
+						return; // Nothing to do.
+
+					if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
+						return; // Unauthenticated POST data.
+
+					$args = array_map('trim', stripslashes_deep((array)$args));
+					if(empty($args['key'])) return; // Nothing to dismiss.
+
+					$errors = (is_array($errors = get_option(__NAMESPACE__.'_errors'))) ? $errors : array();
+					unset($errors[$args['key']]); // Dismiss this error.
+					update_option(__NAMESPACE__.'_errors', $errors);
+
+					wp_redirect(remove_query_arg(__NAMESPACE__)).exit();
+				}
 		}
 
 		new actions(); // Initialize/handle actions.

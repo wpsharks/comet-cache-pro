@@ -33,7 +33,8 @@ namespace quick_cache // Root namespace.
 					echo '   </div>'."\n";
 
 					echo '   <div class="plugin-menu-page-upsells">'."\n";
-					echo '      <a href="http://www.websharks-inc.com/r/quick-cache-subscribe/" target="_blank"><i class="fa fa-envelope"></i> Quick Cache Updates (via Email)</a>'."\n";
+					if(current_user_can(plugin()->update_cap)) echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync')), self_admin_url('/admin.php'))).'"><i class="fa fa-magic"></i> '.__('Pro Updater', plugin()->text_domain).'</a>'."\n";
+					echo '      <a href="'.esc_attr('http://www.websharks-inc.com/r/'.str_replace('_', '-', __NAMESPACE__).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', plugin()->text_domain).'</a>'."\n";
 					echo '   </div>'."\n";
 
 					echo '   <img src="'.plugin()->url('/client-s/images/options.png').'" alt="'.esc_attr(__('Plugin Options', plugin()->text_domain)).'" />'."\n";
@@ -282,6 +283,25 @@ namespace quick_cache // Root namespace.
 					echo '<div class="plugin-menu-page-panel">'."\n";
 
 					echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+					echo '      <i class="fa fa-gears"></i> '.__('RSS, RDF, and Atom Feeds', plugin()->text_domain)."\n";
+					echo '   </div>'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+					echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+					echo '      <h3>'.__('Caching Enabled for RSS, RDF, Atom Feeds?', plugin()->text_domain).'</h3>'."\n";
+					echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. UNLESS, you\'re sure that you want to cache your feeds. If you use a web feed management provider like Google® Feedburner and you set this option to <code>Yes</code>, you may experience delays in the detection of new posts.', plugin()->text_domain).'</p>'."\n";
+					echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][feeds_enable]">'."\n";
+					echo '            <option value="0"'.selected(plugin()->options['feeds_enable'], '0', FALSE).'>'.__('No, do NOT cache (or serve a cache file) when displaying a feed.', plugin()->text_domain).'</option>'."\n";
+					echo '            <option value="1"'.selected(plugin()->options['feeds_enable'], '1', FALSE).'>'.__('Yes, I would like to cache feed URLs.', plugin()->text_domain).'</option>'."\n";
+					echo '         </select></p>'."\n";
+					echo '      <p class="info">'.__('<strong>Note:</strong> This option affects all feeds served by WordPress, including the site feed, the site comment feed, post-specific comment feeds, author feeds, search feeds, and category and tag feeds. See also: <a href="http://codex.wordpress.org/WordPress_Feeds" target="_blank">WordPress Feeds</a>.', plugin()->text_domain).'</p>'."\n";
+					echo '   </div>'."\n";
+
+					echo '</div>'."\n";
+
+					echo '<div class="plugin-menu-page-panel">'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-heading">'."\n";
 					echo '      <i class="fa fa-gears"></i> '.__('URI Exclusion Patterns', plugin()->text_domain)."\n";
 					echo '   </div>'."\n";
 
@@ -407,7 +427,89 @@ namespace quick_cache // Root namespace.
 					echo '</div>'."\n";
 
 					echo '<div class="plugin-menu-page-save">'."\n";
+					echo '   <input type="hidden" name="'.esc_attr(__NAMESPACE__).'[save_options][crons_setup]" value="'.esc_attr(plugin()->options['crons_setup']).'" autocomplete="off" />'."\n";
+					echo '   <input type="hidden" name="'.esc_attr(__NAMESPACE__).'[save_options][update_sync_username]" value="'.esc_attr(plugin()->options['update_sync_username']).'" autocomplete="off" />'."\n";
+					echo '   <input type="hidden" name="'.esc_attr(__NAMESPACE__).'[save_options][update_sync_password]" value="'.esc_attr(plugin()->options['update_sync_password']).'" autocomplete="off" />'."\n";
+					echo '   <input type="hidden" name="'.esc_attr(__NAMESPACE__).'[save_options][update_sync_version_check]" value="'.esc_attr(plugin()->options['update_sync_version_check']).'" autocomplete="off" />'."\n";
+					echo '   <input type="hidden" name="'.esc_attr(__NAMESPACE__).'[save_options][last_update_sync_version_check]" value="'.esc_attr(plugin()->options['last_update_sync_version_check']).'" autocomplete="off" />'."\n";
 					echo '   <button type="submit">'.__('Save All Changes', plugin()->text_domain).' <i class="fa fa-save"></i></button>'."\n";
+					echo '</div>'."\n";
+
+					echo '</div>'."\n";
+					echo '</form>';
+				}
+
+			public function update_sync()
+				{
+					echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data"'.
+					     ' action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync', '_wpnonce' => wp_create_nonce())), self_admin_url('/admin.php'))).'">'."\n";
+
+					echo '<div class="plugin-menu-page-heading">'."\n";
+
+					echo '   <button type="submit">'.__('Update Now', plugin()->text_domain).' <i class="fa fa-magic"></i></button>'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-togglers" title="'.esc_attr(__('All Panels', plugin()->text_domain)).'">'."\n";
+					echo '      <button type="button" class="plugin-menu-page-panels-open"><i class="fa fa-chevron-down"></i></button>'."\n";
+					echo '      <button type="button" class="plugin-menu-page-panels-close"><i class="fa fa-chevron-up"></i></button>'."\n";
+					echo '   </div>'."\n";
+
+					echo '   <div class="plugin-menu-page-upsells">'."\n";
+					if(current_user_can(plugin()->cap)) echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => __NAMESPACE__)), self_admin_url('/admin.php'))).'"><i class="fa fa-gears"></i> '.__('Options', plugin()->text_domain).'</a>'."\n";
+					echo '      <a href="'.esc_attr('http://www.websharks-inc.com/r/'.str_replace('_', '-', __NAMESPACE__).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', plugin()->text_domain).'</a>'."\n";
+					echo '   </div>'."\n";
+
+					echo '   <img src="'.plugin()->url('/client-s/images/updater.png').'" alt="'.esc_attr(__('Plugin Updater', plugin()->text_domain)).'" />'."\n";
+
+					echo '</div>'."\n";
+
+					if(!empty($_REQUEST[__NAMESPACE__.'__error'])) // Error?
+						{
+							echo '<div class="plugin-menu-page-error error">'."\n";
+							echo '   <i class="fa fa-thumbs-down"></i> '.esc_html(stripslashes((string)$_REQUEST[__NAMESPACE__.'__error']))."\n";
+							echo '</div>'."\n";
+						}
+					echo '<div class="plugin-menu-page-body">'."\n";
+
+					echo '<div class="plugin-menu-page-panel">'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-heading open">'."\n";
+					echo '      <i class="fa fa-sign-in"></i> '.__('Update Credentials', plugin()->text_domain)."\n";
+					echo '   </div>'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-body clearfix open">'."\n";
+					echo '      <i class="fa fa-user fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+					echo '      <h3>'.__('WebSharks™ Authentication', plugin()->text_domain).'</h3>'."\n";
+					echo '      <p>'.sprintf(__('From this page you can update to the latest version of Quick Cache Pro for WordPress. Quick Cache Pro is a premium product available for purchase @ <a href="http://www.websharks-inc.com/product/%1$s/" target="_blank">websharks-inc.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href="http://www.websharks-inc.com/product/%1$s/" target="_blank">websharks-inc.com</a>. This will authenticate your copy of Quick Cache Pro; providing you with access to the latest version. You only need to enter these credentials once. Quick Cache Pro will save them in your WordPress database; making future upgrades even easier. <i class="fa fa-smile-o"></i>', plugin()->text_domain), str_replace('_', '-', __NAMESPACE__)).'</p>'."\n";
+					echo '      <hr />'."\n";
+					echo '      <h3>'.__('WebSharks™ Username', plugin()->text_domain).'</h3>'."\n";
+					echo '      <p><input type="text" name="'.esc_attr(__NAMESPACE__).'[update_sync][username]" value="'.esc_attr(plugin()->options['update_sync_username']).'" autocomplete="off" /></p>'."\n";
+					echo '      <h3>'.__('WebSharks™ Password', plugin()->text_domain).'</h3>'."\n";
+					echo '      <p><input type="password" name="'.esc_attr(__NAMESPACE__).'[update_sync][password]" value="'.esc_attr(plugin()->options['update_sync_password']).'" autocomplete="off" /></p>'."\n";
+					echo '   </div>'."\n";
+
+					echo '</div>'."\n";
+
+					echo '<div class="plugin-menu-page-panel">'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+					echo '      <i class="fa fa-bullhorn"></i> '.__('Update Notifier', plugin()->text_domain)."\n";
+					echo '   </div>'."\n";
+
+					echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+					echo '      <i class="fa fa-rss fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+					echo '      <h3>'.__('WebSharks™ Update Notifier', plugin()->text_domain).'</h3>'."\n";
+					echo '      <p>'.__('When a new version of Quick Cache Pro becomes available, WebSharks™ can display a notification in your WordPress Dashboard prompting you to return to this page and perform an upgrade. Would you like this functionality enabled or disabled?', plugin()->text_domain).'</p>'."\n";
+					echo '      <hr />'."\n";
+					echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[update_sync][version_check]" autocomplete="off">'."\n";
+					echo '            <option value="1"'.selected(plugin()->options['update_sync_version_check'], '1', FALSE).'>'.__('Yes, display a notification in my WordPress Dashboard when a new version is available.', plugin()->text_domain).'</option>'."\n";
+					echo '            <option value="0"'.selected(plugin()->options['update_sync_version_check'], '0', FALSE).'>'.__('No, do not display any Quick Cache update notifications in my WordPress Dashboard.', plugin()->text_domain).'</option>'."\n";
+					echo '         </select></p>'."\n";
+					echo '   </div>'."\n";
+
+					echo '</div>'."\n";
+
+					echo '<div class="plugin-menu-page-save">'."\n";
+					echo '   <button type="submit">'.__('Update Now', plugin()->text_domain).' <i class="fa fa-magic"></i></button>'."\n";
 					echo '</div>'."\n";
 
 					echo '</div>'."\n";
