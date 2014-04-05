@@ -216,7 +216,7 @@ namespace quick_cache // Root namespace.
 					if(!($this->user_token = $this->user_token()))
 						return; // Do NOT invalidate; no token.
 
-					$regex = '/\.u\/'.preg_quote($this->user_token, '/').'(?:\/|$)/'; // This user ID.
+					$regex = '/~u\/'.preg_quote($this->user_token, '/').'(?:\/|$)/'; // This user ID.
 
 					/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 					foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile())
@@ -353,10 +353,15 @@ namespace quick_cache // Root namespace.
 					return apply_filters(__METHOD__, $regex_iterator, get_defined_vars());
 				}
 
+			/*
+			 * See also: `quick-cache-pro.inc.php` for a duplicate of this method.
+			 * NOTE: the call to `is_ssl()` in this duplicate uses `$this->is_ssl()` because `is_ssl()`
+			 *    may NOT be available in this routine; i.e. it's not been loaded up yet.
+			 */
 			public function url_to_cache_path($url, $with_query = TRUE, $with_user_token = '', $with_version_salt = '')
 				{
 					$url               = trim((string)$url);
-					$with_user_token   = (string)$with_user_token;
+					$with_user_token   = trim((string)$with_user_token);
 					$with_version_salt = trim((string)$with_version_salt);
 
 					if($url && strpos($url, '://') === FALSE)
@@ -375,22 +380,23 @@ namespace quick_cache // Root namespace.
 						$cache_path .= $url['host'].'/';
 					else $cache_path .= $_SERVER['HTTP_HOST'].'/';
 
-					if(isset($url['path']) && strlen($url['path']))
+					if(!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B")))
 						$cache_path .= $url['path'].'/';
+					else $cache_path .= 'index.html/';
 
-					$cache_path = str_replace('.', '-', $cache_path);
+					$cache_path = str_replace('~', '-', $cache_path);
 
 					if($with_query && isset($url['query']) && strlen($url['query']))
-						$cache_path = rtrim($cache_path, '/').'.q/'.md5($url['query']).'/';
+						$cache_path = rtrim($cache_path, '/').'~q/'.md5($url['query']).'/';
 
 					if(strlen($with_user_token)) // This is a user token (string).
-						$cache_path = rtrim($cache_path, '/').'.u/'.str_replace(array('/', '\\'), '-', $with_user_token).'/';
+						$cache_path = rtrim($cache_path, '/').'~u/'.str_replace(array('/', '\\'), '-', $with_user_token).'/';
 
 					if(strlen($with_version_salt)) // Allow a version salt to be `0` if desirable.
-						$cache_path = rtrim($cache_path, '/').'.v/'.str_replace(array('/', '\\'), '-', $with_version_salt).'/';
+						$cache_path = rtrim($cache_path, '/').'~v/'.str_replace(array('/', '\\'), '-', $with_version_salt).'/';
 
 					$cache_path = trim(preg_replace('/\/+/', '/', $cache_path), '/');
-					$cache_path = preg_replace('/[^a-z0-9.\/]/i', '-', $cache_path);
+					$cache_path = preg_replace('/[^a-z0-9\/~.]/i', '-', $cache_path);
 
 					return $cache_path;
 				}
