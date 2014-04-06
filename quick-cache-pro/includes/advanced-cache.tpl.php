@@ -54,16 +54,17 @@ namespace quick_cache // Root namespace.
 		/*
 		 * The heart of Quick Cache.
 		 */
+
 		class advanced_cache # `/wp-content/advanced-cache.php`
 		{
 			public $is_pro = TRUE; // Identifies the pro version of Quick Cache.
 			public $timer = 0; // Microtime; defined by class constructor for debugging purposes.
-			public $md5_1 = ''; // Calculated cache file hash (MD5); for position number 1 in file name.
-			public $md5_2 = ''; // Calculated cache file hash (MD5); for position number 2 in file name.
-			public $md5_3 = ''; // Calculated cache file hash (MD5); for position number 3 in file name.
-			public $md5_4 = ''; // Calculated cache file hash (MD5); for position number 4 in file name.
-			public $salt_location = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
+			public $protocol = ''; // Calculated protocol; one of `http://` or `https://`.
+			public $user_token = ''; // Calculated user token; applicable w/ user postload enabled.
+			public $version_salt = ''; // Calculated version salt; set by site configuration data.
+			public $cache_path = ''; // Calculated cache path; absolute relative (no leading/trailing slashes).
 			public $cache_file = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
+			public $salt_location = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
 			public $text_domain = ''; // Defined by class constructor; this is for translations.
 			public $postload = array(); // Off by default; just an empty array.
 			public $hooks = array(); // Array of advanced cache plugin hooks.
@@ -172,37 +173,11 @@ namespace quick_cache // Root namespace.
 					if(QUICK_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER']))
 						if(preg_match(QUICK_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) return;
 
-					$protocol       = $this->is_ssl() ? 'https://' : 'http://';
-					$http_host_nps  = preg_replace('/\:[0-9]+$/', '', $_SERVER['HTTP_HOST']);
-					$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
-
-					if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
-						{ // Multisite w/ sub-directories; need a valid sub-directory token.
-
-							$base = '/'; // Initial default value.
-							if(defined('PATH_CURRENT_SITE')) $base = PATH_CURRENT_SITE;
-							else if(!empty($GLOBALS['base'])) $base = $GLOBALS['base'];
-
-							$uri_minus_base = // Supports `/sub-dir/child-blog-sub-dir/` also.
-								preg_replace('/^'.preg_quote($base, '/').'/', '', $_SERVER['REQUEST_URI']);
-
-							list($host_dir_token) = explode('/', trim($uri_minus_base, '/'));
-							$host_dir_token = (isset($host_dir_token[0])) ? '/'.$host_dir_token.'/' : '/';
-
-							if($host_dir_token !== '/' // Perhaps NOT the main site?
-							   && (!is_file(QUICK_CACHE_DIR.'/qc-blog-paths') // NOT a read/valid blog path?
-							       || !in_array($host_dir_token, unserialize(file_get_contents(QUICK_CACHE_DIR.'/qc-blog-paths')), TRUE))
-							) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
-						}
-					$version_salt // Give advanced cache plugins a chance to modify this.
-						= $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
-
-					$this->md5_1 = md5($version_salt.$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-					$this->md5_2 = md5($http_host_nps.$_SERVER['REQUEST_URI']);
-					$this->md5_3 = md5($http_host_nps.$host_dir_token);
-
-					$this->salt_location = ltrim($version_salt.' '.$protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-					$this->cache_file    = QUICK_CACHE_DIR.'/qc-c-'.$this->md5_1.'-'.$this->md5_2.'-'.$this->md5_3;
+					$this->protocol      = $this->is_ssl() ? 'https://' : 'http://';
+					$this->version_salt  = $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
+					$this->cache_path    = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
+					$this->cache_file    = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
+					$this->salt_location = ltrim($this->version_salt.' '.$this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 					if(QUICK_CACHE_WHEN_LOGGED_IN === 'postload' && $this->is_like_user_logged_in())
 						{
@@ -238,20 +213,17 @@ namespace quick_cache // Root namespace.
 					if(empty($this->postload['invalidate_when_logged_in']))
 						return; // Nothing to do in this case.
 
-					if(($user_id = wp_validate_auth_cookie('', 'logged_in')))
-						$md5_4 = md5($user_id); // A real user in this case.
+					if(!($this->user_token = $this->user_token()))
+						return; // Do NOT invalidate; no token.
 
-					else if(!empty($_COOKIE['comment_author_email_'.COOKIEHASH]) && is_string($_COOKIE['comment_author_email_'.COOKIEHASH]))
-						$md5_4 = md5(strtolower(stripslashes($_COOKIE['comment_author_email_'.COOKIEHASH])));
+					$regex = '/\.u\/'.preg_quote($this->user_token, '/').'[.\/]/'; // This user.
 
-					else if(!empty($_COOKIE['wp-postpass_'.COOKIEHASH]) && is_string($_COOKIE['wp-postpass_'.COOKIEHASH]))
-						$md5_4 = md5(stripslashes($_COOKIE['wp-postpass_'.COOKIEHASH]));
-
-					else return; // Do NOT invalidate. Should not happen; but there's nothing we can do? TODO
-
-					foreach((array)glob(QUICK_CACHE_DIR.'/qc-c-*-*-*-'.$md5_4, GLOB_NOSORT) as $_file) if($_file && is_file($_file))
-						if(!unlink($_file)) // If file deletion fails; stop here w/ exception.
-							throw new \exception(sprintf(__('Unable to invalidate: `%1$s`.', $this->text_domain), $_file));
+					/** @var $_file \RecursiveDirectoryIterator For IDEs. */
+					foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile())
+						{
+							if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
+								throw new \exception(sprintf(__('Unable to invalidate file: `%1$s`.', $this->text_domain), $_file->getPathname()));
+						}
 					unset($_file); // Just a little housekeeping.
 				}
 
@@ -263,18 +235,11 @@ namespace quick_cache // Root namespace.
 					if(empty($this->postload['when_logged_in']))
 						return; // Nothing to do in this case.
 
-					if(($user_id = wp_validate_auth_cookie('', 'logged_in')))
-						$this->md5_4 = $this->user_token = md5($user_id); // A real user in this case.
+					if(!($this->user_token = $this->user_token()))
+						return; // Do NOT cache; no token.
 
-					else if(!empty($_COOKIE['comment_author_email_'.COOKIEHASH]) && is_string($_COOKIE['comment_author_email_'.COOKIEHASH]))
-						$this->md5_4 = $this->user_token = md5(strtolower(stripslashes($_COOKIE['comment_author_email_'.COOKIEHASH])));
-
-					else if(!empty($_COOKIE['wp-postpass_'.COOKIEHASH]) && is_string($_COOKIE['wp-postpass_'.COOKIEHASH]))
-						$this->md5_4 = $this->user_token = md5(stripslashes($_COOKIE['wp-postpass_'.COOKIEHASH]));
-
-					else return; // Do NOT cache. Should not happen; but there's nothing we can do in this rare scenario? TODO
-
-					$this->cache_file .= '-'.$this->md5_4; // Create a user-specific cache in this case (very dynamic).
+					$this->cache_path = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
+					$this->cache_file = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
 
 					if(is_file($this->cache_file) && filemtime($this->cache_file) >= strtotime('-'.QUICK_CACHE_MAX_AGE))
 						{
@@ -289,7 +254,7 @@ namespace quick_cache // Root namespace.
 								{
 									$total_time = number_format(microtime(TRUE) - $this->timer, 5, '.', '');
 									$cache .= "\n".'<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->';
-									$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache fully functional :-) Cache file served for (%1$s; user token: %2$s) in %3$s seconds, on: %4$s.', $this->text_domain), $this->salt_location, substr($this->md5_4, 0, 8), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+									$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache fully functional :-) Cache file served for (%1$s; user token: %2$s) in %3$s seconds, on: %4$s.', $this->text_domain), $this->salt_location, $this->user_token, $total_time, date('M jS, Y @ g:i a T'))).' -->';
 								}
 							exit($cache); // Exit with cache contents.
 						}
@@ -338,19 +303,37 @@ namespace quick_cache // Root namespace.
 
 					// Caching occurs here; we're good-to-go now :-)
 
+					/*
+					 * @TODO @raamdev ... If we can find a way to reduce the number of directory checks here,
+					 *    it could really help to speed QC up even further. There are a number of function calls below
+					 *    that I'd really like to work on reducing. Some of these are intended to make QC as friendly to a site owner as possible.
+					 *    However, in doing so we add a bit of overhead here that's normally not necessary when a site owner has things up and running properly.
+					 *
+					 * i.e. look at the number of calls to `is_dir()` below.
+					 * NOTE: Some of the repeated calls below are intended to check if the directory exists after we create one that's missing.
+					 *    Still, there is room for some further optimization here.
+					 *
+					 * It's not a huge deal... since this is writing to the cache. Writes occur left often that reads do of course.
+					 *    Still.. I guess if we can improve this it would be good to do :-)
+					 */
+
 					if(!is_dir(QUICK_CACHE_DIR) && mkdir(QUICK_CACHE_DIR, 0775, TRUE))
 						{
 							if(is_writable(QUICK_CACHE_DIR) && !is_file(QUICK_CACHE_DIR.'/.htaccess'))
-								file_put_contents(QUICK_CACHE_DIR.'/.htaccess', 'deny from all');
+								file_put_contents(QUICK_CACHE_DIR.'/.htaccess', $this->htaccess_deny);
 						}
 					if(!is_dir(QUICK_CACHE_DIR) || !is_writable(QUICK_CACHE_DIR)) // Must have this directory.
 						throw new \exception(sprintf(__('Cache directory not writable. Quick Cache needs this directory please: `%1$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', $this->text_domain), QUICK_CACHE_DIR));
+
+					if(!is_dir($cache_file_dir = dirname($this->cache_file))) mkdir($cache_file_dir, 0775, TRUE);
+					if(!is_dir($cache_file_dir) || !is_writable($cache_file_dir)) // Must have this sub-directory (or sub-directories; plural).
+						throw new \exception(sprintf(__('Cache directory not writable. Quick Cache needs this directory please: `%1$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', $this->text_domain), $cache_file_dir));
 
 					if(QUICK_CACHE_DEBUGGING_ENABLE) // Debugging messages enabled; or no?
 						{
 							$total_time = number_format(microtime(TRUE) - $this->timer, 5, '.', '');
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache file built for (%1$s%2$s) in %3$s seconds, on: %4$s.', $this->text_domain),
-							                                                $this->salt_location, (($this->md5_4) ? '; '.sprintf(__('user token: %1$s', $this->text_domain), substr($this->md5_4, 0, 8)) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+							                                                $this->salt_location, (($this->user_token) ? '; '.sprintf(__('user token: %1$s', $this->text_domain), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This Quick Cache file will auto-expire (and be rebuilt) on: %1$s (based on your configured expiration time).', $this->text_domain), date('M jS, Y @ g:i a T', strtotime('+'.QUICK_CACHE_MAX_AGE)))).' -->';
 						}
 					$cache_file_tmp = $this->cache_file.'.'.uniqid('', TRUE).'.tmp'; // Cache creation is atomic; e.g. tmp file w/ rename.
@@ -359,6 +342,86 @@ namespace quick_cache // Root namespace.
 
 					@unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
 					throw new \exception(sprintf(__('Quick Cache: failed to write cache file for: `%1$s`; possible permissions issue (or race condition), please check your cache directory: `%2$s`.', $this->text_domain), $_SERVER['REQUEST_URI'], QUICK_CACHE_DIR));
+				}
+
+			public function dir_regex_iteration($dir, $regex)
+				{
+					$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
+					$iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
+					$regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
+
+					return apply_filters(__METHOD__, $regex_iterator, get_defined_vars());
+				}
+
+			/*
+			 * See also: `quick-cache-pro.inc.php` duplicate.
+			 * NOTE: the call to `is_ssl()` in this duplicate uses `$this->is_ssl()` because `is_ssl()`
+			 *    may NOT be available in this routine; i.e. it's not been loaded up yet.
+			 */
+			const CACHE_PATH_NO_SCHEME = 1; // Exclude scheme.
+			const CACHE_PATH_NO_HOST = 2; // Exclude host (i.e. domain name).
+			const CACHE_PATH_NO_PATH = 4; // Exclude path (i.e. the request URI).
+			const CACHE_PATH_NO_PATH_INDEX = 8; // Exclude path index (i.e. no default `index`).
+			const CACHE_PATH_NO_QUV = 16; // Exclude query, user & version salt.
+			const CACHE_PATH_NO_QUERY = 32; // Exclude query string.
+			const CACHE_PATH_NO_USER = 64; // Exclude user token.
+			const CACHE_PATH_NO_VSALT = 128; // Exclude version salt.
+			const CACHE_PATH_NO_EXT = 256; // Exclude extension.
+
+			public function url_to_cache_path($url, $with_user_token = '', $with_version_salt = '', $flags = 0)
+				{
+					$cache_path        = ''; // Initialize.
+					$url               = trim((string)$url);
+					$with_user_token   = trim((string)$with_user_token);
+					$with_version_salt = trim((string)$with_version_salt);
+
+					if($url && strpos($url, '://') === FALSE)
+						$url = '//'.ltrim($url, '/');
+
+					if(!$url || !($url = parse_url($url)))
+						return ''; // Invalid URL.
+
+					if(!($flags & $this::CACHE_PATH_NO_SCHEME))
+						{
+							if(!empty($url['scheme']))
+								$cache_path .= $url['scheme'].'/';
+							else $cache_path .= $this->is_ssl() ? 'https/' : 'http/';
+						}
+					if(!($flags & $this::CACHE_PATH_NO_HOST))
+						{
+							if(!empty($url['host']))
+								$cache_path .= $url['host'].'/';
+							else $cache_path .= $_SERVER['HTTP_HOST'].'/';
+						}
+					if(!($flags & $this::CACHE_PATH_NO_PATH))
+						{
+							if(!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B")))
+								$cache_path .= $url['path'].'/';
+							else if(!($flags & $this::CACHE_PATH_NO_PATH_INDEX)) $cache_path .= 'index/';
+						}
+					$cache_path = str_replace('.', '-', $cache_path);
+
+					if(!($flags & $this::CACHE_PATH_NO_QUV))
+						{
+							if(!($flags & $this::CACHE_PATH_NO_QUERY))
+								if(isset($url['query']) && $url['query'] !== '')
+									$cache_path = rtrim($cache_path, '/').'.q/'.md5($url['query']).'/';
+
+							if(!($flags & $this::CACHE_PATH_NO_USER))
+								if($with_user_token !== '') // Allow a `0` value if desirable.
+									$cache_path = rtrim($cache_path, '/').'.u/'.str_replace(array('/', '\\'), '-', $with_user_token).'/';
+
+							if(!($flags & $this::CACHE_PATH_NO_VSALT))
+								if($with_version_salt !== '') // Allow a `0` value if desirable.
+									$cache_path = rtrim($cache_path, '/').'.v/'.str_replace(array('/', '\\'), '-', $with_version_salt).'/';
+						}
+					$cache_path = trim(preg_replace('/\/+/', '/', $cache_path), '/');
+					$cache_path = preg_replace('/[^a-z0-9\/.]/i', '-', $cache_path);
+
+					if(!($flags & $this::CACHE_PATH_NO_EXT))
+						$cache_path .= '.html';
+
+					return $cache_path;
 				}
 
 			public function is_post_put_del_request()
@@ -416,6 +479,23 @@ namespace quick_cache // Root namespace.
 					unset($_key, $_value); // Housekeeping.
 
 					return ($is = FALSE);
+				}
+
+			public function user_token()
+				{
+					static $token; // Cache.
+					if(isset($token)) return $token;
+
+					if(($user_id = (integer)wp_validate_auth_cookie('', 'logged_in')))
+						return ($token = $user_id); // A real user in this case.
+
+					else if(!empty($_COOKIE['comment_author_email_'.COOKIEHASH]) && is_string($_COOKIE['comment_author_email_'.COOKIEHASH]))
+						return ($token = md5(strtolower(stripslashes($_COOKIE['comment_author_email_'.COOKIEHASH]))));
+
+					else if(!empty($_COOKIE['wp-postpass_'.COOKIEHASH]) && is_string($_COOKIE['wp-postpass_'.COOKIEHASH]))
+						return ($token = md5(stripslashes($_COOKIE['wp-postpass_'.COOKIEHASH])));
+
+					return ($token = '');
 				}
 
 			public function is_localhost()
@@ -573,6 +653,8 @@ namespace quick_cache // Root namespace.
 
 					return $value; // With applied filters.
 				}
+
+			public $htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";
 		}
 
 		function __($string, $text_domain) // Polyfill `\__()`.
