@@ -569,7 +569,7 @@ namespace quick_cache // Root namespace.
 							/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
 							foreach($this->dir_regex_iteration($cache_dir, '/.+/') as $_dir_file)
 								{
-									if($_dir_file->isFile() && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
+									if(($_dir_file->isFile() || $_dir_file->isLink()) && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
 										// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
 										// Actual `http|https/...` cache files are nested. Files in the immediate directory are for other purposes.
 										if(!unlink($_dir_file->getPathname())) // Throw exception if unable to delete.
@@ -623,7 +623,7 @@ namespace quick_cache // Root namespace.
 							/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
 							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_dir_file)
 								{
-									if($_dir_file->isFile() && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
+									if(($_dir_file->isFile() || $_dir_file->isLink()) && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
 										// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
 										// Actual `http|https/...` cache files are nested. Files in the immediate directory are for other purposes.
 										if(!unlink($_dir_file->getPathname())) // Throw exception if unable to delete.
@@ -651,7 +651,7 @@ namespace quick_cache // Root namespace.
 							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, '/.+/') as $_file) if($_file->isFile())
+							foreach($this->dir_regex_iteration($cache_dir, '/.+/') as $_file) if($_file->isFile() || $_file->isLink())
 								{
 									if($_file->getMTime() < $max_age && strpos($_file->getSubpathname(), '/') !== FALSE)
 										// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
@@ -735,7 +735,7 @@ namespace quick_cache // Root namespace.
 							                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile())
+							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 								{
 									if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
 									// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
@@ -777,7 +777,7 @@ namespace quick_cache // Root namespace.
 							                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile())
+							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 								{
 									if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
 									// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
@@ -832,7 +832,7 @@ namespace quick_cache // Root namespace.
 							                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile())
+							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 								{
 									if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
 									// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
@@ -894,7 +894,7 @@ namespace quick_cache // Root namespace.
 							$regex = '/\.u\/'.preg_quote($user_id, '/').'[.\/]/'; // This user.
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile())
+							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 								{
 									if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
 									// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
@@ -1280,7 +1280,7 @@ namespace quick_cache // Root namespace.
 
 					public function dir_regex_iteration($dir, $regex)
 						{
-							$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
+							$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
 							$iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
 							$regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
 

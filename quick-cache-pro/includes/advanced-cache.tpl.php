@@ -219,7 +219,7 @@ namespace quick_cache // Root namespace.
 					$regex = '/\.u\/'.preg_quote($this->user_token, '/').'[.\/]/'; // This user.
 
 					/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-					foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile())
+					foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 						{
 							if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
 								throw new \exception(sprintf(__('Unable to invalidate file: `%1$s`.', $this->text_domain), $_file->getPathname()));
@@ -346,11 +346,11 @@ namespace quick_cache // Root namespace.
 
 			public function dir_regex_iteration($dir, $regex)
 				{
-					$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::FOLLOW_SYMLINKS | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
+					$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
 					$iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
 					$regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
 
-					return apply_filters(__METHOD__, $regex_iterator, get_defined_vars());
+					return $regex_iterator;
 				}
 
 			/*
