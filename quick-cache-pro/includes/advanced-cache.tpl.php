@@ -64,6 +64,7 @@ namespace quick_cache // Root namespace.
 			public $version_salt = ''; // Calculated version salt; set by site configuration data.
 			public $cache_path = ''; // Calculated cache path; absolute relative (no leading/trailing slashes).
 			public $cache_file = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
+			public $cache_file_404 = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
 			public $salt_location = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
 			public $text_domain = ''; // Defined by class constructor; this is for translations.
 			public $postload = array(); // Off by default; just an empty array.
@@ -177,6 +178,7 @@ namespace quick_cache // Root namespace.
 					$this->version_salt  = $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
 					$this->cache_path    = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
 					$this->cache_file    = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
+					$this->cache_file_404	= QUICK_CACHE_DIR.'/'.$this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].'/----404----');
 					$this->salt_location = ltrim($this->version_salt.' '.$this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 					if(QUICK_CACHE_WHEN_LOGGED_IN === 'postload' && $this->is_like_user_logged_in())
@@ -276,6 +278,15 @@ namespace quick_cache // Root namespace.
 					if(function_exists('zlib_get_coding_type') && zlib_get_coding_type() && (!($zlib_oc = ini_get('zlib.output_compression')) || !preg_match('/^(?:1|on|yes|true)$/i', $zlib_oc)))
 						throw new \exception(__('Unable to cache already-compressed output. Please use `mod_deflate` w/ Apache; or use `zlib.output_compression` in your `php.ini` file. Quick Cache is NOT compatible with `ob_gzhandler()` and others like this.', $this->text_domain));
 
+					/**
+					 * @TODO this needs to be an option in the UI, to cache 404s or exclude them. We might also want to allow for configuring the 404 cache filename (`----404----.html` by default).
+					 */
+					$_404s_allowed = TRUE;
+					$is_404        = FALSE;
+
+					if(function_exists('is_404') && ($is_404 = is_404()) && !$_404s_allowed)
+						return $buffer;
+
 					if(function_exists('is_maintenance') && is_maintenance()) return $buffer; # http://wordpress.org/extend/plugins/maintenance-mode
 					if(function_exists('did_action') && did_action('wm_head')) return $buffer; # http://wordpress.org/extend/plugins/wp-maintenance-mode
 
@@ -336,8 +347,28 @@ namespace quick_cache // Root namespace.
 							                                                $this->salt_location, (($this->user_token) ? '; '.sprintf(__('user token: %1$s', $this->text_domain), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This Quick Cache file will auto-expire (and be rebuilt) on: %1$s (based on your configured expiration time).', $this->text_domain), date('M jS, Y @ g:i a T', strtotime('+'.QUICK_CACHE_MAX_AGE)))).' -->';
 						}
+
+					/**
+					 * Is this a 404 and the 404 cache file already exists?
+					 * Then lets symlink this 404 cache file to the existing cache file
+					 * and return the cache; with possible debug information also.
+					 */
+					if($is_404 && is_file($this->cache_file_404)) {
+						symlink($this->cache_file_404, $this->cache_file);
+						return $cache;
+					}
+
+					// This is NOT a 404, or it is 404 and the 404 cache file doesn't yet exist (so we need to create it)
+
 					$cache_file_tmp = $this->cache_file.'.'.uniqid('', TRUE).'.tmp'; // Cache creation is atomic; e.g. tmp file w/ rename.
-					if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file))
+
+					if($is_404 && !is_file($this->cache_file_404)) { // This is a 404; let's create 404 cache file and symlink to it
+						if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file_404)) {
+							symlink($this->cache_file_404, $this->cache_file);
+							return $cache; // Return the newly built cache; with possible debug information also.
+						}
+					} // NOT a 404; let's write a new cache file
+					else if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file))
 						return $cache; // Return the newly built cache; with possible debug information also.
 
 					@unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
