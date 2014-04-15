@@ -52,6 +52,11 @@ namespace quick_cache // Root namespace.
 		if(!defined('QUICK_CACHE_VERSION_SALT')) define('QUICK_CACHE_VERSION_SALT', '%%QUICK_CACHE_VERSION_SALT%%');
 
 		/*
+		 * A unique filename for the special 404 Cache File (used when 404 caching is enabled).
+		 */
+		if(!defined('QUICK_CACHE_404_CACHE_FILENAME')) define('QUICK_CACHE_404_CACHE_FILENAME', '----404----');
+
+		/*
 		 * The heart of Quick Cache.
 		 */
 
@@ -178,7 +183,7 @@ namespace quick_cache // Root namespace.
 					$this->version_salt  = $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
 					$this->cache_path    = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
 					$this->cache_file    = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
-					$this->cache_file_404	= QUICK_CACHE_DIR.'/'.$this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].'/----404----');
+					$this->cache_file_404	= QUICK_CACHE_DIR.'/'.$this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].'/'.QUICK_CACHE_404_CACHE_FILENAME);
 					$this->salt_location = ltrim($this->version_salt.' '.$this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 					if(QUICK_CACHE_WHEN_LOGGED_IN === 'postload' && $this->is_like_user_logged_in())
