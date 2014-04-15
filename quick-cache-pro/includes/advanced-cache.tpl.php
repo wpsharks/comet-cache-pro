@@ -301,19 +301,36 @@ namespace quick_cache // Root namespace.
 					if(strpos($buffer, '<body id="error-page">') !== FALSE)
 						return $buffer; // Don't cache WP errors.
 
-					$cacheable_http_status_codes = array('200', '404'); // As of WP 3.9, these are the only two cacheable codes that WordPress sets
-
-					foreach($headers as $_header) // Loop headers.
+					foreach($headers as $_header)
 						{
-							if(preg_match('#HTTP/\d+\.\d+ (\d+)#', $_header, $matches) && !in_array($matches[1], $cacheable_http_status_codes))
-								return $buffer; // Don't cache anything that's not a cacheable status code
+							if(stripos($_header, 'Content-Type:') === 0)
+								$content_type = $_header; // Last one.
 
-							if(stripos($_header, 'Content-Type:') === 0) $content_type = $_header; // Last one.
+							/*
+								* A Retry-After header indicates the site is temporarily unavailable.
+								*    i.e. That the site is down; or is in maintenance mode.
+								*    I've seen maintenance mode plugins for WP set this.
+								*
+								* A Status header indicates that a plugin may have set a particular HTTP status code.
+								*    While WP itself no longer sends this, it's good to check for plugins that do.
+								* ~ NOTE: We should request that the WP core function `status_header()` start sending this.
+								*
+								* An HTTP status code set by WP core function `status_header()`.
+								* ~ NOTE: at this time the `headers_list()` function does NOT include this header unfortunately.
+								*    Therefore, the routine below which looks for this header will NOT find it under any circumstance.
+								*    Tested and confirmed. See also: <http://www.php.net/manual/en/function.headers-list.php>
+								*    That said, I think we should leave it here in case a future version of PHP corrects this behavior.
+								*/
+
+							else if(preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+\.[0-9]+\s+(?P<http_status>[0-9]+))/i', $_header, $_m))
+								if(!empty($_m['retry']) || (!empty($_m['status']) && $_m['status'][0] !== '2' && $_m['status'] !== '404')
+								   || (!empty($_m['http_status']) && $_m['http_status'][0] !== '2' && $_m['http_status'] !== '404')
+								) return $buffer; // Don't cache (anything that's NOT a 2xx or 404 status).
 						}
-					unset($_header); // Just a little housekeeping.
+					unset($_header); // Just a little houskeeping.
 
-					if($content_type) // If we found a Content-Type; make sure it's XML/HTML code.
-						if(!preg_match('/xhtml|html|xml|'.preg_quote(__NAMESPACE__, '/').'/i', $content_type)) return $buffer;
+					if($content_type && !preg_match('/xhtml|html|xml|'.preg_quote(__NAMESPACE__, '/').'/i', $content_type))
+						return $buffer; // Don't cache anything that is NOT XML/HTML code.
 
 					// Caching occurs here; we're good-to-go now :-)
 
