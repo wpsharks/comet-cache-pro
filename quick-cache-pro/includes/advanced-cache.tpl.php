@@ -301,13 +301,16 @@ namespace quick_cache // Root namespace.
 					if(strpos($buffer, '<body id="error-page">') !== FALSE)
 						return $buffer; // Don't cache WP errors.
 
+					$cacheable_http_status_codes = array('200', '404'); // As of WP 3.9, these are the only two cacheable codes that WordPress sets
+
 					foreach($headers as $_header) // Loop headers.
 						{
-							if(preg_match('/^(?:Retry\-After\:|Status\:\s+[^2]|HTTP\/1\.[01]\s+[^2])/i', $_header))
-								return $buffer; // Don't cache errors (anything that's NOT a 2xx status).
+							if(preg_match('#HTTP/\d+\.\d+ (\d+)#', $_header, $matches) && !in_array($matches[1], $cacheable_http_status_codes))
+								return $buffer; // Don't cache anything that's not a cacheable status code
+
 							if(stripos($_header, 'Content-Type:') === 0) $content_type = $_header; // Last one.
 						}
-					unset($_header); // Just a little houskeeping.
+					unset($_header); // Just a little housekeeping.
 
 					if($content_type) // If we found a Content-Type; make sure it's XML/HTML code.
 						if(!preg_match('/xhtml|html|xml|'.preg_quote(__NAMESPACE__, '/').'/i', $content_type)) return $buffer;
