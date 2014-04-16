@@ -57,6 +57,7 @@ namespace quick_cache // Root namespace.
 							                                'when_logged_in'                       => '0', // `0|1|postload`.
 							                                'get_requests'                         => '0', // `0|1`.
 							                                'feeds_enable'                         => '0', // `0|1`.
+							                                'cache_404_requests'                   => '0', // `0|1`.
 
 							                                'exclude_uris'                         => '', // Empty string or line-delimited patterns.
 							                                'exclude_refs'                         => '', // Empty string or line-delimited patterns.
@@ -583,7 +584,7 @@ namespace quick_cache // Root namespace.
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing we can do.
 
-							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
 							/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
@@ -667,7 +668,7 @@ namespace quick_cache // Root namespace.
 							$max_age   = strtotime('-'.$this->options['cache_max_age']);
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
-							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
