@@ -25,6 +25,7 @@ namespace quick_cache // Root namespace.
 		if(!defined('QUICK_CACHE_ENABLE')) define('QUICK_CACHE_ENABLE', '%%QUICK_CACHE_ENABLE%%');
 		if(!defined('QUICK_CACHE_DEBUGGING_ENABLE')) define('QUICK_CACHE_DEBUGGING_ENABLE', '%%QUICK_CACHE_DEBUGGING_ENABLE%%');
 		if(!defined('QUICK_CACHE_ALLOW_BROWSER_CACHE')) define('QUICK_CACHE_ALLOW_BROWSER_CACHE', '%%QUICK_CACHE_ALLOW_BROWSER_CACHE%%');
+		if(!defined('QUICK_CACHE_CACHE_404_REQUESTS')) define('QUICK_CACHE_CACHE_404_REQUESTS', '%%QUICK_CACHE_CACHE_404_REQUESTS%%');
 
 		/*
 		 * Cache directory. Max age; e.g. `7 days` — anything compatible w/ `strtotime()`.
@@ -283,13 +284,8 @@ namespace quick_cache // Root namespace.
 					if(function_exists('zlib_get_coding_type') && zlib_get_coding_type() && (!($zlib_oc = ini_get('zlib.output_compression')) || !preg_match('/^(?:1|on|yes|true)$/i', $zlib_oc)))
 						throw new \exception(__('Unable to cache already-compressed output. Please use `mod_deflate` w/ Apache; or use `zlib.output_compression` in your `php.ini` file. Quick Cache is NOT compatible with `ob_gzhandler()` and others like this.', $this->text_domain));
 
-					/**
-					 * @TODO this needs to be an option in the UI, to cache 404s or exclude them. We might also want to allow for configuring the 404 cache filename (`----404----.html` by default).
-					 */
-					$_404s_allowed = TRUE;
 					$is_404        = FALSE;
-
-					if(function_exists('is_404') && ($is_404 = is_404()) && !$_404s_allowed)
+					if(function_exists('is_404') && ($is_404 = is_404()) && !QUICK_CACHE_CACHE_404_REQUESTS)
 						return $buffer;
 
 					if(function_exists('is_maintenance') && is_maintenance()) return $buffer; # http://wordpress.org/extend/plugins/maintenance-mode
