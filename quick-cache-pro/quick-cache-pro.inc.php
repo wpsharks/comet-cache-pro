@@ -591,6 +591,8 @@ namespace quick_cache // Root namespace.
 						{
 							$counter = 0; // Initialize.
 
+							$counter += $this->wipe_htmlc_cache($manually);
+
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing we can do.
 
@@ -612,8 +614,6 @@ namespace quick_cache // Root namespace.
 											throw new \exception(sprintf(__('Unable to wipe dir: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
 								}
 							unset($_dir_file); // Just a little housekeeping.
-
-							$counter += $this->wipe_htmlc_cache($manually);
 
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
@@ -654,6 +654,8 @@ namespace quick_cache // Root namespace.
 						{
 							$counter = 0; // Initialize.
 
+							$counter += $this->clear_htmlc_cache($manually);
+
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
@@ -682,8 +684,6 @@ namespace quick_cache // Root namespace.
 								}
 							unset($_dir_file); // Just a little housekeeping.
 
-							$counter += $this->clear_htmlc_cache($manually);
-
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
@@ -691,8 +691,8 @@ namespace quick_cache // Root namespace.
 						{
 							$counter = 0; // Initialize.
 
-							$host_token = $this->host_token();
-							if(($host_dir_token = $this->host_dir_token()) === '/')
+							$host_token = $this->host_token(TRUE);
+							if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
 								$host_dir_token = ''; // Not necessary in this case.
 
 							$cache_dir_public  = ABSPATH.$this->options['htmlc_cache_dir_public'].$host_dir_token.'/'.$host_token;
@@ -1368,13 +1368,13 @@ namespace quick_cache // Root namespace.
 							return $cache_path; // Do not filter; exists in advanced-cache too.
 						}
 
-					public function host_token()
+					public function host_token($dashify = FALSE)
 						{
-							return trim(preg_replace('/[^a-z0-9]/i', '', $_SERVER['HTTP_HOST']), '-');
-							// Do not filter; exists in advanced-cache too.
+							$host = strtolower($_SERVER['HTTP_HOST']);
+							return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host), '-') : $host;
 						}
 
-					public function host_dir_token()
+					public function host_dir_token($dashify = FALSE)
 						{
 							$cache_dir      = ABSPATH.$this->options['cache_dir'];
 							$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
@@ -1397,7 +1397,7 @@ namespace quick_cache // Root namespace.
 									       || !in_array($host_dir_token, unserialize(file_get_contents($cache_dir.'/qc-blog-paths')), TRUE))
 									) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
 								}
-							return $host_dir_token; // Do not filter; exists in advanced-cache too.
+							return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host_dir_token), '-') : $host_dir_token;
 						}
 
 					public function dir_regex_iteration($dir, $regex)

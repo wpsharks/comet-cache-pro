@@ -417,7 +417,7 @@ namespace quick_cache // Root namespace.
 
 					require_once dirname(plugin()->file).'/includes/html-compressor.phar';
 
-					if(($host_dir_token = $this->host_dir_token()) === '/')
+					if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
 						$host_dir_token = ''; // Not necessary.
 					// Deals with multisite sub-directory installs.
 					// e.g. `wp-content/htmlc/cache/public/www-example-com` (main site)
@@ -529,12 +529,13 @@ namespace quick_cache // Root namespace.
 					return $cache_path;
 				}
 
-			public function host_token()
+			public function host_token($dashify = FALSE)
 				{
-					return trim(preg_replace('/[^a-z0-9]/i', '', $_SERVER['HTTP_HOST']), '-');
+					$host = strtolower($_SERVER['HTTP_HOST']);
+					return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host), '-') : $host;
 				}
 
-			public function host_dir_token()
+			public function host_dir_token($dashify = FALSE)
 				{
 					$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
 
@@ -556,7 +557,7 @@ namespace quick_cache // Root namespace.
 							       || !in_array($host_dir_token, unserialize(file_get_contents(QUICK_CACHE_DIR.'/qc-blog-paths')), TRUE))
 							) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
 						}
-					return $host_dir_token;
+					return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host_dir_token), '-') : $host_dir_token;
 				}
 
 			public function is_post_put_del_request()
