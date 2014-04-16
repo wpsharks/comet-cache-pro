@@ -62,6 +62,8 @@ namespace quick_cache // Root namespace.
 							                                'exclude_refs'                  => '', // Empty string or line-delimited patterns.
 							                                'exclude_agents'                => 'w3c_validator', // Empty string or line-delimited patterns.
 
+							                                'htmlc_enable'                  => '1', // Enable HTML compression?
+
 							                                'version_salt'                  => '', // Any string value.
 
 							                                'change_notifications_enable'   => '1', // `0|1`.

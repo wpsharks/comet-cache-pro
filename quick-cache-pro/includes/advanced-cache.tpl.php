@@ -52,6 +52,26 @@ namespace quick_cache // Root namespace.
 		if(!defined('QUICK_CACHE_VERSION_SALT')) define('QUICK_CACHE_VERSION_SALT', '%%QUICK_CACHE_VERSION_SALT%%');
 
 		/*
+		 * Configuration for the HTML Compressor (if enabled).
+		 */
+		if(!defined('QUICK_CACHE_HTMLC_ENABLE')) define('QUICK_CACHE_HTMLC_ENABLE', '%%QUICK_CACHE_HTMLC_ENABLE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS%%');
+		if(!defined('QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME')) define('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC%%');
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_JS_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE%%');
+
+		/*
 		 * The heart of Quick Cache.
 		 */
 
@@ -329,6 +349,8 @@ namespace quick_cache // Root namespace.
 					if(!is_dir($cache_file_dir) || !is_writable($cache_file_dir)) // Must have this sub-directory (or sub-directories; plural).
 						throw new \exception(sprintf(__('Cache directory not writable. Quick Cache needs this directory please: `%1$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', $this->text_domain), $cache_file_dir));
 
+					$cache = $this->maybe_compress_html_cache($cache); // Possible HTML compression (if enabled).
+
 					if(QUICK_CACHE_DEBUGGING_ENABLE) // Debugging messages enabled; or no?
 						{
 							$total_time = number_format(microtime(TRUE) - $this->timer, 5, '.', '');
@@ -342,6 +364,39 @@ namespace quick_cache // Root namespace.
 
 					@unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
 					throw new \exception(sprintf(__('Quick Cache: failed to write cache file for: `%1$s`; possible permissions issue (or race condition), please check your cache directory: `%2$s`.', $this->text_domain), $_SERVER['REQUEST_URI'], QUICK_CACHE_DIR));
+				}
+
+			public function maybe_compress_html_cache($cache)
+				{
+					if(!QUICK_CACHE_HTMLC_ENABLE || !class_exists('\\'.__NAMESPACE__.'\\plugin'))
+						return $cache; // Nothing to do here.
+
+					require_once dirname(plugin()->file).'/includes/html-compressor.phar';
+
+					$html_compressor_options = array(
+						'benchmark'                      => QUICK_CACHE_DEBUGGING_ENABLE,
+						'product_title'                  => __('Quick Cache HTML Compressor', $this->text_domain),
+
+						'regex_css_exclusions'           => QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS,
+						'regex_js_exclusions'            => QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS,
+
+						'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
+						'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC,
+						'cache_dir_url_public'           => site_url('/'.str_replace(ABSPATH, '', QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC)),
+						'cache_dir_private'              => QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE,
+
+						'compress_combine_head_body_css' => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
+						'compress_combine_head_js'       => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
+						'compress_combine_footer_js'     => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS,
+						'compress_inline_js_code'        => QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE,
+						'compress_css_code'              => QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE,
+						'compress_js_code'               => QUICK_CACHE_HTMLC_COMPRESS_JS_CODE,
+						'compress_html_code'             => QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE,
+					);
+					$html_compressor         = new \websharks\html_compressor\core($html_compressor_options);
+					$compressed_cache        = $html_compressor->compress($cache);
+
+					return $compressed_cache;
 				}
 
 			public function dir_regex_iteration($dir, $regex)
