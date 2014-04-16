@@ -380,6 +380,7 @@ namespace quick_cache // Root namespace.
 							return $cache; // Nothing more to do here.
 						}
 					$cache = $this->maybe_compress_html($cache); // Possible HTML compression.
+					// @raamdev I suggest this remain a Pro feature; i.e. NOT integrated into the lite version.
 
 					if(QUICK_CACHE_DEBUGGING_ENABLE) // Debugging messages enabled; or no?
 						{
@@ -416,6 +417,12 @@ namespace quick_cache // Root namespace.
 
 					require_once dirname(plugin()->file).'/includes/html-compressor.phar';
 
+					if(($host_dir_token = $this->host_dir_token()) === '/')
+						$host_dir_token = ''; // Not necessary.
+					// Deals with multisite sub-directory installs.
+					// e.g. `wp-content/htmlc/cache/public/www-example-com` (main site)
+					// e.g. `wp-content/htmlc/cache/public/sub/www-example-com`
+
 					$html_compressor_options = array(
 						'benchmark'                      => QUICK_CACHE_DEBUGGING_ENABLE,
 						'product_title'                  => __('Quick Cache HTML Compressor', $this->text_domain),
@@ -424,8 +431,8 @@ namespace quick_cache // Root namespace.
 						'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS, // Regex.
 
 						'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
-						'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC,
-						'cache_dir_url_public'           => site_url('/'.str_replace(ABSPATH, '', QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC)),
+						'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token,
+						'cache_dir_url_public'           => site_url('/'.str_replace(ABSPATH, '', QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token)),
 						'cache_dir_private'              => QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE,
 
 						'compress_combine_head_body_css' => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
@@ -520,6 +527,36 @@ namespace quick_cache // Root namespace.
 						$cache_path .= '.html';
 
 					return $cache_path;
+				}
+
+			public function host_token()
+				{
+					return trim(preg_replace('/[^a-z0-9]/i', '', $_SERVER['HTTP_HOST']), '-');
+				}
+
+			public function host_dir_token()
+				{
+					$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
+
+					if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
+						{ // Multisite w/ sub-directories; need a valid sub-directory token.
+
+							$base = '/'; // Initial default value.
+							if(defined('PATH_CURRENT_SITE')) $base = PATH_CURRENT_SITE;
+							else if(!empty($GLOBALS['base'])) $base = $GLOBALS['base'];
+
+							$uri_minus_base = // Supports `/sub-dir/child-blog-sub-dir/` also.
+								preg_replace('/^'.preg_quote($base, '/').'/', '', $_SERVER['REQUEST_URI']);
+
+							list($host_dir_token) = explode('/', trim($uri_minus_base, '/'));
+							$host_dir_token = (isset($host_dir_token[0])) ? '/'.$host_dir_token.'/' : '/';
+
+							if($host_dir_token !== '/' // Perhaps NOT the main site?
+							   && (!is_file(QUICK_CACHE_DIR.'/qc-blog-paths') // NOT a read/valid blog path?
+							       || !in_array($host_dir_token, unserialize(file_get_contents(QUICK_CACHE_DIR.'/qc-blog-paths')), TRUE))
+							) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
+						}
+					return $host_dir_token;
 				}
 
 			public function is_post_put_del_request()
