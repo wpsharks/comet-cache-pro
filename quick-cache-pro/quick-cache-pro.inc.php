@@ -38,39 +38,54 @@ namespace quick_cache // Root namespace.
 							load_plugin_textdomain($this->text_domain);
 
 							$this->default_options = array( // Default options.
-							                                'version'                       => $this->version,
+							                                'version'                              => $this->version,
 
-							                                'crons_setup'                   => '0', // `0` or timestamp.
+							                                'crons_setup'                          => '0', // `0` or timestamp.
 
-							                                'enable'                        => '0', // `0|1`.
-							                                'debugging_enable'              => '1', // `0|1`.
-							                                'admin_bar_enable'              => '1', // `0|1`.
-							                                'cache_clear_s2clean_enable'    => '0', // `0|1`.
-							                                'cache_clear_eval_code'         => '', // PHP code.
-							                                'cache_purge_home_page_enable'  => '1', // `0|1`.
-							                                'cache_purge_posts_page_enable' => '1', // `0|1`.
-							                                'allow_browser_cache'           => '0', // `0|1`.
+							                                'enable'                               => '0', // `0|1`.
+							                                'debugging_enable'                     => '1', // `0|1`.
+							                                'admin_bar_enable'                     => '1', // `0|1`.
+							                                'cache_clear_s2clean_enable'           => '0', // `0|1`.
+							                                'cache_clear_eval_code'                => '', // PHP code.
+							                                'cache_purge_home_page_enable'         => '1', // `0|1`.
+							                                'cache_purge_posts_page_enable'        => '1', // `0|1`.
+							                                'allow_browser_cache'                  => '0', // `0|1`.
 
-							                                'cache_dir'                     => 'wp-content/cache', // Relative to `ABSPATH`.
-							                                'cache_max_age'                 => '7 days', // `strtotime()` compatible.
+							                                'cache_dir'                            => 'wp-content/cache', // Relative to `ABSPATH`.
+							                                'cache_max_age'                        => '7 days', // `strtotime()` compatible.
 
-							                                'when_logged_in'                => '0', // `0|1|postload`.
-							                                'get_requests'                  => '0', // `0|1`.
-							                                'feeds_enable'                  => '0', // `0|1`.
+							                                'when_logged_in'                       => '0', // `0|1|postload`.
+							                                'get_requests'                         => '0', // `0|1`.
+							                                'feeds_enable'                         => '0', // `0|1`.
 
-							                                'exclude_uris'                  => '', // Empty string or line-delimited patterns.
-							                                'exclude_refs'                  => '', // Empty string or line-delimited patterns.
-							                                'exclude_agents'                => 'w3c_validator', // Empty string or line-delimited patterns.
+							                                'exclude_uris'                         => '', // Empty string or line-delimited patterns.
+							                                'exclude_refs'                         => '', // Empty string or line-delimited patterns.
+							                                'exclude_agents'                       => 'w3c_validator', // Empty string or line-delimited patterns.
 
-							                                'htmlc_enable'                  => '1', // Enable HTML compression?
+							                                'version_salt'                         => '', // Any string value.
 
-							                                'version_salt'                  => '', // Any string value.
+							                                'htmlc_enable'                         => '1', // Enable HTML compression?
 
-							                                'change_notifications_enable'   => '1', // `0|1`.
-							                                'uninstall_on_deactivation'     => '0', // `0|1`.
+							                                'htmlc_css_exclusions'                 => '', // Empty string or line-delimited patterns.
+							                                'htmlc_js_exclusions'                  => '.php?', // Empty string or line-delimited patterns.
 
-							                                'update_sync_username'          => '', 'update_sync_password' => '',
-							                                'update_sync_version_check'     => '1', 'last_update_sync_version_check' => '0'
+							                                'htmlc_cache_expiration_time'          => '14 days', // `strtotime()` compatible.
+							                                'htmlc_cache_dir_public'               => 'wp-content/htmlc/cache/public', // Relative to `ABSPATH`.
+							                                'htmlc_cache_dir_private'              => 'wp-content/htmlc/cache/private', // Relative to `ABSPATH`.
+
+							                                'htmlc_compress_combine_head_body_css' => '1', // `0|1`.
+							                                'htmlc_compress_combine_head_js'       => '1', // `0|1`.
+							                                'htmlc_compress_combine_footer_js'     => '1', // `0|1`.
+							                                'htmlc_compress_inline_js_code'        => '1', // `0|1`.
+							                                'htmlc_compress_css_code'              => '1', // `0|1`.
+							                                'htmlc_compress_js_code'               => '1', // `0|1`.
+							                                'htmlc_compress_html_code'             => '1', // `0|1`.
+
+							                                'change_notifications_enable'          => '1', // `0|1`.
+							                                'uninstall_on_deactivation'            => '0', // `0|1`.
+
+							                                'update_sync_username'                 => '', 'update_sync_password' => '',
+							                                'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0'
 							); // Default options are merged with those defined by the site owner.
 							$options               = (is_array($options = get_option(__NAMESPACE__.'_options'))) ? $options : array();
 							if(is_multisite() && is_array($site_options = get_site_option(__NAMESPACE__.'_options')))
@@ -105,10 +120,13 @@ namespace quick_cache // Root namespace.
 									if(!isset($options['version_salt']) && isset($old_options['version_salt']))
 										$options['version_salt'] = (string)$old_options['version_salt'];
 								}
-							$this->default_options      = apply_filters(__METHOD__.'__default_options', $this->default_options, get_defined_vars());
-							$this->options              = array_merge($this->default_options, $options); // This considers old options also.
-							$this->options              = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
-							$this->options['cache_dir'] = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
+							$this->default_options = apply_filters(__METHOD__.'__default_options', $this->default_options, get_defined_vars());
+							$this->options         = array_merge($this->default_options, $options); // This considers old options also.
+							$this->options         = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
+
+							$this->options['cache_dir']               = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
+							$this->options['htmlc_cache_dir_public']  = trim($this->options['htmlc_cache_dir_public'], '\\/'." \t\n\r\0\x0B");
+							$this->options['htmlc_cache_dir_private'] = trim($this->options['htmlc_cache_dir_private'], '\\/'." \t\n\r\0\x0B");
 
 							$this->update_cap  = apply_filters(__METHOD__.'__update_cap', 'update_plugins');
 							$this->network_cap = apply_filters(__METHOD__.'__network_cap', 'manage_network_plugins');
@@ -1063,14 +1081,20 @@ namespace quick_cache // Root namespace.
 										case 'exclude_refs': // Converts to regex (case sensitive).
 										case 'exclude_agents': // Converts to regex (case insensitive).
 
+										case 'htmlc_css_exclusions': // Converts to regex (case insensitive).
+										case 'htmlc_js_exclusions': // Converts to regex (case insensitive).
+
 												if(($_values = preg_split('/['."\r\n".']+/', $_value, NULL, PREG_SPLIT_NO_EMPTY)))
-													$_value = '/(?:'.implode('|', array_map(function ($string)
-															{
-																$string = preg_quote($string, '/'); // Escape.
-																return preg_replace('/\\\\\*/', '.*?', $string); // Wildcards.
+													{
+														$_value = '/(?:'.implode('|', array_map(function ($string)
+																{
+																	$string = preg_quote($string, '/'); // Escape.
+																	return preg_replace('/\\\\\*/', '.*?', $string); // Wildcards.
 
-															}, $_values)).')/'.(($_option === 'exclude_agents') ? 'i' : '');
-
+																}, $_values)).')/';
+														if(in_array($_option, array('exclude_agents', 'htmlc_css_exclusions', 'htmlc_js_exclusions'), TRUE))
+															$_value .= 'i'; // These regex patterns are case insensitive.
+													}
 												$_value = "'".$this->esc_sq($_value)."'";
 
 												break; // Break switch handler.

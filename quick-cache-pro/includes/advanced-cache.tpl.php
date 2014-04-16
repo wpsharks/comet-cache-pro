@@ -56,8 +56,8 @@ namespace quick_cache // Root namespace.
 		 */
 		if(!defined('QUICK_CACHE_HTMLC_ENABLE')) define('QUICK_CACHE_HTMLC_ENABLE', '%%QUICK_CACHE_HTMLC_ENABLE%%');
 
-		if(!defined('QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS%%');
-		if(!defined('QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS%%');
+		if(!defined('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_CSS_EXCLUSIONS%%');
+		if(!defined('QUICK_CACHE_HTMLC_JS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_JS_EXCLUSIONS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME')) define('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
 		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC%%');
@@ -377,8 +377,8 @@ namespace quick_cache // Root namespace.
 						'benchmark'                      => QUICK_CACHE_DEBUGGING_ENABLE,
 						'product_title'                  => __('Quick Cache HTML Compressor', $this->text_domain),
 
-						'regex_css_exclusions'           => QUICK_CACHE_HTMLC_REGEX_CSS_EXCLUSIONS,
-						'regex_js_exclusions'            => QUICK_CACHE_HTMLC_REGEX_JS_EXCLUSIONS,
+						'regex_css_exclusions'           => QUICK_CACHE_HTMLC_CSS_EXCLUSIONS, // Regex.
+						'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS, // Regex.
 
 						'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
 						'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC,
