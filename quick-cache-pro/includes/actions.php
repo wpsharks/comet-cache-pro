@@ -137,8 +137,16 @@ namespace quick_cache // Root namespace.
 							unset($args['crons_setup']); // Unset; CANNOT be imported (installation-specific).
 						}
 					$args = array_map('trim', stripslashes_deep((array)$args));
+
 					if(isset($args['cache_dir'])) // No leading/trailing slashes please.
 						$args['cache_dir'] = trim($args['cache_dir'], '\\/'." \t\n\r\0\x0B");
+
+					if(isset($args['htmlc_cache_dir_public'])) // No leading/trailing slashes please.
+						$args['htmlc_cache_dir_public'] = trim($args['htmlc_cache_dir_public'], '\\/'." \t\n\r\0\x0B");
+
+					if(isset($args['htmlc_cache_dir_private'])) // No leading/trailing slashes please.
+						$args['htmlc_cache_dir_private'] = trim($args['htmlc_cache_dir_private'], '\\/'." \t\n\r\0\x0B");
+
 					plugin()->options = array_merge(plugin()->default_options, $args);
 
 					if(!trim(plugin()->options['cache_dir'], '\\/'." \t\n\r\0\x0B") // Empty (do not allow).

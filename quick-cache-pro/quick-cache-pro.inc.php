@@ -38,37 +38,55 @@ namespace quick_cache // Root namespace.
 							load_plugin_textdomain($this->text_domain);
 
 							$this->default_options = array( // Default options.
-							                                'version'                       => $this->version,
+							                                'version'                              => $this->version,
 
-							                                'crons_setup'                   => '0', // `0` or timestamp.
+							                                'crons_setup'                          => '0', // `0` or timestamp.
 
-							                                'enable'                        => '0', // `0|1`.
-							                                'debugging_enable'              => '1', // `0|1`.
-							                                'admin_bar_enable'              => '1', // `0|1`.
-							                                'cache_clear_s2clean_enable'    => '0', // `0|1`.
-							                                'cache_clear_eval_code'         => '', // PHP code.
-							                                'cache_purge_home_page_enable'  => '1', // `0|1`.
-							                                'cache_purge_posts_page_enable' => '1', // `0|1`.
-							                                'allow_browser_cache'           => '0', // `0|1`.
+							                                'enable'                               => '0', // `0|1`.
+							                                'debugging_enable'                     => '1', // `0|1`.
+							                                'admin_bar_enable'                     => '1', // `0|1`.
+							                                'cache_clear_s2clean_enable'           => '0', // `0|1`.
+							                                'cache_clear_eval_code'                => '', // PHP code.
+							                                'cache_purge_home_page_enable'         => '1', // `0|1`.
+							                                'cache_purge_posts_page_enable'        => '1', // `0|1`.
+							                                'allow_browser_cache'                  => '0', // `0|1`.
 
-							                                'cache_dir'                     => 'wp-content/cache', // Relative to `ABSPATH`.
-							                                'cache_max_age'                 => '7 days', // `strtotime()` compatible.
+							                                'cache_dir'                            => 'wp-content/cache', // Relative to `ABSPATH`.
+							                                'cache_max_age'                        => '7 days', // `strtotime()` compatible.
 
-							                                'when_logged_in'                => '0', // `0|1|postload`.
-							                                'get_requests'                  => '0', // `0|1`.
-							                                'feeds_enable'                  => '0', // `0|1`.
+							                                'when_logged_in'                       => '0', // `0|1|postload`.
+							                                'get_requests'                         => '0', // `0|1`.
+							                                'feeds_enable'                         => '0', // `0|1`.
+							                                'cache_404_requests'                   => '0', // `0|1`.
 
-							                                'exclude_uris'                  => '', // Empty string or line-delimited patterns.
-							                                'exclude_refs'                  => '', // Empty string or line-delimited patterns.
-							                                'exclude_agents'                => 'w3c_validator', // Empty string or line-delimited patterns.
+							                                'exclude_uris'                         => '', // Empty string or line-delimited patterns.
+							                                'exclude_refs'                         => '', // Empty string or line-delimited patterns.
+							                                'exclude_agents'                       => 'w3c_validator', // Empty string or line-delimited patterns.
 
-							                                'version_salt'                  => '', // Any string value.
+							                                'version_salt'                         => '', // Any string value.
 
-							                                'change_notifications_enable'   => '1', // `0|1`.
-							                                'uninstall_on_deactivation'     => '0', // `0|1`.
+							                                'htmlc_enable'                         => '0', // Enable HTML compression?
 
-							                                'update_sync_username'          => '', 'update_sync_password' => '',
-							                                'update_sync_version_check'     => '1', 'last_update_sync_version_check' => '0'
+							                                'htmlc_css_exclusions'                 => '', // Empty string or line-delimited patterns.
+							                                'htmlc_js_exclusions'                  => '.php?', // Empty string or line-delimited patterns.
+
+							                                'htmlc_cache_expiration_time'          => '14 days', // `strtotime()` compatible.
+							                                'htmlc_cache_dir_public'               => 'wp-content/htmlc/cache/public', // Relative to `ABSPATH`.
+							                                'htmlc_cache_dir_private'              => 'wp-content/htmlc/cache/private', // Relative to `ABSPATH`.
+
+							                                'htmlc_compress_combine_head_body_css' => '1', // `0|1`.
+							                                'htmlc_compress_combine_head_js'       => '1', // `0|1`.
+							                                'htmlc_compress_combine_footer_js'     => '1', // `0|1`.
+							                                'htmlc_compress_inline_js_code'        => '1', // `0|1`.
+							                                'htmlc_compress_css_code'              => '1', // `0|1`.
+							                                'htmlc_compress_js_code'               => '1', // `0|1`.
+							                                'htmlc_compress_html_code'             => '1', // `0|1`.
+
+							                                'change_notifications_enable'          => '1', // `0|1`.
+							                                'uninstall_on_deactivation'            => '0', // `0|1`.
+
+							                                'update_sync_username'                 => '', 'update_sync_password' => '',
+							                                'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0'
 							); // Default options are merged with those defined by the site owner.
 							$options               = (is_array($options = get_option(__NAMESPACE__.'_options'))) ? $options : array();
 							if(is_multisite() && is_array($site_options = get_site_option(__NAMESPACE__.'_options')))
@@ -103,10 +121,13 @@ namespace quick_cache // Root namespace.
 									if(!isset($options['version_salt']) && isset($old_options['version_salt']))
 										$options['version_salt'] = (string)$old_options['version_salt'];
 								}
-							$this->default_options      = apply_filters(__METHOD__.'__default_options', $this->default_options, get_defined_vars());
-							$this->options              = array_merge($this->default_options, $options); // This considers old options also.
-							$this->options              = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
-							$this->options['cache_dir'] = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
+							$this->default_options = apply_filters(__METHOD__.'__default_options', $this->default_options, get_defined_vars());
+							$this->options         = array_merge($this->default_options, $options); // This considers old options also.
+							$this->options         = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
+
+							$this->options['cache_dir']               = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
+							$this->options['htmlc_cache_dir_public']  = trim($this->options['htmlc_cache_dir_public'], '\\/'." \t\n\r\0\x0B");
+							$this->options['htmlc_cache_dir_private'] = trim($this->options['htmlc_cache_dir_private'], '\\/'." \t\n\r\0\x0B");
 
 							$this->update_cap  = apply_filters(__METHOD__.'__update_cap', 'update_plugins');
 							$this->network_cap = apply_filters(__METHOD__.'__network_cap', 'manage_network_plugins');
@@ -172,6 +193,11 @@ namespace quick_cache // Root namespace.
 
 							add_filter('pre_site_transient_update_plugins', array($this, 'pre_site_transient_update_plugins'));
 
+							if($this->options['htmlc_enable']) // Mark `<!--footer-scripts-->` for HTML compressor.
+								{
+									add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), -PHP_INT_MAX);
+									add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
+								}
 							if((integer)$this->options['crons_setup'] < 1382523750)
 								{
 									wp_clear_scheduled_hook('_cron_'.__NAMESPACE__.'_cleanup');
@@ -373,6 +399,11 @@ namespace quick_cache // Root namespace.
 							wp_enqueue_script(__NAMESPACE__.'-admin-bar', $this->url('/client-s/js/admin-bar.min.js'), $deps, $this->version, TRUE);
 						}
 
+					public function htmlc_footer_scripts()
+						{
+							echo "\n".'<!--footer-scripts-->'."\n";
+						}
+
 					public function enqueue_admin_styles()
 						{
 							if(empty($_GET['page']) || strpos($_GET['page'], __NAMESPACE__) !== 0)
@@ -560,10 +591,12 @@ namespace quick_cache // Root namespace.
 						{
 							$counter = 0; // Initialize.
 
+							$counter += $this->wipe_htmlc_cache($manually);
+
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing we can do.
 
-							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
 							/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
@@ -585,36 +618,51 @@ namespace quick_cache // Root namespace.
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					public function wipe_htmlc_cache($manually = FALSE)
+						{
+							$counter = 0; // Initialize.
+
+							$cache_dir_public  = ABSPATH.$this->options['htmlc_cache_dir_public'];
+							$cache_dir_private = ABSPATH.$this->options['htmlc_cache_dir_private'];
+							if(!is_dir($cache_dir_public) && !is_dir($cache_dir_private))
+								return $counter; // Nothing to do in this case.
+
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
+							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
+
+							/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
+							foreach(array($cache_dir_public, $cache_dir_private) as $_cache_dir) if(is_dir($_cache_dir))
+								foreach($this->dir_regex_iteration($_cache_dir, '/.+/') as $_dir_file)
+									{
+										if(($_dir_file->isFile() || $_dir_file->isLink()) && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
+											// Don't delete files in the immediate directory; e.g. `.htaccess`, or anything else that's special.
+											// Actual `host-tld` cache files are nested. Files in the immediate directory are for other purposes.
+											if(!unlink($_dir_file->getPathname())) // Throw exception if unable to delete.
+												throw new \exception(sprintf(__('Unable to wipe HTMLC file: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
+											else $counter++; // Increment counter for each file we purge.
+
+										else if($_dir_file->isDir()) // Directories are last in the iteration.
+											if(!rmdir($_dir_file->getPathname())) // Throw exception if unable to delete.
+												throw new \exception(sprintf(__('Unable to wipe HTMLC dir: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
+									}
+							unset($_cache_dir, $_dir_file); // Just a little housekeeping.
+
+							return apply_filters(__METHOD__, $counter, get_defined_vars());
+						}
+
 					public function clear_cache($manually = FALSE)
 						{
 							$counter = 0; // Initialize.
 
+							$counter += $this->clear_htmlc_cache($manually);
+
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
-							$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
-							if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
-								{ // Multisite w/ sub-directories; need a valid sub-directory token.
-
-									$base = '/'; // Initial default value.
-									if(defined('PATH_CURRENT_SITE')) $base = PATH_CURRENT_SITE;
-									else if(!empty($GLOBALS['base'])) $base = $GLOBALS['base'];
-
-									$uri_minus_base = // Supports `/sub-dir/child-blog-sub-dir/` also.
-										preg_replace('/^'.preg_quote($base, '/').'/', '', $_SERVER['REQUEST_URI']);
-
-									list($host_dir_token) = explode('/', trim($uri_minus_base, '/'));
-									$host_dir_token = (isset($host_dir_token[0])) ? '/'.$host_dir_token.'/' : '/';
-
-									if($host_dir_token !== '/' // Perhaps NOT the main site?
-									   && (!is_file($cache_dir.'/qc-blog-paths') // NOT a read/valid blog path?
-									       || !in_array($host_dir_token, unserialize(file_get_contents($cache_dir.'/qc-blog-paths')), TRUE))
-									) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
-								}
-							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
-							$url                          = 'http://'.$_SERVER['HTTP_HOST'].$host_dir_token;
+							$url                          = 'http://'.$_SERVER['HTTP_HOST'].$this->host_dir_token();
 							$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($url, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 							$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all paths; and all possible variations.
 							                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
@@ -639,6 +687,42 @@ namespace quick_cache // Root namespace.
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					public function clear_htmlc_cache($manually = FALSE)
+						{
+							$counter = 0; // Initialize.
+
+							$host_token = $this->host_token(TRUE);
+							if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
+								$host_dir_token = ''; // Not necessary in this case.
+
+							$cache_dir_public  = ABSPATH.$this->options['htmlc_cache_dir_public'].$host_dir_token.'/'.$host_token;
+							$cache_dir_private = ABSPATH.$this->options['htmlc_cache_dir_private'].$host_dir_token.'/'.$host_token;
+							if(!is_dir($cache_dir_public) && !is_dir($cache_dir_private))
+								return $counter; // Nothing to do in this case.
+
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
+							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
+
+							/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
+							foreach(array($cache_dir_public, $cache_dir_private) as $_cache_dir) if(is_dir($_cache_dir))
+								foreach($this->dir_regex_iteration($_cache_dir, '/.+/') as $_dir_file)
+									{
+										if(($_dir_file->isFile() || $_dir_file->isLink()) && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
+											// Don't delete files in the immediate directory; e.g. `.htaccess`, or anything else that's special.
+											// Actual `checksum` cache files are nested. Files in the immediate directory are for other purposes.
+											if(!unlink($_dir_file->getPathname())) // Throw exception if unable to delete.
+												throw new \exception(sprintf(__('Unable to clear HTMLC file: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
+											else $counter++; // Increment counter for each file we purge.
+
+										else if($_dir_file->isDir()) // Directories are last in the iteration.
+											if(!rmdir($_dir_file->getPathname())) // Throw exception if unable to delete.
+												throw new \exception(sprintf(__('Unable to clear HTMLC dir: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
+									}
+							unset($_cache_dir, $_dir_file); // Just a little housekeeping.
+
+							return apply_filters(__METHOD__, $counter, get_defined_vars());
+						}
+
 					public function purge_cache() // i.e. the Quick Cache garbage collector.
 						{
 							$counter = 0; // Initialize.
@@ -647,7 +731,7 @@ namespace quick_cache // Root namespace.
 							$max_age   = strtotime('-'.$this->options['cache_max_age']);
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
-							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation
+							// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 							@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
@@ -1061,14 +1145,20 @@ namespace quick_cache // Root namespace.
 										case 'exclude_refs': // Converts to regex (case sensitive).
 										case 'exclude_agents': // Converts to regex (case insensitive).
 
+										case 'htmlc_css_exclusions': // Converts to regex (case insensitive).
+										case 'htmlc_js_exclusions': // Converts to regex (case insensitive).
+
 												if(($_values = preg_split('/['."\r\n".']+/', $_value, NULL, PREG_SPLIT_NO_EMPTY)))
-													$_value = '/(?:'.implode('|', array_map(function ($string)
-															{
-																$string = preg_quote($string, '/'); // Escape.
-																return preg_replace('/\\\\\*/', '.*?', $string); // Wildcards.
+													{
+														$_value = '/(?:'.implode('|', array_map(function ($string)
+																{
+																	$string = preg_quote($string, '/'); // Escape.
+																	return preg_replace('/\\\\\*/', '.*?', $string); // Wildcards.
 
-															}, $_values)).')/'.(($_option === 'exclude_agents') ? 'i' : '');
-
+																}, $_values)).')/';
+														if(in_array($_option, array('exclude_agents', 'htmlc_css_exclusions', 'htmlc_js_exclusions'), TRUE))
+															$_value .= 'i'; // These regex patterns are case insensitive.
+													}
 												$_value = "'".$this->esc_sq($_value)."'";
 
 												break; // Break switch handler.
@@ -1275,7 +1365,39 @@ namespace quick_cache // Root namespace.
 							if(!($flags & $this::CACHE_PATH_NO_EXT))
 								$cache_path .= '.html';
 
-							return $cache_path;
+							return $cache_path; // Do not filter; exists in advanced-cache too.
+						}
+
+					public function host_token($dashify = FALSE)
+						{
+							$host = strtolower($_SERVER['HTTP_HOST']);
+							return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host), '-') : $host;
+						}
+
+					public function host_dir_token($dashify = FALSE)
+						{
+							$cache_dir      = ABSPATH.$this->options['cache_dir'];
+							$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
+
+							if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
+								{ // Multisite w/ sub-directories; need a valid sub-directory token.
+
+									$base = '/'; // Initial default value.
+									if(defined('PATH_CURRENT_SITE')) $base = PATH_CURRENT_SITE;
+									else if(!empty($GLOBALS['base'])) $base = $GLOBALS['base'];
+
+									$uri_minus_base = // Supports `/sub-dir/child-blog-sub-dir/` also.
+										preg_replace('/^'.preg_quote($base, '/').'/', '', $_SERVER['REQUEST_URI']);
+
+									list($host_dir_token) = explode('/', trim($uri_minus_base, '/'));
+									$host_dir_token = (isset($host_dir_token[0])) ? '/'.$host_dir_token.'/' : '/';
+
+									if($host_dir_token !== '/' // Perhaps NOT the main site?
+									   && (!is_file($cache_dir.'/qc-blog-paths') // NOT a read/valid blog path?
+									       || !in_array($host_dir_token, unserialize(file_get_contents($cache_dir.'/qc-blog-paths')), TRUE))
+									) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
+								}
+							return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host_dir_token), '-') : $host_dir_token;
 						}
 
 					public function dir_regex_iteration($dir, $regex)

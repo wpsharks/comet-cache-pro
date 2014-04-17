@@ -25,6 +25,7 @@ namespace quick_cache // Root namespace.
 		if(!defined('QUICK_CACHE_ENABLE')) define('QUICK_CACHE_ENABLE', '%%QUICK_CACHE_ENABLE%%');
 		if(!defined('QUICK_CACHE_DEBUGGING_ENABLE')) define('QUICK_CACHE_DEBUGGING_ENABLE', '%%QUICK_CACHE_DEBUGGING_ENABLE%%');
 		if(!defined('QUICK_CACHE_ALLOW_BROWSER_CACHE')) define('QUICK_CACHE_ALLOW_BROWSER_CACHE', '%%QUICK_CACHE_ALLOW_BROWSER_CACHE%%');
+		if(!defined('QUICK_CACHE_CACHE_404_REQUESTS')) define('QUICK_CACHE_CACHE_404_REQUESTS', '%%QUICK_CACHE_CACHE_404_REQUESTS%%');
 
 		/*
 		 * Cache directory. Max age; e.g. `7 days` — anything compatible w/ `strtotime()`.
@@ -52,6 +53,31 @@ namespace quick_cache // Root namespace.
 		if(!defined('QUICK_CACHE_VERSION_SALT')) define('QUICK_CACHE_VERSION_SALT', '%%QUICK_CACHE_VERSION_SALT%%');
 
 		/*
+		 * A unique filename for the special 404 Cache File (used when 404 caching is enabled).
+		 */
+		if(!defined('QUICK_CACHE_404_CACHE_FILENAME')) define('QUICK_CACHE_404_CACHE_FILENAME', '----404----');
+
+		/*
+		 * Configuration for the HTML Compressor (if enabled).
+		 */
+		if(!defined('QUICK_CACHE_HTMLC_ENABLE')) define('QUICK_CACHE_HTMLC_ENABLE', '%%QUICK_CACHE_HTMLC_ENABLE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_CSS_EXCLUSIONS%%');
+		if(!defined('QUICK_CACHE_HTMLC_JS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_JS_EXCLUSIONS%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME')) define('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC%%');
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_JS_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE%%');
+
+		/*
 		 * The heart of Quick Cache.
 		 */
 
@@ -64,6 +90,7 @@ namespace quick_cache // Root namespace.
 			public $version_salt = ''; // Calculated version salt; set by site configuration data.
 			public $cache_path = ''; // Calculated cache path; absolute relative (no leading/trailing slashes).
 			public $cache_file = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
+			public $cache_file_404 = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
 			public $salt_location = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
 			public $text_domain = ''; // Defined by class constructor; this is for translations.
 			public $postload = array(); // Off by default; just an empty array.
@@ -173,11 +200,12 @@ namespace quick_cache // Root namespace.
 					if(QUICK_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER']))
 						if(preg_match(QUICK_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) return;
 
-					$this->protocol      = $this->is_ssl() ? 'https://' : 'http://';
-					$this->version_salt  = $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
-					$this->cache_path    = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
-					$this->cache_file    = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
-					$this->salt_location = ltrim($this->version_salt.' '.$this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+					$this->protocol       = $this->is_ssl() ? 'https://' : 'http://';
+					$this->version_salt   = $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
+					$this->cache_path     = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
+					$this->cache_file     = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
+					$this->cache_file_404 = QUICK_CACHE_DIR.'/'.$this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].'/'.QUICK_CACHE_404_CACHE_FILENAME);
+					$this->salt_location  = ltrim($this->version_salt.' '.$this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 					if(QUICK_CACHE_WHEN_LOGGED_IN === 'postload' && $this->is_like_user_logged_in())
 						{
@@ -276,8 +304,15 @@ namespace quick_cache // Root namespace.
 					if(function_exists('zlib_get_coding_type') && zlib_get_coding_type() && (!($zlib_oc = ini_get('zlib.output_compression')) || !preg_match('/^(?:1|on|yes|true)$/i', $zlib_oc)))
 						throw new \exception(__('Unable to cache already-compressed output. Please use `mod_deflate` w/ Apache; or use `zlib.output_compression` in your `php.ini` file. Quick Cache is NOT compatible with `ob_gzhandler()` and others like this.', $this->text_domain));
 
-					if(function_exists('is_maintenance') && is_maintenance()) return $buffer; # http://wordpress.org/extend/plugins/maintenance-mode
-					if(function_exists('did_action') && did_action('wm_head')) return $buffer; # http://wordpress.org/extend/plugins/wp-maintenance-mode
+					$is_404 = (function_exists('is_404') && is_404());
+					if($is_404 && !QUICK_CACHE_CACHE_404_REQUESTS)
+						return $buffer; // Not caching 404 errors.
+
+					if(function_exists('is_maintenance') && is_maintenance())
+						return $buffer; // <http://wordpress.org/extend/plugins/maintenance-mode>
+
+					if(function_exists('did_action') && did_action('wm_head'))
+						return $buffer; // <http://wordpress.org/extend/plugins/wp-maintenance-mode>
 
 					$buffer        = trim($buffer); // Trim buffer.
 					$cache         = $buffer; // Initialize cache value.
@@ -290,44 +325,62 @@ namespace quick_cache // Root namespace.
 					if(strpos($buffer, '<body id="error-page">') !== FALSE)
 						return $buffer; // Don't cache WP errors.
 
-					foreach($headers as $_header) // Loop headers.
+					foreach($headers as $_header)
 						{
-							if(preg_match('/^(?:Retry\-After\:|Status\:\s+[^2]|HTTP\/1\.[01]\s+[^2])/i', $_header))
-								return $buffer; // Don't cache errors (anything that's NOT a 2xx status).
-							if(stripos($_header, 'Content-Type:') === 0) $content_type = $_header; // Last one.
+							if(stripos($_header, 'Content-Type:') === 0)
+								$content_type = $_header; // Last one.
+							/*
+							 * A Retry-After header indicates the site is temporarily unavailable.
+							 *    i.e. That the site is down; or is in maintenance mode.
+							 *    I've seen maintenance mode plugins for WP set this.
+							 *
+							 * A Status header indicates that a plugin may have set a particular HTTP status code.
+							 *    While WP itself no longer sends this, it's good to check for plugins that do.
+							 * ~ NOTE: We should request that the WP core function `status_header()` start sending this.
+							 *
+							 * An HTTP status code set by WP core function `status_header()`.
+							 * ~ NOTE: at this time the `headers_list()` function does NOT include this header unfortunately.
+							 *    Therefore, the routine below which looks for this header will NOT find it under any circumstance.
+							 *    Tested and confirmed. See also: <http://www.php.net/manual/en/function.headers-list.php>
+							 *    That said, I think we should leave it here in case a future version of PHP corrects this behavior.
+							 */
+							else if(preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+\.[0-9]+\s+(?P<http_status>[0-9]+))/i', $_header, $_m))
+								if(!empty($_m['retry']) || (!empty($_m['status']) && $_m['status'][0] !== '2' && $_m['status'] !== '404')
+								   || (!empty($_m['http_status']) && $_m['http_status'][0] !== '2' && $_m['http_status'] !== '404')
+								) return $buffer; // Don't cache (anything that's NOT a 2xx or 404 status).
 						}
 					unset($_header); // Just a little houskeeping.
 
-					if($content_type) // If we found a Content-Type; make sure it's XML/HTML code.
-						if(!preg_match('/xhtml|html|xml|'.preg_quote(__NAMESPACE__, '/').'/i', $content_type)) return $buffer;
+					if($content_type && !preg_match('/xhtml|html|xml|'.preg_quote(__NAMESPACE__, '/').'/i', $content_type))
+						return $buffer; // Don't cache anything that is NOT XML/HTML code.
 
-					// Caching occurs here; we're good-to-go now :-)
-
+					# Caching occurs here; we're good-to-go now :-)
 					/*
-					 * @TODO @raamdev ... If we can find a way to reduce the number of directory checks here,
-					 *    it could really help to speed QC up even further. There are a number of function calls below
-					 *    that I'd really like to work on reducing. Some of these are intended to make QC as friendly to a site owner as possible.
-					 *    However, in doing so we add a bit of overhead here that's normally not necessary when a site owner has things up and running properly.
-					 *
-					 * i.e. look at the number of calls to `is_dir()` below.
-					 * NOTE: Some of the repeated calls below are intended to check if the directory exists after we create one that's missing.
-					 *    Still, there is room for some further optimization here.
-					 *
-					 * It's not a huge deal... since this is writing to the cache. Writes occur left often that reads do of course.
-					 *    Still.. I guess if we can improve this it would be good to do :-)
+					 * @raamdev ... I reviewed this section again and optimized it a bit further.
+					 *    I now avoid repeated calls to `is_dir() && is_writable()` when it's not necessary.
+					 *    This should speed things up a bit further. What I had before was a mess. Sorry :-)
 					 */
+					if(!is_dir(QUICK_CACHE_DIR) && mkdir(QUICK_CACHE_DIR, 0775, TRUE) && !is_file(QUICK_CACHE_DIR.'/.htaccess'))
+						file_put_contents(QUICK_CACHE_DIR.'/.htaccess', $this->htaccess_deny); // We know it's writable here.
 
-					if(!is_dir(QUICK_CACHE_DIR) && mkdir(QUICK_CACHE_DIR, 0775, TRUE))
-						{
-							if(is_writable(QUICK_CACHE_DIR) && !is_file(QUICK_CACHE_DIR.'/.htaccess'))
-								file_put_contents(QUICK_CACHE_DIR.'/.htaccess', $this->htaccess_deny);
-						}
-					if(!is_dir(QUICK_CACHE_DIR) || !is_writable(QUICK_CACHE_DIR)) // Must have this directory.
-						throw new \exception(sprintf(__('Cache directory not writable. Quick Cache needs this directory please: `%1$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', $this->text_domain), QUICK_CACHE_DIR));
-
-					if(!is_dir($cache_file_dir = dirname($this->cache_file))) mkdir($cache_file_dir, 0775, TRUE);
-					if(!is_dir($cache_file_dir) || !is_writable($cache_file_dir)) // Must have this sub-directory (or sub-directories; plural).
+					if(!is_dir($cache_file_dir = dirname($this->cache_file))) $cache_file_dir_writable = mkdir($cache_file_dir, 0775, TRUE);
+					if(empty($cache_file_dir_writable) && !is_writable($cache_file_dir)) // Only check if it's writable, if we didn't just successfully create it.
 						throw new \exception(sprintf(__('Cache directory not writable. Quick Cache needs this directory please: `%1$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', $this->text_domain), $cache_file_dir));
+					/*
+					 * Is this a 404 and the 404 cache file already exists?
+					 * Then lets symlink this 404 cache file to the existing cache file.
+					 * and return the cache; with possible debug information also.
+					 *
+					 * @raamdev I bumped this up here so it's BEFORE possible HTML compression below.
+					 *    i.e. There is no need to compress the HTML if this is a 404 error.
+					 */
+					if($is_404 && is_file($this->cache_file_404))
+						{
+							symlink($this->cache_file_404, $this->cache_file);
+							return $cache; // Nothing more to do here.
+						}
+					$cache = $this->maybe_compress_html($cache); // Possible HTML compression.
+					// @raamdev I suggest this remain a Pro feature; i.e. NOT integrated into the lite version.
 
 					if(QUICK_CACHE_DEBUGGING_ENABLE) // Debugging messages enabled; or no?
 						{
@@ -337,11 +390,63 @@ namespace quick_cache // Root namespace.
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This Quick Cache file will auto-expire (and be rebuilt) on: %1$s (based on your configured expiration time).', $this->text_domain), date('M jS, Y @ g:i a T', strtotime('+'.QUICK_CACHE_MAX_AGE)))).' -->';
 						}
 					$cache_file_tmp = $this->cache_file.'.'.uniqid('', TRUE).'.tmp'; // Cache creation is atomic; e.g. tmp file w/ rename.
-					if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file))
+
+					/*
+					 * This is NOT a 404, or it is 404 and the 404 cache file doesn't yet exist (so we need to create it).
+					 *    @raamdev All of this looks awesome to me! Nice work :-) I like that you're creating and then symlinking here.
+					 */
+					if($is_404) // This is a 404; let's create 404 cache file and symlink to it.
+						{ // @raamdev Removing the `is_file()` check here. We know already that `$this->cache_file_404` does not exist from the previous check above.
+							if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file_404))
+								{
+									symlink($this->cache_file_404, $this->cache_file);
+									return $cache; // Return the newly built cache; with possible debug information also.
+								}
+						} // NOT a 404; let's write a new cache file.
+					else if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file))
 						return $cache; // Return the newly built cache; with possible debug information also.
 
 					@unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
 					throw new \exception(sprintf(__('Quick Cache: failed to write cache file for: `%1$s`; possible permissions issue (or race condition), please check your cache directory: `%2$s`.', $this->text_domain), $_SERVER['REQUEST_URI'], QUICK_CACHE_DIR));
+				}
+
+			public function maybe_compress_html($cache) // <https://github.com/WebSharks/HTML-Compressor>
+				{
+					if(!QUICK_CACHE_HTMLC_ENABLE || !class_exists('\\'.__NAMESPACE__.'\\plugin'))
+						return $cache; // Nothing to do here.
+
+					require_once dirname(plugin()->file).'/includes/html-compressor.phar';
+
+					if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
+						$host_dir_token = ''; // Not necessary.
+					// Deals with multisite sub-directory installs.
+					// e.g. `wp-content/htmlc/cache/public/www-example-com` (main site)
+					// e.g. `wp-content/htmlc/cache/public/sub/www-example-com`
+
+					$html_compressor_options = array(
+						'benchmark'                      => QUICK_CACHE_DEBUGGING_ENABLE,
+						'product_title'                  => __('Quick Cache HTML Compressor', $this->text_domain),
+
+						'regex_css_exclusions'           => QUICK_CACHE_HTMLC_CSS_EXCLUSIONS, // Regex.
+						'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS, // Regex.
+
+						'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
+						'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token,
+						'cache_dir_url_public'           => site_url('/'.str_replace(ABSPATH, '', QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token)),
+						'cache_dir_private'              => QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE,
+
+						'compress_combine_head_body_css' => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
+						'compress_combine_head_js'       => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
+						'compress_combine_footer_js'     => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS,
+						'compress_inline_js_code'        => QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE,
+						'compress_css_code'              => QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE,
+						'compress_js_code'               => QUICK_CACHE_HTMLC_COMPRESS_JS_CODE,
+						'compress_html_code'             => QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE,
+					);
+					$html_compressor         = new \websharks\html_compressor\core($html_compressor_options);
+					$compressed_cache        = $html_compressor->compress($cache);
+
+					return $compressed_cache;
 				}
 
 			public function dir_regex_iteration($dir, $regex)
@@ -422,6 +527,37 @@ namespace quick_cache // Root namespace.
 						$cache_path .= '.html';
 
 					return $cache_path;
+				}
+
+			public function host_token($dashify = FALSE)
+				{
+					$host = strtolower($_SERVER['HTTP_HOST']);
+					return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host), '-') : $host;
+				}
+
+			public function host_dir_token($dashify = FALSE)
+				{
+					$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
+
+					if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
+						{ // Multisite w/ sub-directories; need a valid sub-directory token.
+
+							$base = '/'; // Initial default value.
+							if(defined('PATH_CURRENT_SITE')) $base = PATH_CURRENT_SITE;
+							else if(!empty($GLOBALS['base'])) $base = $GLOBALS['base'];
+
+							$uri_minus_base = // Supports `/sub-dir/child-blog-sub-dir/` also.
+								preg_replace('/^'.preg_quote($base, '/').'/', '', $_SERVER['REQUEST_URI']);
+
+							list($host_dir_token) = explode('/', trim($uri_minus_base, '/'));
+							$host_dir_token = (isset($host_dir_token[0])) ? '/'.$host_dir_token.'/' : '/';
+
+							if($host_dir_token !== '/' // Perhaps NOT the main site?
+							   && (!is_file(QUICK_CACHE_DIR.'/qc-blog-paths') // NOT a read/valid blog path?
+							       || !in_array($host_dir_token, unserialize(file_get_contents(QUICK_CACHE_DIR.'/qc-blog-paths')), TRUE))
+							) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
+						}
+					return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host_dir_token), '-') : $host_dir_token;
 				}
 
 			public function is_post_put_del_request()
