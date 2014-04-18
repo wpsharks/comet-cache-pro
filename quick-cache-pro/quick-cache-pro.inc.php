@@ -77,6 +77,7 @@ namespace quick_cache // Root namespace.
 							                                'htmlc_compress_combine_head_body_css' => '1', // `0|1`.
 							                                'htmlc_compress_combine_head_js'       => '1', // `0|1`.
 							                                'htmlc_compress_combine_footer_js'     => '1', // `0|1`.
+							                                'htmlc_compress_combine_remote_css_js' => '1', // `0|1`.
 							                                'htmlc_compress_inline_js_code'        => '1', // `0|1`.
 							                                'htmlc_compress_css_code'              => '1', // `0|1`.
 							                                'htmlc_compress_js_code'               => '1', // `0|1`.

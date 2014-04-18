@@ -402,6 +402,10 @@ namespace quick_cache // Root namespace.
 					echo '               <option value="1"'.selected(plugin()->options['htmlc_compress_combine_footer_js'], '1', FALSE).'>'.__('Yes, combine JS footer scripts into fewer files.', plugin()->text_domain).'</option>'."\n";
 					echo '               <option value="0"'.selected(plugin()->options['htmlc_compress_combine_footer_js'], '0', FALSE).'>'.__('No, do not combine JS footer scripts into fewer files.', plugin()->text_domain).'</option>'."\n";
 					echo '            </select></p>'."\n";
+					echo '         <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][htmlc_compress_combine_remote_css_js]" autocomplete="off">'."\n";
+					echo '               <option value="1"'.selected(plugin()->options['htmlc_compress_combine_remote_css_js'], '1', FALSE).'>'.__('Yes, combine CSS/JS from remote resources too.', plugin()->text_domain).'</option>'."\n";
+					echo '               <option value="0"'.selected(plugin()->options['htmlc_compress_combine_remote_css_js'], '0', FALSE).'>'.__('No, do not combine CSS/JS from remote resources.', plugin()->text_domain).'</option>'."\n";
+					echo '            </select></p>'."\n";
 					echo '         <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][htmlc_compress_js_code]" autocomplete="off">'."\n";
 					echo '               <option value="1"'.selected(plugin()->options['htmlc_compress_js_code'], '1', FALSE).'>'.__('Yes, compress the code in any unified JS files.', plugin()->text_domain).'</option>'."\n";
 					echo '               <option value="0"'.selected(plugin()->options['htmlc_compress_js_code'], '0', FALSE).'>'.__('No, do not compress the code in any unified JS files.', plugin()->text_domain).'</option>'."\n";
