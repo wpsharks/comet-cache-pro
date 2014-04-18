@@ -416,7 +416,7 @@ namespace quick_cache // Root namespace.
 					if(!QUICK_CACHE_HTMLC_ENABLE || !class_exists('\\'.__NAMESPACE__.'\\plugin'))
 						return $cache; // Nothing to do here.
 
-					require_once dirname(plugin()->file).'/includes/html-compressor.phar';
+					require_once dirname(plugin()->file).'/includes/html-compressor/stub.php';
 
 					if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
 						$host_dir_token = ''; // Not necessary.
