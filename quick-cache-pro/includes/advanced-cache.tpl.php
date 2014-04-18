@@ -355,12 +355,8 @@ namespace quick_cache // Root namespace.
 					if($content_type && !preg_match('/xhtml|html|xml|'.preg_quote(__NAMESPACE__, '/').'/i', $content_type))
 						return $buffer; // Don't cache anything that is NOT XML/HTML code.
 
-					# Caching occurs here; we're good-to-go now :-)
-					/*
-					 * @raamdev ... I reviewed this section again and optimized it a bit further.
-					 *    I now avoid repeated calls to `is_dir() && is_writable()` when it's not necessary.
-					 *    This should speed things up a bit further. What I had before was a mess. Sorry :-)
-					 */
+					// Caching occurs here; we're good-to-go now :-)
+
 					if(!is_dir(QUICK_CACHE_DIR) && mkdir(QUICK_CACHE_DIR, 0775, TRUE) && !is_file(QUICK_CACHE_DIR.'/.htaccess'))
 						file_put_contents(QUICK_CACHE_DIR.'/.htaccess', $this->htaccess_deny); // We know it's writable here.
 
@@ -371,17 +367,14 @@ namespace quick_cache // Root namespace.
 					 * Is this a 404 and the 404 cache file already exists?
 					 * Then lets symlink this 404 cache file to the existing cache file.
 					 * and return the cache; with possible debug information also.
-					 *
-					 * @raamdev I bumped this up here so it's BEFORE possible HTML compression below.
-					 *    i.e. There is no need to compress the HTML if this is a 404 error.
 					 */
 					if($is_404 && is_file($this->cache_file_404))
 						{
 							symlink($this->cache_file_404, $this->cache_file);
 							return $cache; // Nothing more to do here.
 						}
+
 					$cache = $this->maybe_compress_html($cache); // Possible HTML compression.
-					// @raamdev I suggest this remain a Pro feature; i.e. NOT integrated into the lite version.
 
 					if(QUICK_CACHE_DEBUGGING_ENABLE) // Debugging messages enabled; or no?
 						{
@@ -394,10 +387,9 @@ namespace quick_cache // Root namespace.
 
 					/*
 					 * This is NOT a 404, or it is 404 and the 404 cache file doesn't yet exist (so we need to create it).
-					 *    @raamdev All of this looks awesome to me! Nice work :-) I like that you're creating and then symlinking here.
 					 */
 					if($is_404) // This is a 404; let's create 404 cache file and symlink to it.
-						{ // @raamdev Removing the `is_file()` check here. We know already that `$this->cache_file_404` does not exist from the previous check above.
+						{
 							if(file_put_contents($cache_file_tmp, serialize($headers).'<!--headers-->'.$cache) && rename($cache_file_tmp, $this->cache_file_404))
 								{
 									symlink($this->cache_file_404, $this->cache_file);
