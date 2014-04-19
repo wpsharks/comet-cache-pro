@@ -1,0 +1,3 @@
+
+var ApiGen = ApiGen || {};
+ApiGen.elements = [["f","__()"],["c","Exception"],["c","FilterIterator"],["c","Iterator"],["c","IteratorIterator"],["c","OuterIterator"],["f","plugin()"],["c","quick_cache\\actions"],["c","quick_cache\\advanced_cache"],["c","quick_cache\\menu_pages"],["c","quick_cache\\plugin"],["f","quick_cache_php53_dashboard_notice()"],["c","RegexIterator"],["c","Traversable"],["c","websharks\\html_compressor\\core"],["c","websharks\\html_compressor\\js_minifier"],["c","websharks\\html_compressor\\js_minifier_comment_e"],["c","websharks\\html_compressor\\js_minifier_regex_e"],["c","websharks\\html_compressor\\js_minifier_string_e"],["f","wp_cache_postload()"]];
