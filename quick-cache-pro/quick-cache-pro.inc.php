@@ -170,6 +170,9 @@ namespace quick_cache // Root namespace.
 							add_action('delete_post', array($this, 'auto_purge_post_cache'));
 							add_action('clean_post_cache', array($this, 'auto_purge_post_cache'));
 
+							add_action('added_term_relationship', array($this, 'auto_purge_tag_archive_cache'), 10, 2);
+							add_action('deleted_term_relationships', array($this, 'auto_purge_tag_archive_cache'), 10, 2);
+
 							add_action('trackback_post', array($this, 'auto_purge_comment_post_cache'));
 							add_action('pingback_post', array($this, 'auto_purge_comment_post_cache'));
 							add_action('comment_post', array($this, 'auto_purge_comment_post_cache'));
@@ -812,7 +815,6 @@ namespace quick_cache // Root namespace.
 							$counter += $this->auto_purge_home_page_cache(); // If enabled and necessary.
 							$counter += $this->auto_purge_posts_page_cache(); // If enabled and applicable.
 							$counter += $this->auto_purge_category_archive_cache(); // If enabled and applicable.
-							$counter += $this->auto_purge_tag_archive_cache(); // If enabled and applicable.
 
 							if(!($permalink = get_permalink($id))) return $counter; // Nothing we can do.
 
@@ -946,6 +948,7 @@ namespace quick_cache // Root namespace.
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					// @TODO need to update this to be intelligent like auto_purge_tag_archive_cache()
 					public function auto_purge_category_archive_cache()
 						{
 							$counter = 0; // Initialize.
@@ -993,9 +996,26 @@ namespace quick_cache // Root namespace.
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
-					public function auto_purge_tag_archive_cache()
+					/*
+					 * See also: wp_remove_object_terms() in wp-includes/taxonomy.php
+					 * See also: wp_set_object_terms() in wp-includes/taxonomy.php
+					 */
+					public function auto_purge_tag_archive_cache( $object_id, $tt_ids )
 						{
-							$counter = 0; // Initialize.
+							$counter = 0; // Initialize
+							$terms_to_purge = array(); // Initialize
+
+							if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+								return $counter; // Nothing to do.
+
+							if(get_post_status($object_id) == 'auto-draft')
+								return $counter; // Nothing to do.
+
+							// @TODO Add option to UI to disable clearing tag cache when saving as Draft
+							// By default, clearing the tag cache when saving as Draft is enabled because
+							// the post might be going from Published -> Draft, in which case the Tag
+							// archive cache should be updated. Some site-owners might want to disable
+							// this behavior.
 
 							if(!$this->options['enable'])
 								return $counter; // Nothing to do.
@@ -1006,35 +1026,46 @@ namespace quick_cache // Root namespace.
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
-							$archive_base  = get_option('category_base');
-
-							if($archive_base === '')  // If no custom archive base is configured, we use the default
-								$archive_base = home_url('/tag/');
-
-							$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($archive_base, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
-							$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
-							                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-							                                '(?:\/index)?(?:\.|\/[^\/]+[.\/])/';
-
-							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
-								{
-									if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
-									// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
-									// Actual `http|https/...` cache files are nested. Files in the immediate directory are for other purposes.
-
-									if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
-										throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
-									$counter++; // Increment counter for each file purge.
-
-									if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
-										continue; // Stop here; we already issued a notice, or this notice is N/A.
-
-									$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-									$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-									              __('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the designated "Tag Archive" (auto-purging).', $this->text_domain);
-									update_option(__NAMESPACE__.'_notices', $_notices);
+							if( is_array( $tt_ids ) ) {
+								foreach ( $tt_ids as $term_taxonomy_id ) {
+									$terms_to_purge[] = get_term_by( 'term_taxonomy_id', (integer)$term_taxonomy_id, 'post_tag', OBJECT );
 								}
+							}
+							else {
+								$terms_to_purge[] = get_term_by( 'term_taxonomy_id', (integer)$tt_ids, 'post_tag', OBJECT );
+							}
+
+							if( empty( $terms_to_purge ) ) return $counter; // Nothing to do.
+
+							foreach( $terms_to_purge as $term ) {
+
+								$term_permalink = get_tag_link($term->term_id);
+
+								$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($term_permalink, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+								$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
+								                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
+								                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+
+								/** @var $_file \RecursiveDirectoryIterator For IDEs. */
+								foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
+									{
+										if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
+										// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
+										// Actual `http|https/...` cache files are nested. Files in the immediate directory are for other purposes.
+
+										if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
+											throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
+										$counter++; // Increment counter for each file purge.
+
+										if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
+											continue; // Stop here; we already issued a notice, or this notice is N/A.
+
+										$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
+										$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+										              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for Tag: <code>%1$s</code> (auto-purging).', $this->text_domain), $term->name);
+										update_option(__NAMESPACE__.'_notices', $_notices);
+									}
+							}
 							unset($_file, $_notices); // Just a little housekeeping.
 
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
