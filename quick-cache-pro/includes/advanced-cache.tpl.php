@@ -231,7 +231,7 @@ namespace quick_cache // Root namespace.
 								}
 							exit($cache); // Exit with cache contents.
 						}
-					else ob_start(array($this, 'output_buffer_callback_handler')); // Start output buffering.
+					else ob_start(array($this, 'output_buffer_callback_handler', 0, 0)); // Start locked output buffering.
 				}
 
 			public function maybe_invalidate_when_logged_in_postload()
@@ -287,7 +287,7 @@ namespace quick_cache // Root namespace.
 								}
 							exit($cache); // Exit with cache contents.
 						}
-					else ob_start(array($this, 'output_buffer_callback_handler')); // Start output buffering.
+					else ob_start(array($this, 'output_buffer_callback_handler', 0, 0)); // Start locked output buffering.
 				}
 
 			public function output_buffer_callback_handler($buffer)
