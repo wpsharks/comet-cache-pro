@@ -959,12 +959,12 @@ namespace quick_cache // Root namespace.
 							$archive_base  = get_option('category_base');
 
 							if($archive_base === '')  // If no custom archive base is configured, we use the default
-								$archive_base = home_url('/') . 'category/';
+								$archive_base = home_url('/category/');
 
 							$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($archive_base, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 							$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 							                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-							                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+							                                '(?:\/index)?(?:\.|\/[^\/]+[.\/])/';
 
 							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
