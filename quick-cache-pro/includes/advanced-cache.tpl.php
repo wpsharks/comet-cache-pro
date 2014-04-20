@@ -239,7 +239,7 @@ namespace quick_cache // Root namespace.
 					if(empty($_SERVER['REQUEST_URI']))
 						return $this->maybe_set_debug_info($this::NC_DEBUG_NO_SERVER_REQUEST_URI);
 
-					if(isset($_GET['qcAC']) && !$_GET['qcAC'])
+					if(isset($_GET['qcAC']) && !filter_var($_GET['qcAC'], FILTER_VALIDATE_BOOLEAN))
 						return $this->maybe_set_debug_info($this::NC_DEBUG_QCAC_GET_VAR);
 
 					if(defined('QUICK_CACHE_ALLOWED') && !QUICK_CACHE_ALLOWED)
@@ -276,7 +276,7 @@ namespace quick_cache // Root namespace.
 					if(!QUICK_CACHE_WHEN_LOGGED_IN && $this->is_like_user_logged_in())
 						return $this->maybe_set_debug_info($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
 
-					if(!QUICK_CACHE_GET_REQUESTS && $this->is_get_request_w_query() && empty($_GET['qcAC']))
+					if(!QUICK_CACHE_GET_REQUESTS && $this->is_get_request_w_query() && (!isset($_GET['qcAC']) || !filter_var($_GET['qcAC'], FILTER_VALIDATE_BOOLEAN)))
 						return $this->maybe_set_debug_info($this::NC_DEBUG_GET_REQUEST_QUERIES);
 
 					if(QUICK_CACHE_EXCLUDE_URIS && preg_match(QUICK_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI']))
@@ -445,16 +445,14 @@ namespace quick_cache // Root namespace.
 			 *    It is EXTREMEMLY important that we NOT attempt to grab any object references here.
 			 *    Anything acquired in this phase should be stored as a scalar value.
 			 *    See {@link output_buffer_callback_handler()} for further details.
-			 *
-			 * @param \WP_Query $wp_query
 			 */
-			public function wp_main_query_postload($wp_query) // Fires on `wp` action hook.
+			public function wp_main_query_postload() // Fires on `wp` action hook.
 				{
 					if($this->is_wp_loaded_query || is_admin())
 						return; // Nothing to do.
 
-					if(!($wp_query instanceof \WP_Query) || !$wp_query->is_main_query())
-						return; // Not applicable; i.e. NOT the main query.
+					if(!is_main_query())
+						return; // Not the main query.
 
 					$this->is_wp_loaded_query = TRUE;
 					$this->is_404             = is_404();
@@ -511,7 +509,7 @@ namespace quick_cache // Root namespace.
 					if(!isset($cache[0])) // Allows a `0`.
 						return FALSE; // Don't cache an empty buffer.
 
-					if(isset($_GET['qcAC']) && !$_GET['qcAC'])
+					if(isset($_GET['qcAC']) && !filter_var($_GET['qcAC'], FILTER_VALIDATE_BOOLEAN))
 						return $this->maybe_add_nc_debug_info($buffer, $this::NC_DEBUG_QCAC_GET_VAR);
 
 					if(defined('QUICK_CACHE_ALLOWED') && !QUICK_CACHE_ALLOWED)
@@ -577,7 +575,7 @@ namespace quick_cache // Root namespace.
 						{
 							$total_time = number_format(microtime(TRUE) - $this->timer, 5, '.', '');
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache file built for (%1$s%2$s) in %3$s seconds, on: %4$s.', $this->text_domain),
-							                                                $this->salt_location, (($this->user_token) ? '; '.sprintf(__('user token: %1$s', $this->text_domain), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+							                                                ($this->is_404) ? '404 [error document]' : $this->salt_location, (($this->user_token) ? '; '.sprintf(__('user token: %1$s', $this->text_domain), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This Quick Cache file will auto-expire (and be rebuilt) on: %1$s (based on your configured expiration time).', $this->text_domain), date('M jS, Y @ g:i a T', strtotime('+'.QUICK_CACHE_MAX_AGE)))).' -->';
 						}
 					$cache_file_tmp = $this->cache_file.'.'.uniqid('', TRUE).'.tmp'; // Cache creation is atomic; e.g. tmp file w/ rename.
@@ -764,7 +762,7 @@ namespace quick_cache // Root namespace.
 								break; // Break switch handler.
 
 						case $this::NC_DEBUG_1ST_TIME_404_SYMLINK:
-								$reason = __('because the WordPress `is_404()` Conditional Tag says the current page is a 404 error; and this is the 1st time it\'s happened on this page. Your current configuration says that 404 errors SHOULD be cached. If you reload this page (assuming you don\'t clear the cache before you do so); you should get a cached version of your 404 error document. This message occurs ONCE for each new/unique 404 error request.', $this->text_domain);
+								$reason = __('because the WordPress `is_404()` Conditional Tag says the current page is a 404 error; and this is the first time it\'s happened on this page. Your current configuration says that 404 errors SHOULD be cached, so Quick Cache built a cached symlink which points future requests for this location to your already-cached 404 error document. If you reload this page (assuming you don\'t clear the cache before you do so); you should get a cached version of your 404 error document. This message occurs ONCE for each new/unique 404 error request.', $this->text_domain);
 								break; // Break switch handler.
 
 						default: // Default case handler.
@@ -939,7 +937,7 @@ namespace quick_cache // Root namespace.
 					static $is; // Cache.
 					if(isset($is)) return $is;
 
-					if(!empty($_GET) || (isset($_SERVER['QUERY_STRING']) && strlen($_SERVER['QUERY_STRING'])))
+					if(!empty($_GET) || isset($_SERVER['QUERY_STRING'][0]))
 						if(!(isset($_GET['qcABC']) && count($_GET) === 1)) // Ignore this special case.
 							return ($is = TRUE);
 
