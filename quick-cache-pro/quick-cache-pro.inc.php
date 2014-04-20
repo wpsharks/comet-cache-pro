@@ -29,7 +29,7 @@ namespace quick_cache // Root namespace.
 							add_action('after_setup_theme', array($this, 'setup'));
 							register_activation_hook($this->file, array($this, 'activate'));
 							register_deactivation_hook($this->file, array($this, 'deactivate'));
-							add_filter('plugin_action_links_' . str_ireplace('.inc', '', plugin_basename(__FILE__)), array($this, 'add_settings_link'));
+							add_filter('plugin_action_links_'.str_ireplace('.inc', '', plugin_basename(__FILE__)), array($this, 'add_settings_link'));
 						}
 
 					public function setup()
@@ -1301,10 +1301,11 @@ namespace quick_cache // Root namespace.
 							return $value; // Pass through untouched (always).
 						}
 
-					public function add_settings_link( $links ) {
-						$links[] = '<a href="options-general.php?page=quick_cache">Settings</a>';
-						return $links;
-					}
+					public function add_settings_link($links)
+						{
+							$links[] = '<a href="options-general.php?page=quick_cache">Settings</a>';
+							return $links;
+						}
 
 					/*
 					 * See also: `advanced-cache.tpl.php` duplicate.
@@ -1377,12 +1378,22 @@ namespace quick_cache // Root namespace.
 
 					public function host_token($dashify = FALSE)
 						{
-							$host = strtolower($_SERVER['HTTP_HOST']);
-							return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host), '-') : $host;
+							$dashify = (integer)$dashify;
+							static $tokens = array(); // Static cache.
+							if(isset($tokens[$dashify])) return $tokens[$dashify];
+
+							$host        = strtolower($_SERVER['HTTP_HOST']);
+							$token_value = ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host), '-') : $host;
+
+							return ($tokens[$dashify] = $token_value);
 						}
 
 					public function host_dir_token($dashify = FALSE)
 						{
+							$dashify = (integer)$dashify;
+							static $tokens = array(); // Static cache.
+							if(isset($tokens[$dashify])) return $tokens[$dashify];
+
 							$cache_dir      = ABSPATH.$this->options['cache_dir'];
 							$host_dir_token = '/'; // Assume NOT multisite; or running it's own domain.
 
@@ -1404,7 +1415,9 @@ namespace quick_cache // Root namespace.
 									       || !in_array($host_dir_token, unserialize(file_get_contents($cache_dir.'/qc-blog-paths')), TRUE))
 									) $host_dir_token = '/'; // Main site; e.g. this is NOT a real/valid child blog path.
 								}
-							return ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host_dir_token), '-') : $host_dir_token;
+							$token_value = ($dashify) ? trim(preg_replace('/[^a-z0-9\/]/i', '-', $host_dir_token), '-') : $host_dir_token;
+
+							return ($tokens[$dashify] = $token_value);
 						}
 
 					public function dir_regex_iteration($dir, $regex)
