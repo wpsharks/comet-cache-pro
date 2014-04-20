@@ -435,7 +435,7 @@ namespace quick_cache // Root namespace.
 					$_this = $this; // Need this reference in the closure below (PHP v.5.3 compat).
 					add_action('shutdown', function () use ($_this) // Debug info in the shutdown phase.
 						{
-							if($_this->is_cacheable_content_type() && (is_404() || is_front_page() || is_home() || is_singular() || is_archive() || is_post_type_archive() || is_tax() || is_search() || is_feed()))
+							if($_this->has_a_cacheable_content_type() && (is_404() || is_front_page() || is_home() || is_singular() || is_archive() || is_post_type_archive() || is_tax() || is_search() || is_feed()))
 								echo (string)$_this->maybe_add_nc_debug_info(NULL, $_this->postload['with_debug_info']['reason_code'], $_this->postload['with_debug_info']['reason']);
 						}, -(PHP_INT_MAX - 10));
 				}
@@ -466,17 +466,25 @@ namespace quick_cache // Root namespace.
 			/**
 			 * @raamdev This turns off `E_NOTICE` level errors in the shutdown phase to prevent the WP core function
 			 *    {@link wp_ob_end_flush_all()} from triggering `WP_DEBUG` notices in the shutdown phase.
-			 *    Ideally we would not do this. However, there is little choice.
 			 *
-			 * @note This is what makes it possible for Quick Cache to use a locked output buffer.
+			 *    Ideally we would NOT do this. However, there is little choice.
+			 *    This is what makes it possible for Quick Cache to use a locked output buffer.
 			 *    e.g. `ob_start(handler, 0, 0)`. Having a locked output buffer makes Quick Cache more dependable.
 			 *    In cases where there are theme/plugin conflicts, more of these should be reported to us now; i.e. site owners may
 			 *    report `WP_DEBUG` notices regarding failed attempts to close/clean/flush an out-of-order output handler.
 			 *    These can be caused by a rogue theme/plugin that is doing things w/ buffers that it should not be doing.
 			 *
-			 * @note The disabling of `E_NOTICE` here only impacts the PHP shutdown phase.
+			 *    The disabling of `E_NOTICE` here only impacts the PHP shutdown phase.
 			 *    i.e. Anything registered in PHP via {@link register_shutdown_function()}.
 			 *    e.g. {@link wp_ob_end_flush_all()} runs in the shutdown phase.
+			 *
+			 *    This will NOT prevent `E_NOTICE` level errors from being triggered when a
+			 *    theme/plugin does something out-of-order with an output buffer. Want WANT to see those!
+			 *
+			 * @IMPORTANT I suspect we will see some reports of this suddenly showing up on sites where a conflict currently exists.
+			 *    Of course, that will be a GOOD thing in most cases, because QC will have not been working properly for sites with conflicts anyway.
+			 *    Having said that, a sudden change like this could bring a site down completely, instead of just serving a corrupted cache every once in awhile.
+			 *    I'm not overly concerned about it though, because they're just notices; a site running in `WP_DEBUG` mode is usually not a live site anyway.
 			 *
 			 * @see https://github.com/WebSharks/Quick-Cache/issues/97
 			 */
@@ -545,10 +553,10 @@ namespace quick_cache // Root namespace.
 					if(strpos($cache, '<body id="error-page">') !== FALSE)
 						return $this->maybe_add_nc_debug_info($buffer, $this::NC_DEBUG_WP_ERROR_PAGE);
 
-					if(!$this->is_cacheable_content_type())
+					if(!$this->has_a_cacheable_content_type())
 						return $this->maybe_add_nc_debug_info($buffer, $this::NC_DEBUG_UNCACHEABLE_CONTENT_TYPE);
 
-					if(!$this->is_cacheable_status())
+					if(!$this->has_a_cacheable_status())
 						return $this->maybe_add_nc_debug_info($buffer, $this::NC_DEBUG_UNCACHEABLE_STATUS);
 
 					# Cache directory checks. The cache file directory is created here if necessary.
@@ -574,6 +582,7 @@ namespace quick_cache // Root namespace.
 					if(QUICK_CACHE_DEBUGGING_ENABLE && $this->is_html_xml_doc($cache)) // Only if HTML comments are possible.
 						{
 							$total_time = number_format(microtime(TRUE) - $this->timer, 5, '.', '');
+							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache file on disk: %1$s', $this->text_domain), str_replace(ABSPATH, '', $this->is_404 ? $this->cache_file_404 : $this->cache_file))).' -->';
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache file built for (%1$s%2$s) in %3$s seconds, on: %4$s.', $this->text_domain),
 							                                                ($this->is_404) ? '404 [error document]' : $this->salt_location, (($this->user_token) ? '; '.sprintf(__('user token: %1$s', $this->text_domain), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
 							$cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This Quick Cache file will auto-expire (and be rebuilt) on: %1$s (based on your configured expiration time).', $this->text_domain), date('M jS, Y @ g:i a T', strtotime('+'.QUICK_CACHE_MAX_AGE)))).' -->';
@@ -1053,10 +1062,10 @@ namespace quick_cache // Root namespace.
 			 * @raamdev This got moved here into a new class member.
 			 *    It was previously inside {@link output_buffer_callback_handler()}.
 			 */
-			public function is_cacheable_content_type()
+			public function has_a_cacheable_content_type()
 				{
-					static $is; // Cache.
-					if(isset($is)) return $is;
+					static $has; // Cache.
+					if(isset($has)) return $has;
 
 					foreach(headers_list() as $_header)
 						if(stripos($_header, 'Content-Type:') === 0)
@@ -1064,19 +1073,19 @@ namespace quick_cache // Root namespace.
 					unset($_header); // Just a little housekeeping.
 
 					if(isset($content_type[0]) && stripos($content_type, 'html') === FALSE && stripos($content_type, 'xml') === FALSE && stripos($content_type, __NAMESPACE__) === FALSE)
-						return ($is = FALSE); // Do NOT cache data sent by scripts serving other MIME types.
+						return ($has = FALSE); // Do NOT cache data sent by scripts serving other MIME types.
 
-					return ($is = TRUE); // Assume that it is by default, we are within WP after all.
+					return ($has = TRUE); // Assume that it is by default, we are within WP after all.
 				}
 
 			/*
 			 * @raamdev This got moved here into a new class member.
 			 *    It was previously inside {@link output_buffer_callback_handler()}.
 			 */
-			public function is_cacheable_status()
+			public function has_a_cacheable_status()
 				{
-					static $is; // Cache.
-					if(isset($is)) return $is;
+					static $has; // Cache.
+					if(isset($has)) return $has;
 
 					/*
 					 * @raamdev PHP's `headers_list()` currently does NOT include `HTTP/` headers.
@@ -1087,10 +1096,10 @@ namespace quick_cache // Root namespace.
 						if(preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+\.[0-9]+\s+(?P<http_status>[0-9]+))/i', $_header, $_m))
 							if(!empty($_m['retry']) || (!empty($_m['status']) && $_m['status'][0] !== '2' && $_m['status'] !== '404')
 							   || (!empty($_m['http_status']) && $_m['http_status'][0] !== '2' && $_m['http_status'] !== '404')
-							) return ($is = FALSE); // Don't cache (anything that's NOT a 2xx or 404 status).
+							) return ($has = FALSE); // Don't cache (anything that's NOT a 2xx or 404 status).
 					unset($_header); // Just a little housekeeping.
 
-					return ($is = TRUE); // Assume that it is by default, we are within WP after all.
+					return ($has = TRUE); // Assume that it is by default, we are within WP after all.
 				}
 
 			public function hook_id($function)
