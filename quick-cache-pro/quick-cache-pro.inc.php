@@ -37,6 +37,9 @@ namespace quick_cache // Root namespace.
 
 							load_plugin_textdomain($this->text_domain);
 
+							$wp_content_dir_relative = // Considers custom `WP_CONTENT_DIR` locations.
+								rtrim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '/'); // No trailing slash.
+
 							$this->default_options = array( // Default options.
 							                                'version'                              => $this->version,
 
@@ -53,7 +56,7 @@ namespace quick_cache // Root namespace.
 							                                'cache_purge_tag_archive_enable'       => '1', // `0|1`.
 							                                'allow_browser_cache'                  => '0', // `0|1`.
 
-							                                'cache_dir'                            => 'wp-content/cache', // Relative to `ABSPATH`.
+							                                'cache_dir'                            => $wp_content_dir_relative.'/cache',
 							                                'cache_max_age'                        => '7 days', // `strtotime()` compatible.
 
 							                                'when_logged_in'                       => '0', // `0|1|postload`.
@@ -73,8 +76,8 @@ namespace quick_cache // Root namespace.
 							                                'htmlc_js_exclusions'                  => '.php?', // Empty string or line-delimited patterns.
 
 							                                'htmlc_cache_expiration_time'          => '14 days', // `strtotime()` compatible.
-							                                'htmlc_cache_dir_public'               => 'wp-content/htmlc/cache/public', // Relative to `ABSPATH`.
-							                                'htmlc_cache_dir_private'              => 'wp-content/htmlc/cache/private', // Relative to `ABSPATH`.
+							                                'htmlc_cache_dir_public'               => $wp_content_dir_relative.'/htmlc/cache/public',
+							                                'htmlc_cache_dir_private'              => $wp_content_dir_relative.'/htmlc/cache/private',
 
 							                                'htmlc_compress_combine_head_body_css' => '1', // `0|1`.
 							                                'htmlc_compress_combine_head_js'       => '1', // `0|1`.
@@ -87,6 +90,11 @@ namespace quick_cache // Root namespace.
 
 							                                'change_notifications_enable'          => '1', // `0|1`.
 							                                'uninstall_on_deactivation'            => '0', // `0|1`.
+
+							                                'auto_cache_enable'                    => '0', // `0|1`.
+							                                'auto_cache_sitemap_url'               => 'sitemap.xml', // Relative to `site_url()`.
+							                                'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
+							                                'auto_cache_user_agent'                => 'WordPress/'.get_bloginfo('version'),
 
 							                                'update_sync_username'                 => '', 'update_sync_password' => '',
 							                                'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0'
@@ -206,19 +214,23 @@ namespace quick_cache // Root namespace.
 									add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), -PHP_INT_MAX);
 									add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
 								}
-							if((integer)$this->options['crons_setup'] < 1382523750)
+							add_filter('cron_schedules', array($this, 'extend_cron_schedules'));
+							if((integer)$this->options['crons_setup'] < 1398051975)
 								{
+									wp_clear_scheduled_hook('_cron_'.__NAMESPACE__.'_auto_cache');
 									wp_clear_scheduled_hook('_cron_'.__NAMESPACE__.'_cleanup');
 
 									wp_clear_scheduled_hook('ws_plugin__qcache_garbage_collector__schedule');
 									wp_clear_scheduled_hook('ws_plugin__qcache_auto_cache_engine__schedule');
 
+									wp_schedule_event(time() + 60, 'every15m', '_cron_'.__NAMESPACE__.'_auto_cache');
 									wp_schedule_event(time() + 60, 'daily', '_cron_'.__NAMESPACE__.'_cleanup');
 
 									$this->options['crons_setup'] = (string)time();
 									update_option(__NAMESPACE__.'_options', $this->options); // Blog-specific.
 									if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
 								}
+							add_action('_cron_'.__NAMESPACE__.'_auto_cache', array($this, 'auto_cache'));
 							add_action('_cron_'.__NAMESPACE__.'_cleanup', array($this, 'purge_cache'));
 
 							do_action('after__'.__METHOD__, get_defined_vars());
@@ -593,6 +605,30 @@ namespace quick_cache // Root namespace.
 									echo apply_filters(__METHOD__.'__error', '<div class="error"><p>'.$_error.$_dismiss.'</p></div>', get_defined_vars());
 								}
 							unset($_key, $_error, $_dismiss_css, $_dismiss); // Housekeeping.
+						}
+
+					public function auto_cache()
+						{
+							if(!$this->options['enable'])
+								return; // Nothing to do.
+
+							if(!$this->options['auto_cache_enable'])
+								return; // Nothing to do.
+
+							if(!$this->options['auto_cache_sitemap_url'])
+								if(!$this->options['auto_cache_other_urls'])
+									return; // Nothing to do.
+
+							require_once dirname(__FILE__).'/includes/auto-cache.php';
+							$auto_cache = new auto_cache();
+							$auto_cache->run();
+						}
+
+					public function extend_cron_schedules($schedules)
+						{
+							$schedules['every15m'] = array('interval' => 900, 'display' => __('Every 15 Minutes', $this->text_domain));
+
+							return apply_filters(__METHOD__, $schedules, get_defined_vars());
 						}
 
 					public function wipe_cache($manually = FALSE)
@@ -1052,7 +1088,7 @@ namespace quick_cache // Root namespace.
 							else
 								{
 									/* @raamdev This call to `get_term_by()` might return a FALSE value. */
-											$terms_to_purge[] = get_term_by('term_taxonomy_id', (integer)$tt_ids, 'post_tag', OBJECT);
+									$terms_to_purge[] = get_term_by('term_taxonomy_id', (integer)$tt_ids, 'post_tag', OBJECT);
 								}
 							/* @raamdev Don't forget to `unset($term_taxonomy_id);` here to help yourself avoid a conflict later in your code.
 							 *    You might have noticed that when I use temp vars like this in an iteration I usually give them a temp prefix
@@ -1379,7 +1415,7 @@ namespace quick_cache // Root namespace.
 							if(!is_file($advanced_cache_file)) return TRUE; // Already gone.
 
 							if(is_readable($advanced_cache_file) && filesize($advanced_cache_file) === 0)
-								return TRUE; // Already gone; e.g. it's empty already.
+								return TRUE; // Already gone; i.e. it's empty already.
 
 							if(!is_writable($advanced_cache_file)) return FALSE; // Not possible.
 
@@ -1464,8 +1500,9 @@ namespace quick_cache // Root namespace.
 
 					public function add_settings_link($links)
 						{
-							$links[] = '<a href="options-general.php?page=quick_cache">Settings</a>';
-							return $links;
+							$links[] = '<a href="options-general.php?page='.urlencode(__NAMESPACE__).'">'.__('Settings', $this->text_domain).'</a>';
+
+							return apply_filters(__METHOD__, $links, get_defined_vars());
 						}
 
 					/*
