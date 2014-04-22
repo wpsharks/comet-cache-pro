@@ -1,10 +1,21 @@
 <?php
+/**
+ * Auto-Cache Engine.
+ *
+ * @since 140420 Adding auto-cache engine.
+ * @package quick_cache\auto_cache_engine
+ * @copyright WebSharks, Inc. <http://www.websharks-inc.com>
+ * @license GNU General Public License, version 2
+ */
 namespace quick_cache // Root namespace.
 	{
 		if(!defined('WPINC')) // MUST have WordPress.
 			exit('Do NOT access this file directly: '.basename(__FILE__));
 
-		class auto_cache // Auto-cache engine.
+		/**
+		 * Auto-Cache Engine.
+		 */
+		class auto_cache
 		{
 			/**
 			 * @var plugin Quick Cache instance.
