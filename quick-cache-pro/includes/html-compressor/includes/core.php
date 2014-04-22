@@ -28,7 +28,7 @@ namespace websharks\html_compressor
 			 *
 			 * @var string Dated version string: `YYMMDD`.
 			 */
-			protected $version = '140418';
+			protected $version = '140422';
 
 			/**
 			 * An array of class options.
@@ -51,7 +51,7 @@ namespace websharks\html_compressor
 			protected $cache_expiration_time = '14 days';
 
 			/**
-			 * Regex vendor CSS prefixes.
+			 * Vendor-specific CSS prefixes (regex).
 			 *
 			 * @since 140417 Initial release.
 			 *
@@ -60,16 +60,16 @@ namespace websharks\html_compressor
 			protected $regex_vendor_css_prefixes = '';
 
 			/**
-			 * Default set of CSS exclusions.
+			 * Default set of CSS exclusions (array).
 			 *
 			 * @since 140417 Initial release.
 			 *
-			 * @var array These are used if no option value is supplied.
+			 * @var array These are used if no option value is supplied to override them.
 			 */
 			protected $default_vendor_css_prefixes = array('moz', 'webkit', 'khtml', 'ms', 'o');
 
 			/**
-			 * Regex CSS exclusions.
+			 * CSS exclusions (regex).
 			 *
 			 * @since 140417 Initial release.
 			 *
@@ -78,16 +78,36 @@ namespace websharks\html_compressor
 			protected $regex_css_exclusions = '';
 
 			/**
-			 * Default set of CSS exclusions.
+			 * Default set of CSS exclusions (array).
 			 *
 			 * @since 140417 Initial release.
 			 *
-			 * @var array These are used if no option value is supplied.
+			 * @var array These are used if no option value is supplied to override them.
 			 */
 			protected $default_css_exclusions = array();
 
 			/**
-			 * Regex JS exclusions.
+			 * Built-in CSS exclusions (regex).
+			 *
+			 * @since 140422 Changing the way CSS exclusions operate.
+			 *
+			 * @var string Set dynamically by class constructor.
+			 */
+			protected $built_in_regex_css_exclusions = '';
+
+			/**
+			 * A set of built-in CSS exclusions (regex patterns).
+			 *
+			 * @since 140422 Changing the way CSS exclusions operate.
+			 *
+			 * @var array These are on at all times; UNLESS options dictate otherwise.
+			 *    To disable these built-in CSS exclusions pass the option `disable_built_in_css_exclusions` as TRUE.
+			 * @note These get converted to a regex pattern by the class constructor. Reference {@link $built_in_regex_css_exclusions}.
+			 */
+			protected $built_in_regex_css_exclusion_patterns = array('\W#post\-[0-9]+\W');
+
+			/**
+			 * JS exclusions (regex).
 			 *
 			 * @since 140417 Initial release.
 			 *
@@ -96,13 +116,33 @@ namespace websharks\html_compressor
 			protected $regex_js_exclusions = '';
 
 			/**
-			 * Default set of JS exclusions.
+			 * Default set of JS exclusions (array).
 			 *
 			 * @since 140417 Initial release.
 			 *
-			 * @var array These are used if no option value is supplied.
+			 * @var array These are used if no option value is supplied to override them.
 			 */
-			protected $default_js_exclusions = array('.php?');
+			protected $default_js_exclusions = array();
+
+			/**
+			 * Built-in JS exclusions (regex).
+			 *
+			 * @since 140422 Changing the way JS exclusions operate.
+			 *
+			 * @var string Set dynamically by class constructor.
+			 */
+			protected $built_in_regex_js_exclusions = '';
+
+			/**
+			 * A set of built-in JS exclusions (regex patterns).
+			 *
+			 * @since 140422 Changing the way JS exclusions operate.
+			 *
+			 * @var array These are on at all times; UNLESS options dictate otherwise.
+			 *    To disable these built-in JS exclusions pass the option `disable_built_in_js_exclusions` as TRUE.
+			 * @note These get converted to a regex pattern by the class constructor. Reference {@link $built_in_regex_js_exclusions}.
+			 */
+			protected $built_in_regex_js_exclusion_patterns = array('\.google\-analytics\.com\/', '\Wga\s*\(', '\W_gaq\.push\s*\(', '\.php\?');
 
 			/**
 			 * Current base HREF value.
@@ -149,32 +189,50 @@ namespace websharks\html_compressor
 				{
 					$this->options = $options; // Instance options.
 
+					# Cache Expiration Time
+
 					if(!empty($this->options['cache_expiration_time']))
 						$this->cache_expiration_time = (string)$this->options['cache_expiration_time'];
 
-					if(isset($this->options['vendor_css_prefixes'])) // Override built-in defaults?
-						$this->regex_vendor_css_prefixes = (!$this->options['vendor_css_prefixes']) ? '' // None.
-							: implode('|', $this->preg_quote_deep((array)$this->options['vendor_css_prefixes'], '/'));
-					else if(isset($this->options['regex_vendor_css_prefixes'])) // Regex?
-						$this->regex_vendor_css_prefixes = (string)$this->options['regex_vendor_css_prefixes'];
-					else if($this->default_vendor_css_prefixes) // Else we will use the default set of CSS vendor prefixes.
-						$this->regex_vendor_css_prefixes = implode('|', $this->preg_quote_deep($this->default_vendor_css_prefixes, '/'));
+					# Vendor-Specific CSS Prefixes
 
-					if(isset($this->options['css_exclusions'])) // Override built-in defaults?
-						$this->regex_css_exclusions = (!$this->options['css_exclusions']) ? '' // None.
-							: '/'.implode('|', $this->preg_quote_deep((array)$this->options['css_exclusions'], '/')).'/i';
-					else if(isset($this->options['regex_css_exclusions'])) // Regex?
-						$this->regex_css_exclusions = (string)$this->options['regex_css_exclusions'];
-					else if($this->default_css_exclusions) // Else we will use the default set of CSS exclusions.
+					if(isset($this->options['vendor_css_prefixes']) && is_array($this->options['vendor_css_prefixes']))
+						$this->regex_vendor_css_prefixes = implode('|', $this->preg_quote_deep($this->options['vendor_css_prefixes'], '/'));
+					else $this->regex_vendor_css_prefixes = implode('|', $this->preg_quote_deep($this->default_vendor_css_prefixes, '/'));
+
+					# CSS Exclusions (If Applicable)
+
+					if(isset($this->options['regex_css_exclusions']) && is_string($this->options['regex_css_exclusions']))
+						$this->regex_css_exclusions = $this->options['regex_css_exclusions'];
+
+					else if(isset($this->options['css_exclusions']) && is_array($this->options['css_exclusions']))
+						$this->regex_css_exclusions = ($this->options['css_exclusions']) // Contains exclusions?
+							? '/'.implode('|', $this->preg_quote_deep($this->options['css_exclusions'], '/')).'/i'
+							: ''; // No exclusions; i.e. pass an empty array to indicate none.
+
+					else if($this->default_css_exclusions) // Else we will use the default set of exclusions.
 						$this->regex_css_exclusions = '/'.implode('|', $this->preg_quote_deep($this->default_css_exclusions, '/')).'/i';
 
-					if(isset($this->options['js_exclusions'])) // Override built-in defaults?
-						$this->regex_js_exclusions = (!$this->options['js_exclusions']) ? '' // None.
-							: '/'.implode('|', $this->preg_quote_deep((array)$this->options['js_exclusions'], '/')).'/i';
-					else if(isset($this->options['regex_js_exclusions'])) // Regex?
-						$this->regex_js_exclusions = (string)$this->options['regex_js_exclusions'];
-					else if($this->default_js_exclusions) // Else we will use the default set of CSS exclusions.
+					if($this->built_in_regex_css_exclusion_patterns && empty($this->options['disable_built_in_css_exclusions']))
+						$this->built_in_regex_css_exclusions = '/'.implode('|', $this->built_in_regex_css_exclusion_patterns).'/i';
+
+					# JavaScript Exclusions (If Applicable)
+
+					if(isset($this->options['regex_js_exclusions']) && is_string($this->options['regex_js_exclusions']))
+						$this->regex_js_exclusions = $this->options['regex_js_exclusions'];
+
+					else if(isset($this->options['js_exclusions']) && is_array($this->options['js_exclusions']))
+						$this->regex_js_exclusions = ($this->options['js_exclusions']) // Contains exclusions?
+							? '/'.implode('|', $this->preg_quote_deep($this->options['js_exclusions'], '/')).'/i'
+							: ''; // No exclusions; i.e. pass an empty array to indicate none.
+
+					else if($this->default_js_exclusions) // Else we will use the default set of exclusions.
 						$this->regex_js_exclusions = '/'.implode('|', $this->preg_quote_deep($this->default_js_exclusions, '/')).'/i';
+
+					if($this->built_in_regex_js_exclusion_patterns && empty($this->options['disable_built_in_js_exclusions']))
+						$this->built_in_regex_js_exclusions = '/'.implode('|', $this->built_in_regex_js_exclusion_patterns).'/i';
+
+					# JavaScript Compression Library
 
 					require_once dirname(__FILE__).'/externals/js-minifier.php';
 				}
@@ -387,8 +445,6 @@ namespace websharks\html_compressor
 			 * @return array Array of CSS parts, else an empty array on failure.
 			 *
 			 * @throws \exception If unable to cache CSS parts.
-			 *
-			 * @todo Optimize this further to reduce the size of the cache.
 			 */
 			protected function compile_css_tag_frags_into_parts(array $css_tag_frags)
 				{
@@ -501,8 +557,6 @@ namespace websharks\html_compressor
 			 * @return array Array of JS parts, else an empty array on failure.
 			 *
 			 * @throws \exception If unable to cache JS parts.
-			 *
-			 * @todo Optimize this further to reduce the size of the cache.
 			 */
 			protected function compile_js_tag_frags_into_parts(array $js_tag_frags)
 				{
@@ -663,6 +717,9 @@ namespace websharks\html_compressor
 
 											else if($this->regex_css_exclusions && preg_match($this->regex_css_exclusions, $_tag_frag_r['link_href'].$_tag_frag_r['style_css']))
 												$_tag_frag_r['exclude'] = TRUE;
+
+											else if($this->built_in_regex_js_exclusions && preg_match($this->built_in_regex_js_exclusions, $_tag_frag_r['link_href'].$_tag_frag_r['style_css']))
+												$_tag_frag_r['exclude'] = TRUE;
 										}
 								}
 						}
@@ -727,6 +784,9 @@ namespace websharks\html_compressor
 												$_tag_frag_r['exclude'] = TRUE;
 
 											else if($this->regex_js_exclusions && preg_match($this->regex_js_exclusions, $_tag_frag_r['script_src'].$_tag_frag_r['script_js']))
+												$_tag_frag_r['exclude'] = TRUE;
+
+											else if($this->built_in_regex_js_exclusions && preg_match($this->built_in_regex_js_exclusions, $_tag_frag_r['script_src'].$_tag_frag_r['script_js']))
 												$_tag_frag_r['exclude'] = TRUE;
 										}
 								}
@@ -1297,7 +1357,7 @@ namespace websharks\html_compressor
 					$css   = preg_replace($regex, '/', $css); // To absolute paths.
 
 					if(($compressed_css = $this->compress_css($css)))
-						return '/*HC*/'.$compressed_css;
+						return $compressed_css;
 
 					return $css;
 				}
@@ -1331,7 +1391,7 @@ namespace websharks\html_compressor
 							                           'unnecessary_;s'  => '/;\}/'
 							);
 							$static['with']    = array('', '', ' ', '$1', '}');
-							$static['colors']  = '/(?P<context>\:#| #)(?P<hex>[a-z0-9]{6})/i';
+							$static['colors']  = '/(?P<context>[:,\h]+#)(?P<hex>[a-z0-9]{6})/i';
 						}
 					$css = preg_replace($static['replace'], $static['with'], $css);
 					$css = preg_replace_callback($static['colors'], array($this, '_maybe_compress_css_color'), $css);
@@ -1383,7 +1443,7 @@ namespace websharks\html_compressor
 							return $js; // Nothing to do here.
 
 					if(($compressed_js = js_minifier::compress($js)))
-						return '/*HC*/'.$compressed_js;
+						return $compressed_js;
 
 					return $js;
 				}
@@ -1458,7 +1518,7 @@ namespace websharks\html_compressor
 						return $js; // Nothing to do.
 
 					if(($compressed_js = js_minifier::compress($js)))
-						return '/*HC*//*<![CDATA[*/'.$compressed_js.'/*]]>*/';
+						return '/*<![CDATA[*/'.$compressed_js.'/*]]>*/';
 
 					return $js;
 				}
