@@ -1228,7 +1228,7 @@ namespace quick_cache
 					 *
 					 * @param integer $id A WordPress post ID.
 					 *
-					 * @return integer Total files cleared by this routine (if any).
+					 * @return integer Total files purged by this routine (if any).
 					 *
 					 * @throws \exception If a purge failure occurs.
 					 *
@@ -1293,6 +1293,20 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					/**
+					 * Automatically purges cache files for the home page.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @return integer Total files purged by this routine (if any).
+					 *
+					 * @throws \exception If a purge failure occurs.
+					 *
+					 * @note Unlike many of the other `auto_` methods, this one is NOT currently
+					 *    attached to any hooks. However, it is called upon by {@link auto_purge_post_cache()}.
+					 *
+					 * @see auto_purge_post_cache()
+					 */
 					public function auto_purge_home_page_cache()
 						{
 							$counter = 0; // Initialize.
@@ -1335,6 +1349,20 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					/**
+					 * Automatically purges cache files for the posts page.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @return integer Total files purged by this routine (if any).
+					 *
+					 * @throws \exception If a purge failure occurs.
+					 *
+					 * @note Unlike many of the other `auto_` methods, this one is NOT currently
+					 *    attached to any hooks. However, it is called upon by {@link auto_purge_post_cache()}.
+					 *
+					 * @see auto_purge_post_cache()
+					 */
 					public function auto_purge_posts_page_cache()
 						{
 							$counter = 0; // Initialize.
@@ -1544,6 +1572,25 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					/**
+					 * Automatically purges cache files for a post associated with a particular comment.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `trackback_post` hook.
+					 * @attaches-to `pingback_post` hook.
+					 * @attaches-to `comment_post` hook.
+					 *
+					 * @attaches-to `edit_comment` hook.
+					 * @attaches-to `delete_comment` hook.
+					 * @attaches-to `wp_set_comment_status` hook.
+					 *
+					 * @param integer $id A WordPress comment ID.
+					 *
+					 * @return integer Total files purged by this routine (if any).
+					 *
+					 * @see auto_purge_post_cache()
+					 */
 					public function auto_purge_comment_post_cache($id)
 						{
 							$counter = 0; // Initialize.
@@ -1565,6 +1612,29 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					/**
+					 * Automatically purges cache files associated with a particular user.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `profile_update` hook.
+					 * @attaches-to `add_user_metadata` filter.
+					 * @attaches-to `update_user_metadata` filter.
+					 * @attaches-to `delete_user_metadata` filter.
+					 * @attaches-to `set_auth_cookie` hook.
+					 * @attaches-to `clear_auth_cookie` hook.
+					 *
+					 * @param integer $user_id A WordPress user ID.
+					 *
+					 * @return integer Total files purged by this routine (if any).
+					 *
+					 * @throws \exception If a purge failure occurs.
+					 *
+					 * @see auto_purge_user_cache_a1()
+					 * @see auto_purge_user_cache_fa2()
+					 * @see auto_purge_user_cache_a4()
+					 * @see auto_purge_user_cache_cur()
+					 */
 					public function auto_purge_user_cache($user_id)
 						{
 							$counter = 0; // Initialize.
@@ -1606,22 +1676,72 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
+					/**
+					 * Automatically purges cache files associated with a particular user.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `profile_update` hook.
+					 *
+					 * @param integer $user_id A WordPress user ID.
+					 *
+					 * @see auto_purge_user_cache()
+					 */
 					public function auto_purge_user_cache_a1($user_id)
 						{
 							$this->auto_purge_user_cache($user_id);
 						}
 
+					/**
+					 * Automatically purges cache files associated with a particular user.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `add_user_metadata` filter.
+					 * @attaches-to `update_user_metadata` filter.
+					 * @attaches-to `delete_user_metadata` filter.
+					 *
+					 * @param mixed   $value Filter value (passes through).
+					 * @param integer $user_id A WordPress user ID.
+					 *
+					 * @return mixed The same `$value` (passes through).
+					 *
+					 * @see auto_purge_user_cache()
+					 */
 					public function auto_purge_user_cache_fa2($value, $user_id)
 						{
 							$this->auto_purge_user_cache($user_id);
 							return $value; // Filter.
 						}
 
+					/**
+					 * Automatically purges cache files associated with a particular user.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `set_auth_cookie` hook.
+					 *
+					 * @param mixed   $_ Irrelevant hook argument value.
+					 * @param mixed   $__ Irrelevant hook argument value.
+					 * @param mixed   $___ Irrelevant hook argument value.
+					 * @param integer $user_id A WordPress user ID.
+					 *
+					 * @see auto_purge_user_cache()
+					 */
 					public function auto_purge_user_cache_a4($_, $__, $___, $user_id)
 						{
 							$this->auto_purge_user_cache($user_id);
 						}
 
+					/**
+					 * Automatically purges cache files associated with current user.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `clear_auth_cookie` hook.
+					 *
+					 * @see auto_purge_user_cache()
+					 */
 					public function auto_purge_user_cache_cur()
 						{
 							$this->auto_purge_user_cache(get_current_user_id());
