@@ -472,11 +472,29 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $url, get_defined_vars());
 						}
 
+					/**
+					 * Escape single quotes.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @param string  $string Input string to escape.
+					 * @param integer $times Optional. Defaults to one escape char; e.g. `\'`.
+					 *    If you need to escape more than once, set this to something > `1`.
+					 *
+					 * @return string Escaped string; e.g. `Raam\'s the lead developer`.
+					 */
 					public function esc_sq($string, $times = 1)
 						{
 							return str_replace("'", str_repeat('\\', abs($times))."'", (string)$string);
 						}
 
+					/**
+					 * Plugin action handler.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `wp_loaded` hook.
+					 */
 					public function actions()
 						{
 							if(empty($_REQUEST[__NAMESPACE__])) return;
@@ -484,7 +502,15 @@ namespace quick_cache
 							require_once dirname(__FILE__).'/includes/actions.php';
 						}
 
-					/** @param $wp_admin_bar \WP_Admin_Bar */
+					/**
+					 * Filter WordPress admin bar.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `admin_bar_menu` hook.
+					 *
+					 * @param $wp_admin_bar \WP_Admin_Bar
+					 */
 					public function admin_bar_menu(&$wp_admin_bar)
 						{
 							if(!$this->options['enable'])
@@ -508,6 +534,13 @@ namespace quick_cache
 							                                                'class' => __NAMESPACE__, 'tabindex' => -1)));
 						}
 
+					/**
+					 * Injects `<meta>` tag w/ JSON-encoded data for WordPress admin bar.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `admin_head` hook.
+					 */
 					public function admin_bar_meta_tags()
 						{
 							if(!$this->options['enable'])
@@ -531,6 +564,14 @@ namespace quick_cache
 							echo apply_filters(__METHOD__, $tags, get_defined_vars());
 						}
 
+					/**
+					 * Adds CSS for WordPress admin bar.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `wp_enqueue_scripts` hook.
+					 * @attaches-to `admin_enqueue_scripts` hook.
+					 */
 					public function admin_bar_styles()
 						{
 							if(!$this->options['enable'])
@@ -547,6 +588,14 @@ namespace quick_cache
 							wp_enqueue_style(__NAMESPACE__.'-admin-bar', $this->url('/client-s/css/admin-bar.min.css'), $deps, $this->version, 'all');
 						}
 
+					/**
+					 * Adds JS for WordPress admin bar.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `wp_enqueue_scripts` hook.
+					 * @attaches-to `admin_enqueue_scripts` hook.
+					 */
 					public function admin_bar_scripts()
 						{
 							if(!$this->options['enable'])
@@ -563,11 +612,25 @@ namespace quick_cache
 							wp_enqueue_script(__NAMESPACE__.'-admin-bar', $this->url('/client-s/js/admin-bar.min.js'), $deps, $this->version, TRUE);
 						}
 
+					/**
+					 * Adds marker for the HTML Compressor.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `wp_print_footer_scripts` hook (twice).
+					 */
 					public function htmlc_footer_scripts()
 						{
 							echo "\n".'<!--footer-scripts-->'."\n";
 						}
 
+					/**
+					 * Adds CSS for administrative menu pages.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `admin_enqueue_scripts` hook.
+					 */
 					public function enqueue_admin_styles()
 						{
 							if(empty($_GET['page']) || strpos($_GET['page'], __NAMESPACE__) !== 0)
@@ -578,6 +641,13 @@ namespace quick_cache
 							wp_enqueue_style(__NAMESPACE__, $this->url('/client-s/css/menu-pages.min.css'), $deps, $this->version, 'all');
 						}
 
+					/**
+					 * Adds JS for administrative menu pages.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `admin_enqueue_scripts` hook.
+					 */
 					public function enqueue_admin_scripts()
 						{
 							if(empty($_GET['page']) || strpos($_GET['page'], __NAMESPACE__) !== 0)
