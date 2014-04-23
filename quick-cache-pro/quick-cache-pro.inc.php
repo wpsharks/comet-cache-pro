@@ -706,8 +706,8 @@ namespace quick_cache
 					 *
 					 * @since 140422 First documented version.
 					 *
-					 * @see {@link add_network_menu_pages()}
-					 * @see {@link add_menu_pages()}
+					 * @see add_network_menu_pages()
+					 * @see add_menu_pages()
 					 */
 					public function menu_page_options()
 						{
@@ -721,8 +721,8 @@ namespace quick_cache
 					 *
 					 * @since 140422 First documented version.
 					 *
-					 * @see {@link add_network_menu_pages()}
-					 * @see {@link add_menu_pages()}
+					 * @see add_network_menu_pages()
+					 * @see add_menu_pages()
 					 */
 					public function menu_page_update_sync()
 						{
@@ -731,6 +731,15 @@ namespace quick_cache
 							$menu_pages->update_sync();
 						}
 
+					/**
+					 * Checks for a new pro release once every hour.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `admin_init` hook.
+					 *
+					 * @see pre_site_transient_update_plugins()
+					 */
 					public function check_update_sync_version()
 						{
 							if(!$this->options['update_sync_version_check'])
@@ -765,6 +774,17 @@ namespace quick_cache
 							update_option(__NAMESPACE__.'_notices', $notices);
 						}
 
+					/**
+					 * Modifies transient data associated with this plugin.
+					 *
+					 * This tells WordPress to connect to our server in order to receive plugin updates.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `pre_site_transient_update_plugins` filter.
+					 *
+					 * @see check_update_sync_version()
+					 */
 					public function pre_site_transient_update_plugins($transient)
 						{
 							if(!is_admin() || $GLOBALS['pagenow'] !== 'update.php')
@@ -799,6 +819,13 @@ namespace quick_cache
 							return $transient; // Nodified now.
 						}
 
+					/**
+					 * Render admin notices; across all admin dashboard views.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `all_admin_notices` hook.
+					 */
 					public function all_admin_notices()
 						{
 							if(($notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array()))
@@ -825,6 +852,13 @@ namespace quick_cache
 							unset($_key, $_notice, $_dismiss_css, $_dismiss); // Housekeeping.
 						}
 
+					/**
+					 * Render admin errors; across all admin dashboard views.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `all_admin_notices` hook.
+					 */
 					public function all_admin_errors()
 						{
 							if(($errors = (is_array($errors = get_option(__NAMESPACE__.'_errors'))) ? $errors : array()))
@@ -851,6 +885,13 @@ namespace quick_cache
 							unset($_key, $_error, $_dismiss_css, $_dismiss); // Housekeeping.
 						}
 
+					/**
+					 * Runs the auto-cache engine.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `_cron_quick_cache_auto_cache` hook.
+					 */
 					public function auto_cache()
 						{
 							if(!$this->options['enable'])
@@ -868,6 +909,17 @@ namespace quick_cache
 							$auto_cache->run();
 						}
 
+					/**
+					 * Extends WP-Cron schedules.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `cron_schedules` filter.
+					 *
+					 * @param array $schedules An array of the current schedules.
+					 *
+					 * @return array Revised array of WP-Cron schedules.
+					 */
 					public function extend_cron_schedules($schedules)
 						{
 							$schedules['every15m'] = array('interval' => 900, 'display' => __('Every 15 Minutes', $this->text_domain));
@@ -875,6 +927,18 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $schedules, get_defined_vars());
 						}
 
+					/**
+					 * Wipes out all cache files in the cache directory.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @param boolean $manually Defaults to a `FALSE` value.
+					 *    Pass as TRUE if the wipe is done manually by the site owner.
+					 *
+					 * @return integer Total files wiped by this routine (if any).
+					 *
+					 * @throws \exception If a wipe failure occurs.
+					 */
 					public function wipe_cache($manually = FALSE)
 						{
 							$counter = 0; // Initialize.
