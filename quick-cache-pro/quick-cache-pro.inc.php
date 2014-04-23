@@ -658,6 +658,13 @@ namespace quick_cache
 							wp_enqueue_script(__NAMESPACE__, $this->url('/client-s/js/menu-pages.min.js'), $deps, $this->version, TRUE);
 						}
 
+					/**
+					 * Creates network admin menu pages.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `network_admin_menu` hook.
+					 */
 					public function add_network_menu_pages()
 						{
 							add_menu_page(__('Quick Cache', $this->text_domain), __('Quick Cache', $this->text_domain),
@@ -672,6 +679,13 @@ namespace quick_cache
 								                 $this->update_cap, __NAMESPACE__.'-update-sync', array($this, 'menu_page_update_sync'));
 						}
 
+					/**
+					 * Creates admin menu pages.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @attaches-to `admin_menu` hook.
+					 */
 					public function add_menu_pages()
 						{
 							if(is_multisite()) return; // Multisite networks MUST use network admin area.
@@ -687,6 +701,14 @@ namespace quick_cache
 							                 $this->update_cap, __NAMESPACE__.'-update-sync', array($this, 'menu_page_update_sync'));
 						}
 
+					/**
+					 * Loads the admin menu page options.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @see {@link add_network_menu_pages()}
+					 * @see {@link add_menu_pages()}
+					 */
 					public function menu_page_options()
 						{
 							require_once dirname(__FILE__).'/includes/menu-pages.php';
@@ -694,6 +716,14 @@ namespace quick_cache
 							$menu_pages->options();
 						}
 
+					/**
+					 * Loads the admin menu page updater.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @see {@link add_network_menu_pages()}
+					 * @see {@link add_menu_pages()}
+					 */
 					public function menu_page_update_sync()
 						{
 							require_once dirname(__FILE__).'/includes/menu-pages.php';
