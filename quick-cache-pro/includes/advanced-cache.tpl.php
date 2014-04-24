@@ -8,75 +8,146 @@ namespace quick_cache // Root namespace.
 		 * This file serves as a template for the Quick Cache plugin in WordPress.
 		 * The Quick Cache plugin will fill the `%%` replacement codes automatically.
 		 *    e.g. this file becomes: `/wp-content/advanced-cache.php`.
+		 */
+
+		/**
+		 * Is this Quick Cache Pro?
 		 *
-		 * Or, if you prefer; you can set the PHP constants below in your `/wp-config.php` file.
-		 * Then, you could simply drop this file into: `/wp-content/advanced-cache.php` on your own :-)
-		 * ~ Be sure to setup a CRON job that clears your `QUICK_CACHE_DIR` periodically.
+		 * @since 140422 First documented version.
+		 *
+		 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
 		 */
+		define('QUICK_CACHE_PRO', TRUE); // Note that we do NOT check `if(defined())` here.
 
-		/*
-		 * Quick Cache configuration constants.
-		 * ----------------------------------------------------------------------------
-		 */
-		/*
-		 * These work as boolean flags.
-		 */
-		if(!defined('QUICK_CACHE_PRO')) define('QUICK_CACHE_PRO', TRUE); // Identifier.
-		if(!defined('QUICK_CACHE_ENABLE')) define('QUICK_CACHE_ENABLE', '%%QUICK_CACHE_ENABLE%%');
-		if(!defined('QUICK_CACHE_DEBUGGING_ENABLE')) define('QUICK_CACHE_DEBUGGING_ENABLE', '%%QUICK_CACHE_DEBUGGING_ENABLE%%');
-		if(!defined('QUICK_CACHE_ALLOW_BROWSER_CACHE')) define('QUICK_CACHE_ALLOW_BROWSER_CACHE', '%%QUICK_CACHE_ALLOW_BROWSER_CACHE%%');
-		if(!defined('QUICK_CACHE_CACHE_404_REQUESTS')) define('QUICK_CACHE_CACHE_404_REQUESTS', '%%QUICK_CACHE_CACHE_404_REQUESTS%%');
+		if(!defined('QUICK_CACHE_ENABLE'))
+			/**
+			 * Is Quick Cache enabled?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
+			define('QUICK_CACHE_ENABLE', '%%QUICK_CACHE_ENABLE%%');
 
-		/*
-		 * Cache directory. Max age; e.g. `7 days` — anything compatible w/ `strtotime()`.
-		 */
-		if(!defined('QUICK_CACHE_DIR')) define('QUICK_CACHE_DIR', ABSPATH.'%%QUICK_CACHE_DIR%%');
-		if(!defined('QUICK_CACHE_MAX_AGE')) define('QUICK_CACHE_MAX_AGE', '%%QUICK_CACHE_MAX_AGE%%');
+		if(!defined('QUICK_CACHE_DEBUGGING_ENABLE'))
+			/**
+			 * Is Quick Cache debugging enabled?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
+			define('QUICK_CACHE_DEBUGGING_ENABLE', '%%QUICK_CACHE_DEBUGGING_ENABLE%%');
+
+		if(!defined('QUICK_CACHE_ALLOW_BROWSER_CACHE'))
+			/**
+			 * Should Quick Cache allow browsers to cache each document?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 *
+			 * @note If this is a `FALSE` (or an empty) value; Quick Cache will send no-cache headers.
+			 *    If `TRUE`, Quick Cache will NOT send no-cache headers.
+			 */
+			define('QUICK_CACHE_ALLOW_BROWSER_CACHE', '%%QUICK_CACHE_ALLOW_BROWSER_CACHE%%');
+
+		if(!defined('QUICK_CACHE_CACHE_404_REQUESTS'))
+			define('QUICK_CACHE_CACHE_404_REQUESTS', '%%QUICK_CACHE_CACHE_404_REQUESTS%%');
+
+		if(!defined('QUICK_CACHE_DIR'))
+			/**
+			 * Directory used to store cache files; relative to `ABSPATH`.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Directory relative to `ABSPATH`.
+			 */
+			define('QUICK_CACHE_DIR', ABSPATH.'%%QUICK_CACHE_DIR%%');
+
+		if(!defined('QUICK_CACHE_MAX_AGE'))
+			define('QUICK_CACHE_MAX_AGE', '%%QUICK_CACHE_MAX_AGE%%');
 
 		/*
 		 * The work as boolean flags.
 		 */
-		if(!defined('QUICK_CACHE_WHEN_LOGGED_IN')) define('QUICK_CACHE_WHEN_LOGGED_IN', '%%QUICK_CACHE_WHEN_LOGGED_IN%%');
-		if(!defined('QUICK_CACHE_GET_REQUESTS')) define('QUICK_CACHE_GET_REQUESTS', '%%QUICK_CACHE_GET_REQUESTS%%');
-		if(!defined('QUICK_CACHE_FEEDS_ENABLE')) define('QUICK_CACHE_FEEDS_ENABLE', '%%QUICK_CACHE_FEEDS_ENABLE%%');
+		if(!defined('QUICK_CACHE_WHEN_LOGGED_IN'))
+			define('QUICK_CACHE_WHEN_LOGGED_IN', '%%QUICK_CACHE_WHEN_LOGGED_IN%%');
+
+		if(!defined('QUICK_CACHE_GET_REQUESTS'))
+			define('QUICK_CACHE_GET_REQUESTS', '%%QUICK_CACHE_GET_REQUESTS%%');
+
+		if(!defined('QUICK_CACHE_FEEDS_ENABLE'))
+			define('QUICK_CACHE_FEEDS_ENABLE', '%%QUICK_CACHE_FEEDS_ENABLE%%');
 
 		/*
 		 * These should contain empty strings; or regex patterns.
 		 */
-		if(!defined('QUICK_CACHE_EXCLUDE_URIS')) define('QUICK_CACHE_EXCLUDE_URIS', '%%QUICK_CACHE_EXCLUDE_URIS%%');
-		if(!defined('QUICK_CACHE_EXCLUDE_REFS')) define('QUICK_CACHE_EXCLUDE_REFS', '%%QUICK_CACHE_EXCLUDE_REFS%%');
-		if(!defined('QUICK_CACHE_EXCLUDE_AGENTS')) define('QUICK_CACHE_EXCLUDE_AGENTS', '%%QUICK_CACHE_EXCLUDE_AGENTS%%');
+		if(!defined('QUICK_CACHE_EXCLUDE_URIS'))
+			define('QUICK_CACHE_EXCLUDE_URIS', '%%QUICK_CACHE_EXCLUDE_URIS%%');
+
+		if(!defined('QUICK_CACHE_EXCLUDE_REFS'))
+			define('QUICK_CACHE_EXCLUDE_REFS', '%%QUICK_CACHE_EXCLUDE_REFS%%');
+
+		if(!defined('QUICK_CACHE_EXCLUDE_AGENTS'))
+			define('QUICK_CACHE_EXCLUDE_AGENTS', '%%QUICK_CACHE_EXCLUDE_AGENTS%%');
 
 		/*
 		 * Any string value; or just an empty string will do fine also.
 		 */
-		if(!defined('QUICK_CACHE_VERSION_SALT')) define('QUICK_CACHE_VERSION_SALT', '%%QUICK_CACHE_VERSION_SALT%%');
+		if(!defined('QUICK_CACHE_VERSION_SALT'))
+			define('QUICK_CACHE_VERSION_SALT', '%%QUICK_CACHE_VERSION_SALT%%');
 
 		/*
 		 * A unique filename for the special 404 Cache File (used when 404 caching is enabled).
 		 */
-		if(!defined('QUICK_CACHE_404_CACHE_FILENAME')) define('QUICK_CACHE_404_CACHE_FILENAME', '----404----');
+		if(!defined('QUICK_CACHE_404_CACHE_FILENAME'))
+			define('QUICK_CACHE_404_CACHE_FILENAME', '----404----');
 
 		/*
 		 * Configuration for the HTML Compressor (if enabled).
 		 */
-		if(!defined('QUICK_CACHE_HTMLC_ENABLE')) define('QUICK_CACHE_HTMLC_ENABLE', '%%QUICK_CACHE_HTMLC_ENABLE%%');
+		if(!defined('QUICK_CACHE_HTMLC_ENABLE'))
+			define('QUICK_CACHE_HTMLC_ENABLE', '%%QUICK_CACHE_HTMLC_ENABLE%%');
 
-		if(!defined('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_CSS_EXCLUSIONS%%');
-		if(!defined('QUICK_CACHE_HTMLC_JS_EXCLUSIONS')) define('QUICK_CACHE_HTMLC_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_JS_EXCLUSIONS%%');
+		if(!defined('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS'))
+			define('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_CSS_EXCLUSIONS%%');
 
-		if(!defined('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME')) define('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
-		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC%%');
-		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE')) define('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE%%');
+		if(!defined('QUICK_CACHE_HTMLC_JS_EXCLUSIONS'))
+			define('QUICK_CACHE_HTMLC_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_JS_EXCLUSIONS%%');
 
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS')) define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_JS_CODE%%');
-		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE')) define('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE%%');
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME'))
+			define('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC'))
+			define('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE'))
+			define('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_JS_CODE%%');
+
+		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE'))
+			define('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE%%');
 
 		/*
 		 * The heart of Quick Cache.
