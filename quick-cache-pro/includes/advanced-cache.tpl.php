@@ -345,15 +345,85 @@ namespace quick_cache
 			 */
 			public $protocol = '';
 
-			public $user_token = ''; // Calculated user token; applicable w/ user postload enabled.
-			public $version_salt = ''; // Calculated version salt; set by site configuration data.
-			public $cache_path = ''; // Calculated cache path; absolute relative (no leading/trailing slashes).
-			public $cache_file = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
-			public $cache_file_404 = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
-			public $salt_location = ''; // Calculated location; defined by `maybe_start_output_buffering()`.
+			/**
+			 * Calculated user token; applicable w/ user postload enabled.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer An MD5 hash token; or a specific WP user ID.
+			 */
+			public $user_token = '';
 
-			public $postload = array(); // Off by default; just an empty array.
-			public $http_status; // See `maybe_filter_status_header_postload()`.
+			/**
+			 * Calculated version salt; set by site configuration data.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|mixed Any scalar value does fine.
+			 */
+			public $version_salt = '';
+
+			/**
+			 * Calculated cache path for the current request;
+			 *    absolute relative (no leading/trailing slashes).
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Absolute relative (no leading/trailing slashes).
+			 *    Defined by {@link maybe_start_output_buffering()}.
+			 */
+			public $cache_path = '';
+
+			/**
+			 * Calculated cache file location for the current request; absolute path.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Cache file location for the current request; absolute path.
+			 *    Defined by {@link maybe_start_output_buffering()}.
+			 */
+			public $cache_file = '';
+
+			/**
+			 * Centralized 404 cache file location; absolute path.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Centralized 404 cache file location; absolute path.
+			 *    Defined by {@link maybe_start_output_buffering()}.
+			 */
+			public $cache_file_404 = '';
+
+			/**
+			 * A possible version salt (string value); followed by the current request location.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Version salt (string value); followed by the current request location.
+			 *    Defined by {@link maybe_start_output_buffering()}.
+			 */
+			public $salt_location = '';
+
+			/**
+			 * Array of data targeted at the postload phase.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var array Data and/or flags that work with various postload handlers.
+			 */
+			public $postload = array();
+
+			/**
+			 * Last HTTP status code passed through {@link \status_header}.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var null|integer Last HTTP status code (if applicable).
+			 *
+			 * @see maybe_filter_status_header_postload()
+			 */
+			public $http_status;
+
 			public $is_wp_loaded_query = FALSE; // See: `wp_main_query_postload()`.
 			public $is_404 = FALSE; // Set on `wp` by `wp_main_query_postload()`.
 			public $site_url = ''; // Set on `wp` by `wp_main_query_postload()`.
@@ -1654,6 +1724,13 @@ namespace quick_cache
 	}
 namespace // Global namespace.
 	{
+		/**
+		 * Postload event handler; overrides core WP function.
+		 *
+		 * @since 140422 First documented version.
+		 *
+		 * @note See `/wp-settings.php` around line #226.
+		 */
 		function wp_cache_postload() // See: `wp-settings.php`.
 			{
 				$advanced_cache = $GLOBALS['quick_cache__advanced_cache'];
