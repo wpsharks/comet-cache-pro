@@ -1002,6 +1002,11 @@ namespace quick_cache
 					$this->postload['with_debug_info'] = array('reason_code' => $reason_code, 'reason' => $reason);
 				}
 
+			/**
+			 * Filters WP {@link \status_header()} (if applicable).
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function maybe_filter_status_header_postload()
 				{
 					if(empty($this->postload['filter_status_header']))
@@ -1018,6 +1023,11 @@ namespace quick_cache
 						}, PHP_INT_MAX, 2);
 				}
 
+			/**
+			 * Invalidates cache files for a user (if applicable).
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function maybe_invalidate_when_logged_in_postload()
 				{
 					if(QUICK_CACHE_WHEN_LOGGED_IN !== 'postload')
@@ -1040,6 +1050,12 @@ namespace quick_cache
 					unset($_file); // Just a little housekeeping.
 				}
 
+			/**
+			 * Starts output buffering in the postload phase (i.e. a bit later);
+			 *    when/if user caching is enabled; and if applicable.
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function maybe_start_ob_when_logged_in_postload()
 				{
 					if(QUICK_CACHE_WHEN_LOGGED_IN !== 'postload')
@@ -1080,9 +1096,9 @@ namespace quick_cache
 				}
 
 			/**
-			 * @raamdev This is called upon by the WP postload phase.
-			 *    If debug info is present, it's echoed out at the end of the request — IF it's a request for content within WordPress;
-			 *    and only if it's possible to include an HTML comment based on the current PHP {@link headers_list()}.
+			 * Appends `NC_DEBUG_` info in the WordPress `shutdown` phase (if applicable).
+			 *
+			 * @since 140422 First documented version.
 			 */
 			public function maybe_set_debug_info_postload()
 				{
@@ -1109,12 +1125,19 @@ namespace quick_cache
 				}
 
 			/**
-			 * @raamdev This is where we have a chance to grab any values we need from WordPress; or from the QC plugin.
+			 * Grab details from WP and the Quick Cache plugin itself,
+			 *    after the main query is loaded (if at all possible).
+			 *
+			 * This is where we have a chance to grab any values we need from WordPress; or from the QC plugin.
 			 *    It is EXTREMEMLY important that we NOT attempt to grab any object references here.
 			 *    Anything acquired in this phase should be stored as a scalar value.
 			 *    See {@link output_buffer_callback_handler()} for further details.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @attaches-to `wp` hook.
 			 */
-			public function wp_main_query_postload() // Fires on `wp` action hook.
+			public function wp_main_query_postload()
 				{
 					if($this->is_wp_loaded_query || is_admin())
 						return; // Nothing to do.
