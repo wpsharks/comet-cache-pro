@@ -152,8 +152,9 @@ namespace quick_cache
 							                                'cache_clear_eval_code'                => '', // PHP code.
 							                                'cache_purge_home_page_enable'         => '1', // `0|1`.
 							                                'cache_purge_posts_page_enable'        => '1', // `0|1`.
-							                                'cache_purge_category_archive_enable'  => '1', // `0|1`.
-							                                'cache_purge_tag_archive_enable'       => '1', // `0|1`.
+							                                'cache_purge_term_category_enable'     => '1', // `0|1`.
+							                                'cache_purge_term_post_tag_enable'     => '1', // `0|1`.
+							                                'cache_purge_term_other_enable'        => '1', // `0|1`.
 							                                'allow_browser_cache'                  => '0', // `0|1`.
 
 							                                'cache_dir'                            => $wp_content_dir_relative.'/cache',
@@ -278,8 +279,8 @@ namespace quick_cache
 							add_action('delete_post', array($this, 'auto_purge_post_cache'));
 							add_action('clean_post_cache', array($this, 'auto_purge_post_cache'));
 
-							add_action('added_term_relationship', array($this, 'auto_purge_tag_archive_cache'), 10, 2);
-							add_action('deleted_term_relationships', array($this, 'auto_purge_tag_archive_cache'), 10, 2);
+							add_action('added_term_relationship', array($this, 'auto_purge_post_terms_cache'), 10, 1);
+							add_action('delete_term_relationships', array($this, 'auto_purge_post_terms_cache'), 10, 1);
 
 							add_action('trackback_post', array($this, 'auto_purge_comment_post_cache'));
 							add_action('pingback_post', array($this, 'auto_purge_comment_post_cache'));
@@ -1256,7 +1257,7 @@ namespace quick_cache
 
 							$counter += $this->auto_purge_home_page_cache(); // If enabled and necessary.
 							$counter += $this->auto_purge_posts_page_cache(); // If enabled and applicable.
-							$counter += $this->auto_purge_category_archive_cache(); // If enabled and applicable.
+							$counter += $this->auto_purge_post_terms_cache($id); // If enabled and applicable.
 
 							if(!($permalink = get_permalink($id))) return $counter; // Nothing we can do.
 
@@ -1418,135 +1419,119 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
 
-					// @TODO need to update this to be intelligent like auto_purge_tag_archive_cache()
-					/*
-					 * @raamdev I suspect this method is not necessary. A term is also a category, which is one of the nice things about `term`-related hooks.
-					 *    While they often include MUCH more than you bargained for, they do cut down on the amount of code needed to deal with things like this.
+					/**
+					 * Automatically purge cache files for terms associated with a post.
 					 *
-					 *    You might consider renaming the routine for tags and instead referencing it with the word `terms`.
-					 *    I'll try to offer some suggestions down there as I work through this.
-					 */
-					public function auto_purge_category_archive_cache()
-						{
-							$counter = 0; // Initialize.
-
-							if(!$this->options['enable'])
-								return $counter; // Nothing to do.
-
-							if(!$this->options['cache_purge_category_archive_enable'])
-								return $counter; // Nothing to do.
-
-							$cache_dir = ABSPATH.$this->options['cache_dir'];
-							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
-
-							$archive_base = get_option('category_base');
-
-							if($archive_base === '') // If no custom archive base is configured, we use the default
-								$archive_base = home_url('/category/');
-
-							$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($archive_base, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
-							$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
-							                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-							                                '(?:\/index)?(?:\.|\/[^\/]+[.\/])/';
-
-							/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-							foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
-								{
-									if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
-									// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
-									// Actual `http|https/...` cache files are nested. Files in the immediate directory are for other purposes.
-
-									if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
-										throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
-									$counter++; // Increment counter for each file purge.
-
-									if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
-										continue; // Stop here; we already issued a notice, or this notice is N/A.
-
-									$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-									$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-									              __('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the designated "Category Archive" (auto-purging).', $this->text_domain);
-									update_option(__NAMESPACE__.'_notices', $_notices);
-								}
-							unset($_file, $_notices); // Just a little housekeeping.
-
-							return apply_filters(__METHOD__, $counter, get_defined_vars());
-						}
-
-					/*
-					 * See also: wp_remove_object_terms() in wp-includes/taxonomy.php
-					 * See also: wp_set_object_terms() in wp-includes/taxonomy.php
+					 * @attaches-to `added_term_relationship` hook.
+					 * @attaches-to `delete_term_relationships` hook.
 					 *
-					 *   @raamdev I tested this and it seems to work just fine!
-					 *    I made a few suggestions/observations below; and via HipChat too.
+					 * @since 14XXXX First documented version.
+					 *
+					 * @param integer $id A WordPress post ID.
+					 *
+					 * @return integer Total files purged by this routine (if any).
+					 *
+					 * @throws \exception If a purge failure occurs.
+					 *
+					 * @note In addition to the hooks this is attached to, it is also
+					 *    called upon by {@link auto_purge_post_cache()}.
+					 *
+					 * @see auto_purge_post_cache()
 					 */
-					public function auto_purge_tag_archive_cache($object_id, $tt_ids)
+					public function auto_purge_post_terms_cache($id)
 						{
-							$counter        = 0; // Initialize
-							$terms_to_purge = array(); // Initialize
+							$counter = 0; // Initialize
 
 							if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 								return $counter; // Nothing to do.
 
-							/* @raamdev I would suggest `===` here to avoid a 0 == 0 scenario by mistake. */
-							/* @raamdev I would knock this check down below your other `enable` checks below.
-							 *    If you do those simple checks first, you might be able to avoid a DB query here.
-							 *    i.e. check directories, flags and anything else you can first; trying to avoid DB interaction if possible.
-							 *    You might also check if `$object_id` and/or `$tt_ids` is empty before this check as well. */
-							if(get_post_status($object_id) == 'auto-draft')
-								return $counter; // Nothing to do.
-
-							// @TODO Add option to UI to disable clearing tag cache when saving as Draft
+							// @TODO Add option to UI to disable clearing term cache when saving as Draft
 							// By default, clearing the tag cache when saving as Draft is enabled because
 							// the post might be going from Published -> Draft, in which case the Tag
 							// archive cache should be updated. Some site-owners might want to disable
-							// this behavior.       @raamdev... I think what you have is fine, but I see what you mean!
+							// this behavior.
 
 							if(!$this->options['enable'])
 								return $counter; // Nothing to do.
 
-							if(!$this->options['cache_purge_tag_archive_enable'])
+							if(!$this->options['cache_purge_term_category_enable'] &&
+							   !$this->options['cache_purge_term_post_tag_enable'] &&
+							   !$this->options['cache_purge_term_other_enable']
+							)
+								return $counter; // Nothing to do.
+
+							if(get_post_status($id) === 'auto-draft')
 								return $counter; // Nothing to do.
 
 							$cache_dir = ABSPATH.$this->options['cache_dir'];
 							if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
-							if(is_array($tt_ids))
+							/*
+							 * Build an array of available taxonomies for this post (as taxonomy objects)
+							 */
+							$taxonomies = get_object_taxonomies(get_post($id), 'objects');
+							if(!is_array($taxonomies)) return $counter; // Nothing to do
+
+							/*
+							 * Build an array of terms associated with this post for each taxonomy.
+							 * Also save taxonomy label information for Dashboard messaging later.
+							 */
+							$terms           = array();
+							$taxonomy_labels = array();
+							foreach($taxonomies as $_taxonomy)
 								{
-									foreach($tt_ids as $term_taxonomy_id)
+									// Check if this is a term we should purge
+									if($_taxonomy->name === 'category' && !$this->options['cache_purge_term_category_enable'])
+										continue;
+									if($_taxonomy->name === 'post_tag' && !$this->options['cache_purge_term_post_tag_enable'])
+										continue;
+									if($_taxonomy->name !== 'category' && $_taxonomy->name !== 'post_tag' && !$this->options['cache_purge_term_other_enable'])
+										continue;
+
+									if(is_array($_terms = wp_get_post_terms($id, $_taxonomy->name)))
 										{
-											/* @raamdev This call to `get_term_by()` might return a FALSE value. */
-											$terms_to_purge[] = get_term_by('term_taxonomy_id', (integer)$term_taxonomy_id, 'post_tag', OBJECT);
+											$terms = array_merge($terms, $_terms);
+
+											// Improve Dashboard messaging by getting the Taxonomy label (e.g., "Tag" instead of "post_tag")
+											// If we don't have a Singular Name for this taxonomy, use the taxonomy name itself
+											if(empty($_taxonomy->labels->singular_name) || $_taxonomy->labels->singular_name === '')
+												$taxonomy_labels[$_taxonomy->name] = $_taxonomy->name;
+											else
+												$taxonomy_labels[$_taxonomy->name] = $_taxonomy->labels->singular_name;
 										}
 								}
-							else
-								{
-									/* @raamdev This call to `get_term_by()` might return a FALSE value. */
-									$terms_to_purge[] = get_term_by('term_taxonomy_id', (integer)$tt_ids, 'post_tag', OBJECT);
-								}
-							/* @raamdev Don't forget to `unset($term_taxonomy_id);` here to help yourself avoid a conflict later in your code.
-							 *    You might have noticed that when I use temp vars like this in an iteration I usually give them a temp prefix
-							 *    like `$_term_taxonomy_id`; just so it's easier for me to remember that I should unset after iteration.
-							 *    That's just something that I do to help me remember. It's not really a rule or anything. */
+							unset($_taxonomy, $_terms);
+							if(empty($terms)) return $counter; // Nothing to do.
 
+							/*
+							 * Build an array of terms with Term Names, Permalinks, and associated Taxonomy labels
+							 */
+							$terms_to_purge = array();
+							$_i         = 0;
+							foreach($terms as $_term)
+								{
+									if(($_link = get_term_link($_term)))
+										{
+											$terms_to_purge[$_i]['permalink'] = $_link; // E.g., "http://jason.websharks-inc.net/category/uncategorized/"
+											$terms_to_purge[$_i]['term_name'] = $_term->name; // E.g., "Uncategorized"
+											if(!empty($taxonomy_labels[$_term->taxonomy])) // E.g., "Tag" or "Category"
+												$terms_to_purge[$_i]['taxonomy_label'] = $taxonomy_labels[$_term->taxonomy];
+											else
+												$terms_to_purge[$_i]['taxonomy_label'] = $_term->taxonomy; // e.g., "post_tag" or "category"
+										}
+									$_i++;
+								}
+							unset($_term, $_link, $_i);
 							if(empty($terms_to_purge)) return $counter; // Nothing to do.
 
-							foreach($terms_to_purge as $term)
+							foreach($terms_to_purge as $_term)
 								{
-									/* @raamdev The `$term` variable might be FALSE here.
-									 *    That could (in and of itself) result in `get_tag_link()` being FALSE also.
-									 *    Well, if you avoid the `$term_id` being empty here, I'd still double-check the `$term_permalink`
-									 *    value after calling `get_tag_link()`; just to be extra sure before proceeding beyond this point. */
-
-									/* @raamdev You might also consider looking at @{link \get_term_link()} and {@link \get_term_feed_link()} to see if those might help here.
-									 *    Using those it might be easily possible to consider more than just tags in this routine. */
-									$term_permalink = get_tag_link($term->term_id);
-
-									$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($term_permalink, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+									$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($_term['permalink'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 									$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 									                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 									                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
 
+									$_i = 0;
 									/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 									foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 										{
@@ -1558,16 +1543,17 @@ namespace quick_cache
 												throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 											$counter++; // Increment counter for each file purge.
 
-											if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
-												continue; // Stop here; we already issued a notice, or this notice is N/A.
+											if(!is_admin() || $_i > 100)
+												continue; // Stop here; we're at our max number of notices or this notice is N/A.
 
+											$_i++;
 											$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
 											$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-											              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for Tag: <code>%1$s</code> (auto-purging).', $this->text_domain), $term->name);
+											              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for %1$s: <code>%2$s</code> (auto-purging).', $this->text_domain), $_term['taxonomy_label'], $_term['term_name']);
 											update_option(__NAMESPACE__.'_notices', $_notices);
 										}
 								}
-							unset($_file, $_notices); // Just a little housekeeping.
+							unset($_term, $_file, $_notices, $_i); // Just a little housekeeping.
 
 							return apply_filters(__METHOD__, $counter, get_defined_vars());
 						}
