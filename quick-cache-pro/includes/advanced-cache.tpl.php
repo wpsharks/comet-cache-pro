@@ -794,6 +794,11 @@ namespace quick_cache
 					$this->maybe_start_output_buffering();
 				}
 
+			/**
+			 * Loads any advanced cache plugin files found inside `/wp-content/ac-plugins`.
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function load_ac_plugins()
 				{
 					if(!is_dir(WP_CONTENT_DIR.'/ac-plugins'))
@@ -807,12 +812,22 @@ namespace quick_cache
 					unset($_ac_plugin); // Houskeeping.
 				}
 
+			/**
+			 * Ignores user aborts; when/if the Auto-Cache Engine is running.
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function maybe_ignore_user_abort()
 				{
 					if($this->is_auto_cache_engine())
 						ignore_user_abort(TRUE);
 				}
 
+			/**
+			 * Sends no-cache headers (if applicable).
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function maybe_stop_browser_caching()
 				{
 					if(!empty($_GET['qcABC'])) return;
@@ -824,6 +839,11 @@ namespace quick_cache
 					header('Pragma: no-cache');
 				}
 
+			/**
+			 * Sets a flag for possible invalidation upon certain actions in the postload phase.
+			 *
+			 * @since 140422 First documented version.
+			 */
 			public function maybe_postload_invalidate_when_logged_in()
 				{
 					if(QUICK_CACHE_WHEN_LOGGED_IN !== 'postload')
@@ -848,6 +868,14 @@ namespace quick_cache
 						$this->postload['invalidate_when_logged_in'] = TRUE;
 				}
 
+			/**
+			 * Start output buffering (if applicable); or serve a cache file (if possible).
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @note This is a vital part of Quick Cache. This method serves existing (fresh) cache files.
+			 *    It is also responsible for beginning the process of collecting the output buffer.
+			 */
 			public function maybe_start_output_buffering()
 				{
 					if(strtoupper(PHP_SAPI) === 'CLI')
@@ -955,10 +983,12 @@ namespace quick_cache
 				}
 
 			/**
-			 * @raamdev Adds postload debug info. If set here, the data will get picked up
-			 *    by {@link maybe_set_debug_info_postload()} in the postload phase.
+			 * Used to setup debug info (if enabled).
 			 *
-			 * @see maybe_set_debug_info_postload()
+			 * @since 140422 First documented version.
+			 *
+			 * @param string $reason_code One of the `NC_DEBUG_` constants.
+			 * @param string $reason Optionally override the built-in description with a custom message.
 			 */
 			public function maybe_set_debug_info($reason_code, $reason = '')
 				{
