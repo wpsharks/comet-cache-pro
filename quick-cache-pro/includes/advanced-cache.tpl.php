@@ -1796,6 +1796,15 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
+			/**
+			 * Does the current request include a query string?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_get_request_w_query()
 				{
 					static $is; // Cache.
@@ -1808,6 +1817,15 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
+			/**
+			 * Should the current user be considered a logged-in user?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_like_user_logged_in()
 				{
 					static $is; // Cache.
@@ -1841,6 +1859,15 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
+			/**
+			 * Are we in a LOCALHOST environment?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_localhost()
 				{
 					static $is; // Cache.
@@ -1855,6 +1882,15 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
+			/**
+			 * Is the current request for the Auto-Cache Engine?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_auto_cache_engine()
 				{
 					static $is; // Cache.
@@ -1867,6 +1903,15 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
+			/**
+			 * Is the current request for a feed?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_feed()
 				{
 					static $is; // Cache.
@@ -1881,6 +1926,15 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
+			/**
+			 * Is the current request over SSL?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_ssl()
 				{
 					static $is; // Cache.
@@ -1901,9 +1955,14 @@ namespace quick_cache
 					return ($is = FALSE);
 				}
 
-			/*
-			 * @raamdev This checks the a string document source code to see
-			 *    if it's an HTML or XML document we can attach comments to.
+			/**
+			 * Is a document/string an HTML/XML doc; or no?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @param string $doc Input string/document to check.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
 			 */
 			public function is_html_xml_doc($doc)
 				{
@@ -1913,9 +1972,14 @@ namespace quick_cache
 					return FALSE; // Not an HTML/XML document.
 				}
 
-			/*
-			 * @raamdev This got moved here into a new class member.
-			 *    It was previously inside {@link output_buffer_callback_handler()}.
+			/**
+			 * Does the current request have a cacheable content type?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
 			 */
 			public function has_a_cacheable_content_type()
 				{
@@ -1933,9 +1997,14 @@ namespace quick_cache
 					return ($has = TRUE); // Assume that it is by default, we are within WP after all.
 				}
 
-			/*
-			 * @raamdev This got moved here into a new class member.
-			 *    It was previously inside {@link output_buffer_callback_handler()}.
+			/**
+			 * Does the current request have a cacheable HTTP status code?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @return boolean `TRUE` if yes; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
 			 */
 			public function has_a_cacheable_status()
 				{
