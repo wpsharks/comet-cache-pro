@@ -1,17 +1,23 @@
 <?php
-namespace quick_cache // Root namespace.
+/**
+ * Quick Cache (Advanced Cache Handler)
+ *
+ * This file serves as a template for the Quick Cache plugin in WordPress.
+ * The Quick Cache plugin will fill the `%%` replacement codes automatically.
+ *    This file becomes: `/wp-content/advanced-cache.php`.
+ *
+ * @package quick_cache\advanced_cache
+ * @since 140422 First documented version.
+ * @copyright WebSharks, Inc. <http://www.websharks-inc.com>
+ * @license GNU General Public License, version 2
+ */
+namespace quick_cache
 	{
 		if(!defined('WPINC')) // MUST have WordPress.
 			exit('Do NOT access this file directly: '.basename(__FILE__));
 
-		/*
-		 * This file serves as a template for the Quick Cache plugin in WordPress.
-		 * The Quick Cache plugin will fill the `%%` replacement codes automatically.
-		 *    e.g. this file becomes: `/wp-content/advanced-cache.php`.
-		 */
-
 		/**
-		 * Is this Quick Cache Pro?
+		 * Quick Cache Pro flag.
 		 *
 		 * @since 140422 First documented version.
 		 *
@@ -41,7 +47,7 @@ namespace quick_cache // Root namespace.
 
 		if(!defined('QUICK_CACHE_ALLOW_BROWSER_CACHE'))
 			/**
-			 * Should Quick Cache allow browsers to cache each document?
+			 * Allow browsers to cache each document?
 			 *
 			 * @since 140422 First documented version.
 			 *
@@ -52,8 +58,45 @@ namespace quick_cache // Root namespace.
 			 */
 			define('QUICK_CACHE_ALLOW_BROWSER_CACHE', '%%QUICK_CACHE_ALLOW_BROWSER_CACHE%%');
 
+		if(!defined('QUICK_CACHE_GET_REQUESTS'))
+			/**
+			 * Cache `$_GET` requests w/ a query string?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
+			define('QUICK_CACHE_GET_REQUESTS', '%%QUICK_CACHE_GET_REQUESTS%%');
+
 		if(!defined('QUICK_CACHE_CACHE_404_REQUESTS'))
+			/**
+			 * Cache 404 errors?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_CACHE_404_REQUESTS', '%%QUICK_CACHE_CACHE_404_REQUESTS%%');
+
+		if(!defined('QUICK_CACHE_FEEDS_ENABLE'))
+			/**
+			 * Cache XML/RSS/Atom feeds?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
+			define('QUICK_CACHE_FEEDS_ENABLE', '%%QUICK_CACHE_FEEDS_ENABLE%%');
+
+		if(!defined('QUICK_CACHE_WHEN_LOGGED_IN'))
+			/**
+			 * Cache logged-in users?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`; or `postload`.
+			 */
+			define('QUICK_CACHE_WHEN_LOGGED_IN', '%%QUICK_CACHE_WHEN_LOGGED_IN%%');
 
 		if(!defined('QUICK_CACHE_DIR'))
 			/**
@@ -61,98 +104,218 @@ namespace quick_cache // Root namespace.
 			 *
 			 * @since 140422 First documented version.
 			 *
-			 * @var string Directory relative to `ABSPATH`.
+			 * @var string Absolute server directory path.
 			 */
 			define('QUICK_CACHE_DIR', ABSPATH.'%%QUICK_CACHE_DIR%%');
 
 		if(!defined('QUICK_CACHE_MAX_AGE'))
+			/**
+			 * Cache expiration time.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Anything compatible with PHP's {@link \strtotime()}.
+			 */
 			define('QUICK_CACHE_MAX_AGE', '%%QUICK_CACHE_MAX_AGE%%');
 
-		/*
-		 * The work as boolean flags.
-		 */
-		if(!defined('QUICK_CACHE_WHEN_LOGGED_IN'))
-			define('QUICK_CACHE_WHEN_LOGGED_IN', '%%QUICK_CACHE_WHEN_LOGGED_IN%%');
-
-		if(!defined('QUICK_CACHE_GET_REQUESTS'))
-			define('QUICK_CACHE_GET_REQUESTS', '%%QUICK_CACHE_GET_REQUESTS%%');
-
-		if(!defined('QUICK_CACHE_FEEDS_ENABLE'))
-			define('QUICK_CACHE_FEEDS_ENABLE', '%%QUICK_CACHE_FEEDS_ENABLE%%');
-
-		/*
-		 * These should contain empty strings; or regex patterns.
-		 */
 		if(!defined('QUICK_CACHE_EXCLUDE_URIS'))
+			/**
+			 * URI exclusions.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string A regular expression; else an empty string.
+			 */
 			define('QUICK_CACHE_EXCLUDE_URIS', '%%QUICK_CACHE_EXCLUDE_URIS%%');
 
 		if(!defined('QUICK_CACHE_EXCLUDE_REFS'))
+			/**
+			 * HTTP referrer exclusions.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string A regular expression; else an empty string.
+			 */
 			define('QUICK_CACHE_EXCLUDE_REFS', '%%QUICK_CACHE_EXCLUDE_REFS%%');
 
 		if(!defined('QUICK_CACHE_EXCLUDE_AGENTS'))
+			/**
+			 * HTTP user-agent exclusions.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string A regular expression; else an empty string.
+			 */
 			define('QUICK_CACHE_EXCLUDE_AGENTS', '%%QUICK_CACHE_EXCLUDE_AGENTS%%');
 
-		/*
-		 * Any string value; or just an empty string will do fine also.
-		 */
 		if(!defined('QUICK_CACHE_VERSION_SALT'))
+			/**
+			 * Version salt.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var mixed Any scalar value; e.g. string, integer, boolean;
+			 *    or a PHP expression that results in a scalar value.
+			 */
 			define('QUICK_CACHE_VERSION_SALT', '%%QUICK_CACHE_VERSION_SALT%%');
 
-		/*
-		 * A unique filename for the special 404 Cache File (used when 404 caching is enabled).
-		 */
 		if(!defined('QUICK_CACHE_404_CACHE_FILENAME'))
+			/**
+			 * 404 file name (if applicable).
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string A unique file name that will not conflict with real paths.
+			 *    This should NOT include the extension; basename only please.
+			 */
 			define('QUICK_CACHE_404_CACHE_FILENAME', '----404----');
 
-		/*
-		 * Configuration for the HTML Compressor (if enabled).
-		 */
 		if(!defined('QUICK_CACHE_HTMLC_ENABLE'))
+			/**
+			 * Enable HTML compressor?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_ENABLE', '%%QUICK_CACHE_HTMLC_ENABLE%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS'))
+			/**
+			 * CSS exclusions for the HTML compressor.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string A regular expression; else an empty string.
+			 */
 			define('QUICK_CACHE_HTMLC_CSS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_CSS_EXCLUSIONS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_JS_EXCLUSIONS'))
+			/**
+			 * JS exclusions for the HTML compressor.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string A regular expression; else an empty string.
+			 */
 			define('QUICK_CACHE_HTMLC_JS_EXCLUSIONS', '%%QUICK_CACHE_HTMLC_JS_EXCLUSIONS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME'))
+			/**
+			 * Cache expiration time for the HTML compressor.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Anything compatible with PHP's {@link \strtotime()}.
+			 */
 			define('QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC'))
+			/**
+			 * Public cache directory for the HTML compressor.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Absolute server directory path.
+			 */
 			define('QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE'))
+			/**
+			 * Private cache directory for the HTML compressor.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string Absolute server directory path.
+			 */
 			define('QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE', ABSPATH.'%%QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS'))
+			/**
+			 * Compress/combine `<head>` and `<body>` CSS?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS'))
+			/**
+			 * Compress/combine `<head>` JS?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS'))
+			/**
+			 * Compress/combine `<!--footer-scripts-->`?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS'))
+			/**
+			 * Compress/combine remotely hosted CSS/JS files?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS', '%%QUICK_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE'))
+			/**
+			 * Compress inline `<script>` tags?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE'))
+			/**
+			 * Compress CSS code after combining files?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_CSS_CODE%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE'))
+			/**
+			 * Compress JS code after combining files?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_JS_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_JS_CODE%%');
 
 		if(!defined('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE'))
+			/**
+			 * Compress the resulting HTML code?
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+			 */
 			define('QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE', '%%QUICK_CACHE_HTMLC_COMPRESS_HTML_CODE%%');
 
-		/*
-		 * The heart of Quick Cache.
+		/**
+		 * Quick Cache (Advanced Cache Handler)
+		 *
+		 * @package quick_cache\advanced_cache
+		 * @since 140422 First documented version.
 		 */
-
 		class advanced_cache # `/wp-content/advanced-cache.php`
 		{
 			public $is_pro = TRUE; // Identifies the pro version of Quick Cache.
