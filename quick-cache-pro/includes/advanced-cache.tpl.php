@@ -815,6 +815,17 @@ namespace quick_cache // Root namespace.
 					return $doc."\n".'<!-- '.htmlspecialchars(sprintf(__('Quick Cache is NOT caching this page, %1$s', $this->text_domain), $reason)).' -->';
 				}
 
+			/**
+			 * Recursive directory iterator based on a regex pattern.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @param string $dir An absolute server directory path.
+			 * @param string $regex A regex pattern; compares to each full file path.
+			 *
+			 * @return \RegexIterator Navigable with {@link \foreach()}; where each item
+			 *    is a {@link \RecursiveDirectoryIterator}.
+			 */
 			public function dir_regex_iteration($dir, $regex)
 				{
 					$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
@@ -1248,6 +1259,17 @@ namespace quick_cache // Root namespace.
 					return ($has = TRUE); // Assume that it is by default, we are within WP after all.
 				}
 
+			/**
+			 * Checks if a PHP extension is loaded up.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @param string $extension A PHP extension slug (i.e. extension name).
+			 *
+			 * @return boolean `TRUE` if the extension is loaded; else `FALSE`.
+			 *
+			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 */
 			public function is_extension_loaded($extension)
 				{
 					static $is = array(); // Static cache.
@@ -1351,6 +1373,13 @@ namespace quick_cache // Root namespace.
 					return $value; // With applied filters.
 				}
 
+			/**
+			 * Apache `.htaccess` rules that deny public access to the contents of a directory.
+			 *
+			 * @since 140422 First documented version.
+			 *
+			 * @var string `.htaccess` fules.
+			 */
 			public $htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";
 		}
 

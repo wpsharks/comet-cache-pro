@@ -2160,7 +2160,7 @@ namespace quick_cache
 						}
 
 					/*
-					 * See also: `advanced-cache.tpl.php` duplicate.
+					 * See also: `advanced-cache.tpl.php` duplicates.
 					 *    @TODO Find a way to centralize this section so it can be shared between both classes easily.
 					 */
 
@@ -2387,6 +2387,17 @@ namespace quick_cache
 							return ($tokens[$dashify] = $token_value);
 						}
 
+					/**
+					 * Recursive directory iterator based on a regex pattern.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @param string $dir An absolute server directory path.
+					 * @param string $regex A regex pattern; compares to each full file path.
+					 *
+					 * @return \RegexIterator Navigable with {@link \foreach()}; where each item
+					 *    is a {@link \RecursiveDirectoryIterator}.
+					 */
 					public function dir_regex_iteration($dir, $regex)
 						{
 							$dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
@@ -2396,6 +2407,17 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $regex_iterator, get_defined_vars());
 						}
 
+					/**
+					 * Checks if a PHP extension is loaded up.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @param string $extension A PHP extension slug (i.e. extension name).
+					 *
+					 * @return boolean `TRUE` if the extension is loaded; else `FALSE`.
+					 *
+					 * @note The return value of this function is cached to reduce overhead on repeat calls.
+					 */
 					public function is_extension_loaded($extension)
 						{
 							static $is = array(); // Static cache.
@@ -2403,6 +2425,22 @@ namespace quick_cache
 							return ($is[$extension] = extension_loaded($extension));
 						}
 
+					/*
+					 * ------------ end section to centralize in a future release.
+					 */
+
+					/**
+					 * Is a particular function possible in every way?
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @param string $function A PHP function (or user function) to check.
+					 *
+					 * @return string `TRUE` if the function is possible; else `FALSE`.
+					 *
+					 * @note This checks (among other things) if the function exists and that it's callable.
+					 *    It also checks the currently configured `disable_functions` and `suhosin.executor.func.blacklist`.
+					 */
 					public function function_is_possible($function)
 						{
 							static $disabled_functions; // Static cache.
@@ -2426,10 +2464,22 @@ namespace quick_cache
 							return apply_filters(__METHOD__, $possible, get_defined_vars());
 						}
 
+					/**
+					 * Apache `.htaccess` rules that deny public access to the contents of a directory.
+					 *
+					 * @since 140422 First documented version.
+					 *
+					 * @var string `.htaccess` fules.
+					 */
 					public $htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";
 				}
 
 				/**
+				 * Used internally by other Quick Cache classes as an easy way to reference
+				 *    the core {@link plugin} class instance for Quick Cache.
+				 *
+				 * @since 140422 First documented version.
+				 *
 				 * @return plugin Class instance.
 				 */
 				function plugin() // Easy reference.
@@ -2437,7 +2487,17 @@ namespace quick_cache
 						return $GLOBALS[__NAMESPACE__];
 					}
 
+				/**
+				 * A global reference to the Quick Cache plugin.
+				 *
+				 * @since 140422 First documented version.
+				 *
+				 * @var plugin $GLOBALS [__NAMESPACE__]
+				 */
 				$GLOBALS[__NAMESPACE__] = new plugin(); // New plugin instance.
+				/*
+				 * API class inclusion; depends on {@link $GLOBALS[__NAMESPACE__]}.
+				 */
 				require_once dirname(__FILE__).'/includes/api-class.php';
 			}
 		else add_action('all_admin_notices', function () // Do NOT load in this case.
