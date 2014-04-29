@@ -502,6 +502,16 @@ namespace quick_cache
 			public $plugin_file = '';
 
 			/**
+			 * Flag indicating the current user login cookie is expired or invalid.
+			 *
+			 * @since 140429 Improving user cache handlers.
+			 *
+			 * @var boolean `TRUE` if current user login cookie is expired or invalid.
+			 *    See also {@link user_token()} and {@link maybe_start_ob_when_logged_in_postload()}.
+			 */
+			public $user_login_cookie_expired_or_invalid = FALSE;
+
+			/**
 			 * Text domain for translations; based on `__NAMESPACE__`.
 			 *
 			 * @since 140422 First documented version.
@@ -1065,8 +1075,13 @@ namespace quick_cache
 						return NULL; // Nothing to do in this case.
 
 					if(!($this->user_token = $this->user_token()))
-						return $this->maybe_set_debug_info($this::NC_DEBUG_NO_USER_TOKEN);
-
+						if(!$this->user_login_cookie_expired_or_invalid)
+							return $this->maybe_set_debug_info($this::NC_DEBUG_NO_USER_TOKEN);
+					/*
+					 * Note that it IS possible for `$this->user_token` to be empty here in a case where
+					 * it was not possible to obtain a user token because the current user's login is expired or invalid.
+					 * In this scenario we still proceed, but WITHOUT a user token; i.e. we use a cache that is NOT user-specific.
+					 */
 					$this->cache_path = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
 					$this->cache_file = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
 
@@ -1736,6 +1751,10 @@ namespace quick_cache
 			 *    else an empty string if that's not possible to do.
 			 *
 			 * @note The return value of this function is cached to reduce overhead on repeat calls.
+			 *
+			 * @note This routine may trigger a flag which indicates that the current user was logged-in at some point,
+			 *    but now the login cookie can no longer be validated by WordPress; i.e. they are NOT actually logged in any longer.
+			 *    See {@link $user_login_cookie_expired_or_invalid}
 			 */
 			public function user_token()
 				{
@@ -1750,6 +1769,12 @@ namespace quick_cache
 
 					else if(!empty($_COOKIE['wp-postpass_'.COOKIEHASH]) && is_string($_COOKIE['wp-postpass_'.COOKIEHASH]))
 						return ($token = md5(stripslashes($_COOKIE['wp-postpass_'.COOKIEHASH])));
+
+					else if(defined('SID') && SID) return ($token = preg_replace('/[^a-z0-9]/i', '', SID));
+
+					if(function_exists('wp_validate_auth_cookie') // We were unable to validate the login cookie?
+					   && !empty($_COOKIE['wordpress_logged_in_'.COOKIEHASH]) && is_string($_COOKIE['wordpress_logged_in_'.COOKIEHASH])
+					) $this->user_login_cookie_expired_or_invalid = TRUE; // Flag as `TRUE`.
 
 					return ($token = '');
 				}
