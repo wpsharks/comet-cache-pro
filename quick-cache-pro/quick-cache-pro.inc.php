@@ -1331,7 +1331,7 @@ namespace quick_cache
 					 * @note This is also called upon by other routines which listen for
 					 *    events that are indirectly associated with a post ID.
 					 *
-					 * @see auto_purge_comment_post_cache()
+					 * @see auto_purge_post_cache()
 					 */
 					public function auto_purge_post_cache_transition($new_status, $old_status, $post)
 						{
