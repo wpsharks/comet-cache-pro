@@ -35,6 +35,7 @@ namespace quick_cache // Root namespace.
 					echo '   <div class="plugin-menu-page-upsells">'."\n";
 					if(current_user_can(plugin()->update_cap)) echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync')), self_admin_url('/admin.php'))).'"><i class="fa fa-magic"></i> '.__('Pro Updater', plugin()->text_domain).'</a>'."\n";
 					echo '      <a href="'.esc_attr('http://www.websharks-inc.com/r/'.str_replace('_', '-', __NAMESPACE__).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', plugin()->text_domain).'</a>'."\n";
+					echo '      <a href="'.esc_attr('http://www.websharks-inc.com/r/quick-cache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', plugin()->text_domain).'</a>'."\n";
 					echo '   </div>'."\n";
 
 					echo '   <img src="'.plugin()->url('/client-s/images/options.png').'" alt="'.esc_attr(__('Plugin Options', plugin()->text_domain)).'" />'."\n";
@@ -606,6 +607,7 @@ namespace quick_cache // Root namespace.
 					echo '   <div class="plugin-menu-page-upsells">'."\n";
 					if(current_user_can(plugin()->cap)) echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => __NAMESPACE__)), self_admin_url('/admin.php'))).'"><i class="fa fa-gears"></i> '.__('Options', plugin()->text_domain).'</a>'."\n";
 					echo '      <a href="'.esc_attr('http://www.websharks-inc.com/r/'.str_replace('_', '-', __NAMESPACE__).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', plugin()->text_domain).'</a>'."\n";
+					echo '      <a href="'.esc_attr('http://www.websharks-inc.com/r/quick-cache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', plugin()->text_domain).'</a>'."\n";
 					echo '   </div>'."\n";
 
 					echo '   <img src="'.plugin()->url('/client-s/images/updater.png').'" alt="'.esc_attr(__('Plugin Updater', plugin()->text_domain)).'" />'."\n";
