@@ -158,7 +158,7 @@ namespace quick_cache
 							                                'cache_purge_term_other_enable'        => '0', // `0|1`.
 							                                'allow_browser_cache'                  => '0', // `0|1`.
 
-							                                'cache_dir'                            => $wp_content_dir_relative.'/cache/quick-cache',
+							                                'cache_dir'                            => $wp_content_dir_relative.'/cache/quick-cache/cache',
 							                                'cache_max_age'                        => '7 days', // `strtotime()` compatible.
 
 							                                'when_logged_in'                       => '0', // `0|1|postload`.
@@ -178,8 +178,8 @@ namespace quick_cache
 							                                'htmlc_js_exclusions'                  => '.php?', // Empty string or line-delimited patterns.
 
 							                                'htmlc_cache_expiration_time'          => '14 days', // `strtotime()` compatible.
-							                                'htmlc_cache_dir_public'               => $wp_content_dir_relative.'/htmlc/cache/public',
-							                                'htmlc_cache_dir_private'              => $wp_content_dir_relative.'/htmlc/cache/private',
+							                                'htmlc_cache_dir_public'               => $wp_content_dir_relative.'/cache/quick-cache/htmlc/public',
+							                                'htmlc_cache_dir_private'              => $wp_content_dir_relative.'/cache/quick-cache/htmlc/private',
 
 							                                'htmlc_compress_combine_head_body_css' => '1', // `0|1`.
 							                                'htmlc_compress_combine_head_js'       => '1', // `0|1`.
