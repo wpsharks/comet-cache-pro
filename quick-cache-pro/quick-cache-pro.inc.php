@@ -452,7 +452,7 @@ namespace quick_cache
 											$wp_content_dir_relative = // Considers custom `WP_CONTENT_DIR` locations.
 												trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'." \t\n\r\0\x0B");
 
-											$this->options['base_dir'] = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
+											$this->options['base_dir'] = $this->options['cache_dir'] = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
 											if(!$this->options['base_dir'] || $this->options['base_dir'] === $wp_content_dir_relative.'/cache')
 												$this->options['base_dir'] = $wp_content_dir_relative.'/cache/quick-cache';
 
