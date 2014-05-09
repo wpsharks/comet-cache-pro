@@ -1353,7 +1353,7 @@ namespace quick_cache
 						'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
 						'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token,
 						'cache_dir_url_public'           => $this->site_url.'/'.str_replace(ABSPATH, '', QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token),
-						'cache_dir_private'              => QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE,
+						'cache_dir_private'              => QUICK_CACHE_HTMLC_CACHE_DIR_PRIVATE.$host_dir_token,
 
 						'compress_combine_head_body_css' => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
 						'compress_combine_head_js'       => QUICK_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
