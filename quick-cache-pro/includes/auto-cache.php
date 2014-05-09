@@ -45,11 +45,9 @@ namespace quick_cache // Root namespace.
 						if(!$this->plugin->options['auto_cache_other_urls'])
 							return; // Nothing to do.
 
-					if(!is_dir($this->plugin->abspath_to($this->plugin->cache_sub_dir)))
-						return; // Not possible; cache directory missing.
-
-					if(!is_writable($this->plugin->abspath_to($this->plugin->cache_sub_dir)))
-						return; // Not possible; cache directory not writable.
+					$cache_dir = $this->plugin->abspath_to($this->plugin->cache_sub_dir);
+					if(!is_dir($cache_dir) || !is_writable($cache_dir))
+						return; // Not possible in this case.
 
 					@set_time_limit(900); // 15 minutes maximum.
 					ignore_user_abort(TRUE); // Keep running.
