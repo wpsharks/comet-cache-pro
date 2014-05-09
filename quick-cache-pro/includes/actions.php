@@ -138,20 +138,15 @@ namespace quick_cache // Root namespace.
 						}
 					$args = array_map('trim', stripslashes_deep((array)$args));
 
-					if(isset($args['cache_dir'])) // No leading/trailing slashes please.
-						$args['cache_dir'] = trim($args['cache_dir'], '\\/'." \t\n\r\0\x0B");
-
-					if(isset($args['htmlc_cache_dir_public'])) // No leading/trailing slashes please.
-						$args['htmlc_cache_dir_public'] = trim($args['htmlc_cache_dir_public'], '\\/'." \t\n\r\0\x0B");
-
-					if(isset($args['htmlc_cache_dir_private'])) // No leading/trailing slashes please.
-						$args['htmlc_cache_dir_private'] = trim($args['htmlc_cache_dir_private'], '\\/'." \t\n\r\0\x0B");
+					if(isset($args['base_dir'])) // No leading/trailing slashes please.
+						$args['base_dir'] = trim($args['base_dir'], '\\/'." \t\n\r\0\x0B");
 
 					plugin()->options = array_merge(plugin()->default_options, $args);
 
-					if(!trim(plugin()->options['cache_dir'], '\\/'." \t\n\r\0\x0B") // Empty (do not allow).
-					   || strpos(basename(plugin()->options['cache_dir']), 'wp-') === 0 // Reserved name?
-					) plugin()->options['cache_dir'] = plugin()->default_options['cache_dir'];
+					if(!trim(plugin()->options['base_dir'], '\\/'." \t\n\r\0\x0B") // Empty?
+					   || strpos(basename(plugin()->options['base_dir']), 'wp-admin') === 0 // Absolutely not!
+					   || strpos(basename(plugin()->options['base_dir']), 'wp-includes') === 0 // Absolutely not!
+					) plugin()->options['base_dir'] = plugin()->default_options['base_dir'];
 
 					update_option(__NAMESPACE__.'_options', plugin()->options); // Blog-specific.
 					if(is_multisite()) update_site_option(__NAMESPACE__.'_options', plugin()->options);
