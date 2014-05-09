@@ -2220,13 +2220,13 @@ namespace quick_cache
 							if(!($advanced_cache_contents = file_get_contents($advanced_cache_template)))
 								return FALSE; // Template file is missing; or is not readable.
 
-							$possible_advanced_cache_content_key_values = array_merge(
+							$possible_advanced_cache_constant_key_values = array_merge(
 								$this->options, // The following additional keys are dynamic.
 								array('cache_dir'               => $this->basepath_to($this->cache_sub_dir),
 								      'htmlc_cache_dir_public'  => $this->basepath_to($this->htmlc_cache_sub_dir_public),
 								      'htmlc_cache_dir_private' => $this->basepath_to($this->htmlc_cache_sub_dir_private)
 								));
-							foreach($possible_advanced_cache_content_key_values as $_option => $_value)
+							foreach($possible_advanced_cache_constant_key_values as $_option => $_value)
 								{
 									$_value = (string)$_value; // Force string.
 
