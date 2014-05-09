@@ -165,7 +165,7 @@ namespace quick_cache
 							load_plugin_textdomain($this->text_domain);
 
 							$wp_content_dir_relative = // Considers custom `WP_CONTENT_DIR` locations.
-								trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'); // No leading/trailing slashes.
+								trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'." \t\n\r\0\x0B");
 
 							$this->default_options = array( // Default options.
 							                                'version'                              => $this->version,
@@ -450,10 +450,10 @@ namespace quick_cache
 									if(!empty($this->options['cache_dir'])) // From the previous release.
 										{
 											$wp_content_dir_relative = // Considers custom `WP_CONTENT_DIR` locations.
-												trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'); // No leading/trailing slashes.
+												trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'." \t\n\r\0\x0B");
 
-											$this->options['base_dir'] = $this->options['cache_dir'];
-											if($this->options['base_dir'] === $wp_content_dir_relative.'/cache')
+											$this->options['base_dir'] = trim($this->options['cache_dir'], '\\/'." \t\n\r\0\x0B");
+											if(!$this->options['base_dir'] || $this->options['base_dir'] === $wp_content_dir_relative.'/cache')
 												$this->options['base_dir'] = $wp_content_dir_relative.'/cache/quick-cache';
 
 											$this->wipe_cache(FALSE, ABSPATH.$this->options['cache_dir']);
@@ -487,7 +487,7 @@ namespace quick_cache
 							 * Common upgrade notice. This applies to all upgrades regardless of version.
 							 * NOTE: the use of `array_unshift()` puts this notice first; even though it comes last down here.
 							 */
-							$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
+							$notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
 							array_unshift($notices, __('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', $this->text_domain));
 							update_option(__NAMESPACE__.'_notices', $notices);
 						}
