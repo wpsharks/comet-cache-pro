@@ -1343,7 +1343,7 @@ namespace quick_cache
 			// e.g. `wp-content/htmlc/cache/public/www-example-com` (main site)
 			// e.g. `wp-content/htmlc/cache/public/sub/www-example-com`
 
-			$htmlc_benchmark = ( QUICK_CACHE_DEBUGGING_ENABLE >= 2 ? 'details' : QUICK_CACHE_DEBUGGING_ENABLE );
+			$htmlc_benchmark = (QUICK_CACHE_DEBUGGING_ENABLE >= 2 ? 'details' : QUICK_CACHE_DEBUGGING_ENABLE);
 
 			$html_compressor_options = array(
 				'benchmark'                      => $htmlc_benchmark,
