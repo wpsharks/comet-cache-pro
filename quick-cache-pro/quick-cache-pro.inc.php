@@ -173,7 +173,7 @@ namespace quick_cache
 				                                'crons_setup'                          => '0', // `0` or timestamp.
 
 				                                'enable'                               => '0', // `0|1`.
-				                                'debugging_enable'                     => '1', // `0|1`.
+				                                'debugging_enable'                     => '1', // `0|1|2` // 2 indicates greater debugging detail.
 				                                'admin_bar_enable'                     => '1', // `0|1`.
 				                                'cache_clear_s2clean_enable'           => '0', // `0|1`.
 				                                'cache_clear_eval_code'                => '', // PHP code.
