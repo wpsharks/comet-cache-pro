@@ -28,7 +28,7 @@ namespace websharks\html_compressor
 		 *
 		 * @var string Dated version string: `YYMMDD`.
 		 */
-		protected $version = '140425';
+		protected $version = '140520';
 
 		/**
 		 * An array of class options.
@@ -147,11 +147,29 @@ namespace websharks\html_compressor
 		/**
 		 * Current base HREF value.
 		 *
+		 * @since 140519 Adding additional benchmarks.
+		 *
+		 * @var array Filled by the cURL (and related) methods.
+		 */
+		protected $remote_connection_times = array();
+
+		/**
+		 * Current base HREF value.
+		 *
 		 * @since 140417 Initial release.
 		 *
 		 * @var string Set by various routines that work together.
 		 */
 		protected $current_base = '';
+
+		/**
+		 * Current CSS `@media` value.
+		 *
+		 * @since 140519 Improving CSS `@media` query support.
+		 *
+		 * @var string Set by various routines that work together.
+		 */
+		protected $current_css_media = '';
 
 		/**
 		 * Static cache array for this class.
@@ -232,7 +250,7 @@ namespace websharks\html_compressor
 			if($this->built_in_regex_js_exclusion_patterns && empty($this->options['disable_built_in_js_exclusions']))
 				$this->built_in_regex_js_exclusions = '/'.implode('|', $this->built_in_regex_js_exclusion_patterns).'/i';
 
-			# JavaScript Compression Library
+			# Require Additional Libs; i.e. Dependencies
 
 			require_once dirname(__FILE__).'/externals/js-minifier.php';
 		}
@@ -276,7 +294,10 @@ namespace websharks\html_compressor
 				if(!empty($this->options['product_title']))
 					$product_title = (string)$this->options['product_title'];
 				$time = number_format(microtime(TRUE) - $time, 5, '.', '');
-				$html .= "\n\n".'<!-- '.sprintf('%1$s took: %2$s seconds -->', htmlspecialchars($product_title), htmlspecialchars($time));
+
+				foreach($this->remote_connection_times as $_remote_connection)
+					$html .= "\n\n".'<!-- '.sprintf('%1$s took %2$s seconds fetching `%3$s`. -->', htmlspecialchars($product_title), htmlspecialchars($_remote_connection['time']), htmlspecialchars($_remote_connection['url']));
+				$html .= "\n\n".'<!-- '.sprintf('%1$s took %2$s seconds (total). -->', htmlspecialchars($product_title), htmlspecialchars($time));
 			}
 			if(!isset($this->options['cleanup_cache_dirs']) || $this->options['cleanup_cache_dirs'])
 				if(mt_rand(1, 20) === 1) $this->cleanup_cache_dirs();
@@ -467,8 +488,9 @@ namespace websharks\html_compressor
 				if(is_array($cached_parts = unserialize(file_get_contents($cache_parts_file_path))))
 					return $cached_parts;
 
-			$css_part  = 0; // Initialize.
-			$css_parts = array(); // Initialize.
+			$css_part                 = 0; // Initialize.
+			$css_parts                = array(); // Initialize.
+			$_last_css_tag_frag_media = 'all'; // Initialize.
 
 			foreach($css_tag_frags as $_css_tag_frag_pos => $_css_tag_frag)
 			{
@@ -490,11 +512,18 @@ namespace websharks\html_compressor
 						if(($_css_code = $this->curl($_css_tag_frag['link_href'])))
 						{
 							$_css_code = $this->resolve_css_relatives($_css_code, $_css_tag_frag['link_href']);
-							$_css_code = $this->resolve_resolved_css_imports($_css_code);
-							$_css_code = $this->wrap_with_css_media_rule($_css_code, $_css_tag_frag['media'], FALSE);
+							$_css_code = $this->resolve_resolved_css_imports($_css_code, $_css_tag_frag['media']);
 
 							if($_css_code) // Now, DO we have something here?
 							{
+								if($_css_tag_frag['media'] !== $_last_css_tag_frag_media)
+									$css_part++; // Starts new part; different `@media` spec here.
+
+								else if(!empty($css_parts[$css_part]['code']) && stripos($css_parts[$css_part]['code'], '@import') !== FALSE)
+									$css_part++; // Starts new part; existing code contains an @import.
+
+								$css_parts[$css_part]['media'] = $_css_tag_frag['media'];
+
 								if(!empty($css_parts[$css_part]['code']))
 									$css_parts[$css_part]['code'] .= "\n\n".$_css_code;
 								else $css_parts[$css_part]['code'] = $_css_code;
@@ -505,23 +534,35 @@ namespace websharks\html_compressor
 				{
 					$_css_code = $_css_tag_frag['style_css'];
 					$_css_code = $this->resolve_css_relatives($_css_code);
-					$_css_code = $this->resolve_resolved_css_imports($_css_code);
-					$_css_code = $this->wrap_with_css_media_rule($_css_code, $_css_tag_frag['media'], FALSE);
+					$_css_code = $this->resolve_resolved_css_imports($_css_code, $_css_tag_frag['media']);
 
 					if($_css_code) // Now, DO we have something here?
 					{
+						if($_css_tag_frag['media'] !== $_last_css_tag_frag_media)
+							$css_part++; // Starts new part; different `@media` spec here.
+
+						else if(!empty($css_parts[$css_part]['code']) && stripos($css_parts[$css_part]['code'], '@import') !== FALSE)
+							$css_part++; // Starts new part; existing code contains an @import.
+
+						$css_parts[$css_part]['media'] = $_css_tag_frag['media'];
+
 						if(!empty($css_parts[$css_part]['code']))
 							$css_parts[$css_part]['code'] .= "\n\n".$_css_code;
 						else $css_parts[$css_part]['code'] = $_css_code;
 					}
 				}
+				$_last_css_tag_frag_media = $_css_tag_frag['media'];
 			}
-			unset($_css_tag_frag_pos, $_css_tag_frag, $_css_code);
+			unset($_last_css_tag_frag_media, $_css_tag_frag_pos, $_css_tag_frag, $_css_code);
 
 			foreach(array_keys($css_parts = array_values($css_parts)) as $css_part)
 			{
 				if(!empty($css_parts[$css_part]['code']))
 				{
+					$_css_media = 'all';
+					if(!empty($css_parts[$css_part]['media']))
+						$_css_media = $css_parts[$css_part]['media'];
+
 					$_css_code    = $css_parts[$css_part]['code'];
 					$_css_code    = $this->move_special_css_at_rules_to_top($_css_code);
 					$_css_code    = $this->strip_prepend_css_charset_utf8($_css_code);
@@ -534,12 +575,12 @@ namespace websharks\html_compressor
 					if(!file_put_contents($_css_code_path, $_css_code)) // Cache compressed CSS code.
 						throw new \exception(sprintf('Unable to cache CSS code file: `%1$s`.', $_css_code_path));
 
-					$css_parts[$css_part]['tag'] = '<link type="text/css" rel="stylesheet" href="'.htmlspecialchars($_css_code_url, ENT_QUOTES).'" media="all" />';
+					$css_parts[$css_part]['tag'] = '<link type="text/css" rel="stylesheet" href="'.htmlspecialchars($_css_code_url, ENT_QUOTES).'" media="'.htmlspecialchars($_css_media, ENT_QUOTES).'" />';
 
 					unset($css_parts[$css_part]['code']); // Ditch this; no need to cache this code too.
 				}
 			}
-			unset($_css_code, $_css_code_cs, $_css_code_path, $_css_code_url);
+			unset($_css_media, $_css_code, $_css_code_cs, $_css_code_path, $_css_code_url);
 
 			if(!file_put_contents($cache_parts_file_path, serialize($css_parts)))
 				throw new \exception(sprintf('Unable to cache CSS parts into: `%1$s`.', $cache_parts_file_path));
@@ -679,7 +720,7 @@ namespace websharks\html_compressor
 			{
 				foreach($_tag_frags as $_tag_frag)
 				{
-					$_link_href = $_style_css = $_media = '';
+					$_link_href = $_style_css = $_media = 'all';
 
 					if(($_link_href = $this->get_link_css_href($_tag_frag)))
 						$_media = $this->get_link_css_media($_tag_frag);
@@ -703,7 +744,7 @@ namespace websharks\html_compressor
 							'style_css'             => $_style_css, // This could also be empty.
 							'style_closing_tag'     => isset($_tag_frag['style_closing_tag']) ? $_tag_frag['style_closing_tag'] : '',
 
-							'media'                 => $_media, // Defaults to `all`.
+							'media'                 => ($_media) ? $_media : 'all', // Defaults to `all`.
 
 							'exclude'               => FALSE // Default value.
 						);
@@ -901,52 +942,23 @@ namespace websharks\html_compressor
 		}
 
 		/**
-		 * Wrap CSS code with the specified `@media` rule.
-		 *
-		 * @since 140417 Initial release.
-		 *
-		 * @note All `@import` rules should have already been 100% resolved
-		 *    with `resolve_resolved_css_imports()` BEFORE running this routine.
-		 *
-		 * @param string  $css CSS code.
-		 * @param string  $media Media rule/declaration.
-		 * @param boolean $move_at_rules Optional; defaults a TRUE value.
-		 *    Only disable if this is handled elsewhere.
-		 *
-		 * @return string CSS code wrapped w/ the specified `@media` rule.
-		 *
-		 * @see <https://developer.mozilla.org/en-US/docs/Web/CSS/@charset>
-		 * @see <http://stackoverflow.com/questions/11746581/nesting-media-rules-in-css>
-		 */
-		protected function wrap_with_css_media_rule($css, $media, $move_at_rules = TRUE)
-		{
-			if(!($css = (string)$css))
-				return $css; // Nothing to do.
-
-			if(!($media = (string)$media))
-				return $css; // Nothing to do.
-
-			$css = '@media '.$media.' {'."\n".$css."\n".'}';
-			if($move_at_rules) // Disable only if handled elsewhere.
-				$css = $this->move_special_css_at_rules_to_top($css);
-
-			return $css;
-		}
-
-		/**
 		 * Resolves `@import` rules in CSS code recursively.
 		 *
 		 * @since 140417 Initial release.
 		 *
 		 * @param string  $css CSS code.
+		 * @param string  $media Current media specification.
 		 * @param boolean $___recursion Internal use only.
 		 *
 		 * @return string CSS code after all `@import` rules have been resolved recursively.
 		 */
-		protected function resolve_resolved_css_imports($css, $___recursion = FALSE)
+		protected function resolve_resolved_css_imports($css, $media, $___recursion = FALSE)
 		{
 			if(!($css = (string)$css))
 				return $css; // Nothing to do.
+
+			$media = $this->current_css_media = (string)$media;
+			if(!$media) $media = $this->current_css_media = 'all';
 
 			$import_media_without_url_regex = '/@(?:\-(?:'.$this->regex_vendor_css_prefixes.')\-)?import\s*(["\'])(?P<url>.+?)\\1(?P<media>[^;]*?);/i';
 			$import_media_with_url_regex    = '/@(?:\-(?:'.$this->regex_vendor_css_prefixes.')\-)?import\s+url\s*\(\s*(["\']?)(?P<url>.+?)\\1\s*\)(?P<media>[^;]*?);/i';
@@ -954,8 +966,15 @@ namespace websharks\html_compressor
 			$css = preg_replace_callback($import_media_without_url_regex, array($this, '_resolve_resolved_css_imports_cb'), $css);
 			$css = preg_replace_callback($import_media_with_url_regex, array($this, '_resolve_resolved_css_imports_cb'), $css);
 
-			if(preg_match($import_media_without_url_regex, $css) || preg_match($import_media_with_url_regex, $css))
-				return $this->resolve_resolved_css_imports($css, TRUE); // Recursive.
+			if(preg_match_all($import_media_without_url_regex, $css, $_m))
+				foreach($_m['media'] as $_media) if(!$_media || $_media === $this->current_css_media)
+					return $this->resolve_resolved_css_imports($css, $this->current_css_media, TRUE); // Recursive.
+			unset($_m, $_media); // Housekeeping.
+
+			if(preg_match_all($import_media_with_url_regex, $css, $_m))
+				foreach($_m['media'] as $_media) if(!$_media || $_media === $this->current_css_media)
+					return $this->resolve_resolved_css_imports($css, $this->current_css_media, TRUE); // Recursive.
+			unset($_m, $_media); // Housekeeping.
 
 			return $css;
 		}
@@ -971,12 +990,14 @@ namespace websharks\html_compressor
 		 */
 		protected function _resolve_resolved_css_imports_cb(array $m)
 		{
-			if(empty($m['url']) || !($css = $this->curl($m['url'])))
+			if(empty($m['url']))
 				return ''; // Nothing to resolve.
 
-			$css   = $this->resolve_css_relatives($css, $m['url']);
-			$media = (!empty($m['media']) && ($m['media'] = trim($m['media']))) ? $m['media'] : 'all';
-			$css   = $this->wrap_with_css_media_rule($css, $media, FALSE);
+			if(!empty($m['media']) && $m['media'] !== $this->current_css_media)
+				return $m[0]; // Not possible; different media.
+
+			if(($css = $this->curl($m['url'])))
+				$css = $this->resolve_css_relatives($css, $m['url']);
 
 			return $css;
 		}
@@ -1064,15 +1085,15 @@ namespace websharks\html_compressor
 		 *
 		 * @param array $tag_frag A CSS tag fragment.
 		 *
-		 * @return string The link media value if possible (defaulting to `all`); else an empty string.
+		 * @return string The link media value if possible; else a default value of `all`.
 		 */
 		protected function get_link_css_media(array $tag_frag)
 		{
 			if(!empty($tag_frag['link_self_closing_tag']) && preg_match('/type\s*\=\s*(["\'])text\/css\\1|rel\s*=\s*(["\'])stylesheet\\2/i', $tag_frag['link_self_closing_tag']))
-				if((preg_match('/\s+media\s*\=\s*(["\'])(?P<value>.+?)\\1/i', $tag_frag['link_self_closing_tag'], $media) && ($link_css_media = trim($media['value']))) || ($link_css_media = 'all'))
+				if(preg_match('/\s+media\s*\=\s*(["\'])(?P<value>.+?)\\1/i', $tag_frag['link_self_closing_tag'], $media) && ($link_css_media = trim($media['value'])))
 					return $link_css_media;
 
-			return '';
+			return 'all';
 		}
 
 		/**
@@ -1082,15 +1103,15 @@ namespace websharks\html_compressor
 		 *
 		 * @param array $tag_frag A CSS tag fragment.
 		 *
-		 * @return string The style media value if possible (defaulting to `all`); else an empty string.
+		 * @return string The style media value if possible; else a default value of `all`.
 		 */
 		protected function get_style_css_media(array $tag_frag)
 		{
 			if(!empty($tag_frag['style_open_tag']) && !empty($tag_frag['style_closing_tag']) && preg_match('/\<style\s*\>|type\s*\=\s*(["\'])text\/css\\1/i', $tag_frag['style_open_tag']))
-				if((preg_match('/\s+media\s*\=\s*(["\'])(?P<value>.+?)\\1/i', $tag_frag['style_open_tag'], $media) && ($style_css_media = trim($media['value']))) || ($style_css_media = 'all'))
+				if(preg_match('/\s+media\s*\=\s*(["\'])(?P<value>.+?)\\1/i', $tag_frag['style_open_tag'], $media) && ($style_css_media = trim($media['value'])))
 					return $style_css_media;
 
-			return '';
+			return 'all';
 		}
 
 		/**
@@ -2796,10 +2817,16 @@ namespace websharks\html_compressor
 		 */
 		protected function curl($url, $body = '', $max_con_secs = 20, $max_stream_secs = 20, array $headers = array(), $cookie_file = '', $fail_on_error = TRUE, $return_array = FALSE)
 		{
+			$benchmark = !empty($this->options['benchmark'])
+			             && $this->options['benchmark'] === 'details';
+			if($benchmark) $time = microtime(TRUE);
+
 			$custom_request_method = '';
 			$url                   = (string)$url;
 			$max_con_secs          = (integer)$max_con_secs;
 			$max_stream_secs       = (integer)$max_stream_secs;
+			if(!is_array($headers)) $headers = array();
+			$cookie_file = (string)$cookie_file;
 
 			$custom_request_regex = // e.g.`PUT::http://www.example.com/`
 				'/^(?P<custom_request_method>(?:GET|POST|PUT|DELETE))\:{2}(?P<url>.+)/i';
@@ -2815,6 +2842,48 @@ namespace websharks\html_compressor
 			else $body = (string)$body;
 
 			if(!$url) return ''; // Nothing to do here.
+
+			$output    = ''; // Initialize.
+			$http_code = 0; // Initialize.
+
+			/* ---------------------------------------------------------- */
+
+			wordpress_transport: // WordPress transport layer.
+
+			/*
+			 * This is currently disabled because it runs in the shutdown phase
+			 * when integrated with Quick Cache. Meaning, objects may have already been destructed by the time this runs.
+			 * Until a good reliable solution is found, this will remain disabled via `0 === 0`.
+			 */
+			if(0 === 0 || !defined('WPINC') || !class_exists('\\WP_Http') || !did_action('init')
+			   || $cookie_file || ($custom_request_method && !in_array($custom_request_method, array('GET', 'POST'), TRUE))
+			) goto curl_transport; // WP_Http unavailable; or unable to handle the request method type.
+
+			foreach($headers as $_key => $_value)
+				if(!is_string($_key) && strpos($_value, ':') > 0)
+				{
+					list($_header, $_header_value) = explode(':', $_value, 2);
+					$headers[$_header] = trim($_header_value);
+					unset($headers[$_key]);
+				}
+			unset($_key, $_value, $_header, $_header_value);
+
+			if($custom_request_method === 'POST' || ($body && $custom_request_method !== 'GET'))
+				$wp_remote_request = wp_remote_post($url, array('headers' => $headers, 'body' => $body, 'timeout' => $max_con_secs));
+			else $wp_remote_request = wp_remote_get($url, array('headers' => $headers, 'timeout' => $max_con_secs));
+
+			if(!is_wp_error($wp_remote_request))
+			{
+				$output    = trim((string)wp_remote_retrieve_body($wp_remote_request));
+				$http_code = (integer)wp_remote_retrieve_response_code($wp_remote_request);
+				if($fail_on_error && $http_code >= 400)
+					$output = ''; // Fail silently.
+			}
+			goto finale; // All done here, jump to finale.
+
+			/* ---------------------------------------------------------- */
+
+			curl_transport: // cURL transport layer (default hanlder).
 
 			$can_follow = (!ini_get('safe_mode') && !ini_get('open_basedir'));
 
@@ -2849,8 +2918,18 @@ namespace websharks\html_compressor
 			$curl = curl_init();
 			curl_setopt_array($curl, $curl_opts);
 			$output    = trim((string)curl_exec($curl));
-			$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			$http_code = (integer)curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			curl_close($curl);
+
+			goto finale; // All done here, jump to finale.
+
+			/* ---------------------------------------------------------- */
+
+			finale: // Target point; finale/return value.
+
+			if($benchmark && !empty($time))
+				$this->remote_connection_times[] = // Benchmark data.
+					array('time' => number_format(microtime(TRUE) - $time, 5, '.', ''), 'url' => $url);
 
 			return ($return_array) ? array('code' => $http_code, 'body' => $output) : $output;
 		}
