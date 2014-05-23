@@ -627,8 +627,8 @@ namespace quick_cache
 
 				$wp_admin_bar->add_node(array('parent' => 'top-secondary', 'id' => __NAMESPACE__.'-clear', 'title' => __('Clear Cache', $this->text_domain), 'href' => '#',
 				                              'meta'   => array('title' => ((is_multisite() && current_user_can($this->network_cap))
-						                              ? __('Clear Cache (Start Fresh); affects the current site only.', $this->text_domain)
-						                              : __('Clear Cache (Start Fresh)', $this->text_domain)),
+					                              ? __('Clear Cache (Start Fresh); affects the current site only.', $this->text_domain)
+					                              : __('Clear Cache (Start Fresh)', $this->text_domain)),
 				                                                'class' => __NAMESPACE__, 'tabindex' => -1)));
 			}
 
