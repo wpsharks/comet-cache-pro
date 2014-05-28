@@ -235,8 +235,7 @@ namespace quick_cache // Root namespace.
 			if(function_exists('apache_setenv'))
 				apache_setenv('no-gzip', '1');
 
-			if(ob_get_level()) // Cleans output buffers.
-				while(ob_get_level()) ob_end_clean();
+			while(@ob_end_clean()) ; // Cleans output buffers.
 
 			$export    = json_encode(plugin()->options);
 			$file_name = __NAMESPACE__.'-options.json';
