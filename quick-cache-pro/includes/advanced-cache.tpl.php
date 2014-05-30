@@ -1171,7 +1171,7 @@ namespace quick_cache
 		}
 
 		/**
-		 * Appends `NC_DEBUG_` info in the WordPress `shutdown` phase (if applicable).
+		 * Hooks `NC_DEBUG_` info into the WordPress `shutdown` phase (if applicable).
 		 *
 		 * @since 140422 First documented version.
 		 */
@@ -1188,12 +1188,7 @@ namespace quick_cache
 			if(strcasecmp(PHP_SAPI, 'cli') === 0)
 				return; // Let's not run the risk here.
 
-			$_this = $this; // Need this reference in the closure below (PHP v.5.3 compat).
-			add_action('shutdown', function () use ($_this) // Debug info in the shutdown phase.
-			{
-				if($_this->debug_info && $_this->has_a_cacheable_content_type() && $_this->is_a_wp_content_type)
-					echo (string)$_this->maybe_get_nc_debug_info($_this->debug_info['reason_code'], $_this->debug_info['reason']);
-			}, -(PHP_INT_MAX - 10));
+			add_action('shutdown', array($this, 'maybe_echo_nc_debug_info'), PHP_INT_MAX - 10);
 		}
 
 		/**
@@ -1404,6 +1399,27 @@ namespace quick_cache
 			$compressed_cache        = $html_compressor->compress($cache);
 
 			return $compressed_cache;
+		}
+
+		/**
+		 * Echoes `NC_DEBUG_` info in the WordPress `shutdown` phase (if applicable).
+		 *
+		 * @since 14xxxx Improving debug info output phase.
+		 *
+		 * @attaches-to `shutdown` hook in WordPress w/ a late priority.
+		 */
+		public function maybe_echo_nc_debug_info() // Debug info in the shutdown phase.
+		{
+			if(!QUICK_CACHE_DEBUGGING_ENABLE)
+				return; // Nothing to do.
+
+			if(is_admin()) return; // Not applicable.
+
+			if(strcasecmp(PHP_SAPI, 'cli') === 0)
+				return; // Let's not run the risk here.
+
+			if($this->debug_info && $this->has_a_cacheable_content_type() && $this->is_a_wp_content_type)
+				echo (string)$this->maybe_get_nc_debug_info($this->debug_info['reason_code'], $this->debug_info['reason']);
 		}
 
 		/**
