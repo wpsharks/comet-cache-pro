@@ -434,11 +434,8 @@ namespace quick_cache
 				 * Upgrading from a version prior to v140104 where we introduced feed caching.
 				 */
 				if(version_compare($prev_version, '140104', '<')) // When this sort of update occurs, we issue a notice about this new feature.
-				{
-					$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-					$notices[] = __('<strong>Quick Cache Feature Notice:</strong> This version of Quick Cache adds new options for Feed caching. Feed caching is now disabled by default. If you wish to enable feed caching, please visit the Quick Cache options panel.', $this->text_domain);
-					update_option(__NAMESPACE__.'_notices', $notices);
-				}
+					$this->enqueue_notice(__('<strong>Quick Cache Feature Notice:</strong> This version of Quick Cache adds new options for Feed caching. Feed caching is now disabled by default. If you wish to enable feed caching, please visit the Quick Cache options panel.', $this->text_domain));
+
 				/*
 				 * Upgrading from a version prior to v14xxxx? (@TODO @raamdev See below, `140509` can change also).
 				 *    v14xxxx is where we introduced a branched cache structure, also also moved to a base directory layout.
@@ -464,9 +461,7 @@ namespace quick_cache
 						if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
 					}
 					// @TODO @raamdev You might like to customize this upgrade notice a bit further.
-					$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-					$notices[] = __('<strong>Quick Cache Feature Notice:</strong> This version of Quick Cache introduces a new <a href="https://github.com/WebSharks/Quick-Cache/wiki/Branched-Cache-Structure" target="_blank">Branched Cache Structure</a>.', $this->text_domain);
-					update_option(__NAMESPACE__.'_notices', $notices);
+					$this->enqueue_notice(__('<strong>Quick Cache Feature Notice:</strong> This version of Quick Cache introduces a new <a href="https://github.com/WebSharks/Quick-Cache/wiki/Branched-Cache-Structure" target="_blank">Branched Cache Structure</a>.', $this->text_domain));
 				}
 				/* ------- END: VERSION-SPECIFIC UPGRADE HANDLERS ----------------------------- */
 
@@ -486,11 +481,9 @@ namespace quick_cache
 
 				/*
 				 * Common upgrade notice. This applies to all upgrades regardless of version.
-				 * NOTE: the use of `array_unshift()` puts this notice first; even though it comes last down here.
+				 * NOTE: the use of `TRUE` in the 3rd argument puts this notice first; even though it comes last down here.
 				 */
-				$notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-				array_unshift($notices, __('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', $this->text_domain));
-				update_option(__NAMESPACE__.'_notices', $notices);
+				$this->enqueue_notice(__('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', $this->text_domain), '', TRUE);
 			}
 
 			/**
@@ -507,9 +500,7 @@ namespace quick_cache
 
 				delete_option('ws_plugin__qcache_configured'); // One-time only.
 
-				$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-				$notices[] = __('<strong>Quick Cache:</strong> this version is a <strong>complete rewrite</strong> :-) Please review your Quick Cache options carefully!', $this->text_domain);
-				update_option(__NAMESPACE__.'_notices', $notices);
+				$this->enqueue_notice(__('<strong>Quick Cache:</strong> this version is a <strong>complete rewrite</strong> :-) Please review your Quick Cache options carefully!', $this->text_domain));
 			}
 
 			/**
@@ -627,8 +618,8 @@ namespace quick_cache
 
 				$wp_admin_bar->add_node(array('parent' => 'top-secondary', 'id' => __NAMESPACE__.'-clear', 'title' => __('Clear Cache', $this->text_domain), 'href' => '#',
 				                              'meta'   => array('title' => ((is_multisite() && current_user_can($this->network_cap))
-						                              ? __('Clear Cache (Start Fresh); affects the current site only.', $this->text_domain)
-						                              : __('Clear Cache (Start Fresh)', $this->text_domain)),
+					                              ? __('Clear Cache (Start Fresh); affects the current site only.', $this->text_domain)
+					                              : __('Clear Cache (Start Fresh)', $this->text_domain)),
 				                                                'class' => __NAMESPACE__, 'tabindex' => -1)));
 			}
 
@@ -865,11 +856,8 @@ namespace quick_cache
 				$update_sync_page = self_admin_url('/admin.php'); // Page that initiates an update.
 				$update_sync_page = add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync')), $update_sync_page);
 
-				$notices                                   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-				$notices['persistent-update-sync-version'] = // This creates a persistent notice; e.g. it must be cleared away by the site owner.
-					sprintf(__('<strong>Quick Cache Pro:</strong> a new version is now available. Please <a href="%1$s">upgrade to v%2$s</a>.', $this->text_domain),
-					        $update_sync_page, $update_sync_response['version']);
-				update_option(__NAMESPACE__.'_notices', $notices);
+				$this->enqueue_notice(sprintf(__('<strong>Quick Cache Pro:</strong> a new version is now available. Please <a href="%1$s">upgrade to v%2$s</a>.', $this->text_domain),
+				                              $update_sync_page, $update_sync_response['version']), 'persistent-update-sync-version');
 			}
 
 			/**
@@ -951,6 +939,44 @@ namespace quick_cache
 			}
 
 			/**
+			 * Enqueue an administrative notice.
+			 *
+			 * @since 14xxxx Adding enqueue notice/error methods.
+			 *
+			 * @param string  $notice HTML markup containing the notice itself.
+			 *
+			 * @param string  $persistent_key Optional. A unique key which identifies a particular type of persistent notice.
+			 *    This defaults to an empty string. If this is passed, the notice is persistent; i.e. it continues to be displayed until dismissed by the site owner.
+			 *
+			 * @param boolean $push_to_top Optional. Defaults to a `FALSE` value.
+			 *    If `TRUE`, the notice is pushed to the top of the stack; i.e. displayed above any others.
+			 */
+			public function enqueue_notice($notice, $persistent_key = '', $push_to_top = FALSE)
+			{
+				$notice         = (string)$notice;
+				$persistent_key = (string)$persistent_key;
+
+				$notices = get_option(__NAMESPACE__.'_notices');
+				if(!is_array($notices)) $notices = array();
+
+				if($persistent_key) // A persistent notice?
+				{
+					if(strpos($persistent_key, 'persistent-') !== 0)
+						$persistent_key = 'persistent-'.$persistent_key;
+
+					if($push_to_top) // Push this notice to the top?
+						$notices = array($persistent_key => $notice) + $notices;
+					else $notices[$persistent_key] = $notice;
+				}
+				else if($push_to_top) // Push to the top?
+					array_unshift($notices, $notice);
+
+				else $notices[] = $notice; // Default behavior.
+
+				update_option(__NAMESPACE__.'_notices', $notices);
+			}
+
+			/**
 			 * Render admin errors; across all admin dashboard views.
 			 *
 			 * @since 140422 First documented version.
@@ -981,6 +1007,44 @@ namespace quick_cache
 					echo apply_filters(__METHOD__.'__error', '<div class="error"><p>'.$_error.$_dismiss.'</p></div>', get_defined_vars());
 				}
 				unset($_key, $_error, $_dismiss_css, $_dismiss); // Housekeeping.
+			}
+
+			/**
+			 * Enqueue an administrative error.
+			 *
+			 * @since 14xxxx Adding enqueue notice/error methods.
+			 *
+			 * @param string  $error HTML markup containing the error itself.
+			 *
+			 * @param string  $persistent_key Optional. A unique key which identifies a particular type of persistent error.
+			 *    This defaults to an empty string. If this is passed, the error is persistent; i.e. it continues to be displayed until dismissed by the site owner.
+			 *
+			 * @param boolean $push_to_top Optional. Defaults to a `FALSE` value.
+			 *    If `TRUE`, the error is pushed to the top of the stack; i.e. displayed above any others.
+			 */
+			public function enqueue_error($error, $persistent_key = '', $push_to_top = FALSE)
+			{
+				$error          = (string)$error;
+				$persistent_key = (string)$persistent_key;
+
+				$errors = get_option(__NAMESPACE__.'_errors');
+				if(!is_array($errors)) $errors = array();
+
+				if($persistent_key) // A persistent notice?
+				{
+					if(strpos($persistent_key, 'persistent-') !== 0)
+						$persistent_key = 'persistent-'.$persistent_key;
+
+					if($push_to_top) // Push this notice to the top?
+						$errors = array($persistent_key => $error) + $errors;
+					else $errors[$persistent_key] = $error;
+				}
+				else if($push_to_top) // Push to the top?
+					array_unshift($errors, $error);
+
+				else $errors[] = $error; // Default behavior.
+
+				update_option(__NAMESPACE__.'_errors', $errors);
 			}
 
 			/**
@@ -1282,12 +1346,9 @@ namespace quick_cache
 				$counter = $this->wipe_cache();
 
 				if($counter && $this->options['change_notifications_enable'] && is_admin())
-				{
-					$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-					$notices[] = '<img src="'.esc_attr($this->url('/client-s/images/wipe.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					             __('<strong>Quick Cache:</strong> detected significant changes. Found cache files (auto-wiping).', $this->text_domain);
-					update_option(__NAMESPACE__.'_notices', $notices);
-				}
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/wipe.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      __('<strong>Quick Cache:</strong> detected significant changes. Found cache files (auto-wiping).', $this->text_domain));
+
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
@@ -1324,12 +1385,9 @@ namespace quick_cache
 				$counter = $this->clear_cache();
 
 				if($counter && $this->options['change_notifications_enable'] && is_admin())
-				{
-					$notices   = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
-					$notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					             __('<strong>Quick Cache:</strong> detected changes. Found cache files for this site (auto-clearing).', $this->text_domain);
-					update_option(__NAMESPACE__.'_notices', $notices);
-				}
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      __('<strong>Quick Cache:</strong> detected changes. Found cache files for this site (auto-clearing).', $this->text_domain));
+
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
@@ -1359,7 +1417,8 @@ namespace quick_cache
 			 */
 			public function auto_purge_post_cache($id, $force = FALSE)
 			{
-				$counter = 0; // Initialize.
+				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1416,15 +1475,14 @@ namespace quick_cache
 						throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 					$counter++; // Increment counter for each file purge.
 
-					if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
+					if($enqueued_notices || !$this->options['change_notifications_enable'] || !is_admin())
 						continue; // Stop here; we already issued a notice, or this notice is N/A.
 
-					$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-					$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for %1$s ID: <code>%2$s</code> (auto-purging).', $this->text_domain), $type_singular_name, $id);
-					update_option(__NAMESPACE__.'_notices', $_notices);
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for %1$s ID: <code>%2$s</code> (auto-purging).', $this->text_domain), $type_singular_name, $id));
+					$enqueued_notices++; // Notice counter.
 				}
-				unset($_file, $_notices); // Just a little housekeeping.
+				unset($_file); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -1482,7 +1540,8 @@ namespace quick_cache
 			 */
 			public function auto_purge_home_page_cache()
 			{
-				$counter = 0; // Initialize.
+				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1509,15 +1568,14 @@ namespace quick_cache
 						throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 					$counter++; // Increment counter for each file purge.
 
-					if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
+					if($enqueued_notices || !$this->options['change_notifications_enable'] || !is_admin())
 						continue; // Stop here; we already issued a notice, or this notice is N/A.
 
-					$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-					$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					              __('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the designated "Home Page" (auto-purging).', $this->text_domain);
-					update_option(__NAMESPACE__.'_notices', $_notices);
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      __('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the designated "Home Page" (auto-purging).', $this->text_domain));
+					$enqueued_notices++; // Notice counter.
 				}
-				unset($_file, $_notices); // Just a little housekeeping.
+				unset($_file); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -1538,7 +1596,8 @@ namespace quick_cache
 			 */
 			public function auto_purge_posts_page_cache()
 			{
-				$counter = 0; // Initialize.
+				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1578,15 +1637,14 @@ namespace quick_cache
 						throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 					$counter++; // Increment counter for each file purge.
 
-					if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
+					if($enqueued_notices || !$this->options['change_notifications_enable'] || !is_admin())
 						continue; // Stop here; we already issued a notice, or this notice is N/A.
 
-					$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-					$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					              __('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the designated "Posts Page" (auto-purging).', $this->text_domain);
-					update_option(__NAMESPACE__.'_notices', $_notices);
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      __('<strong>Quick Cache:</strong> detected changes. Found cache file(s) for the designated "Posts Page" (auto-purging).', $this->text_domain));
+					$enqueued_notices++; // Notice counter.
 				}
-				unset($_file, $_notices); // Just a little housekeeping.
+				unset($_file); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -1613,6 +1671,8 @@ namespace quick_cache
 			public function auto_purge_author_page_cache($post_ID, $post_after, $post_before)
 			{
 				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
+
 				$authors          = array(); // Initialize.
 				$authors_to_purge = array(); // Initialize.
 
@@ -1676,17 +1736,14 @@ namespace quick_cache
 							throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 						$counter++; // Increment counter for each file purge.
 
-						if(!is_admin())
-							continue; // Stop here; this notice is N/A.
+						if(!is_admin()) continue; // Stop here; this notice is N/A.
 
-						$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-						$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-						              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for Author Page: <code>%1$s</code> (auto-purging).', $this->text_domain), esc_html($_author['display_name']));
-
-						update_option(__NAMESPACE__.'_notices', $_notices);
+						$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+						                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for Author Page: <code>%1$s</code> (auto-purging).', $this->text_domain), esc_html($_author['display_name'])));
+						$enqueued_notices++; // Notice counter.
 					}
 				}
-				unset($_file, $_notices, $_author); // Just a little housekeeping.
+				unset($_file, $_author); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -1715,7 +1772,8 @@ namespace quick_cache
 			 */
 			public function auto_purge_post_terms_cache($id, $force = FALSE)
 			{
-				$counter = 0; // Initialize
+				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
 
 				if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 					return $counter; // Nothing to do.
@@ -1726,8 +1784,7 @@ namespace quick_cache
 				if(!$this->options['cache_purge_term_category_enable'] &&
 				   !$this->options['cache_purge_term_post_tag_enable'] &&
 				   !$this->options['cache_purge_term_other_enable']
-				)
-					return $counter; // Nothing to do.
+				) return $counter; // Nothing to do.
 
 				$post_status = get_post_status($id); // Cache this.
 
@@ -1799,7 +1856,7 @@ namespace quick_cache
 						else
 							$terms_to_purge[$_i]['taxonomy_label'] = $_term->taxonomy; // e.g., "post_tag" or "category"
 					}
-					$_i++;
+					$_i++; // Array index counter.
 				}
 				unset($_term, $_link, $_i);
 				if(empty($terms_to_purge)) return $counter; // Nothing to do.
@@ -1811,7 +1868,6 @@ namespace quick_cache
 					                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 					                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
 
-					$_i = 0;
 					/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 					foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 					{
@@ -1823,17 +1879,15 @@ namespace quick_cache
 							throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 						$counter++; // Increment counter for each file purge.
 
-						if(!is_admin() || $_i > 100)
+						if($enqueued_notices > 100 || !is_admin())
 							continue; // Stop here; we're at our max number of notices or this notice is N/A.
 
-						$_i++;
-						$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-						$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-						              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for %1$s: <code>%2$s</code> (auto-purging).', $this->text_domain), $_term['taxonomy_label'], $_term['term_name']);
-						update_option(__NAMESPACE__.'_notices', $_notices);
+						$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+						                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for %1$s: <code>%2$s</code> (auto-purging).', $this->text_domain), $_term['taxonomy_label'], $_term['term_name']));
+						$enqueued_notices++; // Notice counter.
 					}
 				}
-				unset($_term, $_file, $_notices, $_i); // Just a little housekeeping.
+				unset($_term, $_file); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -1903,7 +1957,8 @@ namespace quick_cache
 			 */
 			public function auto_purge_user_cache($user_id)
 			{
-				$counter = 0; // Initialize.
+				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1929,15 +1984,14 @@ namespace quick_cache
 						throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
 					$counter++; // Increment counter for each file purge.
 
-					if(!empty($_notices) || !$this->options['change_notifications_enable'] || !is_admin())
+					if($enqueued_notices || !$this->options['change_notifications_enable'] || !is_admin())
 						continue; // Stop here; we already issued a notice, or this notice is N/A.
 
-					$_notices   = (is_array($_notices = get_option(__NAMESPACE__.'_notices'))) ? $_notices : array();
-					$_notices[] = '<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					              sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for user ID: <code>%1$s</code> (auto-purging).', $this->text_domain), $user_id);
-					update_option(__NAMESPACE__.'_notices', $_notices);
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for user ID: <code>%1$s</code> (auto-purging).', $this->text_domain), $user_id));
+					$enqueued_notices++; // Notice counter.
 				}
-				unset($_file, $_notices); // Just a little housekeeping.
+				unset($_file); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -2279,10 +2333,8 @@ namespace quick_cache
 							   && is_object($_response = json_decode(wp_remote_retrieve_body($_response))) && !empty($_response->errors) && strcasecmp($_response->errors, 'true') === 0
 							) // We will NOT include a version salt if the syntax contains errors reported by this web service.
 							{
-								$_value    = ''; // PHP syntax errors; empty this.
-								$_errors   = (is_array($_errors = get_option(__NAMESPACE__.'_errors'))) ? $_errors : array();
-								$_errors[] = __('<strong>Quick Cache</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', $this->text_domain);
-								update_option(__NAMESPACE__.'_errors', $_errors);
+								$_value = ''; // PHP syntax errors; empty this.
+								$this->enqueue_error(__('<strong>Quick Cache</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', $this->text_domain));
 							}
 							if(!$_value) $_value = "''"; // Use an empty string (default).
 
@@ -2299,7 +2351,7 @@ namespace quick_cache
 						                   "'%%".str_ireplace('_cache', '', __NAMESPACE__).'_'.$_option."%%'"),
 						             $_value, $advanced_cache_contents);
 				}
-				unset($_option, $_value, $_values, $_response, $_errors); // Housekeeping.
+				unset($_option, $_value, $_values, $_response); // Housekeeping.
 
 				// Ignore; this is created by Quick Cache; and we don't need to obey in this case.
 				#if(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)
