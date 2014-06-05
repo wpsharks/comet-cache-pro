@@ -49,7 +49,7 @@ namespace quick_cache
 			 *
 			 * @var string Current version of the software.
 			 */
-			public $version = '140529';
+			public $version = '140605';
 
 			/**
 			 * Plugin text domain for translations.
@@ -111,7 +111,7 @@ namespace quick_cache
 			/**
 			 * Cache directory.
 			 *
-			 * @since 14xxxx Moving to a base directory.
+			 * @since 140605 Moving to a base directory.
 			 *
 			 * @var string Cache directory; relative to the configured base directory.
 			 */
@@ -120,7 +120,7 @@ namespace quick_cache
 			/**
 			 * HTML Compressor cache directory (public).
 			 *
-			 * @since 14xxxx Moving to a base directory.
+			 * @since 140605 Moving to a base directory.
 			 *
 			 * @var string Public HTML Compressor cache directory; relative to the configured base directory.
 			 */
@@ -129,7 +129,7 @@ namespace quick_cache
 			/**
 			 * HTML Compressor cache directory (private).
 			 *
-			 * @since 14xxxx Moving to a base directory.
+			 * @since 140605 Moving to a base directory.
 			 *
 			 * @var string Private HTML Compressor cache directory; relative to the configured base directory.
 			 */
@@ -934,7 +934,7 @@ namespace quick_cache
 			/**
 			 * Enqueue an administrative notice.
 			 *
-			 * @since 14xxxx Adding enqueue notice/error methods.
+			 * @since 140605 Adding enqueue notice/error methods.
 			 *
 			 * @param string  $notice HTML markup containing the notice itself.
 			 *
@@ -1005,7 +1005,7 @@ namespace quick_cache
 			/**
 			 * Enqueue an administrative error.
 			 *
-			 * @since 14xxxx Adding enqueue notice/error methods.
+			 * @since 140605 Adding enqueue notice/error methods.
 			 *
 			 * @param string  $error HTML markup containing the error itself.
 			 *
@@ -1486,7 +1486,7 @@ namespace quick_cache
 			 *
 			 * @attaches-to `transition_post_status` hook.
 			 *
-			 * @since 14xxxx First documented version.
+			 * @since 140605 First documented version.
 			 *
 			 * @param string   $new_status New post status.
 			 * @param string   $old_status Old post status.
@@ -1647,7 +1647,7 @@ namespace quick_cache
 			 *
 			 * @attaches-to `post_updated` hook.
 			 *
-			 * @since 14xxxx First documented version.
+			 * @since 140605 First documented version.
 			 *
 			 * @param integer  $post_ID A WordPress post ID.
 			 * @param \WP_Post $post_after WP_Post object following the update.
@@ -1747,7 +1747,7 @@ namespace quick_cache
 			 * @attaches-to `added_term_relationship` hook.
 			 * @attaches-to `delete_term_relationships` hook.
 			 *
-			 * @since 14XXXX First documented version.
+			 * @since 140605 First documented version.
 			 *
 			 * @param integer $id A WordPress post ID.
 			 * @param bool    $force Defaults to a `FALSE` value.
@@ -2064,7 +2064,7 @@ namespace quick_cache
 			 * This constructs an absolute server directory path (no trailing slashes);
 			 *    which is always nested into {@link \ABSPATH} and the configured `base_dir` option value.
 			 *
-			 * @since 14xxxx Moving to a base directory structure.
+			 * @since 140605 Moving to a base directory structure.
 			 *
 			 * @param string $rel_dir_file A sub-directory or file; relative location please.
 			 *
@@ -2090,7 +2090,7 @@ namespace quick_cache
 			 * This constructs a relative/base directory path (no leading/trailing slashes).
 			 *    Always relative to {@link \ABSPATH}. Depends on the configured `base_dir` option value.
 			 *
-			 * @since 14xxxx Moving to a base directory structure.
+			 * @since 140605 Moving to a base directory structure.
 			 *
 			 * @param string $rel_dir_file A sub-directory or file; relative location please.
 			 *
@@ -2716,7 +2716,7 @@ namespace quick_cache
 			/**
 			 * Produces a token based on the current site's base directory.
 			 *
-			 * @since 14xxxx First documented version.
+			 * @since 140605 First documented version.
 			 *
 			 * @param boolean $dashify Optional, defaults to a `FALSE` value.
 			 *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
