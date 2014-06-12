@@ -136,6 +136,13 @@ namespace quick_cache
 			public $htmlc_cache_sub_dir_private = 'htmlc/private';
 
 			/**
+			 * Used by methods in this class to help optimize performance.
+			 *
+			 * @var array An instance-based cache used by methods in this class.
+			 */
+			public $cache = array();
+
+			/**
 			 * Quick Cache plugin constructor.
 			 *
 			 * @since 140422 First documented version.
