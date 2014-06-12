@@ -1417,8 +1417,14 @@ namespace quick_cache
 			 */
 			public function auto_purge_post_cache($id, $force = FALSE)
 			{
+				$id = (integer)$id;
+
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$id][(integer)$force]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$id][(integer)$force] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1508,9 +1514,16 @@ namespace quick_cache
 			 *
 			 * @see auto_purge_post_cache()
 			 */
-			public function auto_purge_post_cache_transition($new_status, $old_status, $post)
+			public function auto_purge_post_cache_transition($new_status, $old_status, \WP_Post $post)
 			{
+				$new_status = (string)$new_status;
+				$old_status = (string)$old_status;
+
 				$counter = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$new_status][$old_status][$post->ID]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$new_status][$old_status][$post->ID] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1542,6 +1555,10 @@ namespace quick_cache
 			{
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1598,6 +1615,10 @@ namespace quick_cache
 			{
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1668,13 +1689,19 @@ namespace quick_cache
 			 *       and current author pages are purged, if the post status is applicable.
 			 *
 			 */
-			public function auto_purge_author_page_cache($post_ID, $post_after, $post_before)
+			public function auto_purge_author_page_cache($post_ID, \WP_Post $post_after, \WP_Post $post_before)
 			{
+				$post_ID = (integer)$post_ID;
+
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
 
 				$authors          = array(); // Initialize.
 				$authors_to_purge = array(); // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$post_ID][$post_after->ID][$post_before->ID]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$post_ID][$post_after->ID][$post_before->ID] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1772,8 +1799,14 @@ namespace quick_cache
 			 */
 			public function auto_purge_post_terms_cache($id, $force = FALSE)
 			{
+				$id = (integer)$id;
+
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$id][(integer)$force]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$id][(integer)$force] = -1;
 
 				if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
 					return $counter; // Nothing to do.
@@ -1913,7 +1946,13 @@ namespace quick_cache
 			 */
 			public function auto_purge_comment_post_cache($id)
 			{
+				$id = (integer)$id;
+
 				$counter = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$id]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$id] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
@@ -1957,8 +1996,14 @@ namespace quick_cache
 			 */
 			public function auto_purge_user_cache($user_id)
 			{
+				$user_id = (integer)$user_id;
+
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$user_id]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$user_id] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
