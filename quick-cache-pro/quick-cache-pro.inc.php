@@ -12,6 +12,8 @@ namespace quick_cache
 	if(!defined('WPINC')) // MUST have WordPress.
 		exit('Do NOT access this file directly: '.basename(__FILE__));
 
+	require_once dirname(__FILE__).'/includes/share.php';
+
 	if(!class_exists('\\'.__NAMESPACE__.'\\plugin'))
 	{
 		/**
@@ -136,6 +138,15 @@ namespace quick_cache
 			public $htmlc_cache_sub_dir_private = 'htmlc/private';
 
 			/**
+			 * Easy reference to the {@link share} class instance.
+			 *
+			 * @since 14xxxx Reorganize class members.
+			 *
+			 * @var share References {@link share} class.
+			 */
+			public $share; // Set by constructor.
+
+			/**
 			 * Quick Cache plugin constructor.
 			 *
 			 * @since 140422 First documented version.
@@ -147,6 +158,7 @@ namespace quick_cache
 
 				$this->file        = preg_replace('/\.inc\.php$/', '.php', __FILE__);
 				$this->text_domain = str_replace('_', '-', __NAMESPACE__);
+				$this->share       = $GLOBALS[__NAMESPACE__.'__share'];
 
 				add_action('after_setup_theme', array($this, 'setup'));
 				register_activation_hook($this->file, array($this, 'activate'));
