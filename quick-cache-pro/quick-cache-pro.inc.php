@@ -1340,6 +1340,10 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
+				if(isset($this->cache[__FUNCTION__]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__] = -1;
+
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
@@ -1378,6 +1382,10 @@ namespace quick_cache
 			public function auto_clear_cache()
 			{
 				$counter = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__] = -1;
 
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
