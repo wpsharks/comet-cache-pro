@@ -28,6 +28,7 @@ namespace quick_cache // Root namespace.
 		public function __construct()
 		{
 			$this->plugin = plugin();
+			$this->run(); // Run!
 		}
 
 		/**
@@ -45,7 +46,7 @@ namespace quick_cache // Root namespace.
 				if(!$this->plugin->options['auto_cache_other_urls'])
 					return; // Nothing to do.
 
-			$cache_dir = $this->plugin->abspath_to($this->plugin->cache_sub_dir);
+			$cache_dir = $this->plugin->cache_dir();
 			if(!is_dir($cache_dir) || !is_writable($cache_dir))
 				return; // Not possible in this case.
 
@@ -94,7 +95,7 @@ namespace quick_cache // Root namespace.
 				return; // We're NOT caching URLs with a query string.
 
 			$cache_path      = $this->plugin->url_to_cache_path($url);
-			$cache_file_path = $this->plugin->abspath_to($this->plugin->cache_sub_dir.'/'.$cache_path);
+			$cache_file_path = $this->plugin->cache_dir($cache_path);
 
 			if(is_file($cache_file_path)) // If it's already cached (and still fresh); just bypass silently.
 				if(filemtime($cache_file_path) >= strtotime('-'.$this->plugin->options['cache_max_age']))
@@ -114,7 +115,7 @@ namespace quick_cache // Root namespace.
 		 */
 		protected function log_auto_cache_url($url, $wp_remote_get_response)
 		{
-			$cache_dir           = $this->plugin->abspath_to($this->plugin->cache_sub_dir);
+			$cache_dir           = $this->plugin->cache_dir();
 			$auto_cache_log_file = $cache_dir.'/auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
@@ -139,7 +140,7 @@ namespace quick_cache // Root namespace.
 		 */
 		protected function log_auto_cache_run($total_urls, $total_time)
 		{
-			$cache_dir           = $this->plugin->abspath_to($this->plugin->cache_sub_dir);
+			$cache_dir           = $this->plugin->cache_dir();
 			$auto_cache_log_file = $cache_dir.'/auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
