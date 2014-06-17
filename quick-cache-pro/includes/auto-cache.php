@@ -137,7 +137,7 @@ namespace quick_cache // Root namespace.
 		protected function log_auto_cache_url($url, $wp_remote_get_response)
 		{
 			$cache_dir           = $this->plugin->cache_dir();
-			$auto_cache_log_file = $cache_dir.'/auto-cache.log';
+			$auto_cache_log_file = $cache_dir.'/qc-auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
 				throw new \exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', $this->plugin->text_domain), $auto_cache_log_file));
@@ -162,7 +162,7 @@ namespace quick_cache // Root namespace.
 		protected function log_auto_cache_run($total_urls, $total_time)
 		{
 			$cache_dir           = $this->plugin->cache_dir();
-			$auto_cache_log_file = $cache_dir.'/auto-cache.log';
+			$auto_cache_log_file = $cache_dir.'/qc-auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
 				throw new \exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', $this->plugin->text_domain), $auto_cache_log_file));
