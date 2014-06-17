@@ -1116,7 +1116,7 @@ namespace quick_cache
 				@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
 				$url                          = 'http://'.$_SERVER['HTTP_HOST'].$this->host_base_dir_tokens();
-				$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($url, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+				$cache_path_no_scheme_quv_ext = $this->build_cache_path($url, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all paths; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 				                                '(?:\/index)?[.\/]/';
@@ -1371,7 +1371,7 @@ namespace quick_cache
 					$type_singular_name = $type->labels->singular_name; // Singular name for the post type.
 				else $type_singular_name = __('Post', $this->text_domain); // Default value.
 
-				$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($permalink, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+				$cache_path_no_scheme_quv_ext = $this->build_cache_path($permalink, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
@@ -1475,7 +1475,7 @@ namespace quick_cache
 				$cache_dir = $this->cache_dir(); // Current cache directory.
 				if(!is_dir($cache_dir)) return $counter; // Nothing to do.
 
-				$cache_path_no_scheme_quv_ext = $this->url_to_cache_path(home_url('/'), '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+				$cache_path_no_scheme_quv_ext = $this->build_cache_path(home_url('/'), '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
@@ -1548,7 +1548,7 @@ namespace quick_cache
 				else if($show_on_front === 'page') $posts_page = get_permalink($page_for_posts);
 				if(empty($posts_page)) return $counter; // Nothing we can do.
 
-				$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($posts_page, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+				$cache_path_no_scheme_quv_ext = $this->build_cache_path($posts_page, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
@@ -1653,7 +1653,7 @@ namespace quick_cache
 
 				foreach($authors_to_purge as $_author)
 				{
-					$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($_author['posts_url'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+					$cache_path_no_scheme_quv_ext = $this->build_cache_path($_author['posts_url'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 					$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 					                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 					                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
@@ -1802,7 +1802,7 @@ namespace quick_cache
 
 				foreach($terms_to_purge as $_term)
 				{
-					$cache_path_no_scheme_quv_ext = $this->url_to_cache_path($_term['permalink'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
+					$cache_path_no_scheme_quv_ext = $this->build_cache_path($_term['permalink'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 					$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 					                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
 					                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';

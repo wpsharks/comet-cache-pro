@@ -94,7 +94,7 @@ namespace quick_cache // Root namespace.
 			if(!$this->plugin->options['get_requests'] && strpos($url, '?') !== FALSE)
 				return; // We're NOT caching URLs with a query string.
 
-			$cache_path      = $this->plugin->url_to_cache_path($url);
+			$cache_path      = $this->plugin->build_cache_path($url);
 			$cache_file_path = $this->plugin->cache_dir($cache_path);
 
 			if(is_file($cache_file_path)) // If it's already cached (and still fresh); just bypass silently.
