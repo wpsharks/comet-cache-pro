@@ -56,25 +56,46 @@ namespace quick_cache // Root namespace.
 			$micro_start_time = microtime(TRUE);
 			$start_time       = time(); // Initialize.
 			$total_urls       = $total_time = 0; // Initialize.
-			$sitemap_urls     = $other_urls = $all_urls = array();
 
-			if($this->plugin->options['auto_cache_sitemap_url']) // Memory-optimized routine.
-				$sitemap_urls = $this->get_sitemap_urls_deep(site_url('/'.$this->plugin->options['auto_cache_sitemap_url']));
+			$network_site_url  = rtrim(network_site_url(), '/');
+			$network_site_host = parse_url($network_site_url, PHP_URL_HOST);
+			$network_site_path = parse_url($network_site_url, PHP_URL_PATH);
 
-			if($this->plugin->options['auto_cache_other_urls'])
-				$other_urls = preg_split('/\s+/', $this->plugin->options['auto_cache_other_urls'], NULL, PREG_SPLIT_NO_EMPTY);
+			if(($other_urls = preg_split('/\s+/', $this->plugin->options['auto_cache_other_urls'], NULL, PREG_SPLIT_NO_EMPTY)))
+				$blogs = array((object)array('domain' => $network_site_host, 'path' => $network_site_path, 'other' => $other_urls));
+			else $blogs = array((object)array('domain' => $network_site_host, 'path' => $network_site_path));
 
-			$all_urls = array_unique(array_merge($sitemap_urls, $other_urls));
-			shuffle($all_urls); // Randomize the order; i.e. don't always start from the top.
-
-			foreach($all_urls as $_url)
+			if(is_multisite()) // If this is a network, including child blogs also.
 			{
-				$total_urls++;
-				$this->auto_cache_url($_url);
-				// Stop before execution timeout occurs.
-				if((time() - $start_time) > 870) break;
+				$wpdb = $this->plugin->wpdb(); // WordPress DB object instance.
+				if(($_child_blogs = $wpdb->get_results("SELECT `domain`, `path` FROM `".esc_sql($wpdb->blogs)."` WHERE `deleted` <= '0'")))
+					$blogs = array_merge($blogs, $_child_blogs);
+				unset($_child_blogs); // Housekeeping.
 			}
-			unset($_url); // A little housekeeping.
+			shuffle($blogs); // Randomize the order; i.e. don't always start from the top.
+
+			foreach($blogs as $_blog) // Auto-cache sitemap URLs for each of the blogs.
+			{
+				$_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = array();
+				$_blog_url          = 'http://'.$_blog->domain.'/'.trim($_blog->path, '/');
+
+				if($this->plugin->options['auto_cache_sitemap_url']) // Memory-optimized routine.
+					$_blog_sitemap_urls = $this->get_sitemap_urls_deep($_blog_url.'/'.$this->plugin->options['auto_cache_sitemap_url']);
+				if(!empty($_blog->other)) $_blog_other_urls = array_merge($_blog_urls, $_blog->other);
+
+				$_blog_urls = array_merge($_blog_sitemap_urls, $_blog_other_urls);
+				$_blog_urls = array_unique($_blog_urls); // Unique URLs only.
+				shuffle($_blog_urls); // Randomize the order.
+
+				foreach($_blog_urls as $_url)
+				{
+					$total_urls++;
+					$this->auto_cache_url($_url);
+					if((time() - $start_time) > 870) break 2;
+				}
+				unset($_url); // A little housekeeping.
+			}
+			unset($_blog, $_blog_sitemap_urls, $_blog_other_urls, $_blog_urls, $_blog_url);
 
 			$total_time = number_format(microtime(TRUE) - $micro_start_time, 5, '.', '').' seconds';
 
@@ -116,7 +137,7 @@ namespace quick_cache // Root namespace.
 		protected function log_auto_cache_url($url, $wp_remote_get_response)
 		{
 			$cache_dir           = $this->plugin->cache_dir();
-			$auto_cache_log_file = $cache_dir.'/auto-cache.log';
+			$auto_cache_log_file = $cache_dir.'/qc-auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
 				throw new \exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', $this->plugin->text_domain), $auto_cache_log_file));
@@ -141,7 +162,7 @@ namespace quick_cache // Root namespace.
 		protected function log_auto_cache_run($total_urls, $total_time)
 		{
 			$cache_dir           = $this->plugin->cache_dir();
-			$auto_cache_log_file = $cache_dir.'/auto-cache.log';
+			$auto_cache_log_file = $cache_dir.'/qc-auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
 				throw new \exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', $this->plugin->text_domain), $auto_cache_log_file));
