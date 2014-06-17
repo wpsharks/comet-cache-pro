@@ -184,6 +184,7 @@ namespace quick_cache // Root namespace.
 			echo '            <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', FALSE).'>'.__('Yes, enable Quick Cache notifications in the Dashboard when changes are detected &amp; one or more cache files are purged automatically.', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="0"'.selected($this->plugin->options['change_notifications_enable'], '0', FALSE).'>'.__('No, I don\'t want to know (don\'t really care) what Quick Cache is doing behind-the-scene.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
+			echo '      <hr />'."\n";
 			echo '      <h3>'.__('Auto-Purge Designated "Home Page" Too?', $this->plugin->text_domain).'</h3>'."\n";
 			echo '      <p>'.__('On many sites, the Home Page (aka: the Front Page) offers an archive view of all Posts (or even Pages). Therefore, if a single Post/Page is changed in some way; and Quick Cache purges/resets the cache for a single Post/Page, would you like Quick Cache to also purge any existing cache files for the "Home Page"?', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cache_purge_home_page_enable]">'."\n";
@@ -196,6 +197,7 @@ namespace quick_cache // Root namespace.
 			echo '            <option value="1"'.selected($this->plugin->options['cache_purge_posts_page_enable'], '1', FALSE).'>'.__('Yes, if any single Post/Page is purged/reset; also purge the "Posts Page".', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="0"'.selected($this->plugin->options['cache_purge_posts_page_enable'], '0', FALSE).'>'.__('No, I don\'t use a separate Posts Page; e.g. my Home Page IS my Posts Page.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
+			echo '      <hr />'."\n";
 			echo '      <h3>'.__('Auto-Purge "Author Page" Too?', $this->plugin->text_domain).'</h3>'."\n";
 			echo '      <p>'.__('On many sites, each author has a related "Author Page" that offers an archive view of all posts associated with that author. Therefore, if a single Post/Page is changed in some way; and Quick Cache purges/resets the cache for a single Post/Page, would you like Quick Cache to also purge any existing cache files for the related "Author Page"?', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cache_purge_author_page_enable]">'."\n";
@@ -220,6 +222,15 @@ namespace quick_cache // Root namespace.
 			echo '            <option value="1"'.selected($this->plugin->options['cache_purge_term_other_enable'], '1', FALSE).'>'.__('Yes, if any single Post/Page is purged/reset; also purge any associated custom Term archive views.', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="0"'.selected($this->plugin->options['cache_purge_term_other_enable'], '0', FALSE).'>'.__('No, my site doesn\'t use any custom Terms and/or I don\'t have any custom Term archive views.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
+			echo '      <hr />'."\n";
+			echo '      <h3>'.__('Auto-Purge "XML Sitemaps" Too?', $this->plugin->text_domain).'</h3>'."\n";
+			echo '      <p>'.__('If you\'re generating XML Sitemaps with a plugin like <a href="http://wordpress.org/plugins/google-sitemap-generator/" target="_blank">Google XML Sitemaps</a>, you can tell Quick Cache to automatically purge the cache of any XML Sitemaps whenever it purges a Post/Page. Note; this does NOT purge the XML Sitemap itself of course, only the cache. The point being, to clear the cache and allow changes to a Post/Page to be reflected by a fresh copy of your XML Sitemap; sooner rather than later.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cache_purge_xml_sitemaps_enable]">'."\n";
+			echo '            <option value="1"'.selected($this->plugin->options['cache_purge_xml_sitemaps_enable'], '1', FALSE).'>'.__('Yes, if any single Post/Page is purged/reset; also purge the cache for any XML Sitemaps.', $this->plugin->text_domain).'</option>'."\n";
+			echo '            <option value="0"'.selected($this->plugin->options['cache_purge_xml_sitemaps_enable'], '0', FALSE).'>'.__('No, my site doesn\'t use any XML Sitemaps and/or I prefer NOT to purge the cache for XML Sitemaps.', $this->plugin->text_domain).'</option>'."\n";
+			echo '         </select></p>'."\n";
+			echo '      <p><i class="fa fa-level-up fa-rotate-90"></i>&nbsp;&nbsp;&nbsp;'.__('<strong style="font-size:110%;">XML Sitemap Patterns...</strong> A default value of <code>sitemap*xml</code> covers all XML Sitemaps for most installations. However, you may customize this further if you deem necessary. One pattern per line please. A wildcard <code>*</code> matches zero or more characters. These patterns should match the <a href="https://github.com/WebSharks/quick-cache/wiki/Branched-Cache-Structure" target="_blank">cache file representation</a> of an XML Sitemap. e.g. a request for <code>/sitemap.xml</code> and/or <code>/sitemap-xyz.xml</code> are both matched by the pattern: <code>sitemap*xml</code>', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <p><textarea name="'.esc_attr(__NAMESPACE__).'[save_options][cache_purge_xml_sitemap_patterns]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_purge_xml_sitemap_patterns']).'</textarea></p>'."\n";
 			echo '   </div>'."\n";
 
 			echo '</div>'."\n";
@@ -420,7 +431,8 @@ namespace quick_cache // Root namespace.
 			echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
 			echo '         <h3>'.__('XML Sitemap URL (or an XML Sitemap Index)', $this->plugin->text_domain).'</h3>'."\n";
 			echo '         <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">'.esc_html(site_url('/')).'</td><td><input type="text" name="'.esc_attr(__NAMESPACE__).'[save_options][auto_cache_sitemap_url]" value="'.esc_attr($this->plugin->options['auto_cache_sitemap_url']).'" /></td></tr></table>'."\n";
-			echo '         <h3>'.__('A List of URLs to Auto-Cache (One Per Line)', $this->plugin->text_domain).'</h3>'."\n";
+			if(is_multisite()) echo '<p class="info" style="display:block; margin-top:-15px;">'.__('In a Multisite Network, each child blog will be auto-cached too. Quick Cache will dynamically change the leading <code>'.esc_html(site_url('/')).'</code> as necessary; for each child blog in the network. Quick Cache supports both sub-directory &amp; sub-domain networks; including domain mapping plugins.', $this->plugin->text_domain).'</p>'."\n";
+			echo '         <h3>'.__('And/Or; A List of URLs to Auto-Cache (One Per Line)', $this->plugin->text_domain).'</h3>'."\n";
 			echo '         <p><textarea name="'.esc_attr(__NAMESPACE__).'[save_options][auto_cache_other_urls]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['auto_cache_other_urls']).'</textarea></p>'."\n";
 			echo '         <hr />'."\n";
 			echo '         <h3>'.__('Auto-Cache User-Agent String', $this->plugin->text_domain).'</h3>'."\n";
