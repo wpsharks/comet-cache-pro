@@ -470,8 +470,11 @@ namespace quick_cache
 			 */
 			public function actions()
 			{
-				if(empty($_REQUEST[__NAMESPACE__])) return;
-				require_once dirname(__FILE__).'/includes/actions.php';
+				if(!empty($_REQUEST[__NAMESPACE__]))
+					require_once dirname(__FILE__).'/includes/actions.php';
+
+				if(!empty($_REQUEST[__NAMESPACE__.'__auto_cache_cron']))
+					$this->auto_cache().exit();
 			}
 
 			/**
