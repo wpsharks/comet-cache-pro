@@ -6,8 +6,12 @@ namespace quick_cache // Root namespace.
 
 	class actions // Action handlers.
 	{
+		protected $plugin; // Set by constructor.
+
 		public function __construct()
 		{
+			$this->plugin = plugin();
+
 			if(empty($_REQUEST[__NAMESPACE__])) return;
 			foreach((array)$_REQUEST[__NAMESPACE__] as $action => $args)
 				if(method_exists($this, $action)) $this->{$action}($args);
@@ -15,21 +19,21 @@ namespace quick_cache // Root namespace.
 
 		public function wipe_cache($args)
 		{
-			if(!current_user_can(plugin()->network_cap))
+			if(!current_user_can($this->plugin->network_cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 				return; // Unauthenticated POST data.
 
-			$counter = plugin()->wipe_cache(TRUE); // Counter.
+			$counter = $this->plugin->wipe_cache(TRUE); // Counter.
 
-			if(plugin()->options['cache_clear_s2clean_enable'])
+			if($this->plugin->options['cache_clear_s2clean_enable'])
 				if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
 
-			if(plugin()->options['cache_clear_eval_code']) // Custom code?
+			if($this->plugin->options['cache_clear_eval_code']) // Custom code?
 			{
 				ob_start(); // Buffer output from PHP code.
-				eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+				eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
 				$eval_output = ob_get_clean();
 			}
 			$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
@@ -41,26 +45,26 @@ namespace quick_cache // Root namespace.
 
 		public function ajax_wipe_cache($args)
 		{
-			if(!current_user_can(plugin()->network_cap))
+			if(!current_user_can($this->plugin->network_cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 				return; // Unauthenticated POST data.
 
-			$counter = plugin()->wipe_cache(TRUE); // Counter.
+			$counter = $this->plugin->wipe_cache(TRUE); // Counter.
 
-			if(plugin()->options['cache_clear_s2clean_enable'])
+			if($this->plugin->options['cache_clear_s2clean_enable'])
 				if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
 
-			if(plugin()->options['cache_clear_eval_code']) // Custom code?
+			if($this->plugin->options['cache_clear_eval_code']) // Custom code?
 			{
 				ob_start(); // Buffer output from PHP code.
-				eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+				eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
 				$eval_output = ob_get_clean();
 			}
-			$response = sprintf(__('<p><strong>Wiped a total of <code>%1$s</code> cache files.</strong></p>', plugin()->text_domain), $counter);
-			$response .= __('<p>Cache wiped for all sites; recreation will occur automatically over time.</p>', plugin()->text_domain);
-			if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', plugin()->text_domain), $s2clean_counter);
+			$response = sprintf(__('<p><strong>Wiped a total of <code>%1$s</code> cache files.</strong></p>', $this->plugin->text_domain), $counter);
+			$response .= __('<p>Cache wiped for all sites; recreation will occur automatically over time.</p>', $this->plugin->text_domain);
+			if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', $this->plugin->text_domain), $s2clean_counter);
 			if(!empty($eval_output)) $response .= $eval_output; // Custom output (perhaps even multiple messages).
 
 			exit($response); // JavaScript will take it from here.
@@ -68,21 +72,21 @@ namespace quick_cache // Root namespace.
 
 		public function clear_cache($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 				return; // Unauthenticated POST data.
 
-			$counter = plugin()->clear_cache(TRUE); // Counter.
+			$counter = $this->plugin->clear_cache(TRUE); // Counter.
 
-			if(plugin()->options['cache_clear_s2clean_enable'])
+			if($this->plugin->options['cache_clear_s2clean_enable'])
 				if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
 
-			if(plugin()->options['cache_clear_eval_code']) // Custom code?
+			if($this->plugin->options['cache_clear_eval_code']) // Custom code?
 			{
 				ob_start(); // Buffer output from PHP code.
-				eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+				eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
 				$eval_output = ob_get_clean();
 			}
 			$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
@@ -94,26 +98,26 @@ namespace quick_cache // Root namespace.
 
 		public function ajax_clear_cache($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 				return; // Unauthenticated POST data.
 
-			$counter = plugin()->clear_cache(TRUE); // Counter.
+			$counter = $this->plugin->clear_cache(TRUE); // Counter.
 
-			if(plugin()->options['cache_clear_s2clean_enable'])
+			if($this->plugin->options['cache_clear_s2clean_enable'])
 				if(function_exists('s2clean')) $s2clean_counter = s2clean()->md_cache_clear();
 
-			if(plugin()->options['cache_clear_eval_code']) // Custom code?
+			if($this->plugin->options['cache_clear_eval_code']) // Custom code?
 			{
 				ob_start(); // Buffer output from PHP code.
-				eval('?>'.plugin()->options['cache_clear_eval_code'].'<?php ');
+				eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
 				$eval_output = ob_get_clean();
 			}
-			$response = sprintf(__('<p><strong>Cleared a total of <code>%1$s</code> cache files.</strong></p>', plugin()->text_domain), $counter);
-			$response .= __('<p>Cache cleared for this site; recreation will occur automatically over time.</p>', plugin()->text_domain);
-			if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', plugin()->text_domain), $s2clean_counter);
+			$response = sprintf(__('<p><strong>Cleared a total of <code>%1$s</code> cache files.</strong></p>', $this->plugin->text_domain), $counter);
+			$response .= __('<p>Cache cleared for this site; recreation will occur automatically over time.</p>', $this->plugin->text_domain);
+			if(isset($s2clean_counter)) $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', $this->plugin->text_domain), $s2clean_counter);
 			if(!empty($eval_output)) $response .= $eval_output; // Custom output (perhaps even multiple messages).
 
 			exit($response); // JavaScript will take it from here.
@@ -121,7 +125,7 @@ namespace quick_cache // Root namespace.
 
 		public function save_options($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
@@ -141,38 +145,38 @@ namespace quick_cache // Root namespace.
 			if(isset($args['base_dir'])) // No leading/trailing slashes please.
 				$args['base_dir'] = trim($args['base_dir'], '\\/'." \t\n\r\0\x0B");
 
-			plugin()->options = array_merge(plugin()->default_options, $args);
+			$this->plugin->options = array_merge($this->plugin->default_options, $args);
 
-			if(!trim(plugin()->options['base_dir'], '\\/'." \t\n\r\0\x0B") // Empty?
-			   || strpos(basename(plugin()->options['base_dir']), 'wp-') === 0 // Reserved?
-			) plugin()->options['base_dir'] = plugin()->default_options['base_dir'];
+			if(!trim($this->plugin->options['base_dir'], '\\/'." \t\n\r\0\x0B") // Empty?
+			   || strpos(basename($this->plugin->options['base_dir']), 'wp-') === 0 // Reserved?
+			) $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
 
-			update_option(__NAMESPACE__.'_options', plugin()->options); // Blog-specific.
-			if(is_multisite()) update_site_option(__NAMESPACE__.'_options', plugin()->options);
+			update_option(__NAMESPACE__.'_options', $this->plugin->options); // Blog-specific.
+			if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->plugin->options);
 
 			$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
 			$query_args  = array('page' => __NAMESPACE__, __NAMESPACE__.'__updated' => '1');
 
-			plugin()->auto_wipe_cache(); // May produce a notice.
+			$this->plugin->auto_wipe_cache(); // May produce a notice.
 
-			if(plugin()->options['enable']) // Enable.
+			if($this->plugin->options['enable']) // Enable.
 			{
-				if(!($add_wp_cache_to_wp_config = plugin()->add_wp_cache_to_wp_config()))
+				if(!($add_wp_cache_to_wp_config = $this->plugin->add_wp_cache_to_wp_config()))
 					$query_args[__NAMESPACE__.'__wp_config_wp_cache_add_failure'] = '1';
 
-				if(!($add_advanced_cache = plugin()->add_advanced_cache()))
+				if(!($add_advanced_cache = $this->plugin->add_advanced_cache()))
 					$query_args[__NAMESPACE__.'__advanced_cache_add_failure']
 						= ($add_advanced_cache === NULL)
 						? 'qc-advanced-cache' : '1';
 
-				plugin()->update_blog_paths();
+				$this->plugin->update_blog_paths();
 			}
 			else // We need to disable Quick Cache in this case.
 			{
-				if(!($remove_wp_cache_from_wp_config = plugin()->remove_wp_cache_from_wp_config()))
+				if(!($remove_wp_cache_from_wp_config = $this->plugin->remove_wp_cache_from_wp_config()))
 					$query_args[__NAMESPACE__.'__wp_config_wp_cache_remove_failure'] = '1';
 
-				if(!($remove_advanced_cache = plugin()->remove_advanced_cache()))
+				if(!($remove_advanced_cache = $this->plugin->remove_advanced_cache()))
 					$query_args[__NAMESPACE__.'__advanced_cache_remove_failure'] = '1';
 			}
 			$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
@@ -182,40 +186,39 @@ namespace quick_cache // Root namespace.
 
 		public function restore_default_options($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
 				return; // Unauthenticated POST data.
 
 			delete_option(__NAMESPACE__.'_options'); // Blog-specific.
-			delete_option('ws_plugin__qcache_options'); // Blog-specific.
 			if(is_multisite()) delete_site_option(__NAMESPACE__.'_options');
-			plugin()->options = plugin()->default_options;
+			$this->plugin->options = $this->plugin->default_options;
 
 			$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
 			$query_args  = array('page' => __NAMESPACE__, __NAMESPACE__.'__restored' => '1');
 
-			plugin()->auto_wipe_cache(); // May produce a notice.
+			$this->plugin->auto_wipe_cache(); // May produce a notice.
 
-			if(plugin()->options['enable']) // Enable.
+			if($this->plugin->options['enable']) // Enable.
 			{
-				if(!($add_wp_cache_to_wp_config = plugin()->add_wp_cache_to_wp_config()))
+				if(!($add_wp_cache_to_wp_config = $this->plugin->add_wp_cache_to_wp_config()))
 					$query_args[__NAMESPACE__.'__wp_config_wp_cache_add_failure'] = '1';
 
-				if(!($add_advanced_cache = plugin()->add_advanced_cache()))
+				if(!($add_advanced_cache = $this->plugin->add_advanced_cache()))
 					$query_args[__NAMESPACE__.'__advanced_cache_add_failure']
 						= ($add_advanced_cache === NULL)
 						? 'qc-advanced-cache' : '1';
 
-				plugin()->update_blog_paths();
+				$this->plugin->update_blog_paths();
 			}
 			else // We need to disable Quick Cache in this case.
 			{
-				if(!($remove_wp_cache_from_wp_config = plugin()->remove_wp_cache_from_wp_config()))
+				if(!($remove_wp_cache_from_wp_config = $this->plugin->remove_wp_cache_from_wp_config()))
 					$query_args[__NAMESPACE__.'__wp_config_wp_cache_remove_failure'] = '1';
 
-				if(!($remove_advanced_cache = plugin()->remove_advanced_cache()))
+				if(!($remove_advanced_cache = $this->plugin->remove_advanced_cache()))
 					$query_args[__NAMESPACE__.'__advanced_cache_remove_failure'] = '1';
 			}
 			$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
@@ -225,7 +228,7 @@ namespace quick_cache // Root namespace.
 
 		public function export_options($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
@@ -237,7 +240,7 @@ namespace quick_cache // Root namespace.
 
 			while(@ob_end_clean()) ; // Cleans output buffers.
 
-			$export    = json_encode(plugin()->options);
+			$export    = json_encode($this->plugin->options);
 			$file_name = __NAMESPACE__.'-options.json';
 
 			nocache_headers();
@@ -251,7 +254,7 @@ namespace quick_cache // Root namespace.
 
 		public function update_sync($args)
 		{
-			if(!current_user_can(plugin()->update_cap))
+			if(!current_user_can($this->plugin->update_cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
@@ -259,9 +262,9 @@ namespace quick_cache // Root namespace.
 
 			$args = array_map('trim', stripslashes_deep((array)$args));
 
-			if(empty($args['username'])) $args['username'] = plugin()->options['update_sync_username'];
-			if(empty($args['password'])) $args['password'] = plugin()->options['update_sync_password'];
-			if(!isset($args['version_check'])) $args['version_check'] = plugin()->options['update_sync_version_check'];
+			if(empty($args['username'])) $args['username'] = $this->plugin->options['update_sync_username'];
+			if(empty($args['password'])) $args['password'] = $this->plugin->options['update_sync_password'];
+			if(!isset($args['version_check'])) $args['version_check'] = $this->plugin->options['update_sync_version_check'];
 
 			$update_sync_url       = 'https://www.websharks-inc.com/products/update-sync.php';
 			$update_sync_post_vars = array('data' => array('slug'     => str_replace('_', '-', __NAMESPACE__).'-pro', 'version' => 'latest-stable',
@@ -275,7 +278,7 @@ namespace quick_cache // Root namespace.
 			) // Report errors in all of these cases. Redirect errors to `update-sync` page.
 			{
 				if(!empty($update_sync_response['error'])) $error = $update_sync_response['error'];
-				else $error = __('Unknown error. Please wait 15 minutes and try again.', plugin()->text_domain);
+				else $error = __('Unknown error. Please wait 15 minutes and try again.', $this->plugin->text_domain);
 
 				$redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
 				$query_args  = array('page' => __NAMESPACE__.'-update-sync', __NAMESPACE__.'__error' => $error);
@@ -283,20 +286,20 @@ namespace quick_cache // Root namespace.
 
 				wp_redirect($redirect_to).exit(); // Done; with errors.
 			}
-			plugin()->options['update_sync_username']           = $args['username']; // Update username.
-			plugin()->options['update_sync_password']           = $args['password']; // Update password.
-			plugin()->options['update_sync_version_check']      = $args['version_check']; // Check version?
-			plugin()->options['last_update_sync_version_check'] = time(); // Update this; we just checked :-)
-			update_option(__NAMESPACE__.'_options', plugin()->options); // Save each of these options.
-			if(is_multisite()) update_site_option(__NAMESPACE__.'_options', plugin()->options);
+			$this->plugin->options['update_sync_username']           = $args['username']; // Update username.
+			$this->plugin->options['update_sync_password']           = $args['password']; // Update password.
+			$this->plugin->options['update_sync_version_check']      = $args['version_check']; // Check version?
+			$this->plugin->options['last_update_sync_version_check'] = time(); // Update this; we just checked :-)
+			update_option(__NAMESPACE__.'_options', $this->plugin->options); // Save each of these options.
+			if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->plugin->options);
 
 			$notices = (is_array($notices = get_option(__NAMESPACE__.'_notices'))) ? $notices : array();
 			unset($notices['persistent-update-sync-version']); // Dismiss this notice.
 			update_option(__NAMESPACE__.'_notices', $notices); // Update notices.
 
 			$redirect_to = self_admin_url('/update.php'); // Runs update routines in WordPress.
-			$query_args  = array('action'                         => 'upgrade-plugin', 'plugin' => plugin_basename(plugin()->file),
-			                     '_wpnonce'                       => wp_create_nonce('upgrade-plugin_'.plugin_basename(plugin()->file)),
+			$query_args  = array('action'                         => 'upgrade-plugin', 'plugin' => plugin_basename($this->plugin->file),
+			                     '_wpnonce'                       => wp_create_nonce('upgrade-plugin_'.plugin_basename($this->plugin->file)),
 			                     __NAMESPACE__.'__update_version' => $update_sync_response['version'],
 			                     __NAMESPACE__.'__update_zip'     => base64_encode($update_sync_response['zip']));
 			$redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
@@ -306,7 +309,7 @@ namespace quick_cache // Root namespace.
 
 		public function dismiss_notice($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
@@ -324,7 +327,7 @@ namespace quick_cache // Root namespace.
 
 		public function dismiss_error($args)
 		{
-			if(!current_user_can(plugin()->cap))
+			if(!current_user_can($this->plugin->cap))
 				return; // Nothing to do.
 
 			if(empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce']))
