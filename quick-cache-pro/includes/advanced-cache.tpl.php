@@ -987,9 +987,9 @@ namespace quick_cache
 
 			$this->protocol       = $this->is_ssl() ? 'https://' : 'http://';
 			$this->version_salt   = $this->apply_filters(__CLASS__.'__version_salt', QUICK_CACHE_VERSION_SALT);
-			$this->cache_path     = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
+			$this->cache_path     = $this->build_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $this->version_salt);
 			$this->cache_file     = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
-			$this->cache_file_404 = QUICK_CACHE_DIR.'/'.$this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].'/'.QUICK_CACHE_404_CACHE_FILENAME);
+			$this->cache_file_404 = QUICK_CACHE_DIR.'/'.$this->build_cache_path($this->protocol.$_SERVER['HTTP_HOST'].'/'.QUICK_CACHE_404_CACHE_FILENAME);
 			$this->salt_location  = ltrim($this->version_salt.' '.$this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
 			if(QUICK_CACHE_WHEN_LOGGED_IN === 'postload' && $this->is_like_user_logged_in())
@@ -1111,7 +1111,7 @@ namespace quick_cache
 			 * it was not possible to obtain a user token because the current user's login is expired or invalid.
 			 * In this scenario we still proceed, but WITHOUT a user token; i.e. we use a cache that is NOT user-specific.
 			 */
-			$this->cache_path = $this->url_to_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
+			$this->cache_path = $this->build_cache_path($this->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
 			$this->cache_file = QUICK_CACHE_DIR.'/'.$this->cache_path; // NOT considering a user cache; not yet.
 
 			if(is_file($this->cache_file) && filemtime($this->cache_file) >= strtotime('-'.QUICK_CACHE_MAX_AGE))
