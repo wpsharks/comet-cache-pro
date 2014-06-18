@@ -157,7 +157,7 @@ namespace quick_cache
 					'cache_clear_s2clean_enable'           => '0', // `0|1`.
 					'cache_clear_eval_code'                => '', // PHP code.
 					'cache_purge_xml_sitemaps_enable'      => '1', // `0|1`.
-					'cache_purge_xml_sitemap_patterns'     => 'sitemap*xml', // Empty string or line-delimited patterns.
+					'cache_purge_xml_sitemap_patterns'     => '/sitemap*.xml', // Empty string or line-delimited patterns.
 					'cache_purge_home_page_enable'         => '1', // `0|1`.
 					'cache_purge_posts_page_enable'        => '1', // `0|1`.
 					'cache_purge_author_page_enable'       => '1', // `0|1`.
@@ -772,6 +772,10 @@ namespace quick_cache
 			 * @since 140422 First documented version.
 			 *
 			 * @attaches-to `pre_site_transient_update_plugins` filter.
+			 *
+			 * @param object $transient Transient data provided by the WP filter.
+			 *
+			 * @return object Transient object; possibly altered by this routine.
 			 *
 			 * @see check_update_sync_version()
 			 */
@@ -1478,12 +1482,13 @@ namespace quick_cache
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				$patterns                     = '(?:'.implode('|', array_map(function ($pattern)
+				$_this                        = $this; // Needed in the closure below.
+				$patterns                     = '(?:'.implode('|', array_map(function ($pattern) use ($_this)
 					{
-						$pattern = trim($pattern, '/');
-						$pattern = str_replace('.', '-', $pattern);
-						$pattern = preg_quote($pattern, '/'); // Escape.
-						return preg_replace('/\\\\\*/', '.*?', $pattern); // Wildcards.
+						$pattern = $_this->build_cache_path(home_url('/'.trim($pattern, '/')), '', '', // Convert to a cache path w/ possible wildcards.
+						                                    $_this::CACHE_PATH_ALLOW_WILDCARDS | $_this::CACHE_PATH_NO_SCHEME | $_this::CACHE_PATH_NO_HOST
+						                                    | $_this::CACHE_PATH_NO_PATH_INDEX | $_this::CACHE_PATH_NO_QUV | $_this::CACHE_PATH_NO_EXT);
+						return preg_replace('/\\\\\*/', '.*?', preg_quote($pattern, '/')); // Wildcards.
 
 					}, preg_split('/['."\r\n".']+/', $this->options['cache_purge_xml_sitemap_patterns'], NULL, PREG_SPLIT_NO_EMPTY))).')';
 				$cache_path_no_scheme_quv_ext = $this->build_cache_path(home_url('/'), '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
