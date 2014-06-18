@@ -235,7 +235,7 @@ namespace quick_cache // Root namespace.
 				return; // Unauthenticated POST data.
 
 			ini_set('zlib.output_compression', FALSE);
-			if(function_exists('apache_setenv'))
+			if($this->plugin->function_is_possible('apache_setenv'))
 				apache_setenv('no-gzip', '1');
 
 			while(@ob_end_clean()) ; // Cleans output buffers.
