@@ -57,13 +57,13 @@ namespace quick_cache // Root namespace.
 			$start_time       = time(); // Initialize.
 			$total_urls       = $total_time = 0; // Initialize.
 
-			$network_site_url  = rtrim(network_site_url(), '/');
-			$network_site_host = parse_url($network_site_url, PHP_URL_HOST);
-			$network_site_path = parse_url($network_site_url, PHP_URL_PATH);
+			$network_home_url  = rtrim(network_home_url(), '/');
+			$network_home_host = parse_url($network_home_url, PHP_URL_HOST);
+			$network_home_path = parse_url($network_home_url, PHP_URL_PATH);
 
 			if(($other_urls = preg_split('/\s+/', $this->plugin->options['auto_cache_other_urls'], NULL, PREG_SPLIT_NO_EMPTY)))
-				$blogs = array((object)array('domain' => $network_site_host, 'path' => $network_site_path, 'other' => $other_urls));
-			else $blogs = array((object)array('domain' => $network_site_host, 'path' => $network_site_path));
+				$blogs = array((object)array('domain' => $network_home_host, 'path' => $network_home_path, 'other' => $other_urls));
+			else $blogs = array((object)array('domain' => $network_home_host, 'path' => $network_home_path));
 
 			if(is_multisite()) // If this is a network, including child blogs also.
 			{
