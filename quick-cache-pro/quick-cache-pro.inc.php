@@ -755,7 +755,7 @@ namespace quick_cache
 				if(empty($update_sync_response['version']) || version_compare($this->version, $update_sync_response['version'], '>='))
 					return; // Current version is the latest stable version. Nothing more to do here.
 
-				$update_sync_page = self_admin_url('/admin.php'); // Page that initiates an update.
+				$update_sync_page = network_admin_url('/admin.php'); // Page that initiates an update.
 				$update_sync_page = add_query_arg(urlencode_deep(array('page' => __NAMESPACE__.'-update-sync')), $update_sync_page);
 
 				$this->enqueue_notice(sprintf(__('<strong>Quick Cache Pro:</strong> a new version is now available. Please <a href="%1$s">upgrade to v%2$s</a>.', $this->text_domain),
