@@ -314,7 +314,7 @@ namespace quick_cache
 		/**
 		 * Plugin file path.
 		 *
-		 * @since 14xxxx Reorganizing class members.
+		 * @since 140725 Reorganizing class members.
 		 *
 		 * @var string Absolute server path to QC plugin file.
 		 */
@@ -488,7 +488,7 @@ namespace quick_cache
 		/**
 		 * Current WordPress {@link \content_url()}.
 		 *
-		 * @since 14xxxx Reorganizing class members.
+		 * @since 140725 Reorganizing class members.
 		 *
 		 * @var string Current WordPress {@link \content_url()}.
 		 *
