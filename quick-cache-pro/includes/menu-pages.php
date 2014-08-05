@@ -109,9 +109,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading'.((!$this->plugin->options['enable']) ? ' open' : '').'">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!$this->plugin->options['enable']) ? ' open' : '').'">'."\n";
 			echo '      <i class="fa fa-flag"></i> '.__('Enable/Disable', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body'.((!$this->plugin->options['enable']) ? ' open' : '').' clearfix">'."\n";
 			echo '      <p style="float:right; margin:-5px 0 0 0; font-weight:bold;">Quick Cache = <i class="fa fa-tachometer fa-4x"></i> SPEED<em>!!</em></p>'."\n";
@@ -135,9 +135,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-shield"></i> '.__('Deactivation Safeguards', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-shield fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -153,9 +153,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-info-circle"></i> '.__('Clearing the Cache', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <h3>'.__('Clearing the Cache (Manually)', $this->plugin->text_domain).'</h3>'."\n";
@@ -238,9 +238,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Directory / Expiration Time', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <h3>'.__('Base Cache Directory (Must be Writable; e.g. <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">Permissions</a> <code>755</code> or Higher)', $this->plugin->text_domain).'</h3>'."\n";
@@ -261,9 +261,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Client-Side Cache', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-desktop fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -284,9 +284,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Logged-In Users', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-group fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -307,9 +307,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('GET Requests', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -327,9 +327,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('404 Requests', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -347,9 +347,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('RSS, RDF, and Atom Feeds', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -366,9 +366,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('URI Exclusion Patterns', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <h3>'.__('Don\'t Cache These Special URI Exclusion Patterns?', $this->plugin->text_domain).'</h3>'."\n";
@@ -382,9 +382,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('HTTP Referrer Exclusion Patterns', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <h3>'.__('Don\'t Cache These Special HTTP Referrer Exclusion Patterns?', $this->plugin->text_domain).'</h3>'."\n";
@@ -398,9 +398,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('User-Agent Exclusion Patterns', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <h3>'.__('Don\'t Cache These Special User-Agent Exclusion Patterns?', $this->plugin->text_domain).'</h3>'."\n";
@@ -414,9 +414,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Auto-Cache Engine', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -446,9 +446,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('HTML Compression (Experimental)', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -518,9 +518,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('GZIP Compression', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/gzip.png')).'" class="screenshot" />'."\n";
@@ -537,9 +537,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Dynamic Version Salt', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/salt.png')).'" class="screenshot" />'."\n";
@@ -561,9 +561,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Theme/Plugin Developers', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-puzzle-piece fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -579,9 +579,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-gears"></i> '.__('Import/Export Options', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-arrow-circle-o-up fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -645,9 +645,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading open">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading open">'."\n";
 			echo '      <i class="fa fa-sign-in"></i> '.__('Update Credentials', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix open">'."\n";
 			echo '      <i class="fa fa-user fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
@@ -664,9 +664,9 @@ namespace quick_cache // Root namespace.
 
 			echo '<div class="plugin-menu-page-panel">'."\n";
 
-			echo '   <div class="plugin-menu-page-panel-heading">'."\n";
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
 			echo '      <i class="fa fa-bullhorn"></i> '.__('Update Notifier', $this->plugin->text_domain)."\n";
-			echo '   </div>'."\n";
+			echo '   </a>'."\n";
 
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-rss fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
