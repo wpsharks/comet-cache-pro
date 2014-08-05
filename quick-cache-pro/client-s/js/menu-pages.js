@@ -18,7 +18,7 @@
 			$('.plugin-menu-page-panel-heading', $menuPage).removeClass('open')
 				.next('.plugin-menu-page-panel-body').removeClass('open');
 		});
-		$('.plugin-menu-page-panel-heading', $menuPage).on('click', function()
+		$('.plugin-menu-page-panel-heading', $menuPage).on('click', function(e)
 		{
 			e.preventDefault(), // Prevent click event.
 				$(this).toggleClass('open').next('.plugin-menu-page-panel-body').toggleClass('open');
