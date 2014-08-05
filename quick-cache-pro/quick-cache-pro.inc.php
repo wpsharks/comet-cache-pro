@@ -835,6 +835,9 @@ namespace quick_cache
 					$_dismiss = ''; // Initialize empty string; e.g. reset value on each pass.
 					if(strpos($_key, 'persistent-') === 0) // A dismissal link is needed in this case?
 					{
+						if($_key === 'persistent-update-sync-version' && !current_user_can($this->update_cap))
+							continue; // Current user does not have access.
+
 						$_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
 						$_dismiss     = add_query_arg(urlencode_deep(array(__NAMESPACE__ => array('dismiss_notice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
 						$_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', $this->text_domain).'</a>';
