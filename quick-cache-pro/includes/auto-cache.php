@@ -177,19 +177,43 @@ namespace quick_cache // Root namespace.
 		/**
 		 * Collects all URLs from an XML sitemap deeply.
 		 *
-		 * @param string $sitemap A URL to an XML sitemap file.
+		 * @param string  $sitemap A URL to an XML sitemap file.
 		 *    This supports nested XML sitemap index files too; i.e. `<sitemapindex>`.
 		 *    Note that GZIP files are NOT supported at this time.
 		 *
+		 * @param boolean $___recursive For internal use only.
+		 *
 		 * @return array URLs from an XML sitemap deeply.
+		 *
+		 * @throws \exception If `$sitemap` is NOT actually a sitemap.
 		 */
-		protected function get_sitemap_urls_deep($sitemap)
+		protected function get_sitemap_urls_deep($sitemap, $___recursive = FALSE)
 		{
 			$urls       = array();
-			$sitemap    = (string)$sitemap;
 			$xml_reader = new \XMLReader();
 
-			if($sitemap && @$xml_reader->open($sitemap))
+			if(!($sitemap = trim((string)$sitemap)))
+				goto finale; // Nothing we can do.
+
+			if(is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5))))
+			{
+				if($___recursive) goto finale; // Fail silently on recursive calls.
+				throw new \exception(sprintf(__('Invalid XML sitemap. Unreachable URL: `%1$s`. %2$s', $this->plugin->text_domain),
+				                             $sitemap, $head->get_error_message())); // Include the WP error message too.
+			}
+			if(empty($head['response']['code']) || (integer)$head['response']['code'] >= 400)
+			{
+				if($___recursive) goto finale; // Fail silently on recursive calls.
+				throw new \exception(sprintf(__('Invalid XML sitemap status code at: `%1$s`. Expecting a `200` status. Instead got: `%2$s`.', $this->plugin->text_domain),
+				                             $sitemap, !empty($head['response']['code']) ? $head['response']['code'] : ''));
+			}
+			if(empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === FALSE)
+			{
+				if($___recursive) goto finale; // Fail silently on recursive calls.
+				throw new \exception(sprintf(__('Invalid XML sitemap content type at: `%1$s`. Expecting XML. Instead got: `%2$s`.', $this->plugin->text_domain),
+				                             $sitemap, !empty($head['headers']['content-type']) ? $head['headers']['content-type'] : ''));
+			}
+			if($xml_reader->open($sitemap)) // Attempt to open and read the sitemap.
 				while($xml_reader->read()) if($xml_reader->nodeType === $xml_reader::ELEMENT)
 				{
 					switch($xml_reader->name)
@@ -205,7 +229,9 @@ namespace quick_cache // Root namespace.
 							break; // Break switch handler.
 					}
 				}
-			unset($_sitemapindex_urls, $_urlset_urls); // A little housekeeping.
+			unset($_sitemapindex_urls, $_urlset_urls); // Housekeeping.
+
+			finale: // Target point; grand finale.
 
 			return $urls; // A full set of all sitemap URLs; i.e. `<loc>` tags.
 		}
@@ -232,7 +258,7 @@ namespace quick_cache // Root namespace.
 
 						case 'loc': // A URL location.
 							if(!empty($is_sitemap_node) && $xml_reader->read() && ($_loc = trim($xml_reader->value)))
-								$urls = array_merge($urls, $this->get_sitemap_urls_deep($_loc));
+								$urls = array_merge($urls, $this->get_sitemap_urls_deep($_loc, TRUE));
 							break; // Break switch handler.
 
 						default: // Anything else.
