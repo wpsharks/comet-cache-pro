@@ -885,6 +885,9 @@ namespace quick_cache
 				}
 				if(current_user_can($this->cap)) foreach($notices as $_key => $_notice)
 				{
+					if($_key === 'persistent-update-sync-version' && !current_user_can($this->update_cap))
+						continue; // Current user does not have access.
+
 					$_dismiss = ''; // Initialize empty string; e.g. reset value on each pass.
 					if(strpos($_key, 'persistent-') === 0) // A dismissal link is needed in this case?
 					{
