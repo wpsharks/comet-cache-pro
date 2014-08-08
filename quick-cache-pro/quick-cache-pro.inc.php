@@ -1558,7 +1558,7 @@ namespace quick_cache
 
 						break; // Break switch handler.
 
-					case 'post-comments': // Feed related to comments that a post has.
+					case 'post-comments': // Feeds related to comments that a post has.
 
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
@@ -1571,7 +1571,7 @@ namespace quick_cache
 
 						break; // Break switch handler.
 
-					case 'post-authors': // Feed related to authors that a post has.
+					case 'post-authors': // Feeds related to authors that a post has.
 
 						if(!$post_id) break; // nothing to do here.
 						if(!($post = get_post($post_id))) break;
@@ -1584,7 +1584,7 @@ namespace quick_cache
 
 						break; // Break switch handler.
 
-					case 'post-terms': // Feed related to terms that a post has.
+					case 'post-terms': // Feeds related to terms that a post has.
 
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
@@ -1598,20 +1598,41 @@ namespace quick_cache
 							if(is_array($_post_taxonomy_terms = wp_get_post_terms($post->ID, $_post_taxonomy->name)) && $_post_taxonomy_terms)
 								$post_terms = array_merge($post_terms, $_post_taxonomy_terms);
 
-						foreach($post_terms as $_post_term)
+						$wildcarded_term_feed_link_variations = function ($feed_url, $taxonomy) // @TODO review this again.
 						{
-							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, get_default_feed());
-							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rdf');
-							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss');
-							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss2');
-							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'atom');
+							if($feed_url && $taxonomy) // See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
+								return array(preg_replace('/(&amp;|[&?])'.preg_quote(urlencode($taxonomy), '/').'\=.+?(&amp;|[&#]|$)/',
+								                          '${1}'.urlencode($taxonomy).'=*'.'${2}', $feed_url),
+								             preg_replace('/\/[^\/]+\/feed([\/?#]|$)/', '/*/feed'.'${1}', $feed_url));
+							return array(); // Default; empty array.
+						};
+						foreach($post_terms as $_post_term) // See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
+						{
+							if(($_feed_url = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, get_default_feed())))
+								$feed_urls = array_merge($feed_urls, array($_feed_url), $wildcarded_term_feed_link_variations($_feed_url, $_post_term->taxonomy));
+
+							if(($_feed_url = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rdf')))
+								$feed_urls = array_merge($feed_urls, array($_feed_url), $wildcarded_term_feed_link_variations($_feed_url, $_post_term->taxonomy));
+
+							if(($_feed_url = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss')))
+								$feed_urls = array_merge($feed_urls, array($_feed_url), $wildcarded_term_feed_link_variations($_feed_url, $_post_term->taxonomy));
+
+							if(($_feed_url = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss2')))
+								$feed_urls = array_merge($feed_urls, array($_feed_url), $wildcarded_term_feed_link_variations($_feed_url, $_post_term->taxonomy));
+
+							if(($_feed_url = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'atom')))
+								$feed_urls = array_merge($feed_urls, array($_feed_url), $wildcarded_term_feed_link_variations($_feed_url, $_post_term->taxonomy));
 						}
-						unset($_post_taxonomies, $_post_taxonomy, $_post_taxonomy_terms, $_post_term);
+						unset($_post_taxonomies, $_post_taxonomy, $_post_taxonomy_terms, $_post_term, $_feed_url);
 
 						break; // Break switch handler.
 				}
 				if(!$feed_urls || !($feed_urls = array_unique($feed_urls)))
 					return $counter; // Nothing to do here.
+
+				// @TODO
+				$this->build_cache_path('', '', '', $this::CACHE_PATH_ALLOW_WILDCARDS | $this::CACHE_PATH_NO_SCHEME
+				                                    | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
