@@ -1539,25 +1539,52 @@ namespace quick_cache
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
-						$urls[] = get_feed_link();
+
+						$urls[] = get_feed_link(get_default_feed());
+						$urls[] = get_feed_link('rdf');
+						$urls[] = get_feed_link('rss');
+						$urls[] = get_feed_link('rss2');
+						$urls[] = get_feed_link('atom');
+
 						break; // Break switch handler.
 
 					case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
+
 						$urls[] = get_feed_link('comments_'.get_default_feed());
+						$urls[] = get_feed_link('comments_rdf');
+						$urls[] = get_feed_link('comments_rss');
+						$urls[] = get_feed_link('comments_rss2');
+						$urls[] = get_feed_link('comments_atom');
+
 						break; // Break switch handler.
 
 					case 'post-comments': // Feed related to comments that a post has.
 						if(!$post_id) break; // Nothing to do here.
+						if(!($post = get_post($post_id))) break;
+
+						$urls[] = get_post_comments_feed_link($post_id, get_default_feed());
+						$urls[] = get_post_comments_feed_link($post_id, 'rdf');
+						$urls[] = get_post_comments_feed_link($post_id, 'rss');
+						$urls[] = get_post_comments_feed_link($post_id, 'rss2');
+						$urls[] = get_post_comments_feed_link($post_id, 'atom');
 
 						break; // Break switch handler.
 
 					case 'post-authors': // Feed related to authors that a post has.
-						if(!$post_id) break; // Nothing to do here.
+						if(!$post_id) break; // nothing to do here.
+						if(!($post = get_post($post_id))) break;
+
+						$urls[] = get_author_feed_link($post->post_author, get_default_feed());
+						$urls[] = get_author_feed_link($post->post_author, 'rdf');
+						$urls[] = get_author_feed_link($post->post_author, 'rss');
+						$urls[] = get_author_feed_link($post->post_author, 'rss2');
+						$urls[] = get_author_feed_link($post->post_author, 'atom');
 
 						break; // Break switch handler.
 
 					case 'post-terms': // Feed related to terms that a post has.
 						if(!$post_id) break; // Nothing to do here.
+						if(!($post = get_post($post_id))) break;
 
 						break; // Break switch handler.
 				}
