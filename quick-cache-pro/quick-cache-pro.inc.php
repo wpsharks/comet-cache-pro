@@ -1534,27 +1534,27 @@ namespace quick_cache
 					return $counter; // Already did this.
 				$this->cache[__FUNCTION__][$type][$post_id] = -1;
 
-				$urls = array(); // Initialize array of feed URLs.
+				$feed_urls = array(); // Initialize array of feed URLs.
 
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
 
-						$urls[] = get_feed_link(get_default_feed());
-						$urls[] = get_feed_link('rdf');
-						$urls[] = get_feed_link('rss');
-						$urls[] = get_feed_link('rss2');
-						$urls[] = get_feed_link('atom');
+						$feed_urls[] = get_feed_link(get_default_feed());
+						$feed_urls[] = get_feed_link('rdf');
+						$feed_urls[] = get_feed_link('rss');
+						$feed_urls[] = get_feed_link('rss2');
+						$feed_urls[] = get_feed_link('atom');
 
 						break; // Break switch handler.
 
 					case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
 
-						$urls[] = get_feed_link('comments_'.get_default_feed());
-						$urls[] = get_feed_link('comments_rdf');
-						$urls[] = get_feed_link('comments_rss');
-						$urls[] = get_feed_link('comments_rss2');
-						$urls[] = get_feed_link('comments_atom');
+						$feed_urls[] = get_feed_link('comments_'.get_default_feed());
+						$feed_urls[] = get_feed_link('comments_rdf');
+						$feed_urls[] = get_feed_link('comments_rss');
+						$feed_urls[] = get_feed_link('comments_rss2');
+						$feed_urls[] = get_feed_link('comments_atom');
 
 						break; // Break switch handler.
 
@@ -1562,11 +1562,11 @@ namespace quick_cache
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
-						$urls[] = get_post_comments_feed_link($post_id, get_default_feed());
-						$urls[] = get_post_comments_feed_link($post_id, 'rdf');
-						$urls[] = get_post_comments_feed_link($post_id, 'rss');
-						$urls[] = get_post_comments_feed_link($post_id, 'rss2');
-						$urls[] = get_post_comments_feed_link($post_id, 'atom');
+						$feed_urls[] = get_post_comments_feed_link($post_id, get_default_feed());
+						$feed_urls[] = get_post_comments_feed_link($post_id, 'rdf');
+						$feed_urls[] = get_post_comments_feed_link($post_id, 'rss');
+						$feed_urls[] = get_post_comments_feed_link($post_id, 'rss2');
+						$feed_urls[] = get_post_comments_feed_link($post_id, 'atom');
 
 						break; // Break switch handler.
 
@@ -1574,11 +1574,11 @@ namespace quick_cache
 						if(!$post_id) break; // nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
-						$urls[] = get_author_feed_link($post->post_author, get_default_feed());
-						$urls[] = get_author_feed_link($post->post_author, 'rdf');
-						$urls[] = get_author_feed_link($post->post_author, 'rss');
-						$urls[] = get_author_feed_link($post->post_author, 'rss2');
-						$urls[] = get_author_feed_link($post->post_author, 'atom');
+						$feed_urls[] = get_author_feed_link($post->post_author, get_default_feed());
+						$feed_urls[] = get_author_feed_link($post->post_author, 'rdf');
+						$feed_urls[] = get_author_feed_link($post->post_author, 'rss');
+						$feed_urls[] = get_author_feed_link($post->post_author, 'rss2');
+						$feed_urls[] = get_author_feed_link($post->post_author, 'atom');
 
 						break; // Break switch handler.
 
@@ -1586,8 +1586,28 @@ namespace quick_cache
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
+						$post_terms = array(); // Initialize array of all post terms.
+
+						if(!is_array($_post_taxonomies = get_object_taxonomies($post, 'objects')))
+							break; // Nothing to do here; post has no terms.
+
+						foreach($_post_taxonomies as $_post_taxonomy)
+							if(is_array($_post_taxonomy_terms = wp_get_post_terms($post->ID, $_post_taxonomy->name)))
+								$post_terms = array_merge($post_terms, $_post_taxonomy_terms);
+
+						foreach($post_terms as $_post_term)
+						{
+							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, get_default_feed());
+							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rdf');
+							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss');
+							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss2');
+							$feed_urls[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'atom');
+						}
+						unset($_post_taxonomies, $_post_taxonomy, $_post_taxonomy_terms, $_post_term);
+
 						break; // Break switch handler.
 				}
+				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
