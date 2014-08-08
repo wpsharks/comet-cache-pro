@@ -1562,11 +1562,11 @@ namespace quick_cache
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
-						$feed_urls[] = get_post_comments_feed_link($post_id, get_default_feed());
-						$feed_urls[] = get_post_comments_feed_link($post_id, 'rdf');
-						$feed_urls[] = get_post_comments_feed_link($post_id, 'rss');
-						$feed_urls[] = get_post_comments_feed_link($post_id, 'rss2');
-						$feed_urls[] = get_post_comments_feed_link($post_id, 'atom');
+						$feed_urls[] = get_post_comments_feed_link($post->ID, get_default_feed());
+						$feed_urls[] = get_post_comments_feed_link($post->ID, 'rdf');
+						$feed_urls[] = get_post_comments_feed_link($post->ID, 'rss');
+						$feed_urls[] = get_post_comments_feed_link($post->ID, 'rss2');
+						$feed_urls[] = get_post_comments_feed_link($post->ID, 'atom');
 
 						break; // Break switch handler.
 
@@ -1607,6 +1607,9 @@ namespace quick_cache
 
 						break; // Break switch handler.
 				}
+				if(!$feed_urls || !($feed_urls = array_unique($feed_urls)))
+					return $counter; // Nothing to do here.
+
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
