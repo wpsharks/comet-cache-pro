@@ -1602,10 +1602,11 @@ namespace quick_cache
 							if(is_array($_post_taxonomy_terms = wp_get_post_terms($post->ID, $_post_taxonomy->name)) && $_post_taxonomy_terms)
 								$post_terms = array_merge($post_terms, $_post_taxonomy_terms);
 
-						$wildcarded_post_term_feed_link_variations = function ($post_term_feed_link, $post_term)
+						$post_term_feed_link_variations = function ($post_term_feed_link, $post_term)
 						{
 							$post_term_feed_link = (string)$post_term_feed_link; // Force string value.
 							$variations          = array(); // Initialize the array of variations.
+							if($post_term_feed_link) $variations[] = $post_term_feed_link;
 
 							// @TODO Need to review this again because we DO need to find at least the term's slug or ID in the list.
 							// Currently, the wildcard would pick up everything and anything; we need to restrict this a bit.
@@ -1628,25 +1629,29 @@ namespace quick_cache
 						};
 						foreach($post_terms as $_post_term) // See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
 						{
-							if(($_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, get_default_feed())))
-								$feed_urls = array_merge($feed_urls, array($_post_term_feed_link), $wildcarded_post_term_feed_link_variations($_post_term_feed_link, $_post_term));
+							$_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, get_default_feed());
+							$feed_urls            = array_merge($feed_urls, $post_term_feed_link_variations($_post_term_feed_link, $_post_term));
 
-							if(($_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rdf')))
-								$feed_urls = array_merge($feed_urls, array($_post_term_feed_link), $wildcarded_post_term_feed_link_variations($_post_term_feed_link, $_post_term));
+							$_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rdf');
+							$feed_urls            = array_merge($feed_urls, $post_term_feed_link_variations($_post_term_feed_link, $_post_term));
 
-							if(($_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss')))
-								$feed_urls = array_merge($feed_urls, array($_post_term_feed_link), $wildcarded_post_term_feed_link_variations($_post_term_feed_link, $_post_term));
+							$_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss');
+							$feed_urls            = array_merge($feed_urls, $post_term_feed_link_variations($_post_term_feed_link, $_post_term));
 
-							if(($_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss2')))
-								$feed_urls = array_merge($feed_urls, array($_post_term_feed_link), $wildcarded_post_term_feed_link_variations($_post_term_feed_link, $_post_term));
+							$_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss2');
+							$feed_urls            = array_merge($feed_urls, $post_term_feed_link_variations($_post_term_feed_link, $_post_term));
 
-							if(($_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'atom')))
-								$feed_urls = array_merge($feed_urls, array($_post_term_feed_link), $wildcarded_post_term_feed_link_variations($_post_term_feed_link, $_post_term));
+							$_post_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'atom');
+							$feed_urls            = array_merge($feed_urls, $post_term_feed_link_variations($_post_term_feed_link, $_post_term));
 						}
 						unset($_post_taxonomies, $_post_taxonomy, $_post_taxonomy_terms, $_post_term, $_post_term_feed_link);
 
 						break; // Break switch handler.
 				}
+				foreach($feed_urls as $_key => $_feed_url)
+					if(!is_string($_feed_url) || !$_feed_url) unset($feed_urls[$_key]);
+				unset($_key, $_feed_url); // Housekeeping.
+
 				if(!$feed_urls || !($feed_urls = array_unique($feed_urls)))
 					return $counter; // Nothing to do here.
 
