@@ -1528,12 +1528,22 @@ namespace quick_cache
 			 */
 			public function auto_purge_xml_feeds_cache($type, $post_id = 0)
 			{
+				$counter = 0; // Initialize.
+
+				if(isset($this->cache[__FUNCTION__][$type][$post_id]))
+					return $counter; // Already did this.
+				$this->cache[__FUNCTION__][$type][$post_id] = -1;
+
+				$urls = array(); // Initialize array of feed URLs.
+
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
+						$urls[] = get_feed_link();
 						break; // Break switch handler.
 
 					case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
+						$urls[] = get_feed_link('comments_'.get_default_feed());
 						break; // Break switch handler.
 
 					case 'post-comments': // Feed related to comments that a post has.
