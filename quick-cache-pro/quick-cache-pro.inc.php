@@ -182,6 +182,7 @@ namespace quick_cache
 					'admin_bar_enable'                     => '1', // `0|1`.
 					'cache_clear_s2clean_enable'           => '0', // `0|1`.
 					'cache_clear_eval_code'                => '', // PHP code.
+					'cache_purge_xml_feeds_enable'         => '1', // `0|1`.
 					'cache_purge_xml_sitemaps_enable'      => '1', // `0|1`.
 					'cache_purge_xml_sitemap_patterns'     => '/sitemap*.xml', // Empty string or line-delimited patterns.
 					'cache_purge_home_page_enable'         => '1', // `0|1`.
@@ -1533,6 +1534,18 @@ namespace quick_cache
 				if(isset($this->cache[__FUNCTION__][$type][$post_id]))
 					return $counter; // Already did this.
 				$this->cache[__FUNCTION__][$type][$post_id] = -1;
+
+				if(!$this->options['enable'])
+					return $counter; // Nothing to do.
+
+				if(!$this->options['feeds_enable'])
+					return $counter; // Nothing to do.
+
+				if(!$this->options['cache_purge_xml_feeds_enable'])
+					return $counter; // Nothing to do.
+
+				if(!is_dir($cache_dir = $this->cache_dir()))
+					return $counter; // Nothing to do.
 
 				$feed_urls = array(); // Initialize array of feed URLs.
 
