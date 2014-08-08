@@ -1559,6 +1559,7 @@ namespace quick_cache
 						break; // Break switch handler.
 
 					case 'post-comments': // Feed related to comments that a post has.
+
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
@@ -1571,6 +1572,7 @@ namespace quick_cache
 						break; // Break switch handler.
 
 					case 'post-authors': // Feed related to authors that a post has.
+
 						if(!$post_id) break; // nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
@@ -1583,16 +1585,17 @@ namespace quick_cache
 						break; // Break switch handler.
 
 					case 'post-terms': // Feed related to terms that a post has.
+
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
 						$post_terms = array(); // Initialize array of all post terms.
 
-						if(!is_array($_post_taxonomies = get_object_taxonomies($post, 'objects')))
+						if(!is_array($_post_taxonomies = get_object_taxonomies($post, 'objects')) || !$_post_taxonomies)
 							break; // Nothing to do here; post has no terms.
 
-						foreach($_post_taxonomies as $_post_taxonomy)
-							if(is_array($_post_taxonomy_terms = wp_get_post_terms($post->ID, $_post_taxonomy->name)))
+						foreach($_post_taxonomies as $_post_taxonomy) // Collect terms for each taxonomy.
+							if(is_array($_post_taxonomy_terms = wp_get_post_terms($post->ID, $_post_taxonomy->name)) && $_post_taxonomy_terms)
 								$post_terms = array_merge($post_terms, $_post_taxonomy_terms);
 
 						foreach($post_terms as $_post_term)
