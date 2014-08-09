@@ -1528,7 +1528,12 @@ namespace quick_cache
 			 */
 			public function auto_purge_xml_feeds_cache($type, $post_id = 0)
 			{
-				$counter = 0; // Initialize.
+				$counter          = 0; // Initialize.
+				$enqueued_notices = 0; // Initialize.
+
+				if(!($type = (string)$type))
+					return $counter; // Nothing we can do.
+				$post_id = (integer)$post_id; // Force integer.
 
 				if(isset($this->cache[__FUNCTION__][$type][$post_id]))
 					return $counter; // Already did this.
@@ -1553,10 +1558,8 @@ namespace quick_cache
 					if(!is_string($feed_link) || !$feed_link)
 						return ''; // Nothing to do here.
 
-					$cache_path_flags = $_this::CACHE_PATH_NO_SCHEME // Defaults.
-					                    | $_this::CACHE_PATH_NO_PATH_INDEX | $_this::CACHE_PATH_NO_EXT
+					$cache_path_flags = $_this::CACHE_PATH_NO_SCHEME | $_this::CACHE_PATH_NO_EXT
 					                    | $_this::CACHE_PATH_NO_USER | $_this::CACHE_PATH_NO_VSALT;
-
 					if($wildcard_regex) $cache_path_flags |= $_this::CACHE_PATH_ALLOW_WILDCARDS;
 
 					$cache_path_regex = preg_quote($_this->build_cache_path($feed_link, '', '', $cache_path_flags), '/');
@@ -1634,7 +1637,7 @@ namespace quick_cache
 
 						$post_term_cache_path_variations = function ($post_term_feed_link, $post_term) use ($build_cache_path_regex)
 						{
-							$post_term_feed_link = (string)$post_term_feed_link; // Force string value.
+							$post_term_feed_link = (string)$post_term_feed_link; // Force string.
 							$variations          = array(); // Initialize the array of variations.
 							if($post_term_feed_link) $variations[] = $build_cache_path_regex($post_term_feed_link);
 
@@ -1654,17 +1657,14 @@ namespace quick_cache
 								//    with a wildcard this becomes: `http://www.example.com/tax/*/feed`
 								$_wildcarded = preg_replace('/\/[^\/]+\/feed([\/?#]|$)/', '/*/feed'.'${1}', $post_term_feed_link);
 
-								// @TODO I still need to tune this in a bit further.
-
 								// Quick example: `http://www.example.com/tax/*/feed`;
 								//   becomes: `www\.example\.com\/tax\/.*?[\/\-](?:123|slug)[\/\-].*?\/feed`
 								//    ... this covers variations that use: `/tax/term,term/feed/`
+								//    ... also covers variations that use: `/tax/term/tax/term/feed/`
 								$variations[] = $build_cache_path_regex($_wildcarded, '.*?[\/\-]'.$_term_id_or_slug.'[\/\-].*?');
-
-								// Quick example: `http://www.example.com/tax/*/feed`;
-								//   becomes: `www\.example\.com\/tax\/.*?\/(?:123|slug)\/.*?\/feed`
-								//    ... this covers variations that use: `/tax/term/tax/term/feed/`
-								$variations[] = $build_cache_path_regex($_wildcarded, '.*?\/'.$_term_id_or_slug.'\/.*?');
+								// NOTE: This may also pick up false-positives. Not much we can do about this.
+								//    For instance, if another feed has the same word/slug in what is actually a longer/different term.
+								//    Or, if another feed has the same word/slug in what is actually the name of a taxonomy.
 
 								unset($_term_id_or_slug, $_wildcarded); // Housekeeping.
 							}
@@ -1698,7 +1698,9 @@ namespace quick_cache
 				if(!$feed_cache_paths || !($feed_cache_paths = array_unique($feed_cache_paths)))
 					return $counter; // Nothing to do here.
 
-				// @TODO
+				$regex = '/^'.preg_quote($cache_dir, '/').'\/[^\/]+\/(?:'.implode('|', $feed_cache_paths).')\./';
+
+				$counter += $this->delete_files_from_host_cache_dir($regex);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
