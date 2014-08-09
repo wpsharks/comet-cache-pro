@@ -223,10 +223,10 @@ namespace quick_cache // Root namespace.
 			echo '            <option value="0"'.selected($this->plugin->options['cache_purge_term_other_enable'], '0', FALSE).'>'.__('No, my site doesn\'t use any custom Terms and/or I don\'t have any custom Term archive views.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
 			echo '      <hr />'."\n";
-			echo '      <h3>'.__('Auto-Purge "XML/RSS/RDF/ATOM Feeds" Too?', $this->plugin->text_domain).'</h3>'."\n";
+			echo '      <h3>'.__('Auto-Purge "RSS/RDF/ATOM Feeds" Too?', $this->plugin->text_domain).'</h3>'."\n";
 			echo '      <p>'.__('If you enable Feed Caching (below), this can be quite handy. If enabled, when you update a Post/Page, approve a Comment, or make other changes where Quick Cache can detect that certain types of Feeds should be purged to keep your site up-to-date, then Quick Cache will do this for you automatically. For instance, the blog\'s master feed, the blog\'s master comments feed, feeds associated with comments on a Post/Page, term-related feeds (including mixed term-related feeds), author-related feeds, etc. Under various circumstances (i.e. as you work in the Dashboard) these can be purged automatically to keep your site up-to-date.', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cache_purge_xml_feeds_enable]">'."\n";
-			echo '            <option value="1"'.selected($this->plugin->options['cache_purge_xml_feeds_enable'], '1', FALSE).'>'.__('Yes, automatically purge XML/RSS/RDF/ATOM Feeds from the cache when certain changes occur.', $this->plugin->text_domain).'</option>'."\n";
+			echo '            <option value="1"'.selected($this->plugin->options['cache_purge_xml_feeds_enable'], '1', FALSE).'>'.__('Yes, automatically purge RSS/RDF/ATOM Feeds from the cache when certain changes occur.', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="0"'.selected($this->plugin->options['cache_purge_xml_feeds_enable'], '0', FALSE).'>'.__('No, I don\'t have Feed Caching enabled, or I prefer not to automatically purge Feeds.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
 			echo '      <hr />'."\n";
@@ -361,7 +361,7 @@ namespace quick_cache // Root namespace.
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
 			echo '      <h3>'.__('Caching Enabled for RSS, RDF, Atom Feeds?', $this->plugin->text_domain).'</h3>'."\n";
-			echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. UNLESS, you\'re sure that you want to cache your feeds. If you use a web feed management provider like Google® Feedburner and you set this option to <code>Yes</code>, you may experience delays in the detection of new posts.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. UNLESS, you\'re sure that you want to cache your feeds. If you use a web feed management provider like Google® Feedburner and you set this option to <code>Yes</code>, you may experience delays in the detection of new posts. <strong>NOTE:</strong> If you do enable this, it is highly recommended that you also enable automatic Feed Purging too. Please see the section above: "Clearing the Cache". Find the sub-section titled: "Auto-Purge RSS/RDF/ATOM Feeds".', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][feeds_enable]">'."\n";
 			echo '            <option value="0"'.selected($this->plugin->options['feeds_enable'], '0', FALSE).'>'.__('No, do NOT cache (or serve a cache file) when displaying a feed.', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="1"'.selected($this->plugin->options['feeds_enable'], '1', FALSE).'>'.__('Yes, I would like to cache feed URLs.', $this->plugin->text_domain).'</option>'."\n";
