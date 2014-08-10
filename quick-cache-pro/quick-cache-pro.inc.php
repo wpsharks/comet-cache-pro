@@ -1583,11 +1583,11 @@ namespace quick_cache
 
 						if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
 						{
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf'), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss'), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2'), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom'), $home_url)));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf')), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss')), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2')), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom')), $home_url));
 						}
 						break; // Break switch handler.
 
@@ -1601,11 +1601,11 @@ namespace quick_cache
 
 						if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
 						{
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-'.$default_feed), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-rdf'), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-rss'), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-rss2'), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-atom'), $home_url)));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-'.$default_feed)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-rdf')), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-rss')), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-rss2')), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'comments-atom')), $home_url));
 						}
 						break; // Break switch handler.
 
@@ -1626,19 +1626,19 @@ namespace quick_cache
 
 						if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
 						{
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, 'p' => $post->ID), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', 'p' => $post->ID), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', 'p' => $post->ID), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', 'p' => $post->ID), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', 'p' => $post->ID), $home_url)));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, 'p' => $post->ID)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', 'p' => $post->ID)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', 'p' => $post->ID)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', 'p' => $post->ID)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', 'p' => $post->ID)), $home_url));
 
 							if($post->post_type === 'page') // Cover this additional variation for `post_type=page`.
 							{
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, 'page_id' => $post->ID), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', 'page_id' => $post->ID), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', 'page_id' => $post->ID), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', 'page_id' => $post->ID), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', 'page_id' => $post->ID), $home_url)));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, 'page_id' => $post->ID)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', 'page_id' => $post->ID)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', 'page_id' => $post->ID)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', 'page_id' => $post->ID)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', 'page_id' => $post->ID)), $home_url));
 							}
 						}
 						break; // Break switch handler.
@@ -1656,11 +1656,11 @@ namespace quick_cache
 
 						if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
 						{
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, 'author' => $post->post_author), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', 'author' => $post->post_author), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', 'author' => $post->post_author), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', 'author' => $post->post_author), $home_url)));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', 'author' => $post->post_author), $home_url)));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, 'author' => $post->post_author)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', 'author' => $post->post_author)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', 'author' => $post->post_author)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', 'author' => $post->post_author)), $home_url));
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', 'author' => $post->post_author)), $home_url));
 						}
 						break; // Break switch handler.
 
@@ -1736,17 +1736,17 @@ namespace quick_cache
 									$_post_term_taxonomy_query_var = 'cat'; // Special query var.
 								else $_post_term_taxonomy_query_var = $_post_term_taxonomy->query_var;
 
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, $_post_term_taxonomy_query_var => $_post_term->term_id), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', $_post_term_taxonomy_query_var => $_post_term->term_id), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', $_post_term_taxonomy_query_var => $_post_term->term_id), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', $_post_term_taxonomy_query_var => $_post_term->term_id), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', $_post_term_taxonomy_query_var => $_post_term->term_id), $home_url)));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, $_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', $_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', $_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', $_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', $_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url));
 
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, $_post_term_taxonomy_query_var => $_post_term->slug), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', $_post_term_taxonomy_query_var => $_post_term->slug), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', $_post_term_taxonomy_query_var => $_post_term->slug), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', $_post_term_taxonomy_query_var => $_post_term->slug), $home_url)));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', $_post_term_taxonomy_query_var => $_post_term->slug), $home_url)));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => $default_feed, $_post_term_taxonomy_query_var => $_post_term->slug)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rdf', $_post_term_taxonomy_query_var => $_post_term->slug)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss', $_post_term_taxonomy_query_var => $_post_term->slug)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'rss2', $_post_term_taxonomy_query_var => $_post_term->slug)), $home_url));
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('feed' => 'atom', $_post_term_taxonomy_query_var => $_post_term->slug)), $home_url));
 							}
 							unset($_post_term_taxonomy, $_post_term_taxonomy_query_var); // Housekeeping.
 						}
