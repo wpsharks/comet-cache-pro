@@ -4,7 +4,6 @@
 
 		var plugin = {namespace: 'quick_cache'},
 			$window = $(window), $document = $(document);
-		plugin.vars = $('#' + plugin.namespace + '-vars').data('json');
 
 		plugin.hideAJAXResponseTimeoutDelay = 0;
 
@@ -64,6 +63,7 @@
 			};
 		plugin.onReady = function() // DOM ready event handler.
 			{
+				plugin.vars = $('#' + plugin.namespace + '-vars').data('json');
 				$('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
 				$('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
 				$document.on('click', '#' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
