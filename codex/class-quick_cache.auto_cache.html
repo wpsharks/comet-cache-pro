@@ -7,7 +7,7 @@
 	<title>Class quick_cache\auto_cache | Quick Cache Pro</title>
 
 	<script type="text/javascript" src="resources/combined.js?822040270"></script>
-	<script type="text/javascript" src="elementlist.js?1710082728"></script>
+	<script type="text/javascript" src="elementlist.js?681198180"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3403148767" />
 
 </head>
@@ -45,6 +45,7 @@
 				<li><a href="class-quick_cache.menu_pages.html">menu_pages</a></li>
 				<li><a href="class-quick_cache.plugin.html">plugin</a></li>
 				<li><a href="class-quick_cache.share.html">share</a></li>
+				<li><a href="class-quick_cache.uninstall.html">uninstall</a></li>
 				<li><a href="class-quick_cache.version_specific_upgrade.html">version_specific_upgrade</a></li>
 			</ul>
 
@@ -124,7 +125,7 @@
 		<b>Namespace:</b> <a href="namespace-quick_cache.html">quick_cache</a><br />
 		
 
-		<b>Located at</b> <a href="source-class-quick_cache.auto_cache.html#15-278" title="Go to source code">quick-cache-pro/includes/auto-cache.php</a><br />
+		<b>Located at</b> <a href="source-class-quick_cache.auto_cache.html#15-304" title="Go to source code">quick-cache-pro/includes/auto-cache.php</a><br />
 	</div>
 
 
@@ -331,7 +332,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sitemap_urls_deep">#</a>
-		<code><a href="source-class-quick_cache.auto_cache.html#177-211" title="Go to source code">get_sitemap_urls_deep</a>( <span>string <var>$sitemap</var></span> )</code>
+		<code><a href="source-class-quick_cache.auto_cache.html#177-237" title="Go to source code">get_sitemap_urls_deep</a>( <span>string <var>$sitemap</var></span>, <span>boolean <var>$___recursive</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Collects all URLs from an XML sitemap deeply.</p>
@@ -350,6 +351,9 @@
    This supports nested XML sitemap index files too; i.e. <code>&lt;sitemapindex&gt;</code>.
    Note that GZIP files are NOT supported at this time.</p>
 </dd>
+					<dt><var>$___recursive</var></dt>
+					<dd><code>boolean</code><br><p>$___recursive For internal use only.</p>
+</dd>
 				</dl></div>
 
 				<h4>Returns</h4>
@@ -358,6 +362,11 @@
 <br />
 				</div>
 
+				<h4>Throws</h4>
+				<div class="list">
+					<code>exception</code><br><p>If <code>$sitemap</code> is NOT actually a sitemap.</p>
+<br />
+				</div>
 
 
 
@@ -375,7 +384,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__xml_get_sitemapindex_urls_deep">#</a>
-		<code><a href="source-class-quick_cache.auto_cache.html#213-244" title="Go to source code">_xml_get_sitemapindex_urls_deep</a>( <span>XMLReader <var>$xml_reader</var></span> )</code>
+		<code><a href="source-class-quick_cache.auto_cache.html#239-270" title="Go to source code">_xml_get_sitemapindex_urls_deep</a>( <span>XMLReader <var>$xml_reader</var></span> )</code>
 
 		<div class="description short">
 			<p>For internal use only.</p>
@@ -417,7 +426,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__xml_get_urlset_urls">#</a>
-		<code><a href="source-class-quick_cache.auto_cache.html#246-277" title="Go to source code">_xml_get_urlset_urls</a>( <span>XMLReader <var>$xml_reader</var></span> )</code>
+		<code><a href="source-class-quick_cache.auto_cache.html#272-303" title="Go to source code">_xml_get_urlset_urls</a>( <span>XMLReader <var>$xml_reader</var></span> )</code>
 
 		<div class="description short">
 			<p>For internal use only.</p>

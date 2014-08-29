@@ -8,7 +8,7 @@
 	<title>File quick-cache-pro/includes/auto-cache.php | Quick Cache Pro</title>
 
 	<script type="text/javascript" src="resources/combined.js?822040270"></script>
-	<script type="text/javascript" src="elementlist.js?1710082728"></script>
+	<script type="text/javascript" src="elementlist.js?681198180"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3403148767" />
 
 </head>
@@ -46,6 +46,7 @@
 				<li><a href="class-quick_cache.menu_pages.html">menu_pages</a></li>
 				<li><a href="class-quick_cache.plugin.html">plugin</a></li>
 				<li><a href="class-quick_cache.share.html">share</a></li>
+				<li><a href="class-quick_cache.uninstall.html">uninstall</a></li>
 				<li><a href="class-quick_cache.version_specific_upgrade.html">version_specific_upgrade</a></li>
 			</ul>
 
@@ -282,106 +283,132 @@
 </span><span id="177" class="l"><a class="l" href="#177">177: </a>        <span class="php-comment">/**
 </span></span><span id="178" class="l"><a class="l" href="#178">178: </a><span class="php-comment">         * Collects all URLs from an XML sitemap deeply.
 </span></span><span id="179" class="l"><a class="l" href="#179">179: </a><span class="php-comment">         *
-</span></span><span id="180" class="l"><a class="l" href="#180">180: </a><span class="php-comment">         * @param string $sitemap A URL to an XML sitemap file.
+</span></span><span id="180" class="l"><a class="l" href="#180">180: </a><span class="php-comment">         * @param string  $sitemap A URL to an XML sitemap file.
 </span></span><span id="181" class="l"><a class="l" href="#181">181: </a><span class="php-comment">         *    This supports nested XML sitemap index files too; i.e. `&lt;sitemapindex&gt;`.
 </span></span><span id="182" class="l"><a class="l" href="#182">182: </a><span class="php-comment">         *    Note that GZIP files are NOT supported at this time.
 </span></span><span id="183" class="l"><a class="l" href="#183">183: </a><span class="php-comment">         *
-</span></span><span id="184" class="l"><a class="l" href="#184">184: </a><span class="php-comment">         * @return array URLs from an XML sitemap deeply.
-</span></span><span id="185" class="l"><a class="l" href="#185">185: </a><span class="php-comment">         */</span>
-</span><span id="186" class="l"><a class="l" href="#186">186: </a>        <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_get_sitemap_urls_deep" href="#_get_sitemap_urls_deep">get_sitemap_urls_deep</a>(<span class="php-var">$sitemap</span>)
-</span><span id="187" class="l"><a class="l" href="#187">187: </a>        {
-</span><span id="188" class="l"><a class="l" href="#188">188: </a>            <span class="php-var">$urls</span>       = <span class="php-keyword1">array</span>();
-</span><span id="189" class="l"><a class="l" href="#189">189: </a>            <span class="php-var">$sitemap</span>    = (string)<span class="php-var">$sitemap</span>;
-</span><span id="190" class="l"><a class="l" href="#190">190: </a>            <span class="php-var">$xml_reader</span> = <span class="php-keyword1">new</span> \XMLReader();
-</span><span id="191" class="l"><a class="l" href="#191">191: </a>
-</span><span id="192" class="l"><a class="l" href="#192">192: </a>            <span class="php-keyword1">if</span>(<span class="php-var">$sitemap</span> &amp;&amp; @<span class="php-var">$xml_reader</span>-&gt;open(<span class="php-var">$sitemap</span>))
-</span><span id="193" class="l"><a class="l" href="#193">193: </a>                <span class="php-keyword1">while</span>(<span class="php-var">$xml_reader</span>-&gt;read()) <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;nodeType === <span class="php-var">$xml_reader</span>::ELEMENT)
-</span><span id="194" class="l"><a class="l" href="#194">194: </a>                {
-</span><span id="195" class="l"><a class="l" href="#195">195: </a>                    <span class="php-keyword1">switch</span>(<span class="php-var">$xml_reader</span>-&gt;name)
-</span><span id="196" class="l"><a class="l" href="#196">196: </a>                    {
-</span><span id="197" class="l"><a class="l" href="#197">197: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'sitemapindex'</span>: <span class="php-comment">// e.g. &lt;http://www.smashingmagazine.com/sitemap_index.xml&gt;</span>
-</span><span id="198" class="l"><a class="l" href="#198">198: </a>                            <span class="php-keyword1">if</span>((<span class="php-var">$_sitemapindex_urls</span> = <span class="php-var">$this</span>-&gt;_xml_get_sitemapindex_urls_deep(<span class="php-var">$xml_reader</span>)))
-</span><span id="199" class="l"><a class="l" href="#199">199: </a>                                <span class="php-var">$urls</span> = <span class="php-keyword2">array_merge</span>(<span class="php-var">$urls</span>, <span class="php-var">$_sitemapindex_urls</span>);
-</span><span id="200" class="l"><a class="l" href="#200">200: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="201" class="l"><a class="l" href="#201">201: </a>
-</span><span id="202" class="l"><a class="l" href="#202">202: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'urlset'</span>: <span class="php-comment">// e.g. &lt;http://www.smashingmagazine.com/category-sitemap.xml&gt;</span>
-</span><span id="203" class="l"><a class="l" href="#203">203: </a>                            <span class="php-keyword1">if</span>((<span class="php-var">$_urlset_urls</span> = <span class="php-var">$this</span>-&gt;_xml_get_urlset_urls(<span class="php-var">$xml_reader</span>)))
-</span><span id="204" class="l"><a class="l" href="#204">204: </a>                                <span class="php-var">$urls</span> = <span class="php-keyword2">array_merge</span>(<span class="php-var">$urls</span>, <span class="php-var">$_urlset_urls</span>);
-</span><span id="205" class="l"><a class="l" href="#205">205: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="206" class="l"><a class="l" href="#206">206: </a>                    }
-</span><span id="207" class="l"><a class="l" href="#207">207: </a>                }
-</span><span id="208" class="l"><a class="l" href="#208">208: </a>            <span class="php-keyword1">unset</span>(<span class="php-var">$_sitemapindex_urls</span>, <span class="php-var">$_urlset_urls</span>); <span class="php-comment">// A little housekeeping.</span>
-</span><span id="209" class="l"><a class="l" href="#209">209: </a>
-</span><span id="210" class="l"><a class="l" href="#210">210: </a>            <span class="php-keyword1">return</span> <span class="php-var">$urls</span>; <span class="php-comment">// A full set of all sitemap URLs; i.e. `&lt;loc&gt;` tags.</span>
-</span><span id="211" class="l"><a class="l" href="#211">211: </a>        }
-</span><span id="212" class="l"><a class="l" href="#212">212: </a>
-</span><span id="213" class="l"><a class="l" href="#213">213: </a>        <span class="php-comment">/**
-</span></span><span id="214" class="l"><a class="l" href="#214">214: </a><span class="php-comment">         * For internal use only.
-</span></span><span id="215" class="l"><a class="l" href="#215">215: </a><span class="php-comment">         *
-</span></span><span id="216" class="l"><a class="l" href="#216">216: </a><span class="php-comment">         * @param \XMLReader $xml_reader
-</span></span><span id="217" class="l"><a class="l" href="#217">217: </a><span class="php-comment">         *
-</span></span><span id="218" class="l"><a class="l" href="#218">218: </a><span class="php-comment">         * @return array All sitemap URLs from this `&lt;sitemapindex&gt;` node; deeply.
-</span></span><span id="219" class="l"><a class="l" href="#219">219: </a><span class="php-comment">         */</span>
-</span><span id="220" class="l"><a class="l" href="#220">220: </a>        <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="__xml_get_sitemapindex_urls_deep" href="#__xml_get_sitemapindex_urls_deep">_xml_get_sitemapindex_urls_deep</a>(\XMLReader <span class="php-var">$xml_reader</span>)
-</span><span id="221" class="l"><a class="l" href="#221">221: </a>        {
-</span><span id="222" class="l"><a class="l" href="#222">222: </a>            <span class="php-var">$urls</span> = <span class="php-keyword1">array</span>(); <span class="php-comment">// Initialize.</span>
-</span><span id="223" class="l"><a class="l" href="#223">223: </a>
-</span><span id="224" class="l"><a class="l" href="#224">224: </a>            <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;name === <span class="php-quote">'sitemapindex'</span>) <span class="php-comment">// Sanity check.</span>
-</span><span id="225" class="l"><a class="l" href="#225">225: </a>                <span class="php-keyword1">while</span>(<span class="php-var">$xml_reader</span>-&gt;read()) <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;nodeType === <span class="php-var">$xml_reader</span>::ELEMENT)
-</span><span id="226" class="l"><a class="l" href="#226">226: </a>                {
-</span><span id="227" class="l"><a class="l" href="#227">227: </a>                    <span class="php-keyword1">switch</span>(<span class="php-var">$xml_reader</span>-&gt;name)
-</span><span id="228" class="l"><a class="l" href="#228">228: </a>                    {
-</span><span id="229" class="l"><a class="l" href="#229">229: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'sitemap'</span>:
-</span><span id="230" class="l"><a class="l" href="#230">230: </a>                            <span class="php-var">$is_sitemap_node</span> = <span class="php-keyword1">TRUE</span>;
-</span><span id="231" class="l"><a class="l" href="#231">231: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="232" class="l"><a class="l" href="#232">232: </a>
-</span><span id="233" class="l"><a class="l" href="#233">233: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'loc'</span>: <span class="php-comment">// A URL location.</span>
-</span><span id="234" class="l"><a class="l" href="#234">234: </a>                            <span class="php-keyword1">if</span>(!<span class="php-keyword1">empty</span>(<span class="php-var">$is_sitemap_node</span>) &amp;&amp; <span class="php-var">$xml_reader</span>-&gt;read() &amp;&amp; (<span class="php-var">$_loc</span> = <span class="php-keyword2">trim</span>(<span class="php-var">$xml_reader</span>-&gt;value)))
-</span><span id="235" class="l"><a class="l" href="#235">235: </a>                                <span class="php-var">$urls</span> = <span class="php-keyword2">array_merge</span>(<span class="php-var">$urls</span>, <span class="php-var">$this</span>-&gt;get_sitemap_urls_deep(<span class="php-var">$_loc</span>));
-</span><span id="236" class="l"><a class="l" href="#236">236: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="237" class="l"><a class="l" href="#237">237: </a>
-</span><span id="238" class="l"><a class="l" href="#238">238: </a>                        <span class="php-keyword1">default</span>: <span class="php-comment">// Anything else.</span>
-</span><span id="239" class="l"><a class="l" href="#239">239: </a>                            <span class="php-var">$is_sitemap_node</span> = <span class="php-keyword1">FALSE</span>;
-</span><span id="240" class="l"><a class="l" href="#240">240: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="241" class="l"><a class="l" href="#241">241: </a>                    }
-</span><span id="242" class="l"><a class="l" href="#242">242: </a>                }
-</span><span id="243" class="l"><a class="l" href="#243">243: </a>            <span class="php-keyword1">return</span> <span class="php-var">$urls</span>; <span class="php-comment">// All sitemap URLs from this `&lt;sitemapindex&gt;` node; deeply.</span>
-</span><span id="244" class="l"><a class="l" href="#244">244: </a>        }
-</span><span id="245" class="l"><a class="l" href="#245">245: </a>
-</span><span id="246" class="l"><a class="l" href="#246">246: </a>        <span class="php-comment">/**
-</span></span><span id="247" class="l"><a class="l" href="#247">247: </a><span class="php-comment">         * For internal use only.
-</span></span><span id="248" class="l"><a class="l" href="#248">248: </a><span class="php-comment">         *
-</span></span><span id="249" class="l"><a class="l" href="#249">249: </a><span class="php-comment">         * @param \XMLReader $xml_reader
-</span></span><span id="250" class="l"><a class="l" href="#250">250: </a><span class="php-comment">         *
-</span></span><span id="251" class="l"><a class="l" href="#251">251: </a><span class="php-comment">         * @return array All sitemap URLs from this `&lt;urlset&gt;` node.
-</span></span><span id="252" class="l"><a class="l" href="#252">252: </a><span class="php-comment">         */</span>
-</span><span id="253" class="l"><a class="l" href="#253">253: </a>        <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="__xml_get_urlset_urls" href="#__xml_get_urlset_urls">_xml_get_urlset_urls</a>(\XMLReader <span class="php-var">$xml_reader</span>)
-</span><span id="254" class="l"><a class="l" href="#254">254: </a>        {
-</span><span id="255" class="l"><a class="l" href="#255">255: </a>            <span class="php-var">$urls</span> = <span class="php-keyword1">array</span>(); <span class="php-comment">// Initialize.</span>
-</span><span id="256" class="l"><a class="l" href="#256">256: </a>
-</span><span id="257" class="l"><a class="l" href="#257">257: </a>            <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;name === <span class="php-quote">'urlset'</span>) <span class="php-comment">// Sanity check.</span>
-</span><span id="258" class="l"><a class="l" href="#258">258: </a>                <span class="php-keyword1">while</span>(<span class="php-var">$xml_reader</span>-&gt;read()) <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;nodeType === <span class="php-var">$xml_reader</span>::ELEMENT)
-</span><span id="259" class="l"><a class="l" href="#259">259: </a>                {
-</span><span id="260" class="l"><a class="l" href="#260">260: </a>                    <span class="php-keyword1">switch</span>(<span class="php-var">$xml_reader</span>-&gt;name)
-</span><span id="261" class="l"><a class="l" href="#261">261: </a>                    {
-</span><span id="262" class="l"><a class="l" href="#262">262: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'url'</span>:
-</span><span id="263" class="l"><a class="l" href="#263">263: </a>                            <span class="php-var">$is_url_node</span> = <span class="php-keyword1">TRUE</span>;
-</span><span id="264" class="l"><a class="l" href="#264">264: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="265" class="l"><a class="l" href="#265">265: </a>
-</span><span id="266" class="l"><a class="l" href="#266">266: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'loc'</span>: <span class="php-comment">// A URL location.</span>
-</span><span id="267" class="l"><a class="l" href="#267">267: </a>                            <span class="php-keyword1">if</span>(!<span class="php-keyword1">empty</span>(<span class="php-var">$is_url_node</span>) &amp;&amp; <span class="php-var">$xml_reader</span>-&gt;read() &amp;&amp; (<span class="php-var">$_loc</span> = <span class="php-keyword2">trim</span>(<span class="php-var">$xml_reader</span>-&gt;value)))
-</span><span id="268" class="l"><a class="l" href="#268">268: </a>                                <span class="php-var">$urls</span>[] = <span class="php-var">$_loc</span>; <span class="php-comment">// Add this URL to the list :-)</span>
-</span><span id="269" class="l"><a class="l" href="#269">269: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="270" class="l"><a class="l" href="#270">270: </a>
-</span><span id="271" class="l"><a class="l" href="#271">271: </a>                        <span class="php-keyword1">default</span>: <span class="php-comment">// Anything else.</span>
-</span><span id="272" class="l"><a class="l" href="#272">272: </a>                            <span class="php-var">$is_url_node</span> = <span class="php-keyword1">FALSE</span>;
-</span><span id="273" class="l"><a class="l" href="#273">273: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
-</span><span id="274" class="l"><a class="l" href="#274">274: </a>                    }
-</span><span id="275" class="l"><a class="l" href="#275">275: </a>                }
-</span><span id="276" class="l"><a class="l" href="#276">276: </a>            <span class="php-keyword1">return</span> <span class="php-var">$urls</span>; <span class="php-comment">// All sitemap URLs from this `&lt;urlset&gt;` node.</span>
-</span><span id="277" class="l"><a class="l" href="#277">277: </a>        }
-</span><span id="278" class="l"><a class="l" href="#278">278: </a>    }
-</span><span id="279" class="l"><a class="l" href="#279">279: </a></span>}</code></pre>
+</span></span><span id="184" class="l"><a class="l" href="#184">184: </a><span class="php-comment">         * @param boolean $___recursive For internal use only.
+</span></span><span id="185" class="l"><a class="l" href="#185">185: </a><span class="php-comment">         *
+</span></span><span id="186" class="l"><a class="l" href="#186">186: </a><span class="php-comment">         * @return array URLs from an XML sitemap deeply.
+</span></span><span id="187" class="l"><a class="l" href="#187">187: </a><span class="php-comment">         *
+</span></span><span id="188" class="l"><a class="l" href="#188">188: </a><span class="php-comment">         * @throws \exception If `$sitemap` is NOT actually a sitemap.
+</span></span><span id="189" class="l"><a class="l" href="#189">189: </a><span class="php-comment">         */</span>
+</span><span id="190" class="l"><a class="l" href="#190">190: </a>        <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_get_sitemap_urls_deep" href="#_get_sitemap_urls_deep">get_sitemap_urls_deep</a>(<span class="php-var">$sitemap</span>, <span class="php-var">$___recursive</span> = <span class="php-keyword1">FALSE</span>)
+</span><span id="191" class="l"><a class="l" href="#191">191: </a>        {
+</span><span id="192" class="l"><a class="l" href="#192">192: </a>            <span class="php-var">$urls</span>       = <span class="php-keyword1">array</span>();
+</span><span id="193" class="l"><a class="l" href="#193">193: </a>            <span class="php-var">$xml_reader</span> = <span class="php-keyword1">new</span> \XMLReader();
+</span><span id="194" class="l"><a class="l" href="#194">194: </a>
+</span><span id="195" class="l"><a class="l" href="#195">195: </a>            <span class="php-keyword1">if</span>(!(<span class="php-var">$sitemap</span> = <span class="php-keyword2">trim</span>((string)<span class="php-var">$sitemap</span>)))
+</span><span id="196" class="l"><a class="l" href="#196">196: </a>                <span class="php-keyword1">goto</span> finale; <span class="php-comment">// Nothing we can do.</span>
+</span><span id="197" class="l"><a class="l" href="#197">197: </a>
+</span><span id="198" class="l"><a class="l" href="#198">198: </a>            <span class="php-keyword1">if</span>(is_wp_error(<span class="php-var">$head</span> = wp_remote_head(<span class="php-var">$sitemap</span>, <span class="php-keyword1">array</span>(<span class="php-quote">'redirection'</span> =&gt; <span class="php-num">5</span>))))
+</span><span id="199" class="l"><a class="l" href="#199">199: </a>            {
+</span><span id="200" class="l"><a class="l" href="#200">200: </a>                <span class="php-keyword1">if</span>(<span class="php-var">$___recursive</span>) <span class="php-keyword1">goto</span> finale; <span class="php-comment">// Fail silently on recursive calls.</span>
+</span><span id="201" class="l"><a class="l" href="#201">201: </a>                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \exception(<span class="php-keyword2">sprintf</span>(__(<span class="php-quote">'Invalid XML sitemap. Unreachable URL: `%1$s`. %2$s'</span>, <span class="php-var">$this</span>-&gt;plugin-&gt;text_domain),
+</span><span id="202" class="l"><a class="l" href="#202">202: </a>                                             <span class="php-var">$sitemap</span>, <span class="php-var">$head</span>-&gt;get_error_message())); <span class="php-comment">// Include the WP error message too.</span>
+</span><span id="203" class="l"><a class="l" href="#203">203: </a>            }
+</span><span id="204" class="l"><a class="l" href="#204">204: </a>            <span class="php-keyword1">if</span>(<span class="php-keyword1">empty</span>(<span class="php-var">$head</span>[<span class="php-quote">'response'</span>][<span class="php-quote">'code'</span>]) || (integer)<span class="php-var">$head</span>[<span class="php-quote">'response'</span>][<span class="php-quote">'code'</span>] &gt;= <span class="php-num">400</span>)
+</span><span id="205" class="l"><a class="l" href="#205">205: </a>            {
+</span><span id="206" class="l"><a class="l" href="#206">206: </a>                <span class="php-keyword1">if</span>(<span class="php-var">$___recursive</span>) <span class="php-keyword1">goto</span> finale; <span class="php-comment">// Fail silently on recursive calls.</span>
+</span><span id="207" class="l"><a class="l" href="#207">207: </a>                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \exception(<span class="php-keyword2">sprintf</span>(__(<span class="php-quote">'Invalid XML sitemap status code at: `%1$s`. Expecting a `200` status. Instead got: `%2$s`.'</span>, <span class="php-var">$this</span>-&gt;plugin-&gt;text_domain),
+</span><span id="208" class="l"><a class="l" href="#208">208: </a>                                             <span class="php-var">$sitemap</span>, !<span class="php-keyword1">empty</span>(<span class="php-var">$head</span>[<span class="php-quote">'response'</span>][<span class="php-quote">'code'</span>]) ? <span class="php-var">$head</span>[<span class="php-quote">'response'</span>][<span class="php-quote">'code'</span>] : <span class="php-quote">''</span>));
+</span><span id="209" class="l"><a class="l" href="#209">209: </a>            }
+</span><span id="210" class="l"><a class="l" href="#210">210: </a>            <span class="php-keyword1">if</span>(<span class="php-keyword1">empty</span>(<span class="php-var">$head</span>[<span class="php-quote">'headers'</span>][<span class="php-quote">'content-type'</span>]) || <span class="php-keyword2">stripos</span>(<span class="php-var">$head</span>[<span class="php-quote">'headers'</span>][<span class="php-quote">'content-type'</span>], <span class="php-quote">'xml'</span>) === <span class="php-keyword1">FALSE</span>)
+</span><span id="211" class="l"><a class="l" href="#211">211: </a>            {
+</span><span id="212" class="l"><a class="l" href="#212">212: </a>                <span class="php-keyword1">if</span>(<span class="php-var">$___recursive</span>) <span class="php-keyword1">goto</span> finale; <span class="php-comment">// Fail silently on recursive calls.</span>
+</span><span id="213" class="l"><a class="l" href="#213">213: </a>                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \exception(<span class="php-keyword2">sprintf</span>(__(<span class="php-quote">'Invalid XML sitemap content type at: `%1$s`. Expecting XML. Instead got: `%2$s`.'</span>, <span class="php-var">$this</span>-&gt;plugin-&gt;text_domain),
+</span><span id="214" class="l"><a class="l" href="#214">214: </a>                                             <span class="php-var">$sitemap</span>, !<span class="php-keyword1">empty</span>(<span class="php-var">$head</span>[<span class="php-quote">'headers'</span>][<span class="php-quote">'content-type'</span>]) ? <span class="php-var">$head</span>[<span class="php-quote">'headers'</span>][<span class="php-quote">'content-type'</span>] : <span class="php-quote">''</span>));
+</span><span id="215" class="l"><a class="l" href="#215">215: </a>            }
+</span><span id="216" class="l"><a class="l" href="#216">216: </a>            <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;open(<span class="php-var">$sitemap</span>)) <span class="php-comment">// Attempt to open and read the sitemap.</span>
+</span><span id="217" class="l"><a class="l" href="#217">217: </a>                <span class="php-keyword1">while</span>(<span class="php-var">$xml_reader</span>-&gt;read()) <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;nodeType === <span class="php-var">$xml_reader</span>::ELEMENT)
+</span><span id="218" class="l"><a class="l" href="#218">218: </a>                {
+</span><span id="219" class="l"><a class="l" href="#219">219: </a>                    <span class="php-keyword1">switch</span>(<span class="php-var">$xml_reader</span>-&gt;name)
+</span><span id="220" class="l"><a class="l" href="#220">220: </a>                    {
+</span><span id="221" class="l"><a class="l" href="#221">221: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'sitemapindex'</span>: <span class="php-comment">// e.g. &lt;http://www.smashingmagazine.com/sitemap_index.xml&gt;</span>
+</span><span id="222" class="l"><a class="l" href="#222">222: </a>                            <span class="php-keyword1">if</span>((<span class="php-var">$_sitemapindex_urls</span> = <span class="php-var">$this</span>-&gt;_xml_get_sitemapindex_urls_deep(<span class="php-var">$xml_reader</span>)))
+</span><span id="223" class="l"><a class="l" href="#223">223: </a>                                <span class="php-var">$urls</span> = <span class="php-keyword2">array_merge</span>(<span class="php-var">$urls</span>, <span class="php-var">$_sitemapindex_urls</span>);
+</span><span id="224" class="l"><a class="l" href="#224">224: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="225" class="l"><a class="l" href="#225">225: </a>
+</span><span id="226" class="l"><a class="l" href="#226">226: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'urlset'</span>: <span class="php-comment">// e.g. &lt;http://www.smashingmagazine.com/category-sitemap.xml&gt;</span>
+</span><span id="227" class="l"><a class="l" href="#227">227: </a>                            <span class="php-keyword1">if</span>((<span class="php-var">$_urlset_urls</span> = <span class="php-var">$this</span>-&gt;_xml_get_urlset_urls(<span class="php-var">$xml_reader</span>)))
+</span><span id="228" class="l"><a class="l" href="#228">228: </a>                                <span class="php-var">$urls</span> = <span class="php-keyword2">array_merge</span>(<span class="php-var">$urls</span>, <span class="php-var">$_urlset_urls</span>);
+</span><span id="229" class="l"><a class="l" href="#229">229: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="230" class="l"><a class="l" href="#230">230: </a>                    }
+</span><span id="231" class="l"><a class="l" href="#231">231: </a>                }
+</span><span id="232" class="l"><a class="l" href="#232">232: </a>            <span class="php-keyword1">unset</span>(<span class="php-var">$_sitemapindex_urls</span>, <span class="php-var">$_urlset_urls</span>); <span class="php-comment">// Housekeeping.</span>
+</span><span id="233" class="l"><a class="l" href="#233">233: </a>
+</span><span id="234" class="l"><a class="l" href="#234">234: </a>            finale: <span class="php-comment">// Target point; grand finale.</span>
+</span><span id="235" class="l"><a class="l" href="#235">235: </a>
+</span><span id="236" class="l"><a class="l" href="#236">236: </a>            <span class="php-keyword1">return</span> <span class="php-var">$urls</span>; <span class="php-comment">// A full set of all sitemap URLs; i.e. `&lt;loc&gt;` tags.</span>
+</span><span id="237" class="l"><a class="l" href="#237">237: </a>        }
+</span><span id="238" class="l"><a class="l" href="#238">238: </a>
+</span><span id="239" class="l"><a class="l" href="#239">239: </a>        <span class="php-comment">/**
+</span></span><span id="240" class="l"><a class="l" href="#240">240: </a><span class="php-comment">         * For internal use only.
+</span></span><span id="241" class="l"><a class="l" href="#241">241: </a><span class="php-comment">         *
+</span></span><span id="242" class="l"><a class="l" href="#242">242: </a><span class="php-comment">         * @param \XMLReader $xml_reader
+</span></span><span id="243" class="l"><a class="l" href="#243">243: </a><span class="php-comment">         *
+</span></span><span id="244" class="l"><a class="l" href="#244">244: </a><span class="php-comment">         * @return array All sitemap URLs from this `&lt;sitemapindex&gt;` node; deeply.
+</span></span><span id="245" class="l"><a class="l" href="#245">245: </a><span class="php-comment">         */</span>
+</span><span id="246" class="l"><a class="l" href="#246">246: </a>        <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="__xml_get_sitemapindex_urls_deep" href="#__xml_get_sitemapindex_urls_deep">_xml_get_sitemapindex_urls_deep</a>(\XMLReader <span class="php-var">$xml_reader</span>)
+</span><span id="247" class="l"><a class="l" href="#247">247: </a>        {
+</span><span id="248" class="l"><a class="l" href="#248">248: </a>            <span class="php-var">$urls</span> = <span class="php-keyword1">array</span>(); <span class="php-comment">// Initialize.</span>
+</span><span id="249" class="l"><a class="l" href="#249">249: </a>
+</span><span id="250" class="l"><a class="l" href="#250">250: </a>            <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;name === <span class="php-quote">'sitemapindex'</span>) <span class="php-comment">// Sanity check.</span>
+</span><span id="251" class="l"><a class="l" href="#251">251: </a>                <span class="php-keyword1">while</span>(<span class="php-var">$xml_reader</span>-&gt;read()) <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;nodeType === <span class="php-var">$xml_reader</span>::ELEMENT)
+</span><span id="252" class="l"><a class="l" href="#252">252: </a>                {
+</span><span id="253" class="l"><a class="l" href="#253">253: </a>                    <span class="php-keyword1">switch</span>(<span class="php-var">$xml_reader</span>-&gt;name)
+</span><span id="254" class="l"><a class="l" href="#254">254: </a>                    {
+</span><span id="255" class="l"><a class="l" href="#255">255: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'sitemap'</span>:
+</span><span id="256" class="l"><a class="l" href="#256">256: </a>                            <span class="php-var">$is_sitemap_node</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="257" class="l"><a class="l" href="#257">257: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="258" class="l"><a class="l" href="#258">258: </a>
+</span><span id="259" class="l"><a class="l" href="#259">259: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'loc'</span>: <span class="php-comment">// A URL location.</span>
+</span><span id="260" class="l"><a class="l" href="#260">260: </a>                            <span class="php-keyword1">if</span>(!<span class="php-keyword1">empty</span>(<span class="php-var">$is_sitemap_node</span>) &amp;&amp; <span class="php-var">$xml_reader</span>-&gt;read() &amp;&amp; (<span class="php-var">$_loc</span> = <span class="php-keyword2">trim</span>(<span class="php-var">$xml_reader</span>-&gt;value)))
+</span><span id="261" class="l"><a class="l" href="#261">261: </a>                                <span class="php-var">$urls</span> = <span class="php-keyword2">array_merge</span>(<span class="php-var">$urls</span>, <span class="php-var">$this</span>-&gt;get_sitemap_urls_deep(<span class="php-var">$_loc</span>, <span class="php-keyword1">TRUE</span>));
+</span><span id="262" class="l"><a class="l" href="#262">262: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="263" class="l"><a class="l" href="#263">263: </a>
+</span><span id="264" class="l"><a class="l" href="#264">264: </a>                        <span class="php-keyword1">default</span>: <span class="php-comment">// Anything else.</span>
+</span><span id="265" class="l"><a class="l" href="#265">265: </a>                            <span class="php-var">$is_sitemap_node</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="266" class="l"><a class="l" href="#266">266: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="267" class="l"><a class="l" href="#267">267: </a>                    }
+</span><span id="268" class="l"><a class="l" href="#268">268: </a>                }
+</span><span id="269" class="l"><a class="l" href="#269">269: </a>            <span class="php-keyword1">return</span> <span class="php-var">$urls</span>; <span class="php-comment">// All sitemap URLs from this `&lt;sitemapindex&gt;` node; deeply.</span>
+</span><span id="270" class="l"><a class="l" href="#270">270: </a>        }
+</span><span id="271" class="l"><a class="l" href="#271">271: </a>
+</span><span id="272" class="l"><a class="l" href="#272">272: </a>        <span class="php-comment">/**
+</span></span><span id="273" class="l"><a class="l" href="#273">273: </a><span class="php-comment">         * For internal use only.
+</span></span><span id="274" class="l"><a class="l" href="#274">274: </a><span class="php-comment">         *
+</span></span><span id="275" class="l"><a class="l" href="#275">275: </a><span class="php-comment">         * @param \XMLReader $xml_reader
+</span></span><span id="276" class="l"><a class="l" href="#276">276: </a><span class="php-comment">         *
+</span></span><span id="277" class="l"><a class="l" href="#277">277: </a><span class="php-comment">         * @return array All sitemap URLs from this `&lt;urlset&gt;` node.
+</span></span><span id="278" class="l"><a class="l" href="#278">278: </a><span class="php-comment">         */</span>
+</span><span id="279" class="l"><a class="l" href="#279">279: </a>        <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="__xml_get_urlset_urls" href="#__xml_get_urlset_urls">_xml_get_urlset_urls</a>(\XMLReader <span class="php-var">$xml_reader</span>)
+</span><span id="280" class="l"><a class="l" href="#280">280: </a>        {
+</span><span id="281" class="l"><a class="l" href="#281">281: </a>            <span class="php-var">$urls</span> = <span class="php-keyword1">array</span>(); <span class="php-comment">// Initialize.</span>
+</span><span id="282" class="l"><a class="l" href="#282">282: </a>
+</span><span id="283" class="l"><a class="l" href="#283">283: </a>            <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;name === <span class="php-quote">'urlset'</span>) <span class="php-comment">// Sanity check.</span>
+</span><span id="284" class="l"><a class="l" href="#284">284: </a>                <span class="php-keyword1">while</span>(<span class="php-var">$xml_reader</span>-&gt;read()) <span class="php-keyword1">if</span>(<span class="php-var">$xml_reader</span>-&gt;nodeType === <span class="php-var">$xml_reader</span>::ELEMENT)
+</span><span id="285" class="l"><a class="l" href="#285">285: </a>                {
+</span><span id="286" class="l"><a class="l" href="#286">286: </a>                    <span class="php-keyword1">switch</span>(<span class="php-var">$xml_reader</span>-&gt;name)
+</span><span id="287" class="l"><a class="l" href="#287">287: </a>                    {
+</span><span id="288" class="l"><a class="l" href="#288">288: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'url'</span>:
+</span><span id="289" class="l"><a class="l" href="#289">289: </a>                            <span class="php-var">$is_url_node</span> = <span class="php-keyword1">TRUE</span>;
+</span><span id="290" class="l"><a class="l" href="#290">290: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="291" class="l"><a class="l" href="#291">291: </a>
+</span><span id="292" class="l"><a class="l" href="#292">292: </a>                        <span class="php-keyword1">case</span> <span class="php-quote">'loc'</span>: <span class="php-comment">// A URL location.</span>
+</span><span id="293" class="l"><a class="l" href="#293">293: </a>                            <span class="php-keyword1">if</span>(!<span class="php-keyword1">empty</span>(<span class="php-var">$is_url_node</span>) &amp;&amp; <span class="php-var">$xml_reader</span>-&gt;read() &amp;&amp; (<span class="php-var">$_loc</span> = <span class="php-keyword2">trim</span>(<span class="php-var">$xml_reader</span>-&gt;value)))
+</span><span id="294" class="l"><a class="l" href="#294">294: </a>                                <span class="php-var">$urls</span>[] = <span class="php-var">$_loc</span>; <span class="php-comment">// Add this URL to the list :-)</span>
+</span><span id="295" class="l"><a class="l" href="#295">295: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="296" class="l"><a class="l" href="#296">296: </a>
+</span><span id="297" class="l"><a class="l" href="#297">297: </a>                        <span class="php-keyword1">default</span>: <span class="php-comment">// Anything else.</span>
+</span><span id="298" class="l"><a class="l" href="#298">298: </a>                            <span class="php-var">$is_url_node</span> = <span class="php-keyword1">FALSE</span>;
+</span><span id="299" class="l"><a class="l" href="#299">299: </a>                            <span class="php-keyword1">break</span>; <span class="php-comment">// Break switch handler.</span>
+</span><span id="300" class="l"><a class="l" href="#300">300: </a>                    }
+</span><span id="301" class="l"><a class="l" href="#301">301: </a>                }
+</span><span id="302" class="l"><a class="l" href="#302">302: </a>            <span class="php-keyword1">return</span> <span class="php-var">$urls</span>; <span class="php-comment">// All sitemap URLs from this `&lt;urlset&gt;` node.</span>
+</span><span id="303" class="l"><a class="l" href="#303">303: </a>        }
+</span><span id="304" class="l"><a class="l" href="#304">304: </a>    }
+</span><span id="305" class="l"><a class="l" href="#305">305: </a></span>}</code></pre>
 
 	<div id="footer">
 		Quick Cache Pro API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
