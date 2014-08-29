@@ -3,7 +3,7 @@
  * Quick Cache Uninstaller
  *
  * @package quick_cache\uninstall
- * @since 14xxxx Adding plugin uninstaller.
+ * @since 140829 Adding plugin uninstaller.
  * @copyright WebSharks, Inc. <http://www.websharks-inc.com>
  * @license GNU General Public License, version 2
  */
@@ -19,7 +19,7 @@ namespace quick_cache
 		class uninstall // Uninstall handler.
 		{
 			/**
-			 * @since 14xxxx Adding uninstaller.
+			 * @since 140829 Adding uninstaller.
 			 *
 			 * @var plugin Primary plugin class instance.
 			 */
@@ -28,7 +28,7 @@ namespace quick_cache
 			/**
 			 * Uninstall constructor.
 			 *
-			 * @since 14xxxx Adding uninstall handler.
+			 * @since 140829 Adding uninstall handler.
 			 */
 			public function __construct()
 			{
