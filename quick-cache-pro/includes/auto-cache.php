@@ -50,7 +50,10 @@ namespace quick_cache // Root namespace.
 			if(!is_dir($cache_dir) || !is_writable($cache_dir))
 				return; // Not possible in this case.
 
-			@set_time_limit(900); // 15 minutes maximum.
+			$max_time = (integer)$this->plugin->options['auto_cache_max_time'];
+			$max_time = $max_time > 60 ? $max_time : 900; // 60+ seconds.
+
+			@set_time_limit($max_time); // Max time.
 			ignore_user_abort(TRUE); // Keep running.
 
 			$micro_start_time = microtime(TRUE);
@@ -60,6 +63,9 @@ namespace quick_cache // Root namespace.
 			$network_home_url  = rtrim(network_home_url(), '/');
 			$network_home_host = parse_url($network_home_url, PHP_URL_HOST);
 			$network_home_path = parse_url($network_home_url, PHP_URL_PATH);
+
+			$delay = (integer)$this->plugin->options['auto_cache_delay']; // In milliseconds.
+			$delay = $delay > 0 ? $delay * 1000 : 0; // Convert delay to microseconds for `usleep()`.
 
 			if(($other_urls = preg_split('/\s+/', $this->plugin->options['auto_cache_other_urls'], NULL, PREG_SPLIT_NO_EMPTY)))
 				$blogs = array((object)array('domain' => $network_home_host, 'path' => $network_home_path, 'other' => $other_urls));
@@ -91,7 +97,11 @@ namespace quick_cache // Root namespace.
 				{
 					$total_urls++;
 					$this->auto_cache_url($_url);
-					if((time() - $start_time) > 870) break 2;
+
+					if((time() - $start_time) > ($max_time - 30))
+						break 2; // Stop now.
+
+					if($delay) usleep($delay);
 				}
 				unset($_url); // A little housekeeping.
 			}

@@ -225,6 +225,8 @@ namespace quick_cache
 					'uninstall_on_deletion'                => '0', // `0|1`.
 
 					'auto_cache_enable'                    => '0', // `0|1`.
+					'auto_cache_max_time'                  => '900', // In seconds.
+					'auto_cache_delay'                     => '500', // In milliseconds.
 					'auto_cache_sitemap_url'               => 'sitemap.xml', // Relative to `site_url()`.
 					'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
 					'auto_cache_user_agent'                => 'WordPress/'.get_bloginfo('version'),
