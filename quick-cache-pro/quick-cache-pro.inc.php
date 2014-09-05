@@ -356,7 +356,7 @@ namespace quick_cache
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
 				}
 				add_filter('cron_schedules', array($this, 'extend_cron_schedules'));
-				if((integer)$this->options['crons_setup'] < 1398051975)
+				if(substr($this->options['crons_setup'], -4) !== '-pro' || (integer)$this->options['crons_setup'] < 1398051975)
 				{
 					wp_clear_scheduled_hook('_cron_'.__NAMESPACE__.'_auto_cache');
 					wp_schedule_event(time() + 60, 'every15m', '_cron_'.__NAMESPACE__.'_auto_cache');
@@ -364,7 +364,7 @@ namespace quick_cache
 					wp_clear_scheduled_hook('_cron_'.__NAMESPACE__.'_cleanup');
 					wp_schedule_event(time() + 60, 'daily', '_cron_'.__NAMESPACE__.'_cleanup');
 
-					$this->options['crons_setup'] = (string)time();
+					$this->options['crons_setup'] = time().'-pro'; // With `-pro` suffix.
 					update_option(__NAMESPACE__.'_options', $this->options); // Blog-specific.
 					if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
 				}
