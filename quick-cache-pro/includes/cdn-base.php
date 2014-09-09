@@ -29,5 +29,47 @@ namespace quick_cache // Root namespace.
 		{
 			$this->plugin = plugin();
 		}
+
+		/**
+		 * @TODO Get existing distro.
+		 */
+		abstract public function get_distro();
+
+		/**
+		 * @TODO Create a new distro.
+		 */
+		abstract public function create_distro();
+
+		/**
+		 * @TODO Update existing distro.
+		 */
+		abstract public function update_distro();
+
+		/**
+		 * @TODO Setup URL and content filters.
+		 */
+		public function setup_filters()
+		{
+		}
+
+		/** @TODO Filter URLs that should be served by the CDN.
+		 *
+		 * @param string $url
+		 *
+		 * @return string The URL after having been filtered.
+		 */
+		public function filter_url($url)
+		{
+		}
+
+		/** @TODO Filter content for URLs that should be served by the CDN.
+		 *
+		 * @param string $string
+		 *
+		 * @return string The content string after having been filtered.
+		 */
+		public function filter_content($string)
+		{
+		}
 	}
 }
