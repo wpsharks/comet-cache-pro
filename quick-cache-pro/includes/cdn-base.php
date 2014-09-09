@@ -15,7 +15,7 @@ namespace quick_cache // Root namespace.
 	/**
 	 * CDN Base Class.
 	 */
-	class cdn_base
+	abstract class cdn_base
 	{
 		/**
 		 * @var plugin Quick Cache instance.
