@@ -1,0 +1,6 @@
+{
+	"require": {
+		"maxcdn/php-maxcdn": "2.*",
+		"aws/aws-sdk-php"  : "2.*"
+	}
+}
