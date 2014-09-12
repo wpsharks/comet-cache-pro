@@ -12,6 +12,7 @@ namespace quick_cache // Root namespace.
 	if(!defined('WPINC')) // MUST have WordPress.
 		exit('Do NOT access this file directly: '.basename(__FILE__));
 
+	require_once dirname(__FILE__).'/submodules/aws-php-sdk/vendor/autoload.php';
 	require_once dirname(__FILE__).'/cdn-base.php';
 
 	/**
