@@ -4,6 +4,6 @@
 [submodule "quick-cache-pro/submodules/aws-php-sdk"]
 	path = quick-cache-pro/submodules/aws-php-sdk
 	url = https://github.com/websharks/aws-php-sdk
-[submodule "quick-cache-pro/submodules/max-cdn-php-sdk"]
-	path = quick-cache-pro/submodules/max-cdn-php-sdk
-	url = https://github.com/websharks/max-cdn-php-sdk
+[submodule "quick-cache-pro/submodules/maxcdn-php-sdk"]
+	path = quick-cache-pro/submodules/maxcdn-php-sdk
+	url = https://github.com/websharks/maxcdn-php-sdk
