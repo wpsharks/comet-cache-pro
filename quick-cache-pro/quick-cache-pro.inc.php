@@ -12,7 +12,6 @@ namespace quick_cache
 	if(!defined('WPINC')) // MUST have WordPress.
 		exit('Do NOT access this file directly: '.basename(__FILE__));
 
-	require_once dirname(__FILE__).'/vendor/autoload.php';
 	require_once dirname(__FILE__).'/includes/share.php';
 
 	if(!class_exists('\\'.__NAMESPACE__.'\\plugin'))
