@@ -101,6 +101,16 @@ namespace quick_cache // Root namespace.
 		 */
 		public function filter_content($string)
 		{
+			if(!($string = (string)$string))
+				return $string; // Nothing to do here.
+
+			$regex = ''; // @TODO
+			return preg_replace_callback($regex, array($this, '_filter_content_cb'), $string);
+		}
+
+		protected function _filter_content_cb(array $m)
+		{
+			return $m[0]; // @TODO
 		}
 
 		protected function local_file($url_uri_query)
