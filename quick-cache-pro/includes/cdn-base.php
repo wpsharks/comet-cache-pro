@@ -14,31 +14,39 @@ namespace quick_cache // Root namespace.
 
 	/**
 	 * CDN Base Class.
+	 *
+	 * @since 14xxxx Adding CDN support.
 	 */
 	abstract class cdn_base
 	{
 		/**
+		 * @since 14xxxx Adding CDN support.
 		 * @var plugin Quick Cache instance.
 		 */
 		protected $plugin; // Set by constructor.
 
 		/**
+		 * @since 14xxxx Adding CDN support.
 		 * @var string CDN is for this host name.
 		 */
 		protected $host; // Set by constructor.
 
 		/**
+		 * @since 14xxxx Adding CDN support.
 		 * @var string CDN serves files from this host.
 		 */
 		protected $cdn_host; // Set by constructor.
 
 		/**
+		 * @since 14xxxx Adding CDN support.
 		 * @var array Array of CDN extensions.
 		 */
 		protected $cdn_extensions; // Set by constructor.
 
 		/**
 		 * Class constructor.
+		 *
+		 * @since 14xxxx Adding CDN support.
 		 */
 		public function __construct()
 		{
@@ -59,21 +67,29 @@ namespace quick_cache // Root namespace.
 
 		/**
 		 * @TODO Get existing distro.
+		 *
+		 * @since 14xxxx Adding CDN support.
 		 */
 		abstract public function get_distro();
 
 		/**
 		 * @TODO Create a new distro.
+		 *
+		 * @since 14xxxx Adding CDN support.
 		 */
 		abstract public function create_distro();
 
 		/**
 		 * @TODO Update existing distro.
+		 *
+		 * @since 14xxxx Adding CDN support.
 		 */
 		abstract public function update_distro();
 
 		/**
-		 * Setup URL and content filters. @TODO add content filters.
+		 * Setup URL and content filters.
+		 *
+		 * @since 14xxxx Adding CDN support.
 		 */
 		public function setup_filters()
 		{
@@ -85,10 +101,15 @@ namespace quick_cache // Root namespace.
 
 			add_filter('content_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 2);
 			add_filter('plugins_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 2);
+
+			add_filter('the_content', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
+			add_filter('get_the_excerpt', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
 		}
 
 		/**
 		 * Filter home/site URLs that should be served by the CDN.
+		 *
+		 * @since 14xxxx Adding CDN support.
 		 *
 		 * @param string       $url Input URL|URI|query; passed by filter.
 		 * @param string       $path The path component(s) passed through by the filter.
@@ -105,70 +126,95 @@ namespace quick_cache // Root namespace.
 		/**
 		 * Filter content for URLs that should be served by the CDN.
 		 *
+		 * @since 14xxxx Adding CDN support.
+		 *
 		 * @param string $string Input content string to filter; i.e. HTML code.
 		 *
 		 * @return string The content string after having been filtered.
 		 */
 		public function content_filter($string)
 		{
-			if(!$this->host) // Missing host name?
-				return $string; // Not possible.
-
 			if(!($string = (string)$string))
 				return $string; // Nothing to do here.
 
-			$before_quote = 'url\s*\(\s*|(?:href|src)\s*\=\s*';
-			$regex        = '/\b((?:'.$before_quote.')["\'])(\/\/'.preg_quote($this->host, '/').'\/.+?)(\\1)/';
-			// @TODO Finish regex pattern(s). Need to look at absolute relative paths also.
-			// @TODO Also need to do a better job of finding true URLs within certain contexts.
-			// @TODO Might even be worth using a DOM parser here, though speed will be a serious issue.
+			if(!$this->host) // Missing host name?
+				return $string; // Not possible.
 
-			return preg_replace_callback($regex, array($this, '_content_filter_cb'), $string);
-		}
+			$_this           = $this; // Reference needed by closures below.
+			$regex_url_attrs = '/'. // HTML attributes containing a URL value.
+			                   '(\<)'. // Open tag; group #1.
+			                   '([\w\-]+)'. // Tag name; group #2.
+			                   '([^>]+?)'. // Others before; group #3.
+			                   '((?:href|src)\s*\=\s*)'. // attribute=; group #4.
+			                   '(["\'])'. // Open quote; group #5.
+			                   '([^"\'>]+?)'. // Local URL; group #6.
+			                   '(\\5)'. // Close quote; group #7.
+			                   '([^>]*)'. // Others after; group #8.
+			                   '(\>)'. // Tag close; group #9.
+			                   '/i';
+			$orig_string     = $string; // In case of regex errors.
+			$string          = preg_replace_callback($regex_url_attrs, function ($m) use ($_this)
+			{
+				$m[6] = $_this->filter_url($m[6], NULL, TRUE);
+				return implode('', $m); // Concatenate all parts.
+			}, $string);
 
-		protected function _content_filter_cb(array $m)
-		{
-			return $m[1].$this->filter_url($m[2]).$m[3];
-			// @TODO Deal with HTML entities here. Possibly. If not necessary, at least make a note of this.
+			return $string ? $string : $orig_string;
 		}
 
 		/**
 		 * Filter URLs that should be served by the CDN.
 		 *
+		 * @since 14xxxx Adding CDN support.
+		 *
 		 * @param string      $url_uri_query Input URL|URI|query.
 		 * @param string|null $scheme `NULL`, `http`, `https`, `login`, `login_post`, `admin`, or `relative`.
+		 * @param boolean     $esc Defaults to a FALSE value; do not deal with HTML entities.
 		 *
 		 * @return string The URL after having been filtered.
 		 */
-		protected function filter_url($url_uri_query, $scheme = NULL)
+		protected function filter_url($url_uri_query, $scheme = NULL, $esc = FALSE)
 		{
+			if(!($url_uri_query = trim((string)$url_uri_query)))
+				return NULL; // Unparseable.
+
+			$orig_url_uri_query = $url_uri_query; // Original value.
+			if($esc) $url_uri_query = wp_specialchars_decode($url_uri_query, ENT_QUOTES);
+
 			if(!($local_file = $this->local_file($url_uri_query)))
-				return $url_uri_query; // Not local.
+				return $orig_url_uri_query; // Not local.
 
 			if(!in_array($local_file->extension, $this->cdn_extensions, TRUE))
-				return $url_uri_query; // Not in the list of CDN extensions.
+				return $orig_url_uri_query; // Not in the list of CDN extensions.
 
 			if(preg_match('/\/wp\-admin(?:[\/?#]|$)/i', $local_file->uri))
-				return $url_uri_query; // Exclude `wp-admin` URIs.
+				return $orig_url_uri_query; // Exclude `wp-admin` URIs.
 
-			return set_url_scheme('//'.$this->cdn_host.$local_file->uri, $scheme);
+			if(!isset($scheme) && isset($local_file->scheme))
+				$scheme = $local_file->scheme; // Use original scheme.
+
+			$url = set_url_scheme('//'.$this->cdn_host.$local_file->uri, $scheme);
+
+			return $esc ? esc_attr($url) : $url;
 		}
 
 		/**
 		 * Parse a URL|URI|query into a local file array.
 		 *
+		 * @since 14xxxx Adding CDN support.
+		 *
 		 * @param string $url_uri_query Input URL|URI|query.
 		 *
-		 * @return object|null An object with two properties: `uri` and `extension`.
-		 *    This returns NULL for any file that is not local, or not a file.
+		 * @return object|null An object with: `scheme`, `extension`, `uri` properties.
+		 *    This returns NULL for any URL that is not local, or does not lead to a file.
 		 */
 		protected function local_file($url_uri_query)
 		{
-			if(!$this->host) // Missing host name?
-				return NULL; // Not possible.
-
 			if(!($url_uri_query = trim((string)$url_uri_query)))
 				return NULL; // Unparseable.
+
+			if(!$this->host) // Missing host name?
+				return NULL; // Not possible.
 
 			if(!($parsed = @parse_url($url_uri_query)))
 				return NULL; // Unparseable.
@@ -176,23 +222,41 @@ namespace quick_cache // Root namespace.
 			if(!empty($parsed['host']) && strcasecmp($parsed['host'], $this->host) !== 0)
 				return NULL; // Not on this host name.
 
-			if(!isset($parsed['path'][0]) || substr($parsed['path'], -1) === '/')
-				return NULL; // No path. Or, not a file; i.e. a directory.
+			if(!isset($parsed['path'][0]) || $parsed['path'][0] !== '/')
+				return NULL; // Missing or unexpected path.
+
+			if(substr($parsed['path'], -1) === '/')
+				return NULL; // Directory, not a file.
+
+			if(strpos($parsed['path'], '..') !== FALSE || strpos($parsed['path'], './') !== FALSE)
+				return NULL; // A relative path that is not absolute.
+
+			$scheme = NULL; // Default scheme handling.
+			if(!empty($parsed['scheme'])) // A specific scheme?
+				$scheme = strtolower($parsed['scheme']);
 
 			if(!($extension = $this->extension($parsed['path'])))
 				return NULL; // No extension; i.e. not a file.
 
 			$uri = $parsed['path']; // Put URI together.
-			if(strpos($uri, '/') !== 0) $uri = '/'.$uri;
 			if(!empty($parsed['query'])) $uri .= '?'.$parsed['query'];
 			if(!empty($parsed['fragment'])) $uri .= '#'.$parsed['fragment'];
 
-			return (object)compact('uri', 'extension');
+			return (object)compact('scheme', 'extension', 'uri');
 		}
 
+		/**
+		 * Get extension from a file path.
+		 *
+		 * @since 14xxxx Adding CDN support.
+		 *
+		 * @param string $path Input file path.
+		 *
+		 * @return string File extension (lowercase), else an empty string.
+		 */
 		protected function extension($path)
 		{
-			if(!($path = (string)$path))
+			if(!($path = trim((string)$path)))
 				return ''; // No path.
 
 			return strtolower(ltrim((string)strrchr(basename($path), '.'), '.'));
