@@ -117,16 +117,19 @@ namespace quick_cache // Root namespace.
 			if(!($string = (string)$string))
 				return $string; // Nothing to do here.
 
-			$regex = '/(["\'])(\/\/'.preg_quote($this->host, '/').'\/.+?)(\\1)/';
-			// @TODO Finish regex pattern(s). May need to look at relative paths also.
+			$before_quote = 'url\s*\(\s*|(?:href|src)\s*\=\s*';
+			$regex        = '/\b((?:'.$before_quote.')["\'])(\/\/'.preg_quote($this->host, '/').'\/.+?)(\\1)/';
+			// @TODO Finish regex pattern(s). Need to look at absolute relative paths also.
 			// @TODO Also need to do a better job of finding true URLs within certain contexts.
+			// @TODO Might even be worth using a DOM parser here, though speed will be a serious issue.
 
 			return preg_replace_callback($regex, array($this, '_content_filter_cb'), $string);
 		}
 
 		protected function _content_filter_cb(array $m)
 		{
-			return $m[1].$this->filter_url($m[2]).$m[3]; // @TODO Deal with HTML entities here.
+			return $m[1].$this->filter_url($m[2]).$m[3];
+			// @TODO Deal with HTML entities here. Possibly. If not necessary, at least make a note of this.
 		}
 
 		/**
