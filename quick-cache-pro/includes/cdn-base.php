@@ -23,31 +23,31 @@ namespace quick_cache // Root namespace.
 		 * @since 14xxxx Adding CDN support.
 		 * @var plugin Quick Cache instance.
 		 */
-		protected $plugin; // Set by constructor.
+		protected $plugin;
 
 		/**
 		 * @since 14xxxx Adding CDN support.
 		 * @var string CDN is for this host name.
 		 */
-		protected $host; // Set by constructor.
+		protected $host;
 
 		/**
 		 * @since 14xxxx Adding CDN support.
 		 * @var string CDN serves files from this host.
 		 */
-		protected $cdn_host; // Set by constructor.
+		protected $cdn_host;
 
 		/**
 		 * @since 14xxxx Adding CDN support.
 		 * @var array Array of CDN extensions.
 		 */
-		protected $cdn_extensions; // Set by constructor.
+		protected $cdn_extensions;
 
 		/**
 		 * @since 14xxxx Adding CDN support.
 		 * @var string CDN blacklisted patterns.
 		 */
-		protected $cdn_blacklist; // Set by constructor.
+		protected $cdn_blacklist;
 
 		/**
 		 * Class constructor.
