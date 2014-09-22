@@ -39,6 +39,12 @@ namespace quick_cache // Root namespace.
 
 		/**
 		 * @since 14xxxx Adding CDN support.
+		 * @var boolean CDN over SSL connections?
+		 */
+		protected $cdn_over_ssl;
+
+		/**
+		 * @since 14xxxx Adding CDN support.
 		 * @var array Array of CDN extensions.
 		 */
 		protected $cdn_extensions;
@@ -60,6 +66,8 @@ namespace quick_cache // Root namespace.
 
 			$this->host     = strtolower((string)parse_url(network_home_url(), PHP_URL_HOST));
 			$this->cdn_host = strtolower($this->plugin->options['cdn_host']);
+
+			$this->cdn_over_ssl = (boolean)$this->plugin->options['cdn_over_ssl'];
 
 			$this->cdn_extensions = trim(strtolower($this->plugin->options['cdn_extensions']), "\r\n\t\0\x0B".' ;,');
 			$this->cdn_extensions = preg_split('/[|;,\s]+/', $this->cdn_extensions, NULL, PREG_SPLIT_NO_EMPTY);
@@ -104,6 +112,9 @@ namespace quick_cache // Root namespace.
 		 */
 		public function setup_filters()
 		{
+			if(!$this->cdn_over_ssl && is_ssl())
+				return; // Disable in this case.
+
 			add_filter('home_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 4);
 			add_filter('site_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 4);
 
