@@ -95,6 +95,9 @@ namespace quick_cache // Root namespace.
 		 * @TODO Create a new distro.
 		 *
 		 * @since 14xxxx Adding CDN support.
+		 *
+		 * @TODO see <http://bit.ly/1paPksq> for MaxCDN examples.
+		 * @TODO see <http://bit.ly/1paPxMh> for CloudFront examples.
 		 */
 		abstract public function create_distro();
 
