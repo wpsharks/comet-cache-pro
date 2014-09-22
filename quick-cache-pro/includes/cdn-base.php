@@ -44,6 +44,12 @@ namespace quick_cache // Root namespace.
 		protected $cdn_extensions; // Set by constructor.
 
 		/**
+		 * @since 14xxxx Adding CDN support.
+		 * @var string CDN blacklisted patterns.
+		 */
+		protected $cdn_blacklist; // Set by constructor.
+
+		/**
 		 * Class constructor.
 		 *
 		 * @since 14xxxx Adding CDN support.
@@ -63,6 +69,11 @@ namespace quick_cache // Root namespace.
 				if(in_array($_extension, array('php'), TRUE))
 					unset($this->cdn_extensions[$_key]);
 			unset($_key, $_extension);
+
+			$this->cdn_blacklist = '/(?:'.implode('|', array_map(function ($pattern)
+				{
+					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/'));
+				}, preg_split('/['."\r\n".']+/', $this->plugin->options['cdn_blacklist'], NULL, PREG_SPLIT_NO_EMPTY))).')/';
 		}
 
 		/**
@@ -192,6 +203,9 @@ namespace quick_cache // Root namespace.
 
 			if(preg_match('/\/wp\-admin(?:[\/?#]|$)/i', $local_file->uri))
 				return $orig_url_uri_query; // Exclude `wp-admin` URIs.
+
+			if(preg_match($this->cdn_blacklist, $local_file->uri))
+				return $orig_url_uri_query; // Exclude blacklisted URIs.
 
 			if(!isset($scheme) && isset($local_file->scheme))
 				$scheme = $local_file->scheme; // Use original scheme.
