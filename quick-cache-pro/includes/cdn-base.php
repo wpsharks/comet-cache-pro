@@ -140,6 +140,9 @@ namespace quick_cache // Root namespace.
 			if(!$this->host) // Missing host name?
 				return $string; // Not possible.
 
+			if(strpos($string, '<') === FALSE)
+				return $string; // Save some time.
+
 			$_this           = $this; // Reference needed by closures below.
 			$regex_url_attrs = '/'. // HTML attributes containing a URL value.
 			                   '(\<)'. // Open tag; group #1.
