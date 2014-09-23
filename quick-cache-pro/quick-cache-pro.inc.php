@@ -293,6 +293,7 @@ namespace quick_cache
 
 				add_action('admin_init', array($this, 'check_version'));
 				add_action('admin_init', array($this, 'check_update_sync_version'));
+				add_action('admin_init', array($this, 'maybe_auto_clear_cache'));
 
 				add_action('admin_bar_menu', array($this, 'admin_bar_menu'));
 				add_action('wp_head', array($this, 'admin_bar_meta_tags'), 0);
@@ -2578,6 +2579,28 @@ namespace quick_cache
 			public function auto_purge_user_cache_cur()
 			{
 				$this->auto_purge_user_cache(get_current_user_id());
+			}
+
+			/**
+			 * Automatically clears all cache files for current blog under various conditions;
+			 *    used to check for conditions that don't have a hook that we can attach to.
+			 *
+			 * @since 140922 First documented version.
+			 *
+			 * @attaches-to `admin_init` hook.
+			 *
+			 * @see auto_clear_cache()
+			 */
+			public function maybe_auto_clear_cache()
+			{
+				$_pagenow = $GLOBALS['pagenow'];
+				if(isset($this->cache[__FUNCTION__][$_pagenow]))
+					return; // Already did this.
+				$this->cache[__FUNCTION__][$_pagenow] = -1;
+
+				// If Dashboard → Settings → Reading options are updated
+				if($GLOBALS['pagenow'] === 'options-reading.php' && !empty($_REQUEST['settings-updated']))
+					$this->auto_clear_cache();
 			}
 
 			/**
