@@ -230,7 +230,7 @@ namespace quick_cache
 					'auto_cache_delay'                     => '500', // In milliseconds.
 					'auto_cache_sitemap_url'               => 'sitemap.xml', // Relative to `site_url()`.
 					'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
-					'auto_cache_user_agent'                => 'WordPress/'.get_bloginfo('version'),
+					'auto_cache_user_agent'                => 'WordPress',
 
 					'update_sync_username'                 => '', 'update_sync_password' => '',
 					'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0'
