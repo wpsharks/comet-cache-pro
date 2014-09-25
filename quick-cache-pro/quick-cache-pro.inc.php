@@ -230,7 +230,7 @@ namespace quick_cache
 					'auto_cache_delay'                     => '500', // In milliseconds.
 					'auto_cache_sitemap_url'               => 'sitemap.xml', // Relative to `site_url()`.
 					'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
-					'auto_cache_user_agent'                => 'WordPress/'.get_bloginfo('version'),
+					'auto_cache_user_agent'                => 'WordPress',
 
 					'update_sync_username'                 => '', 'update_sync_password' => '',
 					'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0'
@@ -293,6 +293,7 @@ namespace quick_cache
 
 				add_action('admin_init', array($this, 'check_version'));
 				add_action('admin_init', array($this, 'check_update_sync_version'));
+				add_action('admin_init', array($this, 'maybe_auto_clear_cache'));
 
 				add_action('admin_bar_menu', array($this, 'admin_bar_menu'));
 				add_action('wp_head', array($this, 'admin_bar_meta_tags'), 0);
@@ -311,10 +312,10 @@ namespace quick_cache
 				add_action('network_admin_menu', array($this, 'add_network_menu_pages'));
 				add_action('admin_menu', array($this, 'add_menu_pages'));
 
-				add_action('upgrader_process_complete', array($this, 'auto_clear_cache'));
-				add_action('switch_theme', array($this, 'auto_clear_cache'));
+				add_action('upgrader_process_complete', array($this, 'upgrader_process_complete'), 10, 2);
 				add_action('safecss_save_pre', array($this, 'jetpack_custom_css'), 10, 1);
 
+				add_action('switch_theme', array($this, 'auto_clear_cache'));
 				add_action('wp_create_nav_menu', array($this, 'auto_clear_cache'));
 				add_action('wp_update_nav_menu', array($this, 'auto_clear_cache'));
 				add_action('wp_delete_nav_menu', array($this, 'auto_clear_cache'));
@@ -1357,7 +1358,7 @@ namespace quick_cache
 
 				if($counter && $this->options['change_notifications_enable'] && is_admin())
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      __('<strong>Quick Cache:</strong> detected changes. Found cache files for this site (auto-clearing).', $this->text_domain));
+					                      __('<strong>Quick Cache:</strong> detected important site changes. Found cache files for this site (auto-clearing).', $this->text_domain));
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -2581,6 +2582,28 @@ namespace quick_cache
 			}
 
 			/**
+			 * Automatically clears all cache files for current blog under various conditions;
+			 *    used to check for conditions that don't have a hook that we can attach to.
+			 *
+			 * @since 140922 First documented version.
+			 *
+			 * @attaches-to `admin_init` hook.
+			 *
+			 * @see auto_clear_cache()
+			 */
+			public function maybe_auto_clear_cache()
+			{
+				$_pagenow = $GLOBALS['pagenow'];
+				if(isset($this->cache[__FUNCTION__][$_pagenow]))
+					return; // Already did this.
+				$this->cache[__FUNCTION__][$_pagenow] = -1;
+
+				// If Dashboard → Settings → Reading options are updated
+				if($GLOBALS['pagenow'] === 'options-reading.php' && !empty($_REQUEST['settings-updated']))
+					$this->auto_clear_cache();
+			}
+
+			/**
 			 * Automatically clears all cache files for current blog when JetPack Custom CSS is saved.
 			 *
 			 * @since 140919 First documented version.
@@ -2593,6 +2616,119 @@ namespace quick_cache
 			{
 				if(class_exists('Jetpack') && !$args['is_preview'])
 					$this->auto_clear_cache();
+			}
+
+			/**
+			 * Automatically clears all cache files for current blog when WordPress core, or an active component, is upgraded.
+			 *
+			 * @since 14xxxx Clearing the cache on WP upgrades.
+			 *
+			 * @attaches-to `upgrader_process_complete` hook.
+			 *
+			 * @param \WP_Upgrader $upgrader_instance An instance of \WP_Upgrader.
+			 *    Or, any class that extends \WP_Upgrader.
+			 *
+			 * @param array        $data Array of bulk item update data.
+			 *
+			 *    This array may include one or more of the following keys:
+			 *
+			 *       - `string` `$action` Type of action. Default 'update'.
+			 *       - `string` `$type` Type of update process; e.g. 'plugin', 'theme', 'core'.
+			 *       - `boolean` `$bulk` Whether the update process is a bulk update. Default true.
+			 *       - `array` `$packages` Array of plugin, theme, or core packages to update.
+			 *
+			 * @see auto_clear_cache()
+			 */
+			public function upgrader_process_complete(\WP_Upgrader $upgrader_instance, array $data)
+			{
+				switch(!empty($data['type']) ? $data['type'] : '')
+				{
+					case 'plugin': // Plugin upgrade.
+
+						/** @var $skin \Plugin_Upgrader_Skin * */
+						$skin                    = $upgrader_instance->skin;
+						$multi_plugin_update     = $single_plugin_update = FALSE;
+						$upgrading_active_plugin = FALSE; // Initialize.
+
+						if(!empty($data['bulk']) && !empty($data['plugins']) && is_array($data['plugins']))
+							$multi_plugin_update = TRUE;
+
+						else if(!empty($data['plugin']) && is_string($data['plugin']))
+							$single_plugin_update = TRUE;
+
+						if($multi_plugin_update)
+						{
+							foreach($data['plugins'] as $_plugin)
+								if($_plugin && is_string($_plugin) && is_plugin_active($_plugin))
+								{
+									$upgrading_active_plugin = TRUE;
+									break; // Got what we need here.
+								}
+							unset($_plugin); // Housekeeping.
+						}
+						else if($single_plugin_update && $skin->plugin_active == TRUE)
+							$upgrading_active_plugin = TRUE;
+
+						if($upgrading_active_plugin)
+							$this->auto_clear_cache(); // Yes, clear the cache.
+
+						break; // Break switch.
+
+					case 'theme': // Theme upgrade.
+
+						$current_active_theme          = wp_get_theme();
+						$current_active_theme_parent   = $current_active_theme->parent();
+						$multi_theme_update            = $single_theme_update = FALSE;
+						$upgrading_active_parent_theme = $upgrading_active_theme = FALSE;
+
+						if(!empty($data['bulk']) && !empty($data['themes']) && is_array($data['themes']))
+							$multi_theme_update = TRUE;
+
+						else if(!empty($data['theme']) && is_string($data['theme']))
+							$single_theme_update = TRUE;
+
+						if($multi_theme_update)
+						{
+							foreach($data['themes'] as $_theme)
+							{
+								if(!$_theme || !is_string($_theme) || !($_theme_obj = wp_get_theme($_theme)))
+									continue; // Unable to acquire theme object instance.
+
+								if($current_active_theme_parent && $current_active_theme_parent->get_stylesheet() === $_theme_obj->get_stylesheet())
+								{
+									$upgrading_active_parent_theme = TRUE;
+									break; // Got what we needed here.
+								}
+								else if($current_active_theme->get_stylesheet() === $_theme_obj->get_stylesheet())
+								{
+									$upgrading_active_theme = TRUE;
+									break; // Got what we needed here.
+								}
+							}
+							unset($_theme, $_theme_obj); // Housekeeping.
+						}
+						else if($single_theme_update && ($_theme_obj = wp_get_theme($data['theme'])))
+						{
+							if($current_active_theme_parent && $current_active_theme_parent->get_stylesheet() === $_theme_obj->get_stylesheet())
+								$upgrading_active_parent_theme = TRUE;
+
+							else if($current_active_theme->get_stylesheet() === $_theme_obj->get_stylesheet())
+								$upgrading_active_theme = TRUE;
+						}
+						unset($_theme_obj); // Housekeeping.
+
+						if($upgrading_active_theme || $upgrading_active_parent_theme)
+							$this->auto_clear_cache(); // Yes, clear the cache.
+
+						break; // Break switch.
+
+					case 'core': // Core upgrade.
+					default: // Or any other sort of upgrade.
+
+						$this->auto_clear_cache(); // Yes, clear the cache.
+
+						break; // Break switch.
+				}
 			}
 
 			/**

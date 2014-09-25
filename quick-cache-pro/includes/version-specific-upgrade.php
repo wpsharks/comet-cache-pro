@@ -47,6 +47,7 @@ namespace quick_cache // Root namespace.
 				$this->from_lt_v140104();
 				$this->from_lt_v140605();
 				$this->from_lt_v140612();
+				$this->from_lt_v140923();
 			}
 
 			/*
@@ -129,6 +130,20 @@ namespace quick_cache // Root namespace.
 							' '.__('Quick Cache has detected that your previously configured cache directory may have been in conflict with this change. As a result, your Quick Cache configuration has been updated to the new default value; just to keep things running smoothly for you :-). If you would like to review this change, please see: <code>Dashboard ⥱ Quick Cache ⥱ Directory &amp; Expiration Time</code>; where you may customize it further if necessary.', $this->plugin->text_domain).'</p>'
 						);
 					}
+				}
+			}
+
+			/*
+			 * Upgrading from a version before we removed the WordPress version number from the Auto-Cache Engine User-Agent string.
+			*/
+			public function from_lt_v140923()
+			{
+				if(version_compare($this->prev_version, '140923', '<'))
+				{
+					$this->plugin->options['auto_cache_user_agent'] = $this->plugin->default_options['auto_cache_user_agent'];
+
+					update_option(__NAMESPACE__.'_options', $this->plugin->options);
+					if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->plugin->options);
 				}
 			}
 		}
