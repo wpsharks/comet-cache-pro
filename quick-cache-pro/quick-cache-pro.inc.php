@@ -1397,7 +1397,7 @@ namespace quick_cache
 					if($this->options['change_notifications_enable'] && is_admin())
 					{
 						$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-						                      __('<strong>Quick Cache:</strong> detected important site changes that would normally trigger a clear cache routine, however clear cache routines have been disabled by a site administrator.', $this->text_domain));
+						                      __('<strong>Quick Cache:</strong> detected important site changes that would normally trigger a clear cache routine, however clear cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
 					}
 					return TRUE;
 				}
@@ -1423,7 +1423,7 @@ namespace quick_cache
 					if($this->options['change_notifications_enable'] && is_admin())
 					{
 						$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-						                      __('<strong>Quick Cache:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator.', $this->text_domain));
+						                      __('<strong>Quick Cache:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
 					}
 					return TRUE;
 				}
