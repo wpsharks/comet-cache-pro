@@ -1382,7 +1382,7 @@ namespace quick_cache
 			}
 
 			/**
-			 * Allows a site owner to disable the clear and wipe cache routines by filtering quick_cache_disable_clear_cache_routines to return TRUE, in which case this method returns TRUE, otherwise FALSE.
+			 * Allows a site owner to disable the clear and wipe cache routines by filtering quick_cache_disable_auto_clear_cache_routines to return TRUE, in which case this method returns TRUE, otherwise it returns FALSE.
 			 *
 			 * @since 14xxxx First documented version.
 			 *
@@ -1392,7 +1392,7 @@ namespace quick_cache
 			 */
 			public function disable_clear_cache_routines()
 			{
-				if(apply_filters('quick_cache_disable_clear_cache_routines', FALSE))
+				if(apply_filters('quick_cache_disable_auto_clear_cache_routines', FALSE))
 				{
 					if($this->options['change_notifications_enable'] && is_admin())
 					{
@@ -1408,7 +1408,7 @@ namespace quick_cache
 			}
 
 			/**
-			 * Allows a site owner to disable the wipe cache routines by filtering quick_cache_disable_wipe_cache_routines to return TRUE, in which case this method returns TRUE, otherwise FALSE.
+			 * Allows a site owner to disable the wipe cache routines by filtering quick_cache_disable_auto_wipe_cache_routines to return TRUE, in which case this method returns TRUE, otherwise it returns FALSE.
 			 *
 			 * @since 14xxxx First documented version.
 			 *
@@ -1418,7 +1418,7 @@ namespace quick_cache
 			 */
 			public function disable_wipe_cache_routines()
 			{
-				if(apply_filters('quick_cache_disable_wipe_cache_routines', FALSE))
+				if(apply_filters('quick_cache_disable_auto_wipe_cache_routines', FALSE))
 				{
 					if($this->options['change_notifications_enable'] && is_admin())
 					{
