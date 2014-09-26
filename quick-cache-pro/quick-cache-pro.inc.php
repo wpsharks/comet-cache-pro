@@ -438,7 +438,7 @@ namespace quick_cache
 					$this->add_advanced_cache();
 					$this->update_blog_paths();
 				}
-				$this->wipe_cache(); // Always wipe the cache; no exceptions.
+				$this->wipe_cache(); // Always wipe the cache; unless disabled by site owner; @see disable_wipe_cache_routines()
 
 				$this->enqueue_notice(__('<strong>Quick Cache:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', $this->text_domain), '', TRUE);
 			}
@@ -1079,6 +1079,9 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
+				if($this->disable_wipe_cache_routines() && !$manually)
+					return $counter; // Nothing to do.
+
 				// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 				@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
@@ -1133,6 +1136,9 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
+				if($this->disable_wipe_cache_routines() && !$manually)
+					return $counter; // Nothing to do.
+
 				$cache_dir_public  = $this->wp_content_dir_to($this->htmlc_cache_sub_dir_public);
 				$cache_dir_private = $this->wp_content_dir_to($this->htmlc_cache_sub_dir_private);
 
@@ -1174,6 +1180,9 @@ namespace quick_cache
 			public function clear_cache($manually = FALSE)
 			{
 				$counter = 0; // Initialize.
+
+				if($this->disable_clear_cache_routines() && !$manually)
+					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return apply_filters(__METHOD__, $this->clear_htmlc_cache($manually), get_defined_vars());
@@ -1223,6 +1232,9 @@ namespace quick_cache
 			public function clear_htmlc_cache($manually = FALSE)
 			{
 				$counter = 0; // Initialize.
+
+				if($this->disable_clear_cache_routines() && !$manually)
+					return $counter; // Nothing to do.
 
 				$host_token = $this->host_token(TRUE);
 				if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
@@ -1311,6 +1323,9 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
+				if($this->disable_wipe_cache_routines())
+					return $counter; // Nothing to do.
+
 				$counter = $this->wipe_cache();
 
 				if($counter && $this->options['change_notifications_enable'] && is_admin())
@@ -1354,6 +1369,9 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
+				if($this->disable_clear_cache_routines())
+					return $counter; // Nothing to do.
+
 				$counter = $this->clear_cache();
 
 				if($counter && $this->options['change_notifications_enable'] && is_admin())
@@ -1361,6 +1379,58 @@ namespace quick_cache
 					                      __('<strong>Quick Cache:</strong> detected important site changes. Found cache files for this site (auto-clearing).', $this->text_domain));
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
+			}
+
+			/**
+			 * Allows a site owner to disable the clear and wipe cache routines by filtering quick_cache_disable_auto_clear_cache_routines to return TRUE, in which case this method returns TRUE, otherwise it returns FALSE.
+			 *
+			 * @since 14xxxx First documented version.
+			 *
+			 * @see auto_clear_cache()
+			 * @see clear_htmlc_cache()
+			 * @see clear_cache()
+			 */
+			public function disable_clear_cache_routines()
+			{
+				if(apply_filters('quick_cache_disable_auto_clear_cache_routines', FALSE))
+				{
+					if($this->options['change_notifications_enable'] && is_admin())
+					{
+						$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+						                      __('<strong>Quick Cache:</strong> detected important site changes that would normally trigger a clear cache routine, however clear cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
+					}
+					return TRUE;
+				}
+				else
+				{
+					return FALSE;
+				}
+			}
+
+			/**
+			 * Allows a site owner to disable the wipe cache routines by filtering quick_cache_disable_auto_wipe_cache_routines to return TRUE, in which case this method returns TRUE, otherwise it returns FALSE.
+			 *
+			 * @since 14xxxx First documented version.
+			 *
+			 * @see auto_wipe_cache()
+			 * @see wipe_htmlc_cache()
+			 * @see wipe_cache()
+			 */
+			public function disable_wipe_cache_routines()
+			{
+				if(apply_filters('quick_cache_disable_auto_wipe_cache_routines', FALSE))
+				{
+					if($this->options['change_notifications_enable'] && is_admin())
+					{
+						$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+						                      __('<strong>Quick Cache:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
+					}
+					return TRUE;
+				}
+				else
+				{
+					return FALSE;
+				}
 			}
 
 			/**
@@ -1440,7 +1510,7 @@ namespace quick_cache
 				$cache_path_no_scheme_quv_ext = $this->build_cache_path($permalink, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+				                                '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/';
 
 				/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 				foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
@@ -1905,7 +1975,7 @@ namespace quick_cache
 				$cache_path_no_scheme_quv_ext = $this->build_cache_path(home_url('/'), '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+				                                '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/';
 
 				/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 				foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
@@ -1980,7 +2050,7 @@ namespace quick_cache
 				$cache_path_no_scheme_quv_ext = $this->build_cache_path($posts_page, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+				                                '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/';
 
 				/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 				foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
@@ -2055,7 +2125,7 @@ namespace quick_cache
 				$cache_path_no_scheme_quv_ext = $this->build_cache_path($custom_post_type_archive_link, '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 				$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 				                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-				                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+				                                '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/';
 
 				/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 				foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
@@ -2161,7 +2231,7 @@ namespace quick_cache
 					$cache_path_no_scheme_quv_ext = $this->build_cache_path($_author['posts_url'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 					$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 					                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-					                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+					                                '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/';
 
 					/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 					foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
@@ -2318,7 +2388,7 @@ namespace quick_cache
 					$cache_path_no_scheme_quv_ext = $this->build_cache_path($_term['permalink'], '', '', $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT);
 					$regex                        = '/^'.preg_quote($cache_dir, '/'). // Consider all schemes; all path paginations; and all possible variations.
 					                                '\/[^\/]+\/'.preg_quote($cache_path_no_scheme_quv_ext, '/').
-					                                '(?:\/index)?(?:\.|\/(?:page|comment\-page)\/[0-9]+[.\/])/';
+					                                '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/';
 
 					/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 					foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
@@ -2598,8 +2668,20 @@ namespace quick_cache
 					return; // Already did this.
 				$this->cache[__FUNCTION__][$_pagenow] = -1;
 
+				// If Dashboard → Settings → General options are updated
+				if($GLOBALS['pagenow'] === 'options-general.php' && !empty($_REQUEST['settings-updated']))
+					$this->auto_clear_cache();
+
 				// If Dashboard → Settings → Reading options are updated
 				if($GLOBALS['pagenow'] === 'options-reading.php' && !empty($_REQUEST['settings-updated']))
+					$this->auto_clear_cache();
+
+				// If Dashboard → Settings → Discussion options are updated
+				if($GLOBALS['pagenow'] === 'options-discussion.php' && !empty($_REQUEST['settings-updated']))
+					$this->auto_clear_cache();
+
+				// If Dashboard → Settings → Permalink options are updated
+				if($GLOBALS['pagenow'] === 'options-permalink.php' && !empty($_REQUEST['settings-updated']))
 					$this->auto_clear_cache();
 			}
 
