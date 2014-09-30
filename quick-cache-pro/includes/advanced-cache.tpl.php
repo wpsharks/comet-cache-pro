@@ -904,7 +904,7 @@ namespace quick_cache
 			if(!empty($_REQUEST[__NAMESPACE__]['ajax_clear_cache']))
 				return; // Site owner is clearing cache now.
 
-			if($this->is_uncacheable_request_method())
+			if($this->is_post_put_delete_request() || $this->is_uncacheable_request_method())
 				$this->postload['invalidate_when_logged_in'] = TRUE;
 
 			else if(!QUICK_CACHE_GET_REQUESTS && $this->is_get_request_w_query())
