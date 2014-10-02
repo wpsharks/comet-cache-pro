@@ -1384,7 +1384,7 @@ namespace quick_cache
 			/**
 			 * Allows a site owner to disable the clear and wipe cache routines by filtering quick_cache_disable_auto_clear_cache_routines to return TRUE, in which case this method returns TRUE, otherwise it returns FALSE.
 			 *
-			 * @since 14xxxx First documented version.
+			 * @since 141001 First documented version.
 			 *
 			 * @see auto_clear_cache()
 			 * @see clear_htmlc_cache()
@@ -1410,7 +1410,7 @@ namespace quick_cache
 			/**
 			 * Allows a site owner to disable the wipe cache routines by filtering quick_cache_disable_auto_wipe_cache_routines to return TRUE, in which case this method returns TRUE, otherwise it returns FALSE.
 			 *
-			 * @since 14xxxx First documented version.
+			 * @since 141001 First documented version.
 			 *
 			 * @see auto_wipe_cache()
 			 * @see wipe_htmlc_cache()
@@ -2703,7 +2703,7 @@ namespace quick_cache
 			/**
 			 * Automatically clears all cache files for current blog when WordPress core, or an active component, is upgraded.
 			 *
-			 * @since 14xxxx Clearing the cache on WP upgrades.
+			 * @since 141001 Clearing the cache on WP upgrades.
 			 *
 			 * @attaches-to `upgrader_process_complete` hook.
 			 *
