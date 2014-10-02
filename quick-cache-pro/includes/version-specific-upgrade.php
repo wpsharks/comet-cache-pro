@@ -47,7 +47,7 @@ namespace quick_cache // Root namespace.
 				$this->from_lt_v140104();
 				$this->from_lt_v140605();
 				$this->from_lt_v140612();
-				$this->from_lt_v140923();
+				$this->from_lt_v141001();
 			}
 
 			/*
@@ -136,9 +136,9 @@ namespace quick_cache // Root namespace.
 			/*
 			 * Upgrading from a version before we removed the WordPress version number from the Auto-Cache Engine User-Agent string.
 			*/
-			public function from_lt_v140923()
+			public function from_lt_v141001()
 			{
-				if(version_compare($this->prev_version, '140923', '<'))
+				if(version_compare($this->prev_version, '141001', '<'))
 				{
 					$this->plugin->options['auto_cache_user_agent'] = $this->plugin->default_options['auto_cache_user_agent'];
 
