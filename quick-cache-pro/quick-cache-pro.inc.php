@@ -2362,7 +2362,6 @@ namespace quick_cache
 
 				if($post_status === 'future' && !$force)
 					return $counter; // Nothing to do.
-
 				/*
 				 * Build an array of available taxonomies for this post (as taxonomy objects)
 				 */
@@ -2573,7 +2572,7 @@ namespace quick_cache
 			{
 				$user_id = (integer)$user_id;
 
-				$counter = 0; // Initialize counter.
+				$counter = 0; // Initialize.
 
 				if(isset($this->cache[__FUNCTION__][$user_id]))
 					return $counter; // Already did this.
