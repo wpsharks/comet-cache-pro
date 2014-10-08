@@ -2549,7 +2549,7 @@ namespace quick_cache
 			}
 
 			/**
-			 * Automatically purges cache files associated with a particular user.
+			 * Clears cache files associated with a particular user.
 			 *
 			 * @since 140422 First documented version.
 			 *
@@ -2562,9 +2562,7 @@ namespace quick_cache
 			 *
 			 * @param integer $user_id A WordPress user ID.
 			 *
-			 * @return integer Total files purged by this routine (if any).
-			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @return integer Total files cleared.
 			 *
 			 * @see auto_purge_user_cache_a1()
 			 * @see auto_purge_user_cache_fa2()
@@ -2575,8 +2573,7 @@ namespace quick_cache
 			{
 				$user_id = (integer)$user_id;
 
-				$counter          = 0; // Initialize.
-				$enqueued_notices = 0; // Initialize.
+				$counter = 0; // Initialize counter.
 
 				if(isset($this->cache[__FUNCTION__][$user_id]))
 					return $counter; // Already did this.
@@ -2590,31 +2587,15 @@ namespace quick_cache
 
 				if(!$user_id) return $counter; // No can-do.
 
-				if(!is_dir($cache_dir = $this->cache_dir()))
-					return $counter; // Nothing to do.
+				$regex = '/.*?\.u\/'.preg_quote($user_id, '/').'[.\/]/';
+				$counter += $this->clear_files_from_host_cache_dir($regex);
 
-				$regex = '/\.u\/'.preg_quote($user_id, '/').'[.\/]/'; // This user.
-
-				/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-				foreach($this->dir_regex_iteration($cache_dir, $regex) as $_file) if($_file->isFile() || $_file->isLink())
+				if($counter && $this->options['change_notifications_enable'] && is_admin())
 				{
-					if(strpos($_file->getSubpathname(), '/') === FALSE) continue;
-					// Don't delete files in the immediate directory; e.g. `qc-advanced-cache` or `.htaccess`, etc.
-					// Actual `http|https/...` cache files are nested. Files in the immediate directory are for other purposes.
-
-					if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
-						throw new \exception(sprintf(__('Unable to auto-purge file: `%1$s`.', $this->text_domain), $_file->getPathname()));
-					$counter++; // Increment counter for each file purge.
-
-					if($enqueued_notices || !$this->options['change_notifications_enable'] || !is_admin())
-						continue; // Stop here; we already issued a notice, or this notice is N/A.
-
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found cache files for user ID: <code>%1$s</code> (auto-purging).', $this->text_domain), $user_id));
-					$enqueued_notices++; // Notice counter.
+					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found %1$s in the cache for user ID: <code>%2$s</code>; auto-clearing.', $this->text_domain),
+					                              $this->files_i18n($counter), $user_id));
 				}
-				unset($_file); // Just a little housekeeping.
-
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
@@ -3317,11 +3298,9 @@ namespace quick_cache
 			/**
 			 * Removes the entire base directory.
 			 *
-			 * @since 14xxx First documented version.
+			 * @since 140422 First documented version.
 			 *
 			 * @return integer Total files removed by this routine (if any).
-			 *
-			 * @throws \exception If a wipe failure occurs.
 			 */
 			public function remove_base_dir()
 			{
@@ -3330,26 +3309,7 @@ namespace quick_cache
 				// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
 				@set_time_limit(1800); // In case of HUGE sites w/ a very large directory. Errors are ignored in case `set_time_limit()` is disabled.
 
-				$base_dir = $this->wp_content_dir_to(''); // Simply the base directory.
-
-				/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
-				if($base_dir && is_dir($base_dir)) foreach($this->dir_regex_iteration($base_dir, '/.+/') as $_dir_file)
-				{
-					if(($_dir_file->isFile() || $_dir_file->isLink()))
-						if(!unlink($_dir_file->getPathname())) // Throw exception if unable to delete.
-							throw new \exception(sprintf(__('Unable to remove file: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
-						else $counter++; // Increment counter for each file we wipe.
-
-					else if($_dir_file->isDir())
-						if(!rmdir($_dir_file->getPathname())) // Throw exception if unable to delete.
-							throw new \exception(sprintf(__('Unable to remove dir: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
-				}
-				unset($_dir_file); // Just a little housekeeping.
-
-				if(is_dir($base_dir) && !rmdir($base_dir)) // Throw exception if unable to delete.
-					throw new \exception(sprintf(__('Unable to remove base dir: `%1$s`.', $this->text_domain), $base_dir));
-
-				return $counter; // Total removals.
+				return ($counter += $this->delete_all_files_dirs_in($this->wp_content_dir_to(''), TRUE));
 			}
 		}
 
