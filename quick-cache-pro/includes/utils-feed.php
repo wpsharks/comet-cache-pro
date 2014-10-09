@@ -15,7 +15,7 @@ namespace quick_cache // Root namespace.
 	/**
 	 * Feed Utilities
 	 */
-	class auto_cache
+	class utils_feed
 	{
 		/**
 		 * @var plugin Quick Cache instance.
@@ -161,9 +161,17 @@ namespace quick_cache // Root namespace.
 		 *
 		 * @param \WP_Post A WordPress post class instance.
 		 *
+		 * @param boolean  $include_regex_wildcard_keys Defaults to a `FALSE` value.
+		 *    If `TRUE`, some associative array keys will be returned also.
+		 *
 		 * @return array An array of all feed link variations.
+		 *
+		 * @note If `$include_regex_wildcard_keys` is `TRUE`...
+		 *    This particular method may return some associative keys also.
+		 *    For string/associative keys, each key is `[feed type]::[regex]`, and the feed link/URL
+		 *    will contain a single `*` wildcard character where the `[regex]` pattern should go.
 		 */
-		public function post_term_feed_link_variations(\WP_Post $post)
+		public function post_term_feed_link_variations(\WP_Post $post, $include_regex_wildcard_keys = FALSE)
 		{
 			$variations = array(); // Initialize.
 			$post_terms = array(); // Initialize.
@@ -179,10 +187,33 @@ namespace quick_cache // Root namespace.
 			foreach($post_terms as $_post_term) // Iterate all post terms.
 			{
 				foreach($this->feed_types as $_feed_type)
-					$variations[] = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, $_feed_type);
-				unset($_feed_type); // Housekeeping.
+				{
+					$_term_feed_link = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, $_feed_type);
+					$variations[]    = $_term_feed_link; // Add this variation; always.
 
-				if($this->seo_friendly_permalinks && ($_taxonomy = get_taxonomy($_post_term->taxonomy)))
+					if($include_regex_wildcard_keys && $_term_feed_link && strpos($_term_feed_link, '?') === FALSE)
+					{
+						// Quick example: `(?:123|slug)`; to consider both.
+						$_term_id_or_slug = '(?:'.preg_quote($_post_term->term_id, '/').
+						                    '|'.preg_quote(preg_replace('/[^a-z0-9\/.]/i', '-', $_post_term->slug), '/').')';
+
+						// Quick example: `http://www.example.com/tax/term/feed`;
+						//    with a wildcard this becomes: `http://www.example.com/tax/*/feed`.
+						$_term_feed_link_with_wildcard = preg_replace('/\/[^\/]+\/feed([\/?#]|$)/', '/*/feed'.'${1}', $_term_feed_link);
+
+						// Quick example: `http://www.example.com/tax/*/feed`;
+						//   becomes: `\/http\/www\.example\.com\/tax\/.*?(?=[\/\-]?(?:123|slug)[\/\-]).*?\/feed`
+						//    ... this covers variations that use: `/tax/term,term/feed/`.
+						//    ... also covers variations that use: `/tax/term/tax/term/feed/`.
+						$variations[$_feed_type.'::.*?(?=[\/\-]?'.$_term_id_or_slug.'[\/\-]).*?'] = $_term_feed_link_with_wildcard;
+						// NOTE: This may also pick up false-positives. Not much we can do about this.
+						//    For instance, if another feed has the same word/slug in what is actually a longer/different term.
+						//    Or, if another feed has the same word/slug in what is actually the name of a taxonomy.
+					}
+				}
+				unset($_feed_type, $_term_feed_link, $_term_id_or_slug, $_term_feed_link_with_wildcard); // Housekeeping.
+
+				if($this->seo_friendly_permalinks && is_object($_taxonomy = get_taxonomy($_post_term->taxonomy)))
 				{
 					if($_taxonomy->name === 'category')
 						$_taxonomy_query_var = 'cat'; // Special case.
@@ -197,40 +228,61 @@ namespace quick_cache // Root namespace.
 					unset($_feed_type); // Housekeeping.
 				}
 				unset($_taxonomy, $_taxonomy_query_var); // Housekeeping.
-
-				// @TODO Need to finish this part off...
-
-				/* NOTE: We CANNOT reliably include permalink variations here that use query string vars.
-								This is because Quick Cache hashes query string variables via MD5 checksums.
-								For this reason, we deal with SEO-friendly permalink variations only here. */
-
-				if($post_term_feed_link && strpos($post_term_feed_link, '?') === FALSE
-				   && is_object($post_term) && !empty($post_term->term_id) && !empty($post_term->slug)
-				)// Create variations that deal with SEO-friendly permalink variations.
-				{
-					// Quick example: `(?:123|slug)`; to consider both.
-					$_term_id_or_slug = '(?:'.preg_quote($post_term->term_id, '/').
-					                    '|'.preg_quote(preg_replace('/[^a-z0-9\/.]/i', '-', $post_term->slug), '/').')';
-
-					// Quick example: `http://www.example.com/tax/term/feed`;
-					//    with a wildcard this becomes: `http://www.example.com/tax/*/feed`
-					$_wildcarded = preg_replace('/\/[^\/]+\/feed([\/?#]|$)/', '/*/feed'.'${1}', $post_term_feed_link);
-
-					// Quick example: `http://www.example.com/tax/*/feed`;
-					//   becomes: `www\.example\.com\/tax\/.*?(?=[\/\-]?(?:123|slug)[\/\-]).*?\/feed`
-					//    ... this covers variations that use: `/tax/term,term/feed/`
-					//    ... also covers variations that use: `/tax/term/tax/term/feed/`
-					$variations[] = $build_cache_path_regex($_wildcarded, '.*?(?=[\/\-]?'.$_term_id_or_slug.'[\/\-]).*?');
-					// NOTE: This may also pick up false-positives. Not much we can do about this.
-					//    For instance, if another feed has the same word/slug in what is actually a longer/different term.
-					//    Or, if another feed has the same word/slug in what is actually the name of a taxonomy.
-
-					unset($_term_id_or_slug, $_wildcarded); // Housekeeping.
-				}
 			}
 			unset($_post_term); // Housekeeping.
 
 			return $variations;
+		}
+
+		/**
+		 * Convert variations into regex patterns; relative to the current host|blog directory.
+		 *
+		 * @since 14xxxx Refactoring cache clear/purge routines.
+		 *
+		 * @param array $variations An array of variations built by other class members.
+		 *
+		 * @return array An array of all feed link variations; converted to regex.
+		 *    Regex patterns are relative to the current host|blog directory.
+		 *
+		 * @note This automatically forces the following {@link build_cache_path()} flags.
+		 *
+		 *       - {@link CACHE_PATH_NO_SCHEME}
+		 *       - {@link CACHE_PATH_NO_HOST}
+		 *       - {@link CACHE_PATH_NO_USER}
+		 *       - {@link CACHE_PATH_NO_VSALT}
+		 *       - {@link CACHE_PATH_NO_EXT}
+		 *       - {@link CACHE_PATH_ALLOW_WILDCARDS}; when applicable.
+		 */
+		public function convert_variations_to_host_cache_path_regex_patterns(array $variations)
+		{
+			$regex_variations = array(); // Initialize regex variations.
+			$plugin           = $this->plugin; // For proper syntax.
+
+			$flags = $plugin::CACHE_PATH_NO_SCHEME | $plugin::CACHE_PATH_NO_HOST
+			         | $plugin::CACHE_PATH_NO_USER | $plugin::CACHE_PATH_NO_VSALT
+			         | $plugin::CACHE_PATH_NO_EXT;
+
+			foreach($variations as $_key => $_variation)
+			{
+				if(!$_variation || !is_string($_variation))
+					continue; // Invalid variation.
+
+				if(is_string($_key) && strpos($_key, '::') !== FALSE && strpos($_variation, '*') !== FALSE)
+				{
+					$_flags = $flags | $plugin::CACHE_PATH_ALLOW_WILDCARDS;
+					list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2);
+
+					$_cache_path_regex  = preg_quote($this->plugin->build_cache_path($_variation, '', '', $_flags), '/');
+					$_cache_path_regex  = preg_replace('/\\\\\*/', $_wildcard_regex, $_cache_path_regex);
+					$regex_variations[] = $_cache_path_regex; // Add variation now.
+
+					unset($_flags, $_feed_type, $_wildcard_regex, $_cache_path_regex); // Housekeeping.
+				}
+				else $regex_variations[] = preg_quote($this->plugin->build_cache_path($_variation, '', '', $flags), '/');
+			}
+			unset($_key, $_variation); // Housekeeping.
+
+			return $regex_variations;
 		}
 	}
 }

@@ -1440,6 +1440,9 @@ namespace quick_cache // Root namespace.
 			 * @return integer Total files deleted by this routine (if any).
 			 *
 			 * @throws \exception If unable to delete a file for any reason.
+			 *
+			 * @TODO What about patterns that were built from `home_url()`, which may include
+			 *    the host token/prefix already? Need to look closer at that potential conflict.
 			 */
 			public function delete_files_from_host_cache_dir($regex, $check_max_age = FALSE)
 			{
