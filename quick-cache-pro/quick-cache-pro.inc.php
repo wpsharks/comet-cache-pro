@@ -1692,10 +1692,10 @@ namespace quick_cache
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				if(!($patterns = $this->build_host_cache_path_regex_patterns_from_wc_uris($this->options['cache_purge_xml_sitemap_patterns'])))
+				if(!($regex_frags = $this->build_host_cache_path_regex_frags_from_wc_uris($this->options['cache_purge_xml_sitemap_patterns'], '')))
 					return $counter; // There are no patterns to look for.
 
-				$regex = $this->build_host_cache_path_regex(home_url('/'), '\/'.$patterns.'\.');
+				$regex = $this->build_host_cache_path_regex('', '\/'.$regex_frags.'\.');
 				$counter += $this->clear_files_from_host_cache_dir($regex);
 
 				if($counter && is_admin() && $this->options['change_notifications_enable'])
