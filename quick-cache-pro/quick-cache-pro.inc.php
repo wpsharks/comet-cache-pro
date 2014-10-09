@@ -2507,10 +2507,9 @@ namespace quick_cache
 				if($this->options['when_logged_in'] !== 'postload')
 					return $counter; // Nothing to do.
 
-				if(!$user_id) return $counter; // No can-do.
-
-				$regex = $this->build_host_cache_path_regex(home_url('/'), '.*?\.u\/'.preg_quote($user_id, '/').'[.\/]');
-				$counter += $this->clear_files_from_host_cache_dir($regex); // Clear matching files.
+				$regex = $this->build_cache_path_regex('', '.*?\.u\/'.preg_quote($user_id, '/').'[.\/]');
+				// NOTE: this clears the cache network-side; for all cache files associated w/ the user.
+				$counter += $this->clear_files_from_cache_dir($regex); // Clear matching files.
 
 				if($counter && is_admin() && $this->options['change_notifications_enable'])
 				{

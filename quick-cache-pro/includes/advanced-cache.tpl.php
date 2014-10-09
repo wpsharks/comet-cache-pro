@@ -898,6 +898,12 @@ namespace quick_cache
 			if(!$this->is_like_user_logged_in())
 				return; // Nothing to do.
 
+			if(!empty($_REQUEST[__NAMESPACE__]['wipe_cache']))
+				return; // Site owner is clearing cache now.
+
+			if(!empty($_REQUEST[__NAMESPACE__]['ajax_wipe_cache']))
+				return; // Site owner is clearing cache now.
+
 			if(!empty($_REQUEST[__NAMESPACE__]['clear_cache']))
 				return; // Site owner is clearing cache now.
 
@@ -1079,17 +1085,9 @@ namespace quick_cache
 			if(!($this->user_token = $this->user_token()))
 				return; // Nothing to do in this case.
 
-			$regex = '/\.u\/'.preg_quote($this->user_token, '/').'[.\/]/'; // This user.
-
-			// @TODO Refactor; make this atomic.
-
-			/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-			foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile() || $_file->isLink())
-			{
-				if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
-					throw new \exception(sprintf(__('Unable to invalidate file: `%1$s`.', $this->text_domain), $_file->getPathname()));
-			}
-			unset($_file); // Just a little housekeeping.
+			$regex = $this->build_cache_path_regex('', '.*?\.u\/'.preg_quote($this->user_token, '/').'[.\/]');
+			// NOTE: this clears the cache network-side; for all cache files associated w/ the user.
+			$this->clear_files_from_cache_dir($regex); // Clear matching files.
 		}
 
 		/**
