@@ -203,16 +203,16 @@ namespace quick_cache
 					'admin_bar_enable'                     => '1', // `0|1`.
 					'cache_clear_s2clean_enable'           => '0', // `0|1`.
 					'cache_clear_eval_code'                => '', // PHP code.
-					'cache_purge_xml_feeds_enable'         => '1', // `0|1`.
-					'cache_purge_xml_sitemaps_enable'      => '1', // `0|1`.
-					'cache_purge_xml_sitemap_patterns'     => '/sitemap*.xml', // Empty string or line-delimited patterns.
-					'cache_purge_home_page_enable'         => '1', // `0|1`.
-					'cache_purge_posts_page_enable'        => '1', // `0|1`.
-					'cache_purge_custom_post_type_enable'  => '1', // `0|1`.
-					'cache_purge_author_page_enable'       => '1', // `0|1`.
-					'cache_purge_term_category_enable'     => '1', // `0|1`.
-					'cache_purge_term_post_tag_enable'     => '1', // `0|1`.
-					'cache_purge_term_other_enable'        => '0', // `0|1`.
+					'cache_clear_xml_feeds_enable'         => '1', // `0|1`.
+					'cache_clear_xml_sitemaps_enable'      => '1', // `0|1`.
+					'cache_clear_xml_sitemap_patterns'     => '/sitemap*.xml', // Empty string or line-delimited patterns.
+					'cache_clear_home_page_enable'         => '1', // `0|1`.
+					'cache_clear_posts_page_enable'        => '1', // `0|1`.
+					'cache_clear_custom_post_type_enable'  => '1', // `0|1`.
+					'cache_clear_author_page_enable'       => '1', // `0|1`.
+					'cache_clear_term_category_enable'     => '1', // `0|1`.
+					'cache_clear_term_post_tag_enable'     => '1', // `0|1`.
+					'cache_clear_term_other_enable'        => '0', // `0|1`.
 					'allow_browser_cache'                  => '0', // `0|1`.
 
 					'base_dir'                             => 'cache/quick-cache', // Relative to `WP_CONTENT_DIR`.
@@ -296,6 +296,7 @@ namespace quick_cache
 				$this->default_options = apply_filters(__METHOD__.'__default_options', $this->default_options, get_defined_vars());
 				$this->options         = array_merge($this->default_options, $options); // This considers old options also.
 				$this->options         = apply_filters(__METHOD__.'__options', $this->options, get_defined_vars());
+				$this->options         = array_intersect_key($this->options, $this->default_options);
 
 				$this->options['base_dir'] = trim($this->options['base_dir'], '\\/'." \t\n\r\0\x0B");
 				if(!$this->options['base_dir']) // Security enhancement; NEVER allow this to be empty.
@@ -346,26 +347,26 @@ namespace quick_cache
 				add_action('wp_update_nav_menu', array($this, 'auto_clear_cache'));
 				add_action('wp_delete_nav_menu', array($this, 'auto_clear_cache'));
 
-				add_action('save_post', array($this, 'auto_purge_post_cache'));
-				add_action('delete_post', array($this, 'auto_purge_post_cache'));
-				add_action('clean_post_cache', array($this, 'auto_purge_post_cache'));
-				add_action('post_updated', array($this, 'auto_purge_author_page_cache'), 10, 3);
-				add_action('transition_post_status', array($this, 'auto_purge_post_cache_transition'), 10, 3);
+				add_action('save_post', array($this, 'auto_clear_post_cache'));
+				add_action('delete_post', array($this, 'auto_clear_post_cache'));
+				add_action('clean_post_cache', array($this, 'auto_clear_post_cache'));
+				add_action('post_updated', array($this, 'auto_clear_author_page_cache'), 10, 3);
+				add_action('transition_post_status', array($this, 'auto_clear_post_cache_transition'), 10, 3);
 
-				add_action('added_term_relationship', array($this, 'auto_purge_post_terms_cache'), 10, 1);
-				add_action('delete_term_relationships', array($this, 'auto_purge_post_terms_cache'), 10, 1);
+				add_action('added_term_relationship', array($this, 'auto_clear_post_terms_cache'), 10, 1);
+				add_action('delete_term_relationships', array($this, 'auto_clear_post_terms_cache'), 10, 1);
 
-				add_action('trackback_post', array($this, 'auto_purge_comment_post_cache'));
-				add_action('pingback_post', array($this, 'auto_purge_comment_post_cache'));
-				add_action('comment_post', array($this, 'auto_purge_comment_post_cache'));
-				add_action('transition_comment_status', array($this, 'auto_purge_comment_transition'), 10, 3);
+				add_action('trackback_post', array($this, 'auto_clear_comment_post_cache'));
+				add_action('pingback_post', array($this, 'auto_clear_comment_post_cache'));
+				add_action('comment_post', array($this, 'auto_clear_comment_post_cache'));
+				add_action('transition_comment_status', array($this, 'auto_clear_comment_transition'), 10, 3);
 
-				add_action('profile_update', array($this, 'auto_purge_user_cache_a1'));
-				add_filter('add_user_metadata', array($this, 'auto_purge_user_cache_fa2'), 10, 2);
-				add_filter('update_user_metadata', array($this, 'auto_purge_user_cache_fa2'), 10, 2);
-				add_filter('delete_user_metadata', array($this, 'auto_purge_user_cache_fa2'), 10, 2);
-				add_action('set_auth_cookie', array($this, 'auto_purge_user_cache_a4'), 10, 4);
-				add_action('clear_auth_cookie', array($this, 'auto_purge_user_cache_cur'));
+				add_action('profile_update', array($this, 'auto_clear_user_cache_a1'));
+				add_filter('add_user_metadata', array($this, 'auto_clear_user_cache_fa2'), 10, 2);
+				add_filter('update_user_metadata', array($this, 'auto_clear_user_cache_fa2'), 10, 2);
+				add_filter('delete_user_metadata', array($this, 'auto_clear_user_cache_fa2'), 10, 2);
+				add_action('set_auth_cookie', array($this, 'auto_clear_user_cache_a4'), 10, 4);
+				add_action('clear_auth_cookie', array($this, 'auto_clear_user_cache_cur'));
 
 				add_action('create_term', array($this, 'auto_clear_cache'));
 				add_action('edit_terms', array($this, 'auto_clear_cache'));
@@ -1407,7 +1408,7 @@ namespace quick_cache
 			}
 
 			/**
-			 * Automatically purge cache files for a particular post.
+			 * Automatically clears cache files for a particular post.
 			 *
 			 * @attaches-to `save_post` hook.
 			 * @attaches-to `delete_post` hook.
@@ -1416,21 +1417,22 @@ namespace quick_cache
 			 * @since 140422 First documented version.
 			 *
 			 * @param integer $post_id A WordPress post ID.
+			 *
 			 * @param bool    $force Defaults to a `FALSE` value.
-			 *    Pass as TRUE if purge should be done for `draft`, `pending`,
+			 *    Pass as TRUE if clearing should be done for `draft`, `pending`,
 			 *    `future`, or `trash` post statuses.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note This is also called upon by other routines which listen for
 			 *    events that are indirectly associated with a post ID.
 			 *
-			 * @see auto_purge_comment_post_cache()
-			 * @see auto_purge_post_cache_transition()
+			 * @see auto_clear_comment_post_cache()
+			 * @see auto_clear_post_cache_transition()
 			 */
-			public function auto_purge_post_cache($post_id, $force = FALSE)
+			public function auto_clear_post_cache($post_id, $force = FALSE)
 			{
 				$counter = 0; // Initialize.
 
@@ -1441,9 +1443,9 @@ namespace quick_cache
 					return $counter; // Already did this.
 				$this->cache[__FUNCTION__][$post_id][(integer)$force] = -1;
 
-				if(isset(static::$static['___allow_auto_purge_post_cache']) && static::$static['___allow_auto_purge_post_cache'] === FALSE)
+				if(isset(static::$static['___allow_auto_clear_post_cache']) && static::$static['___allow_auto_clear_post_cache'] === FALSE)
 				{
-					static::$static['___allow_auto_purge_post_cache'] = TRUE; // Reset state.
+					static::$static['___allow_auto_clear_post_cache'] = TRUE; // Reset state.
 					return $counter; // Nothing to do.
 				}
 				if(!$this->options['enable'])
@@ -1489,23 +1491,23 @@ namespace quick_cache
 					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found %1$s in the cache for %2$s ID: <code>%3$s</code>; auto-clearing.', $this->text_domain),
 					                              esc_html($this->i18n_files($counter)), esc_html($type_singular_name), esc_html($post_id)));
 				}
-				$counter += $this->auto_purge_xml_feeds_cache('blog');
-				$counter += $this->auto_purge_xml_feeds_cache('post-terms', $post_id);
-				$counter += $this->auto_purge_xml_feeds_cache('post-authors', $post_id);
+				$counter += $this->auto_clear_xml_feeds_cache('blog');
+				$counter += $this->auto_clear_xml_feeds_cache('post-terms', $post_id);
+				$counter += $this->auto_clear_xml_feeds_cache('post-authors', $post_id);
 
-				$counter += $this->auto_purge_xml_sitemaps_cache();
-				$counter += $this->auto_purge_home_page_cache();
-				$counter += $this->auto_purge_posts_page_cache();
-				$counter += $this->auto_purge_post_terms_cache($post_id, $force);
+				$counter += $this->auto_clear_xml_sitemaps_cache();
+				$counter += $this->auto_clear_home_page_cache();
+				$counter += $this->auto_clear_posts_page_cache();
+				$counter += $this->auto_clear_post_terms_cache($post_id, $force);
 
-				// Also purge a possible custom post type archive view.
-				$counter += $this->auto_purge_custom_post_type_archive_cache($post_id);
+				// Also clear a possible custom post type archive view.
+				$counter += $this->auto_clear_custom_post_type_archive_cache($post_id);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purge cache files for a particular post when transitioning
+			 * Automatically clears cache files for a particular post when transitioning
 			 *    from `publish` or `private` post status to `draft`, `future`, `private`, or `trash`.
 			 *
 			 * @attaches-to `transition_post_status` hook.
@@ -1516,16 +1518,16 @@ namespace quick_cache
 			 * @param string   $old_status Old post status.
 			 * @param \WP_Post $post Post object.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note This is also called upon by other routines which listen for
 			 *    events that are indirectly associated with a post ID.
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_post_cache_transition($new_status, $old_status, \WP_Post $post)
+			public function auto_clear_post_cache_transition($new_status, $old_status, \WP_Post $post)
 			{
 				$new_status = (string)$new_status;
 				$old_status = (string)$old_status;
@@ -1543,27 +1545,27 @@ namespace quick_cache
 					return $counter; // Nothing to do. We MUST be transitioning FROM one of these statuses.
 
 				if($new_status === 'draft' || $new_status === 'future' || $new_status === 'private' || $new_status === 'trash')
-					$counter = $this->auto_purge_post_cache($post->ID, TRUE);
+					$counter = $this->auto_clear_post_cache($post->ID, TRUE);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purges cache files related to XML feeds.
+			 * Automatically clears cache files related to XML feeds.
 			 *
 			 * @since 140829 Working to improve compatibility with feeds.
 			 *
-			 * @param string  $type Type of feed(s) to auto-purge.
+			 * @param string  $type Type of feed(s) to auto-clear.
 			 * @param integer $post_id A Post ID (when applicable).
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note Unlike many of the other `auto_` methods, this one is NOT currently
 			 *    attached to any hooks. However, it is called upon by other routines attached to hooks.
 			 */
-			public function auto_purge_xml_feeds_cache($type, $post_id = 0)
+			public function auto_clear_xml_feeds_cache($type, $post_id = 0)
 			{
 				$counter = 0; // Initialize.
 
@@ -1581,7 +1583,7 @@ namespace quick_cache
 				if(!$this->options['feeds_enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_xml_feeds_enable'])
+				if(!$this->options['cache_clear_xml_feeds_enable'])
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -1659,20 +1661,20 @@ namespace quick_cache
 			}
 
 			/**
-			 * Automatically purges cache files related to XML sitemaps.
+			 * Automatically clears cache files related to XML sitemaps.
 			 *
 			 * @since 140725 Working to improve compatibility with sitemaps.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note Unlike many of the other `auto_` methods, this one is NOT currently
-			 *    attached to any hooks. However, it is called upon by {@link auto_purge_post_cache()}.
+			 *    attached to any hooks. However, it is called upon by {@link auto_clear_post_cache()}.
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_xml_sitemaps_cache()
+			public function auto_clear_xml_sitemaps_cache()
 			{
 				$counter = 0; // Initialize.
 
@@ -1683,16 +1685,16 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_xml_sitemaps_enable'])
+				if(!$this->options['cache_clear_xml_sitemaps_enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_xml_sitemap_patterns'])
+				if(!$this->options['cache_clear_xml_sitemap_patterns'])
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				if(!($regex_frags = $this->build_host_cache_path_regex_frags_from_wc_uris($this->options['cache_purge_xml_sitemap_patterns'], '')))
+				if(!($regex_frags = $this->build_host_cache_path_regex_frags_from_wc_uris($this->options['cache_clear_xml_sitemap_patterns'], '')))
 					return $counter; // There are no patterns to look for.
 
 				$regex = $this->build_host_cache_path_regex('', '\/'.$regex_frags.'\.');
@@ -1708,20 +1710,20 @@ namespace quick_cache
 			}
 
 			/**
-			 * Automatically purges cache files for the home page.
+			 * Automatically clears cache files for the home page.
 			 *
 			 * @since 140422 First documented version.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note Unlike many of the other `auto_` methods, this one is NOT currently
-			 *    attached to any hooks. However, it is called upon by {@link auto_purge_post_cache()}.
+			 *    attached to any hooks. However, it is called upon by {@link auto_clear_post_cache()}.
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_home_page_cache()
+			public function auto_clear_home_page_cache()
 			{
 				$counter = 0; // Initialize.
 
@@ -1732,7 +1734,7 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_home_page_enable'])
+				if(!$this->options['cache_clear_home_page_enable'])
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -1747,26 +1749,26 @@ namespace quick_cache
 					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found %1$s in the cache for the designated "Home Page"; auto-clearing.', $this->text_domain),
 					                              esc_html($this->i18n_files($counter))));
 				}
-				$counter += $this->auto_purge_xml_feeds_cache('blog');
+				$counter += $this->auto_clear_xml_feeds_cache('blog');
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purges cache files for the posts page.
+			 * Automatically clears cache files for the posts page.
 			 *
 			 * @since 140422 First documented version.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note Unlike many of the other `auto_` methods, this one is NOT currently
-			 *    attached to any hooks. However, it is called upon by {@link auto_purge_post_cache()}.
+			 *    attached to any hooks. However, it is called upon by {@link auto_clear_post_cache()}.
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_posts_page_cache()
+			public function auto_clear_posts_page_cache()
 			{
 				$counter = 0; // Initialize.
 
@@ -1777,7 +1779,7 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_posts_page_enable'])
+				if(!$this->options['cache_clear_posts_page_enable'])
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -1805,28 +1807,28 @@ namespace quick_cache
 					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found %1$s in the cache for the designated "Posts Page"; auto-clearing.', $this->text_domain),
 					                              esc_html($this->i18n_files($counter))));
 				}
-				$counter += $this->auto_purge_xml_feeds_cache('blog');
+				$counter += $this->auto_clear_xml_feeds_cache('blog');
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purges cache files for a custom post type archive view.
+			 * Automatically clears cache files for a custom post type archive view.
 			 *
 			 * @since 140918 First documented version.
 			 *
 			 * @param integer $post_id A WordPress post ID.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note Unlike many of the other `auto_` methods, this one is NOT currently
-			 *    attached to any hooks. However, it is called upon by {@link auto_purge_post_cache()}.
+			 *    attached to any hooks. However, it is called upon by {@link auto_clear_post_cache()}.
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_custom_post_type_archive_cache($post_id)
+			public function auto_clear_custom_post_type_archive_cache($post_id)
 			{
 				$counter = 0; // Initialize.
 
@@ -1840,7 +1842,7 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_custom_post_type_enable'])
+				if(!$this->options['cache_clear_custom_post_type_enable'])
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -1874,13 +1876,13 @@ namespace quick_cache
 					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found %1$s in the cache for Custom Post Type: <code>%2$s</code>; auto-clearing.', $this->text_domain),
 					                              esc_html($this->i18n_files($counter)), esc_html($custom_post_type_name)));
 				}
-				$counter += $this->auto_purge_xml_feeds_cache('custom-post-type', $post_id);
+				$counter += $this->auto_clear_xml_feeds_cache('custom-post-type', $post_id);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purges cache files for the author page(s).
+			 * Automatically clears cache files for the author page(s).
 			 *
 			 * @attaches-to `post_updated` hook.
 			 *
@@ -1890,19 +1892,19 @@ namespace quick_cache
 			 * @param \WP_Post $post_after WP_Post object following the update.
 			 * @param \WP_Post $post_before WP_Post object before the update.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note If the author for the post is being changed, both the previous author
-			 *       and current author pages are purged, if the post status is applicable.
+			 *       and current author pages are cleared, if the post status is applicable.
 			 */
-			public function auto_purge_author_page_cache($post_id, \WP_Post $post_after, \WP_Post $post_before)
+			public function auto_clear_author_page_cache($post_id, \WP_Post $post_after, \WP_Post $post_before)
 			{
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
 				$authors          = array(); // Initialize.
-				$authors_to_purge = array(); // Initialize.
+				$authors_to_clear = array(); // Initialize.
 
 				if(!($post_id = (integer)$post_id))
 					return $counter; // Nothing to do.
@@ -1914,7 +1916,7 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_author_page_enable'])
+				if(!$this->options['cache_clear_author_page_enable'])
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -1942,17 +1944,17 @@ namespace quick_cache
 				)
 					$authors[] = (integer)$post_after->post_author;
 
-				if(!$authors) // Have no authors to purge?
+				if(!$authors) // Have no authors to clear?
 					return $counter; // Nothing to do.
 
 				foreach($authors as $_author_id) // Get author posts URL and display name.
 				{
-					$authors_to_purge[$_author_id]['posts_url']    = get_author_posts_url($_author_id);
-					$authors_to_purge[$_author_id]['display_name'] = get_the_author_meta('display_name', $_author_id);
+					$authors_to_clear[$_author_id]['posts_url']    = get_author_posts_url($_author_id);
+					$authors_to_clear[$_author_id]['display_name'] = get_the_author_meta('display_name', $_author_id);
 				}
 				unset($_author_id); // Housekeeping.
 
-				foreach($authors_to_purge as $_author)
+				foreach($authors_to_clear as $_author)
 				{
 					$_author_regex   = $this->build_host_cache_path_regex($_author['posts_url']);
 					$_author_counter = $this->clear_files_from_host_cache_dir($_author_regex);
@@ -1968,14 +1970,14 @@ namespace quick_cache
 				}
 				unset($_author, $_author_regex, $_author_counter); // Housekeeping.
 
-				$counter += $this->auto_purge_xml_feeds_cache('blog');
-				$counter += $this->auto_purge_xml_feeds_cache('post-authors', $post_id);
+				$counter += $this->auto_clear_xml_feeds_cache('blog');
+				$counter += $this->auto_clear_xml_feeds_cache('post-authors', $post_id);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purge cache files for terms associated with a post.
+			 * Automatically clears cache files for terms associated with a post.
 			 *
 			 * @attaches-to `added_term_relationship` hook.
 			 * @attaches-to `delete_term_relationships` hook.
@@ -1983,20 +1985,21 @@ namespace quick_cache
 			 * @since 140605 First documented version.
 			 *
 			 * @param integer $post_id A WordPress post ID.
+			 *
 			 * @param bool    $force Defaults to a `FALSE` value.
-			 *    Pass as TRUE if purge should be done for `draft`, `pending`,
+			 *    Pass as TRUE if clearing should be done for `draft`, `pending`,
 			 *    or `future` post statuses.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note In addition to the hooks this is attached to, it is also
-			 *    called upon by {@link auto_purge_post_cache()}.
+			 *    called upon by {@link auto_clear_post_cache()}.
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_post_terms_cache($post_id, $force = FALSE)
+			public function auto_clear_post_terms_cache($post_id, $force = FALSE)
 			{
 				$counter          = 0; // Initialize.
 				$enqueued_notices = 0; // Initialize.
@@ -2014,9 +2017,9 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if(!$this->options['cache_purge_term_category_enable'] &&
-				   !$this->options['cache_purge_term_post_tag_enable'] &&
-				   !$this->options['cache_purge_term_other_enable']
+				if(!$this->options['cache_clear_term_category_enable'] &&
+				   !$this->options['cache_clear_term_post_tag_enable'] &&
+				   !$this->options['cache_clear_term_other_enable']
 				) return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -2056,12 +2059,12 @@ namespace quick_cache
 
 				foreach($taxonomies as $_taxonomy)
 				{
-					// Check if this is a term we should purge
-					if($_taxonomy->name === 'category' && !$this->options['cache_purge_term_category_enable'])
+					// Check if this is a term we should clear.
+					if($_taxonomy->name === 'category' && !$this->options['cache_clear_term_category_enable'])
 						continue;
-					if($_taxonomy->name === 'post_tag' && !$this->options['cache_purge_term_post_tag_enable'])
+					if($_taxonomy->name === 'post_tag' && !$this->options['cache_clear_term_post_tag_enable'])
 						continue;
-					if($_taxonomy->name !== 'category' && $_taxonomy->name !== 'post_tag' && !$this->options['cache_purge_term_other_enable'])
+					if($_taxonomy->name !== 'category' && $_taxonomy->name !== 'post_tag' && !$this->options['cache_clear_term_other_enable'])
 						continue;
 
 					if(is_array($_terms = wp_get_post_terms($post_id, $_taxonomy->name)))
@@ -2084,28 +2087,28 @@ namespace quick_cache
 				 * Build an array of terms with term names,
 				 * permalinks, and associated taxonomy labels.
 				 */
-				$terms_to_purge = array();
+				$terms_to_clear = array();
 				$_i             = 0;
 
 				foreach($terms as $_term)
 				{
 					if(($_link = get_term_link($_term)))
 					{
-						$terms_to_purge[$_i]['permalink'] = $_link; // E.g., "http://jason.websharks-inc.net/category/uncategorized/"
-						$terms_to_purge[$_i]['term_name'] = $_term->name; // E.g., "Uncategorized"
+						$terms_to_clear[$_i]['permalink'] = $_link; // E.g., "http://jason.websharks-inc.net/category/uncategorized/"
+						$terms_to_clear[$_i]['term_name'] = $_term->name; // E.g., "Uncategorized"
 						if(!empty($taxonomy_labels[$_term->taxonomy])) // E.g., "Tag" or "Category"
-							$terms_to_purge[$_i]['taxonomy_label'] = $taxonomy_labels[$_term->taxonomy];
+							$terms_to_clear[$_i]['taxonomy_label'] = $taxonomy_labels[$_term->taxonomy];
 						else
-							$terms_to_purge[$_i]['taxonomy_label'] = $_term->taxonomy; // e.g., "post_tag" or "category"
+							$terms_to_clear[$_i]['taxonomy_label'] = $_term->taxonomy; // e.g., "post_tag" or "category"
 					}
 					$_i++; // Array index counter.
 				}
 				unset($_term, $_link, $_i);
 
-				if(empty($terms_to_purge))
+				if(empty($terms_to_clear))
 					return $counter; // Nothing to do.
 
-				foreach($terms_to_purge as $_term)
+				foreach($terms_to_clear as $_term)
 				{
 					$_term_regex   = $this->build_host_cache_path_regex($_term['permalink']);
 					$_term_counter = $this->clear_files_from_host_cache_dir($_term_regex);
@@ -2121,13 +2124,13 @@ namespace quick_cache
 				}
 				unset($_term, $_term_regex, $_term_counter); // Housekeeping.
 
-				$counter += $this->auto_purge_xml_feeds_cache('post-terms', $post_id);
+				$counter += $this->auto_clear_xml_feeds_cache('post-terms', $post_id);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purges cache files for a post associated with a particular comment.
+			 * Automatically clears cache files for a post associated with a particular comment.
 			 *
 			 * @since 140422 First documented version.
 			 *
@@ -2137,11 +2140,11 @@ namespace quick_cache
 			 *
 			 * @param integer $comment_id A WordPress comment ID.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @see auto_purge_post_cache()
+			 * @see auto_clear_post_cache()
 			 */
-			public function auto_purge_comment_post_cache($comment_id)
+			public function auto_clear_comment_post_cache($comment_id)
 			{
 				$counter = 0; // Initialize.
 
@@ -2162,21 +2165,21 @@ namespace quick_cache
 					return $counter; // Nothing we can do.
 
 				if($comment->comment_approved === 'spam' || $comment->comment_approved === '0')
-					// Don't allow next `auto_purge_post_cache()` call to clear post cache.
+					// Don't allow next `auto_clear_post_cache()` call to clear post cache.
 					// Also, don't allow spam to clear cache.
 				{
-					static::$static['___allow_auto_purge_post_cache'] = FALSE;
+					static::$static['___allow_auto_clear_post_cache'] = FALSE;
 					return $counter; // Nothing to do here.
 				}
-				$counter += $this->auto_purge_xml_feeds_cache('blog-comments');
-				$counter += $this->auto_purge_xml_feeds_cache('post-comments', $comment->comment_post_ID);
-				$counter += $this->auto_purge_post_cache($comment->comment_post_ID);
+				$counter += $this->auto_clear_xml_feeds_cache('blog-comments');
+				$counter += $this->auto_clear_xml_feeds_cache('post-comments', $comment->comment_post_ID);
+				$counter += $this->auto_clear_post_cache($comment->comment_post_ID);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
 			/**
-			 * Automatically purges cache files for a post associated with a particular comment.
+			 * Automatically clears cache files for a post associated with a particular comment.
 			 *
 			 * @since 140711 First documented version.
 			 *
@@ -2186,16 +2189,16 @@ namespace quick_cache
 			 * @param string   $old_status Old comment status.
 			 * @param \WP_Post $comment Comment object.
 			 *
-			 * @return integer Total files purged by this routine (if any).
+			 * @return integer Total files cleared by this routine (if any).
 			 *
-			 * @throws \exception If a purge failure occurs.
+			 * @throws \exception If a clear failure occurs.
 			 *
 			 * @note This is also called upon by other routines which listen for
 			 *    events that are indirectly associated with a comment ID.
 			 *
-			 * @see auto_purge_comment_post_cache()
+			 * @see auto_clear_comment_post_cache()
 			 */
-			public function auto_purge_comment_transition($new_status, $old_status, $comment)
+			public function auto_clear_comment_transition($new_status, $old_status, $comment)
 			{
 				$counter = 0; // Initialize.
 
@@ -2209,14 +2212,14 @@ namespace quick_cache
 					return $counter; // Nothing we can do.
 
 				if(!($old_status === 'approved' || ($old_status === 'unapproved' && $new_status === 'approved')))
-					// If excluded here, don't allow next `auto_purge_post_cache()` call to clear post cache.
+					// If excluded here, don't allow next `auto_clear_post_cache()` call to clear post cache.
 				{
-					static::$static['___allow_auto_purge_post_cache'] = FALSE;
+					static::$static['___allow_auto_clear_post_cache'] = FALSE;
 					return $counter; // Nothing to do here.
 				}
-				$counter += $this->auto_purge_xml_feeds_cache('blog-comments');
-				$counter += $this->auto_purge_xml_feeds_cache('post-comments', $comment->comment_post_ID);
-				$counter += $this->auto_purge_post_cache($comment->comment_post_ID);
+				$counter += $this->auto_clear_xml_feeds_cache('blog-comments');
+				$counter += $this->auto_clear_xml_feeds_cache('post-comments', $comment->comment_post_ID);
+				$counter += $this->auto_clear_post_cache($comment->comment_post_ID);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
@@ -2237,12 +2240,12 @@ namespace quick_cache
 			 *
 			 * @return integer Total files cleared.
 			 *
-			 * @see auto_purge_user_cache_a1()
-			 * @see auto_purge_user_cache_fa2()
-			 * @see auto_purge_user_cache_a4()
-			 * @see auto_purge_user_cache_cur()
+			 * @see auto_clear_user_cache_a1()
+			 * @see auto_clear_user_cache_fa2()
+			 * @see auto_clear_user_cache_a4()
+			 * @see auto_clear_user_cache_cur()
 			 */
-			public function auto_purge_user_cache($user_id)
+			public function auto_clear_user_cache($user_id)
 			{
 				$counter = 0; // Initialize.
 
@@ -2273,7 +2276,7 @@ namespace quick_cache
 			}
 
 			/**
-			 * Automatically purges cache files associated with a particular user.
+			 * Automatically clears cache files associated with a particular user.
 			 *
 			 * @since 140422 First documented version.
 			 *
@@ -2281,15 +2284,15 @@ namespace quick_cache
 			 *
 			 * @param integer $user_id A WordPress user ID.
 			 *
-			 * @see auto_purge_user_cache()
+			 * @see auto_clear_user_cache()
 			 */
-			public function auto_purge_user_cache_a1($user_id)
+			public function auto_clear_user_cache_a1($user_id)
 			{
-				$this->auto_purge_user_cache($user_id);
+				$this->auto_clear_user_cache($user_id);
 			}
 
 			/**
-			 * Automatically purges cache files associated with a particular user.
+			 * Automatically clears cache files associated with a particular user.
 			 *
 			 * @since 140422 First documented version.
 			 *
@@ -2302,17 +2305,17 @@ namespace quick_cache
 			 *
 			 * @return mixed The same `$value` (passes through).
 			 *
-			 * @see auto_purge_user_cache()
+			 * @see auto_clear_user_cache()
 			 */
-			public function auto_purge_user_cache_fa2($value, $user_id)
+			public function auto_clear_user_cache_fa2($value, $user_id)
 			{
-				$this->auto_purge_user_cache($user_id);
+				$this->auto_clear_user_cache($user_id);
 
 				return $value; // Filter.
 			}
 
 			/**
-			 * Automatically purges cache files associated with a particular user.
+			 * Automatically clears cache files associated with a particular user.
 			 *
 			 * @since 140422 First documented version.
 			 *
@@ -2323,25 +2326,25 @@ namespace quick_cache
 			 * @param mixed   $___ Irrelevant hook argument value.
 			 * @param integer $user_id A WordPress user ID.
 			 *
-			 * @see auto_purge_user_cache()
+			 * @see auto_clear_user_cache()
 			 */
-			public function auto_purge_user_cache_a4($_, $__, $___, $user_id)
+			public function auto_clear_user_cache_a4($_, $__, $___, $user_id)
 			{
-				$this->auto_purge_user_cache($user_id);
+				$this->auto_clear_user_cache($user_id);
 			}
 
 			/**
-			 * Automatically purges cache files associated with current user.
+			 * Automatically clears cache files associated with current user.
 			 *
 			 * @since 140422 First documented version.
 			 *
 			 * @attaches-to `clear_auth_cookie` hook.
 			 *
-			 * @see auto_purge_user_cache()
+			 * @see auto_clear_user_cache()
 			 */
-			public function auto_purge_user_cache_cur()
+			public function auto_clear_user_cache_cur()
 			{
-				$this->auto_purge_user_cache(get_current_user_id());
+				$this->auto_clear_user_cache(get_current_user_id());
 			}
 
 			/**
