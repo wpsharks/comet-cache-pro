@@ -1672,9 +1672,10 @@ namespace quick_cache
 				$seo_friendly_permalinks = (boolean)get_option('permalink_structure');
 				$_this                   = $this; // Reference needed by the closure below.
 				$feed_cache_path_regexs  = array(); // Initialize array of feed cache paths.
-				$build_cache_path_regex  = function ($feed_link, $wildcard_regex = NULL) use ($_this)
+
+				$build_cache_path_regex = function ($feed_link, $wildcard_regex = NULL) use ($_this)
 				{
-					if(!is_string($feed_link) || !$feed_link)
+					if(!$feed_link || !is_string($feed_link))
 						return ''; // Nothing to do here.
 
 					$cache_path_flags = $_this::CACHE_PATH_NO_SCHEME | $_this::CACHE_PATH_NO_EXT
@@ -1885,8 +1886,9 @@ namespace quick_cache
 					if(!is_string($_feed_cache_path_regex) || !$_feed_cache_path_regex) unset($feed_cache_path_regexs[$_key]);
 				unset($_key, $_feed_cache_path_regex); // Housekeeping.
 
-				if(!$feed_cache_path_regexs || !($feed_cache_path_regexs = array_unique($feed_cache_path_regexs)))
-					return $counter; // Nothing to do here.
+				if(!$feed_cache_path_regexs // Have regex patterns?
+				   || !($feed_cache_path_regexs = array_unique($feed_cache_path_regexs))
+				) return $counter; // Nothing to do here.
 
 				$in_sets_of = apply_filters(__METHOD__.'__in_sets_of', 10, get_defined_vars());
 
@@ -1899,10 +1901,12 @@ namespace quick_cache
 				}
 				unset($_i, $_feed_cache_path_regexs, $_regex); // Housekeeping.
 
-				if($counter && $this->options['change_notifications_enable'] && is_admin())
+				if($counter && is_admin() && $this->options['change_notifications_enable'])
+				{
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found XML feeds of type <code>%1$s</code> (auto-purging).', $this->text_domain), esc_html($type)));
-
+					                      sprintf(__('<strong>Quick Cache:</strong> detected changes. Found %1$s in the cache, for XML feeds of type: <code>%2$s</code>; auto-clearing.', $this->text_domain),
+					                              esc_html($this->files_i18n($counter)), esc_html($type)));
+				}
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
 
