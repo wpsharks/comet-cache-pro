@@ -1402,7 +1402,7 @@ namespace quick_cache // Root namespace.
 				$cache_dir_tmp       = $cache_dir.'.'.uniqid('', TRUE).'.tmp'; // Tmp directory.
 				$cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
 				$cache_dir_tmp_regex = '\\/'.ltrim($cache_dir_tmp_regex, '^\\/'); // Make sure it begins with an escaped `/`.
-				$cache_dir_tmp_regex = $this->str_replace_once(preg_quote($cache_dir.'/', '/'), '', $cache_dir_tmp_regex);
+				$cache_dir_tmp_regex = $this->str_ireplace_once(preg_quote($cache_dir.'/', '/'), '', $cache_dir_tmp_regex);
 				$cache_dir_tmp_regex = '/^'.preg_quote($cache_dir_tmp.'/', '/').ltrim($cache_dir_tmp_regex, '^\\/');
 
 				if(!rename($cache_dir, $cache_dir_tmp)) // Work from tmp directory so deletions are atomic.
@@ -1465,9 +1465,6 @@ namespace quick_cache // Root namespace.
 			 * @return integer Total files deleted by this routine (if any).
 			 *
 			 * @throws \exception If unable to delete a file for any reason.
-			 *
-			 * @TODO What about patterns that were built from `home_url()`, which may include
-			 *    the host token/prefix already? Need to look closer at that potential conflict.
 			 */
 			public function delete_files_from_host_cache_dir($regex, $check_max_age = FALSE)
 			{
@@ -1502,16 +1499,16 @@ namespace quick_cache // Root namespace.
 				{
 					$_host_url              = $_host_scheme.'://'.$host.$host_base_dir_tokens; // Base URL for this host|blog.
 					$_host_cache_path_flags = $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
-					$_host_cache_path       = $this->build_cache_path($_host_url, '', '', $_host_cache_path_flags); // Relative to `$cache_dir`.
-					$_host_cache_dir        = $this->n_dir_seps($cache_dir.'/'.$_host_cache_path); // Normalize directory separators.
+					$_host_cache_path       = $this->build_cache_path($_host_url, '', '', $_host_cache_path_flags);
+					$_host_cache_dir        = $this->n_dir_seps($cache_dir.'/'.$_host_cache_path); // Normalize.
 
 					if(!$_host_cache_dir || !is_dir($_host_cache_dir)) continue; // Nothing to do.
 
 					$_host_cache_dir_tmp       = $_host_cache_dir.'.'.uniqid('', TRUE).'.tmp'; // Tmp directory.
 					$_host_cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
 					$_host_cache_dir_tmp_regex = '\\/'.ltrim($_host_cache_dir_tmp_regex, '^\\/'); // Make sure it begins with an escaped `/`.
-					$_host_cache_dir_tmp_regex = $this->str_replace_once(preg_quote($_host_cache_path.'/', '/'), '', $_host_cache_dir_tmp_regex);
-					$_host_cache_dir_tmp_regex = $this->str_replace_once(preg_quote($_host_cache_dir.'/', '/'), '', $_host_cache_dir_tmp_regex);
+					$_host_cache_dir_tmp_regex = $this->str_ireplace_once(preg_quote($_host_cache_path.'/', '/'), '', $_host_cache_dir_tmp_regex);
+					$_host_cache_dir_tmp_regex = $this->str_ireplace_once(preg_quote($_host_cache_dir.'/', '/'), '', $_host_cache_dir_tmp_regex);
 					$_host_cache_dir_tmp_regex = '/^'.preg_quote($_host_cache_dir_tmp.'/', '/').ltrim($_host_cache_dir_tmp_regex, '^\\/');
 
 					if(!rename($_host_cache_dir, $_host_cache_dir_tmp)) // Work from tmp directory so deletions are atomic.
