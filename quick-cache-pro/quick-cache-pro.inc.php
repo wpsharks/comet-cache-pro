@@ -1117,7 +1117,7 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
-				if($this->disable_wipe_cache_routines() && !$manually)
+				if($this->disable_auto_wipe_cache_routines() && !$manually)
 					return $counter; // Nothing to do.
 
 				// @TODO When set_time_limit() is disabled by PHP configuration, display a warning message to users upon plugin activation.
@@ -1174,7 +1174,7 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
-				if($this->disable_wipe_cache_routines() && !$manually)
+				if($this->disable_auto_wipe_cache_routines() && !$manually)
 					return $counter; // Nothing to do.
 
 				$cache_dir_public  = $this->wp_content_dir_to($this->htmlc_cache_sub_dir_public);
@@ -1219,7 +1219,7 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
-				if($this->disable_clear_cache_routines() && !$manually)
+				if($this->disable_auto_clear_cache_routines() && !$manually)
 					return $counter; // Nothing to do.
 
 				if(!is_dir($cache_dir = $this->cache_dir()))
@@ -1271,7 +1271,7 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
-				if($this->disable_clear_cache_routines() && !$manually)
+				if($this->disable_auto_clear_cache_routines() && !$manually)
 					return $counter; // Nothing to do.
 
 				$host_token = $this->host_token(TRUE);
@@ -1361,16 +1361,50 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if($this->disable_wipe_cache_routines())
+				if($this->disable_auto_wipe_cache_routines())
 					return $counter; // Nothing to do.
 
 				$counter = $this->wipe_cache();
 
-				if($counter && $this->options['change_notifications_enable'] && is_admin())
+				if($counter && is_admin() && $this->options['change_notifications_enable'])
+				{
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/wipe.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      __('<strong>Quick Cache:</strong> detected significant changes. Found cache files (auto-wiping).', $this->text_domain));
-
+					                      sprintf(__('<strong>Quick Cache:</strong> detected significant changes. Found %1$s in the cache; auto-wiping.', $this->text_domain),
+					                              esc_html($this->i18n_files($counter))));
+				}
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
+			}
+
+			/**
+			 * Allows a site owner to disable the wipe cache routines.
+			 *
+			 * This is done by filtering `quick_cache_disable_auto_wipe_cache_routines` to return TRUE,
+			 *    in which case this method returns TRUE, otherwise it returns FALSE.
+			 *
+			 * @since 141001 First documented version.
+			 *
+			 * @TODO @raamdev I noticed that you used `quick_cache_` in this filter.
+			 *    Moving forward, I'd suggest that we use `__METHOD__` instead, as seen elsewhere in the codebase.
+			 *    This allows us to rebrand the software under a different namespace quite easily. Changing the namespace changes everything.
+			 *    In the future, we could even work to enhance this further, by avoiding anything that hard-codes `quick_cache` or `Quick Cache`.
+			 *    Instead, we might create a class property; e.g. `$this->name = 'Quick Cache';` so it's available when we need to call the plugin by name.
+			 *
+			 * @return boolean `TRUE` if disabled; and this also creates a dashboard notice in some cases.
+			 *
+			 * @see auto_wipe_cache()
+			 * @see wipe_htmlc_cache()
+			 * @see wipe_cache()
+			 */
+			public function disable_auto_wipe_cache_routines()
+			{
+				$is_disabled = (boolean)apply_filters('quick_cache_disable_auto_wipe_cache_routines', FALSE);
+
+				if($is_disabled && $this->options['change_notifications_enable'] && is_admin())
+				{
+					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+					                      __('<strong>Quick Cache:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
+				}
+				return $is_disabled; // Disabled?
 			}
 
 			/**
@@ -1407,7 +1441,7 @@ namespace quick_cache
 				if(!$this->options['enable'])
 					return $counter; // Nothing to do.
 
-				if($this->disable_clear_cache_routines())
+				if($this->disable_auto_clear_cache_routines())
 					return $counter; // Nothing to do.
 
 				$counter = $this->clear_cache();
@@ -1440,7 +1474,7 @@ namespace quick_cache
 			 * @see clear_htmlc_cache()
 			 * @see clear_cache()
 			 */
-			public function disable_clear_cache_routines()
+			public function disable_auto_clear_cache_routines()
 			{
 				$is_disabled = (boolean)apply_filters('quick_cache_disable_auto_clear_cache_routines', FALSE);
 
@@ -1448,32 +1482,6 @@ namespace quick_cache
 				{
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
 					                      __('<strong>Quick Cache:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
-				}
-				return $is_disabled; // Disabled?
-			}
-
-			/**
-			 * Allows a site owner to disable the wipe cache routines.
-			 *
-			 * This is done by filtering `quick_cache_disable_auto_wipe_cache_routines` to return TRUE,
-			 *    in which case this method returns TRUE, otherwise it returns FALSE.
-			 *
-			 * @since 141001 First documented version.
-			 *
-			 * @return boolean `TRUE` if disabled; and this also creates a dashboard notice in some cases.
-			 *
-			 * @see auto_wipe_cache()
-			 * @see wipe_htmlc_cache()
-			 * @see wipe_cache()
-			 */
-			public function disable_wipe_cache_routines()
-			{
-				$is_disabled = (boolean)apply_filters('quick_cache_disable_auto_wipe_cache_routines', FALSE);
-
-				if($is_disabled && $this->options['change_notifications_enable'] && is_admin())
-				{
-					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      __('<strong>Quick Cache:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
 				}
 				return $is_disabled; // Disabled?
 			}
