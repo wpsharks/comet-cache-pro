@@ -1593,7 +1593,7 @@ namespace quick_cache
 				$_this                   = $this; // Reference needed by the closure below.
 				$feed_cache_path_regexs  = array(); // Initialize array of feed cache paths.
 
-				$build_cache_path_regex = function ($feed_link, $wildcard_regex = NULL) use ($_this)
+				$build_cache_path_regex                 = function ($feed_link, $wildcard_regex = NULL) use ($_this)
 				{
 					if(!$feed_link || !is_string($feed_link))
 						return ''; // Nothing to do here.
@@ -1609,32 +1609,35 @@ namespace quick_cache
 
 					return $cache_path_regex;
 				};
+				$get_feed_link_variations               = function ($type_prefix) use ($_this, $default_feed, $feed_cache_path_regexs, $build_cache_path_regex)
+				{
+					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
+						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link((string)$type_prefix.$_feed_type));
+				};
+				$get_post_comments_feed_link_variations = function ($post_id) use ($_this, $default_feed, $feed_cache_path_regexs, $build_cache_path_regex)
+				{
+					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
+						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link((integer)$post_id, $_feed_type));
+				};
+				$get_author_feed_link_variations        = function ($author_id) use ($_this, $default_feed, $feed_cache_path_regexs, $build_cache_path_regex)
+				{
+					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
+						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link((integer)$author_id, $_feed_type));
+				};
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
 
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link($default_feed));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('rdf'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('rss'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('rss2'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('atom'));
-
+						$get_feed_link_variations('');
 						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
 						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
-
 						break; // Break switch handler.
 
 					case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
 
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('comments_'.$default_feed));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('comments_rdf'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('comments_rss'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('comments_rss2'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link('comments_atom'));
-
+						$get_feed_link_variations('comments_');
 						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
 						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
-
 						break; // Break switch handler.
 
 					// @TODO Possibly consider search-related feeds in the future.
@@ -1646,15 +1649,9 @@ namespace quick_cache
 						if(!$post_id) break; // Nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, $default_feed));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, 'rdf'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, 'rss'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, 'rss2'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, 'atom'));
-
+						$get_post_comments_feed_link_variations($post->ID);
 						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
 						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
-
 						break; // Break switch handler.
 
 					case 'post-authors': // Feeds related to authors that a post has.
@@ -1662,11 +1659,7 @@ namespace quick_cache
 						if(!$post_id) break; // nothing to do here.
 						if(!($post = get_post($post_id))) break;
 
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, $default_feed));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, 'rdf'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, 'rss'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, 'rss2'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, 'atom'));
+						$get_author_feed_link_variations($post->post_author);
 
 						if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
 							// Here we cover query string variations that can be left behind after `redirect_canonical()` does its thing.
@@ -2922,12 +2915,12 @@ namespace quick_cache
 
 					switch($_option) // Some values need tranformations.
 					{
-						case 'exclude_uris': // Converts to regex (case sensitive).
-						case 'exclude_refs': // Converts to regex (case sensitive).
-						case 'exclude_agents': // Converts to regex (case insensitive).
+						case 'exclude_uris': // Converts to regex (caSe insensitive).
+						case 'exclude_refs': // Converts to regex (caSe insensitive).
+						case 'exclude_agents': // Converts to regex (caSe insensitive).
 
-						case 'htmlc_css_exclusions': // Converts to regex (case insensitive).
-						case 'htmlc_js_exclusions': // Converts to regex (case insensitive).
+						case 'htmlc_css_exclusions': // Converts to regex (caSe insensitive).
+						case 'htmlc_js_exclusions': // Converts to regex (caSe insensitive).
 
 							if(($_values = preg_split('/['."\r\n".']+/', $_value, NULL, PREG_SPLIT_NO_EMPTY)))
 							{
@@ -2936,9 +2929,7 @@ namespace quick_cache
 										$string = preg_quote($string, '/'); // Escape.
 										return preg_replace('/\\\\\*/', '.*?', $string); // Wildcards.
 
-									}, $_values)).')/';
-								if(in_array($_option, array('exclude_agents', 'htmlc_css_exclusions', 'htmlc_js_exclusions'), TRUE))
-									$_value .= 'i'; // These regex patterns are case insensitive.
+									}, $_values)).')/i';
 							}
 							$_value = "'".$this->esc_sq($_value)."'";
 

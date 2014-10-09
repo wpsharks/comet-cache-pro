@@ -961,13 +961,13 @@ namespace quick_cache
 			if(!QUICK_CACHE_FEEDS_ENABLE && $this->is_feed())
 				return $this->maybe_set_debug_info($this::NC_DEBUG_FEED_REQUEST);
 
-			if(preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/', $_SERVER['REQUEST_URI']))
+			if(preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/i', $_SERVER['REQUEST_URI']))
 				return $this->maybe_set_debug_info($this::NC_DEBUG_WP_SYSTEMATICS);
 
-			if(is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/', $_SERVER['REQUEST_URI']))
+			if(is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/i', $_SERVER['REQUEST_URI']))
 				return $this->maybe_set_debug_info($this::NC_DEBUG_WP_ADMIN);
 
-			if(is_multisite() && preg_match('/\/files(?:[\/?]|$)/', $_SERVER['REQUEST_URI']))
+			if(is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI']))
 				return $this->maybe_set_debug_info($this::NC_DEBUG_MS_FILES);
 
 			if(!QUICK_CACHE_WHEN_LOGGED_IN && $this->is_like_user_logged_in())
@@ -1255,7 +1255,7 @@ namespace quick_cache
 			if($this->is_404 && !QUICK_CACHE_CACHE_404_REQUESTS) // Not caching 404 errors.
 				return (boolean)$this->maybe_set_debug_info($this::NC_DEBUG_404_REQUEST);
 
-			if(strpos($cache, '<body id="error-page">') !== FALSE) // A WordPress-generated {@link \wp_die()} error?
+			if(stripos($cache, '<body id="error-page">') !== FALSE) // A WordPress-generated error?
 				return (boolean)$this->maybe_set_debug_info($this::NC_DEBUG_WP_ERROR_PAGE);
 
 			if(!$this->function_is_possible('http_response_code')) // Unable to reliably detect HTTP status code?
@@ -1358,8 +1358,8 @@ namespace quick_cache
 				'benchmark'                      => $htmlc_benchmark,
 				'product_title'                  => __('Quick Cache HTML Compressor', $this->text_domain),
 
-				'regex_css_exclusions'           => QUICK_CACHE_HTMLC_CSS_EXCLUSIONS, // Regex.
-				'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS, // Regex.
+				'regex_css_exclusions'           => QUICK_CACHE_HTMLC_CSS_EXCLUSIONS,
+				'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS,
 
 				'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
 				'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token,
