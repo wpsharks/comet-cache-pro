@@ -2253,7 +2253,8 @@ namespace quick_cache
 				)
 					$authors[] = (integer)$post_after->post_author;
 
-				else return $counter; // Nothing to do in this scenario.
+				if(!$authors) // Have no authors to purge?
+					return $counter; // Nothing to do.
 
 				foreach($authors as $_author_id) // Get author posts URL and display name.
 				{
