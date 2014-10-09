@@ -1081,6 +1081,8 @@ namespace quick_cache
 
 			$regex = '/\.u\/'.preg_quote($this->user_token, '/').'[.\/]/'; // This user.
 
+			// @TODO Refactor; make this atomic.
+
 			/** @var $_file \RecursiveDirectoryIterator For IDEs. */
 			foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile() || $_file->isLink())
 			{
