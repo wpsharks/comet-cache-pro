@@ -1593,6 +1593,8 @@ namespace quick_cache
 				$_this                   = $this; // Reference needed by the closure below.
 				$feed_cache_path_regexs  = array(); // Initialize array of feed cache paths.
 
+				// @TODO Remove this in favor of new methods in the share class.
+
 				$build_cache_path_regex                 = function ($feed_link, $wildcard_regex = NULL) use ($_this)
 				{
 					if(!$feed_link || !is_string($feed_link))
@@ -1609,43 +1611,8 @@ namespace quick_cache
 
 					return $cache_path_regex;
 				};
-				$get_feed_link_variations               = function ($type_prefix) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
-				{
-					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link((string)$type_prefix.$_feed_type));
-					unset($_feed_type); // Housekeeping.
-				};
-				$get_post_comments_feed_link_variations = function (\WP_Post $post) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
-				{
-					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, $_feed_type));
-					unset($_feed_type); // Housekeeping.
-				};
-				$get_author_feed_link_variations        = function (\WP_Post $post) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
-				{
-					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, $_feed_type));
-					unset($_feed_type); // Housekeeping.
+				// @TODO Update these to use the new feed utilities class.
 
-					if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
-					{
-						$post_author = get_userdata($post->post_author); // Get author data; needed below.
-						foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						{
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/'.urlencode($_feed_type).'/'));
-
-							if($post_author && !empty($post_author->user_nicename)) // By author nicename also; when/if possible.
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post_author->user_nicename)), $home_url.'feed/'.urlencode($_feed_type).'/'));
-						}
-						unset($_feed_type); // Housekeeping.
-					}
-				};
-				$get_post_type_archive_link_variations  = function (\WP_Post $post) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
-				{
-					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, $_feed_type));
-					unset($_feed_type); // Housekeeping.
-				};
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
@@ -1682,92 +1649,7 @@ namespace quick_cache
 						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
 
-						$post_terms = array(); // Initialize array of all post terms.
-
-						if(!is_array($_post_taxonomies = get_object_taxonomies($post, 'objects')) || !$_post_taxonomies)
-							break; // Nothing to do here; post has no terms.
-
-						foreach($_post_taxonomies as $_post_taxonomy) // Collect terms for each taxonomy.
-							if(is_array($_post_taxonomy_terms = wp_get_post_terms($post->ID, $_post_taxonomy->name)) && $_post_taxonomy_terms)
-								$post_terms = array_merge($post_terms, $_post_taxonomy_terms);
-
-						$post_term_cache_path_variations = function ($post_term_feed_link, $post_term) use ($build_cache_path_regex)
-						{
-							$post_term_feed_link = (string)$post_term_feed_link; // Force string.
-							$variations          = array(); // Initialize the array of variations.
-							if($post_term_feed_link) $variations[] = $build_cache_path_regex($post_term_feed_link);
-
-							/* NOTE: We CANNOT reliably include permalink variations here that use query string vars.
-								This is because Quick Cache hashes query string variables via MD5 checksums.
-								For this reason, we deal with SEO-friendly permalink variations only here. */
-
-							if($post_term_feed_link && strpos($post_term_feed_link, '?') === FALSE
-							   && is_object($post_term) && !empty($post_term->term_id) && !empty($post_term->slug)
-							)// Create variations that deal with SEO-friendly permalink variations.
-							{
-								// Quick example: `(?:123|slug)`; to consider both.
-								$_term_id_or_slug = '(?:'.preg_quote($post_term->term_id, '/').
-								                    '|'.preg_quote(preg_replace('/[^a-z0-9\/.]/i', '-', $post_term->slug), '/').')';
-
-								// Quick example: `http://www.example.com/tax/term/feed`;
-								//    with a wildcard this becomes: `http://www.example.com/tax/*/feed`
-								$_wildcarded = preg_replace('/\/[^\/]+\/feed([\/?#]|$)/', '/*/feed'.'${1}', $post_term_feed_link);
-
-								// Quick example: `http://www.example.com/tax/*/feed`;
-								//   becomes: `www\.example\.com\/tax\/.*?(?=[\/\-]?(?:123|slug)[\/\-]).*?\/feed`
-								//    ... this covers variations that use: `/tax/term,term/feed/`
-								//    ... also covers variations that use: `/tax/term/tax/term/feed/`
-								$variations[] = $build_cache_path_regex($_wildcarded, '.*?(?=[\/\-]?'.$_term_id_or_slug.'[\/\-]).*?');
-								// NOTE: This may also pick up false-positives. Not much we can do about this.
-								//    For instance, if another feed has the same word/slug in what is actually a longer/different term.
-								//    Or, if another feed has the same word/slug in what is actually the name of a taxonomy.
-
-								unset($_term_id_or_slug, $_wildcarded); // Housekeeping.
-							}
-							return $variations; // Zero or more variations.
-						};
-						foreach($post_terms as $_post_term) // See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
-						{
-							$_post_term_feed_link   = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, $default_feed);
-							$feed_cache_path_regexs = array_merge($feed_cache_path_regexs, $post_term_cache_path_variations($_post_term_feed_link, $_post_term));
-
-							$_post_term_feed_link   = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rdf');
-							$feed_cache_path_regexs = array_merge($feed_cache_path_regexs, $post_term_cache_path_variations($_post_term_feed_link, $_post_term));
-
-							$_post_term_feed_link   = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss');
-							$feed_cache_path_regexs = array_merge($feed_cache_path_regexs, $post_term_cache_path_variations($_post_term_feed_link, $_post_term));
-
-							$_post_term_feed_link   = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'rss2');
-							$feed_cache_path_regexs = array_merge($feed_cache_path_regexs, $post_term_cache_path_variations($_post_term_feed_link, $_post_term));
-
-							$_post_term_feed_link   = get_term_feed_link($_post_term->term_id, $_post_term->taxonomy, 'atom');
-							$feed_cache_path_regexs = array_merge($feed_cache_path_regexs, $post_term_cache_path_variations($_post_term_feed_link, $_post_term));
-
-							if($seo_friendly_permalinks && ($_post_term_taxonomy = get_taxonomy($_post_term->taxonomy))/* The above uses SEO-friendly permalinks? */)
-								// Here we cover query string variations that can be left behind after `redirect_canonical()` does its thing.
-								// In the case of term-related feeds, most of the URL is converted to SEO-friendly format.
-								// Everything except `?[tax query var]=` which is what we deal with below.
-							{
-								if($_post_term_taxonomy->name === 'category')
-									$_post_term_taxonomy_query_var = 'cat'; // Special query var.
-								else $_post_term_taxonomy_query_var = $_post_term_taxonomy->query_var;
-
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url.'feed/'.urlencode($default_feed).'/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url.'feed/rdf/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url.'feed/rss/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url.'feed/rss2/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->term_id)), $home_url.'feed/atom/'));
-
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->slug)), $home_url.'feed/'.urlencode($default_feed).'/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->slug)), $home_url.'feed/rdf/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->slug)), $home_url.'feed/rss/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->slug)), $home_url.'feed/rss2/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array($_post_term_taxonomy_query_var => $_post_term->slug)), $home_url.'feed/atom/'));
-							}
-							unset($_post_term_taxonomy, $_post_term_taxonomy_query_var); // Housekeeping.
-						}
-						unset($_post_taxonomies, $_post_taxonomy, $_post_taxonomy_terms, $_post_term, $_post_term_feed_link);
-
+						$get_post_term_feed_link_variations($post);
 						break; // Break switch handler.
 
 					case 'custom-post-type': // Feeds related to a custom post type archive view.
