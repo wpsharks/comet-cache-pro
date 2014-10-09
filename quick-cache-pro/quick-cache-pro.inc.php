@@ -1107,13 +1107,6 @@ namespace quick_cache
 			 * @param string  $also_wipe_dir Defaults to an empty string.
 			 *    By default (i.e. when this is empty) we only wipe {@link $cache_sub_dir} files.
 			 *
-			 *    WARNING: If this is passed, EVERYTHING inside this directory is deleted recursively;
-			 *       in addition to deleting all of the {@link $cache_sub_dir} files.
-			 *
-			 *    SECURITY: This directory MUST be located inside the `/wp-content/` directory.
-			 *    Also, it MUST be a sub-directory of `/wp-content/`, NOT the directory itself.
-			 *    Also, it cannot be: `mu-plugins`, `themes`, or `plugins`.
-			 *
 			 * @return integer Total files wiped by this routine (if any).
 			 *
 			 * @throws \exception If a wipe failure occurs.
@@ -1134,14 +1127,8 @@ namespace quick_cache
 
 				if($also_wipe_dir && is_dir($also_wipe_dir)) // Also wipe another directory?
 					// This is called w/ version-specific upgrades. That's the only use at this time.
-				{
-					$also_wipe_dir        = $this->n_dir_seps($also_wipe_dir);
-					$wp_content_dir_regex = preg_quote($this->n_dir_seps(WP_CONTENT_DIR), '/');
+					$counter += $this->delete_all_files_dirs_in($also_wipe_dir);
 
-					if(preg_match('/^'.$wp_content_dir_regex.'\/[^\/]+/i', $also_wipe_dir)) // A sub-directory?
-						if(!preg_match('/^'.$wp_content_dir_regex.'\/(?:mu\-plugins|themes|plugins)(?:\/|$)/i', $also_wipe_dir))
-							$counter += $this->delete_all_files_dirs_in($also_wipe_dir);
-				}
 				$counter += $this->wipe_htmlc_cache($manually);
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
