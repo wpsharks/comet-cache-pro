@@ -1587,94 +1587,66 @@ namespace quick_cache
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				$home_url                = home_url('/'); // Need this below.
-				$default_feed            = get_default_feed(); // Need this below.
-				$seo_friendly_permalinks = (boolean)get_option('permalink_structure');
-				$_this                   = $this; // Reference needed by the closure below.
-				$feed_cache_path_regexs  = array(); // Initialize array of feed cache paths.
-
-				// @TODO Remove this in favor of new methods in the share class.
-
-				$build_cache_path_regex                 = function ($feed_link, $wildcard_regex = NULL) use ($_this)
-				{
-					if(!$feed_link || !is_string($feed_link))
-						return ''; // Nothing to do here.
-
-					$cache_path_flags = $_this::CACHE_PATH_NO_SCHEME | $_this::CACHE_PATH_NO_EXT
-					                    | $_this::CACHE_PATH_NO_USER | $_this::CACHE_PATH_NO_VSALT;
-					if($wildcard_regex) $cache_path_flags |= $_this::CACHE_PATH_ALLOW_WILDCARDS;
-
-					$cache_path_regex = preg_quote($_this->build_cache_path($feed_link, '', '', $cache_path_flags), '/');
-
-					if($wildcard_regex) // Replace wildcards with regex.
-						$cache_path_regex = preg_replace('/\\\\\*/', $wildcard_regex, $cache_path_regex);
-
-					return $cache_path_regex;
-				};
-				// @TODO Update these to use the new feed utilities class.
+				$variations = $regex_variations = array(); // Initialize.
+				require_once dirname(__FILE__).'/includes/utils-feed.php';
+				$utils = new utils_feed(); // Feed utilities.
 
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
 
-						$get_feed_link_variations('');
+						$variations = array_merge($variations, $utils->feed_link_variations());
 						break; // Break switch handler.
 
 					case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
 
-						$get_feed_link_variations('comments_');
+						$variations = array_merge($variations, $utils->feed_link_variations('comments_'));
 						break; // Break switch handler.
-
-					// @TODO Possibly consider search-related feeds in the future.
-					//    See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
 
 					case 'post-comments': // Feeds related to comments that a post has.
 
 						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
-
-						$get_post_comments_feed_link_variations($post);
+						$variations = array_merge($variations, $utils->post_comments_feed_link_variations($post));
 						break; // Break switch handler.
 
 					case 'post-authors': // Feeds related to authors that a post has.
 
 						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
-
-						$get_author_feed_link_variations($post);
+						$variations = array_merge($variations, $utils->post_author_feed_link_variations($post));
 						break; // Break switch handler.
 
 					case 'post-terms': // Feeds related to terms that a post has.
 
 						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
-
-						$get_post_term_feed_link_variations($post);
+						$variations = array_merge($variations, $utils->post_term_feed_link_variations($post, TRUE));
 						break; // Break switch handler.
 
 					case 'custom-post-type': // Feeds related to a custom post type archive view.
 
 						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
-
-						$get_post_type_archive_link_variations($post);
+						$variations = array_merge($variations, $utils->post_type_archive_link_variations($post));
 						break; // Break switch handler.
-				}
-				foreach($feed_cache_path_regexs as $_key => $_feed_cache_path_regex)
-					if(!is_string($_feed_cache_path_regex) || !$_feed_cache_path_regex) unset($feed_cache_path_regexs[$_key]);
-				unset($_key, $_feed_cache_path_regex); // Housekeeping.
 
-				if(!$feed_cache_path_regexs // Have regex patterns?
-				   || !($feed_cache_path_regexs = array_unique($feed_cache_path_regexs))
+					// @TODO Possibly consider search-related feeds in the future.
+					//    See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
+				}
+				$regex_variations = $utils->convert_variations_to_host_cache_path_regex_patterns($variations);
+
+				if(!$regex_variations // Have regex pattern variations?
+				   || !($regex_variations = array_unique($regex_variations))
 				) return $counter; // Nothing to do here.
 
 				$in_sets_of = apply_filters(__METHOD__.'__in_sets_of', 10, get_defined_vars());
 
-				for($_i = 0; $_i < count($feed_cache_path_regexs); $_i = $_i + $in_sets_of)
+				for($_i = 0; $_i < count($regex_variations); $_i = $_i + $in_sets_of)
 					// This prevents the regex from hitting a backtrack limit in some environments.
 				{
-					$_feed_cache_path_regexs = array_slice($feed_cache_path_regexs, $_i, $in_sets_of);
-					$_regex                  = '/^'.preg_quote($cache_dir, '/').'\/[^\/]+\/(?:'.implode('|', $_feed_cache_path_regexs).')\./';
+					$_regex_variations = array_slice($regex_variations, $_i, $in_sets_of);
+					$_regex            = '/^'.preg_quote($cache_dir, '/').'\/[^\/]+\/(?:'.implode('|', $_regex_variations).')\./';
 					$counter += $this->clear_files_from_host_cache_dir($_regex);
 				}
 				unset($_i, $_feed_cache_path_regexs, $_regex); // Housekeeping.

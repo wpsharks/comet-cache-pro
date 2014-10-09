@@ -116,7 +116,7 @@ namespace quick_cache // Root namespace.
 		 *
 		 * @return array An array of all feed link variations.
 		 */
-		public function author_feed_link_variations(\WP_Post $post)
+		public function post_author_feed_link_variations(\WP_Post $post)
 		{
 			$variations = array(); // Initialize.
 
