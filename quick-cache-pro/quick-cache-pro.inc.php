@@ -1248,34 +1248,21 @@ namespace quick_cache
 			{
 				$counter = 0; // Initialize.
 
-				if($this->disable_auto_clear_cache_routines() && !$manually)
+				if(!$manually && $this->disable_auto_clear_cache_routines())
 					return $counter; // Nothing to do.
+
+				@set_time_limit(1800); // @TODO When disabled, display a warning.
 
 				$host_token = $this->host_token(TRUE);
 				if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
 					$host_dir_token = ''; // Not necessary in this case.
 
-				$cache_dir_public  = $this->wp_content_base_dir_to($this->htmlc_cache_sub_dir_public.$host_dir_token.'/'.$host_token);
-				$cache_dir_private = $this->wp_content_base_dir_to($this->htmlc_cache_sub_dir_private.$host_dir_token.'/'.$host_token);
+				$htmlc_cache_dir_public  = $this->wp_content_base_dir_to($this->htmlc_cache_sub_dir_public.$host_dir_token.'/'.$host_token);
+				$htmlc_cache_dir_private = $this->wp_content_base_dir_to($this->htmlc_cache_sub_dir_private.$host_dir_token.'/'.$host_token);
 
-				@set_time_limit(1800); // @TODO When disabled, display a warning.
-
-				/** @var $_dir_file \RecursiveDirectoryIterator For IDEs. */
-				foreach(array($cache_dir_public, $cache_dir_private) as $_cache_dir) if(is_dir($_cache_dir))
-					foreach($this->dir_regex_iteration($_cache_dir, '/.+/') as $_dir_file)
-					{
-						if(($_dir_file->isFile() || $_dir_file->isLink()) && strpos($_dir_file->getSubpathname(), '/') !== FALSE)
-							// Don't delete files in the immediate directory; e.g. `.htaccess`, or anything else that's special.
-							// Actual `checksum` cache files are nested. Files in the immediate directory are for other purposes.
-							if(!unlink($_dir_file->getPathname())) // Throw exception if unable to delete.
-								throw new \exception(sprintf(__('Unable to clear HTMLC file: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
-							else $counter++; // Increment counter for each file we purge.
-
-						else if($_dir_file->isDir()) // Directories are last in the iteration.
-							if(!rmdir($_dir_file->getPathname())) // Throw exception if unable to delete.
-								throw new \exception(sprintf(__('Unable to clear HTMLC dir: `%1$s`.', $this->text_domain), $_dir_file->getPathname()));
-					}
-				unset($_cache_dir, $_dir_file); // Just a little housekeeping.
+				foreach(array($htmlc_cache_dir_public, $htmlc_cache_dir_private) as $_htmlc_cache_dir)
+					$counter += $this->delete_all_files_dirs_in($htmlc_cache_dir_public);
+				unset($_htmlc_cache_dir); // Just a little housekeeping.
 
 				return apply_filters(__METHOD__, $counter, get_defined_vars());
 			}
