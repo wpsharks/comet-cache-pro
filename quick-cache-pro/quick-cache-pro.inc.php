@@ -1609,84 +1609,77 @@ namespace quick_cache
 
 					return $cache_path_regex;
 				};
-				$get_feed_link_variations               = function ($type_prefix) use ($_this, $default_feed, $feed_cache_path_regexs, $build_cache_path_regex)
+				$get_feed_link_variations               = function ($type_prefix) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
 				{
 					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
 						$feed_cache_path_regexs[] = $build_cache_path_regex(get_feed_link((string)$type_prefix.$_feed_type));
+					unset($_feed_type); // Housekeeping.
 				};
-				$get_post_comments_feed_link_variations = function ($post_id) use ($_this, $default_feed, $feed_cache_path_regexs, $build_cache_path_regex)
+				$get_post_comments_feed_link_variations = function (\WP_Post $post) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
 				{
 					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link((integer)$post_id, $_feed_type));
+						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_comments_feed_link($post->ID, $_feed_type));
+					unset($_feed_type); // Housekeeping.
 				};
-				$get_author_feed_link_variations        = function ($author_id) use ($_this, $default_feed, $feed_cache_path_regexs, $build_cache_path_regex)
+				$get_author_feed_link_variations        = function (\WP_Post $post) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
 				{
 					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link((integer)$author_id, $_feed_type));
+						$feed_cache_path_regexs[] = $build_cache_path_regex(get_author_feed_link($post->post_author, $_feed_type));
+					unset($_feed_type); // Housekeeping.
+
+					if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
+					{
+						$post_author = get_userdata($post->post_author); // Get author data; needed below.
+						foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
+						{
+							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/'.urlencode($_feed_type).'/'));
+
+							if($post_author && !empty($post_author->user_nicename)) // By author nicename also; when/if possible.
+								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post_author->user_nicename)), $home_url.'feed/'.urlencode($_feed_type).'/'));
+						}
+						unset($_feed_type); // Housekeeping.
+					}
+				};
+				$get_post_type_archive_link_variations  = function (\WP_Post $post) use ($_this, $home_url, $default_feed, $seo_friendly_permalinks, $feed_cache_path_regexs, $build_cache_path_regex)
+				{
+					foreach(array_unique(array($default_feed, 'rdf', 'rss', 'rss2', 'atom')) as $_feed_type)
+						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, $_feed_type));
+					unset($_feed_type); // Housekeeping.
 				};
 				switch($type) // Handle purging based on the `$type`.
 				{
 					case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
 
 						$get_feed_link_variations('');
-						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
-						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
 						break; // Break switch handler.
 
 					case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
 
 						$get_feed_link_variations('comments_');
-						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
-						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
 						break; // Break switch handler.
 
 					// @TODO Possibly consider search-related feeds in the future.
 					//    See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
-					// e.g. case 'blog-searches':
 
 					case 'post-comments': // Feeds related to comments that a post has.
 
-						if(!$post_id) break; // Nothing to do here.
+						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
 
-						$get_post_comments_feed_link_variations($post->ID);
-						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
-						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
+						$get_post_comments_feed_link_variations($post);
 						break; // Break switch handler.
 
 					case 'post-authors': // Feeds related to authors that a post has.
 
-						if(!$post_id) break; // nothing to do here.
+						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
 
-						$get_author_feed_link_variations($post->post_author);
-
-						if($seo_friendly_permalinks) // The above uses SEO-friendly permalinks?
-							// Here we cover query string variations that can be left behind after `redirect_canonical()` does its thing.
-							// In the case of author-related feeds, most of the URL is converted to SEO-friendly format.
-							// Everything except `?author=` which is what we deal with below.
-						{
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/'.urlencode($default_feed).'/'));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/rdf/'));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/rss/'));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/rss2/'));
-							$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $post->post_author)), $home_url.'feed/atom/'));
-
-							if(($_post_author = get_userdata($post->post_author)) && !empty($_post_author->user_nicename)) // By author nicename.
-							{
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $_post_author->user_nicename)), $home_url.'feed/'.urlencode($default_feed).'/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $_post_author->user_nicename)), $home_url.'feed/rdf/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $_post_author->user_nicename)), $home_url.'feed/rss/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $_post_author->user_nicename)), $home_url.'feed/rss2/'));
-								$feed_cache_path_regexs[] = $build_cache_path_regex(add_query_arg(urlencode_deep(array('author' => $_post_author->user_nicename)), $home_url.'feed/atom/'));
-							}
-							unset($_post_author); // Housekeeping.
-						}
+						$get_author_feed_link_variations($post);
 						break; // Break switch handler.
 
 					case 'post-terms': // Feeds related to terms that a post has.
 
-						if(!$post_id) break; // Nothing to do here.
+						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
 
 						$post_terms = array(); // Initialize array of all post terms.
@@ -1779,20 +1772,10 @@ namespace quick_cache
 
 					case 'custom-post-type': // Feeds related to a custom post type archive view.
 
-						if(!$post_id) break; // Nothing to do here.
+						if(!$post_id) break; // Nothing to do.
 						if(!($post = get_post($post_id))) break;
 
-						$custom_post_type_archive_link = get_post_type_archive_link($post->post_type);
-
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, $default_feed));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, 'rdf'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, 'rss'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, 'rss2'));
-						$feed_cache_path_regexs[] = $build_cache_path_regex(get_post_type_archive_feed_link($post->post_type, 'atom'));
-
-						// It is not necessary to cover query string variations for these when `$seo_friendly_permalinks = TRUE`,
-						//    because `redirect_canonical()` will force SEO-friendly links in the end anyway.
-
+						$get_post_type_archive_link_variations($post);
 						break; // Break switch handler.
 				}
 				foreach($feed_cache_path_regexs as $_key => $_feed_cache_path_regex)
