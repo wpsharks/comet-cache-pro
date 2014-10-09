@@ -235,14 +235,14 @@ namespace quick_cache // Root namespace.
 		}
 
 		/**
-		 * Convert variations into regex patterns; relative to the current host|blog directory.
+		 * Convert variations into regex fragments; relative to the current host|blog directory.
 		 *
 		 * @since 14xxxx Refactoring cache clear/purge routines.
 		 *
 		 * @param array $variations An array of variations built by other class members.
 		 *
-		 * @return array An array of all feed link variations; converted to regex.
-		 *    Regex patterns are relative to the current host|blog directory.
+		 * @return array An array of all feed link variations; converted to regex fragments.
+		 *    Regex fragments are relative to the current host|blog directory.
 		 *
 		 * @note This automatically forces the following {@link build_cache_path()} flags.
 		 *
@@ -253,10 +253,10 @@ namespace quick_cache // Root namespace.
 		 *       - {@link CACHE_PATH_NO_EXT}
 		 *       - {@link CACHE_PATH_ALLOW_WILDCARDS}; when applicable.
 		 */
-		public function convert_variations_to_host_cache_path_regex_patterns(array $variations)
+		public function convert_variations_to_host_cache_path_regex_frags(array $variations)
 		{
-			$regex_variations = array(); // Initialize regex variations.
-			$plugin           = $this->plugin; // For proper syntax.
+			$plugin      = $this->plugin; // For proper syntax.
+			$regex_frags = array(); // Initialize regex variation frags.
 
 			$flags = $plugin::CACHE_PATH_NO_SCHEME | $plugin::CACHE_PATH_NO_HOST
 			         | $plugin::CACHE_PATH_NO_USER | $plugin::CACHE_PATH_NO_VSALT
@@ -272,17 +272,17 @@ namespace quick_cache // Root namespace.
 					$_flags = $flags | $plugin::CACHE_PATH_ALLOW_WILDCARDS;
 					list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2);
 
-					$_cache_path_regex  = preg_quote($this->plugin->build_cache_path($_variation, '', '', $_flags), '/');
-					$_cache_path_regex  = preg_replace('/\\\\\*/', $_wildcard_regex, $_cache_path_regex);
-					$regex_variations[] = $_cache_path_regex; // Add variation now.
+					$_cache_path_regex = preg_quote($this->plugin->build_cache_path($_variation, '', '', $_flags), '/');
+					$_cache_path_regex = preg_replace('/\\\\\*/', $_wildcard_regex, $_cache_path_regex);
+					$regex_frags[]     = $_cache_path_regex; // Add variation now.
 
 					unset($_flags, $_feed_type, $_wildcard_regex, $_cache_path_regex); // Housekeeping.
 				}
-				else $regex_variations[] = preg_quote($this->plugin->build_cache_path($_variation, '', '', $flags), '/');
+				else $regex_frags[] = preg_quote($this->plugin->build_cache_path($_variation, '', '', $flags), '/');
 			}
 			unset($_key, $_variation); // Housekeeping.
 
-			return $regex_variations;
+			return $regex_frags;
 		}
 	}
 }

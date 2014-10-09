@@ -1587,7 +1587,7 @@ namespace quick_cache
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				$variations = $regex_variations = array(); // Initialize.
+				$variations = $variation_regex_frags = array(); // Initialize.
 				require_once dirname(__FILE__).'/includes/utils-feed.php';
 				$utils = new utils_feed(); // Feed utilities.
 
@@ -1634,22 +1634,20 @@ namespace quick_cache
 					// @TODO Possibly consider search-related feeds in the future.
 					//    See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
 				}
-				$regex_variations = $utils->convert_variations_to_host_cache_path_regex_patterns($variations);
+				$variation_regex_frags = $utils->convert_variations_to_host_cache_path_regex_frags($variations);
 
-				if(!$regex_variations // Have regex pattern variations?
-				   || !($regex_variations = array_unique($regex_variations))
+				if(!$variation_regex_frags // Have regex pattern variations?
+				   || !($variation_regex_frags = array_unique($variation_regex_frags))
 				) return $counter; // Nothing to do here.
 
 				$in_sets_of = apply_filters(__METHOD__.'__in_sets_of', 10, get_defined_vars());
-
-				for($_i = 0; $_i < count($regex_variations); $_i = $_i + $in_sets_of)
-					// This prevents the regex from hitting a backtrack limit in some environments.
+				for($_i = 0; $_i < count($variation_regex_frags); $_i = $_i + $in_sets_of)
 				{
-					$_regex_variations = array_slice($regex_variations, $_i, $in_sets_of);
-					$_regex            = '/^'.preg_quote($cache_dir, '/').'\/[^\/]+\/(?:'.implode('|', $_regex_variations).')\./';
+					$_variation_regex_frags = array_slice($variation_regex_frags, $_i, $in_sets_of);
+					$_regex                 = '/^\/(?:'.implode('|', $_variation_regex_frags).')\./';
 					$counter += $this->clear_files_from_host_cache_dir($_regex);
 				}
-				unset($_i, $_feed_cache_path_regexs, $_regex); // Housekeeping.
+				unset($_i, $_variation_regex_frags, $_regex); // Housekeeping.
 
 				if($counter && is_admin() && $this->options['change_notifications_enable'])
 				{
