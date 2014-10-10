@@ -1302,6 +1302,9 @@ namespace quick_cache
 			 *    In the future, we could even work to enhance this further, by avoiding anything that hard-codes `quick_cache` or `Quick Cache`.
 			 *    Instead, we might create a class property; e.g. `$this->name = 'Quick Cache';` so it's available when we need to call the plugin by name.
 			 *
+			 * @raamdev UPDATE: I added two new properties that we can start using for the plugin name, to help make a name transition easier.
+			 *    New properties can be referenced like this: `$this->name`, and `$this->short_name`, as seen in the notice below.
+			 *
 			 * @return boolean `TRUE` if disabled; and this also creates a dashboard notice in some cases.
 			 *
 			 * @see auto_wipe_cache()
@@ -1315,7 +1318,8 @@ namespace quick_cache
 				if($is_disabled && is_admin() && $this->options['change_notifications_enable'])
 				{
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      __('<strong>Quick Cache:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
+					                      sprintf(__('<strong>%1$s:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain),
+					                              esc_html($this->name)));
 				}
 				return $is_disabled; // Disabled?
 			}
@@ -1381,6 +1385,9 @@ namespace quick_cache
 			 *    In the future, we could even work to enhance this further, by avoiding anything that hard-codes `quick_cache` or `Quick Cache`.
 			 *    Instead, we might create a class property; e.g. `$this->name = 'Quick Cache';` so it's available when we need to call the plugin by name.
 			 *
+			 * @raamdev UPDATE: I added two new properties that we can start using for the plugin name, to help make a name transition easier.
+			 *    New properties can be referenced like this: `$this->name`, and `$this->short_name`, as seen in the notice below.
+			 *
 			 * @return boolean `TRUE` if disabled; and this also creates a dashboard notice in some cases.
 			 *
 			 * @see auto_clear_cache()
@@ -1394,7 +1401,8 @@ namespace quick_cache
 				if($is_disabled && is_admin() && $this->options['change_notifications_enable'])
 				{
 					$this->enqueue_notice('<img src="'.esc_attr($this->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-					                      __('<strong>Quick Cache:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain));
+					                      sprintf(__('<strong>%1$s:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href="http://www.websharks-inc.com/r/quick-cache-clear-cache-and-wipe-cache-routines-wiki/" target="_blank">?</a>]', $this->text_domain),
+					                              esc_html($this->name)));
 				}
 				return $is_disabled; // Disabled?
 			}
@@ -1638,7 +1646,7 @@ namespace quick_cache
 				for($_i = 0; $_i < count($variation_regex_frags); $_i = $_i + $in_sets_of)
 				{
 					$_variation_regex_frags = array_slice($variation_regex_frags, $_i, $in_sets_of);
-					$_regex                 = '/^\/(?:'.implode('|', $_variation_regex_frags).')\./';
+					$_regex                 = '/^\/(?:'.implode('|', $_variation_regex_frags).')\./i';
 					$counter += $this->clear_files_from_host_cache_dir($_regex);
 				}
 				unset($_i, $_variation_regex_frags, $_regex); // Housekeeping.
@@ -2051,13 +2059,11 @@ namespace quick_cache
 
 				foreach($taxonomies as $_taxonomy)
 				{
-					// Check if this is a term we should clear.
-					if($_taxonomy->name === 'category' && !$this->options['cache_clear_term_category_enable'])
-						continue;
-					if($_taxonomy->name === 'post_tag' && !$this->options['cache_clear_term_post_tag_enable'])
-						continue;
-					if($_taxonomy->name !== 'category' && $_taxonomy->name !== 'post_tag' && !$this->options['cache_clear_term_other_enable'])
-						continue;
+					if( // Check if this is a taxonomy/term that we should clear.
+						($_taxonomy->name === 'category' && !$this->options['cache_clear_term_category_enable'])
+						|| ($_taxonomy->name === 'post_tag' && !$this->options['cache_clear_term_post_tag_enable'])
+						|| ($_taxonomy->name !== 'category' && $_taxonomy->name !== 'post_tag' && !$this->options['cache_clear_term_other_enable'])
+					) continue; // Continue; nothing to do for this taxonomy.
 
 					if(is_array($_terms = wp_get_post_terms($post_id, $_taxonomy->name)))
 					{
