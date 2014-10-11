@@ -776,7 +776,7 @@ msgid "Caching Enabled for RSS, RDF, Atom Feeds?"
 msgstr ""
 
 #: includes/menu-pages.php:370
-msgid "This should almost ALWAYS be set to <code>No</code>. UNLESS, you're sure that you want to cache your feeds. If you use a web feed management provider like Google® Feedburner and you set this option to <code>Yes</code>, you may experience delays in the detection of new posts. <strong>NOTE:</strong> If you do enable this, it is highly recommended that you also enable automatic Feed Purging too. Please see the section above: \"Clearing the Cache\". Find the sub-section titled: \"Auto-Purge RSS/RDF/ATOM Feeds\"."
+msgid "This should almost ALWAYS be set to <code>No</code>. UNLESS, you're sure that you want to cache your feeds. If you use a web feed management provider like Google® Feedburner and you set this option to <code>Yes</code>, you may experience delays in the detection of new posts. <strong>NOTE:</strong> If you do enable this, it is highly recommended that you also enable automatic Feed Clearing too. Please see the section above: \"Clearing the Cache\". Find the sub-section titled: \"Auto-Purge RSS/RDF/ATOM Feeds\"."
 msgstr ""
 
 #: includes/menu-pages.php:372
