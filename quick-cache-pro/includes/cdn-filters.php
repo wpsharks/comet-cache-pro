@@ -211,6 +211,8 @@ namespace quick_cache // Root namespace.
 			add_filter('content_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 2);
 			add_filter('plugins_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 2);
 
+			add_filter('wp_get_attachment_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 1);
+
 			add_filter('the_content', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
 			add_filter('get_the_excerpt', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
 		}
