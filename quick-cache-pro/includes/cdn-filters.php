@@ -177,6 +177,9 @@ namespace quick_cache // Root namespace.
 		 */
 		public function maybe_setup_filters()
 		{
+			if(is_admin()) // Not front-end?
+				return; // Not applicable.
+
 			if(!$this->cdn_enable)
 				return; // Disabled currently.
 
