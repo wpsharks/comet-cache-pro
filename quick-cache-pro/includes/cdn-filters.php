@@ -64,7 +64,10 @@ namespace quick_cache // Root namespace.
 		{
 			$this->plugin = plugin();
 
-			$this->host     = strtolower((string)parse_url(network_home_url(), PHP_URL_HOST));
+			// We use the network host here; since this only works from a single host name.
+			// If CDN filters are used in a network, the network MUST use a sub-directory install.
+			$this->host = strtolower((string)parse_url(network_home_url(), PHP_URL_HOST));
+
 			$this->cdn_host = strtolower($this->plugin->options['cdn_host']);
 
 			$this->cdn_over_ssl = (boolean)$this->plugin->options['cdn_over_ssl'];
