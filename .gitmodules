@@ -1,9 +1,3 @@
 [submodule "quick-cache-pro/submodules/html-compressor"]
 	path = quick-cache-pro/submodules/html-compressor
 	url = https://github.com/websharks/html-compressor
-[submodule "quick-cache-pro/submodules/aws-php-sdk"]
-	path = quick-cache-pro/submodules/aws-php-sdk
-	url = https://github.com/websharks/aws-php-sdk
-[submodule "quick-cache-pro/submodules/maxcdn-php-sdk"]
-	path = quick-cache-pro/submodules/maxcdn-php-sdk
-	url = https://github.com/websharks/maxcdn-php-sdk
