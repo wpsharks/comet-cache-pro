@@ -1,6 +1,6 @@
 <?php
 /**
- * CDN Base Class.
+ * CDN Filters
  *
  * @package quick_cache\cdn
  * @since 14xxxx Adding CDN support.
@@ -13,11 +13,11 @@ namespace quick_cache // Root namespace.
 		exit('Do NOT access this file directly: '.basename(__FILE__));
 
 	/**
-	 * CDN Base Class.
+	 * CDN Filters
 	 *
 	 * @since 14xxxx Adding CDN support.
 	 */
-	abstract class cdn_base
+	abstract class cdn_filters
 	{
 		/**
 		 * @since 14xxxx Adding CDN support.
@@ -83,30 +83,6 @@ namespace quick_cache // Root namespace.
 					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/'));
 				}, preg_split('/['."\r\n".']+/', $this->plugin->options['cdn_blacklist'], NULL, PREG_SPLIT_NO_EMPTY))).')/';
 		}
-
-		/**
-		 * @TODO Get existing distro.
-		 *
-		 * @since 14xxxx Adding CDN support.
-		 */
-		abstract public function get_distro();
-
-		/**
-		 * @TODO Create a new distro.
-		 *
-		 * @since 14xxxx Adding CDN support.
-		 *
-		 * @TODO see <http://bit.ly/1paPksq> for MaxCDN examples.
-		 * @TODO see <http://bit.ly/1paPxMh> for CloudFront examples.
-		 */
-		abstract public function create_distro();
-
-		/**
-		 * @TODO Update existing distro.
-		 *
-		 * @since 14xxxx Adding CDN support.
-		 */
-		abstract public function update_distro();
 
 		/**
 		 * Setup URL and content filters.
