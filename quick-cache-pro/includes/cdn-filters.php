@@ -134,8 +134,18 @@ namespace quick_cache // Root namespace.
 			if(!$this->cdn_over_ssl && is_ssl())
 				return; // Disable in this case.
 
-			if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
-				return; // Not possible; requires a sub-domain install (for now).
+			if(is_multisite() && (defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL))
+				/*
+				 * @TODO this is something we need to look at in the future.
+				 *
+				 * We expect a single local host name at present.
+				 *    However, it MIGHT be feasible to allow for wildcarded host names
+				 *    in order to support sub-domain installs in the future.
+				 *
+				 * ~ Domain mapping will be another thing to look at.
+				 *    I don't see an easy way to support domain mapping plugins.
+				 */
+				return; // Not possible; requires a sub-directory install (for now).
 
 			add_filter('home_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 4);
 			add_filter('site_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 4);
