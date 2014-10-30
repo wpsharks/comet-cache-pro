@@ -140,7 +140,7 @@ namespace quick_cache // Root namespace.
 
 			if($cdn_whitelisted_uri_patterns) $this->cdn_whitelisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern)
 				{
-					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/')); #
+					return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/')); #
 
 				}, $cdn_whitelisted_uri_patterns)).')/i'; // CaSe inSensitive.
 
@@ -152,7 +152,7 @@ namespace quick_cache // Root namespace.
 			$cdn_blacklisted_uri_patterns[] = '*/wp-admin/*'; // Always.
 
 			if(is_multisite()) // Auto-exclude multisite rewrites.
-				$cdn_blacklisted_uri_patterns[] = '*/files/*'; // Uses rewrite.
+				$cdn_blacklisted_uri_patterns[] = '/^/files/*'; // Uses rewrite.
 
 			if(defined('WS_PLUGIN__S2MEMBER_VERSION')) // Auto-exclude s2Member rewrites.
 				$cdn_blacklisted_uri_patterns[] = '*/s2member-files/*';
@@ -161,7 +161,7 @@ namespace quick_cache // Root namespace.
 
 			if($cdn_blacklisted_uri_patterns) $this->cdn_blacklisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern)
 				{
-					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/')); #
+					return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/')); #
 
 				}, $cdn_blacklisted_uri_patterns)).')/i'; // CaSe inSensitive.
 
@@ -215,6 +215,9 @@ namespace quick_cache // Root namespace.
 			add_filter('plugins_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 2);
 
 			add_filter('wp_get_attachment_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 1);
+
+			add_filter('script_loader_src', array($this, 'url_filter'), PHP_INT_MAX - 10, 1);
+			add_filter('style_loader_src', array($this, 'url_filter'), PHP_INT_MAX - 10, 1);
 
 			add_filter('the_content', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
 			add_filter('get_the_excerpt', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
