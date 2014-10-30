@@ -898,13 +898,19 @@ namespace quick_cache
 			if(!$this->is_like_user_logged_in())
 				return; // Nothing to do.
 
+			if(!empty($_REQUEST[__NAMESPACE__]['wipe_cache']))
+				return; // Site owner is clearing cache now.
+
+			if(!empty($_REQUEST[__NAMESPACE__]['ajax_wipe_cache']))
+				return; // Site owner is clearing cache now.
+
 			if(!empty($_REQUEST[__NAMESPACE__]['clear_cache']))
 				return; // Site owner is clearing cache now.
 
 			if(!empty($_REQUEST[__NAMESPACE__]['ajax_clear_cache']))
 				return; // Site owner is clearing cache now.
 
-			if($this->is_uncacheable_request_method())
+			if($this->is_post_put_delete_request() || $this->is_uncacheable_request_method())
 				$this->postload['invalidate_when_logged_in'] = TRUE;
 
 			else if(!QUICK_CACHE_GET_REQUESTS && $this->is_get_request_w_query())
@@ -955,13 +961,13 @@ namespace quick_cache
 			if(!QUICK_CACHE_FEEDS_ENABLE && $this->is_feed())
 				return $this->maybe_set_debug_info($this::NC_DEBUG_FEED_REQUEST);
 
-			if(preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/', $_SERVER['REQUEST_URI']))
+			if(preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/i', $_SERVER['REQUEST_URI']))
 				return $this->maybe_set_debug_info($this::NC_DEBUG_WP_SYSTEMATICS);
 
-			if(is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/', $_SERVER['REQUEST_URI']))
+			if(is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/i', $_SERVER['REQUEST_URI']))
 				return $this->maybe_set_debug_info($this::NC_DEBUG_WP_ADMIN);
 
-			if(is_multisite() && preg_match('/\/files(?:[\/?]|$)/', $_SERVER['REQUEST_URI']))
+			if(is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI']))
 				return $this->maybe_set_debug_info($this::NC_DEBUG_MS_FILES);
 
 			if(!QUICK_CACHE_WHEN_LOGGED_IN && $this->is_like_user_logged_in())
@@ -1079,15 +1085,9 @@ namespace quick_cache
 			if(!($this->user_token = $this->user_token()))
 				return; // Nothing to do in this case.
 
-			$regex = '/\.u\/'.preg_quote($this->user_token, '/').'[.\/]/'; // This user.
-
-			/** @var $_file \RecursiveDirectoryIterator For IDEs. */
-			foreach($this->dir_regex_iteration(QUICK_CACHE_DIR, $regex) as $_file) if($_file->isFile() || $_file->isLink())
-			{
-				if(!unlink($_file->getPathname())) // Throw exception if unable to delete.
-					throw new \exception(sprintf(__('Unable to invalidate file: `%1$s`.', $this->text_domain), $_file->getPathname()));
-			}
-			unset($_file); // Just a little housekeeping.
+			$regex = $this->build_cache_path_regex('', '.*?\.u\/'.preg_quote($this->user_token, '/').'[.\/]');
+			// NOTE: this clears the cache network-side; for all cache files associated w/ the user.
+			$this->clear_files_from_cache_dir($regex); // Clear matching files.
 		}
 
 		/**
@@ -1255,7 +1255,7 @@ namespace quick_cache
 			if($this->is_404 && !QUICK_CACHE_CACHE_404_REQUESTS) // Not caching 404 errors.
 				return (boolean)$this->maybe_set_debug_info($this::NC_DEBUG_404_REQUEST);
 
-			if(strpos($cache, '<body id="error-page">') !== FALSE) // A WordPress-generated {@link \wp_die()} error?
+			if(stripos($cache, '<body id="error-page">') !== FALSE) // A WordPress-generated error?
 				return (boolean)$this->maybe_set_debug_info($this::NC_DEBUG_WP_ERROR_PAGE);
 
 			if(!$this->function_is_possible('http_response_code')) // Unable to reliably detect HTTP status code?
@@ -1286,7 +1286,7 @@ namespace quick_cache
 
 			# This is where a new 404 request might be detected for the first time; and where the 404 error file already exists in this case.
 
-			$cache_file_tmp = $this->cache_file.'.'.uniqid('', TRUE).'.tmp'; // Cache/symlink creation is atomic; e.g. tmp file w/ rename.
+			$cache_file_tmp = $this->add_tmp_suffix($this->cache_file); // Cache/symlink creation is atomic; e.g. tmp file w/ rename.
 
 			if($this->is_404 && is_file($this->cache_file_404))
 				if(!(symlink($this->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $this->cache_file)))
@@ -1358,8 +1358,8 @@ namespace quick_cache
 				'benchmark'                      => $htmlc_benchmark,
 				'product_title'                  => __('Quick Cache HTML Compressor', $this->text_domain),
 
-				'regex_css_exclusions'           => QUICK_CACHE_HTMLC_CSS_EXCLUSIONS, // Regex.
-				'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS, // Regex.
+				'regex_css_exclusions'           => QUICK_CACHE_HTMLC_CSS_EXCLUSIONS,
+				'regex_js_exclusions'            => QUICK_CACHE_HTMLC_JS_EXCLUSIONS,
 
 				'cache_expiration_time'          => QUICK_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
 				'cache_dir_public'               => QUICK_CACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token,
