@@ -284,7 +284,7 @@ namespace quick_cache
 					'cdn_invalidation_var'                 => 'iv', // A query string variable name.
 					'cdn_invalidation_counter'             => '1', // Current version counter.
 
-					'cdn_over_ssl'                         => '1', // `0|1`; enable SSL compat?
+					'cdn_over_ssl'                         => '0', // `0|1`; enable SSL compat?
 
 					'cdn_whitelisted_extensions'           => '', // Whitelisted extensions.
 					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.

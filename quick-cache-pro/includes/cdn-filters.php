@@ -186,12 +186,6 @@ namespace quick_cache // Root namespace.
 			if(!$this->cdn_host)
 				return; // Not possible.
 
-			if(!$this->cdn_invalidation_var)
-				return; // Not possible.
-
-			if(!$this->cdn_invalidation_counter)
-				return; // Not possible.
-
 			if(!$this->cdn_over_ssl && is_ssl())
 				return; // Disable in this case.
 
@@ -324,7 +318,9 @@ namespace quick_cache // Root namespace.
 				$scheme = $local_file->scheme; // Use original scheme.
 
 			$url = set_url_scheme('//'.$this->cdn_host.$local_file->uri, $scheme);
-			$url = add_query_arg($this->cdn_invalidation_var, $this->cdn_invalidation_counter, $url);
+
+			if($this->cdn_invalidation_var && $this->cdn_invalidation_counter)
+				$url = add_query_arg($this->cdn_invalidation_var, $this->cdn_invalidation_counter, $url);
 
 			return $esc ? esc_attr($url) : $url;
 		}

@@ -471,18 +471,18 @@ namespace quick_cache // Root namespace.
 			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
 			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
 			echo '      <h3>'.__('Enable WebSharks™ HTML Compression?', $this->plugin->text_domain).'</h3>'."\n";
-			echo '      <p class="notice" style="display:block;">'.__('This is an experimental feature, however it offers a potentially HUGE speed boost. You can <a href="https://github.com/WebSharks/HTML-Compressor" target="_blank">learn more here</a>. Please use with caution.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <p class="notice" style="display:block;">'.__('This is an experimental feature, however it offers a potentially HUGE speed boost. You can <a href="https://github.com/websharks/html-compressor" target="_blank">learn more here</a>. Please use with caution.', $this->plugin->text_domain).'</p>'."\n";
 			if(!$this->plugin->is_extension_loaded('curl') || !is_array($_curl_version = curl_version()) || !($_curl_version['features'] & CURL_VERSION_SSL))
 				echo '   <p class="error" style="display:block;">'.__('<strong>WARNING:</strong> The HTML Compressor requires the <a href="http://www.php.net/manual/en/book.curl.php" target="_blank" rel="external">cURL extension for PHP</a>. cURL must also be compiled together with <a href="http://www.php.net/manual/en/book.openssl.php" target="_blank" rel="external">OpenSSL</a>. Quick Cache has detected that one or both of these are currently missing. Please check with your hosting company to resolve this message.', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][htmlc_enable]">'."\n";
 			echo '            <option value="0"'.selected($this->plugin->options['htmlc_enable'], '0', FALSE).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="1"'.selected($this->plugin->options['htmlc_enable'], '1', FALSE).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
-			echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/WebSharks/HTML-Compressor/issues" target="_blank">report issues here</a>.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/websharks/html-compressor/issues" target="_blank">report issues here</a>.', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <hr />'."\n";
 			echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
 			echo '         <h3>'.__('HTML Compression Options', $this->plugin->text_domain).'</h3>'."\n";
-			echo '         <p>'.__('You can <a href="https://github.com/WebSharks/HTML-Compressor" target="_blank">learn more about all of these options here</a>.', $this->plugin->text_domain).'</p>'."\n";
+			echo '         <p>'.__('You can <a href="https://github.com/WebSharks/html-compressor" target="_blank">learn more about all of these options here</a>.', $this->plugin->text_domain).'</p>'."\n";
 			echo '         <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][htmlc_compress_combine_head_body_css]" autocomplete="off">'."\n";
 			echo '               <option value="1"'.selected($this->plugin->options['htmlc_compress_combine_head_body_css'], '1', FALSE).'>'.__('Yes, combine CSS from &lt;head&gt; and &lt;body&gt; into fewer files.', $this->plugin->text_domain).'</option>'."\n";
 			echo '               <option value="0"'.selected($this->plugin->options['htmlc_compress_combine_head_body_css'], '0', FALSE).'>'.__('No, do not combine CSS from &lt;head&gt; and &lt;body&gt; into fewer files.', $this->plugin->text_domain).'</option>'."\n";
@@ -529,6 +529,51 @@ namespace quick_cache // Root namespace.
 			echo '         <p><input type="text" name="'.esc_attr(__NAMESPACE__).'[save_options][htmlc_cache_expiration_time]" value="'.esc_attr($this->plugin->options['htmlc_cache_expiration_time']).'" /></p>'."\n";
 			echo '         <p class="info" style="display:block;">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with PHP\'s <a href="http://php.net/manual/en/function.strtotime.php" target="_blank" style="text-decoration:none;"><code>strtotime()</code></a> function. Examples: <code>2 hours</code>, <code>7 days</code>, <code>6 months</code>, <code>1 year</code>.', $this->plugin->text_domain).'</p>'."\n";
 			echo '         <p>'.__('<strong>Note:</strong> This does NOT impact the overall cache expiration time that you configure with Quick Cache. It only impacts the sub-routines provided by the HTML Compressor. In fact, this expiration time is mostly irrelevant. The HTML Compressor uses an internal checksum, and it also checks <code>filemtime()</code> before using an existing cache file. The HTML Compressor class also handles the automatic cleanup of your cache directories to keep it from growing too large over time. Therefore, unless you have VERY little disk space there is no reason to set this to a lower value (even if your site changes dynamically quite often). If anything, you might like to increase this value which could help to further reduce server load. You can <a href="https://github.com/WebSharks/HTML-Compressor" target="_blank">learn more here</a>. We recommend setting this value to at least double that of your overall Quick Cache expiration time.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      </div>'."\n";
+			echo '   </div>'."\n";
+
+			echo '</div>'."\n";
+
+			echo '<div class="plugin-menu-page-panel">'."\n";
+
+			echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+			echo '      <i class="fa fa-gears"></i> '.__('Static CDN Filters (Experimental)', $this->plugin->text_domain)."\n";
+			echo '   </a>'."\n";
+
+			echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+			echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+			echo '      <h3>'.__('Enable Static CDN Filters?', $this->plugin->text_domain).'</h3>'."\n";
+			echo '      <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_enable]">'."\n";
+			echo '            <option value="0"'.selected($this->plugin->options['cdn_enable'], '0', FALSE).'>'.__('No, I do NOT want CDN filters applied at runtime.', $this->plugin->text_domain).'</option>'."\n";
+			echo '            <option value="1"'.selected($this->plugin->options['cdn_enable'], '1', FALSE).'>'.__('Yes, I want CDN filters applied w/ my configuration below.', $this->plugin->text_domain).'</option>'."\n";
+			echo '         </select></p>'."\n";
+			echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/websharks/quick-cache/issues" target="_blank">report issues here</a>.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <hr />'."\n";
+			echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
+			echo '         <h3>'.__('Static CDN Filter Options', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p>'.__('You can <a href="https://github.com/websharks/quick-cache/wiki/Static-CDN-Filter-Options" target="_blank">learn more about all of these options here</a>.', $this->plugin->text_domain).'</p>'."\n";
+			echo '         <h3>'.__('CDN Host Name (Requires Setup)', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><input type="text" name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_host]" value="'.esc_attr($this->plugin->options['cdn_host']).'" /></p>'."\n";
+			echo '         <h3>'.__('CDN Host Supports HTTPS Connections?', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><select name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_over_ssl]" autocomplete="off">'."\n";
+			echo '               <option value="0"'.selected($this->plugin->options['cdn_over_ssl'], '0', FALSE).'>'.__('No, unsupported by my CDN host name; and/or I don\'t serve pages over https://.', $this->plugin->text_domain).'</option>'."\n";
+			echo '               <option value="1"'.selected($this->plugin->options['cdn_over_ssl'], '1', FALSE).'>'.__('Yes, my CDN host allows SSL connections, and I need support for https:// enabled.', $this->plugin->text_domain).'</option>'."\n";
+			echo '            </select></p>'."\n";
+			echo '         <hr />'."\n";
+			echo '         <h3>'.__('Whitelisted File Extensions', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><input type="text" name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_whitelisted_extensions]" value="'.esc_attr($this->plugin->options['cdn_whitelisted_extensions']).'" /></p>'."\n";
+			echo '         <h3>'.__('Blacklisted File Extensions', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><input type="text" name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_blacklisted_extensions]" value="'.esc_attr($this->plugin->options['cdn_blacklisted_extensions']).'" /></p>'."\n";
+			echo '         <hr />'."\n";
+			echo '         <h3>'.__('Whitelisted URI Inclusion Patterns?', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><textarea name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_whitelisted_uri_patterns]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cdn_whitelisted_uri_patterns']).'</textarea></p>'."\n";
+			echo '         <p class="info" style="display:block;">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g. one exclusion pattern per line.', $this->plugin->text_domain).'</p>'."\n";
+			echo '         <h3>'.__('Blacklisted URI Exclusion Patterns?', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><textarea name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_blacklisted_uri_patterns]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cdn_blacklisted_uri_patterns']).'</textarea></p>'."\n";
+			echo '         <p class="info" style="display:block;">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g. one exclusion pattern per line.', $this->plugin->text_domain).'</p>'."\n";
+			echo '         <hr />'."\n";
+			echo '         <h3>'.__('Query String Invalidation Variable Name', $this->plugin->text_domain).'</h3>'."\n";
+			echo '         <p><input type="text" name="'.esc_attr(__NAMESPACE__).'[save_options][cdn_invalidation_var]" value="'.esc_attr($this->plugin->options['cdn_invalidation_var']).'" /></p>'."\n";
 			echo '      </div>'."\n";
 			echo '   </div>'."\n";
 
