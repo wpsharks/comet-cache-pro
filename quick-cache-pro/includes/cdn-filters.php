@@ -17,7 +17,7 @@ namespace quick_cache // Root namespace.
 	 *
 	 * @since 14xxxx Adding CDN support.
 	 */
-	abstract class cdn_filters
+	class cdn_filters
 	{
 		/**
 		 * @since 14xxxx Adding CDN support.
@@ -30,6 +30,12 @@ namespace quick_cache // Root namespace.
 		 * @var string CDN is for this host name.
 		 */
 		protected $host;
+
+		/**
+		 * @since 14xxxx Adding CDN support.
+		 * @var boolean Enable CDN filters?
+		 */
+		protected $cdn_enable;
 
 		/**
 		 * @since 14xxxx Adding CDN support.
@@ -64,6 +70,8 @@ namespace quick_cache // Root namespace.
 		{
 			$this->plugin = plugin();
 
+			$this->cdn_enable = (boolean)$this->plugin->options['cdn_enable'];
+
 			// We use the network host here; since this only works from a single host name.
 			// If CDN filters are used in a network, the network MUST use a sub-directory install.
 			$this->host = strtolower((string)parse_url(network_home_url(), PHP_URL_HOST));
@@ -85,6 +93,8 @@ namespace quick_cache // Root namespace.
 				{
 					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/'));
 				}, preg_split('/['."\r\n".']+/', $this->plugin->options['cdn_blacklist'], NULL, PREG_SPLIT_NO_EMPTY))).')/';
+
+			$this->maybe_setup_filters();
 		}
 
 		/**
@@ -92,10 +102,19 @@ namespace quick_cache // Root namespace.
 		 *
 		 * @since 14xxxx Adding CDN support.
 		 */
-		public function setup_filters()
+		public function maybe_setup_filters()
 		{
+			if(!$this->cdn_enable)
+				return; // Disabled currently.
+
+			if(!$this->cdn_host)
+				return; // Not possible.
+
 			if(!$this->cdn_over_ssl && is_ssl())
 				return; // Disable in this case.
+
+			if(is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL))
+				return; // Not possible; requires a sub-domain install (for now).
 
 			add_filter('home_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 4);
 			add_filter('site_url', array($this, 'url_filter'), PHP_INT_MAX - 10, 4);

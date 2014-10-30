@@ -186,40 +186,71 @@ namespace quick_cache
 				load_plugin_textdomain($this->text_domain);
 
 				$this->default_options = array(
-					'version'                              => $this->version,
+					/* Core/systematic plugin options. */
 
+					'version'                              => $this->version,
 					'crons_setup'                          => '0', // `0` or timestamp.
 
+					/* Primary switch; enable? */
+
 					'enable'                               => '0', // `0|1`.
-					'debugging_enable'                     => '1', // `0|1|2` // 2 indicates greater debugging detail.
+
+					/* Related to debugging. */
+
+					'debugging_enable'                     => '1',
+					// `0|1|2` // 2 indicates greater debugging detail.
+
+					/* Related to admin bar. */
+
 					'admin_bar_enable'                     => '1', // `0|1`.
-					'cache_clear_s2clean_enable'           => '0', // `0|1`.
-					'cache_clear_eval_code'                => '', // PHP code.
-					'cache_clear_xml_feeds_enable'         => '1', // `0|1`.
-					'cache_clear_xml_sitemaps_enable'      => '1', // `0|1`.
-					'cache_clear_xml_sitemap_patterns'     => '/sitemap*.xml', // Empty string or line-delimited patterns.
-					'cache_clear_home_page_enable'         => '1', // `0|1`.
-					'cache_clear_posts_page_enable'        => '1', // `0|1`.
-					'cache_clear_custom_post_type_enable'  => '1', // `0|1`.
-					'cache_clear_author_page_enable'       => '1', // `0|1`.
-					'cache_clear_term_category_enable'     => '1', // `0|1`.
-					'cache_clear_term_post_tag_enable'     => '1', // `0|1`.
-					'cache_clear_term_other_enable'        => '0', // `0|1`.
-					'allow_browser_cache'                  => '0', // `0|1`.
+
+					/* Related to cache directory. */
 
 					'base_dir'                             => 'cache/quick-cache', // Relative to `WP_CONTENT_DIR`.
 					'cache_max_age'                        => '7 days', // `strtotime()` compatible.
 
+					/* Related to automatic cache clearing. */
+
+					'change_notifications_enable'          => '1', // `0|1`.
+
+					'cache_clear_s2clean_enable'           => '0', // `0|1`.
+					'cache_clear_eval_code'                => '', // PHP code.
+
+					'cache_clear_xml_feeds_enable'         => '1', // `0|1`.
+
+					'cache_clear_xml_sitemaps_enable'      => '1', // `0|1`.
+					'cache_clear_xml_sitemap_patterns'     => '/sitemap*.xml',
+					// Empty string or line-delimited patterns.
+
+					'cache_clear_home_page_enable'         => '1', // `0|1`.
+					'cache_clear_posts_page_enable'        => '1', // `0|1`.
+
+					'cache_clear_custom_post_type_enable'  => '1', // `0|1`.
+					'cache_clear_author_page_enable'       => '1', // `0|1`.
+
+					'cache_clear_term_category_enable'     => '1', // `0|1`.
+					'cache_clear_term_post_tag_enable'     => '1', // `0|1`.
+					'cache_clear_term_other_enable'        => '0', // `0|1`.
+
+					/* Misc. cache behaviors. */
+
+					'allow_browser_cache'                  => '0', // `0|1`.
 					'when_logged_in'                       => '0', // `0|1|postload`.
 					'get_requests'                         => '0', // `0|1`.
 					'feeds_enable'                         => '0', // `0|1`.
 					'cache_404_requests'                   => '0', // `0|1`.
 
+					/* Related to exclusions. */
+
 					'exclude_uris'                         => '', // Empty string or line-delimited patterns.
 					'exclude_refs'                         => '', // Empty string or line-delimited patterns.
 					'exclude_agents'                       => 'w3c_validator', // Empty string or line-delimited patterns.
 
+					/* Related to version salt. */
+
 					'version_salt'                         => '', // Any string value.
+
+					/* Related to HTML compressor. */
 
 					'htmlc_enable'                         => '0', // Enable HTML compression?
 					'htmlc_css_exclusions'                 => '', // Empty string or line-delimited patterns.
@@ -235,8 +266,7 @@ namespace quick_cache
 					'htmlc_compress_js_code'               => '1', // `0|1`.
 					'htmlc_compress_html_code'             => '1', // `0|1`.
 
-					'change_notifications_enable'          => '1', // `0|1`.
-					'uninstall_on_deletion'                => '0', // `0|1`.
+					/* Related to auto-cache engine. */
 
 					'auto_cache_enable'                    => '0', // `0|1`.
 					'auto_cache_max_time'                  => '900', // In seconds.
@@ -245,8 +275,27 @@ namespace quick_cache
 					'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
 					'auto_cache_user_agent'                => 'WordPress',
 
+					/* Related to CDN functionality. */
+
+					'cdn_enable'                           => '0', // `0|1`; enable CDN filters?
+					'cdn_host'                             => '', // e.g. `d1v41qemfjie0l.cloudfront.net`
+					'cdn_over_ssl'                         => '1', // `0|1`; enable SSL compat?
+
+					'cdn_extensions'                       => '', // Extensions to serve from the CDN.
+					// This is a delimited list. Delimiters may include `[|;,\s]`.
+
+					'cdn_blacklist'                        => '', // A line-delimited list of exclusion patterns.
+					// Wildcards `*` are supported here. Matched against local file URIs.
+
+					/* Related to automatic pro plugin updates. */
+
 					'update_sync_username'                 => '', 'update_sync_password' => '',
-					'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0'
+					'update_sync_version_check'            => '1', 'last_update_sync_version_check' => '0',
+
+					/* Related to uninstallation routines. */
+
+					'uninstall_on_deletion'                => '0', // `0|1`.
+
 				); // Default options are merged with those defined by the site owner.
 				$options               = (is_array($options = get_option(__NAMESPACE__.'_options'))) ? $options : array();
 				if(is_multisite() && is_array($site_options = get_site_option(__NAMESPACE__.'_options')))
@@ -378,6 +427,11 @@ namespace quick_cache
 				{
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), -PHP_INT_MAX);
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
+				}
+				if($this->options['cdn_enable']) // Enable CDN filters?
+				{
+					require_once dirname(__FILE__).'/includes/cdn-filters.php';
+					new cdn_filters(); // Setup CDN filters.
 				}
 				/* -------------------------------------------------------------- */
 
