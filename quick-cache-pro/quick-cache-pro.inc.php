@@ -278,7 +278,12 @@ namespace quick_cache
 					/* Related to CDN functionality. */
 
 					'cdn_enable'                           => '0', // `0|1`; enable CDN filters?
+
 					'cdn_host'                             => '', // e.g. `d1v41qemfjie0l.cloudfront.net`
+
+					'cdn_invalidation_var'                 => 'iv', // A query string variable name.
+					'cdn_invalidation_counter'             => '1', // Current version counter.
+
 					'cdn_over_ssl'                         => '1', // `0|1`; enable SSL compat?
 
 					'cdn_extensions'                       => '', // Extensions to serve from the CDN.
@@ -423,13 +428,14 @@ namespace quick_cache
 
 				add_filter('plugin_action_links_'.plugin_basename($this->file), array($this, 'add_settings_link'));
 
-				if($this->options['htmlc_enable']) // Mark `<!--footer-scripts-->` for HTML compressor.
+				if($this->options['enable'] && $this->options['htmlc_enable']) // Mark `<!--footer-scripts-->` for HTML compressor.
 				{
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), -PHP_INT_MAX);
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
 				}
-				if($this->options['cdn_enable']) // Enable CDN filters?
+				if($this->options['enable'] && $this->options['cdn_enable']) // Enable CDN filters?
 				{
+					add_action('upgrader_process_complete', array($this, 'bump_cdn_invalidation_counter'), 10, 0);
 					require_once dirname(__FILE__).'/includes/cdn-filters.php';
 					new cdn_filters(); // Setup CDN filters.
 				}
@@ -740,6 +746,9 @@ namespace quick_cache
 			 */
 			public function htmlc_footer_scripts()
 			{
+				if(!$this->options['enable'])
+					return; // Nothing to do.
+
 				echo "\n".'<!--footer-scripts-->'."\n";
 			}
 
@@ -1141,6 +1150,25 @@ namespace quick_cache
 				$schedules['every15m'] = array('interval' => 900, 'display' => __('Every 15 Minutes', $this->text_domain));
 
 				return apply_filters(__METHOD__, $schedules, get_defined_vars());
+			}
+
+			/**
+			 * Bumps CDN invalidation counter.
+			 *
+			 * @since 140422 First documented version.
+			 */
+			public function bump_cdn_invalidation_counter()
+			{
+				if(!$this->options['enable'])
+					return; // Nothing to do.
+
+				if(!$this->options['cdn_enable'])
+					return; // Nothing to do.
+
+				$this->options['cdn_invalidation_counter'] = // Bump!
+					(string)($this->options['cdn_invalidation_counter'] + 1);
+				update_option(__NAMESPACE__.'_options', $this->options); // Blog-specific.
+				if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
 			}
 
 			/**
