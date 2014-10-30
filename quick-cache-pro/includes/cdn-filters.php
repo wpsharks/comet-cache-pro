@@ -263,12 +263,12 @@ namespace quick_cache // Root namespace.
 
 			                   '([^>]+?)'. // Others before; group #3.
 
-			                   '((?:href|src)\s*\=\s*)'. // attribute=; group #4.
-			                   '(["\'])'. // Open quote; group #5.
-			                   '([^"\'>]+?)'. // Local URL; group #6.
+			                   '(\s(?:href|src)\s*\=\s*)'. // ` attribute=`; group #4.
+			                   '(["\'])'. // Open double or single; group #5.
+			                   '([^"\'>]+?)'. // Possible URL; group #6.
 			                   '(\\5)'. // Close quote; group #7.
 
-			                   '([^>]*)'. // Others after; group #8.
+			                   '([^>]*?)'. // Others after; group #8.
 
 			                   '(\>)'. // Tag close; group #9.
 
@@ -277,6 +277,7 @@ namespace quick_cache // Root namespace.
 			$orig_string = $string; // In case of regex errors.
 			$string      = preg_replace_callback($regex_url_attrs, function ($m) use ($_this)
 			{
+				unset($m[0]); // Discard full match.
 				$m[6] = $_this->filter_url($m[6], NULL, TRUE);
 				return implode('', $m); // Concatenate all parts.
 
