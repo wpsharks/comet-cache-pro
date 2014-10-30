@@ -261,7 +261,7 @@ namespace quick_cache // Root namespace.
 			                   '(\<)'. // Open tag; group #1.
 			                   '([\w\-]+)'. // Tag name; group #2.
 
-			                   '([^>]+?)'. // Others before; group #3.
+			                   '([^>]*?)'. // Others before; group #3.
 
 			                   '(\s(?:href|src)\s*\=\s*)'. // ` attribute=`; group #4.
 			                   '(["\'])'. // Open double or single; group #5.
