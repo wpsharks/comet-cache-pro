@@ -63,15 +63,27 @@ namespace quick_cache // Root namespace.
 
 		/**
 		 * @since 14xxxx Adding CDN support.
-		 * @var array Array of CDN extensions.
+		 * @var array Array of whitelisted extensions.
 		 */
-		protected $cdn_extensions;
+		protected $cdn_whitelisted_extensions;
 
 		/**
 		 * @since 14xxxx Adding CDN support.
-		 * @var string CDN blacklisted patterns.
+		 * @var array Array of blacklisted extensions.
 		 */
-		protected $cdn_blacklist;
+		protected $cdn_blacklisted_extensions;
+
+		/**
+		 * @since 14xxxx Adding CDN support.
+		 * @var string|null CDN whitelisted URI patterns.
+		 */
+		protected $cdn_whitelisted_uri_patterns;
+
+		/**
+		 * @since 14xxxx Adding CDN support.
+		 * @var string|null CDN blacklisted URI patterns.
+		 */
+		protected $cdn_blacklisted_uri_patterns;
 
 		/**
 		 * Class constructor.
@@ -80,31 +92,80 @@ namespace quick_cache // Root namespace.
 		 */
 		public function __construct()
 		{
-			$this->plugin = plugin();
+			$this->plugin = plugin(); // Plugin class.
+
+			/* Primary switch; enabled? */
 
 			$this->cdn_enable = (boolean)$this->plugin->options['cdn_enable'];
+
+			/* Host-related properties. */
 
 			$this->local_host = strtolower((string)parse_url(network_home_url(), PHP_URL_HOST));
 			$this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
 
+			/* Configure invalidation-related properties. */
+
 			$this->cdn_invalidation_var     = (string)$this->plugin->options['cdn_invalidation_var'];
 			$this->cdn_invalidation_counter = (integer)$this->plugin->options['cdn_invalidation_counter'];
 
+			/* CDN supports SSL connections? */
+
 			$this->cdn_over_ssl = (boolean)$this->plugin->options['cdn_over_ssl'];
 
-			$this->cdn_extensions = trim(strtolower($this->plugin->options['cdn_extensions']), "\r\n\t\0\x0B".' |;,');
-			$this->cdn_extensions = preg_split('/[|;,\s]+/', $this->cdn_extensions, NULL, PREG_SPLIT_NO_EMPTY);
-			$this->cdn_extensions = array_unique($this->cdn_extensions);
+			/* Whitelisted extensions; MUST have these at all times. */
 
-			foreach($this->cdn_extensions as $_key => $_extension)
-				if(in_array($_extension, array('php'), TRUE))
-					unset($this->cdn_extensions[$_key]);
-			unset($_key, $_extension); // Housekeeping.
+			if(!($cdn_whitelisted_extensions = trim($this->plugin->options['cdn_whitelisted_extensions'])))
+				$cdn_whitelisted_extensions = implode('|', array_keys(wp_get_mime_types()));
 
-			$this->cdn_blacklist = '/(?:'.implode('|', array_map(function ($pattern)
+			$this->cdn_whitelisted_extensions = trim(strtolower($cdn_whitelisted_extensions), "\r\n\t\0\x0B".' |;,');
+			$this->cdn_whitelisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_whitelisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
+			$this->cdn_whitelisted_extensions = array_unique($this->cdn_whitelisted_extensions);
+
+			/* Blacklisted extensions; if applicable. */
+
+			$cdn_blacklisted_extensions = $this->plugin->options['cdn_blacklisted_extensions'];
+
+			$this->cdn_blacklisted_extensions = trim(strtolower($cdn_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
+			$this->cdn_blacklisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_blacklisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
+
+			$this->cdn_blacklisted_extensions[] = 'php'; // Always exclude.
+
+			$this->cdn_blacklisted_extensions = array_unique($this->cdn_blacklisted_extensions);
+
+			/* Whitelisted URI patterns; if applicable. */
+
+			$cdn_whitelisted_uri_patterns = trim(strtolower($this->plugin->options['cdn_whitelisted_uri_patterns']));
+			$cdn_whitelisted_uri_patterns = preg_split('/['."\r\n".']+/', $cdn_whitelisted_uri_patterns, NULL, PREG_SPLIT_NO_EMPTY);
+			$cdn_whitelisted_uri_patterns = array_unique($cdn_whitelisted_uri_patterns);
+
+			if($cdn_whitelisted_uri_patterns) $this->cdn_whitelisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern)
 				{
-					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/'));
-				}, preg_split('/['."\r\n".']+/', $this->plugin->options['cdn_blacklist'], NULL, PREG_SPLIT_NO_EMPTY))).')/';
+					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/')); #
+
+				}, $cdn_whitelisted_uri_patterns)).')/i'; // CaSe inSensitive.
+
+			/* Blacklisted URI patterns; if applicable. */
+
+			$cdn_blacklisted_uri_patterns = trim(strtolower($this->plugin->options['cdn_blacklisted_uri_patterns']));
+			$cdn_blacklisted_uri_patterns = preg_split('/['."\r\n".']+/', $cdn_blacklisted_uri_patterns, NULL, PREG_SPLIT_NO_EMPTY);
+
+			$cdn_blacklisted_uri_patterns[] = '*/wp-admin/*'; // Always.
+
+			if(is_multisite()) // Auto-exclude multisite rewrites.
+				$cdn_blacklisted_uri_patterns[] = '*/files/*'; // Uses rewrite.
+
+			if(defined('WS_PLUGIN__S2MEMBER_VERSION')) // Auto-exclude s2Member rewrites.
+				$cdn_blacklisted_uri_patterns[] = '*/s2member-files/*';
+
+			$cdn_blacklisted_uri_patterns = array_unique($cdn_blacklisted_uri_patterns);
+
+			if($cdn_blacklisted_uri_patterns) $this->cdn_blacklisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern)
+				{
+					return preg_replace('/\\\\\*/', '.*?', preg_quote('/'.ltrim($pattern, '/'), '/')); #
+
+				}, $cdn_blacklisted_uri_patterns)).')/i'; // CaSe inSensitive.
+
+			/* Maybe attach filters. */
 
 			$this->maybe_setup_filters();
 		}
@@ -245,16 +306,19 @@ namespace quick_cache // Root namespace.
 			if($esc) $url_uri_query = wp_specialchars_decode($url_uri_query, ENT_QUOTES);
 
 			if(!($local_file = $this->local_file($url_uri_query)))
-				return $orig_url_uri_query; // Not local.
+				return $orig_url_uri_query; // Not a local file.
 
-			if(!in_array($local_file->extension, $this->cdn_extensions, TRUE))
-				return $orig_url_uri_query; // Not in the list of CDN extensions.
+			if(!in_array($local_file->extension, $this->cdn_whitelisted_extensions, TRUE))
+				return $orig_url_uri_query; // Not a whitelisted extension.
 
-			if(preg_match('/\/wp\-admin(?:[\/?#]|$)/i', $local_file->uri))
-				return $orig_url_uri_query; // Exclude `wp-admin` URIs.
+			if($this->cdn_blacklisted_extensions && in_array($local_file->extension, $this->cdn_blacklisted_extensions, TRUE))
+				return $orig_url_uri_query; // Exclude; it's a blacklisted extension.
 
-			if(preg_match($this->cdn_blacklist, $local_file->uri))
-				return $orig_url_uri_query; // Exclude blacklisted URIs.
+			if($this->cdn_whitelisted_uri_patterns && !preg_match($this->cdn_whitelisted_uri_patterns, $local_file->uri))
+				return $orig_url_uri_query; // Exclude; not a whitelisted URI pattern.
+
+			if($this->cdn_blacklisted_uri_patterns && preg_match($this->cdn_blacklisted_uri_patterns, $local_file->uri))
+				return $orig_url_uri_query; // Exclude; it's a blacklisted URI pattern.
 
 			if(!isset($scheme) && isset($local_file->scheme))
 				$scheme = $local_file->scheme; // Use original scheme.

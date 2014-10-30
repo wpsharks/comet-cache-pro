@@ -286,10 +286,17 @@ namespace quick_cache
 
 					'cdn_over_ssl'                         => '1', // `0|1`; enable SSL compat?
 
-					'cdn_extensions'                       => '', // Extensions to serve from the CDN.
-					// This is a delimited list. Delimiters may include `[|;,\s]`.
+					'cdn_whitelisted_extensions'           => '', // Whitelisted extensions.
+					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
+					// Defaults to all extensions supported by the WP media library; i.e. `wp_get_mime_types()`.
 
-					'cdn_blacklist'                        => '', // A line-delimited list of exclusion patterns.
+					'cdn_blacklisted_extensions'           => '', // Blacklisted extensions.
+					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
+
+					'cdn_whitelisted_uri_patterns'         => '', // A line-delimited list of inclusion patterns.
+					// Wildcards `*` are supported here. Matched against local file URIs.
+
+					'cdn_blacklisted_uri_patterns'         => '', // A line-delimited list of exclusion patterns.
 					// Wildcards `*` are supported here. Matched against local file URIs.
 
 					/* Related to automatic pro plugin updates. */
