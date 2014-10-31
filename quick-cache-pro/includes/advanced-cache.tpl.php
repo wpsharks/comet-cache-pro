@@ -1344,7 +1344,7 @@ namespace quick_cache
 			if(!QUICK_CACHE_HTMLC_ENABLE)
 				return $cache; // Nothing to do here.
 
-			require_once dirname($this->plugin_file).'/submodules/htmlc/html-compressor/stub.php';
+			require_once dirname($this->plugin_file).'/submodules/html-compressor/html-compressor/stub.php';
 
 			if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
 				$host_dir_token = ''; // Not necessary.
