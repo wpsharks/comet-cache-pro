@@ -54,6 +54,7 @@ namespace quick_cache // Root namespace.
 			$max_time = $max_time > 60 ? $max_time : 900; // 60+ seconds.
 
 			@set_time_limit($max_time); // Max time.
+			// @TODO When disabled, display a warning.
 			ignore_user_abort(TRUE); // Keep running.
 
 			$micro_start_time = microtime(TRUE);
