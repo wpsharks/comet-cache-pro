@@ -275,30 +275,6 @@ namespace quick_cache
 					'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
 					'auto_cache_user_agent'                => 'WordPress',
 
-					/* Related to CDN functionality. */
-
-					'cdn_enable'                           => '0', // `0|1`; enable CDN filters?
-
-					'cdn_host'                             => '', // e.g. `d1v41qemfjie0l.cloudfront.net`
-
-					'cdn_invalidation_var'                 => 'iv', // A query string variable name.
-					'cdn_invalidation_counter'             => '1', // Current version counter.
-
-					'cdn_over_ssl'                         => '0', // `0|1`; enable SSL compat?
-
-					'cdn_whitelisted_extensions'           => '', // Whitelisted extensions.
-					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
-					// Defaults to all extensions supported by the WP media library; i.e. `wp_get_mime_types()`.
-
-					'cdn_blacklisted_extensions'           => '', // Blacklisted extensions.
-					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
-
-					'cdn_whitelisted_uri_patterns'         => '', // A line-delimited list of inclusion patterns.
-					// Wildcards `*` are supported here. Matched against local file URIs.
-
-					'cdn_blacklisted_uri_patterns'         => '', // A line-delimited list of exclusion patterns.
-					// Wildcards `*` are supported here. Matched against local file URIs.
-
 					/* Related to automatic pro plugin updates. */
 
 					'update_sync_username'                 => '', 'update_sync_password' => '',
@@ -439,12 +415,6 @@ namespace quick_cache
 				{
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), -PHP_INT_MAX);
 					add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
-				}
-				if($this->options['enable'] && $this->options['cdn_enable']) // Enable CDN filters?
-				{
-					add_action('upgrader_process_complete', array($this, 'bump_cdn_invalidation_counter'), 10, 0);
-					require_once dirname(__FILE__).'/includes/cdn-filters.php';
-					new cdn_filters(); // Setup CDN filters.
 				}
 				/* -------------------------------------------------------------- */
 
@@ -1157,25 +1127,6 @@ namespace quick_cache
 				$schedules['every15m'] = array('interval' => 900, 'display' => __('Every 15 Minutes', $this->text_domain));
 
 				return apply_filters(__METHOD__, $schedules, get_defined_vars());
-			}
-
-			/**
-			 * Bumps CDN invalidation counter.
-			 *
-			 * @since 140422 First documented version.
-			 */
-			public function bump_cdn_invalidation_counter()
-			{
-				if(!$this->options['enable'])
-					return; // Nothing to do.
-
-				if(!$this->options['cdn_enable'])
-					return; // Nothing to do.
-
-				$this->options['cdn_invalidation_counter'] = // Bump!
-					(string)($this->options['cdn_invalidation_counter'] + 1);
-				update_option(__NAMESPACE__.'_options', $this->options); // Blog-specific.
-				if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->options);
 			}
 
 			/**
