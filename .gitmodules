@@ -1,0 +1,3 @@
+[submodule "quick-cache-pro/submodules/html-compressor"]
+	path = quick-cache-pro/submodules/html-compressor
+	url = https://github.com/websharks/html-compressor
