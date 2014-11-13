@@ -148,6 +148,7 @@ namespace quick_cache // Root namespace.
 		protected function log_auto_cache_url($url, $wp_remote_get_response)
 		{
 			$cache_dir           = $this->plugin->cache_dir();
+			$cache_lock          = $this->plugin->cache_lock();
 			$auto_cache_log_file = $cache_dir.'/qc-auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
@@ -160,6 +161,8 @@ namespace quick_cache // Root namespace.
 			file_put_contents($auto_cache_log_file, $log_entry, FILE_APPEND);
 			if(filesize($auto_cache_log_file) > 2097152) // 2MB is the maximum log file size.
 				rename($auto_cache_log_file, substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
+
+			$this->plugin->cache_unlock($cache_lock); // Unlock cache directory.
 		}
 
 		/**
@@ -173,6 +176,7 @@ namespace quick_cache // Root namespace.
 		protected function log_auto_cache_run($total_urls, $total_time)
 		{
 			$cache_dir           = $this->plugin->cache_dir();
+			$cache_lock          = $this->plugin->cache_lock();
 			$auto_cache_log_file = $cache_dir.'/qc-auto-cache.log';
 
 			if(is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file))
@@ -183,6 +187,8 @@ namespace quick_cache // Root namespace.
 			file_put_contents($auto_cache_log_file, $log_entry, FILE_APPEND);
 			if(filesize($auto_cache_log_file) > 2097152) // 2MB is the maximum log file size.
 				rename($auto_cache_log_file, substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
+
+			$this->plugin->cache_unlock($cache_lock); // Unlock cache directory.
 		}
 
 		/**
