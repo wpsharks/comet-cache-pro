@@ -407,6 +407,7 @@ namespace quick_cache
 
 				add_filter('enable_live_network_counts', array($this, 'update_blog_paths'));
 
+				add_filter('fs_ftp_connection_types', array($this, 'fs_ftp_connection_types'));
 				add_filter('pre_site_transient_update_plugins', array($this, 'pre_site_transient_update_plugins'));
 
 				add_filter('plugin_action_links_'.plugin_basename($this->file), array($this, 'add_settings_link'));
@@ -892,6 +893,44 @@ namespace quick_cache
 
 				$this->enqueue_notice(sprintf(__('<strong>Quick Cache Pro:</strong> a new version is now available. Please <a href="%1$s">upgrade to v%2$s</a>.', $this->text_domain),
 				                              $update_sync_page, $update_sync_response['version']), 'persistent-update-sync-version');
+			}
+
+			/**
+			 * Appends hidden inputs for pro updater when FTP credentials are requested by WP.
+			 *
+			 * @since 14xxxx See: <https://github.com/websharks/quick-cache/issues/389#issuecomment-68620617>
+			 *
+			 * @attaches-to `fs_ftp_connection_types` filter.
+			 *
+			 * @param array $types Types of connections.
+			 *
+			 * @return array $types Types of connections.
+			 */
+			public function fs_ftp_connection_types($types)
+			{
+				if(!is_admin() || $GLOBALS['pagenow'] !== 'update.php')
+					return $types; // Nothing to do here.
+
+				$_r = array_map('trim', stripslashes_deep($_REQUEST));
+
+				if(empty($_r['action']) || $_r['action'] !== 'upgrade-plugin')
+					return $types; // Nothing to do here.
+
+				if(empty($_r[__NAMESPACE__.'__update_version']) || !($update_version = (string)$_r[__NAMESPACE__.'__update_version']))
+					return $types; // Nothing to do here.
+
+				if(empty($_r[__NAMESPACE__.'__update_zip']) || !($update_zip = (string)$_r[__NAMESPACE__.'__update_zip']))
+					return $types; // Nothing to do here.
+
+				echo '<script type="text/javascript">';
+				echo '   (function($){ $(document).ready(function(){';
+				echo '      var $form = $(\'input#hostname\').closest(\'form\');';
+				echo '      $form.append(\'<input type="hidden" name="'.esc_attr(__NAMESPACE__.'__update_version').'" value="'.esc_attr($update_version).'" />\');';
+				echo '      $form.append(\'<input type="hidden" name="'.esc_attr(__NAMESPACE__.'__update_zip').'" value="'.esc_attr($update_zip).'" />\');';
+				echo '   }); })(jQuery);';
+				echo '</script>';
+
+				return $types; // Filter through.
 			}
 
 			/**
