@@ -298,8 +298,26 @@ namespace quick_cache // Root namespace.
 				}
 				if(!($flags & $this::CACHE_PATH_NO_PATH))
 				{
+					if(isset($url['path'][201])) // Extremely long?
+					{
+						$url['_path_tmp'] = '/'; // Initialize tmp path.
+						foreach(explode('/', $url['path']) as $_path_component)
+						{
+							if(!isset($_path_component[0]))
+								continue; // Empty.
+
+							if(isset($_path_component[201]))
+								$_path_component = 'lpc-'.sha1($_path_component);
+							$url['_path_tmp'] .= $_path_component.'/';
+						}
+						$url['path'] = $url['_path_tmp']; // Shorter components.
+						unset($_path_component, $url['_path_tmp']); // Housekeeping.
+
+						if(isset($url['path'][2001])) // Overall path length is very long?
+							$url['path'] = '/lp-'.sha1($url['path']).'/';
+					}
 					if(!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B")))
-						$cache_path .= $url['path'].'/';
+						$cache_path .= $url['path'].'/'; // Has a path, let's use it :-)
 					else if(!($flags & $this::CACHE_PATH_NO_PATH_INDEX)) $cache_path .= 'index/';
 				}
 				if($this->is_extension_loaded('mbstring') && mb_check_encoding($cache_path, 'UTF-8'))
@@ -320,7 +338,7 @@ namespace quick_cache // Root namespace.
 						if($with_version_salt !== '') // Allow a `0` value if desirable.
 							$cache_path = rtrim($cache_path, '/').'.v/'.str_replace(array('/', '\\'), '-', $with_version_salt).'/';
 				}
-				$cache_path = trim(preg_replace('/\/+/', '/', $cache_path), '/');
+				$cache_path = trim(preg_replace(array('/\/+/', '/\.+/'), array('/', '.'), $cache_path), '/');
 
 				if($flags & $this::CACHE_PATH_ALLOW_WILDCARDS) // Allow `*`?
 					$cache_path = preg_replace('/[^a-z0-9\/.*]/i', '-', $cache_path);
@@ -1885,7 +1903,7 @@ namespace quick_cache // Root namespace.
 			public function cache_lock()
 			{
 				if($this->apply_filters(__CLASS__.'_disable_cache_locking', FALSE))
-					return false;
+					return FALSE;
 
 				if(!($wp_config_file = $this->find_wp_config_file()))
 					throw new \exception(__('Unable to find the wp-config.php file.', $this->text_domain));
@@ -1907,7 +1925,7 @@ namespace quick_cache // Root namespace.
 					throw new \exception(__('No writable tmp directory.', $this->text_domain));
 
 				$inode_key = fileinode($wp_config_file);
-				$mutex = $tmp_dir.'/'.$this->slug.'-'.$inode_key.'.lock';
+				$mutex     = $tmp_dir.'/'.$this->slug.'-'.$inode_key.'.lock';
 				if(!($resource = fopen($mutex, 'w')) || !flock($resource, LOCK_EX))
 					throw new \exception(__('Unable to obtain an exclusive lock.', $this->text_domain));
 
