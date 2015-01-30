@@ -916,7 +916,7 @@ namespace quick_cache
 			if($this->is_post_put_delete_request() || $this->is_uncacheable_request_method())
 				$this->postload['invalidate_when_logged_in'] = TRUE;
 
-			else if(!QUICK_CACHE_GET_REQUESTS && $this->is_get_request_w_query())
+			else if(!QUICK_CACHE_GET_REQUESTS && $this->is_get_request_w_query() && (!isset($_GET['qcAC']) || !filter_var($_GET['qcAC'], FILTER_VALIDATE_BOOLEAN)))
 				$this->postload['invalidate_when_logged_in'] = TRUE;
 		}
 
