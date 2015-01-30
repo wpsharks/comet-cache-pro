@@ -898,7 +898,7 @@ namespace quick_cache
 			/**
 			 * Appends hidden inputs for pro updater when FTP credentials are requested by WP.
 			 *
-			 * @since 14xxxx See: <https://github.com/websharks/quick-cache/issues/389#issuecomment-68620617>
+			 * @since 150129 See: <https://github.com/websharks/quick-cache/issues/389#issuecomment-68620617>
 			 *
 			 * @attaches-to `fs_ftp_connection_types` filter.
 			 *
