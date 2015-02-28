@@ -50,6 +50,7 @@ namespace quick_cache // Root namespace.
 				$this->from_lt_v141001();
 				$this->from_lt_v141009();
 				$this->from_lt_v141105();
+				$this->from_lt_v150129_1();
 			}
 
 			/*
