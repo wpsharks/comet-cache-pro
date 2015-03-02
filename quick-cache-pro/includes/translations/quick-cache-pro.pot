@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Quick Cache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quick Cache Pro 150129.1\n"
+"Project-Id-Version: Quick Cache Pro 150129.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/quick-cache-pro\n"
 "POT-Creation-Date: 2015-02-28 19:03:04+00:00\n"
 "MIME-Version: 1.0\n"
