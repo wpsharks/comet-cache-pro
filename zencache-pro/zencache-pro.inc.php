@@ -291,7 +291,7 @@ namespace zencache
 					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
 					// Defaults to all extensions supported by the WP media library; i.e. `wp_get_mime_types()`.
 
-					'cdn_blacklisted_extensions'           => '', // Blacklisted extensions.
+					'cdn_blacklisted_extensions'           => 'eot,ttf,otf,woff', // Blacklisted extensions.
 					// This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
 
 					'cdn_whitelisted_uri_patterns'         => '', // A line-delimited list of inclusion patterns.
