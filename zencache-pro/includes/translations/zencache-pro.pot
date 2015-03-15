@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the ZenCache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: ZenCache Pro 150218\n"
+"Project-Id-Version: ZenCache Pro 150314\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/zencache-pro\n"
-"POT-Creation-Date: 2015-02-18 04:43:56+00:00\n"
+"POT-Creation-Date: 2015-03-15 00:20:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -250,7 +250,7 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: includes/menu-pages.php:41 includes/menu-pages.php:761
+#: includes/menu-pages.php:41 includes/menu-pages.php:763
 msgid "All Panels"
 msgstr ""
 
@@ -258,11 +258,11 @@ msgstr ""
 msgid "Pro Updater"
 msgstr ""
 
-#: includes/menu-pages.php:48 includes/menu-pages.php:768
+#: includes/menu-pages.php:48 includes/menu-pages.php:770
 msgid "Newsletter (Subscribe)"
 msgstr ""
 
-#: includes/menu-pages.php:49 includes/menu-pages.php:769
+#: includes/menu-pages.php:49 includes/menu-pages.php:771
 msgid "Beta Testers (Signup)"
 msgstr ""
 
@@ -825,7 +825,7 @@ msgstr ""
 
 #: includes/menu-pages.php:438 includes/menu-pages.php:456
 #: includes/menu-pages.php:474 includes/menu-pages.php:574
-#: includes/menu-pages.php:578 includes/menu-pages.php:658
+#: includes/menu-pages.php:578 includes/menu-pages.php:660
 msgid "<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g. one exclusion pattern per line."
 msgstr ""
 
@@ -1061,248 +1061,248 @@ msgstr ""
 msgid "If you want to enable GZIP, create an <code>.htaccess</code> file in your WordPress® installation directory, and put the following few lines in it. Alternatively, if you already have an <code>.htaccess</code> file, just add these lines to it, and that is all there is to it. GZIP is now enabled in the recommended way! See also: <a href=\"https://developers.google.com/speed/articles/gzip\" target=\"_blank\"><i class=\"fa fa-youtube-play\"></i> video about GZIP Compression</a>."
 msgstr ""
 
-#: includes/menu-pages.php:615
+#: includes/menu-pages.php:617
 msgid "Static CDN Filters"
 msgstr ""
 
-#: includes/menu-pages.php:620
+#: includes/menu-pages.php:622
 msgid "Enable Static CDN Filters (e.g. MaxCDN/CloudFront)?"
 msgstr ""
 
-#: includes/menu-pages.php:621
+#: includes/menu-pages.php:623
 msgid "This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn't require any DNS changes either. :-) Please <a href=\"http://zencache.com/r/static-cdn-filters-general-instructions/\" target=\"_blank\">click here</a> for a general set of instructions."
 msgstr ""
 
-#: includes/menu-pages.php:622
+#: includes/menu-pages.php:624
 msgid "<strong>What's a CDN?</strong> It's a Content Delivery Network (i.e. a network of optimized servers) designed to cache static resources served from your site (e.g. JS/CSS/images and other static files) onto it's own servers, which are located strategically in various geographic areas around the world. Integrating a CDN for static files can dramatically improve the speed and performance of your site, lower the burden on your own server, and reduce latency associated with visitors attempting to access your site from geographic areas of the world that might be very far away from the primary location of your own web servers."
 msgstr ""
 
-#: includes/menu-pages.php:624
+#: includes/menu-pages.php:626
 msgid "No, I do NOT want CDN filters applied at runtime."
 msgstr ""
 
-#: includes/menu-pages.php:625
+#: includes/menu-pages.php:627
 msgid "Yes, I want CDN filters applied w/ my configuration below."
 msgstr ""
 
-#: includes/menu-pages.php:629
+#: includes/menu-pages.php:631
 msgid "CDN Host Name (Absolutely Required)"
 msgstr ""
 
-#: includes/menu-pages.php:633
+#: includes/menu-pages.php:635
 msgid "This one field is really all that's necessary to get Static CDN Filters working! However, it does requires a little bit of work on your part. You need to setup and configure a CDN before you can fill in this field. One you configure a CDN, you'll receive a host name (provided by your CDN), which you'll enter here; e.g. <code>js9dgjsl4llqpp.cloudfront.net</code>. We recommend <a href=\"https://www.maxcdn.com/websharks/\" target=\"_blank\">MaxCDN</a> and/or <a href=\"http://aws.amazon.com/cloudfront/\" target=\"_blank\">Amazon CloudFront</a>, but this should work with many of the most popular CDNs. Please read <a href=\"http://zencache.com/r/static-cdn-filters-general-instructions/\" target=\"_blank\">this article</a> for a general set of instructions. We also have a <a href=\"http://zencache.com/r/static-cdn-filters-cloudfront/\" target=\"_blank\">CloudFront tutorial video</a> that walks you through the process."
 msgstr ""
 
-#: includes/menu-pages.php:635
+#: includes/menu-pages.php:637
 msgid "CDN Host Supports HTTPS Connections?"
 msgstr ""
 
-#: includes/menu-pages.php:637
+#: includes/menu-pages.php:639
 msgid "No, I don't serve content over https://; or I haven't configured my CDN w/ an SSL certificate."
 msgstr ""
 
-#: includes/menu-pages.php:638
+#: includes/menu-pages.php:640
 msgid "Yes, I've configured my CDN w/ an SSL certificate; I need https:// enabled."
 msgstr ""
 
-#: includes/menu-pages.php:641
+#: includes/menu-pages.php:643
 msgid "Everything else below is 100% completely optional; i.e. not required to enjoy the benefits of Static CDN Filters."
 msgstr ""
 
-#: includes/menu-pages.php:643
+#: includes/menu-pages.php:645
 msgid "Whitelisted File Extensions (Optional; Comma-Delimited)"
 msgstr ""
 
-#: includes/menu-pages.php:646
+#: includes/menu-pages.php:648
 msgid "Blacklisted File Extensions (Optional; Comma-Delimited)"
 msgstr ""
 
-#: includes/menu-pages.php:648
+#: includes/menu-pages.php:650
 msgid "With or without a whitelist, you can force exclusions by explicitly blacklisting certain file extensions of your choosing. Please note, the <code>php</code> extension will never be considered a static resource; i.e. it is automatically blacklisted at all times."
 msgstr ""
 
-#: includes/menu-pages.php:650
+#: includes/menu-pages.php:652
 msgid "Whitelisted URI Inclusion Patterns (Optional; One Per Line)"
 msgstr ""
 
-#: includes/menu-pages.php:652
+#: includes/menu-pages.php:654
 msgid "<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g. one inclusion pattern per line."
 msgstr ""
 
-#: includes/menu-pages.php:653
+#: includes/menu-pages.php:655
 msgid "If provided, only local URIs matching one of the patterns you list here will be served from your CDN Host Name. URI patterns are caSe-insensitive. A wildcard <code>*</code> will match zero or more characters in any of your patterns. A caret <code>^</code> symbol will match zero or more characters that are NOT the <code>/</code> character. For instance, <code>*/wp-content/*</code> here would indicate that you only want to filter URLs that lead to files located inside the <code>wp-content</code> directory. Adding an additional line with <code>*/wp-includes/*</code> would filter URLs in the <code>wp-includes</code> directory also. <strong>If you leave this empty</strong>, ALL files matching a static file extension will be served from your CDN; i.e. the default behavior."
 msgstr ""
 
-#: includes/menu-pages.php:654
+#: includes/menu-pages.php:656
 msgid "Please note that URI patterns are tested against a file's path (i.e. a file's URI, and NOT its full URL). A URI always starts with a leading <code>/</code>. To clarify, a URI is the portion of the URL which comes after the host name. For instance, given the following URL: <code>http://example.com/path/to/style.css?ver=3</code>, the URI you are matching against would be: <code>/path/to/style.css?ver=3</code>. To whitelist this URI, you could use a line that contains something like this: <code>/path/to/*.css*</code>"
 msgstr ""
 
-#: includes/menu-pages.php:655
+#: includes/menu-pages.php:657
 msgid "Blacklisted URI Exclusion Patterns (Optional; One Per Line)"
 msgstr ""
 
-#: includes/menu-pages.php:657
+#: includes/menu-pages.php:659
 msgid "With or without a whitelist, you can force exclusions by explicitly blacklisting certain URI patterns. URI patterns are caSe-insensitive. A wildcard <code>*</code> will match zero or more characters in any of your patterns. A caret <code>^</code> symbol will match zero or more characters that are NOT the <code>/</code> character. For instance, <code>*/wp-content/*/dynamic.pdf*</code> would exclude a file with the name <code>dynamic.pdf</code> located anywhere inside a sub-directory of <code>wp-content</code>."
 msgstr ""
 
-#: includes/menu-pages.php:660
+#: includes/menu-pages.php:662
 msgid "Query String Invalidation Variable Name"
 msgstr ""
 
-#: includes/menu-pages.php:662
+#: includes/menu-pages.php:664
 msgid "Each filtered URL (which then leads to your CDN) will include this query string variable as an easy way to invalidate the CDN cache at any time. Invalidating the CDN cache is simply a matter of changing the global invalidation counter (i.e. the value assigned to this query string variable). %1$s manages invalidations automatically; i.e. %1$s will automatically bump an internal counter each time you upgrade a WordPress component (e.g. a plugin, theme, or WP itself). Or, if you ask %1$s to invalidate the CDN cache (e.g. a manual clearing of the CDN cache); the internal counter is bumped then too. In short, %1$s handles cache invalidations for you reliably. This option simply allows you to customize the query string variable name which makes cache invalidations possible. <strong>Please note, the default value is adequate for most sites. You can change this if you like, but it's not necessary.</strong>"
 msgstr ""
 
-#: includes/menu-pages.php:663
+#: includes/menu-pages.php:665
 msgid "<strong>Note:</strong> If you empty this field, it will effectively disable the %1$s invalidation system for Static CDN Filters; i.e. the query string variable will NOT be included if you do not supply a variable name."
 msgstr ""
 
-#: includes/menu-pages.php:674
+#: includes/menu-pages.php:676
 msgid "Dynamic Version Salt"
 msgstr ""
 
-#: includes/menu-pages.php:679
+#: includes/menu-pages.php:681
 msgid "<i class=\"fa fa-flask\"></i> <span style=\"display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;\"><span style=\"font-weight:bold; font-size:80%;\">GEEK ALERT</span></span> This is for VERY advanced users only..."
 msgstr ""
 
-#: includes/menu-pages.php:680
+#: includes/menu-pages.php:682
 msgid "<em>Note: Understanding the %1$s <a href=\"http://zencache.com/r/kb-branched-cache-structure/\" target=\"_blank\">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>"
 msgstr ""
 
-#: includes/menu-pages.php:681
+#: includes/menu-pages.php:683
 msgid "A Version Salt gives you the ability to dynamically create multiple variations of the cache, and those dynamic variations will be served on subsequent visits; e.g. if a visitor has a specific cookie (of a certain value) they will see pages which were cached with that version (i.e. w/ that Version Salt: the value of the cookie). A Version Salt can really be anything."
 msgstr ""
 
-#: includes/menu-pages.php:682
+#: includes/menu-pages.php:684
 msgid "A Version Salt can be a single variable like <code>$_COOKIE['my_cookie']</code>, or it can be a combination of multiple variables, like <code>$_COOKIE['my_cookie'].$_COOKIE['my_other_cookie']</code>. (When using multiple variables, please separate them with a dot, as shown in the example.)"
 msgstr ""
 
-#: includes/menu-pages.php:683
+#: includes/menu-pages.php:685
 msgid "Experts could even use PHP ternary expressions that evaluate into something. For example: <code>((preg_match('/iPhone/i', $_SERVER['HTTP_USER_AGENT'])) ? 'iPhones' : '')</code>. This would force a separate version of the cache to be created for iPhones (e.g., <code>/cache/PROTOCOL/HOST/REQUEST-URI.v/iPhones.html</code>)."
 msgstr ""
 
-#: includes/menu-pages.php:684
+#: includes/menu-pages.php:686
 msgid "For more documentation, please see <a href=\"http://zencache.com/r/kb-dynamic-version-salts/\" target=\"_blank\">Dynamic Version Salts</a>."
 msgstr ""
 
-#: includes/menu-pages.php:686
+#: includes/menu-pages.php:688
 msgid "Create a Dynamic Version Salt For %1$s? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style=\"font-size:90%%; opacity:0.5;\">150%% OPTIONAL</span>"
 msgstr ""
 
-#: includes/menu-pages.php:688
+#: includes/menu-pages.php:690
 msgid "<a href=\"http://php.net/manual/en/language.variables.superglobals.php\" target=\"_blank\">Super Globals</a> work here; <a href=\"http://codex.wordpress.org/Editing_wp-config.php#table_prefix\" target=\"_blank\"><code>$GLOBALS['table_prefix']</code></a> is a popular one.<br />Or, perhaps a PHP Constant defined in <code>/wp-config.php</code>; such as <code>WPLANG</code> or <code>DB_HOST</code>."
 msgstr ""
 
-#: includes/menu-pages.php:689
+#: includes/menu-pages.php:691
 msgid "<strong>Important:</strong> your Version Salt is scanned for PHP syntax errors via <a href=\"http://phpcodechecker.com/\" target=\"_blank\"><code>phpCodeChecker.com</code></a>. If errors are found, you'll receive a notice in the Dashboard."
 msgstr ""
 
-#: includes/menu-pages.php:690
+#: includes/menu-pages.php:692
 msgid "If you've enabled a separate cache for each user (optional) that's perfectly OK. A Version Salt works with user caching too."
 msgstr ""
 
-#: includes/menu-pages.php:700
+#: includes/menu-pages.php:702
 msgid "Theme/Plugin Developers"
 msgstr ""
 
-#: includes/menu-pages.php:705
+#: includes/menu-pages.php:707
 msgid "Developing a Theme or Plugin for WordPress?"
 msgstr ""
 
-#: includes/menu-pages.php:706
+#: includes/menu-pages.php:708
 msgid "<strong>Tip:</strong> %1$s can be disabled temporarily. If you're a theme/plugin developer, you can set a flag within your PHP code to disable the cache engine at runtime. Perhaps on a specific page, or in a specific scenario. In your PHP script, set: <code>$_SERVER['ZENCACHE_ALLOWED'] = FALSE;</code> or <code>define('ZENCACHE_ALLOWED', FALSE)</code>. %1$s is also compatible with: <code>define('DONOTCACHEPAGE', TRUE)</code>. It does't matter where or when you define one of these, because %1$s is the last thing to run before script execution ends."
 msgstr ""
 
-#: includes/menu-pages.php:708
+#: includes/menu-pages.php:710
 msgid "Writing \"Advanced Cache\" Plugins Specifically for %1$s"
 msgstr ""
 
-#: includes/menu-pages.php:709
+#: includes/menu-pages.php:711
 msgid "Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href=\"https://github.com/websharks/zencache/blob/000000-dev/zencache/includes/ac-plugin.example.php\" target=\"_blank\">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org."
 msgstr ""
 
-#: includes/menu-pages.php:710
+#: includes/menu-pages.php:712
 msgid "<strong>Why does %1$s have it's own plugin architecture?</strong> WordPress loads the <code>advanced-cache.php</code> drop-in file (for caching purposes) very early-on; before any other plugins or a theme. For this reason, %1$s implements it's own watered-down version of functions like <code>add_action()</code>, <code>do_action()</code>, <code>add_filter()</code>, <code>apply_filters()</code>."
 msgstr ""
 
-#: includes/menu-pages.php:720
+#: includes/menu-pages.php:722
 msgid "Import/Export Options"
 msgstr ""
 
-#: includes/menu-pages.php:725
+#: includes/menu-pages.php:727
 msgid "Import Options from Another %1$s Installation?"
 msgstr ""
 
-#: includes/menu-pages.php:726
+#: includes/menu-pages.php:728
 msgid "Upload your <code>%1$s-options.json</code> file and click \"Save All Changes\" below. The options provided by your import file will override any that exist currently."
 msgstr ""
 
-#: includes/menu-pages.php:729
+#: includes/menu-pages.php:731
 msgid "Export Existing Options from this %1$s Installation?"
 msgstr ""
 
-#: includes/menu-pages.php:732
+#: includes/menu-pages.php:734
 msgid "%1$s-options.json"
 msgstr ""
 
-#: includes/menu-pages.php:733
+#: includes/menu-pages.php:735
 msgid "Download your existing options and import them all into another %1$s installation; saves time on future installs."
 msgstr ""
 
-#: includes/menu-pages.php:741
+#: includes/menu-pages.php:743
 msgid "Save All Changes"
 msgstr ""
 
-#: includes/menu-pages.php:759 includes/menu-pages.php:837
+#: includes/menu-pages.php:761 includes/menu-pages.php:839
 msgid "Update Now"
 msgstr ""
 
-#: includes/menu-pages.php:767
+#: includes/menu-pages.php:769
 msgid "Options"
 msgstr ""
 
-#: includes/menu-pages.php:772 zencache-pro.inc.php:796
+#: includes/menu-pages.php:774 zencache-pro.inc.php:796
 #: zencache-pro.inc.php:819
 msgid "Pro Plugin Updater"
 msgstr ""
 
-#: includes/menu-pages.php:797
+#: includes/menu-pages.php:799
 msgid "Update Credentials"
 msgstr ""
 
-#: includes/menu-pages.php:802
+#: includes/menu-pages.php:804
 msgid "%1$s™ Authentication"
 msgstr ""
 
-#: includes/menu-pages.php:803
+#: includes/menu-pages.php:805
 msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://%2$s/\" target=\"_blank\">%2$s</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href=\"http://%2$s/\" target=\"_blank\">%2$s</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://%2$s/\" target=\"_blank\">%2$s</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"fa fa-smile-o\"></i>"
 msgstr ""
 
-#: includes/menu-pages.php:805
+#: includes/menu-pages.php:807
 msgid "Customer Username"
 msgstr ""
 
-#: includes/menu-pages.php:807
+#: includes/menu-pages.php:809
 msgid "Customer Password or Product License Key"
 msgstr ""
 
-#: includes/menu-pages.php:818
+#: includes/menu-pages.php:820
 msgid "Update Notifier"
 msgstr ""
 
-#: includes/menu-pages.php:823
+#: includes/menu-pages.php:825
 msgid "%1$s™ Update Notifier"
 msgstr ""
 
-#: includes/menu-pages.php:824
+#: includes/menu-pages.php:826
 msgid "When a new version of %1$s Pro becomes available, %1$s Pro can display a notification in your WordPress Dashboard prompting you to return to this page and perform an upgrade. Would you like this functionality enabled or disabled?"
 msgstr ""
 
-#: includes/menu-pages.php:827
+#: includes/menu-pages.php:829
 msgid "Yes, display a notification in my WordPress Dashboard when a new version is available."
 msgstr ""
 
-#: includes/menu-pages.php:828
+#: includes/menu-pages.php:830
 msgid "No, do not display any %1$s update notifications in my WordPress Dashboard."
 msgstr ""
 
@@ -1380,67 +1380,28 @@ msgstr[1] ""
 msgid "Invalid hook."
 msgstr ""
 
-#: includes/version-specific-upgrade.php:69
+#: includes/version-specific-upgrade.php:70
 msgid "<strong>%1$s:</strong> this version is a <strong>complete rewrite</strong> of Quick Cache :-) Please review your %1$s options carefully!"
 msgstr ""
 
-#: includes/version-specific-upgrade.php:79
+#: includes/version-specific-upgrade.php:80
 msgid "<strong>%1$s Feature Notice:</strong> This version of %1$s adds new options for Feed caching. Feed caching is now disabled by default. If you wish to enable feed caching, please visit the %1$s options panel."
 msgstr ""
 
-#: includes/version-specific-upgrade.php:118
+#: includes/version-specific-upgrade.php:119
 msgid "<strong>%1$s Feature Notice:</strong> This version of %1$s introduces a new <a href=\"http://zencache.com/r/kb-branched-cache-structure/\" target=\"_blank\">Branched Cache Structure</a> and several other <a href=\"http://www.websharks-inc.com/post/quick-cache-v140605-now-available/\" target=\"_blank\">new features</a>."
 msgstr ""
 
-#: includes/version-specific-upgrade.php:151
+#: includes/version-specific-upgrade.php:152
 msgid "<strong>%1$s Notice:</strong> This version of %1$s changes the default base directory that it uses, from <code>ABSPATH</code> to <code>WP_CONTENT_DIR</code>. This is for improved compatibility with installations that choose to use a custom <code>WP_CONTENT_DIR</code> location."
 msgstr ""
 
-#: includes/version-specific-upgrade.php:152
+#: includes/version-specific-upgrade.php:153
 msgid "%1$s has detected that your previously configured cache directory may have been in conflict with this change. As a result, your %1$s configuration has been updated to the new default value; just to keep things running smoothly for you :-). If you would like to review this change, please see: <code>Dashboard ⥱ %1$s ⥱ Directory &amp; Expiration Time</code>; where you may customize it further if necessary."
 msgstr ""
 
-#: includes/version-specific-upgrade.php:273
+#: includes/version-specific-upgrade.php:274
 msgid "<strong>Woohoo! %1$s activated.</strong> :-)"
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:124
-msgid "extension"
-msgid_plural "extensions"
-msgstr[0] ""
-msgstr[1] ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:132
-msgid "<strong>%1$s is NOT active. It requires PHP v%2$s+.</strong>"
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:133
-msgid "&#8627; You're currently running an older copy of PHP v%1$s."
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:136
-msgid "&#8627; You are also missing the following required PHP %1$s: %2$s."
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:138
-#: submodules/wp-php-rv/wp-php-rv.php:146
-msgid "<em>A simple update is necessary. Please ask your hosting company to help resolve this quickly.</em>"
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:139
-msgid "<em>To remove this message, please upgrade PHP. Or, remove %1$s from WordPress.</em>"
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:144
-msgid "<strong>%1$s is NOT active. PHP %2$s missing.</strong>"
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:145
-msgid "&#8627; You are missing the following required PHP %1$s: %2$s."
-msgstr ""
-
-#: submodules/wp-php-rv/wp-php-rv.php:147
-msgid "<em>To remove this message, please install the required PHP %1$s. Or, remove %2$s from WordPress.</em>"
 msgstr ""
 
 #: zencache-pro.inc.php:516
@@ -1467,91 +1428,91 @@ msgstr ""
 msgid "<strong>%1$s Pro:</strong> a new version is now available. Please <a href=\"%2$s\">upgrade to v%3$s</a>."
 msgstr ""
 
-#: zencache-pro.inc.php:1025 zencache-pro.inc.php:1096
+#: zencache-pro.inc.php:1025 zencache-pro.inc.php:1102
 msgid "dismiss &times;"
 msgstr ""
 
-#: zencache-pro.inc.php:1177
+#: zencache-pro.inc.php:1183
 msgid "Every 15 Minutes"
 msgstr ""
 
-#: zencache-pro.inc.php:1394
+#: zencache-pro.inc.php:1400
 msgid "<strong>%1$s:</strong> detected significant changes. Found %2$s in the cache; auto-wiping."
 msgstr ""
 
-#: zencache-pro.inc.php:1421
+#: zencache-pro.inc.php:1427
 msgid "<strong>%1$s:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href=\"http://zencache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
-#: zencache-pro.inc.php:1468
+#: zencache-pro.inc.php:1474
 msgid "<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache for this site; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:1495
+#: zencache-pro.inc.php:1501
 msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href=\"http://zencache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
-#: zencache-pro.inc.php:1574
+#: zencache-pro.inc.php:1580
 msgid "Post"
 msgstr ""
 
-#: zencache-pro.inc.php:1582
+#: zencache-pro.inc.php:1588
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:1748
+#: zencache-pro.inc.php:1754
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache, for XML feeds of type: <code>%3$s</code>; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:1797
+#: zencache-pro.inc.php:1803
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for XML sitemaps; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:1840
+#: zencache-pro.inc.php:1846
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for the designated \"Home Page\"; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:1898
+#: zencache-pro.inc.php:1904
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for the designated \"Posts Page\"; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:1956
+#: zencache-pro.inc.php:1962
 msgid "Untitled"
 msgstr ""
 
-#: zencache-pro.inc.php:1967
+#: zencache-pro.inc.php:1973
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Custom Post Type: <code>%3$s</code>; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:2057
+#: zencache-pro.inc.php:2063
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Author Page: <code>%3$s</code>; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:2209
+#: zencache-pro.inc.php:2215
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s: <code>%4$s</code>; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:2361
+#: zencache-pro.inc.php:2367
 msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for user ID: <code>%3$s</code>; auto-clearing."
 msgstr ""
 
-#: zencache-pro.inc.php:2621 zencache-pro.inc.php:2649
+#: zencache-pro.inc.php:2627 zencache-pro.inc.php:2655
 msgid "Doing it wrong! Missing `base_dir` option value. MUST call this method after `setup()`."
 msgstr ""
 
-#: zencache-pro.inc.php:2851
+#: zencache-pro.inc.php:2861
 msgid "<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors."
 msgstr ""
 
-#: zencache-pro.inc.php:3113
+#: zencache-pro.inc.php:3123
 msgid "Lite"
 msgstr ""
 
-#: zencache-pro.inc.php:3114
+#: zencache-pro.inc.php:3124
 msgid "Pro"
 msgstr ""
 
-#: zencache-pro.inc.php:3120
+#: zencache-pro.inc.php:3130
 msgid "<strong>%1$s</strong> is NOT running. A conflicting plugin, <strong>%2$s</strong>, is currently active. Please deactivate the %2$s plugin to clear this message."
 msgstr ""
 
