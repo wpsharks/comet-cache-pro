@@ -397,7 +397,7 @@ namespace zencache // Root namespace.
 		/**
 		 * Default whitelisted extensions.
 		 *
-		 * @since 15xxxx Auto-excluding font file extensions.
+		 * @since 150314 Auto-excluding font file extensions.
 		 *
 		 * @return array Default whitelisted extensions.
 		 */
