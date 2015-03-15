@@ -115,7 +115,7 @@ namespace zencache // Root namespace.
 			/* Whitelisted extensions; MUST have these at all times. */
 
 			if(!($cdn_whitelisted_extensions = trim($this->plugin->options['cdn_whitelisted_extensions'])))
-				$cdn_whitelisted_extensions = implode('|', array_keys(wp_get_mime_types()));
+				$cdn_whitelisted_extensions = implode('|', static::default_whitelisted_extensions());
 
 			$this->cdn_whitelisted_extensions = trim(strtolower($cdn_whitelisted_extensions), "\r\n\t\0\x0B".' |;,');
 			$this->cdn_whitelisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_whitelisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
@@ -125,9 +125,8 @@ namespace zencache // Root namespace.
 
 			$cdn_blacklisted_extensions = $this->plugin->options['cdn_blacklisted_extensions'];
 
-			$this->cdn_blacklisted_extensions = trim(strtolower($cdn_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
-			$this->cdn_blacklisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_blacklisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
-
+			$this->cdn_blacklisted_extensions   = trim(strtolower($cdn_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
+			$this->cdn_blacklisted_extensions   = preg_split('/[|;,\s]+/', $this->cdn_blacklisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
 			$this->cdn_blacklisted_extensions[] = 'php'; // Always exclude.
 
 			$this->cdn_blacklisted_extensions = array_unique($this->cdn_blacklisted_extensions);
@@ -300,7 +299,7 @@ namespace zencache // Root namespace.
 		 *
 		 * @return string The URL after having been filtered.
 		 */
-		protected function filter_url($url_uri_query, $scheme = NULL, $esc = FALSE)
+		public function filter_url($url_uri_query, $scheme = NULL, $esc = FALSE)
 		{
 			if(!($url_uri_query = trim((string)$url_uri_query)))
 				return NULL; // Unparseable.
@@ -393,6 +392,22 @@ namespace zencache // Root namespace.
 				return ''; // No path.
 
 			return strtolower(ltrim((string)strrchr(basename($path), '.'), '.'));
+		}
+
+		/**
+		 * Default whitelisted extensions.
+		 *
+		 * @since 150314 Auto-excluding font file extensions.
+		 *
+		 * @return array Default whitelisted extensions.
+		 */
+		public static function default_whitelisted_extensions()
+		{
+			$wp_media_library_extensions = array_keys(wp_get_mime_types());
+			$wp_media_library_extensions = explode('|', strtolower(implode('|', $wp_media_library_extensions)));
+			$font_file_extensions        = array('eot', 'ttf', 'otf', 'woff');
+
+			return array_unique(array_merge($wp_media_library_extensions, $font_file_extensions));
 		}
 	}
 }

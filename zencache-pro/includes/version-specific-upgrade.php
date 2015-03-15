@@ -50,6 +50,7 @@ namespace zencache // Root namespace.
 				$this->from_lt_v141001();
 				$this->from_lt_v141009();
 				$this->from_quick_cache();
+				$this->from_lte_v150218();
 			}
 
 			/*
@@ -274,6 +275,32 @@ namespace zencache // Root namespace.
 						'<p>'.sprintf(__('NOTE: Your Quick Cache options were preserved by %1$s (for more details, visit the <a href="http://zencache.com/r/quick-cache-pro-migration-faq/" target="_blank">Migration FAQ</a>).'.'', $this->plugin->text_domain), esc_html($this->plugin->name)).'</p>'.
 						'<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s ⥱ Plugin Options</a>.'.'', $this->plugin->text_domain), esc_html($this->plugin->name), esc_attr(add_query_arg(urlencode_deep(array('page' => __NAMESPACE__)), self_admin_url('/admin.php')))).'</p>'
 					);
+				}
+			}
+
+			/**
+			 * Upgrading from a version before we changed the
+			 *    CDN defaults for whitelist/blacklist.
+			 */
+			public function from_lte_v150218()
+			{
+				if(version_compare($this->prev_version, '150218', '<='))
+				{
+					if(!$this->plugin->options['cdn_whitelisted_extensions'])
+					{
+						$blacklisted_extensions = $this->plugin->options['cdn_blacklisted_extensions'];
+						$blacklisted_extensions = trim(strtolower($blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
+						$blacklisted_extensions = preg_split('/[|;,\s]+/', $blacklisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
+
+						$default_blacklisted_extensions = $this->plugin->default_options['cdn_blacklisted_extensions'];
+						$default_blacklisted_extensions = trim(strtolower($default_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
+						$default_blacklisted_extensions = preg_split('/[|;,\s]+/', $default_blacklisted_extensions, NULL, PREG_SPLIT_NO_EMPTY);
+
+						$this->plugin->options['cdn_blacklisted_extensions'] = implode(',', array_unique(array_merge($blacklisted_extensions, $default_blacklisted_extensions)));
+
+						update_option(__NAMESPACE__.'_options', $this->plugin->options);
+						if(is_multisite()) update_site_option(__NAMESPACE__.'_options', $this->plugin->options);
+					}
 				}
 			}
 		}
