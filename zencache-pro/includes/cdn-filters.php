@@ -234,10 +234,10 @@ namespace zencache // Root namespace.
 
 			if($this->htmlc_enable) // If the HTML Compressor is enabled, attach early hook. Runs later.
 			{
-				if(empty($GLOBALS['html_compressor_early_hooks']) || !is_array($GLOBALS['html_compressor_early_hooks']))
-					$GLOBALS['html_compressor_early_hooks'] = array(); // Initialize.
+				if(empty($GLOBALS['websharks\\html_compressor_early_hooks']) || !is_array($GLOBALS['websharks\\html_compressor_early_hooks']))
+					$GLOBALS['websharks\\html_compressor_early_hooks'] = array(); // Initialize.
 
-				$GLOBALS['html_compressor_early_hooks'][__CLASS__] = array(
+				$GLOBALS['websharks\\html_compressor_early_hooks'][__CLASS__] = array(
 					'hook'          => 'part_url', // Filters JS/CSS parts.
 					'function'      => array($this, 'url_filter'),
 					'priority'      => PHP_INT_MAX - 10,
