@@ -220,6 +220,7 @@ namespace zencache // Root namespace.
 
 			add_filter('the_content', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
 			add_filter('get_the_excerpt', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
+			add_filter('widget_text', array($this, 'content_filter'), PHP_INT_MAX - 10, 1);
 		}
 
 		/**
