@@ -1371,27 +1371,30 @@ namespace zencache
 			if(!ZENCACHE_HTMLC_ENABLE)
 				return $cache; // Nothing to do here.
 
-			require_once dirname($this->plugin_file).'/submodules/html-compressor/html-compressor/stub.php';
-
 			if(($host_dir_token = $this->host_dir_token(TRUE)) === '/')
 				$host_dir_token = ''; // Not necessary.
 			// Deals with multisite sub-directory installs.
 			// e.g. `wp-content/cache/zencache/htmlc/cache/public/www-example-com` (main site)
 			// e.g. `wp-content/cache/zencache/htmlc/cache/public/sub/www-example-com`
 
-			$htmlc_benchmark = (ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE);
+			$cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token;
+			$cache_dir_private    = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.$host_dir_token;
+			$cache_dir_url_public = $this->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
+			$htmlc_benchmark      = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
+			$product_title        = sprintf(__('%1$s HTML Compressor', $this->text_domain), $this->name);
 
 			$html_compressor_options = array(
 				'benchmark'                      => $htmlc_benchmark,
-				'product_title'                  => sprintf(__('%1$s HTML Compressor', $this->text_domain), $this->name),
+				'product_title'                  => $product_title,
+
+				'cache_dir_public'               => $cache_dir_public,
+				'cache_dir_url_public'           => $cache_dir_url_public,
+				'cache_dir_private'              => $cache_dir_private,
+
+				'cache_expiration_time'          => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
 
 				'regex_css_exclusions'           => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
 				'regex_js_exclusions'            => ZENCACHE_HTMLC_JS_EXCLUSIONS,
-
-				'cache_expiration_time'          => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
-				'cache_dir_public'               => ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token,
-				'cache_dir_url_public'           => $this->content_url.str_replace(WP_CONTENT_DIR, '', ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token),
-				'cache_dir_private'              => ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.$host_dir_token,
 
 				'compress_combine_head_body_css' => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
 				'compress_combine_head_js'       => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
@@ -1402,8 +1405,9 @@ namespace zencache
 				'compress_js_code'               => ZENCACHE_HTMLC_COMPRESS_JS_CODE,
 				'compress_html_code'             => ZENCACHE_HTMLC_COMPRESS_HTML_CODE,
 			);
-			$html_compressor         = new \websharks\html_compressor\core($html_compressor_options);
-			$compressed_cache        = $html_compressor->compress($cache);
+			require_once dirname($this->plugin_file).'/submodules/html-compressor/html-compressor/stub.php';
+			$html_compressor  = new \websharks\html_compressor\core($html_compressor_options);
+			$compressed_cache = $html_compressor->compress($cache);
 
 			return $compressed_cache;
 		}
