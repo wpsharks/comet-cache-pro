@@ -1380,11 +1380,11 @@ namespace zencache
 			$cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token;
 			$cache_dir_private    = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.$host_dir_token;
 			$cache_dir_url_public = $this->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
-			$htmlc_benchmark      = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
+			$benchmark            = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
 			$product_title        = sprintf(__('%1$s HTML Compressor', $this->text_domain), $this->name);
 
 			$html_compressor_options = array(
-				'benchmark'                      => $htmlc_benchmark,
+				'benchmark'                      => $benchmark,
 				'product_title'                  => $product_title,
 
 				'cache_dir_public'               => $cache_dir_public,
