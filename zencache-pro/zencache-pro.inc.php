@@ -974,7 +974,7 @@ namespace zencache
 				if(!is_admin() || $GLOBALS['pagenow'] !== 'update.php')
 					return $types; // Nothing to do here.
 
-				$_r = array_map('trim', stripslashes_deep($_REQUEST));
+				$_r = array_map(array($this, 'trim_deep'), stripslashes_deep($_REQUEST));
 
 				if(empty($_r['action']) || $_r['action'] !== 'upgrade-plugin')
 					return $types; // Nothing to do here.
