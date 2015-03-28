@@ -136,7 +136,7 @@ namespace zencache
 			 *
 			 * @since 15xxxx
 			 *
-			 * @var array An associative array with the with Post ID as the named key containing the post permalink before the post has been transitioned
+			 * @var array An associative array with the Post ID as the named key containing the post permalink before the post has been transitioned
 			 *
 			 * @see auto_clear_post_cache()
 			 * @see auto_clear_post_cache_transition()
