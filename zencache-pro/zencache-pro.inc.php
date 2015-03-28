@@ -136,12 +136,12 @@ namespace zencache
 			 *
 			 * @since 15xxxx
 			 *
-			 * @var string The post permalink before the post has been transitioned
+			 * @var array An associative array with the with Post ID as the named key containing the post permalink before the post has been transitioned
 			 *
 			 * @see auto_clear_post_cache()
 			 * @see auto_clear_post_cache_transition()
 			 */
-			protected $pre_post_update_post_permalink = '';
+			protected $pre_post_update_post_permalink = array();
 
 			/**
 			 * Used by the plugin's uninstall handler.
@@ -1617,8 +1617,8 @@ namespace zencache
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				if($permalink = $this->pre_post_update_post_permalink)
-					$this->pre_post_update_post_permalink = ''; // Reset; only used for post status transitions
+				if($permalink = $this->pre_post_update_post_permalink[$post_id])
+					$this->pre_post_update_post_permalink[$post_id] = ''; // Reset; only used for post status transitions
 				elseif(!($permalink = get_permalink($post_id)))
 					return $counter; // Nothing we can do.
 
@@ -1703,7 +1703,7 @@ namespace zencache
 				 * See also: https://github.com/websharks/zencache/issues/441
 				 */
 				if($old_status === 'publish' && in_array($data['post_status'], array('pending', 'draft', TRUE)))
-					$this->pre_post_update_post_permalink = get_permalink($post_ID);
+					$this->pre_post_update_post_permalink[$post_ID] = get_permalink($post_ID);
 
 				$counter = 0; // Initialize.
 
