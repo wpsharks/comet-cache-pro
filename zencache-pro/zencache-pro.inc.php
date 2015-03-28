@@ -1617,7 +1617,7 @@ namespace zencache
 				if(!is_dir($cache_dir = $this->cache_dir()))
 					return $counter; // Nothing to do.
 
-				if($permalink = $this->pre_post_update_post_permalink[$post_id])
+				if(!empty($this->pre_post_update_post_permalink[$post_id]) && ($permalink = $this->pre_post_update_post_permalink[$post_id]))
 					$this->pre_post_update_post_permalink[$post_id] = ''; // Reset; only used for post status transitions
 				elseif(!($permalink = get_permalink($post_id)))
 					return $counter; // Nothing we can do.
