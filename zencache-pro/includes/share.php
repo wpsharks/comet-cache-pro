@@ -61,7 +61,7 @@ namespace zencache // Root namespace.
 			 *
 			 * @var string Current version of the software.
 			 */
-			public $version = '150314';
+			public $version = '150409';
 
 			/**
 			 * Plugin slug; based on `__NAMESPACE__`.
@@ -1297,7 +1297,7 @@ namespace zencache // Root namespace.
 			/**
 			 * Trims strings deeply.
 			 *
-			 * @since 15xxxx
+			 * @since 150409
 			 *
 			 * @param mixed  $values Any value can be converted into a trimmed string.
 			 *    Actually, objects can't, but this recurses into objects.

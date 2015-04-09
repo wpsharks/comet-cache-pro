@@ -38,7 +38,7 @@ namespace zencache // Root namespace.
 		protected $cdn_enable;
 
 		/**
-		 * @since 15xxxx Improving CDN support.
+		 * @since 150409 Improving CDN support.
 		 * @var boolean Enable CDN filters in HTML Compressor?
 		 */
 		protected $htmlc_enable;
