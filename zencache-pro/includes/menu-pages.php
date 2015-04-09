@@ -530,7 +530,7 @@ namespace zencache // Root namespace.
 			echo '            <option value="0"'.selected($this->plugin->options['htmlc_enable'], '0', FALSE).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', $this->plugin->text_domain).'</option>'."\n";
 			echo '            <option value="1"'.selected($this->plugin->options['htmlc_enable'], '1', FALSE).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', $this->plugin->text_domain).'</option>'."\n";
 			echo '         </select></p>'."\n";
-			echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/websharks/quick-cache/issues" target="_blank">report issues here</a>.', $this->plugin->text_domain).'</p>'."\n";
+			echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/websharks/zencache/issues" target="_blank">report issues here</a>.', $this->plugin->text_domain).'</p>'."\n";
 			echo '      <hr />'."\n";
 			echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
 			echo '         <h3>'.__('HTML Compression Options', $this->plugin->text_domain).'</h3>'."\n";
