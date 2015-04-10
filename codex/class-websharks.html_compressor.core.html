@@ -7,7 +7,7 @@
 	<title>Class websharks\html_compressor\core | ZenCache Pro</title>
 
 	<script type="text/javascript" src="resources/combined.js?3172704083"></script>
-	<script type="text/javascript" src="elementlist.js?515689076"></script>
+	<script type="text/javascript" src="elementlist.js?3211902484"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3403148767" />
 
 </head>
@@ -39,7 +39,9 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-websharks.html_compressor.benchmark.html">benchmark</a></li>
 				<li class="active"><a href="class-websharks.html_compressor.core.html">core</a></li>
+				<li><a href="class-websharks.html_compressor.hook_api.html">hook_api</a></li>
 			</ul>
 
 
@@ -114,9 +116,12 @@
 		<b>Package:</b> websharks\html\compressor<br />
 
 				<b>Author:</b>
-				<p>JasWSInc <a href="https://github.com/JasWSInc">https://github.com/JasWSInc</a></p>
+				<p>JasWSInc <a href="https://github.com/jaswsinc">https://github.com/jaswsinc</a></p>
 <br />
-		<b>Located at</b> <a href="source-class-websharks.html_compressor.core.html#13-3413" title="Go to source code">zencache-pro/submodules/html-compressor/html-compressor/includes/core.php</a><br />
+				<b>Since:</b>
+				<p>140417 Initial release.</p>
+<br />
+		<b>Located at</b> <a href="source-class-websharks.html_compressor.core.html#16-3429" title="Go to source code">zencache-pro/submodules/html-compressor/html-compressor/includes/core.php</a><br />
 	</div>
 
 
@@ -134,7 +139,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#213-282" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#228-299" title="Go to source code">__construct</a>( <span>array <var>$options</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Class Constructor.</p>
@@ -185,7 +190,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compress">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#290-337" title="Go to source code">compress</a>( <span>string <var>$input</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#307-356" title="Go to source code">compress</a>( <span>string <var>$input</var></span> )</code>
 
 		<div class="description short">
 			<p>Handles compression. The heart of this class.</p>
@@ -240,7 +245,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___get">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#345-365" title="Go to source code">__get</a>( <span>string <var>$property</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#364-384" title="Go to source code">__get</a>( <span>string <var>$property</var></span> )</code>
 
 		<div class="description short">
 			<p>Magic method for access to read-only properties.</p>
@@ -292,7 +297,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_combine_head_body_css">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#374-431" title="Go to source code">maybe_compress_combine_head_body_css</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#393-454" title="Go to source code">maybe_compress_combine_head_body_css</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Handles possible compression of head/body CSS.</p>
@@ -339,7 +344,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compile_css_tag_frags_into_parts">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#433-582" title="Go to source code">compile_css_tag_frags_into_parts</a>( <span>array <var>$css_tag_frags</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#456-605" title="Go to source code">compile_css_tag_frags_into_parts</a>( <span>array <var>$css_tag_frags</var></span> )</code>
 
 		<div class="description short">
 			<p>Compiles CSS tag fragments into CSS parts with compression.</p>
@@ -391,7 +396,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_css_tag_frags">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#584-673" title="Go to source code">get_css_tag_frags</a>( <span>array <var>$html_frag</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#607-695" title="Go to source code">get_css_tag_frags</a>( <span>array <var>$html_frag</var></span> )</code>
 
 		<div class="description short">
 			<p>Parses and returns an array of CSS tag fragments.</p>
@@ -446,7 +451,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_link_tag_frag_css">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#675-710" title="Go to source code">is_link_tag_frag_css</a>( <span>array <var>$tag_frag</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#697-732" title="Go to source code">is_link_tag_frag_css</a>( <span>array <var>$tag_frag</var></span> )</code>
 
 		<div class="description short">
 			<p>Test a tag fragment to see if it's CSS.</p>
@@ -493,7 +498,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_style_tag_frag_css">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#712-738" title="Go to source code">is_style_tag_frag_css</a>( <span>array <var>$tag_frag</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#734-760" title="Go to source code">is_style_tag_frag_css</a>( <span>array <var>$tag_frag</var></span> )</code>
 
 		<div class="description short">
 			<p>Test a tag fragment to see if it's CSS.</p>
@@ -540,7 +545,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_link_css_href">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#740-762" title="Go to source code">get_link_css_href</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#762-784" title="Go to source code">get_link_css_href</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get a CSS link href value from a tag fragment.</p>
@@ -591,7 +596,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_link_css_media">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#764-786" title="Go to source code">get_link_css_media</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#786-808" title="Go to source code">get_link_css_media</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get a CSS link media rule from a tag fragment.</p>
@@ -642,7 +647,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_style_css_media">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#788-810" title="Go to source code">get_style_css_media</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#810-832" title="Go to source code">get_style_css_media</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get a CSS style media rule from a tag fragment.</p>
@@ -693,7 +698,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_style_css">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#812-832" title="Go to source code">get_style_css</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#834-854" title="Go to source code">get_style_css</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_css</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get style CSS from a CSS tag fragment.</p>
@@ -744,7 +749,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_strip_existing_css_charsets">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#834-852" title="Go to source code">strip_existing_css_charsets</a>( <span>string <var>$css</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#856-874" title="Go to source code">strip_existing_css_charsets</a>( <span>string <var>$css</var></span> )</code>
 
 		<div class="description short">
 			<p>Strip existing charset rules from CSS code.</p>
@@ -791,7 +796,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_strip_prepend_css_charset_utf8">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#854-872" title="Go to source code">strip_prepend_css_charset_utf8</a>( <span>string <var>$css</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#876-894" title="Go to source code">strip_prepend_css_charset_utf8</a>( <span>string <var>$css</var></span> )</code>
 
 		<div class="description short">
 			<p>Strip existing charsets and add a UTF-8 <code>@charset</code> rule.</p>
@@ -838,7 +843,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_move_special_css_at_rules_to_top">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#874-911" title="Go to source code">move_special_css_at_rules_to_top</a>( <span>string <var>$css</var></span>, <span>integer <var>$___recursion</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#896-933" title="Go to source code">move_special_css_at_rules_to_top</a>( <span>string <var>$css</var></span>, <span>integer <var>$___recursion</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			<p>Moves special CSS <code>@rules</code> to the top.</p>
@@ -895,7 +900,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_resolve_resolved_css_imports">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#913-949" title="Go to source code">resolve_resolved_css_imports</a>( <span>string <var>$css</var></span>, <span>string <var>$media</var></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#935-971" title="Go to source code">resolve_resolved_css_imports</a>( <span>string <var>$css</var></span>, <span>string <var>$media</var></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Resolves <code>@import</code> rules in CSS code recursively.</p>
@@ -948,7 +953,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__resolve_resolved_css_imports_cb">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#951-972" title="Go to source code">_resolve_resolved_css_imports_cb</a>( <span>array <var>$m</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#973-994" title="Go to source code">_resolve_resolved_css_imports_cb</a>( <span>array <var>$m</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback handler for resolving @ import rules.</p>
@@ -995,7 +1000,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_resolve_css_relatives">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#974-999" title="Go to source code">resolve_css_relatives</a>( <span>string <var>$css</var></span>, <span>string <var>$base</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#996-1021" title="Go to source code">resolve_css_relatives</a>( <span>string <var>$css</var></span>, <span>string <var>$base</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			<p>Resolve relative URLs in CSS code.</p>
@@ -1046,7 +1051,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__resolve_css_relatives_import_cb">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1001-1013" title="Go to source code">_resolve_css_relatives_import_cb</a>( <span>array <var>$m</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1023-1035" title="Go to source code">_resolve_css_relatives_import_cb</a>( <span>array <var>$m</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback handler for CSS relative URL resolutions.</p>
@@ -1093,7 +1098,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__resolve_css_relatives_url_cb">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1015-1030" title="Go to source code">_resolve_css_relatives_url_cb</a>( <span>array <var>$m</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1037-1052" title="Go to source code">_resolve_css_relatives_url_cb</a>( <span>array <var>$m</var></span> )</code>
 
 		<div class="description short">
 			<p>Callback handler for CSS relative URL resolutions.</p>
@@ -1140,7 +1145,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_combine_head_js">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1039-1095" title="Go to source code">maybe_compress_combine_head_js</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1061-1121" title="Go to source code">maybe_compress_combine_head_js</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Handles possible compression of head JS.</p>
@@ -1187,7 +1192,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_combine_footer_js">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1097-1152" title="Go to source code">maybe_compress_combine_footer_js</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1123-1182" title="Go to source code">maybe_compress_combine_footer_js</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Handles possible compression of footer JS.</p>
@@ -1234,7 +1239,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compile_js_tag_frags_into_parts">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1154-1277" title="Go to source code">compile_js_tag_frags_into_parts</a>( <span>array <var>$js_tag_frags</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1184-1307" title="Go to source code">compile_js_tag_frags_into_parts</a>( <span>array <var>$js_tag_frags</var></span> )</code>
 
 		<div class="description short">
 			<p>Compiles JS tag fragments into JS parts with compression.</p>
@@ -1286,7 +1291,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_js_tag_frags">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1279-1362" title="Go to source code">get_js_tag_frags</a>( <span>array <var>$html_frag</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1309-1391" title="Go to source code">get_js_tag_frags</a>( <span>array <var>$html_frag</var></span> )</code>
 
 		<div class="description short">
 			<p>Parses and return an array of JS tag fragments.</p>
@@ -1341,7 +1346,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_script_tag_frag_js">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1364-1399" title="Go to source code">is_script_tag_frag_js</a>( <span>array <var>$tag_frag</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1393-1428" title="Go to source code">is_script_tag_frag_js</a>( <span>array <var>$tag_frag</var></span> )</code>
 
 		<div class="description short">
 			<p>Test a script tag fragment to see if it's JavaScript.</p>
@@ -1388,7 +1393,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_script_js_src">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1401-1423" title="Go to source code">get_script_js_src</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_js</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1430-1452" title="Go to source code">get_script_js_src</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_js</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get script JS src value from a JS tag fragment.</p>
@@ -1439,7 +1444,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_script_js_async">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1425-1447" title="Go to source code">get_script_js_async</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_js</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1454-1476" title="Go to source code">get_script_js_async</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_js</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get script JS async|defer value from a JS tag fragment.</p>
@@ -1490,7 +1495,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_script_js">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1449-1469" title="Go to source code">get_script_js</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_js</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1478-1498" title="Go to source code">get_script_js</a>( <span>array <var>$tag_frag</var></span>, <span>boolean <var>$test_for_js</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get script JS from a JS tag fragment.</p>
@@ -1541,7 +1546,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_html_frag">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1477-1495" title="Go to source code">get_html_frag</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1506-1524" title="Go to source code">get_html_frag</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Build an HTML fragment from HTML source code.</p>
@@ -1588,7 +1593,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_head_frag">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1497-1515" title="Go to source code">get_head_frag</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1526-1544" title="Go to source code">get_head_frag</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Build a head fragment from HTML source code.</p>
@@ -1635,7 +1640,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_footer_scripts_frag">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1517-1535" title="Go to source code">get_footer_scripts_frag</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1546-1564" title="Go to source code">get_footer_scripts_frag</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Build a footer scripts fragment from HTML source code.</p>
@@ -1682,7 +1687,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tag_frags_checksum">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1537-1557" title="Go to source code">get_tag_frags_checksum</a>( <span>array <var>$tag_frags</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1566-1586" title="Go to source code">get_tag_frags_checksum</a>( <span>array <var>$tag_frags</var></span> )</code>
 
 		<div class="description short">
 			<p>Construct a checksum for an array of tag fragments.</p>
@@ -1736,7 +1741,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_html_code">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1565-1602" title="Go to source code">maybe_compress_html_code</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1594-1631" title="Go to source code">maybe_compress_html_code</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Maybe compress HTML code.</p>
@@ -1783,7 +1788,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compress_html">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1604-1661" title="Go to source code">compress_html</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1633-1690" title="Go to source code">compress_html</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Compresses HTML markup (as quickly as possible).</p>
@@ -1837,7 +1842,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_css_code">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1669-1709" title="Go to source code">maybe_compress_css_code</a>( <span>string <var>$css</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1698-1737" title="Go to source code">maybe_compress_css_code</a>( <span>string <var>$css</var></span> )</code>
 
 		<div class="description short">
 			<p>Maybe compress CSS code.</p>
@@ -1884,7 +1889,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compress_css">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1711-1750" title="Go to source code">compress_css</a>( <span>string <var>$css</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1739-1778" title="Go to source code">compress_css</a>( <span>string <var>$css</var></span> )</code>
 
 		<div class="description short">
 			<p>Compresses CSS code (as quickly as possible).</p>
@@ -1938,7 +1943,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__maybe_compress_css_color">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1752-1769" title="Go to source code">_maybe_compress_css_color</a>( <span>array <var>$m</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1780-1797" title="Go to source code">_maybe_compress_css_color</a>( <span>array <var>$m</var></span> )</code>
 
 		<div class="description short">
 			<p>Compresses HEX color codes.</p>
@@ -1985,7 +1990,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_js_code">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1777-1829" title="Go to source code">maybe_compress_js_code</a>( <span>string <var>$js</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1805-1856" title="Go to source code">maybe_compress_js_code</a>( <span>string <var>$js</var></span> )</code>
 
 		<div class="description short">
 			<p>Maybe compress JS code.</p>
@@ -2032,7 +2037,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_maybe_compress_inline_js_code">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1831-1899" title="Go to source code">maybe_compress_inline_js_code</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1858-1930" title="Go to source code">maybe_compress_inline_js_code</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Maybe compress inline JS code within the HTML source.</p>
@@ -2079,7 +2084,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#__compress_inline_js_code">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1901-1919" title="Go to source code">_compress_inline_js_code</a>( <span>string <var>$js</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1932-1950" title="Go to source code">_compress_inline_js_code</a>( <span>string <var>$js</var></span> )</code>
 
 		<div class="description short">
 			<p>Helper function; compress inline JS code.</p>
@@ -2126,7 +2131,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_compile_key_elements_deep">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1927-1978" title="Go to source code">compile_key_elements_deep</a>( <span>array <var>$array</var></span>, <span>string|integer|array <var>$keys</var></span>, <span>boolean <var>$preserve_keys</var> = <span class="php-keyword1">FALSE</span></span>, <span>integer <var>$search_dimensions</var> = -<span class="php-num">1</span></span>, <span>integer <var>$___current_dimension</var> = <span class="php-num">1</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#1958-2009" title="Go to source code">compile_key_elements_deep</a>( <span>array <var>$array</var></span>, <span>string|integer|array <var>$keys</var></span>, <span>boolean <var>$preserve_keys</var> = <span class="php-keyword1">FALSE</span></span>, <span>integer <var>$search_dimensions</var> = -<span class="php-num">1</span></span>, <span>integer <var>$___current_dimension</var> = <span class="php-num">1</span></span> )</code>
 
 		<div class="description short">
 			<p>Compiles a new array of all <code>$key</code> elements (deeply).</p>
@@ -2200,7 +2205,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remove_numeric_keys_deep">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#1980-2006" title="Go to source code">remove_numeric_keys_deep</a>( <span>array <var>$array</var></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2011-2037" title="Go to source code">remove_numeric_keys_deep</a>( <span>array <var>$array</var></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Removes all numeric array keys (deeply).</p>
@@ -2255,7 +2260,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_preg_quote_deep">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2014-2044" title="Go to source code">preg_quote_deep</a>( <span>mixed <var>$value</var></span>, <span>string <var>$delimiter</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2045-2075" title="Go to source code">preg_quote_deep</a>( <span>mixed <var>$value</var></span>, <span>string <var>$delimiter</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Escapes regex special chars deeply (i.e. <code>preg_quote()</code> deeply).</p>
@@ -2318,7 +2323,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_replace_once_deep">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2046-2137" title="Go to source code">replace_once_deep</a>( <span>string|array <var>$needle</var></span>, <span>string|array <var>$replace</var></span>, <span>mixed <var>$value</var></span>, <span>boolean <var>$case_insensitive</var> = <span class="php-keyword1">FALSE</span></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2077-2168" title="Go to source code">replace_once_deep</a>( <span>string|array <var>$needle</var></span>, <span>string|array <var>$replace</var></span>, <span>mixed <var>$value</var></span>, <span>boolean <var>$case_insensitive</var> = <span class="php-keyword1">FALSE</span></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>String replace (ONE time), and deeply into arrays/objects.</p>
@@ -2394,7 +2399,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_replace_once">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2139-2160" title="Go to source code">replace_once</a>( <span>string|array <var>$needle</var></span>, <span>string|array <var>$replace</var></span>, <span>string <var>$string</var></span>, <span>boolean <var>$case_insensitive</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2170-2191" title="Go to source code">replace_once</a>( <span>string|array <var>$needle</var></span>, <span>string|array <var>$replace</var></span>, <span>string <var>$string</var></span>, <span>boolean <var>$case_insensitive</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>String replace (ONE time).</p>
@@ -2456,7 +2461,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_esc_refs_deep">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2162-2195" title="Go to source code">esc_refs_deep</a>( <span>mixed <var>$value</var></span>, <span>integer <var>$times</var> = <span class="php-num">1</span></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2193-2226" title="Go to source code">esc_refs_deep</a>( <span>mixed <var>$value</var></span>, <span>integer <var>$times</var> = <span class="php-num">1</span></span>, <span>boolean <var>$___recursion</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Escapes regex backreference chars deeply (i.e. <code>\\$</code> and <code>\\\\</code>).</p>
@@ -2519,7 +2524,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_esc_refs">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2197-2210" title="Go to source code">esc_refs</a>( <span>string <var>$string</var></span>, <span>integer <var>$times</var> = <span class="php-num">1</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2228-2241" title="Go to source code">esc_refs</a>( <span>string <var>$string</var></span>, <span>integer <var>$times</var> = <span class="php-num">1</span></span> )</code>
 
 		<div class="description short">
 			<p>Escapes regex backreference chars (i.e. <code>\\$</code> and <code>\\\\</code>).</p>
@@ -2569,7 +2574,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cleanup_self_closing_html_tag_lines">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2212-2227" title="Go to source code">cleanup_self_closing_html_tag_lines</a>( <span>string <var>$html</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2243-2258" title="Go to source code">cleanup_self_closing_html_tag_lines</a>( <span>string <var>$html</var></span> )</code>
 
 		<div class="description short">
 			<p>Cleans up self-closing HTML tag lines.</p>
@@ -2616,7 +2621,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cache_dir">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2255-2313" title="Go to source code">cache_dir</a>( <span>string <var>$type</var></span>, <span>string <var>$checksum</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$base_only</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2286-2350" title="Go to source code">cache_dir</a>( <span>string <var>$type</var></span>, <span>string <var>$checksum</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$base_only</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get (and possibly create) the cache dir.</p>
@@ -2677,7 +2682,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cache_dir_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2315-2371" title="Go to source code">cache_dir_url</a>( <span>string <var>$type</var></span>, <span>string <var>$checksum</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$base_only</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2352-2408" title="Go to source code">cache_dir_url</a>( <span>string <var>$type</var></span>, <span>string <var>$checksum</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$base_only</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Get (and possibly create) the cache dir URL.</p>
@@ -2740,7 +2745,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cleanup_cache_dirs">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2373-2410" title="Go to source code">cleanup_cache_dirs</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2410-2447" title="Go to source code">cleanup_cache_dirs</a>( )</code>
 
 		<div class="description short">
 			<p>Cache cleanup routine.</p>
@@ -2787,7 +2792,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_dir_regex_iteration">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2412-2432" title="Go to source code">dir_regex_iteration</a>( <span>string <var>$dir</var></span>, <span>string <var>$regex</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2449-2469" title="Go to source code">dir_regex_iteration</a>( <span>string <var>$dir</var></span>, <span>string <var>$regex</var></span> )</code>
 
 		<div class="description short">
 			<p>Regex directory iterator.</p>
@@ -2837,7 +2842,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_n_dir_seps">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2434-2466" title="Go to source code">n_dir_seps</a>( <span>string <var>$dir_file</var></span>, <span>boolean <var>$allow_trailing_slash</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2471-2503" title="Go to source code">n_dir_seps</a>( <span>string <var>$dir_file</var></span>, <span>boolean <var>$allow_trailing_slash</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Normalizes directory/file separators.</p>
@@ -2888,7 +2893,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_current_url_ssl">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2563-2588" title="Go to source code">current_url_ssl</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2609-2634" title="Go to source code">current_url_ssl</a>( )</code>
 
 		<div class="description short">
 			<p>Is the current request over SSL?</p>
@@ -2929,7 +2934,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_current_url_scheme">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2590-2611" title="Go to source code">current_url_scheme</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2636-2657" title="Go to source code">current_url_scheme</a>( )</code>
 
 		<div class="description short">
 			<p>Gets the current scheme (via environment variables).</p>
@@ -2975,7 +2980,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_current_url_host">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2613-2634" title="Go to source code">current_url_host</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2659-2680" title="Go to source code">current_url_host</a>( )</code>
 
 		<div class="description short">
 			<p>Gets the current host name (via environment variables).</p>
@@ -3021,7 +3026,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_current_url_uri">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2636-2657" title="Go to source code">current_url_uri</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2682-2703" title="Go to source code">current_url_uri</a>( )</code>
 
 		<div class="description short">
 			<p>Gets the current URI (via environment variables).</p>
@@ -3067,7 +3072,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_current_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2659-2676" title="Go to source code">current_url</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2705-2722" title="Go to source code">current_url</a>( )</code>
 
 		<div class="description short">
 			<p>URL to current request.</p>
@@ -3108,7 +3113,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_n_url_scheme">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2678-2696" title="Go to source code">n_url_scheme</a>( <span>string <var>$scheme</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2724-2742" title="Go to source code">n_url_scheme</a>( <span>string <var>$scheme</var></span> )</code>
 
 		<div class="description short">
 			<p>Normalizes a URL scheme.</p>
@@ -3155,7 +3160,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_n_url_host">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2698-2713" title="Go to source code">n_url_host</a>( <span>string <var>$host</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2744-2759" title="Go to source code">n_url_host</a>( <span>string <var>$host</var></span> )</code>
 
 		<div class="description short">
 			<p>Normalizes a URL host name.</p>
@@ -3202,7 +3207,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_n_url_amps">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2715-2734" title="Go to source code">n_url_amps</a>( <span>string <var>$url_uri_query_fragment</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2761-2780" title="Go to source code">n_url_amps</a>( <span>string <var>$url_uri_query_fragment</var></span> )</code>
 
 		<div class="description short">
 			<p>Converts all ampersand entities in a URL (or a URI/query/fragment only); to just <code>&amp;</code>.</p>
@@ -3250,7 +3255,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_n_url_path_seps">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2736-2761" title="Go to source code">n_url_path_seps</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>boolean <var>$allow_trailing_slash</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2782-2807" title="Go to source code">n_url_path_seps</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>boolean <var>$allow_trailing_slash</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Normalizes a URL path from a URL (or a URI/query/fragment only).</p>
@@ -3302,7 +3307,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_set_url_scheme">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2763-2789" title="Go to source code">set_url_scheme</a>( <span>string <var>$url</var></span>, <span>string <var>$scheme</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2809-2835" title="Go to source code">set_url_scheme</a>( <span>string <var>$url</var></span>, <span>string <var>$scheme</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			<p>Sets a particular scheme.</p>
@@ -3354,7 +3359,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_url_external">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2791-2811" title="Go to source code">is_url_external</a>( <span>string <var>$url_uri_query_fragment</var></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2837-2857" title="Go to source code">is_url_external</a>( <span>string <var>$url_uri_query_fragment</var></span> )</code>
 
 		<div class="description short">
 			<p>Checks if a given URL is local or external to the current host.</p>
@@ -3409,7 +3414,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_parse_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2813-2935" title="Go to source code">parse_url</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>null|integer <var>$component</var> = <span class="php-keyword1">NULL</span></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2859-2981" title="Go to source code">parse_url</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>null|integer <var>$component</var> = <span class="php-keyword1">NULL</span></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span> )</code>
 
 		<div class="description short">
 			<p>Parses a URL (or a URI/query/fragment only) into an array.</p>
@@ -3480,7 +3485,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_must_parse_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2937-2955" title="Go to source code">must_parse_url</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#2983-3001" title="Go to source code">must_parse_url</a>( )</code>
 
 		<div class="description short">
 			<p>Parses a URL (or a URI/query/fragment only) into an array.</p>
@@ -3535,7 +3540,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_unparse_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#2957-3025" title="Go to source code">unparse_url</a>( <span>array <var>$parsed</var></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3003-3071" title="Go to source code">unparse_url</a>( <span>array <var>$parsed</var></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span> )</code>
 
 		<div class="description short">
 			<p>Unparses a URL (putting it all back together again).</p>
@@ -3588,7 +3593,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_must_unparse_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3027-3045" title="Go to source code">must_unparse_url</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3073-3091" title="Go to source code">must_unparse_url</a>( )</code>
 
 		<div class="description short">
 			<p>Unparses a URL (putting it all back together again).</p>
@@ -3643,7 +3648,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_parse_uri_parts">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3047-3071" title="Go to source code">parse_uri_parts</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3093-3117" title="Go to source code">parse_uri_parts</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span> )</code>
 
 		<div class="description short">
 			<p>Parses URI parts from a URL (or a URI/query/fragment only).</p>
@@ -3700,7 +3705,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_must_parse_uri_parts">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3073-3091" title="Go to source code">must_parse_uri_parts</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3119-3137" title="Go to source code">must_parse_uri_parts</a>( )</code>
 
 		<div class="description short">
 			<p>Parses URI parts from a URL (or a URI/query/fragment only).</p>
@@ -3755,7 +3760,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_parse_uri">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3093-3118" title="Go to source code">parse_uri</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span>, <span>boolean <var>$include_fragment</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3139-3164" title="Go to source code">parse_uri</a>( <span>string <var>$url_uri_query_fragment</var></span>, <span>null|integer <var>$normalize</var> = <span class="php-keyword1">NULL</span></span>, <span>boolean <var>$include_fragment</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			<p>Parses a URI from a URL (or a URI/query/fragment only).</p>
@@ -3811,7 +3816,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_must_parse_uri">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3120-3138" title="Go to source code">must_parse_uri</a>( )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3166-3184" title="Go to source code">must_parse_uri</a>( )</code>
 
 		<div class="description short">
 			<p>Parses a URI from a URL (or a URI/query/fragment only).</p>
@@ -3866,7 +3871,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_resolve_relative_url">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3140-3201" title="Go to source code">resolve_relative_url</a>( <span>string <var>$relative_url_uri_query_fragment</var></span>, <span>string <var>$base_url</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3186-3247" title="Go to source code">resolve_relative_url</a>( <span>string <var>$relative_url_uri_query_fragment</var></span>, <span>string <var>$base_url</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			<p>Resolves a relative URL into a full URL from a base.</p>
@@ -3927,7 +3932,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_remote">#</a>
-		<code><a href="source-class-websharks.html_compressor.core.html#3203-3412" title="Go to source code">remote</a>( <span>string <var>$url</var></span>, <span>string|array <var>$body</var> = <span class="php-quote">''</span></span>, <span>integer <var>$max_con_secs</var> = <span class="php-num">20</span></span>, <span>integer <var>$max_stream_secs</var> = <span class="php-num">20</span></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>string <var>$cookie_file</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$fail_on_error</var> = <span class="php-keyword1">TRUE</span></span>, <span>boolean <var>$return_array</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-websharks.html_compressor.core.html#3249-3428" title="Go to source code">remote</a>( <span>string <var>$url</var></span>, <span>string|array <var>$body</var> = <span class="php-quote">''</span></span>, <span>integer <var>$max_con_secs</var> = <span class="php-num">20</span></span>, <span>integer <var>$max_stream_secs</var> = <span class="php-num">20</span></span>, <span>array <var>$headers</var> = <span class="php-keyword1">array</span>()</span>, <span>string <var>$cookie_file</var> = <span class="php-quote">''</span></span>, <span>boolean <var>$fail_on_error</var> = <span class="php-keyword1">TRUE</span></span>, <span>boolean <var>$return_array</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			<p>Remote HTTP communication.</p>
@@ -3976,7 +3981,7 @@
 				<h4>Throws</h4>
 				<div class="list">
 					<code>exception</code><br><p>If unable to find a workable HTTP transport layer.
-   Supported transports include: <code>wordpress</code>, <code>curl</code>, and <code>fopen</code>.</p>
+   Supported transports include: <code>curl</code> and <code>fopen</code>.</p>
 <br />
 				</div>
 
@@ -4005,7 +4010,7 @@
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2235-2243" title="Go to source code"><b>dir_public_type</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2266-2274" title="Go to source code"><b>dir_public_type</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'public'</span></code></td>
 		<td class="description"><div>
@@ -4032,7 +4037,7 @@
 
 		<td class="attributes"><code>string</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2245-2253" title="Go to source code"><b>dir_private_type</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2276-2284" title="Go to source code"><b>dir_private_type</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-quote">'private'</span></code></td>
 		<td class="description"><div>
@@ -4059,7 +4064,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2483-2491" title="Go to source code"><b>url_scheme</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2529-2537" title="Go to source code"><b>url_scheme</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">1</span></code></td>
 		<td class="description"><div>
@@ -4086,7 +4091,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2493-2501" title="Go to source code"><b>url_user</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2539-2547" title="Go to source code"><b>url_user</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">2</span></code></td>
 		<td class="description"><div>
@@ -4113,7 +4118,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2503-2511" title="Go to source code"><b>url_pass</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2549-2557" title="Go to source code"><b>url_pass</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">4</span></code></td>
 		<td class="description"><div>
@@ -4140,7 +4145,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2513-2521" title="Go to source code"><b>url_host</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2559-2567" title="Go to source code"><b>url_host</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">8</span></code></td>
 		<td class="description"><div>
@@ -4167,7 +4172,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2523-2531" title="Go to source code"><b>url_port</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2569-2577" title="Go to source code"><b>url_port</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">16</span></code></td>
 		<td class="description"><div>
@@ -4194,7 +4199,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2533-2541" title="Go to source code"><b>url_path</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2579-2587" title="Go to source code"><b>url_path</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">32</span></code></td>
 		<td class="description"><div>
@@ -4221,7 +4226,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2543-2551" title="Go to source code"><b>url_query</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2589-2597" title="Go to source code"><b>url_query</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">64</span></code></td>
 		<td class="description"><div>
@@ -4248,7 +4253,7 @@
 
 		<td class="attributes"><code>integer</code></td>
 		<td class="name"><code>
-				<a href="source-class-websharks.html_compressor.core.html#2553-2561" title="Go to source code"><b>url_fragment</b></a>
+				<a href="source-class-websharks.html_compressor.core.html#2599-2607" title="Go to source code"><b>url_fragment</b></a>
 		</code></td>
 		<td class="value"><code><span class="php-num">128</span></code></td>
 		<td class="description"><div>
@@ -4285,7 +4290,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#30-37" title="Go to source code"><var>$product_title</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#36-43" title="Go to source code"><var>$product_title</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">'HTML Compressor'</span></code></td>
 		<td class="description"><div>
@@ -4315,9 +4320,9 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#39-46" title="Go to source code"><var>$version</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#45-52" title="Go to source code"><var>$version</var></a>
 		</td>
-		<td class="value"><code><span class="php-quote">'140926'</span></code></td>
+		<td class="value"><code><span class="php-quote">'150321'</span></code></td>
 		<td class="description"><div>
 			<a href="#$version" class="anchor">#</a>
 
@@ -4345,7 +4350,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#48-55" title="Go to source code"><var>$options</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#54-61" title="Go to source code"><var>$options</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
 		<td class="description"><div>
@@ -4368,6 +4373,66 @@
 			</div>
 		</div></td>
 	</tr>
+	<tr data-order="hook_api" id="$hook_api">
+		<td class="attributes"><code>
+			protected  
+			<code><a href="class-websharks.html_compressor.hook_api.html">websharks\html_compressor\hook_api</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-websharks.html_compressor.core.html#63-70" title="Go to source code"><var>$hook_api</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$hook_api" class="anchor">#</a>
+
+			<div class="description short">
+				<p>Hook API class instance.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Hook API class instance.</p>
+
+
+					<h4>Since</h4>
+					<div class="list">
+							<p>150321 Adding hook API for plugins.</p>
+<br />
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="benchmark" id="$benchmark">
+		<td class="attributes"><code>
+			protected  
+			<code><a href="class-websharks.html_compressor.benchmark.html">websharks\html_compressor\benchmark</a></code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-websharks.html_compressor.core.html#72-79" title="Go to source code"><var>$benchmark</var></a>
+		</td>
+		<td class="value"><code></code></td>
+		<td class="description"><div>
+			<a href="#$benchmark" class="anchor">#</a>
+
+			<div class="description short">
+				<p>Benchmark class instance.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Benchmark class instance.</p>
+
+
+					<h4>Since</h4>
+					<div class="list">
+							<p>150315 Adding additional benchmarks.</p>
+<br />
+					</div>
+			</div>
+		</div></td>
+	</tr>
 	<tr data-order="cache_expiration_time" id="$cache_expiration_time">
 		<td class="attributes"><code>
 			protected  
@@ -4375,7 +4440,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#57-66" title="Go to source code"><var>$cache_expiration_time</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#81-90" title="Go to source code"><var>$cache_expiration_time</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">'14 days'</span></code></td>
 		<td class="description"><div>
@@ -4410,7 +4475,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#68-75" title="Go to source code"><var>$regex_vendor_css_prefixes</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#92-99" title="Go to source code"><var>$regex_vendor_css_prefixes</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4440,7 +4505,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#77-84" title="Go to source code"><var>$default_vendor_css_prefixes</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#101-108" title="Go to source code"><var>$default_vendor_css_prefixes</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>(<span class="php-quote">'moz'</span>, <span class="php-quote">'webkit'</span>, <span class="php-quote">'khtml'</span>, <span class="php-quote">'ms'</span>, <span class="php-quote">'o'</span>)</code></td>
 		<td class="description"><div>
@@ -4470,7 +4535,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#86-93" title="Go to source code"><var>$regex_css_exclusions</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#110-117" title="Go to source code"><var>$regex_css_exclusions</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4500,7 +4565,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#95-102" title="Go to source code"><var>$default_css_exclusions</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#119-126" title="Go to source code"><var>$default_css_exclusions</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
 		<td class="description"><div>
@@ -4530,7 +4595,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#104-111" title="Go to source code"><var>$built_in_regex_css_exclusions</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#128-135" title="Go to source code"><var>$built_in_regex_css_exclusions</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4560,7 +4625,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#113-122" title="Go to source code"><var>$built_in_regex_css_exclusion_patterns</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#137-146" title="Go to source code"><var>$built_in_regex_css_exclusion_patterns</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>(<span class="php-quote">'\W#post\-[0-9]+\W'</span>)</code></td>
 		<td class="description"><div>
@@ -4595,7 +4660,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#124-131" title="Go to source code"><var>$regex_js_exclusions</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#148-155" title="Go to source code"><var>$regex_js_exclusions</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4625,7 +4690,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#133-140" title="Go to source code"><var>$default_js_exclusions</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#157-164" title="Go to source code"><var>$default_js_exclusions</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>(<span class="php-quote">'.php?'</span>)</code></td>
 		<td class="description"><div>
@@ -4655,7 +4720,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#142-149" title="Go to source code"><var>$built_in_regex_js_exclusions</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#166-173" title="Go to source code"><var>$built_in_regex_js_exclusions</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4685,7 +4750,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#151-160" title="Go to source code"><var>$built_in_regex_js_exclusion_patterns</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#175-184" title="Go to source code"><var>$built_in_regex_js_exclusion_patterns</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>(<span class="php-quote">'\.js#.'</span>, <span class="php-quote">'\.google\-analytics\.com\/'</span>, <span class="php-quote">'\Wga\s*\('</span>, <span class="php-quote">'\W_gaq\.push\s*\('</span>)</code></td>
 		<td class="description"><div>
@@ -4713,36 +4778,6 @@
 			</div>
 		</div></td>
 	</tr>
-	<tr data-order="benchmark_times" id="$benchmark_times">
-		<td class="attributes"><code>
-			protected  
-			array
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#162-169" title="Go to source code"><var>$benchmark_times</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
-		<td class="description"><div>
-			<a href="#$benchmark_times" class="anchor">#</a>
-
-			<div class="description short">
-				<p>Array of benchmark times.</p>
-
-			</div>
-
-			<div class="description detailed hidden">
-				<p>Array of benchmark times.</p>
-
-
-					<h4>Since</h4>
-					<div class="list">
-							<p>140521 Adding additional benchmarks.</p>
-<br />
-					</div>
-			</div>
-		</div></td>
-	</tr>
 	<tr data-order="current_base" id="$current_base">
 		<td class="attributes"><code>
 			protected  
@@ -4750,7 +4785,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#171-178" title="Go to source code"><var>$current_base</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#186-193" title="Go to source code"><var>$current_base</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4780,7 +4815,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#180-187" title="Go to source code"><var>$current_css_media</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#195-202" title="Go to source code"><var>$current_css_media</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">''</span></code></td>
 		<td class="description"><div>
@@ -4810,7 +4845,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#189-196" title="Go to source code"><var>$static</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#204-211" title="Go to source code"><var>$static</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
 		<td class="description"><div>
@@ -4840,7 +4875,7 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#198-205" title="Go to source code"><var>$cache</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#213-220" title="Go to source code"><var>$cache</var></a>
 		</td>
 		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
 		<td class="description"><div>
@@ -4870,24 +4905,54 @@
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-websharks.html_compressor.core.html#2468-2475" title="Go to source code"><var>$dir_htaccess_deny</var></a>
+				<a href="source-class-websharks.html_compressor.core.html#2505-2512" title="Go to source code"><var>$dir_htaccess_deny</var></a>
 		</td>
 		<td class="value"><code><span class="php-quote">&quot;&lt;IfModule authz_core_module&gt;\n\tRequire all denied\n&lt;/IfModule&gt;\n&lt;IfModule !authz_core_module&gt;\n\tdeny from all\n&lt;/IfModule&gt;&quot;</span></code></td>
 		<td class="description"><div>
 			<a href="#$dir_htaccess_deny" class="anchor">#</a>
 
 			<div class="description short">
-				<p>Apache <code>.htaccess</code> access denial snippet.</p>
+				<p>Apache <code>.htaccess</code> denial snippet.</p>
 
 			</div>
 
 			<div class="description detailed hidden">
-				<p>Apache <code>.htaccess</code> access denial snippet.</p>
+				<p>Apache <code>.htaccess</code> denial snippet.</p>
 
 
 					<h4>Since</h4>
 					<div class="list">
 							<p>140417 Initial release.</p>
+<br />
+					</div>
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="dir_htaccess_allow" id="$dir_htaccess_allow">
+		<td class="attributes"><code>
+			protected  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-websharks.html_compressor.core.html#2514-2521" title="Go to source code"><var>$dir_htaccess_allow</var></a>
+		</td>
+		<td class="value"><code><span class="php-quote">&quot;&lt;IfModule authz_core_module&gt;\n\tRequire all granted\n&lt;/IfModule&gt;\n&lt;IfModule !authz_core_module&gt;\n\tallow from all\n&lt;/IfModule&gt;\n\n&lt;IfModule headers_module&gt;\n\t&lt;FilesMatch \&quot;\\.(html|js|css)</span><span class="php-var">$</span><span class="php-quote">\&quot;&gt;\n\t\tHeader append Vary: Accept-Encoding\n\t&lt;/FilesMatch&gt;\n&lt;/IfModule&gt;&quot;</span></code></td>
+		<td class="description"><div>
+			<a href="#$dir_htaccess_allow" class="anchor">#</a>
+
+			<div class="description short">
+				<p>Apache <code>.htaccess</code> for public files.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				<p>Apache <code>.htaccess</code> for public files.</p>
+
+
+					<h4>Since</h4>
+					<div class="list">
+							<p>150321 Improving publicly cacheable files.</p>
 <br />
 					</div>
 			</div>
