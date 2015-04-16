@@ -201,7 +201,7 @@ namespace zencache // Root namespace.
 			if(!$this->cdn_over_ssl && is_ssl())
 				return; // Disable in this case.
 
-			if(is_multisite() && (defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL))
+			if(is_multisite() && (!is_main_site() && defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL))
 				/*
 				 * @TODO this is something we need to look at in the future.
 				 *
