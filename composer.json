@@ -45,7 +45,7 @@
 
 	"autoload"         : {
 		"psr-4": {
-			"WebSharks\\ZenCachePro\\": "src/includes/classes/"
+			"WebSharks\\ZenCache\\Pro\\": "src/includes/classes/"
 		}
 	},
 
