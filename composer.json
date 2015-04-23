@@ -1,0 +1,55 @@
+{
+	"name"             : "websharks/zencache-pro",
+	"homepage"         : "https://github.com/websharks/zencache-pro",
+	"description"      : "A popular caching plugin for WordPress.",
+	"keywords"         : [
+		"websharks",
+		"zencache",
+		"wordpress",
+		"caching",
+		"cache"
+	],
+	"type"             : "library",
+	"license"          : "GPL-3.0+",
+	"authors"          : [
+		{
+			"name"    : "websharks",
+			"homepage": "http://websharks-inc.com/",
+			"role"    : "company"
+		},
+		{
+			"name"    : "jaswsinc",
+			"homepage": "http://jaswsinc.com/",
+			"role"    : "developer"
+		},
+		{
+			"name"    : "raamdev",
+			"homepage": "http://raam.org/",
+			"role"    : "developer"
+		}
+	],
+	"support"          : {
+		"source": "https://github.com/websharks/zencache-pro",
+		"issues": "https://github.com/websharks/zencache-pro/issues"
+	},
+
+	"require"          : {
+		"php"                      : ">=5.3",
+		"phing/phing"              : "dev-master",
+		"websharks/wp-php-rv"      : "dev-master",
+		"websharks/html-compressor": "dev-master",
+		"websharks/sharkicons"     : "dev-master"
+	},
+	"minimum-stability": "dev",
+	"prefer-stable"    : true,
+
+	"autoload"         : {
+		"psr-4": {
+			"WebSharks\\ZenCachePro\\": "src/includes/classes/"
+		}
+	},
+
+	"config"           : {
+		"vendor-dir": "src/includes/vendor"
+	}
+}

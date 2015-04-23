@@ -1,9 +1,0 @@
-[submodule "zencache-pro/submodules/html-compressor"]
-	path = zencache-pro/submodules/html-compressor
-	url = https://github.com/websharks/html-compressor
-[submodule "zencache-pro/submodules/wp-php-rv"]
-	path = zencache-pro/submodules/wp-php-rv
-	url = https://github.com/websharks/wp-php-rv
-[submodule "zencache-pro/submodules/sharkicons"]
-	path = zencache-pro/submodules/sharkicons
-	url = https://github.com/websharks/sharkicons
