@@ -5,8 +5,6 @@ namespace WebSharks\ZenCache\Pro;
  * ZenCache Plugin
  *
  * @since 150422 Rewrite of ZenCache
- * @copyright WebSharks, Inc. <http://www.websharks-inc.com>
- * @license GNU General Public License, version 3
  */
 class Plugin extends AbsBase
 {

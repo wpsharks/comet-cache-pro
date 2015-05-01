@@ -1,0 +1,320 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "fe9397cebc4c78c6249248e9e8e31a74",
+    "packages": [
+        {
+            "name": "phing/phing",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phingofficial/phing.git",
+                "reference": "f7b806403b3e038c834f0889091d5262a7215393"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/f7b806403b3e038c834f0889091d5262a7215393",
+                "reference": "f7b806403b3e038c834f0889091d5262a7215393",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "lastcraft/simpletest": "@dev",
+                "pdepend/pdepend": "2.x",
+                "pear-pear.php.net/http_request2": "2.2.x",
+                "pear-pear.php.net/net_growl": "2.7.x",
+                "pear-pear.php.net/pear_packagefilemanager": "1.7.x",
+                "pear-pear.php.net/pear_packagefilemanager2": "1.0.x",
+                "pear-pear.php.net/xml_serializer": "0.20.x",
+                "pear/pear_exception": "~1.0",
+                "pear/versioncontrol_git": "@dev",
+                "pear/versioncontrol_svn": "~0.5",
+                "phpdocumentor/phpdocumentor": "2.x",
+                "phploc/phploc": "2.x",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/phpunit": ">=3.7",
+                "sebastian/phpcpd": "2.x",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "suggest": {
+                "pdepend/pdepend": "PHP version of JDepend",
+                "pear/archive_tar": "Tar file management class",
+                "pear/versioncontrol_git": "A library that provides OO interface to handle Git repository",
+                "pear/versioncontrol_svn": "A simple OO-style interface for Subversion, the free/open-source version control system",
+                "phpdocumentor/phpdocumentor": "Documentation Generator for PHP",
+                "phploc/phploc": "A tool for quickly measuring the size of a PHP project",
+                "phpmd/phpmd": "PHP version of PMD tool",
+                "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
+                "phpunit/phpunit": "The PHP Unit Testing Framework",
+                "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
+                "tedivm/jshrink": "Javascript Minifier built in PHP"
+            },
+            "bin": [
+                "bin/phing"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.11.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "classes/phing/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "classes"
+            ],
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Michiel Rook",
+                    "email": "mrook@php.net"
+                },
+                {
+                    "name": "Phing Community",
+                    "homepage": "https://www.phing.info/trac/wiki/Development/Contributors"
+                }
+            ],
+            "description": "PHing Is Not GNU make; it's a PHP project build system or build tool based on Apache Ant.",
+            "homepage": "https://www.phing.info/",
+            "keywords": [
+                "build",
+                "phing",
+                "task",
+                "tool"
+            ],
+            "time": "2015-04-30 14:39:22"
+        },
+        {
+            "name": "websharks/html-compressor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websharks/html-compressor.git",
+                "reference": "eb0788444447433253f251c2a4906a5eeb7a06ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/eb0788444447433253f251c2a4906a5eeb7a06ad",
+                "reference": "eb0788444447433253f251c2a4906a5eeb7a06ad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "php": ">=5.3",
+                "websharks/js-minifier": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WebSharks\\HtmlCompressor\\": "src/includes/classes"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "websharks",
+                    "homepage": "http://websharks-inc.com/",
+                    "role": "company"
+                },
+                {
+                    "name": "jaswsinc",
+                    "homepage": "http://jaswsinc.com/",
+                    "role": "developer"
+                },
+                {
+                    "name": "raamdev",
+                    "homepage": "http://raam.org/",
+                    "role": "developer"
+                }
+            ],
+            "description": "Combines & compresses CSS/JS/HTML code.",
+            "homepage": "https://github.com/websharks/html-compressor",
+            "keywords": [
+                "compressor",
+                "html",
+                "websharks"
+            ],
+            "time": "2015-04-28 23:55:33"
+        },
+        {
+            "name": "websharks/js-minifier",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websharks/js-minifier.git",
+                "reference": "eee35dd574b9695e8c3d32f67bee7d80b537887e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/eee35dd574b9695e8c3d32f67bee7d80b537887e",
+                "reference": "eee35dd574b9695e8c3d32f67bee7d80b537887e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WebSharks\\JsMinifier\\": "src/includes/classes"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "websharks",
+                    "homepage": "http://websharks-inc.com/",
+                    "role": "company"
+                },
+                {
+                    "name": "jaswsinc",
+                    "homepage": "http://jaswsinc.com/",
+                    "role": "developer"
+                },
+                {
+                    "name": "raamdev",
+                    "homepage": "http://raam.org/",
+                    "role": "developer"
+                }
+            ],
+            "description": "Compresses JavaScript code.",
+            "homepage": "https://github.com/websharks/js-minifier",
+            "keywords": [
+                "JS",
+                "compressor",
+                "javascript",
+                "websharks"
+            ],
+            "time": "2015-04-28 23:55:16"
+        },
+        {
+            "name": "websharks/sharkicons",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websharks/sharkicons.git",
+                "reference": "4e0c7c23c6aa86a77659e095b8b14eaac732e6f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/4e0c7c23c6aa86a77659e095b8b14eaac732e6f5",
+                "reference": "4e0c7c23c6aa86a77659e095b8b14eaac732e6f5",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "websharks",
+                    "homepage": "http://websharks-inc.com/",
+                    "role": "company"
+                },
+                {
+                    "name": "jaswsinc",
+                    "homepage": "http://jaswsinc.com/",
+                    "role": "developer"
+                },
+                {
+                    "name": "raamdev",
+                    "homepage": "http://raam.org/",
+                    "role": "developer"
+                }
+            ],
+            "description": "Font containing WebSharks logos/icons.",
+            "homepage": "https://github.com/websharks/sharkicons",
+            "keywords": [
+                "php",
+                "websharks",
+                "wordpress"
+            ],
+            "time": "2015-04-25 23:30:17"
+        },
+        {
+            "name": "websharks/wp-php-rv",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/websharks/wp-php-rv.git",
+                "reference": "6953366641b32b6129bb86bf13c9e76ce46a655f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/6953366641b32b6129bb86bf13c9e76ce46a655f",
+                "reference": "6953366641b32b6129bb86bf13c9e76ce46a655f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "websharks",
+                    "homepage": "http://websharks-inc.com/",
+                    "role": "company"
+                },
+                {
+                    "name": "jaswsinc",
+                    "homepage": "http://jaswsinc.com/",
+                    "role": "developer"
+                },
+                {
+                    "name": "raamdev",
+                    "homepage": "http://raam.org/",
+                    "role": "developer"
+                }
+            ],
+            "description": "Stub for WordPress themes/plugins that require PHP vX.x+.",
+            "homepage": "https://github.com/websharks/wp-php-rv",
+            "keywords": [
+                "php",
+                "websharks",
+                "wordpress"
+            ],
+            "time": "2015-05-01 11:27:16"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "phing/phing": 20,
+        "websharks/wp-php-rv": 20,
+        "websharks/html-compressor": 20,
+        "websharks/sharkicons": 20
+    },
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.3"
+    },
+    "platform-dev": []
+}
