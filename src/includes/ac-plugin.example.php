@@ -1,10 +1,10 @@
 <?php
-
-/*
- * If implemented; this file should go in this special directory.
+/**
+ * Example AC Plugin File.
+ *
+ * If implemented; this file should go in this special directory:
  *    `/wp-content/ac-plugins/my-ac-plugin.php`
  */
-
 if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }

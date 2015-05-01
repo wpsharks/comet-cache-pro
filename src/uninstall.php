@@ -1,8 +1,8 @@
 <?php
 /**
- * ZenCache Uninstaller.
+ * Uninstaller.
  *
- * @since 150422 Rewrite of ZenCache
+ * @since 150422 Rewrite
  */
 namespace WebSharks\ZenCache\Pro;
 
