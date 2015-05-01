@@ -224,10 +224,10 @@ class CdnFilters extends AbsBase
 
         if ($this->htmlc_enable) {
             // If the HTML Compressor is enabled, attach early hook. Runs later.
-            if (empty($GLOBALS['websharks\\html_compressor_early_hooks']) || !is_array($GLOBALS['websharks\\html_compressor_early_hooks'])) {
-                $GLOBALS['websharks\\html_compressor_early_hooks'] = array(); // Initialize.
+            if (empty($GLOBALS['WebSharks\\HtmlCompressor_early_hooks']) || !is_array($GLOBALS['WebSharks\\HtmlCompressor_early_hooks'])) {
+                $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'] = array(); // Initialize.
             }
-            $GLOBALS['websharks\\html_compressor_early_hooks'][__CLASS__] = array(
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][__CLASS__] = array(
                 'hook'          => 'part_url', // Filters JS/CSS parts.
                 'function'      => array($this, 'urlFilter'),
                 'priority'      => PHP_INT_MAX - 10,
