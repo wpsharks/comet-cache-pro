@@ -50,7 +50,7 @@ abstract class AbsBase
      */
     public function __construct()
     {
-        $this->plugin = plugin();
+        $this->plugin = &$GLOBALS[GLOBAL_NS];
 
         $class = get_called_class();
 
