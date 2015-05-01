@@ -2683,7 +2683,7 @@ class Plugin extends AbsBase
 		$rel_dir_file = trim((string)$rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
 		if(empty($this->options) || !is_array($this->options) || empty($this->options['base_dir']))
-			throw new \exception(__('Doing it wrong! Missing `base_dir` option value. MUST call this method after `setup()`.', $this->text_domain));
+			throw new \Exception(__('Doing it wrong! Missing `base_dir` option value. MUST call this method after `setup()`.', $this->text_domain));
 
 		$wp_content_base_dir_to = WP_CONTENT_DIR.'/'.$this->options['base_dir'];
 
@@ -2711,7 +2711,7 @@ class Plugin extends AbsBase
 		$rel_dir_file = trim((string)$rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
 		if(empty($this->options) || !is_array($this->options) || empty($this->options['base_dir']))
-			throw new \exception(__('Doing it wrong! Missing `base_dir` option value. MUST call this method after `setup()`.', $this->text_domain));
+			throw new \Exception(__('Doing it wrong! Missing `base_dir` option value. MUST call this method after `setup()`.', $this->text_domain));
 
 		$base_path_to = $this->options['base_dir'];
 
