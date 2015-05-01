@@ -1,0 +1,526 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	Development	//
+AbsBase	src/includes/classes/AbsBase.php	/^abstract class AbsBase$/;"	c	namespace:WebSharks\ZenCache\Pro
+Actions	src/includes/classes/Actions.php	/^class Actions extends AbsBase$/;"	c	namespace:WebSharks\ZenCache\Pro
+CACHE_PATH_ALLOW_WILDCARDS	src/includes/old-classes/share.php	/^			const CACHE_PATH_ALLOW_WILDCARDS = 512;$/;"	d	class:zencache::share
+CACHE_PATH_NO_EXT	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_EXT = 256;$/;"	d	class:zencache::share
+CACHE_PATH_NO_HOST	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_HOST = 2;$/;"	d	class:zencache::share
+CACHE_PATH_NO_PATH	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_PATH = 4;$/;"	d	class:zencache::share
+CACHE_PATH_NO_PATH_INDEX	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_PATH_INDEX = 8;$/;"	d	class:zencache::share
+CACHE_PATH_NO_QUERY	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_QUERY = 32;$/;"	d	class:zencache::share
+CACHE_PATH_NO_QUV	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_QUV = 16;$/;"	d	class:zencache::share
+CACHE_PATH_NO_SCHEME	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_SCHEME = 1;$/;"	d	class:zencache::share
+CACHE_PATH_NO_USER	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_USER = 64;$/;"	d	class:zencache::share
+CACHE_PATH_NO_VSALT	src/includes/old-classes/share.php	/^			const CACHE_PATH_NO_VSALT = 128;$/;"	d	class:zencache::share
+CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG	src/includes/old-classes/share.php	/^			const CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG = '(?:\\\/index)?(?:\\.|\\\/(?:page\\\/[0-9]+|comment\\-page\\-[0-9]+)[.\\\/])';$/;"	d	class:zencache::share
+NC_DEBUG_1ST_TIME_404_SYMLINK	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_1ST_TIME_404_SYMLINK = 'nc_debug_1st_time_404_symlink';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_404_REQUEST	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_404_REQUEST = 'nc_debug_404_request';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_DONOTCACHEPAGE_CONSTANT	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_DONOTCACHEPAGE_CONSTANT = 'nc_debug_donotcachepage_constant';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR = 'nc_debug_donotcachepage_server_var';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_EARLY_BUFFER_TERMINATION	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_EARLY_BUFFER_TERMINATION = 'nc_debug_early_buffer_termination';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_EXCLUDED_AGENTS	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_EXCLUDED_AGENTS = 'nc_debug_excluded_agents';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_EXCLUDED_REFS	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_EXCLUDED_REFS = 'nc_debug_excluded_refs';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_EXCLUDED_URIS	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_EXCLUDED_URIS = 'nc_debug_excluded_uris';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_FEED_REQUEST	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_FEED_REQUEST = 'nc_debug_feed_request';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_GET_REQUEST_QUERIES	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_GET_REQUEST_QUERIES = 'nc_debug_get_request_queries';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_IS_LIKE_LOGGED_IN_USER	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_IS_LIKE_LOGGED_IN_USER = 'nc_debug_is_like_logged_in_user';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_IS_LOGGED_IN_USER	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_IS_LOGGED_IN_USER = 'nc_debug_is_logged_in_user';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_MAINTENANCE_PLUGIN	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_MAINTENANCE_PLUGIN = 'nc_debug_maintenance_plugin';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_MS_FILES	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_MS_FILES = 'nc_debug_ms_files';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_NO_SERVER_HTTP_HOST	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_NO_SERVER_HTTP_HOST = 'nc_debug_no_server_http_host';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_NO_SERVER_REQUEST_URI	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_NO_SERVER_REQUEST_URI = 'nc_debug_no_server_request_uri';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_NO_USER_TOKEN	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_NO_USER_TOKEN = 'nc_debug_no_user_token';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_OB_ZLIB_CODING_TYPE	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_OB_ZLIB_CODING_TYPE = 'nc_debug_ob_zlib_coding_type';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_PHP_SAPI_CLI	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_PHP_SAPI_CLI = 'nc_debug_php_sapi_cli';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_QCAC_GET_VAR	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_QCAC_GET_VAR = 'nc_debug_zcac_get_var';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_SELF_SERVE_REQUEST	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_SELF_SERVE_REQUEST = 'nc_debug_self_serve_request';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_UNCACHEABLE_CONTENT_TYPE	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_UNCACHEABLE_CONTENT_TYPE = 'nc_debug_uncacheable_content_type';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_UNCACHEABLE_REQUEST	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_UNCACHEABLE_REQUEST = 'nc_debug_post_put_del_request';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_UNCACHEABLE_STATUS	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_UNCACHEABLE_STATUS = 'nc_debug_uncacheable_status';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_WP_ADMIN	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_WP_ADMIN = 'nc_debug_wp_admin';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_WP_ERROR_PAGE	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_WP_ERROR_PAGE = 'nc_debug_wp_error_page';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_WP_SYSTEMATICS	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_WP_SYSTEMATICS = 'nc_debug_wp_systematics';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT = 'nc_debug_zencache_allowed_constant';$/;"	d	class:zencache::advanced_cache
+NC_DEBUG_ZENCACHE_ALLOWED_SERVER_VAR	src/includes/old-classes/advanced-cache.php	/^		const NC_DEBUG_ZENCACHE_ALLOWED_SERVER_VAR = 'nc_debug_zencache_allowed_server_var';$/;"	d	class:zencache::advanced_cache
+Plugin	src/includes/classes/Plugin.php	/^class Plugin extends AbsBase$/;"	c	namespace:WebSharks\ZenCache\Pro
+QUICK_CACHE_constants	src/includes/old-classes/advanced-cache.php	/^		public static function QUICK_CACHE_constants()$/;"	f	class:zencache::advanced_cache_back_compat
+Uninstall	src/includes/classes/Uninstall.php	/^class Uninstall$/;"	c	namespace:WebSharks\ZenCache\Pro
+WebSharks\ZenCache\Pro	src/includes/classes/AbsBase.php	/^namespace WebSharks\\ZenCache\\Pro;$/;"	n
+WebSharks\ZenCache\Pro	src/includes/classes/Actions.php	/^namespace WebSharks\\ZenCache\\Pro;$/;"	n
+WebSharks\ZenCache\Pro	src/includes/classes/Plugin.php	/^namespace WebSharks\\ZenCache\\Pro;$/;"	n
+WebSharks\ZenCache\Pro	src/includes/classes/Uninstall.php	/^namespace WebSharks\\ZenCache\\Pro;$/;"	n
+WebSharks\ZenCache\Pro	src/plugin.php	/^namespace WebSharks\\ZenCache\\Pro;$/;"	n
+WebSharks\ZenCache\Pro	src/uninstall.php	/^namespace WebSharks\\ZenCache\\Pro;$/;"	n
+ZENCACHE_	src/includes/old-classes/advanced-cache.php	/^					define('ZENCACHE_'.$_constant_sub_name, $_value);$/;"	d	function:zencache::advanced_cache_back_compat::QUICK_CACHE_constants
+ZENCACHE_404_CACHE_FILENAME	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_404_CACHE_FILENAME', '----404----');$/;"	d	namespace:zencache
+ZENCACHE_ALLOW_BROWSER_CACHE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_ALLOW_BROWSER_CACHE', '%%ZENCACHE_ALLOW_BROWSER_CACHE%%');$/;"	d	namespace:zencache
+ZENCACHE_CACHE_404_REQUESTS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_CACHE_404_REQUESTS', '%%ZENCACHE_CACHE_404_REQUESTS%%');$/;"	d	namespace:zencache
+ZENCACHE_DEBUGGING_ENABLE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_DEBUGGING_ENABLE', '%%ZENCACHE_DEBUGGING_ENABLE%%');$/;"	d	namespace:zencache
+ZENCACHE_DIR	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_DIR', WP_CONTENT_DIR.'\/'.'%%ZENCACHE_DIR%%');$/;"	d	namespace:zencache
+ZENCACHE_ENABLE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_ENABLE', '%%ZENCACHE_ENABLE%%');$/;"	d	namespace:zencache
+ZENCACHE_EXCLUDE_AGENTS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_EXCLUDE_AGENTS', '%%ZENCACHE_EXCLUDE_AGENTS%%');$/;"	d	namespace:zencache
+ZENCACHE_EXCLUDE_REFS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_EXCLUDE_REFS', '%%ZENCACHE_EXCLUDE_REFS%%');$/;"	d	namespace:zencache
+ZENCACHE_EXCLUDE_URIS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_EXCLUDE_URIS', '%%ZENCACHE_EXCLUDE_URIS%%');$/;"	d	namespace:zencache
+ZENCACHE_FEEDS_ENABLE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_FEEDS_ENABLE', '%%ZENCACHE_FEEDS_ENABLE%%');$/;"	d	namespace:zencache
+ZENCACHE_GET_REQUESTS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_GET_REQUESTS', '%%ZENCACHE_GET_REQUESTS%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_CACHE_DIR_PRIVATE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_CACHE_DIR_PRIVATE', WP_CONTENT_DIR.'\/'.'%%ZENCACHE_HTMLC_CACHE_DIR_PRIVATE%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_CACHE_DIR_PUBLIC	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_CACHE_DIR_PUBLIC', WP_CONTENT_DIR.'\/'.'%%ZENCACHE_HTMLC_CACHE_DIR_PUBLIC%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_CSS_CODE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_CSS_CODE', '%%ZENCACHE_HTMLC_COMPRESS_CSS_CODE%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_HTML_CODE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_HTML_CODE', '%%ZENCACHE_HTMLC_COMPRESS_HTML_CODE%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_COMPRESS_JS_CODE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_COMPRESS_JS_CODE', '%%ZENCACHE_HTMLC_COMPRESS_JS_CODE%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_CSS_EXCLUSIONS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_CSS_EXCLUSIONS', '%%ZENCACHE_HTMLC_CSS_EXCLUSIONS%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_ENABLE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_ENABLE', '%%ZENCACHE_HTMLC_ENABLE%%');$/;"	d	namespace:zencache
+ZENCACHE_HTMLC_JS_EXCLUSIONS	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_HTMLC_JS_EXCLUSIONS', '%%ZENCACHE_HTMLC_JS_EXCLUSIONS%%');$/;"	d	namespace:zencache
+ZENCACHE_MAX_AGE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_MAX_AGE', '%%ZENCACHE_MAX_AGE%%');$/;"	d	namespace:zencache
+ZENCACHE_PLUGIN_FILE	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_PLUGIN_FILE', '%%ZENCACHE_PLUGIN_FILE%%');$/;"	d	namespace:zencache
+ZENCACHE_PRO	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_PRO', TRUE); \/\/ Pro version.$/;"	d	namespace:zencache
+ZENCACHE_VERSION_SALT	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_VERSION_SALT', '%%ZENCACHE_VERSION_SALT%%');$/;"	d	namespace:zencache
+ZENCACHE_WHEN_LOGGED_IN	src/includes/old-classes/advanced-cache.php	/^		define('ZENCACHE_WHEN_LOGGED_IN', '%%ZENCACHE_WHEN_LOGGED_IN%%');$/;"	d	namespace:zencache
+__	src/includes/old-classes/share.php	/^			function __($string, $text_domain)$/;"	f	namespace:zencache
+__construct	src/includes/classes/AbsBase.php	/^    public function __construct()$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+__construct	src/includes/classes/Actions.php	/^    public function __construct()$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+__construct	src/includes/classes/Plugin.php	/^	public function __construct($enable_hooks = TRUE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+__construct	src/includes/classes/Uninstall.php	/^    public function __construct()$/;"	f	class:WebSharks\ZenCache\Pro::Uninstall
+__construct	src/includes/old-classes/actions.php	/^		public function __construct()$/;"	f	class:zencache::actions
+__construct	src/includes/old-classes/advanced-cache.php	/^		public function __construct()$/;"	f	class:zencache::advanced_cache
+__construct	src/includes/old-classes/auto-cache.php	/^		public function __construct()$/;"	f	class:zencache::auto_cache
+__construct	src/includes/old-classes/cdn-filters.php	/^		public function __construct()$/;"	f	class:zencache::cdn_filters
+__construct	src/includes/old-classes/menu-pages.php	/^		public function __construct()$/;"	f	class:zencache::menu_pages
+__construct	src/includes/old-classes/plugin.php	/^			public function __construct($enable_hooks = TRUE)$/;"	f	class:zencache::plugin
+__construct	src/includes/old-classes/share.php	/^			public function __construct()$/;"	f	class:zencache::share
+__construct	src/includes/old-classes/uninstall.php	/^			public function __construct()$/;"	f	class:zencache::uninstall
+__construct	src/includes/old-classes/utils-feed.php	/^		public function __construct()$/;"	f	class:zencache::utils_feed
+__construct	src/includes/old-classes/version-specific-upgrade.php	/^			public function __construct($prev_version)$/;"	f	class:zencache::version_specific_upgrade
+__get	src/includes/classes/AbsBase.php	/^    public function __get($property)$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+__isset	src/includes/classes/AbsBase.php	/^    public function __isset($property)$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+__set	src/includes/classes/AbsBase.php	/^    public function __set($property, $value)$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+__unset	src/includes/classes/AbsBase.php	/^    public function __unset($property)$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+_active_plugin_slug	src/includes/old-classes/conflicts-check.php	/^			if(!($_active_plugin_slug = strstr($_active_plugin_basename, '\/', TRUE)))$/;"	v	namespace:zencache
+_xml_get_sitemapindex_urls_deep	src/includes/old-classes/auto-cache.php	/^		protected function _xml_get_sitemapindex_urls_deep(\\XMLReader $xml_reader)$/;"	f	class:zencache::auto_cache
+_xml_get_urlset_urls	src/includes/old-classes/auto-cache.php	/^		protected function _xml_get_urlset_urls(\\XMLReader $xml_reader)$/;"	f	class:zencache::auto_cache
+actions	src/includes/classes/Plugin.php	/^	public function actions()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+actions	src/includes/old-classes/actions.php	/^	class actions \/\/ Action handlers.$/;"	c	namespace:zencache
+actions	src/includes/old-classes/plugin.php	/^			public function actions()$/;"	f	class:zencache::plugin
+activate	src/includes/classes/Plugin.php	/^	public function activate()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+activate	src/includes/old-classes/plugin.php	/^			public function activate()$/;"	f	class:zencache::plugin
+active_plugins	src/includes/old-classes/conflicts-check.php	/^		$active_plugins           = (array)get_option('active_plugins', array());$/;"	v	namespace:zencache
+active_plugins	src/includes/old-classes/conflicts-check.php	/^		$active_plugins           = array_unique(array_merge($active_plugins, $active_sitewide_plugins));$/;"	v	namespace:zencache
+active_sitewide_plugins	src/includes/old-classes/conflicts-check.php	/^		$active_sitewide_plugins  = is_multisite() ? array_keys((array)get_site_option('active_sitewide_plugins', array())) : array();$/;"	v	namespace:zencache
+add_action	src/includes/old-classes/share.php	/^			public function add_action() \/\/ Simple `add_hook()` alias.$/;"	f	class:zencache::share
+add_advanced_cache	src/includes/classes/Plugin.php	/^	public function add_advanced_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+add_advanced_cache	src/includes/old-classes/plugin.php	/^			public function add_advanced_cache()$/;"	f	class:zencache::plugin
+add_filter	src/includes/old-classes/share.php	/^			public function add_filter() \/\/ Simple `add_hook()` alias.$/;"	f	class:zencache::share
+add_hook	src/includes/old-classes/share.php	/^			public function add_hook($hook, $function, $priority = 10, $accepted_args = 1)$/;"	f	class:zencache::share
+add_menu_pages	src/includes/classes/Plugin.php	/^	public function add_menu_pages()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+add_menu_pages	src/includes/old-classes/plugin.php	/^			public function add_menu_pages()$/;"	f	class:zencache::plugin
+add_network_menu_pages	src/includes/classes/Plugin.php	/^	public function add_network_menu_pages()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+add_network_menu_pages	src/includes/old-classes/plugin.php	/^			public function add_network_menu_pages()$/;"	f	class:zencache::plugin
+add_settings_link	src/includes/classes/Plugin.php	/^	public function add_settings_link($links)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+add_settings_link	src/includes/old-classes/plugin.php	/^			public function add_settings_link($links)$/;"	f	class:zencache::plugin
+add_tmp_suffix	src/includes/old-classes/share.php	/^			public function add_tmp_suffix($dir_file)$/;"	f	class:zencache::share
+add_wp_cache_to_wp_config	src/includes/classes/Plugin.php	/^	public function add_wp_cache_to_wp_config()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+add_wp_cache_to_wp_config	src/includes/old-classes/plugin.php	/^			public function add_wp_cache_to_wp_config()$/;"	f	class:zencache::plugin
+admin_bar_menu	src/includes/classes/Plugin.php	/^	public function admin_bar_menu(&$wp_admin_bar)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+admin_bar_menu	src/includes/old-classes/plugin.php	/^			public function admin_bar_menu(&$wp_admin_bar)$/;"	f	class:zencache::plugin
+admin_bar_meta_tags	src/includes/classes/Plugin.php	/^	public function admin_bar_meta_tags()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+admin_bar_meta_tags	src/includes/old-classes/plugin.php	/^			public function admin_bar_meta_tags()$/;"	f	class:zencache::plugin
+admin_bar_scripts	src/includes/classes/Plugin.php	/^	public function admin_bar_scripts()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+admin_bar_scripts	src/includes/old-classes/plugin.php	/^			public function admin_bar_scripts()$/;"	f	class:zencache::plugin
+admin_bar_styles	src/includes/classes/Plugin.php	/^	public function admin_bar_styles()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+admin_bar_styles	src/includes/old-classes/plugin.php	/^			public function admin_bar_styles()$/;"	f	class:zencache::plugin
+advanced_cache	src/includes/old-classes/advanced-cache.php	/^	class advanced_cache extends share # `\/wp-content\/advanced-cache.php`$/;"	c	namespace:zencache
+advanced_cache_back_compat	src/includes/old-classes/advanced-cache.php	/^	class advanced_cache_back_compat \/\/ No extender; we need this up above.$/;"	c	namespace:zencache
+ajax_clear_cache	src/client-s/js/admin-bar.js	/^		postVars[plugin.namespace] = {ajax_clear_cache: '1'};$/;"	p	class:postVars
+ajax_clear_cache	src/includes/classes/Actions.php	/^    public function ajax_clear_cache($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+ajax_clear_cache	src/includes/old-classes/actions.php	/^		public function ajax_clear_cache($args)$/;"	f	class:zencache::actions
+ajax_wipe_cache	src/client-s/js/admin-bar.js	/^		postVars[plugin.namespace] = {ajax_wipe_cache: '1'};$/;"	p	class:postVars
+ajax_wipe_cache	src/includes/classes/Actions.php	/^    public function ajax_wipe_cache($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+ajax_wipe_cache	src/includes/old-classes/actions.php	/^		public function ajax_wipe_cache($args)$/;"	f	class:zencache::actions
+all_admin_errors	src/includes/classes/Plugin.php	/^	public function all_admin_errors()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+all_admin_errors	src/includes/old-classes/plugin.php	/^			public function all_admin_errors()$/;"	f	class:zencache::plugin
+all_admin_notices	src/includes/classes/Plugin.php	/^	public function all_admin_notices()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+all_admin_notices	src/includes/old-classes/plugin.php	/^			public function all_admin_notices()$/;"	f	class:zencache::plugin
+apply_filters	src/includes/old-classes/share.php	/^			public function apply_filters($hook, $value)$/;"	f	class:zencache::share
+apply_wp_filters	src/includes/old-classes/share.php	/^			public function apply_wp_filters($hook)$/;"	f	class:zencache::share
+auto_cache	src/includes/classes/Plugin.php	/^	public function auto_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_cache	src/includes/old-classes/auto-cache.php	/^	class auto_cache$/;"	c	namespace:zencache
+auto_cache	src/includes/old-classes/plugin.php	/^			public function auto_cache()$/;"	f	class:zencache::plugin
+auto_cache_url	src/includes/old-classes/auto-cache.php	/^		protected function auto_cache_url($url)$/;"	f	class:zencache::auto_cache
+auto_clear_author_page_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_author_page_cache($post_id, \\WP_Post $post_after, \\WP_Post $post_before)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_author_page_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_author_page_cache($post_id, \\WP_Post $post_after, \\WP_Post $post_before)$/;"	f	class:zencache::plugin
+auto_clear_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_cache()$/;"	f	class:zencache::plugin
+auto_clear_comment_post_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_comment_post_cache($comment_id)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_comment_post_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_comment_post_cache($comment_id)$/;"	f	class:zencache::plugin
+auto_clear_comment_transition	src/includes/classes/Plugin.php	/^	public function auto_clear_comment_transition($new_status, $old_status, $comment)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_comment_transition	src/includes/old-classes/plugin.php	/^			public function auto_clear_comment_transition($new_status, $old_status, $comment)$/;"	f	class:zencache::plugin
+auto_clear_custom_post_type_archive_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_custom_post_type_archive_cache($post_id)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_custom_post_type_archive_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_custom_post_type_archive_cache($post_id)$/;"	f	class:zencache::plugin
+auto_clear_home_page_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_home_page_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_home_page_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_home_page_cache()$/;"	f	class:zencache::plugin
+auto_clear_post_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_post_cache($post_id, $force = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_post_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_post_cache($post_id, $force = FALSE)$/;"	f	class:zencache::plugin
+auto_clear_post_cache_transition	src/includes/classes/Plugin.php	/^	public function auto_clear_post_cache_transition($post_ID, $data)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_post_cache_transition	src/includes/old-classes/plugin.php	/^			public function auto_clear_post_cache_transition($post_ID, $data)$/;"	f	class:zencache::plugin
+auto_clear_post_terms_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_post_terms_cache($post_id, $force = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_post_terms_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_post_terms_cache($post_id, $force = FALSE)$/;"	f	class:zencache::plugin
+auto_clear_posts_page_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_posts_page_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_posts_page_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_posts_page_cache()$/;"	f	class:zencache::plugin
+auto_clear_user_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_user_cache($user_id)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_user_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_user_cache($user_id)$/;"	f	class:zencache::plugin
+auto_clear_user_cache_a1	src/includes/classes/Plugin.php	/^	public function auto_clear_user_cache_a1($user_id)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_user_cache_a1	src/includes/old-classes/plugin.php	/^			public function auto_clear_user_cache_a1($user_id)$/;"	f	class:zencache::plugin
+auto_clear_user_cache_a4	src/includes/classes/Plugin.php	/^	public function auto_clear_user_cache_a4($_, $__, $___, $user_id)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_user_cache_a4	src/includes/old-classes/plugin.php	/^			public function auto_clear_user_cache_a4($_, $__, $___, $user_id)$/;"	f	class:zencache::plugin
+auto_clear_user_cache_cur	src/includes/classes/Plugin.php	/^	public function auto_clear_user_cache_cur()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_user_cache_cur	src/includes/old-classes/plugin.php	/^			public function auto_clear_user_cache_cur()$/;"	f	class:zencache::plugin
+auto_clear_user_cache_fa2	src/includes/classes/Plugin.php	/^	public function auto_clear_user_cache_fa2($value, $user_id)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_user_cache_fa2	src/includes/old-classes/plugin.php	/^			public function auto_clear_user_cache_fa2($value, $user_id)$/;"	f	class:zencache::plugin
+auto_clear_xml_feeds_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_xml_feeds_cache($type, $post_id = 0)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_xml_feeds_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_xml_feeds_cache($type, $post_id = 0)$/;"	f	class:zencache::plugin
+auto_clear_xml_sitemaps_cache	src/includes/classes/Plugin.php	/^	public function auto_clear_xml_sitemaps_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_clear_xml_sitemaps_cache	src/includes/old-classes/plugin.php	/^			public function auto_clear_xml_sitemaps_cache()$/;"	f	class:zencache::plugin
+auto_wipe_cache	src/includes/classes/Plugin.php	/^	public function auto_wipe_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+auto_wipe_cache	src/includes/old-classes/plugin.php	/^			public function auto_wipe_cache()$/;"	f	class:zencache::plugin
+base_path_to	src/includes/classes/Plugin.php	/^	public function base_path_to($rel_dir_file)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+base_path_to	src/includes/old-classes/plugin.php	/^			public function base_path_to($rel_dir_file)$/;"	f	class:zencache::plugin
+build_cache_path	src/includes/old-classes/share.php	/^			public function build_cache_path($url, $with_user_token = '', $with_version_salt = '', $flags = 0)$/;"	f	class:zencache::share
+build_cache_path_regex	src/includes/old-classes/share.php	/^			public function build_cache_path_regex($url, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)$/;"	f	class:zencache::share
+build_host_cache_path_regex	src/includes/old-classes/share.php	/^			public function build_host_cache_path_regex($url, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)$/;"	f	class:zencache::share
+build_host_cache_path_regex_frags_from_wc_uris	src/includes/old-classes/share.php	/^			public function build_host_cache_path_regex_frags_from_wc_uris($uris, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)$/;"	f	class:zencache::share
+bump_cdn_invalidation_counter	src/includes/classes/Plugin.php	/^	public function bump_cdn_invalidation_counter()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+bump_cdn_invalidation_counter	src/includes/old-classes/plugin.php	/^			public function bump_cdn_invalidation_counter()$/;"	f	class:zencache::plugin
+cache	src/includes/classes/AbsBase.php	/^    protected $cache = array();$/;"	v	class:WebSharks\ZenCache\Pro::AbsBase
+cache	src/includes/classes/Plugin.php	/^	public $cache = array();$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+cache	src/includes/old-classes/plugin.php	/^			public $cache = array();$/;"	v	class:zencache::plugin
+cache	src/includes/old-classes/share.php	/^			public $cache = array();$/;"	v	class:zencache::share
+cacheKey	src/includes/classes/AbsBase.php	/^    protected function &cacheKey($function, $args = array(), $___prop = 'cache')$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+cache_dir	src/includes/old-classes/share.php	/^			public function cache_dir($rel_path = '')$/;"	f	class:zencache::share
+cache_file	src/includes/old-classes/advanced-cache.php	/^		public $cache_file = '';$/;"	v	class:zencache::advanced_cache
+cache_file_404	src/includes/old-classes/advanced-cache.php	/^		public $cache_file_404 = '';$/;"	v	class:zencache::advanced_cache
+cache_lock	src/includes/old-classes/share.php	/^			public function cache_lock()$/;"	f	class:zencache::share
+cache_path	src/includes/old-classes/advanced-cache.php	/^		public $cache_path = '';$/;"	v	class:zencache::advanced_cache
+cache_sub_dir	src/includes/classes/Plugin.php	/^	public $cache_sub_dir = 'cache';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+cache_sub_dir	src/includes/old-classes/plugin.php	/^			public $cache_sub_dir = 'cache';$/;"	v	class:zencache::plugin
+cache_unlock	src/includes/old-classes/share.php	/^			public function cache_unlock(array $lock)$/;"	f	class:zencache::share
+cacheable_headers_list	src/includes/old-classes/share.php	/^			public function cacheable_headers_list()$/;"	f	class:zencache::share
+cap	src/includes/classes/Plugin.php	/^	public $cap = '';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+cap	src/includes/old-classes/plugin.php	/^			public $cap = '';$/;"	v	class:zencache::plugin
+cdn_blacklisted_extensions	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_blacklisted_extensions;$/;"	v	class:zencache::cdn_filters
+cdn_blacklisted_uri_patterns	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_blacklisted_uri_patterns;$/;"	v	class:zencache::cdn_filters
+cdn_enable	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_enable;$/;"	v	class:zencache::cdn_filters
+cdn_filters	src/includes/old-classes/cdn-filters.php	/^	class cdn_filters$/;"	c	namespace:zencache
+cdn_host	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_host;$/;"	v	class:zencache::cdn_filters
+cdn_invalidation_counter	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_invalidation_counter;$/;"	v	class:zencache::cdn_filters
+cdn_invalidation_var	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_invalidation_var;$/;"	v	class:zencache::cdn_filters
+cdn_over_ssl	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_over_ssl;$/;"	v	class:zencache::cdn_filters
+cdn_whitelisted_extensions	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_whitelisted_extensions;$/;"	v	class:zencache::cdn_filters
+cdn_whitelisted_uri_patterns	src/includes/old-classes/cdn-filters.php	/^		protected $cdn_whitelisted_uri_patterns;$/;"	v	class:zencache::cdn_filters
+check_advanced_cache	src/includes/classes/Plugin.php	/^	public function check_advanced_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+check_advanced_cache	src/includes/old-classes/plugin.php	/^			public function check_advanced_cache()$/;"	f	class:zencache::plugin
+check_blog_paths	src/includes/classes/Plugin.php	/^	public function check_blog_paths()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+check_blog_paths	src/includes/old-classes/plugin.php	/^			public function check_blog_paths()$/;"	f	class:zencache::plugin
+check_latest_pro_version	src/includes/classes/Plugin.php	/^	public function check_latest_pro_version()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+check_latest_pro_version	src/includes/old-classes/plugin.php	/^			public function check_latest_pro_version()$/;"	f	class:zencache::plugin
+check_version	src/includes/classes/Plugin.php	/^	public function check_version()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+check_version	src/includes/old-classes/plugin.php	/^			public function check_version()$/;"	f	class:zencache::plugin
+clear	src/includes/old-classes/api-class.php	/^		public static function clear()$/;"	f	class:zencache
+clearCache	src/client-s/js/admin-bar.js	/^	plugin.clearCache = function()$/;"	f	function:plugin
+clear_cache	src/includes/classes/Actions.php	/^    public function clear_cache($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+clear_cache	src/includes/classes/Plugin.php	/^	public function clear_cache($manually = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+clear_cache	src/includes/old-classes/actions.php	/^		public function clear_cache($args)$/;"	f	class:zencache::actions
+clear_cache	src/includes/old-classes/plugin.php	/^			public function clear_cache($manually = FALSE)$/;"	f	class:zencache::plugin
+clear_files_from_cache_dir	src/includes/old-classes/share.php	/^			public function clear_files_from_cache_dir($regex)$/;"	f	class:zencache::share
+clear_files_from_host_cache_dir	src/includes/old-classes/share.php	/^			public function clear_files_from_host_cache_dir($regex)$/;"	f	class:zencache::share
+clear_htmlc_cache	src/includes/classes/Plugin.php	/^	public function clear_htmlc_cache($manually = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+clear_htmlc_cache	src/includes/old-classes/plugin.php	/^			public function clear_htmlc_cache($manually = FALSE)$/;"	f	class:zencache::plugin
+color_svg_menu_icon	src/includes/classes/Plugin.php	/^	public function color_svg_menu_icon($svg)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+color_svg_menu_icon	src/includes/old-classes/plugin.php	/^			public function color_svg_menu_icon($svg)$/;"	f	class:zencache::plugin
+conflicting_plugin_name	src/includes/old-classes/plugin.php	/^			$conflicting_plugin_name = $plugin_name.' '.__('Lite', $text_domain);$/;"	v	namespace:zencache
+conflicting_plugin_name	src/includes/old-classes/plugin.php	/^		$conflicting_plugin_name = $construct_name($GLOBALS[__NAMESPACE__.'_conflicting_plugin']);$/;"	v	namespace:zencache
+conflicting_plugin_slugs	src/includes/old-classes/conflicts-check.php	/^		$conflicting_plugin_slugs = array($/;"	v	namespace:zencache
+construct_name	src/includes/old-classes/plugin.php	/^		$construct_name          = function ($slug_or_ns)$/;"	f	namespace:zencache
+content_filter	src/includes/old-classes/cdn-filters.php	/^		public function content_filter($string)$/;"	f	class:zencache::cdn_filters
+content_url	src/includes/old-classes/advanced-cache.php	/^		public $content_url = '';$/;"	v	class:zencache::advanced_cache
+convert_variations_to_host_cache_path_regex_frags	src/includes/old-classes/utils-feed.php	/^		public function convert_variations_to_host_cache_path_regex_frags(array $variations)$/;"	f	class:zencache::utils_feed
+current_ip	src/includes/old-classes/share.php	/^			public function current_ip()$/;"	f	class:zencache::share
+deactivate	src/includes/classes/Plugin.php	/^	public function deactivate()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+deactivate	src/includes/old-classes/plugin.php	/^			public function deactivate()$/;"	f	class:zencache::plugin
+debug_info	src/includes/old-classes/advanced-cache.php	/^		public $debug_info = array('reason_code' => '', 'reason' => '');$/;"	v	class:zencache::advanced_cache
+default_feed	src/includes/old-classes/utils-feed.php	/^		protected $default_feed;$/;"	v	class:zencache::utils_feed
+default_options	src/includes/classes/Plugin.php	/^	public $default_options = array();$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+default_options	src/includes/old-classes/plugin.php	/^			public $default_options = array();$/;"	v	class:zencache::plugin
+default_whitelisted_extensions	src/includes/old-classes/cdn-filters.php	/^		public static function default_whitelisted_extensions()$/;"	f	class:zencache::cdn_filters
+delete_advanced_cache	src/includes/classes/Plugin.php	/^	public function delete_advanced_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+delete_advanced_cache	src/includes/old-classes/plugin.php	/^			public function delete_advanced_cache()$/;"	f	class:zencache::plugin
+delete_all_files_dirs_in	src/includes/old-classes/share.php	/^			public function delete_all_files_dirs_in($dir, $delete_dir_too = FALSE)$/;"	f	class:zencache::share
+delete_files_from_cache_dir	src/includes/old-classes/share.php	/^			public function delete_files_from_cache_dir($regex, $check_max_age = FALSE)$/;"	f	class:zencache::share
+delete_files_from_host_cache_dir	src/includes/old-classes/share.php	/^			public function delete_files_from_host_cache_dir($regex, $check_max_age = FALSE)$/;"	f	class:zencache::share
+dir_regex_iteration	src/includes/old-classes/share.php	/^			public function dir_regex_iteration($dir, $regex)$/;"	f	class:zencache::share
+disable_auto_clear_cache_routines	src/includes/classes/Plugin.php	/^	public function disable_auto_clear_cache_routines()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+disable_auto_clear_cache_routines	src/includes/old-classes/plugin.php	/^			public function disable_auto_clear_cache_routines()$/;"	f	class:zencache::plugin
+disable_auto_wipe_cache_routines	src/includes/classes/Plugin.php	/^	public function disable_auto_wipe_cache_routines()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+disable_auto_wipe_cache_routines	src/includes/old-classes/plugin.php	/^			public function disable_auto_wipe_cache_routines()$/;"	f	class:zencache::plugin
+dismiss_error	src/includes/classes/Actions.php	/^    public function dismiss_error($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+dismiss_error	src/includes/old-classes/actions.php	/^		public function dismiss_error($args)$/;"	f	class:zencache::actions
+dismiss_notice	src/includes/classes/Actions.php	/^    public function dismiss_notice($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+dismiss_notice	src/includes/old-classes/actions.php	/^		public function dismiss_notice($args)$/;"	f	class:zencache::actions
+do_action	src/includes/old-classes/share.php	/^			public function do_action($hook)$/;"	f	class:zencache::share
+do_wp_action	src/includes/old-classes/share.php	/^			public function do_wp_action($hook)$/;"	f	class:zencache::share
+domain	src/includes/old-classes/share.php	/^			public $domain = 'zencache.com';$/;"	v	class:zencache::share
+enable_hooks	src/includes/classes/Plugin.php	/^	public $enable_hooks = TRUE;$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+enable_hooks	src/includes/old-classes/plugin.php	/^			public $enable_hooks = TRUE;$/;"	v	class:zencache::plugin
+enqueue_admin_scripts	src/includes/classes/Plugin.php	/^	public function enqueue_admin_scripts()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+enqueue_admin_scripts	src/includes/old-classes/plugin.php	/^			public function enqueue_admin_scripts()$/;"	f	class:zencache::plugin
+enqueue_admin_styles	src/includes/classes/Plugin.php	/^	public function enqueue_admin_styles()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+enqueue_admin_styles	src/includes/old-classes/plugin.php	/^			public function enqueue_admin_styles()$/;"	f	class:zencache::plugin
+enqueue_error	src/includes/classes/Plugin.php	/^	public function enqueue_error($error, $persistent_key = '', $push_to_top = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+enqueue_error	src/includes/old-classes/plugin.php	/^			public function enqueue_error($error, $persistent_key = '', $push_to_top = FALSE)$/;"	f	class:zencache::plugin
+enqueue_notice	src/includes/classes/Plugin.php	/^	public function enqueue_notice($notice, $persistent_key = '', $push_to_top = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+enqueue_notice	src/includes/old-classes/plugin.php	/^			public function enqueue_notice($notice, $persistent_key = '', $push_to_top = FALSE)$/;"	f	class:zencache::plugin
+esc_sq	src/includes/old-classes/share.php	/^			public function esc_sq($string, $times = 1)$/;"	f	class:zencache::share
+export_options	src/includes/classes/Actions.php	/^    public function export_options($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+export_options	src/includes/old-classes/actions.php	/^		public function export_options($args)$/;"	f	class:zencache::actions
+extend_cron_schedules	src/includes/classes/Plugin.php	/^	public function extend_cron_schedules($schedules)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+extend_cron_schedules	src/includes/old-classes/plugin.php	/^			public function extend_cron_schedules($schedules)$/;"	f	class:zencache::plugin
+extension	src/includes/old-classes/cdn-filters.php	/^		protected function extension($path)$/;"	f	class:zencache::cdn_filters
+feed_link_variations	src/includes/old-classes/utils-feed.php	/^		public function feed_link_variations($type_prefix = '')$/;"	f	class:zencache::utils_feed
+feed_types	src/includes/old-classes/utils-feed.php	/^		protected $feed_types;$/;"	v	class:zencache::utils_feed
+file	src/includes/classes/Plugin.php	/^	public $file = '';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+file	src/includes/old-classes/plugin.php	/^			public $file = '';$/;"	v	class:zencache::plugin
+filter_url	src/includes/old-classes/cdn-filters.php	/^		public function filter_url($url_uri_query, $scheme = NULL, $esc = FALSE)$/;"	f	class:zencache::cdn_filters
+find_wp_config_file	src/includes/old-classes/share.php	/^			public function find_wp_config_file()$/;"	f	class:zencache::share
+from_lt_v110523	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lt_v110523()$/;"	f	class:zencache::version_specific_upgrade
+from_lt_v140104	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lt_v140104()$/;"	f	class:zencache::version_specific_upgrade
+from_lt_v140605	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lt_v140605()$/;"	f	class:zencache::version_specific_upgrade
+from_lt_v140612	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lt_v140612()$/;"	f	class:zencache::version_specific_upgrade
+from_lt_v141001	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lt_v141001()$/;"	f	class:zencache::version_specific_upgrade
+from_lt_v141009	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lt_v141009()$/;"	f	class:zencache::version_specific_upgrade
+from_lte_v150218	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_lte_v150218()$/;"	f	class:zencache::version_specific_upgrade
+from_quick_cache	src/includes/old-classes/version-specific-upgrade.php	/^			public function from_quick_cache()$/;"	f	class:zencache::version_specific_upgrade
+fs_ftp_connection_types	src/includes/classes/Plugin.php	/^	public function fs_ftp_connection_types($types)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+fs_ftp_connection_types	src/includes/old-classes/plugin.php	/^			public function fs_ftp_connection_types($types)$/;"	f	class:zencache::plugin
+function_is_possible	src/includes/old-classes/share.php	/^			public function function_is_possible($function)$/;"	f	class:zencache::share
+get_sitemap_urls_deep	src/includes/old-classes/auto-cache.php	/^		protected function get_sitemap_urls_deep($sitemap, $___recursive = FALSE)$/;"	f	class:zencache::auto_cache
+get_tmp_dir	src/includes/old-classes/share.php	/^			public function get_tmp_dir()$/;"	f	class:zencache::share
+global_static	src/includes/classes/AbsBase.php	/^    protected static $global_static = array();$/;"	v	class:WebSharks\ZenCache\Pro::AbsBase
+has_a_cacheable_content_type	src/includes/old-classes/share.php	/^			public function has_a_cacheable_content_type()$/;"	f	class:zencache::share
+has_a_cacheable_status	src/includes/old-classes/share.php	/^			public function has_a_cacheable_status()$/;"	f	class:zencache::share
+headers_list	src/includes/old-classes/share.php	/^			public function headers_list()$/;"	f	class:zencache::share
+hideAJAXResponse	src/client-s/js/admin-bar.js	/^	plugin.hideAJAXResponse = function(event, delay)$/;"	f	function:plugin
+home_url	src/includes/old-classes/utils-feed.php	/^		protected $home_url;$/;"	v	class:zencache::utils_feed
+hook_id	src/includes/old-classes/share.php	/^			public function hook_id($function)$/;"	f	class:zencache::share
+hooks	src/includes/old-classes/share.php	/^			public $hooks = array();$/;"	v	class:zencache::share
+host_base_dir_tokens	src/includes/old-classes/share.php	/^			public function host_base_dir_tokens($dashify = FALSE)$/;"	f	class:zencache::share
+host_base_token	src/includes/old-classes/share.php	/^			public function host_base_token($dashify = FALSE)$/;"	f	class:zencache::share
+host_dir_token	src/includes/old-classes/share.php	/^			public function host_dir_token($dashify = FALSE)$/;"	f	class:zencache::share
+host_token	src/includes/old-classes/share.php	/^			public function host_token($dashify = FALSE)$/;"	f	class:zencache::share
+htaccess_deny	src/includes/old-classes/share.php	/^			public $htaccess_deny = "<IfModule authz_core_module>\\n\\tRequire all denied\\n<\/IfModule>\\n<IfModule !authz_core_module>\\n\\tdeny from all\\n<\/IfModule>";$/;"	v	class:zencache::share
+htmlc_cache_sub_dir_private	src/includes/classes/Plugin.php	/^	public $htmlc_cache_sub_dir_private = 'htmlc\/private';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+htmlc_cache_sub_dir_private	src/includes/old-classes/plugin.php	/^			public $htmlc_cache_sub_dir_private = 'htmlc\/private';$/;"	v	class:zencache::plugin
+htmlc_cache_sub_dir_public	src/includes/classes/Plugin.php	/^	public $htmlc_cache_sub_dir_public = 'htmlc\/public';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+htmlc_cache_sub_dir_public	src/includes/old-classes/plugin.php	/^			public $htmlc_cache_sub_dir_public = 'htmlc\/public';$/;"	v	class:zencache::plugin
+htmlc_enable	src/includes/old-classes/cdn-filters.php	/^		protected $htmlc_enable;$/;"	v	class:zencache::cdn_filters
+htmlc_footer_scripts	src/includes/classes/Plugin.php	/^	public function htmlc_footer_scripts()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+htmlc_footer_scripts	src/includes/old-classes/plugin.php	/^			public function htmlc_footer_scripts()$/;"	f	class:zencache::plugin
+http_protocol	src/includes/old-classes/share.php	/^			public function http_protocol()$/;"	f	class:zencache::share
+http_status	src/includes/old-classes/advanced-cache.php	/^		public $http_status = 0;$/;"	v	class:zencache::advanced_cache
+http_status	src/includes/old-classes/share.php	/^			public function http_status()$/;"	f	class:zencache::share
+i18n_dirs	src/includes/old-classes/share.php	/^			public function i18n_dirs($counter)$/;"	f	class:zencache::share
+i18n_files	src/includes/old-classes/share.php	/^			public function i18n_files($counter)$/;"	f	class:zencache::share
+i18n_files_dirs	src/includes/old-classes/share.php	/^			public function i18n_files_dirs($counter)$/;"	f	class:zencache::share
+is_404	src/includes/old-classes/advanced-cache.php	/^		public $is_404 = FALSE;$/;"	v	class:zencache::advanced_cache
+is_a_wp_content_type	src/includes/old-classes/advanced-cache.php	/^		public $is_a_wp_content_type = FALSE;$/;"	v	class:zencache::advanced_cache
+is_auto_cache_engine	src/includes/old-classes/share.php	/^			public function is_auto_cache_engine()$/;"	f	class:zencache::share
+is_extension_loaded	src/includes/old-classes/share.php	/^			public function is_extension_loaded($extension)$/;"	f	class:zencache::share
+is_feed	src/includes/old-classes/share.php	/^			public function is_feed()$/;"	f	class:zencache::share
+is_get_request_w_query	src/includes/old-classes/share.php	/^			public function is_get_request_w_query()$/;"	f	class:zencache::share
+is_html_xml_doc	src/includes/old-classes/share.php	/^			public function is_html_xml_doc($doc)$/;"	f	class:zencache::share
+is_like_user_logged_in	src/includes/old-classes/share.php	/^			public function is_like_user_logged_in()$/;"	f	class:zencache::share
+is_localhost	src/includes/old-classes/share.php	/^			public function is_localhost()$/;"	f	class:zencache::share
+is_maintenance	src/includes/old-classes/advanced-cache.php	/^		public $is_maintenance = FALSE;$/;"	v	class:zencache::advanced_cache
+is_post_put_delete_request	src/includes/old-classes/share.php	/^			public function is_post_put_delete_request()$/;"	f	class:zencache::share
+is_pro	src/includes/old-classes/share.php	/^			public $is_pro = TRUE;$/;"	v	class:zencache::share
+is_running	src/includes/old-classes/advanced-cache.php	/^		public $is_running = FALSE;$/;"	v	class:zencache::advanced_cache
+is_ssl	src/includes/old-classes/share.php	/^			public function is_ssl()$/;"	f	class:zencache::share
+is_uncacheable_request_method	src/includes/old-classes/share.php	/^			public function is_uncacheable_request_method()$/;"	f	class:zencache::share
+is_user_logged_in	src/includes/old-classes/advanced-cache.php	/^		public $is_user_logged_in = FALSE;$/;"	v	class:zencache::advanced_cache
+is_wp_loaded_query	src/includes/old-classes/advanced-cache.php	/^		public $is_wp_loaded_query = FALSE;$/;"	v	class:zencache::advanced_cache
+jetpack_custom_css	src/includes/classes/Plugin.php	/^	public function jetpack_custom_css($args)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+jetpack_custom_css	src/includes/old-classes/plugin.php	/^			public function jetpack_custom_css($args)$/;"	f	class:zencache::plugin
+load_ac_plugins	src/includes/old-classes/advanced-cache.php	/^		public function load_ac_plugins()$/;"	f	class:zencache::advanced_cache
+local_file	src/includes/old-classes/cdn-filters.php	/^		protected function local_file($url_uri_query)$/;"	f	class:zencache::cdn_filters
+local_host	src/includes/old-classes/cdn-filters.php	/^		protected $local_host;$/;"	v	class:zencache::cdn_filters
+log_auto_cache_run	src/includes/old-classes/auto-cache.php	/^		protected function log_auto_cache_run($total_urls, $total_time)$/;"	f	class:zencache::auto_cache
+log_auto_cache_url	src/includes/old-classes/auto-cache.php	/^		protected function log_auto_cache_url($url, $wp_remote_get_response)$/;"	f	class:zencache::auto_cache
+maybe_auto_clear_cache	src/includes/classes/Plugin.php	/^	public function maybe_auto_clear_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+maybe_auto_clear_cache	src/includes/old-classes/plugin.php	/^			public function maybe_auto_clear_cache()$/;"	f	class:zencache::plugin
+maybe_compress_html	src/includes/old-classes/advanced-cache.php	/^		public function maybe_compress_html($cache)$/;"	f	class:zencache::advanced_cache
+maybe_echo_nc_debug_info	src/includes/old-classes/advanced-cache.php	/^		public function maybe_echo_nc_debug_info() \/\/ Debug info in the shutdown phase.$/;"	f	class:zencache::advanced_cache
+maybe_filter_status_header_postload	src/includes/old-classes/advanced-cache.php	/^		public function maybe_filter_status_header_postload()$/;"	f	class:zencache::advanced_cache
+maybe_get_nc_debug_info	src/includes/old-classes/advanced-cache.php	/^		public function maybe_get_nc_debug_info($reason_code = '', $reason = '')$/;"	f	class:zencache::advanced_cache
+maybe_ignore_user_abort	src/includes/old-classes/advanced-cache.php	/^		public function maybe_ignore_user_abort()$/;"	f	class:zencache::advanced_cache
+maybe_invalidate_when_logged_in_postload	src/includes/old-classes/advanced-cache.php	/^		public function maybe_invalidate_when_logged_in_postload()$/;"	f	class:zencache::advanced_cache
+maybe_postload_invalidate_when_logged_in	src/includes/old-classes/advanced-cache.php	/^		public function maybe_postload_invalidate_when_logged_in()$/;"	f	class:zencache::advanced_cache
+maybe_set_debug_info	src/includes/old-classes/advanced-cache.php	/^		public function maybe_set_debug_info($reason_code, $reason = '')$/;"	f	class:zencache::advanced_cache
+maybe_set_debug_info_postload	src/includes/old-classes/advanced-cache.php	/^		public function maybe_set_debug_info_postload()$/;"	f	class:zencache::advanced_cache
+maybe_setup_filters	src/includes/old-classes/cdn-filters.php	/^		public function maybe_setup_filters()$/;"	f	class:zencache::cdn_filters
+maybe_start_ob_when_logged_in_postload	src/includes/old-classes/advanced-cache.php	/^		public function maybe_start_ob_when_logged_in_postload()$/;"	f	class:zencache::advanced_cache
+maybe_start_output_buffering	src/includes/old-classes/advanced-cache.php	/^		public function maybe_start_output_buffering()$/;"	f	class:zencache::advanced_cache
+maybe_stop_browser_caching	src/includes/old-classes/advanced-cache.php	/^		public function maybe_stop_browser_caching()$/;"	f	class:zencache::advanced_cache
+menu_page_options	src/includes/classes/Plugin.php	/^	public function menu_page_options()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+menu_page_options	src/includes/old-classes/plugin.php	/^			public function menu_page_options()$/;"	f	class:zencache::plugin
+menu_page_pro_updater	src/includes/classes/Plugin.php	/^	public function menu_page_pro_updater()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+menu_page_pro_updater	src/includes/old-classes/plugin.php	/^			public function menu_page_pro_updater()$/;"	f	class:zencache::plugin
+menu_pages	src/includes/old-classes/menu-pages.php	/^	class menu_pages \/\/ Plugin options.$/;"	c	namespace:zencache
+my_ac_plugin	src/includes/ac-plugin.example.php	/^function my_ac_plugin() \/\/ Example plugin.$/;"	f
+my_ac_version_salt_shaker	src/includes/ac-plugin.example.php	/^function my_ac_version_salt_shaker($version_salt)$/;"	f
+n_dir_seps	src/includes/old-classes/share.php	/^			public function n_dir_seps($dir_file, $allow_trailing_slash = FALSE)$/;"	f	class:zencache::share
+name	src/includes/old-classes/share.php	/^			public $name = 'ZenCache';$/;"	v	class:zencache::share
+namespace	src/client-s/js/admin-bar.js	/^	var plugin = {namespace: 'zencache'},$/;"	p	class:plugin
+network_cap	src/includes/classes/Plugin.php	/^	public $network_cap = '';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+network_cap	src/includes/old-classes/plugin.php	/^			public $network_cap = '';$/;"	v	class:zencache::plugin
+onReady	src/client-s/js/admin-bar.js	/^	plugin.onReady = function() \/\/ DOM ready event handler.$/;"	f	function:plugin
+onReady	src/client-s/js/menu-pages.js	/^	plugin.onReady = function() \/\/ jQuery DOM ready event handler.$/;"	f	function:plugin
+options	src/includes/classes/Plugin.php	/^	public $options = array();$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+options	src/includes/old-classes/api-class.php	/^		public static function options()$/;"	f	class:zencache
+options	src/includes/old-classes/menu-pages.php	/^		public function options()$/;"	f	class:zencache::menu_pages
+options	src/includes/old-classes/plugin.php	/^			public $options = array();$/;"	v	class:zencache::plugin
+output_buffer_callback_handler	src/includes/old-classes/advanced-cache.php	/^		public function output_buffer_callback_handler($buffer, $phase)$/;"	f	class:zencache::advanced_cache
+overload	src/includes/classes/AbsBase.php	/^    protected $overload;$/;"	v	class:WebSharks\ZenCache\Pro::AbsBase
+plugin	src/client-s/js/admin-bar.js	/^	var plugin = {namespace: 'zencache'},$/;"	c
+plugin	src/client-s/js/menu-pages.js	/^	var plugin = {}, $window = $(window), $document = $(document);$/;"	v
+plugin	src/includes/classes/AbsBase.php	/^    protected $plugin;$/;"	v	class:WebSharks\ZenCache\Pro::AbsBase
+plugin	src/includes/old-classes/actions.php	/^		protected $plugin; \/\/ Set by constructor.$/;"	v	class:zencache::actions
+plugin	src/includes/old-classes/api-class.php	/^		public static function plugin()$/;"	f	class:zencache
+plugin	src/includes/old-classes/auto-cache.php	/^		protected $plugin; \/\/ Set by constructor.$/;"	v	class:zencache::auto_cache
+plugin	src/includes/old-classes/cdn-filters.php	/^		protected $plugin;$/;"	v	class:zencache::cdn_filters
+plugin	src/includes/old-classes/menu-pages.php	/^		protected $plugin; \/\/ Set by constructor.$/;"	v	class:zencache::menu_pages
+plugin	src/includes/old-classes/plugin.php	/^		class plugin extends share$/;"	c	namespace:zencache
+plugin	src/includes/old-classes/plugin.php	/^		function plugin() \/\/ Easy reference.$/;"	f	namespace:zencache
+plugin	src/includes/old-classes/uninstall.php	/^			protected $plugin; \/\/ Set by constructor.$/;"	v	class:zencache::uninstall
+plugin	src/includes/old-classes/utils-feed.php	/^		protected $plugin;$/;"	v	class:zencache::utils_feed
+plugin	src/includes/old-classes/version-specific-upgrade.php	/^			protected $plugin; \/\/ Set by constructor.$/;"	v	class:zencache::version_specific_upgrade
+plugin_file	src/includes/old-classes/advanced-cache.php	/^		public $plugin_file = ZENCACHE_PLUGIN_FILE;$/;"	v	class:zencache::advanced_cache
+plugin_lite_slug	src/includes/old-classes/conflicts-check.php	/^		$plugin_lite_slug = $plugin_slug; \/\/ i.e. the same.$/;"	v	namespace:zencache
+plugin_name	src/includes/old-classes/plugin.php	/^			$plugin_name             = $plugin_name.' '.__('Pro', $text_domain);$/;"	v	namespace:zencache
+plugin_name	src/includes/old-classes/plugin.php	/^		$plugin_name             = $construct_name(__NAMESPACE__); \/\/ e.g. `zencache` becomes `ZenCache`.$/;"	v	namespace:zencache
+plugin_pro_slug	src/includes/old-classes/conflicts-check.php	/^		$plugin_pro_slug  = $plugin_slug.'-pro';$/;"	v	namespace:zencache
+plugin_slug	src/includes/old-classes/conflicts-check.php	/^		$plugin_slug      = str_replace('_', '-', __NAMESPACE__);$/;"	v	namespace:zencache
+postVars	src/client-s/js/admin-bar.js	/^		postVars[plugin.namespace] = {ajax_clear_cache: '1'};$/;"	c
+postVars	src/client-s/js/admin-bar.js	/^		postVars[plugin.namespace] = {ajax_wipe_cache: '1'};$/;"	c
+post_author_feed_link_variations	src/includes/old-classes/utils-feed.php	/^		public function post_author_feed_link_variations(\\WP_Post $post)$/;"	f	class:zencache::utils_feed
+post_comments_feed_link_variations	src/includes/old-classes/utils-feed.php	/^		public function post_comments_feed_link_variations(\\WP_Post $post)$/;"	f	class:zencache::utils_feed
+post_term_feed_link_variations	src/includes/old-classes/utils-feed.php	/^		public function post_term_feed_link_variations(\\WP_Post $post, $include_regex_wildcard_keys = FALSE)$/;"	f	class:zencache::utils_feed
+post_type_archive_link_variations	src/includes/old-classes/utils-feed.php	/^		public function post_type_archive_link_variations(\\WP_Post $post)$/;"	f	class:zencache::utils_feed
+postload	src/includes/old-classes/advanced-cache.php	/^		public $postload = array($/;"	v	class:zencache::advanced_cache
+pre_post_update_post_permalink	src/includes/classes/Plugin.php	/^	protected $pre_post_update_post_permalink = array();$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+pre_post_update_post_permalink	src/includes/old-classes/plugin.php	/^			protected $pre_post_update_post_permalink = array();$/;"	v	class:zencache::plugin
+pre_site_transient_update_plugins	src/includes/classes/Plugin.php	/^	public function pre_site_transient_update_plugins($transient)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+pre_site_transient_update_plugins	src/includes/old-classes/plugin.php	/^			public function pre_site_transient_update_plugins($transient)$/;"	f	class:zencache::plugin
+prev_version	src/includes/old-classes/version-specific-upgrade.php	/^			protected $prev_version = ''; \/\/ Set by constructor.$/;"	v	class:zencache::version_specific_upgrade
+pro_update	src/includes/classes/Actions.php	/^    public function pro_update($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+pro_update	src/includes/old-classes/actions.php	/^		public function pro_update($args)$/;"	f	class:zencache::actions
+pro_updater	src/includes/old-classes/menu-pages.php	/^		public function pro_updater()$/;"	f	class:zencache::menu_pages
+protocol	src/includes/old-classes/advanced-cache.php	/^		public $protocol = '';$/;"	v	class:zencache::advanced_cache
+purge	src/includes/old-classes/api-class.php	/^		public static function purge()$/;"	f	class:zencache
+purge_cache	src/includes/classes/Plugin.php	/^	public function purge_cache($manually = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+purge_cache	src/includes/old-classes/plugin.php	/^			public function purge_cache($manually = FALSE)$/;"	f	class:zencache::plugin
+purge_files_from_cache_dir	src/includes/old-classes/share.php	/^			public function purge_files_from_cache_dir($regex)$/;"	f	class:zencache::share
+purge_files_from_host_cache_dir	src/includes/old-classes/share.php	/^			public function purge_files_from_host_cache_dir($regex)$/;"	f	class:zencache::share
+qcAC_qcABC_vars	src/includes/old-classes/advanced-cache.php	/^		public static function qcAC_qcABC_vars()$/;"	f	class:zencache::advanced_cache_back_compat
+register_shutdown_flag	src/includes/old-classes/advanced-cache.php	/^		public function register_shutdown_flag()$/;"	f	class:zencache::advanced_cache
+removeAJAXResponse	src/client-s/js/admin-bar.js	/^	plugin.removeAJAXResponse = function()$/;"	f	function:plugin
+remove_action	src/includes/old-classes/share.php	/^			public function remove_action() \/\/ Simple `remove_hook()` alias.$/;"	f	class:zencache::share
+remove_advanced_cache	src/includes/classes/Plugin.php	/^	public function remove_advanced_cache()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+remove_advanced_cache	src/includes/old-classes/plugin.php	/^			public function remove_advanced_cache()$/;"	f	class:zencache::plugin
+remove_base_dir	src/includes/classes/Plugin.php	/^	public function remove_base_dir()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+remove_base_dir	src/includes/old-classes/plugin.php	/^			public function remove_base_dir()$/;"	f	class:zencache::plugin
+remove_filter	src/includes/old-classes/share.php	/^			public function remove_filter() \/\/ Simple `remove_hook()` alias.$/;"	f	class:zencache::share
+remove_hook	src/includes/old-classes/share.php	/^			public function remove_hook($hook, $function, $priority = 10)$/;"	f	class:zencache::share
+remove_wp_cache_from_wp_config	src/includes/classes/Plugin.php	/^	public function remove_wp_cache_from_wp_config()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+remove_wp_cache_from_wp_config	src/includes/old-classes/plugin.php	/^			public function remove_wp_cache_from_wp_config()$/;"	f	class:zencache::plugin
+restore_default_options	src/includes/classes/Actions.php	/^    public function restore_default_options($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+restore_default_options	src/includes/old-classes/actions.php	/^		public function restore_default_options($args)$/;"	f	class:zencache::actions
+run	src/includes/old-classes/auto-cache.php	/^		public function run()$/;"	f	class:zencache::auto_cache
+run_handlers	src/includes/old-classes/version-specific-upgrade.php	/^			public function run_handlers()$/;"	f	class:zencache::version_specific_upgrade
+salt_location	src/includes/old-classes/advanced-cache.php	/^		public $salt_location = '';$/;"	v	class:zencache::advanced_cache
+save_options	src/includes/classes/Actions.php	/^    public function save_options($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+save_options	src/includes/old-classes/actions.php	/^		public function save_options($args)$/;"	f	class:zencache::actions
+seo_friendly_permalinks	src/includes/old-classes/utils-feed.php	/^		protected $seo_friendly_permalinks;$/;"	v	class:zencache::utils_feed
+setup	src/includes/classes/Plugin.php	/^	public function setup()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+setup	src/includes/old-classes/plugin.php	/^			public function setup()$/;"	f	class:zencache::plugin
+share	src/includes/old-classes/share.php	/^		abstract class share \/\/ Shared between {@link advanced_cache} and {@link plugin}.$/;"	c	namespace:zencache
+short_name	src/includes/old-classes/share.php	/^			public $short_name = 'ZC';$/;"	v	class:zencache::share
+showAJAXResponse	src/client-s/js/admin-bar.js	/^	plugin.showAJAXResponse = function()$/;"	f	function:plugin
+slug	src/includes/old-classes/share.php	/^			public $slug = '';$/;"	v	class:zencache::share
+static	src/includes/classes/AbsBase.php	/^    protected $static = array();$/;"	v	class:WebSharks\ZenCache\Pro::AbsBase
+static	src/includes/old-classes/share.php	/^			public static $static = array();$/;"	v	class:zencache::share
+staticKey	src/includes/classes/AbsBase.php	/^    protected function &staticKey($function, $args = array())$/;"	f	class:WebSharks\ZenCache\Pro::AbsBase
+str_ireplace_once	src/includes/old-classes/share.php	/^			public function str_ireplace_once($needle, $replace, $haystack)$/;"	f	class:zencache::share
+str_replace_once	src/includes/old-classes/share.php	/^			public function str_replace_once($needle, $replace, $haystack, $caSe_insensitive = FALSE)$/;"	f	class:zencache::share
+text_domain	src/includes/old-classes/plugin.php	/^		$text_domain             = str_replace('_', '-', __NAMESPACE__);$/;"	v	namespace:zencache
+text_domain	src/includes/old-classes/share.php	/^			public $text_domain = '';$/;"	v	class:zencache::share
+timer	src/includes/old-classes/advanced-cache.php	/^		public $timer = 0;$/;"	v	class:zencache::advanced_cache
+trim_deep	src/includes/old-classes/share.php	/^			public function trim_deep($values, $chars = '', $extra_chars = '')$/;"	f	class:zencache::share
+uninstall	src/includes/classes/Plugin.php	/^	public function uninstall()$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+uninstall	src/includes/old-classes/plugin.php	/^			public function uninstall()$/;"	f	class:zencache::plugin
+uninstall	src/includes/old-classes/uninstall.php	/^		class uninstall \/\/ Uninstall handler.$/;"	c	namespace:zencache
+uninstall_cap	src/includes/classes/Plugin.php	/^	public $uninstall_cap = '';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+uninstall_cap	src/includes/old-classes/plugin.php	/^			public $uninstall_cap = '';$/;"	v	class:zencache::plugin
+update_blog_paths	src/includes/classes/Plugin.php	/^	public function update_blog_paths($enable_live_network_counts = NULL)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+update_blog_paths	src/includes/old-classes/plugin.php	/^			public function update_blog_paths($enable_live_network_counts = NULL)$/;"	f	class:zencache::plugin
+update_cap	src/includes/classes/Plugin.php	/^	public $update_cap = '';$/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+update_cap	src/includes/old-classes/plugin.php	/^			public $update_cap = '';$/;"	v	class:zencache::plugin
+upgrader_process_complete	src/includes/classes/Plugin.php	/^	public function upgrader_process_complete(\\WP_Upgrader $upgrader_instance, array $data)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+upgrader_process_complete	src/includes/old-classes/plugin.php	/^			public function upgrader_process_complete(\\WP_Upgrader $upgrader_instance, array $data)$/;"	f	class:zencache::plugin
+url	src/includes/classes/Plugin.php	/^	public function url($file = '', $scheme = '')$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+url	src/includes/old-classes/plugin.php	/^			public function url($file = '', $scheme = '')$/;"	f	class:zencache::plugin
+url_filter	src/includes/old-classes/cdn-filters.php	/^		public function url_filter($url, $path = '', $scheme = NULL, $blog_id = NULL)$/;"	f	class:zencache::cdn_filters
+user_login_cookie_expired_or_invalid	src/includes/old-classes/share.php	/^			public $user_login_cookie_expired_or_invalid = FALSE;$/;"	v	class:zencache::share
+user_token	src/includes/old-classes/advanced-cache.php	/^		public $user_token = '';$/;"	v	class:zencache::advanced_cache
+user_token	src/includes/old-classes/share.php	/^			public function user_token() \/\/ When\/if possible.$/;"	f	class:zencache::share
+utils_feed	src/includes/old-classes/utils-feed.php	/^	class utils_feed$/;"	c	namespace:zencache
+valid_public_ip	src/includes/old-classes/share.php	/^			public function valid_public_ip($list_of_possible_ips)$/;"	f	class:zencache::share
+version	src/includes/old-classes/api-class.php	/^		public static function version()$/;"	f	class:zencache
+version	src/includes/old-classes/share.php	/^			public $version = '150409';$/;"	v	class:zencache::share
+version_salt	src/includes/old-classes/advanced-cache.php	/^		public $version_salt = '';$/;"	v	class:zencache::advanced_cache
+version_specific_upgrade	src/includes/old-classes/version-specific-upgrade.php	/^		class version_specific_upgrade \/\/ Version-specific upgrade handlers.$/;"	c	namespace:zencache
+wipe	src/includes/old-classes/api-class.php	/^		public static function wipe()$/;"	f	class:zencache
+wipeCache	src/client-s/js/admin-bar.js	/^	plugin.wipeCache = function()$/;"	f	function:plugin
+wipeCache	src/includes/classes/Actions.php	/^    public function wipeCache($args)$/;"	f	class:WebSharks\ZenCache\Pro::Actions
+wipe_cache	src/includes/classes/Plugin.php	/^	public function wipe_cache($manually = FALSE, $also_wipe_dir = '')$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+wipe_cache	src/includes/old-classes/actions.php	/^		public function wipe_cache($args)$/;"	f	class:zencache::actions
+wipe_cache	src/includes/old-classes/plugin.php	/^			public function wipe_cache($manually = FALSE, $also_wipe_dir = '')$/;"	f	class:zencache::plugin
+wipe_htmlc_cache	src/includes/classes/Plugin.php	/^	public function wipe_htmlc_cache($manually = FALSE)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+wipe_htmlc_cache	src/includes/old-classes/plugin.php	/^			public function wipe_htmlc_cache($manually = FALSE)$/;"	f	class:zencache::plugin
+wp_admin_icon_colors	src/includes/classes/Plugin.php	/^	public $wp_admin_icon_colors = array($/;"	v	class:WebSharks\ZenCache\Pro::Plugin
+wp_admin_icon_colors	src/includes/old-classes/plugin.php	/^			public $wp_admin_icon_colors = array($/;"	v	class:zencache::plugin
+wp_cache_postload	src/includes/old-classes/advanced-cache.php	/^	function wp_cache_postload() \/\/ See: `wp-settings.php`.$/;"	f
+wp_content_base_dir_to	src/includes/classes/Plugin.php	/^	public function wp_content_base_dir_to($rel_dir_file)$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+wp_content_base_dir_to	src/includes/old-classes/plugin.php	/^			public function wp_content_base_dir_to($rel_dir_file)$/;"	f	class:zencache::plugin
+wp_main_query_postload	src/includes/old-classes/advanced-cache.php	/^		public function wp_main_query_postload()$/;"	f	class:zencache::advanced_cache
+wpdb	src/includes/classes/Plugin.php	/^	public function wpdb() \/\/ Shortcut for other routines.$/;"	f	class:WebSharks\ZenCache\Pro::Plugin
+wpdb	src/includes/old-classes/plugin.php	/^			public function wpdb() \/\/ Shortcut for other routines.$/;"	f	class:zencache::plugin
+zencache	src/includes/old-classes/actions.php	/^namespace zencache \/\/ Root namespace.$/;"	n
+zencache	src/includes/old-classes/advanced-cache.php	/^namespace zencache$/;"	n
+zencache	src/includes/old-classes/api-class.php	/^	class zencache$/;"	c
+zencache	src/includes/old-classes/auto-cache.php	/^namespace zencache \/\/ Root namespace.$/;"	n
+zencache	src/includes/old-classes/cdn-filters.php	/^namespace zencache \/\/ Root namespace.$/;"	n
+zencache	src/includes/old-classes/conflicts-check.php	/^namespace zencache$/;"	n
+zencache	src/includes/old-classes/menu-pages.php	/^namespace zencache \/\/ Root namespace.$/;"	n
+zencache	src/includes/old-classes/plugin.php	/^namespace zencache$/;"	n
+zencache	src/includes/old-classes/share.php	/^namespace zencache \/\/ Root namespace.$/;"	n
+zencache	src/includes/old-classes/uninstall.php	/^namespace zencache$/;"	n
+zencache	src/includes/old-classes/utils-feed.php	/^namespace zencache \/\/ Root namespace.$/;"	n
+zencache	src/includes/old-classes/version-specific-upgrade.php	/^namespace zencache \/\/ Root namespace.$/;"	n
