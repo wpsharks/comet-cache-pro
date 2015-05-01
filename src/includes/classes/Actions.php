@@ -8,6 +8,11 @@ namespace WebSharks\ZenCache\Pro;
  */
 class Actions extends AbsBase
 {
+    /**
+     * Class constructor.
+     *
+     * @since 150422 Rewrite of ZenCache
+     */
     public function __construct()
     {
         parent::__construct();
@@ -22,6 +27,13 @@ class Actions extends AbsBase
         }
     }
 
+    /**
+     * Class constructor.
+     *
+     * @since 150422 Rewrite of ZenCache
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function wipeCache($args)
     {
         if (!current_user_can($this->plugin->network_cap)) {
