@@ -1,6 +1,6 @@
 <?php
 /**
- * Example AC Plugin File.
+ * Example AC (Advanced Cache) Plugin File.
  *
  * If implemented; this file should go in this special directory:
  *    `/wp-content/ac-plugins/my-ac-plugin.php`
