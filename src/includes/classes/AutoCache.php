@@ -90,7 +90,8 @@ class AutoCache extends AbsBase
             shuffle($_blog_urls); // Randomize the order.
 
             foreach ($_blog_urls as $_url) {
-                $total_urls++;
+                $total_urls++; // Counter.
+
                 $this->autoCacheUrl($_url);
 
                 if ((time() - $start_time) > ($max_time - 30)) {
@@ -138,7 +139,7 @@ class AutoCache extends AbsBase
                     array(
                         'blocking'   => false,
                         'user-agent' => $this->plugin->options['auto_cache_user_agent'].
-                            '; '.__NAMESPACE__.' '.$this->plugin->version,
+                            '; '.GLOBAL_NS.' '.$this->plugin->version,
                     )
                 )
             );

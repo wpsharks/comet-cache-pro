@@ -9,11 +9,14 @@ namespace WebSharks\ZenCache\Pro;
 if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }
+require_once dirname(__FILE__).'/vendor/autoload.php';
+
 const DIRECTORY = __DIR__; // Plugin file directory.
 const GLOBAL_NS = 'zencache'; // Global namespace.
 
-require_once dirname(__FILE__).'/vendor/autoload.php';
-$GLOBALS[GLOBAL_NS.'_uninstalling'] = true;
-$GLOBALS[GLOBAL_NS]                 = null;
-$GLOBALS[GLOBAL_NS]                 =  new Plugin(false);
-$GLOBALS[GLOBAL_NS]->uninstall(); // Run uninstall routines.
+if (!Conflicts::check()) {
+    $GLOBALS[GLOBAL_NS.'_uninstalling'] = true;
+    $GLOBALS[GLOBAL_NS]                 = null;
+    $GLOBALS[GLOBAL_NS]                 = new Plugin(false);
+    $GLOBALS[GLOBAL_NS]->uninstall();
+}

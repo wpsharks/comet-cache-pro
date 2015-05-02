@@ -20,11 +20,12 @@ class Actions extends AbsBase
         if (empty($_REQUEST[GLOBAL_NS])) {
             return; // Not applicable.
         }
-        foreach ((array) $_REQUEST[GLOBAL_NS] as $action => $args) {
-            if (is_string($action) && method_exists($this, $action)) {
-                $this->{$action}($args);
+        foreach ((array) $_REQUEST[GLOBAL_NS] as $_action => $_args) {
+            if (is_string($_action) && method_exists($this, $_action)) {
+                $this->{$_action}($_args);
             }
         }
+        unset($_action, $_args); // Housekeeping.
     }
 
     /**
@@ -159,10 +160,8 @@ class Actions extends AbsBase
             return; // Unauthenticated POST data.
         }
         if (!empty($_FILES[GLOBAL_NS]['tmp_name']['import_options'])) {
-            $import_file_contents = // This should be a JSON file.
-                file_get_contents($_FILES[GLOBAL_NS]['tmp_name']['import_options']);
+            $import_file_contents = file_get_contents($_FILES[GLOBAL_NS]['tmp_name']['import_options']);
             unlink($_FILES[GLOBAL_NS]['tmp_name']['import_options']);
-
             $args = wp_slash(json_decode($import_file_contents, true));
             unset($args['crons_setup']); // Unset; CANNOT be imported.
         }
@@ -310,7 +309,7 @@ class Actions extends AbsBase
            || empty($product_api_response['pro_version']) || empty($product_api_response['pro_zip'])
         ) {
             if (!empty($product_api_response['error'])) {
-                $error = $product_api_response['error'];
+                $error = (string) $product_api_response['error'];
             } else {
                 $error = __('Unknown error. Please wait 15 minutes and try again.', $this->plugin->text_domain);
             }
