@@ -175,7 +175,7 @@ class CdnFilters extends AbsBase
      *
      * @since 150422 Rewrite
      */
-    public function maybeSetupFilters()
+    protected function maybeSetupFilters()
     {
         if (is_admin()) {
             return; // Not applicable.
@@ -250,7 +250,7 @@ class CdnFilters extends AbsBase
      */
     public function urlFilter($url, $path = '', $scheme = null, $blog_id = null)
     {
-        return $this->filterFilter($url, $scheme);
+        return $this->filterUrl($url, $scheme);
     }
 
     /**
@@ -293,7 +293,7 @@ class CdnFilters extends AbsBase
         $orig_string = $string; // In case of regex errors.
         $string      = preg_replace_callback($regex_url_attrs, function ($m) use ($_this) {
             unset($m[0]); // Discard full match.
-            $m[6] = $_this->filterFilter($m[6], null, true);
+            $m[6] = $_this->filterUrl($m[6], null, true);
             return implode('', $m); // Concatenate all parts.
         }, $string); // End content filter.
 
@@ -311,7 +311,7 @@ class CdnFilters extends AbsBase
      *
      * @return string The URL after having been filtered.
      */
-    public function filterFilter($url_uri_query, $scheme = null, $esc = false)
+    public function filterUrl($url_uri_query, $scheme = null, $esc = false)
     {
         if (!($url_uri_query = trim((string) $url_uri_query))) {
             return; // Unparseable.
