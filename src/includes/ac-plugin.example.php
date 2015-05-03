@@ -11,8 +11,8 @@ if (!defined('WPINC')) {
 
 function my_ac_plugin() // Example plugin.
 {
-    $ac = $GLOBALS['zencache__advanced_cache']; // Advanced cache instance.
-    $ac->add_filter(get_class($ac).'__version_salt', 'my_ac_version_salt_shaker');
+    $ac = $GLOBALS['zencache_ac']; // Advanced cache instance.
+    $ac->add_filter('zencache_version_salt', 'my_ac_version_salt_shaker');
 }
 
 function my_ac_version_salt_shaker($version_salt)
