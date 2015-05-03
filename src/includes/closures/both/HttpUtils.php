@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Current HTTP protocol; i.e. `HTTP/1.0` or `HTTP/1.1`.
  *
- * @since 140725 Correcting 404 cache response status code.
+ * @since 150422 Rewrite
  *
  * @return string Current HTTP protocol; i.e. `HTTP/1.0` or `HTTP/1.1`.
  */
@@ -24,7 +24,7 @@ $self->httpProtocol = function () use ($self) {
 /*
  * An array of all headers sent via PHP; and the current HTTP status header too.
  *
- * @since 140725 Correcting 404 cache response status code.
+ * @since 150422 Rewrite
  *
  * @return array PHP {@link headers_list()} supplemented with
  *    HTTP status code when possible.
@@ -46,7 +46,7 @@ $self->headersList = function () use ($self) {
 /*
  * An array of all cacheable/safe headers sent via PHP; and the current HTTP status header too.
  *
- * @since 140829 Correcting security issue related to headers with cookies.
+ * @since 150422 Rewrite
  *
  * @return array PHP {@link headers_list()} supplemented with
  *    HTTP status code when possible.
@@ -126,7 +126,7 @@ $self->cacheableHeadersList = function () use ($self) {
 /*
  * HTTP status code if at all possible.
  *
- * @since 140725 Correcting 404 cache response status code.
+ * @since 150422 Rewrite
  *
  * @return integer HTTP status code if at all possible; else `0`.
  *
