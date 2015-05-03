@@ -11,5 +11,8 @@ if (!defined('WPINC')) {
 }
 require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 
-const DIRECTORY = __DIR__; // Plugin file directory.
-const GLOBAL_NS = 'zencache'; // Global namespace.
+const SHORT_NAME = 'ZC';
+const NAME       = 'ZenCache';
+const DOMAIN     = 'zencache.com';
+const GLOBAL_NS  = 'zencache';
+const VERSION    = '150422';

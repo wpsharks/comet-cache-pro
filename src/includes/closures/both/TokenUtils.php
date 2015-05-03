@@ -2,6 +2,15 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+ * A simple utility flag.
+ *
+ * @since 150422 Rewrite.
+ *
+ * @type bool `TRUE` if expired or invalid.
+ */
+$self->user_login_cookie_expired_or_invalid = false;
+
+/*
  * Produces a token based on the current `$_SERVER['HTTP_HOST']`.
  *
  * @since 150422 Rewrite.

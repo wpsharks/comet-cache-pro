@@ -145,3 +145,12 @@ $self->dirRegexIteration = function ($dir, $regex) use ($self) {
 
     return $regex_iterator;
 };
+
+/*
+ * Apache `.htaccess` rules that deny public access to the contents of a directory.
+ *
+ * @since 150422 Rewrite.
+ *
+ * @var string `.htaccess` fules.
+ */
+$self->htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";

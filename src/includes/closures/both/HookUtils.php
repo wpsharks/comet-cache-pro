@@ -2,6 +2,15 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+ * Array of hooks.
+ *
+ * @since 150422 Rewrite.
+ *
+ * @type array An array of hooks.
+ */
+$self->hooks = array();
+
+/*
  * Assigns an ID to each callable attached to a hook/filter.
  *
  * @since 150422 Rewrite.

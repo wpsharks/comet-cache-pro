@@ -236,17 +236,17 @@ class FeedUtils extends AbsBase
      */
     public function convertVariationsToHostCachePathRegexFrags(array $variations)
     {
-        $plugin      = $this->plugin; // For proper syntax.
-        $regex_frags = array(); // Initialize regex variation frags.
+        $regex_frags = array(); // Initialize.
 
-        $flags = $plugin::CACHE_PATH_NO_SCHEME | $plugin::CACHE_PATH_NO_HOST
-                 | $plugin::CACHE_PATH_NO_USER | $plugin::CACHE_PATH_NO_VSALT
-                 | $plugin::CACHE_PATH_NO_EXT;
+        $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
+                 | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT
+                 | CACHE_PATH_NO_EXT;
 
-        $host                  = $_SERVER['HTTP_HOST'];
+        $host                  = !empty($_SERVER['HTTP_HOST'])
+            ? (string) $_SERVER['HTTP_HOST'] : '';
         $host_base_dir_tokens  = $this->plugin->hostBaseDirTokens();
         $host_url              = rtrim('http://'.$host.$host_base_dir_tokens, '/');
-        $host_cache_path_flags = $flags | $plugin::CACHE_PATH_NO_QUV; // Add one more flag here.
+        $host_cache_path_flags = $flags | CACHE_PATH_NO_QUV; // Add one more flag here.
         $host_cache_path       = $this->plugin->buildCachePath($host_url, '', '', $host_cache_path_flags);
 
         foreach ($variations as $_key => $_variation) {
@@ -254,7 +254,7 @@ class FeedUtils extends AbsBase
                 continue; // Invalid variation.
             }
             if (is_string($_key) && strpos($_key, '::') !== false && strpos($_variation, '*') !== false) {
-                $_flags                             = $flags | $plugin::CACHE_PATH_ALLOW_WILDCARDS;
+                $_flags                             = $flags | CACHE_PATH_ALLOW_WILDCARDS;
                 list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2);
 
                 $_cache_path                = $this->plugin->buildCachePath($_variation, '', '', $_flags);

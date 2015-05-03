@@ -150,7 +150,7 @@ abstract class AbsBase
      * @note This function returns by reference. The use of `&` is highly recommended when calling this utility.
      *    See also: <http://php.net/manual/en/language.references.return.php>
      */
-    protected function &cacheKey($function, $args = array(), $___prop = 'cache')
+    public function &cacheKey($function, $args = array(), $___prop = 'cache')
     {
         $function = (string) $function;
         $args     = (array) $args;
@@ -207,7 +207,7 @@ abstract class AbsBase
      * @note This function returns by reference. The use of `&` is highly recommended when calling this utility.
      *    See also: <http://php.net/manual/en/language.references.return.php>
      */
-    protected function &staticKey($function, $args = array())
+    public function &staticKey($function, $args = array())
     {
         $key = &$this->cacheKey($function, $args, 'static');
 

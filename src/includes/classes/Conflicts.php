@@ -90,9 +90,9 @@ class Conflicts
 
                 return $name; // e.g. `x-cache` becomes `X Cache`.
             };
+            $plugin_name             = $construct_name(GLOBAL_NS);
             $text_domain             = str_replace('_', '-', GLOBAL_NS);
             $conflicting_plugin_name = $construct_name($GLOBALS[GLOBAL_NS.'_conflicting_plugin']);
-            $plugin_name             = $construct_name(GLOBAL_NS);
 
             if (strcasecmp($conflicting_plugin_name, $plugin_name) === 0) {
                 $conflicting_plugin_name = $plugin_name.' '.__('Lite', $text_domain);
