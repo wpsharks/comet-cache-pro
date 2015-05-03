@@ -217,7 +217,7 @@ $self->isSsl = function () use ($self) {
  * @return boolean `TRUE` if `$doc` is an HTML/XML doc type.
  */
 $self->isHtmlXmlDoc = function ($doc) use ($self) {
-    $doc = (string) $doc; // Force string value.
+    $doc = (string) $doc;
 
     if (!is_null($is = &$self->staticKey('isHtmlXmlDoc', sha1($doc)))) {
         return $is; // Already cached this.
@@ -289,5 +289,62 @@ $self->hasACacheableStatus = function () use ($self) {
     }
     unset($_key, $_header); // Housekeeping.
 
+    return ($is = true);
+};
+
+/*
+ * Checks if a PHP extension is loaded up.
+ *
+ * @since 150422 Rewrite
+ *
+ * @param string $extension A PHP extension slug (i.e. extension name).
+ *
+ * @return boolean `TRUE` if the extension is loaded.
+ *
+ * @note The return value of this function is cached to reduce overhead on repeat calls.
+ */
+$self->isExtensionLoaded = function ($extension) use ($self) {
+    $extension = (string) $extension;
+
+    if (!is_null($is = &$self->staticKey('isExtensionLoaded', $extension))) {
+        return $is; // Already cached this.
+    }
+    return ($is = (boolean) extension_loaded($extension));
+};
+
+/*
+ * Is a particular function possible in every way?
+ *
+ * @since 150422 Rewrite
+ *
+ * @param string $function A PHP function (or user function) to check.
+ *
+ * @return string `TRUE` if the function is possible.
+ *
+ * @note This checks (among other things) if the function exists and that it's callable.
+ *    It also checks the currently configured `disable_functions` and `suhosin.executor.func.blacklist`.
+ */
+$self->functionIsPossible = function ($function) use ($self) {
+    $function = (string) $function;
+
+    if (!is_null($is = &$self->staticKey('functionIsPossible', $function))) {
+        return $is; // Already cached this.
+    }
+    if (is_null($disabled_functions = &$self->staticKey('functionIsPossible_disabled_functions'))) {
+        $disabled_functions = array(); // Initialize disabled/blacklisted functions.
+
+        if (($disable_functions = trim(ini_get('disable_functions')))) {
+            $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($disable_functions), null, PREG_SPLIT_NO_EMPTY));
+        }
+        if (($blacklist_functions = trim(ini_get('suhosin.executor.func.blacklist')))) {
+            $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($blacklist_functions), null, PREG_SPLIT_NO_EMPTY));
+        }
+    }
+    if (!function_exists($function) || !is_callable($function)) {
+        return ($is = false); // Not possible.
+    }
+    if ($disabled_functions && in_array(strtolower($function), $disabled_functions, true)) {
+        return ($is = false); // Not possible.
+    }
     return ($is = true);
 };
