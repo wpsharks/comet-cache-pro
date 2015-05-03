@@ -38,8 +38,8 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     if (!($flags & CACHE_PATH_NO_HOST)) {
         if (!empty($url['host'])) {
             $cache_path .= $url['host'].'/';
-        } else {
-            $cache_path .= $_SERVER['HTTP_HOST'].'/';
+        } elseif (!empty($_SERVER['HTTP_HOST'])) {
+            $cache_path .= (string) $_SERVER['HTTP_HOST'].'/';
         }
     }
     if (!($flags & CACHE_PATH_NO_PATH)) {
@@ -108,7 +108,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  * This converts a URL into a relative `cache/path`; i.e. relative to the cache directory,
  *    and then converts that into a regex pattern w/ an optional custom `$regex_suffix_frag`.
  *
- * @since 150218 Refactoring cache clear/purge routines.
+ * @since 150422 Rewrite
  *
  * @param string $url               The input URL to convert. This CAN be left empty when necessary.
  *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -127,8 +127,6 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  *       - {@link CACHE_PATH_NO_PATH_INDEX}
  *       - {@link CACHE_PATH_NO_QUV}
  *       - {@link CACHE_PATH_NO_EXT}
- *
- * @see CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG
  */
 $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url                           = trim((string) $url);
@@ -136,8 +134,7 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
     $abs_relative_cache_path_regex = ''; // Initialize.
 
     if ($url) {
-        $flags = CACHE_PATH_NO_PATH_INDEX
-                 | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
         $relative_cache_path           = $self->buildCachePath($url, '', '', $flags);
         $abs_relative_cache_path       = isset($relative_cache_path[0]) ? '/'.$relative_cache_path : '';
@@ -157,7 +154,7 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
  * This converts a URL into a relative `cache/path`; i.e. relative to the current host|blog directory,
  *    and then converts that into a regex pattern w/ an optional custom `$regex_suffix_frag`.
  *
- * @since 150218 Refactoring cache clear/purge routines.
+ * @since 150422 Rewrite
  *
  * @param string $url               The input URL to convert. This CAN be left empty when necessary.
  *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -176,8 +173,6 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
  *       - {@link CACHE_PATH_NO_PATH_INDEX}
  *       - {@link CACHE_PATH_NO_QUV}
  *       - {@link CACHE_PATH_NO_EXT}
- *
- * @see CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG
  */
 $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url                           = trim((string) $url);
@@ -185,10 +180,10 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
     $abs_relative_cache_path_regex = ''; // Initialize.
 
     if ($url) {
-        $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX
-                 | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
-        $host                 = $_SERVER['HTTP_HOST'];
+        $host                 = !empty($_SERVER['HTTP_HOST'])
+            ? (string) $_SERVER['HTTP_HOST'] : '';
         $host_base_dir_tokens = $self->hostBaseDirTokens();
         $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
         $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
@@ -207,7 +202,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
  * This converts URIs into relative `cache/paths`; i.e. relative to the current host|blog directory,
  *    and then converts those into `(?:regex|fragments)` with piped `|` alternatives.
  *
- * @since 150218 Refactoring cache clear/purge routines.
+ * @since 150422 Rewrite
  *
  * @param string $uris              A line-delimited list of URIs. These may contain `*` wildcards also.
  * @param string $regex_suffix_frag Regex fragment to come after each relative cache/path.
@@ -232,10 +227,10 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     }
     $_this             = $self; // Reference for the closure below.
     $regex_suffix_frag = (string) $regex_suffix_frag; // Force a string value.
-    $flags             = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
-                         | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+    $flags             = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
-    $host                 = $_SERVER['HTTP_HOST'];
+    $host                 = !empty($_SERVER['HTTP_HOST'])
+        ? (string) $_SERVER['HTTP_HOST'] : '';
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
     $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
@@ -244,7 +239,6 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
         $cache_path          = $_this->buildCachePath($host_url.'/'.trim($pattern, '/'), '', '', $flags);
         $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $cache_path);
 
-        return preg_replace('/\\\\\*/', '.*?', preg_quote($relative_cache_path, '/')).$regex_suffix_frag; #
-
+        return preg_replace('/\\\\\*/', '.*?', preg_quote($relative_cache_path, '/')).$regex_suffix_frag;
     }, preg_split('/['."\r\n".']+/', $uris, null, PREG_SPLIT_NO_EMPTY))).')';
 };

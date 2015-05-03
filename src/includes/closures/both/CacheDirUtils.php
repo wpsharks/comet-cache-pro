@@ -12,7 +12,7 @@ namespace WebSharks\ZenCache\Pro;
  */
 $self->cacheDir($rel_path = '') use($self)
 {
-    if (method_exists($self, 'wpContentBaseDirTo') && isset($self->cache_sub_dir)) {
+    if (isset($self->cache_sub_dir) && method_exists($self, 'wpContentBaseDirTo')) {
         $cache_dir = $self->wpContentBaseDirTo($self->cache_sub_dir);
     } elseif (defined('ZENCACHE_DIR') && ZENCACHE_DIR) {
         $cache_dir = ZENCACHE_DIR;
