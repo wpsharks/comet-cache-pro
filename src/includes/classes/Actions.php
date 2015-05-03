@@ -29,7 +29,7 @@ class Actions extends AbsBase
     }
 
     /**
-     * Class constructor.
+     * Action handler.
      *
      * @since 150422 Rewrite
      *
@@ -62,6 +62,13 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function ajaxWipeCache($args)
     {
         if (!current_user_can($this->plugin->network_cap)) {
@@ -93,6 +100,13 @@ class Actions extends AbsBase
         exit($response); // JavaScript will take it from here.
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function clearCache($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -120,6 +134,13 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function ajaxClearCache($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -151,6 +172,13 @@ class Actions extends AbsBase
         exit($response); // JavaScript will take it from here.
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function saveOptions($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -206,6 +234,13 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function restoreDefaultOptions($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -246,6 +281,13 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function exportOptions($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -275,6 +317,13 @@ class Actions extends AbsBase
         exit($export); // Deliver the export file.
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function proUpdate($args)
     {
         if (!current_user_can($this->plugin->update_cap)) {
@@ -345,6 +394,13 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function dismissNotice($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -364,6 +420,13 @@ class Actions extends AbsBase
         wp_redirect(remove_query_arg(GLOBAL_NS)).exit();
     }
 
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function dismissError($args)
     {
         if (!current_user_can($this->plugin->cap)) {
