@@ -137,23 +137,9 @@ namespace zencache // Root namespace.
 			 * Misc. utility methods.
 			 -------------------------------------------------------------------------------------- */
 
-			
 
-			/**
-			 * Escape single quotes.
-			 *
-			 * @since 140422 First documented version.
-			 *
-			 * @param string  $string Input string to escape.
-			 * @param integer $times Optional. Defaults to one escape char; e.g. `\'`.
-			 *    If you need to escape more than once, set this to something > `1`.
-			 *
-			 * @return string Escaped string; e.g. `Raam\'s the lead developer`.
-			 */
-			public function esc_sq($string, $times = 1)
-			{
-				return str_replace("'", str_repeat('\\', abs($times))."'", (string)$string);
-			}
+
+			
 
 			/**
 			 * String replace ONE time.
