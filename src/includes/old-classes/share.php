@@ -139,50 +139,9 @@ namespace zencache // Root namespace.
 
 
 
+
+
 			
-
-			/**
-			 * String replace ONE time.
-			 *
-			 * @since 150218 Refactoring cache clear/purge routines.
-			 *
-			 * @param string  $needle A string to search/replace.
-			 * @param string  $replace What to replace `$needle` with.
-			 * @param string  $haystack The string/haystack to search in.
-			 *
-			 * @param boolean $caSe_insensitive Defaults to a `FALSE` value.
-			 *    Pass this as `TRUE` to a caSe-insensitive search/replace.
-			 *
-			 * @return string The `$haystack`, with `$needle` replaced with `$replace` ONE time only.
-			 */
-			public function str_replace_once($needle, $replace, $haystack, $caSe_insensitive = FALSE)
-			{
-				$needle      = (string)$needle;
-				$replace     = (string)$replace;
-				$haystack    = (string)$haystack;
-				$caSe_strpos = $caSe_insensitive ? 'stripos' : 'strpos';
-
-				if(($needle_strpos = $caSe_strpos($haystack, $needle)) === FALSE)
-					return $haystack; // Nothing to replace.
-
-				return (string)substr_replace($haystack, $replace, $needle_strpos, strlen($needle));
-			}
-
-			/**
-			 * String replace ONE time (caSe-insensitive).
-			 *
-			 * @since 150218 Refactoring cache clear/purge routines.
-			 *
-			 * @param string $needle A string to search/replace.
-			 * @param string $replace What to replace `$needle` with.
-			 * @param string $haystack The string/haystack to search in.
-			 *
-			 * @return string The `$haystack`, with `$needle` replaced with `$replace` ONE time only.
-			 */
-			public function str_ireplace_once($needle, $replace, $haystack)
-			{
-				return $this->str_replace_once($needle, $replace, $haystack, TRUE);
-			}
 
 			/**
 			 * Normalizes directory/file separators.
