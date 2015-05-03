@@ -4,19 +4,19 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * CDN Filters.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class CdnFilters extends AbsBase
 {
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type string Local host name.
      */
     protected $local_host;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type bool Enable CDN filters?
      */
@@ -30,56 +30,56 @@ class CdnFilters extends AbsBase
     protected $htmlc_enable;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type string CDN serves files from this host.
      */
     protected $cdn_host;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type bool CDN over SSL connections?
      */
     protected $cdn_over_ssl;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type string Invalidation variable name.
      */
     protected $cdn_invalidation_var;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Invalidation counter.
      */
     protected $cdn_invalidation_counter;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type array Array of whitelisted extensions.
      */
     protected $cdn_whitelisted_extensions;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type array Array of blacklisted extensions.
      */
     protected $cdn_blacklisted_extensions;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type string|null CDN whitelisted URI patterns.
      */
     protected $cdn_whitelisted_uri_patterns;
 
     /**
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type string|null CDN blacklisted URI patterns.
      */
@@ -88,7 +88,7 @@ class CdnFilters extends AbsBase
     /**
      * Class constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public function __construct()
     {
@@ -173,7 +173,7 @@ class CdnFilters extends AbsBase
     /**
      * Setup URL and content filters.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function maybeSetupFilters()
     {
@@ -239,7 +239,7 @@ class CdnFilters extends AbsBase
     /**
      * Filter home/site URLs that should be served by the CDN.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string      $url     Input URL|URI|query; passed by filter.
      * @param string      $path    The path component(s) passed through by the filter.
@@ -256,7 +256,7 @@ class CdnFilters extends AbsBase
     /**
      * Filter content for URLs that should be served by the CDN.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $string Input content string to filter; i.e. HTML code.
      *
@@ -303,7 +303,7 @@ class CdnFilters extends AbsBase
     /**
      * Filter URLs that should be served by the CDN.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string      $url_uri_query Input URL|URI|query.
      * @param string|null $scheme        `NULL`, `http`, `https`, `login`, `login_post`, `admin`, or `relative`.
@@ -349,7 +349,7 @@ class CdnFilters extends AbsBase
     /**
      * Parse a URL|URI|query into a local file array.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $url_uri_query Input URL|URI|query.
      *
@@ -397,7 +397,7 @@ class CdnFilters extends AbsBase
     /**
      * Get extension from a file path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $path Input file path.
      *

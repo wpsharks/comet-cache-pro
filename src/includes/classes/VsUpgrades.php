@@ -4,21 +4,21 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Version-Specific Upgrades.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class VsUpgrades extends AbsBase
 {
     /**
      * @type string Version they are upgrading from.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $prev_version = '';
 
     /**
      * Class constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $prev_version Version they are upgrading from.
      */
@@ -33,7 +33,7 @@ class VsUpgrades extends AbsBase
     /**
      * Runs upgrade handlers in the proper order.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function runHandlers()
     {
@@ -50,7 +50,7 @@ class VsUpgrades extends AbsBase
     /**
      * Upgrading from a version prior to our rewrite.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLt110523()
     {
@@ -69,7 +69,7 @@ class VsUpgrades extends AbsBase
     /**
      * Upgrading from a version prior to v140104 where we introduced feed caching.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLt140104()
     {
@@ -84,7 +84,7 @@ class VsUpgrades extends AbsBase
      * See <https://github.com/websharks/zencache/issues/147#issuecomment-42659131>
      *    We also also moved to a base directory layout.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLt140605()
     {
@@ -125,7 +125,7 @@ class VsUpgrades extends AbsBase
      * If so, we need to reset the cache location on sites
      * that have `wp-content` in their base directory.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLt140612()
     {
@@ -159,7 +159,7 @@ class VsUpgrades extends AbsBase
      *
      * If so, we need to update the User-Agent string.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLt141001()
     {
@@ -179,7 +179,7 @@ class VsUpgrades extends AbsBase
      * If so, we need to use the existing options to fill the new keys.
      * And, of course, then we save the updated options.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLt141009()
     {
@@ -222,7 +222,7 @@ class VsUpgrades extends AbsBase
      *
      * If so, we need to uninstall and deactivate Quick Cache.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromQuickCache()
     {
@@ -280,7 +280,7 @@ class VsUpgrades extends AbsBase
      *
      * If so, we need to update the default CDN blacklisted extensions.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function fromLte150218()
     {

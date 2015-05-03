@@ -4,14 +4,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Menu Page.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class MenuPage extends AbsBase
 {
     /**
      * Constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param MenuPage $menu_page Menu page.
      */

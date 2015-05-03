@@ -4,14 +4,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Conflicts.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class Conflicts
 {
     /**
      * Check.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public static function check()
     {
@@ -24,7 +24,7 @@ class Conflicts
     /**
      * Perform check.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected static function doCheck()
     {
@@ -65,7 +65,7 @@ class Conflicts
     /**
      * Maybe enqueue dashboard notice.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function mayEnqueueNotice()
     {

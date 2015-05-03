@@ -2,7 +2,7 @@
 /**
  * Stub.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 namespace WebSharks\ZenCache\Pro;
 

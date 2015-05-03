@@ -4,49 +4,49 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Abstract Base.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 abstract class AbsBase
 {
     /**
      * @type plugin Plugin reference.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $plugin;
 
     /**
      * @type array Instance cache.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $cache = array();
 
     /**
      * @type array Global static cache ref.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $static = array();
 
     /**
      * @type array Global static cache.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected static $global_static = array();
 
     /**
      * @type \stdClass Overload properties.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $overload;
 
     /**
      * Class constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public function __construct()
     {

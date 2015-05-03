@@ -4,14 +4,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Pro Updater Page.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class MenuPageProUpdater extends MenuPage
 {
     /**
      * Constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public function __construct()
     {

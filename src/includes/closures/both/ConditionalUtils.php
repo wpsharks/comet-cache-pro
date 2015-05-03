@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Does the current request include a query string?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if request includes a query string.
  *
@@ -25,7 +25,7 @@ $self->isGetRequestWQuery = function () use ($self) {
 /*
  * Is the current request method `POST`, `PUT` or `DELETE`?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if current request method is `POST`, `PUT` or `DELETE`.
  *
@@ -49,7 +49,7 @@ $self->isPostPutDeleteRequest = function () use ($self) {
 /*
  * Is the current request method is uncacheable?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if current request method is uncacheable.
  *
@@ -73,7 +73,7 @@ $self->isUncacheableRequestMethod = function () use ($self) {
 /*
  * Should the current user should be considered a logged-in user?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if current user should be considered a logged-in user.
  *
@@ -110,7 +110,7 @@ $self->isLikeUserLoggedIn = function () use ($self) {
 /*
  * Are we in a LOCALHOST environment?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if we are in a LOCALHOST environment.
  *
@@ -134,7 +134,7 @@ $self->isLocalhost = function () use ($self) {
 /*
  * Is the current request for the Auto-Cache Engine?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if the current request is for the Auto-Cache Engine.
  *
@@ -155,7 +155,7 @@ $self->isAutoCacheEngine = function () use ($self) {
 /*
  * Is the current request for a feed?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if the current request is for a feed.
  *
@@ -179,7 +179,7 @@ $self->isFeed = function () use ($self) {
 /*
  * Is the current request over SSL?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if the current request is over SSL.
  *
@@ -210,7 +210,7 @@ $self->isSsl = function () use ($self) {
 /*
  * Is a document/string an HTML/XML doc; or no?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $doc Input string/document to check.
  *
@@ -234,7 +234,7 @@ $self->isHtmlXmlDoc = function ($doc) use ($self) {
 /*
  * Does the current request have a cacheable content type?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if the current request has a cacheable content type.
  *
@@ -263,7 +263,7 @@ $self->hasACacheableContentType = function () use ($self) {
 /*
  * Does the current request have a cacheable HTTP status code?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if the current request has a cacheable HTTP status code.
  *
@@ -295,7 +295,7 @@ $self->hasACacheableStatus = function () use ($self) {
 /*
  * Checks if a PHP extension is loaded up.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $extension A PHP extension slug (i.e. extension name).
  *
@@ -315,7 +315,7 @@ $self->isExtensionLoaded = function ($extension) use ($self) {
 /*
  * Is a particular function possible in every way?
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $function A PHP function (or user function) to check.
  *

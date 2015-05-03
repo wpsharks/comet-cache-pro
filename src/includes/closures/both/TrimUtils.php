@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Trims strings deeply.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param mixed  $values Any value can be converted into a trimmed string.
  *    Actually, objects can't, but this recurses into objects.

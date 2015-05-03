@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Get the current visitor's real IP address.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return string Real IP address, else `unknown` on failure.
  *
@@ -56,7 +56,7 @@ $self->currentIp = function () use ($self) {
 /*
  * Gets a valid/public IP address.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $list_of_possible_ips A single IP, or a comma-delimited list of IPs.
  *

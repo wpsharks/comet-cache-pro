@@ -4,42 +4,42 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Feed Utils.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class FeedUtils extends AbsBase
 {
     /**
      * @type string WordPress `home_url('/')`.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $home_url;
 
     /**
      * @type string Default feed type; e.g. `rss2`.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $default_feed;
 
     /**
      * @type bool Using SEO-friendly permalinks?
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $seo_friendly_permalinks;
 
     /**
      * @type array All unique feed types.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected $feed_types;
 
     /**
      * Class constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public function __construct()
     {
@@ -54,7 +54,7 @@ class FeedUtils extends AbsBase
     /**
      * Feed link variations.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $type_prefix A feed type prefix; optional.
      *
@@ -75,7 +75,7 @@ class FeedUtils extends AbsBase
     /**
      * Post comments; feed link variations.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param \WP_Post A WordPress post class instance.
      *
@@ -96,7 +96,7 @@ class FeedUtils extends AbsBase
     /**
      * Post author; feed link variations.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param \WP_Post A WordPress post class instance.
      *
@@ -123,7 +123,7 @@ class FeedUtils extends AbsBase
     /**
      * Post type archive; feed link variations.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param \WP_Post A WordPress post class instance.
      *
@@ -144,7 +144,7 @@ class FeedUtils extends AbsBase
     /**
      * Post terms; feed link variations.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param \WP_Post A WordPress post class instance.
      * @param bool $include_regex_wildcard_keys Defaults to a `FALSE` value.
@@ -218,7 +218,7 @@ class FeedUtils extends AbsBase
     /**
      * Convert variations into regex fragments; relative to the current host|blog directory.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param array $variations An array of variations built by other class members.
      *

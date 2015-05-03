@@ -2,7 +2,7 @@
 /**
  * ZenCache Plugin.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 /*
 Version: 150409

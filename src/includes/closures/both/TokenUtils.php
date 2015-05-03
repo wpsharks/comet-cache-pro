@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Produces a token based on the current `$_SERVER['HTTP_HOST']`.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
@@ -32,7 +32,7 @@ $self->hostToken = function ($dashify = false) use ($self) {
 /*
  * Produces a token based on the current site's base directory.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
@@ -69,7 +69,7 @@ $self->hostBaseToken = function ($dashify = false) use ($self) {
 /*
  * Produces a token based on the current blog's sub-directory.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
@@ -111,7 +111,7 @@ $self->hostDirToken = function ($dashify = false) use ($self) {
 /*
  * Produces tokens for the current site's base directory & current blog's sub-directory.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
@@ -135,7 +135,7 @@ $self->hostBaseDirTokens = function ($dashify = false) use ($self) {
 /*
  * Produces a token based on the current user.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @return string Produces a token based on the current user;
  *    else an empty string if that's not possible to do.

@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * String replace ONE time.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string  $needle A string to search/replace.
  * @param string  $replace What to replace `$needle` with.
@@ -30,7 +30,7 @@ $self->strReplaceOnce = function ($needle, $replace, $haystack, $caSe_insensitiv
 /*
  * String replace ONE time (caSe-insensitive).
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $needle A string to search/replace.
  * @param string $replace What to replace `$needle` with.

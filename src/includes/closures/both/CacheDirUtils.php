@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Cache directory path.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $rel_path Relative path inside cache directory.
  *

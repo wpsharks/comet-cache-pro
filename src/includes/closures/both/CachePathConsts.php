@@ -5,7 +5,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Default cache path flags.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int A bitmask.
      */
@@ -14,7 +14,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude scheme from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -23,7 +23,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude host (i.e. domain name) from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -32,7 +32,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude path from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -41,7 +41,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude path index (i.e. no default `index`) from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -50,7 +50,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude query, user & version salt from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -59,7 +59,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude query string from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -68,7 +68,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude user token from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -77,7 +77,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude version salt from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -86,7 +86,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Exclude extension from cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -95,7 +95,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Allow wildcards in the cache path.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type int Part of a bitmask.
      */
@@ -104,7 +104,7 @@ if (!defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     /*
      * Default cache path regex suffix frag.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @type string Default regex suffix frag used in cache path patterns.
      */

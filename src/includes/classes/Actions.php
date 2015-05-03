@@ -4,14 +4,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Actions.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class Actions extends AbsBase
 {
     /**
      * Class constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public function __construct()
     {
@@ -31,7 +31,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -65,7 +65,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -103,7 +103,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -137,7 +137,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -175,7 +175,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -237,7 +237,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -284,7 +284,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -320,7 +320,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -397,7 +397,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */
@@ -423,7 +423,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
      */

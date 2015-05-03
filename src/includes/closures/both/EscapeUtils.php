@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Escape single quotes.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string  $string Input string to escape.
  * @param integer $times Optional. Defaults to one escape char; e.g. `\'`.

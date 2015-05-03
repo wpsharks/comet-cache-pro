@@ -4,14 +4,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Auto-Cache Engine.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class AutoCache extends AbsBase
 {
     /**
      * Class constructor.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     public function __construct()
     {
@@ -23,7 +23,7 @@ class AutoCache extends AbsBase
     /**
      * Public runner; attach to WP-Cron.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      */
     protected function run()
     {
@@ -113,7 +113,7 @@ class AutoCache extends AbsBase
     /**
      * Auto-cache a specific URL.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $url The URL to auto-cache.
      */
@@ -149,7 +149,7 @@ class AutoCache extends AbsBase
     /**
      * Logs an attempt to auto-cache a specific URL.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string    $url                    The URL we attempted to auto-cache.
      * @param \WP_Error $wp_remote_get_response For IDEs.
@@ -186,7 +186,7 @@ class AutoCache extends AbsBase
     /**
      * Logs auto-cache run totals.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param int    $total_urls Total URLs processed by the run.
      * @param string $total_time Total time it took to complete processing.
@@ -218,7 +218,7 @@ class AutoCache extends AbsBase
     /**
      * Collects all URLs from an XML sitemap deeply.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param string $sitemap      A URL to an XML sitemap file.
      *                             This supports nested XML sitemap index files too; i.e. `<sitemapindex>`.
@@ -283,7 +283,7 @@ class AutoCache extends AbsBase
     /**
      * For internal use only.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param \XMLReader $xml_reader
      *
@@ -320,7 +320,7 @@ class AutoCache extends AbsBase
     /**
      * For internal use only.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @param \XMLReader $xml_reader
      *

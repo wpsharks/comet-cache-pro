@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Converts a URL into a relative `cache/path`; i.e. relative to the cache directory.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $url               The input URL to convert.
  * @param string $with_user_token   Optional user token (if applicable).
@@ -108,7 +108,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  * This converts a URL into a relative `cache/path`; i.e. relative to the cache directory,
  *    and then converts that into a regex pattern w/ an optional custom `$regex_suffix_frag`.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $url               The input URL to convert. This CAN be left empty when necessary.
  *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -154,7 +154,7 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
  * This converts a URL into a relative `cache/path`; i.e. relative to the current host|blog directory,
  *    and then converts that into a regex pattern w/ an optional custom `$regex_suffix_frag`.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $url               The input URL to convert. This CAN be left empty when necessary.
  *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -202,7 +202,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
  * This converts URIs into relative `cache/paths`; i.e. relative to the current host|blog directory,
  *    and then converts those into `(?:regex|fragments)` with piped `|` alternatives.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  *
  * @param string $uris              A line-delimited list of URIs. These may contain `*` wildcards also.
  * @param string $regex_suffix_frag Regex fragment to come after each relative cache/path.

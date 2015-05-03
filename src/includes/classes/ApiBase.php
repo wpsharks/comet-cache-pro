@@ -4,14 +4,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * API Base Class.
  *
- * @since 150422 Rewrite
+ * @since 150422 Rewrite.
  */
 class ApiBase
 {
     /**
      * Current QC plugin instance.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @return \zencache\plugin instance.
      */
@@ -23,7 +23,7 @@ class ApiBase
     /**
      * Gives you the current version string.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @return string Current version string.
      */
@@ -35,7 +35,7 @@ class ApiBase
     /**
      * Gives you the current array of configured options.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @return array Current array of options.
      */
@@ -47,7 +47,7 @@ class ApiBase
     /**
      * Purges expired cache files, leaving all others intact.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @note This occurs automatically over time via WP Cron;
      *    but this will force an immediate purge if you so desire.
@@ -62,7 +62,7 @@ class ApiBase
     /**
      * This erases the entire cache for the current blog.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @note In a multisite network this impacts only the current blog,
      *    it does not clear the cache for other child blogs.
@@ -77,7 +77,7 @@ class ApiBase
     /**
      * This wipes out the entire cache.
      *
-     * @since 150422 Rewrite
+     * @since 150422 Rewrite.
      *
      * @note On a standard WP installation this is the same as zencache::clear();
      *    but on a multisite installation it impacts the entire network
