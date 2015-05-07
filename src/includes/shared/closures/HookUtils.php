@@ -58,7 +58,7 @@ $self->addHook = function ($hook, $function, $priority = 10, $accepted_args = 1)
         $hook  = GLOBAL_NS.substr($hook, strlen('quick_cache'));
     }
     $priority      = (integer) $priority;
-    $accepted_args = (integer) $accepted_args;
+    $accepted_args = max(0, (integer) $accepted_args);
     $hook_id       = $self->hookId($function);
 
     $self->hooks[$hook][$priority][$hook_id] = array(

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fe9397cebc4c78c6249248e9e8e31a74",
+    "hash": "8a2b6b78a86842ca81ca7d5c39f9e975",
     "packages": [
         {
             "name": "phing/phing",
@@ -102,12 +102,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "eb0788444447433253f251c2a4906a5eeb7a06ad"
+                "reference": "82118d2608300862dbc4227b98968a4cc7a1b959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/eb0788444447433253f251c2a4906a5eeb7a06ad",
-                "reference": "eb0788444447433253f251c2a4906a5eeb7a06ad",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/82118d2608300862dbc4227b98968a4cc7a1b959",
+                "reference": "82118d2608300862dbc4227b98968a4cc7a1b959",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-04-28 23:55:33"
+            "time": "2015-05-06 07:27:18"
         },
         {
             "name": "websharks/js-minifier",
@@ -159,12 +159,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/js-minifier.git",
-                "reference": "eee35dd574b9695e8c3d32f67bee7d80b537887e"
+                "reference": "c99b9d836fbb4ea94d0db2055ffd524e880ea04d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/eee35dd574b9695e8c3d32f67bee7d80b537887e",
-                "reference": "eee35dd574b9695e8c3d32f67bee7d80b537887e",
+                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/c99b9d836fbb4ea94d0db2055ffd524e880ea04d",
+                "reference": "c99b9d836fbb4ea94d0db2055ffd524e880ea04d",
                 "shasum": ""
             },
             "require": {
@@ -206,7 +206,7 @@
                 "javascript",
                 "websharks"
             ],
-            "time": "2015-04-28 23:55:16"
+            "time": "2015-05-06 07:23:27"
         },
         {
             "name": "websharks/sharkicons",

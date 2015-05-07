@@ -120,16 +120,6 @@ class Plugin extends AbsBaseAp
     {
         parent::__construct();
 
-        $closures_dir      = dirname(dirname(__FILE__)).'/closures/plugin';
-        $self              = $this; // Reference for closures.
-
-        foreach (scandir($closures_dir) as $_closure) {
-            if (substr($_closure, -4) === '.php') {
-                require $closures_dir.'/'.$_closure;
-            }
-        }
-        unset($_closure); // Housekeeping.
-
         /* -------------------------------------------------------------- */
 
         if (!($this->enable_hooks = (boolean) $enable_hooks)) {
@@ -645,17 +635,14 @@ class Plugin extends AbsBaseAp
     public function admin_bar_meta_tags()
     {
         if (!$this->options['enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         if (!$this->options['admin_bar_enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         if (!current_user_can($this->cap) || !is_admin_bar_showing()) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         $vars = array(// Dynamic JS vars.
                        'ajaxURL'  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
                        '_wpnonce' => wp_create_nonce(), );
@@ -679,17 +666,14 @@ class Plugin extends AbsBaseAp
     public function admin_bar_styles()
     {
         if (!$this->options['enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         if (!$this->options['admin_bar_enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         if (!current_user_can($this->cap) || !is_admin_bar_showing()) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         $deps = array(); // Plugin dependencies.
 
         wp_enqueue_style(__NAMESPACE__.'-admin-bar', $this->url('/client-s/css/admin-bar.min.css'), $deps, $this->version, 'all');
@@ -706,17 +690,14 @@ class Plugin extends AbsBaseAp
     public function admin_bar_scripts()
     {
         if (!$this->options['enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         if (!$this->options['admin_bar_enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         if (!current_user_can($this->cap) || !is_admin_bar_showing()) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         $deps = array('jquery'); // Plugin dependencies.
 
         wp_enqueue_script(__NAMESPACE__.'-admin-bar', $this->url('/client-s/js/admin-bar.min.js'), $deps, $this->version, true);
@@ -732,9 +713,8 @@ class Plugin extends AbsBaseAp
     public function htmlc_footer_scripts()
     {
         if (!$this->options['enable']) {
-            return;
-        } // Nothing to do.
-
+            return; // Nothing to do.
+        }
         echo "\n".'<!--footer-scripts-->'."\n";
     }
 

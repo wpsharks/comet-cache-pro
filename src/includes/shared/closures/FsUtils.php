@@ -49,6 +49,8 @@ $self->getTmpDir = function () use ($self) {
     if (!is_null($dir = &$self->staticKey('getTmpDir'))) {
         return $dir; // Already cached this.
     }
+    $possible_dirs = array(); // Initialize.
+
     if (defined('WP_TEMP_DIR')) {
         $possible_dirs[] = (string) WP_TEMP_DIR;
     }
@@ -75,14 +77,13 @@ $self->getTmpDir = function () use ($self) {
     if (defined('WP_CONTENT_DIR')) {
         $possible_dirs[] = (string) WP_CONTENT_DIR;
     }
-    if (!empty($possible_dirs)) {
-        foreach ($possible_dirs as $_key => $_dir) {
-            if (($_dir = trim((string) $_dir)) && @is_dir($_dir) && @is_writable($_dir)) {
-                return ($dir = $self->nDirSeps($_dir));
-            }
+    foreach ($possible_dirs as $_key => $_dir) {
+        if (($_dir = trim((string) $_dir)) && @is_dir($_dir) && @is_writable($_dir)) {
+            return ($dir = $self->nDirSeps($_dir));
         }
-        unset($_key, $_dir); // Housekeeping.
     }
+    unset($_key, $_dir); // Housekeeping.
+
     return ($dir = '');
 };
 

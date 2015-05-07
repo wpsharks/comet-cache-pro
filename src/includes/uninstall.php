@@ -13,7 +13,6 @@ require_once dirname(__FILE__).'/stub.php';
 
 if (!Conflicts::check()) {
     $GLOBALS[GLOBAL_NS.'_uninstalling'] = true;
-    $GLOBALS[GLOBAL_NS]                 = null;
     $GLOBALS[GLOBAL_NS]                 = new Plugin(false);
     $GLOBALS[GLOBAL_NS]->uninstall();
 }

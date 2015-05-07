@@ -16,3 +16,5 @@ const NAME       = 'ZenCache';
 const DOMAIN     = 'zencache.com';
 const GLOBAL_NS  = 'zencache';
 const VERSION    = '150422';
+
+$GLOBALS[GLOBAL_NS] = null;
