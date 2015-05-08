@@ -1,22 +1,13 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
-/**
- * Utilities.
+/*
+ * WordPress database instance.
  *
  * @since 150422 Rewrite.
+ *
+ * @return \wpdb Reference for IDEs.
  */
-class DbUtils extends AbsBase
-{
-    /**
-     * WordPress database instance.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @return \wpdb Reference for IDEs.
-     */
-    public function wpdb()
-    {
-        return $GLOBALS['wpdb'];
-    }
-}
+$self->wpdb = function () use ($self) {
+    return $GLOBALS['wpdb'];
+};
