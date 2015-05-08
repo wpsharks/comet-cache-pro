@@ -94,7 +94,7 @@ abstract class AbsBaseAp extends AbsBase
         $this->file   = dirname(dirname(dirname(dirname(__FILE__)))).'/plugin.php';
         $this->slug   = $this->text_domain   = str_replace('_', '-', GLOBAL_NS);
 
-        $closures_dir = dirname(dirname(__FILE__)).'/closures/shared';
+        $closures_dir = dirname(dirname(__FILE__)).'/closures/Shared';
         $self         = $this; // Reference for closures.
 
         foreach (scandir($closures_dir) as $_closure) {
