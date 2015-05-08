@@ -120,6 +120,15 @@ class Plugin extends AbsBaseAp
     {
         parent::__construct();
 
+        $closures_dir = dirname(dirname(__FILE__)).'/closures/plugin';
+        $self         = $this; // Reference for closures.
+
+        foreach (scandir($closures_dir) as $_closure) {
+            if (substr($_closure, -4) === '.php') {
+                require $closures_dir.'/'.$_closure;
+            }
+        }
+        unset($_closure); // Housekeeping.
         /* -------------------------------------------------------------- */
 
         if (!($this->enable_hooks = (boolean) $enable_hooks)) {
