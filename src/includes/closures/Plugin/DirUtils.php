@@ -17,10 +17,10 @@ namespace WebSharks\ZenCache\Pro;
 $self->wpContentBaseDirTo = function ($rel_dir_file) use ($self) {
     $rel_dir_file = trim((string) $rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
-    if (empty($this->options['base_dir'])) {
-        throw new \Exception(__('Missing `base_dir` option value.', $this->text_domain));
+    if (empty($self->options['base_dir'])) {
+        throw new \Exception(__('Missing `base_dir` option value.', $self->text_domain));
     }
-    $wp_content_base_dir_to = WP_CONTENT_DIR.'/'.$this->options['base_dir'];
+    $wp_content_base_dir_to = WP_CONTENT_DIR.'/'.$self->options['base_dir'];
 
     if (isset($rel_dir_file[0])) {
         $wp_content_base_dir_to .= '/'.$rel_dir_file;
@@ -44,10 +44,10 @@ $self->wpContentBaseDirTo = function ($rel_dir_file) use ($self) {
 $self->baseBathTo = function ($rel_dir_file) use ($self) {
     $rel_dir_file = trim((string) $rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
-    if (empty($this->options['base_dir'])) {
-        throw new \Exception(__('Missing `base_dir` option value.', $this->text_domain));
+    if (empty($self->options['base_dir'])) {
+        throw new \Exception(__('Missing `base_dir` option value.', $self->text_domain));
     }
-    $base_path_to = $this->options['base_dir'];
+    $base_path_to = $self->options['base_dir'];
 
     if (isset($rel_dir_file[0])) {
         $base_path_to .= '/'.$rel_dir_file;
