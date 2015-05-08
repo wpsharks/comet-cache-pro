@@ -10,6 +10,7 @@ if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }
 require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
+require_once dirname(__FILE__).'/functions/i18n-utils.php';
 
 const SHORT_NAME = 'ZC';
 const NAME       = 'ZenCache';

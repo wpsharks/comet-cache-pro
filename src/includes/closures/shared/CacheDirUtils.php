@@ -15,10 +15,10 @@ namespace WebSharks\ZenCache\Pro;
 $self->cacheDir = function ($rel_path = '') use ($self) {
     $rel_path = (string) $rel_path;
 
-    if (isset($self->cache_sub_dir) && method_exists($self, 'wpContentBaseDirTo')) {
+    if (!($self instanceof AdvancedCache)) {
         $cache_dir = $self->wpContentBaseDirTo($self->cache_sub_dir);
-    } elseif (defined('ZENCACHE_DIR') && ZENCACHE_DIR) {
-        $cache_dir = ZENCACHE_DIR;
+    } elseif (defined('ZENCACHE_DIR') && \ZENCACHE_DIR) {
+        $cache_dir = \ZENCACHE_DIR;
     }
     if (empty($cache_dir)) {
         throw new \Exception(__('Unable to determine cache directory location.', $self->text_domain));
@@ -122,7 +122,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
     }
     $cache_dir = $self->nDirSeps($cache_dir);
 
-    if ($check_max_age && !($self instanceof Plugin)) {
+    if ($check_max_age && $self instanceof AdvancedCache) {
         throw new \Exception(__('Requires an instance of Plugin.', $self->text_domain));
     }
     if ($check_max_age && !($max_age = strtotime('-'.$self->options['cache_max_age']))) {
@@ -270,7 +270,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $cache_dir            = $self->nDirSeps($cache_dir);
 
-    if ($check_max_age && !($self instanceof Plugin)) {
+    if ($check_max_age && $self instanceof AdvancedCache) {
         throw new \Exception(__('Requires an instance of Plugin.', $self->text_domain));
     }
     if ($check_max_age && !($max_age = strtotime('-'.$self->options['cache_max_age']))) {
