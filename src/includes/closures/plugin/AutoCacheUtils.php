@@ -1,33 +1,24 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
-/**
- * Utilities.
+/*
+ * Runs the auto-cache engine.
  *
  * @since 150422 Rewrite.
+ *
+ * @attaches-to `_cron_zencache_auto_cache` hook.
  */
-class AutoCacheUtils extends AbsBase
-{
-    /**
-     * Runs the auto-cache engine.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @attaches-to `_cron_zencache_auto_cache` hook.
-     */
-    public function auto_cache()
-    {
-        if (!$this->plugin->options['enable']) {
-            return; // Nothing to do.
-        }
-        if (!$this->plugin->options['auto_cache_enable']) {
-            return; // Nothing to do.
-        }
-        if (!$this->plugin->options['auto_cache_sitemap_url']) {
-            if (!$this->plugin->options['auto_cache_other_urls']) {
-                return; // Nothing to do.
-            }
-        }
-        new AutoCache();
+$self->autoCache = function () use ($self) {
+    if (!$self->options['enable']) {
+        return; // Nothing to do.
     }
-}
+    if (!$self->options['auto_cache_enable']) {
+        return; // Nothing to do.
+    }
+    if (!$self->options['auto_cache_sitemap_url']) {
+        if (!$self->options['auto_cache_other_urls']) {
+            return; // Nothing to do.
+        }
+    }
+    new AutoCache();
+};
