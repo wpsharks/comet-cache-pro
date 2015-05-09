@@ -13,5 +13,5 @@ require_once dirname(__FILE__).'/stub.php';
 
 if (!Conflicts::check()) {
     $GLOBALS[GLOBAL_NS] = new Plugin();
-    require_once dirname(__FILE__).'/api-classes.php';
+    require_once dirname(__FILE__).'/api.php';
 }
