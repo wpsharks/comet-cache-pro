@@ -288,19 +288,19 @@ class Plugin extends AbsBaseAp
             $options                = $quick_cache_options;
             $options['crons_setup'] = $this->default_options['crons_setup'];
         }
-        $this->default_options = $this->apply_wp_filters(GLOBAL_NS.'_default_options', $this->default_options, get_defined_vars());
+        $this->default_options = $this->applyWpFilters(GLOBAL_NS.'_default_options', $this->default_options, get_defined_vars());
         $this->options         = array_merge($this->default_options, $options); // This considers old options also.
-        $this->options         = $this->apply_wp_filters(GLOBAL_NS.'_options', $this->options, get_defined_vars());
+        $this->options         = $this->applyWpFilters(GLOBAL_NS.'_options', $this->options, get_defined_vars());
         $this->options         = array_intersect_key($this->options, $this->default_options);
 
         $this->options['base_dir'] = trim($this->options['base_dir'], '\\/'." \t\n\r\0\x0B");
         if (!$this->options['base_dir']) {
             $this->options['base_dir'] = $this->default_options['base_dir'];
         }
-        $this->cap           = $this->apply_wp_filters(GLOBAL_NS.'_cap', $this->cap);
-        $this->update_cap    = $this->apply_wp_filters(GLOBAL_NS.'_update_cap', $this->update_cap);
-        $this->network_cap   = $this->apply_wp_filters(GLOBAL_NS.'_network_cap', $this->network_cap);
-        $this->uninstall_cap = $this->apply_wp_filters(GLOBAL_NS.'_uninstall_cap', $this->uninstall_cap);
+        $this->cap           = $this->applyWpFilters(GLOBAL_NS.'_cap', $this->cap);
+        $this->update_cap    = $this->applyWpFilters(GLOBAL_NS.'_update_cap', $this->update_cap);
+        $this->network_cap   = $this->applyWpFilters(GLOBAL_NS.'_network_cap', $this->network_cap);
+        $this->uninstall_cap = $this->applyWpFilters(GLOBAL_NS.'_uninstall_cap', $this->uninstall_cap);
 
         /* -------------------------------------------------------------- */
 

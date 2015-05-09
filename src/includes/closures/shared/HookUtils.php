@@ -74,12 +74,11 @@ $self->addHook = function ($hook, $function, $priority = 10, $accepted_args = 1)
  * @since 150422 Rewrite.
  *
  * @return boolean This always returns a `TRUE` value.
- *
- * @see addHook()
  */
 $self->addAction = function () use ($self) {
     return call_user_func_array(array($self, 'addHook'), func_get_args());
 };
+$self->add_action = &$self->addAction; // Back compat.
 
 /*
  * Adds a new filter.
@@ -87,12 +86,11 @@ $self->addAction = function () use ($self) {
  * @since 150422 Rewrite.
  *
  * @return boolean This always returns a `TRUE` value.
- *
- * @see addHook()
  */
 $self->addFilter = function () use ($self) {
     return call_user_func_array(array($self, 'addHook'), func_get_args());
 };
+$self->add_filter = &$self->addFilter; // Back compat.
 
 /*
  * Removes a hook (works with both actions & filters).
@@ -130,8 +128,6 @@ $self->removeHook = function ($hook, $function, $priority = 10) use ($self) {
  * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
- *
- * @see removeHook()
  */
 $self->removeAction = function () use ($self) {
     return call_user_func_array(array($self, 'removeHook'), func_get_args());
@@ -143,8 +139,6 @@ $self->removeAction = function () use ($self) {
  * @since 150422 Rewrite.
  *
  * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
- *
- * @see removeHook()
  */
 $self->removeFilter = function () use ($self) {
     return call_user_func_array(array($self, 'removeHook'), func_get_args());
