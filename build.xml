@@ -116,10 +116,10 @@
         <reflexive>
           <fileset dir="${_src_dir}">
             <exclude pattern="vendor/**" />
-            <include pattern="**.php" />
-            <include pattern="**.scss" />
-            <include pattern="**.css" />
-            <include pattern="**.js" />
+            <include pattern="*.php" />
+            <include pattern="**/*.php" />
+            <include pattern="*.js" />
+            <include pattern="**/*.js" />
           </fileset>
           <filterchain>
             <replaceregexp>
@@ -252,16 +252,27 @@
         <echo msg="Creating PHAR file..." />
         <pharpackage basedir="${project.basedir}" stub="${_phar_stub}" destfile="${_phar_file}">
           <fileset dir="${_src_dir}">
+            <exclude name=".git**" />
             <exclude name="**/.git**" />
+            <exclude name="build.xml" />
             <exclude name="**/build.xml" />
+            <exclude name="composer.json" />
             <exclude name="**/composer.json" />
+            <exclude name="composer.lock" />
             <exclude name="**/composer.lock" />
+            <exclude name="LICENSE.txt" />
             <exclude name="**/LICENSE.txt" />
+            <exclude name="README.md" />
             <exclude name="**/README.md" />
+            <exclude name="CHANGELOG.md" />
             <exclude name="**/CHANGELOG.md" />
+            <exclude name=".htaccess" />
             <exclude name="**/.htaccess" />
+            <exclude name="phar-stub.php" />
             <exclude name="**/phar-stub.php" />
+            <exclude name="vendor/bin/**" />
             <exclude name="**/vendor/bin/**" />
+            <exclude name=".~**" />
             <exclude name="**/.~**" />
           </fileset>
         </pharpackage>
