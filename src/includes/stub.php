@@ -12,10 +12,22 @@ if (!defined('WPINC')) {
 require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 require_once dirname(__FILE__).'/functions/i18n-utils.php';
 
-const SHORT_NAME = 'ZC';
-const NAME       = 'ZenCache';
-const DOMAIN     = 'zencache.com';
-const GLOBAL_NS  = 'zencache';
-const VERSION    = '150509'; //version//
-
-$GLOBALS[GLOBAL_NS] = null;
+if (!defined(__NAMESPACE__.'\\SHORT_NAME')) {
+    define(__NAMESPACE__.'\\SHORT_NAME', 'ZC');
+}
+if (!defined(__NAMESPACE__.'\\NAME')) {
+    define(__NAMESPACE__.'\\NAME', 'ZenCache');
+}
+if (!defined(__NAMESPACE__.'\\DOMAIN')) {
+    define(__NAMESPACE__.'\\DOMAIN', 'zencache.com');
+}
+if (!defined(__NAMESPACE__.'\\GLOBAL_NS')) {
+    define(__NAMESPACE__.'\\GLOBAL_NS', 'zencache');
+}
+if (!defined(__NAMESPACE__.'\\VERSION')) {
+    ${__FILE__}['version'] = '150509'; //version//
+    define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
+}
+if (!isset($GLOBALS[GLOBAL_NS])) {
+    $GLOBALS[GLOBAL_NS] = null;
+}
