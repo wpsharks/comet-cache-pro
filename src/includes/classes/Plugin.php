@@ -137,13 +137,13 @@ class Plugin extends AbsBaseAp
      */
     public function setup()
     {
-        if (!is_null($setup = &$this->staticKey(__FUNCTION__))) {
+        if (!is_null($setup = &$this->cacheKey(__FUNCTION__))) {
             return; // Already setup.
         }
         $setup = -1; // Flag as having been setup.
 
         if ($this->enable_hooks) {
-            $this->do_wp_action('before_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
+            $this->doWpAction('before_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
         }
         /* -------------------------------------------------------------- */
 
@@ -309,86 +309,86 @@ class Plugin extends AbsBaseAp
         }
         /* -------------------------------------------------------------- */
 
-        add_action('init', array($this, 'check_advanced_cache'));
-        add_action('init', array($this, 'check_blog_paths'));
+        add_action('init', array($this, 'checkAdvancedCache'));
+        add_action('init', array($this, 'checkBlogPaths'));
         add_action('wp_loaded', array($this, 'actions'));
 
-        add_action('admin_init', array($this, 'check_version'));
-        add_action('admin_init', array($this, 'check_latest_pro_version'));
-        add_action('admin_init', array($this, 'maybe_auto_clear_cache'));
+        add_action('admin_init', array($this, 'checkVersion'));
+        add_action('admin_init', array($this, 'checkLatestProVersion'));
+        add_action('admin_init', array($this, 'autoClearCacheOnSettingChanges'));
 
-        add_action('admin_bar_menu', array($this, 'admin_bar_menu'));
-        add_action('wp_head', array($this, 'admin_bar_meta_tags'), 0);
-        add_action('wp_enqueue_scripts', array($this, 'admin_bar_styles'));
-        add_action('wp_enqueue_scripts', array($this, 'admin_bar_scripts'));
+        add_action('admin_bar_menu', array($this, 'adminBarMenu'));
+        add_action('wp_head', array($this, 'adminBarMetaTags'), 0);
+        add_action('wp_enqueue_scripts', array($this, 'adminBarStyles'));
+        add_action('wp_enqueue_scripts', array($this, 'adminBarScripts'));
 
-        add_action('admin_head', array($this, 'admin_bar_meta_tags'), 0);
-        add_action('admin_enqueue_scripts', array($this, 'admin_bar_styles'));
-        add_action('admin_enqueue_scripts', array($this, 'admin_bar_scripts'));
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
+        add_action('admin_head', array($this, 'adminBarMetaTags'), 0);
+        add_action('admin_enqueue_scripts', array($this, 'adminBarStyles'));
+        add_action('admin_enqueue_scripts', array($this, 'adminBarScripts'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueueAdminStyles'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueueAdminScripts'));
 
-        add_action('all_admin_notices', array($this, 'all_admin_notices'));
-        add_action('all_admin_notices', array($this, 'all_admin_errors'));
+        add_action('all_admin_notices', array($this, 'allAdminNotices'));
+        add_action('all_admin_notices', array($this, 'allAdminErrors'));
 
-        add_action('network_admin_menu', array($this, 'add_network_menu_pages'));
-        add_action('admin_menu', array($this, 'add_menu_pages'));
+        add_action('network_admin_menu', array($this, 'addNetworkMenuPages'));
+        add_action('admin_menu', array($this, 'addMenuPages'));
 
-        add_action('upgrader_process_complete', array($this, 'upgrader_process_complete'), 10, 2);
-        add_action('safecss_save_pre', array($this, 'jetpack_custom_css'), 10, 1);
+        add_action('upgrader_process_complete', array($this, 'autoClearOnUpgraderProcessComplete'), 10, 2);
+        add_action('safecss_save_pre', array($this, 'autoClearCacheOnJetpackCustomCss'), 10, 1);
 
-        add_action('switch_theme', array($this, 'auto_clear_cache'));
-        add_action('wp_create_nav_menu', array($this, 'auto_clear_cache'));
-        add_action('wp_update_nav_menu', array($this, 'auto_clear_cache'));
-        add_action('wp_delete_nav_menu', array($this, 'auto_clear_cache'));
+        add_action('switch_theme', array($this, 'autoClearCache'));
+        add_action('wp_create_nav_menu', array($this, 'autoClearCache'));
+        add_action('wp_update_nav_menu', array($this, 'autoClearCache'));
+        add_action('wp_delete_nav_menu', array($this, 'autoClearCache'));
 
-        add_action('save_post', array($this, 'auto_clear_post_cache'));
-        add_action('delete_post', array($this, 'auto_clear_post_cache'));
-        add_action('clean_post_cache', array($this, 'auto_clear_post_cache'));
-        add_action('post_updated', array($this, 'auto_clear_author_page_cache'), 10, 3);
-        add_action('pre_post_update', array($this, 'auto_clear_post_cache_transition'), 10, 2);
+        add_action('save_post', array($this, 'autoClearPostCache'));
+        add_action('delete_post', array($this, 'autoClearPostCache'));
+        add_action('clean_post_cache', array($this, 'autoClearPostCache'));
+        add_action('post_updated', array($this, 'autoClearAuthorPageCache'), 10, 3);
+        add_action('pre_post_update', array($this, 'autoClearPostCacheTransition'), 10, 2);
 
-        add_action('added_term_relationship', array($this, 'auto_clear_post_terms_cache'), 10, 1);
-        add_action('delete_term_relationships', array($this, 'auto_clear_post_terms_cache'), 10, 1);
+        add_action('added_term_relationship', array($this, 'autoClearPostTermsCache'), 10, 1);
+        add_action('delete_term_relationships', array($this, 'autoClearPostTermsCache'), 10, 1);
 
-        add_action('trackback_post', array($this, 'auto_clear_comment_post_cache'));
-        add_action('pingback_post', array($this, 'auto_clear_comment_post_cache'));
-        add_action('comment_post', array($this, 'auto_clear_comment_post_cache'));
-        add_action('transition_comment_status', array($this, 'auto_clear_comment_transition'), 10, 3);
+        add_action('trackback_post', array($this, 'autoClearCommentPostCache'));
+        add_action('pingback_post', array($this, 'autoClearCommentPostCache'));
+        add_action('comment_post', array($this, 'autoClearCommentPostCache'));
+        add_action('transition_comment_status', array($this, 'autoClearCommentPostCacheTransition'), 10, 3);
 
-        add_action('profile_update', array($this, 'auto_clear_user_cache_a1'));
-        add_filter('add_user_metadata', array($this, 'auto_clear_user_cache_fa2'), 10, 2);
-        add_filter('update_user_metadata', array($this, 'auto_clear_user_cache_fa2'), 10, 2);
-        add_filter('delete_user_metadata', array($this, 'auto_clear_user_cache_fa2'), 10, 2);
-        add_action('set_auth_cookie', array($this, 'auto_clear_user_cache_a4'), 10, 4);
-        add_action('clear_auth_cookie', array($this, 'auto_clear_user_cache_cur'));
+        add_action('profile_update', array($this, 'autoClearUserCacheA1'));
+        add_filter('add_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_filter('update_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
+        add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
 
-        add_action('create_term', array($this, 'auto_clear_cache'));
-        add_action('edit_terms', array($this, 'auto_clear_cache'));
-        add_action('delete_term', array($this, 'auto_clear_cache'));
+        add_action('create_term', array($this, 'autoClearCache'));
+        add_action('edit_terms', array($this, 'autoClearCache'));
+        add_action('delete_term', array($this, 'autoClearCache'));
 
-        add_action('add_link', array($this, 'auto_clear_cache'));
-        add_action('edit_link', array($this, 'auto_clear_cache'));
-        add_action('delete_link', array($this, 'auto_clear_cache'));
+        add_action('add_link', array($this, 'autoClearCache'));
+        add_action('edit_link', array($this, 'autoClearCache'));
+        add_action('delete_link', array($this, 'autoClearCache'));
 
-        add_filter('enable_live_network_counts', array($this, 'update_blog_paths'));
+        add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
 
-        add_filter('fs_ftp_connection_types', array($this, 'fs_ftp_connection_types'));
-        add_filter('pre_site_transient_update_plugins', array($this, 'pre_site_transient_update_plugins'));
+        add_filter('fs_ftp_connection_types', array($this, 'fsFtpConnectionTypes'));
+        add_filter('pre_site_transient_update_plugins', array($this, 'preSiteTransientUpdatePlugins'));
 
-        add_filter('plugin_action_links_'.plugin_basename($this->file), array($this, 'add_settings_link'));
+        add_filter('plugin_action_links_'.plugin_basename($this->file), array($this, 'addSettingsLink'));
 
         if ($this->options['enable'] && $this->options['htmlc_enable']) {
-            add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), -PHP_INT_MAX);
-            add_action('wp_print_footer_scripts', array($this, 'htmlc_footer_scripts'), PHP_INT_MAX);
+            add_action('wp_print_footer_scripts', array($this, 'htmlCFooterScripts'), -PHP_INT_MAX);
+            add_action('wp_print_footer_scripts', array($this, 'htmlCFooterScripts'), PHP_INT_MAX);
         }
         if ($this->options['enable'] && $this->options['cdn_enable']) {
-            add_action('upgrader_process_complete', array($this, 'bump_cdn_invalidation_counter'), 10, 0);
+            add_action('upgrader_process_complete', array($this, 'bumpCdnInvalidationCounter'), 10, 0);
             new CdnFilters(); // Setup CDN filters.
         }
         /* -------------------------------------------------------------- */
 
-        add_filter('cron_schedules', array($this, 'extend_cron_schedules'));
+        add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
         if (substr($this->options['crons_setup'], -4) !== '-pro' || (integer) $this->options['crons_setup'] < 1398051975) {
             wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
@@ -403,12 +403,12 @@ class Plugin extends AbsBaseAp
                 update_site_option(GLOBAL_NS.'_options', $this->options);
             }
         }
-        add_action('_cron_'.GLOBAL_NS.'_auto_cache', array($this, 'auto_cache'));
-        add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'purge_cache'));
+        add_action('_cron_'.GLOBAL_NS.'_auto_cache', array($this, 'autoCache'));
+        add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'purgeCache'));
 
         /* -------------------------------------------------------------- */
 
-        $this->do_wp_action('after_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
-        $this->do_wp_action(GLOBAL_NS.'_'.__FUNCTION__.'_complete', get_defined_vars());
+        $this->doWpAction('after_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
+        $this->doWpAction(GLOBAL_NS.'_'.__FUNCTION__.'_complete', get_defined_vars());
     }
 }
