@@ -54,14 +54,14 @@ class AdvancedCacheBackCompat
             if (!($_constant_sub_name = substr($_constant, 12))) {
                 continue; // Nothing to do here.
             }
-            if (!defined('ZENCACHE_'.$_constant_sub_name)) {
-                define('ZENCACHE_'.$_constant_sub_name, $_value);
+            if (!defined(GLOBAL_NS.'_'.$_constant_sub_name)) {
+                define(GLOBAL_NS.'_'.$_constant_sub_name, $_value);
             }
         }
         unset($_constant, $_value); // Housekeeping.
 
-        if (isset($_SERVER['QUICK_CACHE_ALLOWED']) && !isset($_SERVER['ZENCACHE_ALLOWED'])) {
-            $_SERVER['ZENCACHE_ALLOWED'] = $_SERVER['QUICK_CACHE_ALLOWED'];
+        if (isset($_SERVER['QUICK_CACHE_ALLOWED']) && !isset($_SERVER[GLOBAL_NS.'_ALLOWED'])) {
+            $_SERVER[GLOBAL_NS.'_ALLOWED'] = $_SERVER['QUICK_CACHE_ALLOWED'];
         }
     }
 }
