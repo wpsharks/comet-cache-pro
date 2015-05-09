@@ -257,7 +257,7 @@ $self->addAdvancedCache = function () use ($self) {
     }
     $cache_dir               = $self->cacheDir();
     $advanced_cache_file     = WP_CONTENT_DIR.'/advanced-cache.php';
-    $advanced_cache_template = dirname(__FILE__).'/includes/advanced-cache.tpl.php';
+    $advanced_cache_template = dirname(dirname(dirname(__FILE__))).'/advanced-cache.tpl.php';
 
     if (is_file($advanced_cache_file) && !is_writable($advanced_cache_file)) {
         return false; // Not possible to create.
