@@ -12,7 +12,7 @@ namespace WebSharks\ZenCache\Pro;
  * @return string URL to plugin directory; or to the specified `$file` if applicable.
  */
 $self->url = function ($file = '', $scheme = '') use ($self) {
-    $url = rtrim(plugin_dir_url($this->file), '/');
+    $url = rtrim(plugin_dir_url($self->file), '/');
     $url .= (string) $file;
 
     if ($scheme) {

@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Checks for a new pro release once every hour.
  *
- * @since 140422 First documented version.
+ * @since 150422 Rewrite.
  *
  * @attaches-to `admin_init` hook.
  *
@@ -43,7 +43,7 @@ $self->checkLatestProVersion = function () use ($self) {
 /*
  * Appends hidden inputs for pro updater when FTP credentials are requested by WP.
  *
- * @since 150218 See: <https://github.com/websharks/quick-cache/issues/389#issuecomment-68620617>
+ * @since 150422 Rewrite.
  *
  * @attaches-to `fs_ftp_connection_types` filter.
  *
@@ -80,7 +80,7 @@ $self->fsFtpConnectionTypes = function ($types) use ($self) {
 /*
  * Modifies transient data associated with this plugin.
  *
- * @since 140422 First documented version.
+ * @since 150422 Rewrite.
  *
  * @attaches-to `pre_site_transient_update_plugins` filter.
  *
