@@ -225,7 +225,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     if (!($uris = trim((string) $uris))) {
         return ''; // Nothing to do.
     }
-    $_this             = $self; // Reference for the closure below.
+    $_self             = $self; // Reference for the closure below.
     $regex_suffix_frag = (string) $regex_suffix_frag; // Force a string value.
     $flags             = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
@@ -235,8 +235,8 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
     $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
 
-    return '(?:'.implode('|', array_map(function ($pattern) use ($_this, $regex_suffix_frag, $flags, $host_url, $host_cache_path) {
-        $cache_path          = $_this->buildCachePath($host_url.'/'.trim($pattern, '/'), '', '', $flags);
+    return '(?:'.implode('|', array_map(function ($pattern) use ($_self, $regex_suffix_frag, $flags, $host_url, $host_cache_path) {
+        $cache_path          = $_self->buildCachePath($host_url.'/'.trim($pattern, '/'), '', '', $flags);
         $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $cache_path);
 
         return preg_replace('/\\\\\*/', '.*?', preg_quote($relative_cache_path, '/')).$regex_suffix_frag;
