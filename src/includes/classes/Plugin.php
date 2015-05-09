@@ -90,17 +90,6 @@ class Plugin extends AbsBaseAp
     public $htmlc_cache_sub_dir_private = 'htmlc/private';
 
     /**
-     * Used for temporarily storing the permalink for posts transitioning from
-     *    `publish` or `private` post status to `pending` or `draft` post status.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @type array An associative array with the Post ID as the named key containing
-     *            the post permalink before the post has been transitioned.
-     */
-    protected $pre_post_update_post_permalink = array();
-
-    /**
      * Used by the plugin's uninstall handler.
      *
      * @since 150422 Rewrite.

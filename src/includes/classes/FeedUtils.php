@@ -102,7 +102,7 @@ class FeedUtils extends AbsBase
      *
      * @return array An array of all feed link variations.
      */
-    public function postAuthorLinkVariations(\WP_Post $post)
+    public function postAuthorFeedLinkVariations(\WP_Post $post)
     {
         $variations = array(); // Initialize.
 
@@ -129,7 +129,7 @@ class FeedUtils extends AbsBase
      *
      * @return array An array of all feed link variations.
      */
-    public function postTypeArchiveLinkVariations(\WP_Post $post)
+    public function postTypeArchiveFeedLinkVariations(\WP_Post $post)
     {
         $variations = array(); // Initialize.
 
