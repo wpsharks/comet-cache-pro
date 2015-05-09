@@ -16,6 +16,6 @@ const SHORT_NAME = 'ZC';
 const NAME       = 'ZenCache';
 const DOMAIN     = 'zencache.com';
 const GLOBAL_NS  = 'zencache';
-const VERSION    = '150422';
+const VERSION    = '150422'; //version//
 
 $GLOBALS[GLOBAL_NS] = null;

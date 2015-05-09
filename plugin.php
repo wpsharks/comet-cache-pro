@@ -1,11 +1,6 @@
 <?php
-/**
- * ZenCache Plugin.
- *
- * @since 150422 Rewrite.
- */
 /*
-Version: 150409
+Version: 150509
 Text Domain: zencache
 Plugin Name: ZenCache Pro
 Network: true

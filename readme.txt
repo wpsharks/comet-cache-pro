@@ -1,8 +1,8 @@
 === ZenCache ===
 
-Stable tag: 150409
-Requires at least: 3.7
-Tested up to: 4.1.1
+Stable tag: 150509
+Requires at least: 4.2.1
+Tested up to: 4.2.1
 Text Domain: zencache
 
 License: GPLv2 or later
@@ -419,4 +419,4 @@ ZenCache is an evolution of Quick Cache. It comes with a completely refactored c
 - **Bug Fix (Pro)**: Fixed a bug with the HTML Compressor where `style`, `link` and/or `script` tags could end up out of order in certain scenarios. See [#45](https://github.com/websharks/html-compressor/issues/45).
 - **Bug Fix (Pro)**: Fixed a bug in the HTML Compressor related to JavaScript compression routines. See [#38](https://github.com/websharks/html-compressor/issues/38).
 
-For older Changelog entries, please see the `CHANGELOG` file.
+For older Changelog entries, please see the `CHANGELOG.md` file.

@@ -31,7 +31,6 @@
 
     "require": {
         "php": ">=5.3",
-        "phing/phing": "dev-master",
         "websharks/wp-php-rv": "dev-master",
         "websharks/html-compressor": "dev-master",
         "websharks/sharkicons": "dev-master"
