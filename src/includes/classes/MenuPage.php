@@ -13,14 +13,22 @@ class MenuPage extends AbsBase
      *
      * @since 150422 Rewrite.
      *
-     * @param MenuPage $menu_page Menu page.
+     * @param string $menu_page Menu page.
      */
-    public function __construct(MenuPage $menu_page = null)
+    public function __construct($menu_page = '')
     {
         parent::__construct();
 
         if ($menu_page) {
-            new $menu_page();
+            switch ($menu_page) {
+                case 'options':
+                    new MenuPageOptions();
+                    break;
+
+                case 'pro-updater':
+                    new MenuPageProUpdater();
+                    break;
+            }
         }
     }
 }
