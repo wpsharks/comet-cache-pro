@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "12c36044b59b4342790b547c56e7ddc9",
+    "hash": "250fd6e7e386b2620e1afd5a21b93298",
     "packages": [
         {
             "name": "websharks/html-compressor",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "82118d2608300862dbc4227b98968a4cc7a1b959"
+                "reference": "b0ba142763f68772b66a230cd1a40f8ec4edd19d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/82118d2608300862dbc4227b98968a4cc7a1b959",
-                "reference": "82118d2608300862dbc4227b98968a4cc7a1b959",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/b0ba142763f68772b66a230cd1a40f8ec4edd19d",
+                "reference": "b0ba142763f68772b66a230cd1a40f8ec4edd19d",
                 "shasum": ""
             },
             "require": {
@@ -61,7 +61,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-05-06 07:27:18"
+            "time": "2015-05-10 11:45:29"
         },
         {
             "name": "websharks/js-minifier",
@@ -69,12 +69,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/js-minifier.git",
-                "reference": "c99b9d836fbb4ea94d0db2055ffd524e880ea04d"
+                "reference": "212cca9bb69a1e591219a86aa88c285cc6362e30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/c99b9d836fbb4ea94d0db2055ffd524e880ea04d",
-                "reference": "c99b9d836fbb4ea94d0db2055ffd524e880ea04d",
+                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/212cca9bb69a1e591219a86aa88c285cc6362e30",
+                "reference": "212cca9bb69a1e591219a86aa88c285cc6362e30",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "javascript",
                 "websharks"
             ],
-            "time": "2015-05-06 07:23:27"
+            "time": "2015-05-10 11:46:24"
         },
         {
             "name": "websharks/sharkicons",
@@ -124,12 +124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
-                "reference": "4e0c7c23c6aa86a77659e095b8b14eaac732e6f5"
+                "reference": "c8f47d45971d6a2e3c58799ac7a6a7bdcfb0485d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/4e0c7c23c6aa86a77659e095b8b14eaac732e6f5",
-                "reference": "4e0c7c23c6aa86a77659e095b8b14eaac732e6f5",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/c8f47d45971d6a2e3c58799ac7a6a7bdcfb0485d",
+                "reference": "c8f47d45971d6a2e3c58799ac7a6a7bdcfb0485d",
                 "shasum": ""
             },
             "type": "library",
@@ -161,7 +161,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-04-25 23:30:17"
+            "time": "2015-05-10 11:47:21"
         },
         {
             "name": "websharks/wp-php-rv",
@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/wp-php-rv.git",
-                "reference": "3ba4182fe50a07602c5133f697ec2310d88138ce"
+                "reference": "f9959e60e58e1f921141163730d3189f13ac3663"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/3ba4182fe50a07602c5133f697ec2310d88138ce",
-                "reference": "3ba4182fe50a07602c5133f697ec2310d88138ce",
+                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/f9959e60e58e1f921141163730d3189f13ac3663",
+                "reference": "f9959e60e58e1f921141163730d3189f13ac3663",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-05-04 04:30:58"
+            "time": "2015-05-10 11:47:34"
         }
     ],
     "packages-dev": [],
