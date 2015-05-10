@@ -109,13 +109,13 @@
     </if>
     <if>
       <and>
-        <available resource="${_src_dir}" type="dir" />
+        <available resource="${project.basedir}" type="dir" />
       </and>
       <then>
-        <echo msg="Replacing tokens in: ${_src_dir} ..." />
+        <echo msg="Replacing tokens in: ${project.basedir} ..." />
         <reflexive>
-          <fileset dir="${_src_dir}">
-            <exclude pattern="vendor/**" />
+          <fileset dir="${project.basedir}">
+            <exclude pattern="src/vendor/**" />
             <include pattern="*.php" />
             <include pattern="**/*.php" />
             <include pattern="*.js" />
@@ -252,26 +252,18 @@
         <echo msg="Creating PHAR file..." />
         <pharpackage basedir="${project.basedir}" stub="${_phar_stub}" destfile="${_phar_file}">
           <fileset dir="${_src_dir}">
-            <exclude name=".git**" />
             <exclude name="**/.git**" />
-            <exclude name="build.xml" />
             <exclude name="**/build.xml" />
-            <exclude name="composer.json" />
-            <exclude name="**/composer.json" />
-            <exclude name="composer.lock" />
-            <exclude name="**/composer.lock" />
-            <exclude name="LICENSE.txt" />
+            <exclude name="**/composer.*" />
             <exclude name="**/LICENSE.txt" />
-            <exclude name="README.md" />
             <exclude name="**/README.md" />
-            <exclude name="CHANGELOG.md" />
+            <exclude name="**/readme.txt" />
             <exclude name="**/CHANGELOG.md" />
-            <exclude name=".htaccess" />
-            <exclude name="**/.htaccess" />
-            <exclude name="phar-stub.php" />
-            <exclude name="**/phar-stub.php" />
             <exclude name="vendor/bin/**" />
             <exclude name="**/vendor/bin/**" />
+            <exclude name="**/phar-stub.php" />
+            <exclude name=".htaccess" />
+            <exclude name="**/.htaccess" />
             <exclude name=".~**" />
             <exclude name="**/.~**" />
           </fileset>

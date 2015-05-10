@@ -25,7 +25,7 @@ if (!defined(__NAMESPACE__.'\\GLOBAL_NS')) {
     define(__NAMESPACE__.'\\GLOBAL_NS', 'zencache');
 }
 if (!defined(__NAMESPACE__.'\\VERSION')) {
-    ${__FILE__}['version'] = '150509'; //version//
+    ${__FILE__}['version'] = '150510'; //version//
     define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
 }
 if (!isset($GLOBALS[GLOBAL_NS])) {
