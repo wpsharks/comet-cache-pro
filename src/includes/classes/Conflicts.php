@@ -36,7 +36,7 @@ class Conflicts
 
         $conflicting_plugin_slugs = array(
             'quick-cache', 'quick-cache-pro',
-            str_replace('_', '-', GLOBAL_NS).($is_pro ? '' : '-pro'),
+            str_replace('_', '-', SLUG_TD).($is_pro ? '' : '-pro'),
             'wp-super-cache', 'w3-total-cache', 'hyper-cache', 'wp-rocket',
         );
         $active_plugins           = (array) get_option('active_plugins', array());
@@ -80,28 +80,24 @@ class Conflicts
         }
         add_action('all_admin_notices', function () {
             $construct_name          = function ($slug_or_ns) {
-                $slug_or_ns = trim(strtolower((string) $slug_or_ns));
-
-                if (preg_match('/^'.preg_quote(GLOBAL_NS, '/').'[_\-]pro$/', $slug_or_ns)) {
-                    $slug_or_ns = strtolower(GLOBAL_NS); // Strip `-pro` suffix.
-                }
-                $name = preg_replace('/[^a-z0-9]/', ' ', $slug_or_ns);
+                $name = trim(strtolower((string) $slug_or_ns));
+                $name = preg_replace('/[_\-]+(?:lite|pro)$/', '', $name);
+                $name = preg_replace('/[^a-z0-9]/', ' ', $name);
                 $name = str_replace('cache', 'Cache', ucwords($name));
 
-                return $name; // e.g. `x-cache` becomes `X Cache`.
+                return $name; // e.g., `x-cache` becomes `X Cache`.
             };
-            $plugin_name             = $construct_name(GLOBAL_NS);
-            $text_domain             = str_replace('_', '-', GLOBAL_NS);
+            $this_plugin_name = NAME; // This plugin name.
             $conflicting_plugin_name = $construct_name($GLOBALS[GLOBAL_NS.'_conflicting_plugin']);
 
-            if (strcasecmp($conflicting_plugin_name, $plugin_name) === 0) {
-                $conflicting_plugin_name = $plugin_name.' '.__('Lite', $text_domain);
-                $plugin_name             = $plugin_name.' '.__('Pro', $text_domain);
+            if (strcasecmp($this_plugin_name, $conflicting_plugin_name) === 0) {
+                $this_plugin_name = $this_plugin_name.' '.__('Pro', SLUG_TD);
+                $conflicting_plugin_name = $this_plugin_name.' '.__('Lite', SLUG_TD);
                 $GLOBALS[GLOBAL_NS.'_conflicting_plugin_lite_pro'] = true;
             }
             echo '<div class="error">'.
                  '   <p>'.// Running one or more conflicting plugins at the same time.
-                 '      '.sprintf(__('<strong>%1$s</strong> is NOT running. A conflicting plugin, <strong>%2$s</strong>, is currently active. Please deactivate the %2$s plugin to clear this message.', $text_domain), esc_html($plugin_name), esc_html($conflicting_plugin_name)).
+                 '      '.sprintf(__('<strong>%1$s</strong> is NOT running. A conflicting plugin, <strong>%2$s</strong>, is currently active. Please deactivate the %2$s plugin to clear this message.', SLUG_TD), esc_html($this_plugin_name), esc_html($conflicting_plugin_name)).
                  '   </p>'.
                  '</div>';
         });

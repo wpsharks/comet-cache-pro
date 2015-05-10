@@ -22,7 +22,7 @@ $self->cacheLock = function () use ($self) {
         return false; // Disabled cache locking.
     }
     if (!($wp_config_file = $self->findWpConfigFile())) {
-        throw new \Exception(__('Unable to find the wp-config.php file.', $self->text_domain));
+        throw new \Exception(__('Unable to find the wp-config.php file.', SLUG_TD));
     }
     $lock_type = 'flock'; // Default lock type.
     $lock_type = $self->applyWpFilters(GLOBAL_NS.'\\share::cache_lock_lock_type', $lock_type);
@@ -39,13 +39,13 @@ $self->cacheLock = function () use ($self) {
         }
     }
     if (!($tmp_dir = $self->getTmpDir())) {
-        throw new \Exception(__('No writable tmp directory.', $self->text_domain));
+        throw new \Exception(__('No writable tmp directory.', SLUG_TD));
     }
     $inode_key = fileinode($wp_config_file);
-    $mutex     = $tmp_dir.'/'.$self->slug.'-'.$inode_key.'.lock';
+    $mutex     = $tmp_dir.'/'.SLUG_TD.'-'.$inode_key.'.lock';
 
     if (!($resource = fopen($mutex, 'w')) || !flock($resource, LOCK_EX)) {
-        throw new \Exception(__('Unable to obtain an exclusive lock.', $self->text_domain));
+        throw new \Exception(__('Unable to obtain an exclusive lock.', SLUG_TD));
     }
     return array('type' => 'flock', 'resource' => $resource);
 };

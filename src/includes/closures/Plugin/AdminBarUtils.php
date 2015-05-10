@@ -25,10 +25,10 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
             array(
                 'parent' => 'top-secondary',
                 'id'     => GLOBAL_NS.'-wipe',
-                'title'  => __('Wipe', $self->text_domain),
+                'title'  => __('Wipe', SLUG_TD),
                 'href'   => '#',
                 'meta'   => array(
-                        'title'    => __('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', $self->text_domain),
+                        'title'    => __('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD),
                         'class'    => GLOBAL_NS,
                         'tabindex' => -1,
                 ),
@@ -39,11 +39,11 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
         array(
             'parent' => 'top-secondary',
             'id'     => GLOBAL_NS.'-clear',
-            'title'  => __('Clear Cache', $self->text_domain), 'href' => '#',
+            'title'  => __('Clear Cache', SLUG_TD), 'href' => '#',
             'meta'   => array(
                     'title' => is_multisite() && current_user_can($self->network_cap)
-                        ? __('Clear Cache (Start Fresh); affects the current site only.', $self->text_domain)
-                        : __('Clear Cache (Start Fresh)', $self->text_domain),
+                        ? __('Clear Cache (Start Fresh); affects the current site only.', SLUG_TD)
+                        : __('Clear Cache (Start Fresh)', SLUG_TD),
                     'class'    => GLOBAL_NS,
                     'tabindex' => -1,
             ),
@@ -96,7 +96,7 @@ $self->adminBarStyles = function () use ($self) {
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/client-s/css/admin-bar.min.css'), $deps, $self->version, 'all');
+    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -119,5 +119,5 @@ $self->adminBarScripts = function () use ($self) {
     }
     $deps = array('jquery'); // Plugin dependencies.
 
-    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/client-s/js/admin-bar.min.js'), $deps, $self->version, true);
+    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
 };

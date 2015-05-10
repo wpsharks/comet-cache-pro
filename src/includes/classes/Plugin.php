@@ -147,12 +147,12 @@ class Plugin extends AbsBaseAp
         }
         /* -------------------------------------------------------------- */
 
-        load_plugin_textdomain($this->text_domain);
+        load_plugin_textdomain(SLUG_TD); // Text domain.
 
         $this->default_options = array(
             /* Core/systematic plugin options. */
 
-            'version'                              => $this->version,
+            'version'                              => VERSION,
             'crons_setup'                          => '0', // `0` or timestamp.
 
             /* Primary switch; enable? */

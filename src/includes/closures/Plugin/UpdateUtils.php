@@ -25,19 +25,19 @@ $self->checkLatestProVersion = function () use ($self) {
     if (is_multisite()) {
         update_site_option(GLOBAL_NS.'_options', $self->options);
     }
-    $product_api_url        = 'https://'.urlencode($self->domain).'/';
+    $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
     $product_api_input_vars = array('product_api' => array('action' => 'latest_pro_version'));
 
     $product_api_response = wp_remote_post($product_api_url, array('body' => $product_api_input_vars));
     $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response), true);
 
-    if (!is_array($product_api_response) || empty($product_api_response['pro_version']) || version_compare($self->version, $product_api_response['pro_version'], '>=')) {
+    if (!is_array($product_api_response) || empty($product_api_response['pro_version']) || version_compare(VERSION, $product_api_response['pro_version'], '>=')) {
         return; // Current pro version is the latest stable version. Nothing more to do here.
     }
     $pro_updater_page = network_admin_url('/admin.php'); // Page that initiates an update.
     $pro_updater_page = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), $pro_updater_page);
 
-    $self->enqueueNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', $self->text_domain), esc_html($self->name), esc_attr($pro_updater_page), esc_html($product_api_response['pro_version'])), 'persistent-new-pro-version-available');
+    $self->enqueueNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($pro_updater_page), esc_html($product_api_response['pro_version'])), 'persistent-new-pro-version-available');
 };
 
 /*
@@ -113,7 +113,7 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
         $transient = new \stdClass();
     }
     $transient->last_checked                           = time();
-    $transient->checked[plugin_basename($self->file)]  = $self->version;
+    $transient->checked[plugin_basename($self->file)]  = VERSION;
     $transient->response[plugin_basename($self->file)] = (object) array(
         'id'          => 0,
         'slug'        => basename($self->file, '.php'),

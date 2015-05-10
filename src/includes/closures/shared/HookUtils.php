@@ -37,7 +37,7 @@ $self->hookId = function ($function) use ($self) {
             return $function[0].'::'.$function[1];
         }
     }
-    throw new \Exception(__('Invalid hook.', $self->text_domain));
+    throw new \Exception(__('Invalid hook.', SLUG_TD));
 };
 
 /*

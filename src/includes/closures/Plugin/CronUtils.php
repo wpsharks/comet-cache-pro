@@ -15,7 +15,7 @@ namespace WebSharks\ZenCache\Pro;
 $self->extendCronSchedules = function ($schedules) use ($self) {
     $schedules['every15m'] = array(
         'interval' => 900,
-        'display'  => __('Every 15 Minutes', $self->text_domain),
+        'display'  => __('Every 15 Minutes', SLUG_TD),
     );
     return $schedules;
 };

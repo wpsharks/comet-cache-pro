@@ -12,7 +12,7 @@ namespace WebSharks\ZenCache\Pro;
  */
 $self->i18nFiles = function ($counter) use ($self) {
     $counter = (integer) $counter;
-    return sprintf(_n('%1$s file', '%1$s files', $counter, $self->text_domain), $counter);
+    return sprintf(_n('%1$s file', '%1$s files', $counter, SLUG_TD), $counter);
 };
 
 /*
@@ -26,7 +26,7 @@ $self->i18nFiles = function ($counter) use ($self) {
  */
 $self->i18nDirs = function ($counter) use ($self) {
     $counter = (integer) $counter;
-    return sprintf(_n('%1$s directory', '%1$s directories', $counter, $self->text_domain), $counter);
+    return sprintf(_n('%1$s directory', '%1$s directories', $counter, SLUG_TD), $counter);
 };
 
 /*
@@ -40,5 +40,5 @@ $self->i18nDirs = function ($counter) use ($self) {
  */
 $self->i18nFilesDirs = function ($counter) use ($self) {
     $counter = (integer) $counter;
-    return sprintf(_n('%1$s file/directory', '%1$s files/directories', $counter, $self->text_domain), $counter);
+    return sprintf(_n('%1$s file/directory', '%1$s files/directories', $counter, SLUG_TD), $counter);
 };

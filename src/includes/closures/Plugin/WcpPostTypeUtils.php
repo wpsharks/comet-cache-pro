@@ -48,7 +48,7 @@ $self->autoClearCustomPostTypeArchiveCache = function ($post_id) use ($self) {
         return $counter; // Unable to retrieve post type.
     }
     if (empty($custom_post_type->labels->name) || !($custom_post_type_name = $custom_post_type->labels->name)) {
-        $custom_post_type_name = __('Untitled', $self->text_domain);
+        $custom_post_type_name = __('Untitled', SLUG_TD);
     }
     if (!($custom_post_type_archive_link = get_post_type_archive_link($post_type))) {
         return $counter; // Nothing to do; no link to work from in this case.
@@ -58,7 +58,7 @@ $self->autoClearCustomPostTypeArchiveCache = function ($post_id) use ($self) {
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Custom Post Type: <code>%3$s</code>; auto-clearing.', $self->text_domain), esc_html($self->name), esc_html($self->i18nFiles($counter)), esc_html($custom_post_type_name)));
+                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Custom Post Type: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($custom_post_type_name)));
     }
     $counter += $self->autoClearXmlFeedsCache('custom-post-type', $post_id);
 

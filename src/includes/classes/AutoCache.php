@@ -139,7 +139,7 @@ class AutoCache extends AbsBase
                     array(
                         'blocking'   => false,
                         'user-agent' => $this->plugin->options['auto_cache_user_agent'].
-                            '; '.GLOBAL_NS.' '.$this->plugin->version,
+                            '; '.SLUG_TD.' '.VERSION,
                     )
                 )
             );
@@ -163,7 +163,7 @@ class AutoCache extends AbsBase
         $auto_cache_log_file = $cache_dir.'/zc-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
-            throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', $this->plugin->text_domain), $auto_cache_log_file));
+            throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
         }
         if (is_wp_error($wp_remote_get_response)) {
             $log_entry =
@@ -200,7 +200,7 @@ class AutoCache extends AbsBase
         $auto_cache_log_file = $cache_dir.'/zc-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
-            throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', $this->plugin->text_domain), $auto_cache_log_file));
+            throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
         }
         $log_entry =
             'Run Completed: '.date(DATE_RFC822)."\n".
@@ -241,19 +241,19 @@ class AutoCache extends AbsBase
             if ($___recursive) {
                 goto finale; // Fail silently on recursive calls.
             }
-            throw new \Exception(sprintf(__('Invalid XML sitemap. Unreachable URL: `%1$s`. %2$s', $this->plugin->text_domain), $sitemap, $head->get_error_message()));
+            throw new \Exception(sprintf(__('Invalid XML sitemap. Unreachable URL: `%1$s`. %2$s', SLUG_TD), $sitemap, $head->get_error_message()));
         }
         if (empty($head['response']['code']) || (integer) $head['response']['code'] >= 400) {
             if ($___recursive) {
                 goto finale; // Fail silently on recursive calls.
             }
-            throw new \Exception(sprintf(__('Invalid XML sitemap status code at: `%1$s`. Expecting a `200` status. Instead got: `%2$s`.', $this->plugin->text_domain), $sitemap, !empty($head['response']['code']) ? $head['response']['code'] : ''));
+            throw new \Exception(sprintf(__('Invalid XML sitemap status code at: `%1$s`. Expecting a `200` status. Instead got: `%2$s`.', SLUG_TD), $sitemap, !empty($head['response']['code']) ? $head['response']['code'] : ''));
         }
         if (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
             if ($___recursive) {
                 goto finale; // Fail silently on recursive calls.
             }
-            throw new \Exception(sprintf(__('Invalid XML sitemap content type at: `%1$s`. Expecting XML. Instead got: `%2$s`.', $this->plugin->text_domain), $sitemap, !empty($head['headers']['content-type']) ? $head['headers']['content-type'] : ''));
+            throw new \Exception(sprintf(__('Invalid XML sitemap content type at: `%1$s`. Expecting XML. Instead got: `%2$s`.', SLUG_TD), $sitemap, !empty($head['headers']['content-type']) ? $head['headers']['content-type'] : ''));
         }
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {

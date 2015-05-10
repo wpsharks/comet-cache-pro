@@ -31,10 +31,10 @@ $self->checkVersion = function () use ($self) {
     $prev_version    = $self->options['version'];
     $current_version = $self->options['version'];
 
-    if (version_compare($current_version, $self->version, '>=')) {
+    if (version_compare($current_version, VERSION, '>=')) {
         return; // Nothing to do; i.e., up-to-date.
     }
-    $current_version = $self->options['version'] = $self->version;
+    $current_version = $self->options['version'] = VERSION;
 
     update_option(GLOBAL_NS.'_options', $self->options);
     if (is_multisite()) {
@@ -49,7 +49,7 @@ $self->checkVersion = function () use ($self) {
     }
     $self->wipeCache(); // Always wipe the cache; unless disabled by site owner; @see disableAutoWipeCacheRoutines()
 
-    $self->enqueueNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', $self->text_domain), esc_html($self->name)), '', true);
+    $self->enqueueNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
 };
 
 /*
@@ -313,7 +313,7 @@ $self->addAdvancedCache = function () use ($self) {
                    && is_object($_response = json_decode(wp_remote_retrieve_body($_response))) && !empty($_response->errors) && strcasecmp($_response->errors, 'true') === 0
                 ) {
                     $_value = ''; // PHP syntax errors; empty this.
-                    $self->enqueueError(sprintf(__('<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', $self->text_domain), esc_html($self->name)));
+                    $self->enqueueError(sprintf(__('<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', SLUG_TD), esc_html(NAME)));
                 }
                 if (!$_value) {
                     $_value = "''"; // Use an empty string (default).

@@ -14,7 +14,7 @@ $self->enqueueAdminStyles = function () use ($self) {
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS, $self->url('/client-s/css/menu-pages.min.css'), $deps, $self->version, 'all');
+    wp_enqueue_style(GLOBAL_NS, $self->url('/client-s/css/menu-pages.min.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -30,7 +30,7 @@ $self->enqueueAdminScripts = function () use ($self) {
     }
     $deps = array('jquery'); // Plugin dependencies.
 
-    wp_enqueue_script(GLOBAL_NS, $self->url('/client-s/js/menu-pages.min.js'), $deps, $self->version, true);
+    wp_enqueue_script(GLOBAL_NS, $self->url('/client-s/js/menu-pages.min.js'), $deps, VERSION, true);
 };
 
 /*
@@ -47,10 +47,10 @@ $self->addNetworkMenuPages = function () use ($self) {
     $icon = file_get_contents(dirname(dirname(dirname(__FILE__))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
-    add_menu_page($self->name, $self->name, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
-    add_submenu_page(GLOBAL_NS, __('Plugin Options', $self->text_domain), __('Plugin Options', $self->text_domain), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
+    add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
+    add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
     if (current_user_can($self->network_cap)) {
-        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', $self->text_domain), __('Plugin Updater', $self->text_domain), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
     }
 };
 
@@ -68,9 +68,9 @@ $self->addMenuPages = function () use ($self) {
     $icon = file_get_contents(dirname(dirname(dirname(__FILE__))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
-    add_menu_page($self->name, $self->name, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
-    add_submenu_page(GLOBAL_NS, __('Plugin Options', $self->text_domain), __('Plugin Options', $self->text_domain), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
-    add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', $self->text_domain), __('Plugin Updater', $self->text_domain), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+    add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
+    add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
+    add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
 };
 
 /*
@@ -85,7 +85,7 @@ $self->addMenuPages = function () use ($self) {
  * @return array Revised array of links.
  */
 $self->addSettingsLink = function ($links) use ($self) {
-    $links[] = '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">'.__('Settings', $self->text_domain).'</a>';
+    $links[] = '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">'.__('Settings', SLUG_TD).'</a>';
     return $links;
 };
 

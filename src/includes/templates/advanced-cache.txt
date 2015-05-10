@@ -23,8 +23,8 @@ require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/stub.php';
 require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/constants/nc-debug.php';
 require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php';
 
-AdvancedCacheBackCompat::quickCacheConstants();
-AdvancedCacheBackCompat::qcRequestVars();
+AdvCacheBackCompat::quickCacheConstants();
+AdvCacheBackCompat::qcRequestVars();
 
 if (!defined('ZENCACHE_PRO')) {
     /*

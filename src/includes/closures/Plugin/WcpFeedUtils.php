@@ -124,7 +124,7 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache, for XML feeds of type: <code>%3$s</code>; auto-clearing.', $self->text_domain), esc_html($self->name), esc_html($self->i18nFiles($counter)), esc_html($type)));
+                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache, for XML feeds of type: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($type)));
     }
     return $counter;
 };

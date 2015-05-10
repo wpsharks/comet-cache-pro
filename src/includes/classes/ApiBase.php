@@ -29,7 +29,7 @@ class ApiBase
      */
     public static function version()
     {
-        return $GLOBALS[GLOBAL_NS]->version;
+        return VERSION; // Via constant.
     }
 
     /**

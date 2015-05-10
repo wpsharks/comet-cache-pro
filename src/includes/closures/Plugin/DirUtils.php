@@ -18,7 +18,7 @@ $self->wpContentBaseDirTo = function ($rel_dir_file) use ($self) {
     $rel_dir_file = trim((string) $rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
     if (empty($self->options['base_dir'])) {
-        throw new \Exception(__('Missing `base_dir` option value.', $self->text_domain));
+        throw new \Exception(__('Missing `base_dir` option value.', SLUG_TD));
     }
     $wp_content_base_dir_to = WP_CONTENT_DIR.'/'.$self->options['base_dir'];
 
@@ -45,7 +45,7 @@ $self->baseBathTo = function ($rel_dir_file) use ($self) {
     $rel_dir_file = trim((string) $rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
     if (empty($self->options['base_dir'])) {
-        throw new \Exception(__('Missing `base_dir` option value.', $self->text_domain));
+        throw new \Exception(__('Missing `base_dir` option value.', SLUG_TD));
     }
     $base_path_to = $self->options['base_dir'];
 

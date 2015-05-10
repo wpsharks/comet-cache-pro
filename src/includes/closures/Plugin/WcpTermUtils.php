@@ -133,7 +133,7 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
 
         if ($_term_counter && $enqueued_notices < 100 && is_admin() && $self->options['change_notifications_enable']) {
             $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                                  sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s: <code>%4$s</code>; auto-clearing.', $self->text_domain), esc_html($self->name), esc_html($self->i18nFiles($_term_counter)), esc_html($_term['taxonomy_label']), esc_html($_term['term_name'])));
+                                  sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($_term_counter)), esc_html($_term['taxonomy_label']), esc_html($_term['term_name'])));
             $enqueued_notices++; // Increment enqueued notices counter.
         }
     }

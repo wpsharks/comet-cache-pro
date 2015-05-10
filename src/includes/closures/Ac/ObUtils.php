@@ -163,7 +163,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
             $total_time = number_format(microtime(true) - $self->timer, 5, '.', '');
             $cache .= "\n".'<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->';
             // translators: This string is actually NOT translatable because the `__()` function is not available at this point in the processing.
-            $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s fully functional :-) Cache file served for (%2$s) in %3$s seconds, on: %4$s.', $self->text_domain), $self->name, $self->salt_location, $total_time, date('M jS, Y @ g:i a T'))).' -->';
+            $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s fully functional :-) Cache file served for (%2$s) in %3$s seconds, on: %4$s.', SLUG_TD), NAME, $self->salt_location, $total_time, date('M jS, Y @ g:i a T'))).' -->';
         }
         exit($cache); // Exit with cache contents.
     } else {
@@ -192,9 +192,9 @@ $self->maybeStartOutputBuffering = function () use ($self) {
  */
 $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     if (!($phase & PHP_OUTPUT_HANDLER_END)) {
-        throw new \Exception(sprintf(__('Unexpected OB phase: `%1$s`.', $self->text_domain), $phase));
+        throw new \Exception(sprintf(__('Unexpected OB phase: `%1$s`.', SLUG_TD), $phase));
     }
-    AdvancedCacheBackCompat::quickCacheConstants();
+    AdvCacheBackCompat::quickCacheConstants();
 
     $cache = trim((string) $buffer);
 
@@ -266,13 +266,13 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
         $cache_file_dir_writable = mkdir($cache_file_dir, 0775, true);
     }
     if (empty($cache_file_dir_writable) && !is_writable($cache_file_dir)) {
-        throw new \Exception(sprintf(__('Cache directory not writable. %1$s needs this directory please: `%2$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', $self->text_domain), $self->name, $cache_file_dir));
+        throw new \Exception(sprintf(__('Cache directory not writable. %1$s needs this directory please: `%2$s`. Set permissions to `755` or higher; `777` might be needed in some cases.', SLUG_TD), NAME, $cache_file_dir));
     }
     # This is where a new 404 request might be detected for the first time.
 
     if ($self->is_404 && is_file($self->cache_file_404)) {
         if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
-            throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', $self->text_domain), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
+            throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
         }
         $self->cacheUnlock($cache_lock); // Unlock cache directory.
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_1ST_TIME_404_SYMLINK);
@@ -283,14 +283,14 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
 
     if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
         $total_time = number_format(microtime(true) - $self->timer, 5, '.', ''); // Based on the original timer.
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file path: %2$s', $self->text_domain), $self->name, str_replace(WP_CONTENT_DIR, '', $self->is_404 ? $self->cache_file_404 : $self->cache_file))).' -->';
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', $self->text_domain), $self->name, $self->is_404 ? '404 [error document]' : $self->salt_location, ($self->user_token ? '; '.sprintf(__('user token: %1$s', $self->text_domain), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', $self->text_domain), $self->name, date('M jS, Y @ g:i a T', strtotime('+'.ZENCACHE_MAX_AGE)))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file path: %2$s', SLUG_TD), NAME, str_replace(WP_CONTENT_DIR, '', $self->is_404 ? $self->cache_file_404 : $self->cache_file))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, ($self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', SLUG_TD), NAME, date('M jS, Y @ g:i a T', strtotime('+'.ZENCACHE_MAX_AGE)))).' -->';
     }
     if ($self->is_404) {
         if (file_put_contents($cache_file_tmp, serialize($self->cacheableHeadersList()).'<!--headers-->'.$cache) && rename($cache_file_tmp, $self->cache_file_404)) {
             if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
-                throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', $self->text_domain), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
+                throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
             }
             $self->cacheUnlock($cache_lock); // Unlock cache directory.
             return $cache; // Return the newly built cache; with possible debug information also.
@@ -301,5 +301,5 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     }
     @unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
 
-    throw new \Exception(sprintf(__('%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`.', $self->text_domain), $self->name, $_SERVER['REQUEST_URI'], ZENCACHE_DIR));
+    throw new \Exception(sprintf(__('%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), NAME, $_SERVER['REQUEST_URI'], ZENCACHE_DIR));
 };

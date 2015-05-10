@@ -89,10 +89,10 @@ class Actions extends AbsBase
             eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
             $eval_output = ob_get_clean();
         }
-        $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', $this->plugin->text_domain), esc_html($this->plugin->name), esc_html($counter));
-        $response .= __('<p>Cache wiped for all sites; recreation will occur automatically over time.</p>', $this->plugin->text_domain);
+        $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
+        $response .= __('<p>Cache wiped for all sites; recreation will occur automatically over time.</p>', SLUG_TD);
         if (isset($s2clean_counter)) {
-            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', $this->plugin->text_domain), $s2clean_counter);
+            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
         if (!empty($eval_output)) {
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
@@ -161,10 +161,10 @@ class Actions extends AbsBase
             eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
             $eval_output = ob_get_clean();
         }
-        $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', $this->plugin->text_domain), esc_html($this->plugin->name), esc_html($counter));
-        $response .= __('<p>Cache cleared for this site; recreation will occur automatically over time.</p>', $this->plugin->text_domain);
+        $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
+        $response .= __('<p>Cache cleared for this site; recreation will occur automatically over time.</p>', SLUG_TD);
         if (isset($s2clean_counter)) {
-            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', $this->plugin->text_domain), $s2clean_counter);
+            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
         if (!empty($eval_output)) {
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
@@ -343,7 +343,7 @@ class Actions extends AbsBase
         if (empty($args['password'])) {
             $args['password'] = $this->plugin->options['pro_update_password'];
         }
-        $product_api_url        = 'https://'.urlencode($this->plugin->domain).'/';
+        $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
         $product_api_input_vars = array(
             'product_api' => array(
                 'action'   => 'latest_pro_update',
@@ -360,7 +360,7 @@ class Actions extends AbsBase
             if (!empty($product_api_response['error'])) {
                 $error = (string) $product_api_response['error'];
             } else {
-                $error = __('Unknown error. Please wait 15 minutes and try again.', $this->plugin->text_domain);
+                $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
             }
             $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
             $query_args  = array('page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'__error' => $error);

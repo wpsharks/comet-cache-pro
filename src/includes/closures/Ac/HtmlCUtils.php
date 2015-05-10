@@ -29,7 +29,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     $cache_dir_private    = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.$host_dir_token;
     $cache_dir_url_public = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
     $benchmark            = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
-    $product_title        = sprintf(__('%1$s HTML Compressor', $self->text_domain), $self->name);
+    $product_title        = sprintf(__('%1$s HTML Compressor', SLUG_TD), NAME);
 
     $html_compressor_options = array(
         'benchmark'                      => $benchmark,

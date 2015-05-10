@@ -21,7 +21,7 @@ $self->cacheDir = function ($rel_path = '') use ($self) {
         $cache_dir = \ZENCACHE_DIR;
     }
     if (empty($cache_dir)) {
-        throw new \Exception(__('Unable to determine cache directory location.', $self->text_domain));
+        throw new \Exception(__('Unable to determine cache directory location.', SLUG_TD));
     }
     return $cache_dir.($rel_path ? '/'.ltrim($rel_path) : '');
 };
@@ -123,7 +123,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
     $cache_dir = $self->nDirSeps($cache_dir);
 
     if ($check_max_age && $self instanceof AdvancedCache) {
-        throw new \Exception(__('Requires an instance of Plugin.', $self->text_domain));
+        throw new \Exception(__('Requires an instance of Plugin.', SLUG_TD));
     }
     if ($check_max_age && !($max_age = strtotime('-'.$self->options['cache_max_age']))) {
         return $counter; // Invalid cache expiration time.
@@ -150,7 +150,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
     // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
     if (!rename($cache_dir, $cache_dir_tmp)) {
-        throw new \Exception(sprintf(__('Unable to delete files. Rename failure on directory: `%1$s`.', $self->text_domain), $cache_dir));
+        throw new \Exception(sprintf(__('Unable to delete files. Rename failure on directory: `%1$s`.', SLUG_TD), $cache_dir));
     }
     /** @type $_resource \RecursiveDirectoryIterator Regex iterator reference for IDEs. */
     foreach (($_dir_regex_iteration = $self->dirRegexIteration($cache_dir_tmp, $cache_dir_tmp_regex)) as $_resource) {
@@ -174,7 +174,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                     }
                 }
                 if (!unlink($_path_name)) {
-                    throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', $self->text_domain), $_path_name));
+                    throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 $counter++; // Increment counter for each link we delete.
 
@@ -187,7 +187,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                         break; // Break switch.
                     }
                     if (!unlink($_path_name)) {
-                        throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', $self->text_domain), $_path_name));
+                        throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                     }
                     $counter++; // Increment counter for each file we delete.
                 }
@@ -202,20 +202,20 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                     break; // Break; not deleting everything.
                 }
                 if (!rmdir($_path_name)) {
-                    throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', $self->text_domain), $_path_name));
+                    throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 # $counter++; // Increment counter for each directory we delete. ~ NO don't do that here.
 
                 break; // Break switch handler.
 
             default: // Something else that is totally unexpected here.
-                throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', $self->text_domain), $_resource_type));
+                throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
         }
     }
     unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name, $_lstat); // Housekeeping.
 
     if (!rename($cache_dir_tmp, $cache_dir)) {
-        throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', $self->text_domain), $cache_dir_tmp));
+        throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $cache_dir_tmp));
     }
     /* ------- End lock state... ------------- */
 
@@ -271,7 +271,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
     $cache_dir            = $self->nDirSeps($cache_dir);
 
     if ($check_max_age && $self instanceof AdvancedCache) {
-        throw new \Exception(__('Requires an instance of Plugin.', $self->text_domain));
+        throw new \Exception(__('Requires an instance of Plugin.', SLUG_TD));
     }
     if ($check_max_age && !($max_age = strtotime('-'.$self->options['cache_max_age']))) {
         return $counter; // Invalid cache expiration time.
@@ -316,7 +316,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
         // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
         if (!rename($_host_cache_dir, $_host_cache_dir_tmp)) {
-            throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', $self->text_domain), $_host_cache_dir));
+            throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $_host_cache_dir));
         }
         /* @var $_file_dir \RecursiveDirectoryIterator Regex iterator reference for IDEs. */
         foreach (($_dir_regex_iteration = $self->dirRegexIteration($_host_cache_dir_tmp, $_host_cache_dir_tmp_regex)) as $_resource) {
@@ -340,7 +340,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
                         }
                     }
                     if (!unlink($_path_name)) {
-                        throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', $self->text_domain), $_path_name));
+                        throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                     }
                     $counter++; // Increment counter for each link we delete.
 
@@ -353,7 +353,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
                             break; // Break switch handler.
                         }
                         if (!unlink($_path_name)) {
-                            throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', $self->text_domain), $_path_name));
+                            throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                         }
                         $counter++; // Increment counter for each file we delete.
                     }
@@ -368,20 +368,20 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
                         break; // Break; not deleting everything.
                     }
                     if (!rmdir($_path_name)) {
-                        throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', $self->text_domain), $_path_name));
+                        throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                     }
                     # $counter++; // Increment counter for each directory we delete. ~ NO don't do that here.
 
                     break; // Break switch handler.
 
                 default: // Something else that is totally unexpected here.
-                    throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', $self->text_domain), $_resource_type));
+                    throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
             }
         }
         unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name, $_lstat); // Housekeeping.
 
         if (!rename($_host_cache_dir_tmp, $_host_cache_dir)) {
-            throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', $self->text_domain), $_host_cache_dir_tmp));
+            throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $_host_cache_dir_tmp));
         }
     }
     unset($_host_scheme, $_host_url, $_host_cache_path_flags, $_host_cache_path, $_host_cache_dir, $_host_cache_dir_tmp, $_host_cache_dir_tmp_regex);
@@ -435,7 +435,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
     clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
 
     if (!rename($dir, $dir_temp)) {
-        throw new \Exception(sprintf(__('Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`.', $self->text_domain), $dir));
+        throw new \Exception(sprintf(__('Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $dir));
     }
     /* @var $_file_dir \RecursiveDirectoryIterator Regex iterator reference for IDEs. */
     foreach (($_dir_regex_iteration = $self->dirRegexIteration($dir_temp, '/.+/')) as $_resource) {
@@ -448,7 +448,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
             case 'link': // Symbolic links; i.e., 404 errors.
 
                 if (!unlink($_path_name)) {
-                    throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', $self->text_domain), $_path_name));
+                    throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 $counter++; // Increment counter for each link we delete.
 
@@ -457,7 +457,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
             case 'file': // Regular files; i.e., not symlinks.
 
                 if (!unlink($_path_name)) {
-                    throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', $self->text_domain), $_path_name));
+                    throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 $counter++; // Increment counter for each file we delete.
 
@@ -466,24 +466,24 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
             case 'dir': // A regular directory; i.e., not a symlink.
 
                 if (!rmdir($_path_name)) {
-                    throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', $self->text_domain), $_path_name));
+                    throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 $counter++; // Increment counter for each directory we delete.
 
                 break; // Break switch handler.
 
             default: // Something else that is totally unexpected here.
-                throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', $self->text_domain), $_resource_type));
+                throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
         }
     }
     unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name); // Housekeeping.
 
     if (!rename($dir_temp, $dir)) {
-        throw new \Exception(sprintf(__('Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`.', $self->text_domain), $dir_temp));
+        throw new \Exception(sprintf(__('Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $dir_temp));
     }
     if ($delete_dir_too) {
         if (!rmdir($dir)) {
-            throw new \Exception(sprintf(__('Unable to delete directory: `%1$s`.', $self->text_domain), $dir));
+            throw new \Exception(sprintf(__('Unable to delete directory: `%1$s`.', SLUG_TD), $dir));
         }
         $counter++; // Increment counter for each directory we delete.
     }

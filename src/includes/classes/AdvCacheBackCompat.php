@@ -6,7 +6,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 150422 Rewrite.
  */
-class AdvancedCacheBackCompat
+class AdvCacheBackCompat
 {
     /**
      * Back compat. with `qcAC` and `qcABC`.

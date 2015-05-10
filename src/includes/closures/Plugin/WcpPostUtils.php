@@ -74,14 +74,14 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
     if (($type = get_post_type($post_id)) && ($type = get_post_type_object($type)) && !empty($type->labels->singular_name)) {
         $type_singular_name = $type->labels->singular_name; // Singular name for the post type.
     } else {
-        $type_singular_name = __('Post', $self->text_domain); // Default value.
+        $type_singular_name = __('Post', SLUG_TD); // Default value.
     }
     $regex = $self->buildHostCachePathRegex($permalink);
     $counter += $self->clearFilesFromHostCacheDir($regex);
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing.', $self->text_domain), esc_html($self->name), esc_html($self->i18nFiles($counter)), esc_html($type_singular_name), esc_html($post_id)));
+                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($type_singular_name), esc_html($post_id)));
     }
     $counter += $self->autoClearXmlFeedsCache('blog');
     $counter += $self->autoClearXmlFeedsCache('post-terms', $post_id);

@@ -9,7 +9,7 @@ namespace WebSharks\ZenCache\Pro;
 abstract class AbsBase
 {
     /**
-     * @type plugin Plugin reference.
+     * @type null|plugin Plugin reference.
      *
      * @since 150422 Rewrite.
      */
@@ -96,7 +96,7 @@ abstract class AbsBase
         if (property_exists($this->overload, $property)) {
             return $this->overload->{$property};
         }
-        throw new \Exception(sprintf(__('Undefined overload property: `%1$s`.', $this->plugin->text_domain), $property));
+        throw new \Exception(sprintf(__('Undefined overload property: `%1$s`.', SLUG_TD), $property));
     }
 
     /**
@@ -114,7 +114,7 @@ abstract class AbsBase
     {
         $property = (string) $property; // Force string.
 
-        throw new \Exception(sprintf(__('Refused to set overload property: `%1$s`.', $this->plugin->text_domain), $property));
+        throw new \Exception(sprintf(__('Refused to set overload property: `%1$s`.', SLUG_TD), $property));
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class AbsBase
     {
         $property = (string) $property; // Force string.
 
-        throw new \Exception(sprintf(__('Refused to unset overload property: `%1$s`.', $this->plugin->text_domain), $property));
+        throw new \Exception(sprintf(__('Refused to unset overload property: `%1$s`.', SLUG_TD), $property));
     }
 
     /*

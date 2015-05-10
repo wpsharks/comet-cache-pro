@@ -190,7 +190,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
         if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
             $total_time = number_format(microtime(true) - $self->timer, 5, '.', '');
             $cache .= "\n".'<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->';
-            $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s fully functional :-) Cache file served for (%2$s; user token: %3$s) in %4$s seconds, on: %5$s.', $self->text_domain), $self->name, $self->salt_location, $self->user_token, $total_time, date('M jS, Y @ g:i a T'))).' -->';
+            $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s fully functional :-) Cache file served for (%2$s; user token: %3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->salt_location, $self->user_token, $total_time, date('M jS, Y @ g:i a T'))).' -->';
         }
         exit($cache); // Exit with cache contents.
     } else {
