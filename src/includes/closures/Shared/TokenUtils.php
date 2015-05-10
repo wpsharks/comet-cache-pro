@@ -158,7 +158,7 @@ $self->hostBaseDirTokens = function ($dashify = false) use ($self) {
  * @warning Do NOT call upon this method until WordPress reaches it's cache postload phase.
  */
 $self->userToken = function () use ($self) {
-    if (!is_null($token = &$self->staticKey('userToken', $dashify))) {
+    if (!is_null($token = &$self->staticKey('userToken'))) {
         return $token; // Already cached this.
     }
     if ($self->functionIsPossible('wp_validate_auth_cookie')) {
