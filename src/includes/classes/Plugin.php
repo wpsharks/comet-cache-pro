@@ -126,8 +126,8 @@ class Plugin extends AbsBaseAp
         /* -------------------------------------------------------------- */
 
         add_action('after_setup_theme', array($this, 'setup'));
-        register_activation_hook($this->file, array($this, 'activate'));
-        register_deactivation_hook($this->file, array($this, 'deactivate'));
+        register_activation_hook(PLUGIN_FILE, array($this, 'activate'));
+        register_deactivation_hook(PLUGIN_FILE, array($this, 'deactivate'));
     }
 
     /**
@@ -376,7 +376,7 @@ class Plugin extends AbsBaseAp
         add_filter('fs_ftp_connection_types', array($this, 'fsFtpConnectionTypes'));
         add_filter('pre_site_transient_update_plugins', array($this, 'preSiteTransientUpdatePlugins'));
 
-        add_filter('plugin_action_links_'.plugin_basename($this->file), array($this, 'addSettingsLink'));
+        add_filter('plugin_action_links_'.plugin_basename(PLUGIN_FILE), array($this, 'addSettingsLink'));
 
         if ($this->options['enable'] && $this->options['htmlc_enable']) {
             add_action('wp_print_footer_scripts', array($this, 'htmlCFooterScripts'), -PHP_INT_MAX);

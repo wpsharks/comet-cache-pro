@@ -100,7 +100,7 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
     if (!current_user_can($self->update_cap)) {
         return $transient; // Nothing to do here.
     }
-    if (empty($_r['_wpnonce']) || !wp_verify_nonce((string) $_r['_wpnonce'], 'upgrade-plugin_'.plugin_basename($self->file))) {
+    if (empty($_r['_wpnonce']) || !wp_verify_nonce((string) $_r['_wpnonce'], 'upgrade-plugin_'.plugin_basename(PLUGIN_FILE))) {
         return $transient; // Nothing to do here.
     }
     if (empty($_r[GLOBAL_NS.'__update_pro_version']) || !($update_pro_version = (string) $_r[GLOBAL_NS.'__update_pro_version'])) {
@@ -113,10 +113,10 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
         $transient = new \stdClass();
     }
     $transient->last_checked                           = time();
-    $transient->checked[plugin_basename($self->file)]  = VERSION;
-    $transient->response[plugin_basename($self->file)] = (object) array(
+    $transient->checked[plugin_basename(PLUGIN_FILE)]  = VERSION;
+    $transient->response[plugin_basename(PLUGIN_FILE)] = (object) array(
         'id'          => 0,
-        'slug'        => basename($self->file, '.php'),
+        'slug'        => basename(PLUGIN_FILE, '.php'),
         'url'         => add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php')),
         'new_version' => $update_pro_version,
         'package'     => $update_pro_zip,

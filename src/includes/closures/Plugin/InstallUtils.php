@@ -338,10 +338,10 @@ $self->addAdvancedCache = function () use ($self) {
     }
     unset($_option, $_value, $_values, $_response); // Housekeeping.
 
-    if (strpos($self->file, WP_CONTENT_DIR) === 0) {
-        $plugin_file = "WP_CONTENT_DIR.'".$self->escSq(str_replace(WP_CONTENT_DIR, '', $self->file))."'";
+    if (strpos(PLUGIN_FILE, WP_CONTENT_DIR) === 0) {
+        $plugin_file = "WP_CONTENT_DIR.'".$self->escSq(str_replace(WP_CONTENT_DIR, '', PLUGIN_FILE))."'";
     } else {
-        $plugin_file = "'".$self->escSq($self->file)."'"; // Full absolute path.
+        $plugin_file = "'".$self->escSq(PLUGIN_FILE)."'"; // Full absolute path.
     }
     // Make it possible for the `advanced-cache.php` handler to find the plugin directory reliably.
     $advanced_cache_contents = str_ireplace("'%%".GLOBAL_NS."_PLUGIN_FILE%%'", $plugin_file, $advanced_cache_contents);

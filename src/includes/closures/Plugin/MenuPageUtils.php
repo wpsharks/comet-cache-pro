@@ -78,7 +78,7 @@ $self->addMenuPages = function () use ($self) {
  *
  * @since 150422 Rewrite.
  *
- * @attaches-to `plugin_action_links_'.plugin_basename($self->file)` filter.
+ * @attaches-to `plugin_action_links_'.plugin_basename(PLUGIN_FILE)` filter.
  *
  * @param array $links An array of the existing links provided by WordPress.
  *

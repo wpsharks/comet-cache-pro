@@ -31,6 +31,10 @@ if (!defined(__NAMESPACE__.'\\VERSION')) {
     ${__FILE__}['version'] = '150510'; //version//
     define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
 }
+if (!defined(__NAMESPACE__.'\\PLUGIN_FILE')) {
+    ${__FILE__}['plugin'] = dirname(dirname(dirname(__FILE__))).'/plugin.php';
+    define(__NAMESPACE__.'\\PLUGIN_FILE', ${__FILE__}['plugin']);
+}
 if (!defined(__NAMESPACE__.'\\IS_PRO')) {
     ${__FILE__}['ns_path'] = str_replace('\\', '/', __NAMESPACE__);
     ${__FILE__}['is_pro']  = strtolower(basename(${__FILE__}['ns_path'])) === 'pro';

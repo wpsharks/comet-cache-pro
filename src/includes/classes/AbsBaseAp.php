@@ -9,15 +9,6 @@ namespace WebSharks\ZenCache\Pro;
 abstract class AbsBaseAp extends AbsBase
 {
     /**
-     * Plugin file path.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @type string Plugin file path.
-     */
-    public $file;
-
-    /**
      * Class constructor.
      *
      * @since 150422 Rewrite.
@@ -26,7 +17,6 @@ abstract class AbsBaseAp extends AbsBase
     {
         parent::__construct();
 
-        $this->file   = dirname(dirname(dirname(dirname(__FILE__)))).'/plugin.php';
         $closures_dir = dirname(dirname(__FILE__)).'/closures/Shared';
         $self         = $this; // Reference for closures.
 

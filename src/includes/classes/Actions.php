@@ -408,8 +408,8 @@ class Actions extends AbsBase
         $redirect_to = self_admin_url('/update.php');
         $query_args  = array(
             'action'                         => 'upgrade-plugin',
-            'plugin'                         => plugin_basename($this->plugin->file),
-            '_wpnonce'                       => wp_create_nonce('upgrade-plugin_'.plugin_basename($this->plugin->file)),
+            'plugin'                         => plugin_basename(PLUGIN_FILE),
+            '_wpnonce'                       => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
             GLOBAL_NS.'__update_pro_version' => $product_api_response['pro_version'],
             GLOBAL_NS.'__update_pro_zip'     => base64_encode($product_api_response['pro_zip']),
         );
