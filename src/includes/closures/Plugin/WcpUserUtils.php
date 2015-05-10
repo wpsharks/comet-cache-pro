@@ -38,7 +38,7 @@ $self->autoClearUserCache = function ($user_id) use ($self) {
     $counter += $self->clearFilesFromCacheDir($regex); // Clear matching files.
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
-        $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for user ID: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($user_id)));
     }
     return $counter;

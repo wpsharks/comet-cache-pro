@@ -80,7 +80,7 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
     $counter += $self->clearFilesFromHostCacheDir($regex);
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
-        $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($type_singular_name), esc_html($post_id)));
     }
     $counter += $self->autoClearXmlFeedsCache('blog');

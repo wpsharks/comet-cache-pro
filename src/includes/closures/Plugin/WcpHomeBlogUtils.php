@@ -34,7 +34,7 @@ $self->autoClearHomePageCache = function () use ($self) {
     $counter += $self->clearFilesFromHostCacheDir($regex);
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
-        $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for the designated "Home Page"; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter))));
     }
     $counter += $self->autoClearXmlFeedsCache('blog');
@@ -92,7 +92,7 @@ $self->autoClearPostsPageCache = function () use ($self) {
     $counter += $self->clearFilesFromHostCacheDir($regex);
 
     if ($counter && is_admin() && $self->options['change_notifications_enable']) {
-        $self->enqueueNotice('<img src="'.esc_attr($self->url('/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for the designated "Posts Page"; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter))));
     }
     $counter += $self->autoClearXmlFeedsCache('blog');

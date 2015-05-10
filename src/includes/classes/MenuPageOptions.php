@@ -27,11 +27,11 @@ class MenuPageOptions extends MenuPage
         if (is_multisite()) {
             echo '<button type="button" class="plugin-menu-page-wipe-cache" style="float:right; margin-left:15px;" title="'.esc_attr(__('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD)).'"'.
                  '  data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('wipe_cache' => '1'))), self_admin_url('/admin.php'))).'">'.
-                 '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/client-s/images/wipe.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+                 '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px;" /></button>'."\n";
         }
         echo '   <button type="button" class="plugin-menu-page-clear-cache" style="float:right;" title="'.esc_attr(__('Clear Cache (Start Fresh)', SLUG_TD).((is_multisite()) ? __('; affects the current site only.', SLUG_TD) : '')).'"'.
              '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('clear_cache' => '1'))), self_admin_url('/admin.php'))).'">'.
-             '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+             '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
 
         echo '   <button type="button" class="plugin-menu-page-restore-defaults"'.// Restores default options.
              '      data-confirmation="'.esc_attr(__('Restore default plugin options? You will lose all of your current settings! Are you absolutely sure about this?', SLUG_TD)).'"'.
@@ -51,7 +51,7 @@ class MenuPageOptions extends MenuPage
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-        echo '   <img src="'.$this->plugin->url('/client-s/images/options.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
+        echo '   <img src="'.$this->plugin->url('/src/client-s/images/options.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
         echo '</div>'."\n";
 
@@ -73,12 +73,12 @@ class MenuPageOptions extends MenuPage
         }
         if (!empty($_REQUEST[GLOBAL_NS.'__cache_wiped'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
-            echo '   <img src="'.esc_attr($this->plugin->url('/client-s/images/wipe.png')).'" /> '.__('Cache wiped across all sites; recreation will occur automatically over time.', SLUG_TD)."\n";
+            echo '   <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" /> '.__('Cache wiped across all sites; recreation will occur automatically over time.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'__cache_cleared'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
-            echo '   <img src="'.esc_attr($this->plugin->url('/client-s/images/clear.png')).'" /> '.__('Cache cleared for this site; recreation will occur automatically over time.', SLUG_TD)."\n";
+            echo '   <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" /> '.__('Cache cleared for this site; recreation will occur automatically over time.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'__wp_config_wp_cache_add_failure'])) {
@@ -130,12 +130,12 @@ class MenuPageOptions extends MenuPage
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body'.((!$this->plugin->options['enable']) ? ' open' : '').' clearfix">'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/tach.png')).'" style="float:right; width:100px; margin-left:1em;" />'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/tach.png')).'" style="float:right; width:100px; margin-left:1em;" />'."\n";
         echo '      <p style="float:right; font-size:120%; font-weight:bold;">'.sprintf(__('%1$s&trade; = SPEED<em>!!</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p><label class="switch-primary"><input type="radio" name="'.esc_attr(GLOBAL_NS).'[saveOptions][enable]" value="1"'.checked($this->plugin->options['enable'], '1', false).' /> '.sprintf(__('Yes, enable %1$s&trade;', SLUG_TD), esc_html(NAME)).' <i class="fa fa-magic fa-flip-horizontal"></i></label> &nbsp;&nbsp;&nbsp; <label><input type="radio" name="'.esc_attr(GLOBAL_NS).'[saveOptions][enable]" value="0"'.checked($this->plugin->options['enable'], '0', false).' /> '.__('No, disable.', SLUG_TD).'</label></p>'."\n";
         echo '      <p class="info" style="font-family:\'Georgia\', serif; font-size:110%; margin-top:1.5em;">'.sprintf(__('<strong>HUGE Time-Saver:</strong> Approx. 95%% of all WordPress sites running %1$s, simply enable it here; and that\'s it :-) <strong>No further configuration is necessary (really).</strong> All of the other options (down below) are already tuned for the BEST performance on a typical WordPress installation. Simply enable %1$s here and click "Save All Changes". If you get any warnings please follow the instructions given. Otherwise, you\'re good <i class="fa fa-smile-o"></i>. This plugin is designed to run just fine like it is. Take it for a spin right away; you can always fine-tune things later if you deem necessary.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <hr />'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/source-code-ss.png')).'" class="screenshot" />'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/source-code-ss.png')).'" class="screenshot" />'."\n";
         echo '      <h3>'.sprintf(__('How Can I Tell %1$s is Working?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
         echo '      <p>'.sprintf(__('First of all, please make sure that you\'ve enabled %1$s here; then scroll down to the bottom of this page and click "Save All Changes". All of the other options (below) are already pre-configured for typical usage. Feel free to skip them all for now. You can go back through all of these later and fine-tune things the way you like them.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p>'.sprintf(__('Once %1$s has been enabled, <strong>you\'ll need to log out (and/or clear browser cookies)</strong>. By default, cache files are NOT served to visitors who are logged-in, and that includes you too ;-) Cache files are NOT served to recent comment authors either. If you\'ve commented (or replied to a comment lately); please clear your browser cookies before testing.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -186,7 +186,7 @@ class MenuPageOptions extends MenuPage
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
         echo '      <h2 style="margin-top:0; font-weight:bold;">'.__('Clearing the Cache Manually', SLUG_TD).'</h2>'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/clear-cache-ss.png')).'" class="screenshot" />'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear-cache-ss.png')).'" class="screenshot" />'."\n";
         echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (see screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g. you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p>'.sprintf(__('Depending on the structure of your site, there could be many reasons to clear the cache. However, the most common reasons are related to Post/Page edits or deletions, Category/Tag edits or deletions, and Theme changes. %1$s handles most scenarios all by itself. However, many site owners like to clear the cache manually; for a variety of reasons (just to force a refresh).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][admin_bar_enable]" style="width:auto;">'."\n";
@@ -206,7 +206,7 @@ class MenuPageOptions extends MenuPage
         echo '      <p class="info" style="margin-top:0;">'.__('<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo \'&lt;p&gt;Also cleared APC cache.&lt;/p&gt;\'; ?&gt;</code>', SLUG_TD).'</p>'."\n";
         echo '      <hr />'."\n";
         echo '      <h2 style="font-weight:bold;">'.__('Clearing the Cache Automatically', SLUG_TD).'</h2>'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
         echo '      <p>'.sprintf(__('This is built into the %1$s plugin; e.g. this functionality is "always on". If you edit a Post/Page (or delete one), %1$s will automatically clear the cache file(s) associated with that content. This way a new updated version of the cache will be created automatically the next time this content is accessed. Simple updates like this occur each time you make changes in the Dashboard, and %1$s will notify you of these as they occur. %1$s monitors changes to Posts (of any kind, including Pages), Categories, Tags, Links, Themes (even Users); and more. Notifications in the Dashboard regarding these detections can be enabled/disabled below.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][change_notifications_enable]" style="width:auto;">'."\n";
         echo '            <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when changes are detected &amp; one or more cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
@@ -594,7 +594,7 @@ class MenuPageOptions extends MenuPage
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/gzip.png')).'" class="screenshot" />'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/gzip.png')).'" class="screenshot" />'."\n";
         echo '      <h3>'.__('<a href="https://developers.google.com/speed/articles/gzip" target="_blank">GZIP Compression</a> (Optional; Highly Recommended)', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.__('You don\'t have to use an <code>.htaccess</code> file to enjoy the performance enhancements provided by this plugin; caching is handled automatically by WordPress/PHP alone. That being said, if you want to take advantage of the additional speed enhancements associated w/ GZIP compression (and we do recommend this), then you WILL need an <code>.htaccess</code> file to accomplish that part.', SLUG_TD).'</p>'."\n";
         echo '      <p>'.sprintf(__('%1$s fully supports GZIP compression on its output. However, it does not handle GZIP compression directly. We purposely left GZIP compression out of this plugin, because GZIP compression is something that should really be enabled at the Apache level or inside your <code>php.ini</code> file. GZIP compression can be used for things like JavaScript and CSS files as well, so why bother turning it on for only WordPress-generated pages when you can enable GZIP at the server level and cover all the bases!', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -627,8 +627,8 @@ class MenuPageOptions extends MenuPage
         echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
         echo '         <h3>'.__('CDN Host Name (Absolutely Required)', SLUG_TD).'</h3>'."\n";
         echo '         <p class="info" style="display:block;">'.// This note includes two graphics. One for MaxCDN; another for CloudFront.
-             '            <a href="http://aws.amazon.com/cloudfront/" target="_blank"><img src="'.esc_attr($this->plugin->url('/client-s/images/cloudfront-logo.png')).'" style="width:75px; float:right; margin: 8px 10px 0 25px;" /></a>'.
-             '            <a href="https://www.maxcdn.com/websharks/" target="_blank"><img src="'.esc_attr($this->plugin->url('/client-s/images/maxcdn-logo.png')).'" style="width:125px; float:right; margin: 20px 0 0 25px;" /></a>'.
+             '            <a href="http://aws.amazon.com/cloudfront/" target="_blank"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/cloudfront-logo.png')).'" style="width:75px; float:right; margin: 8px 10px 0 25px;" /></a>'.
+             '            <a href="https://www.maxcdn.com/websharks/" target="_blank"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/maxcdn-logo.png')).'" style="width:125px; float:right; margin: 20px 0 0 25px;" /></a>'.
              '            '.__('This one field is really all that\'s necessary to get Static CDN Filters working! However, it does requires a little bit of work on your part. You need to setup and configure a CDN before you can fill in this field. One you configure a CDN, you\'ll receive a host name (provided by your CDN), which you\'ll enter here; e.g. <code>js9dgjsl4llqpp.cloudfront.net</code>. We recommend <a href="https://www.maxcdn.com/websharks/" target="_blank">MaxCDN</a> and/or <a href="http://aws.amazon.com/cloudfront/" target="_blank">Amazon CloudFront</a>, but this should work with many of the most popular CDNs. Please read <a href="http://zencache.com/r/static-cdn-filters-general-instructions/" target="_blank">this article</a> for a general set of instructions. We also have a <a href="http://zencache.com/r/static-cdn-filters-cloudfront/" target="_blank">CloudFront tutorial video</a> that walks you through the process.', SLUG_TD).'</option>'."\n";
         echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_host]" value="'.esc_attr($this->plugin->options['cdn_host']).'" /></p>'."\n";
         echo '         <h3>'.__('CDN Host Supports HTTPS Connections?', SLUG_TD).'</h3>'."\n";
@@ -674,7 +674,7 @@ class MenuPageOptions extends MenuPage
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/client-s/images/salt.png')).'" class="screenshot" />'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/salt.png')).'" class="screenshot" />'."\n";
         echo '      <h3>'.__('<i class="fa fa-flask"></i> <span style="display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;"><span style="font-weight:bold; font-size:80%;">GEEK ALERT</span></span> This is for VERY advanced users only...', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.sprintf(__('<em>Note: Understanding the %1$s <a href="http://zencache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p>'.__('A Version Salt gives you the ability to dynamically create multiple variations of the cache, and those dynamic variations will be served on subsequent visits; e.g. if a visitor has a specific cookie (of a certain value) they will see pages which were cached with that version (i.e. w/ that Version Salt: the value of the cookie). A Version Salt can really be anything.', SLUG_TD).'</p>'."\n";
