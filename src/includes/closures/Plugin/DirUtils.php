@@ -41,7 +41,7 @@ $self->wpContentBaseDirTo = function ($rel_dir_file) use ($self) {
  *
  * @return string The relative/base directory path to `$rel_dir_file`.
  */
-$self->baseBathTo = function ($rel_dir_file) use ($self) {
+$self->basePathTo = function ($rel_dir_file) use ($self) {
     $rel_dir_file = trim((string) $rel_dir_file, '\\/'." \t\n\r\0\x0B");
 
     if (empty($self->options['base_dir'])) {

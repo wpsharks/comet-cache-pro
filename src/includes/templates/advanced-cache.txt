@@ -19,7 +19,11 @@ if (!defined('ZENCACHE_PLUGIN_FILE')) {
      */
     define('ZENCACHE_PLUGIN_FILE', '%%ZENCACHE_PLUGIN_FILE%%');
 }
-require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/stub.php';
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/stub.php';
+} elseif ((@require_once(dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/stub.php')) === false) {
+    return; // Unable to find stub. Fail softly.
+}
 require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/constants/nc-debug.php';
 require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php';
 
@@ -34,7 +38,7 @@ if (!defined('ZENCACHE_PRO')) {
      *
      * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
      */
-    define('ZENCACHE_PRO', true);
+    define('ZENCACHE_PRO', IS_PRO);
 }
 if (!defined('ZENCACHE_ENABLE')) {
     /*

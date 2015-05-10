@@ -216,7 +216,7 @@ $self->checkAdvancedCache = function () use ($self) {
     if (!empty($_REQUEST[GLOBAL_NS])) {
         return; // Skip on plugin actions.
     }
-    $cache_dir           = $self->cacheCir();
+    $cache_dir           = $self->cacheDir();
     $advanced_cache_file = WP_CONTENT_DIR.'/advanced-cache.php';
 
     // Fixes zero-byte advanced-cache.php bug related to migrating from Quick Cache
