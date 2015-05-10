@@ -36,7 +36,7 @@ $self->wpContentBaseDirTo = function ($rel_dir_file) use ($self) {
  *
  * @param string $rel_dir_file A sub-directory or file; relative location please.
  *
- * @throws \exception If `base_dir` is empty when this method is called upon;
+ * @throws \Exception If `base_dir` is empty when this method is called upon;
  *                    i.e. if you attempt to call upon this method before {@link setup()} runs.
  *
  * @return string The relative/base directory path to `$rel_dir_file`.

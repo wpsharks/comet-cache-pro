@@ -154,7 +154,7 @@ class AutoCache extends AbsBase
      * @param string    $url                    The URL we attempted to auto-cache.
      * @param \WP_Error $wp_remote_get_response For IDEs.
      *
-     * @throws \exception If log file exists already; but is NOT writable.
+     * @throws \Exception If log file exists already; but is NOT writable.
      */
     protected function logAutoCacheUrl($url, $wp_remote_get_response)
     {
@@ -191,7 +191,7 @@ class AutoCache extends AbsBase
      * @param int    $total_urls Total URLs processed by the run.
      * @param string $total_time Total time it took to complete processing.
      *
-     * @throws \exception If log file exists already; but is NOT writable.
+     * @throws \Exception If log file exists already; but is NOT writable.
      */
     protected function logAutoCacheRun($total_urls, $total_time)
     {
@@ -225,7 +225,7 @@ class AutoCache extends AbsBase
      *                             Note that GZIP files are NOT supported at this time.
      * @param bool   $___recursive For internal use only.
      *
-     * @throws \exception If `$sitemap` is NOT actually a sitemap.
+     * @throws \Exception If `$sitemap` is NOT actually a sitemap.
      *
      * @return array URLs from an XML sitemap deeply.
      */

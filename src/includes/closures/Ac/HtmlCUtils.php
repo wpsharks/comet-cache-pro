@@ -53,7 +53,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
         'compress_js_code'               => ZENCACHE_HTMLC_COMPRESS_JS_CODE,
         'compress_html_code'             => ZENCACHE_HTMLC_COMPRESS_HTML_CODE,
     );
-    $html_compressor  = new \Websharks\HtmlCompressor\Core($html_compressor_options);
+    $html_compressor  = new \WebSharks\HtmlCompressor\Core($html_compressor_options);
     $compressed_cache = $html_compressor->compress($cache);
 
     return $compressed_cache;
