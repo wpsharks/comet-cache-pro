@@ -397,7 +397,7 @@ class Plugin extends AbsBaseAp
             wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
             wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
 
-            $this->options['crons_setup'] = time().'-'.($this->is_pro ? '-pro' : '');
+            $this->options['crons_setup'] = time().'-'.(IS_PRO ? '-pro' : '');
             update_option(GLOBAL_NS.'_options', $this->options);
             if (is_multisite()) {
                 update_site_option(GLOBAL_NS.'_options', $this->options);

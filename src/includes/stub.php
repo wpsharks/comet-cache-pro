@@ -31,6 +31,12 @@ if (!defined(__NAMESPACE__.'\\VERSION')) {
     ${__FILE__}['version'] = '150510'; //version//
     define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
 }
+if (!defined(__NAMESPACE__.'\\IS_PRO')) {
+    ${__FILE__}['ns_path'] = str_replace('\\', '/', __NAMESPACE__);
+    ${__FILE__}['is_pro']  = strtolower(basename(${__FILE__}['ns_path'])) === 'pro';
+    define(__NAMESPACE__.'\\IS_PRO', ${__FILE__}['is_pro']);
+}
 if (!isset($GLOBALS[GLOBAL_NS])) {
     $GLOBALS[GLOBAL_NS] = null;
 }
+unset(${__FILE__}); // Housekeeping.

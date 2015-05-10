@@ -9,15 +9,6 @@ namespace WebSharks\ZenCache\Pro;
 abstract class AbsBaseAp extends AbsBase
 {
     /**
-     * Identifies pro.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @type bool `TRUE` for pro.
-     */
-    public $is_pro;
-
-    /**
      * Plugin file path.
      *
      * @since 150422 Rewrite.
@@ -35,10 +26,7 @@ abstract class AbsBaseAp extends AbsBase
     {
         parent::__construct();
 
-        $ns_path      = str_replace('\\', '/', __NAMESPACE__);
-        $this->is_pro = strtolower(basename($ns_path)) === 'pro';
         $this->file   = dirname(dirname(dirname(dirname(__FILE__)))).'/plugin.php';
-
         $closures_dir = dirname(dirname(__FILE__)).'/closures/Shared';
         $self         = $this; // Reference for closures.
 

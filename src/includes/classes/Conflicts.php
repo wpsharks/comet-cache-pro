@@ -31,12 +31,9 @@ class Conflicts
         if (!empty($GLOBALS[GLOBAL_NS.'_conflicting_plugin'])) {
             return $GLOBALS[GLOBAL_NS.'_conflicting_plugin'];
         }
-        $ns_path = str_replace('\\', '/', __NAMESPACE__);
-        $is_pro  = strtolower(basename($ns_path)) === 'pro';
-
         $conflicting_plugin_slugs = array(
             'quick-cache', 'quick-cache-pro',
-            str_replace('_', '-', SLUG_TD).($is_pro ? '' : '-pro'),
+            str_replace('_', '-', SLUG_TD).(IS_PRO ? '' : '-pro'),
             'wp-super-cache', 'w3-total-cache', 'hyper-cache', 'wp-rocket',
         );
         $active_plugins           = (array) get_option('active_plugins', array());
