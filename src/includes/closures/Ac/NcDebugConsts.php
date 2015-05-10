@@ -1,6 +1,9 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+if (defined(__NAMESPACE__.'\\NC_DEBUG_PHP_SAPI_CLI')) {
+    return; // Already defined these.
+}
 /**
  * No-cache because of the current {@link \PHP_SAPI}.
  *

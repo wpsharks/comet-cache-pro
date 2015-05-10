@@ -24,9 +24,11 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 } elseif ((@require_once(dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/stub.php')) === false) {
     return; // Unable to find stub. Fail softly.
 }
-require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/constants/nc-debug.php';
-require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php';
-
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    require_once dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php';
+} elseif ((@require_once(dirname(ZENCACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
+    return; // Unable to find postload function(s). Fail softly.
+}
 AdvCacheBackCompat::quickCacheConstants();
 AdvCacheBackCompat::qcRequestVars();
 
