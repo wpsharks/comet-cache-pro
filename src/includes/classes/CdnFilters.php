@@ -92,6 +92,8 @@ class CdnFilters extends AbsBase
      */
     public function __construct()
     {
+        parent::__construct();
+
         /* Primary switch; CDN filters enabled? */
 
         $this->cdn_enable = (boolean) $this->plugin->options['cdn_enable'];
