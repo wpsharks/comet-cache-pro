@@ -44,7 +44,7 @@ $self->addNetworkMenuPages = function () use ($self) {
     if (!is_multisite()) {
         return; // Not applicable.
     }
-    $icon = file_get_contents(dirname(dirname(dirname(__FILE__))).'/client-s/images/inline-icon.svg');
+    $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
     add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
@@ -65,7 +65,7 @@ $self->addMenuPages = function () use ($self) {
     if (is_multisite()) {
         return; // Multisite networks MUST use network admin area.
     }
-    $icon = file_get_contents(dirname(dirname(dirname(__FILE__))).'/client-s/images/inline-icon.svg');
+    $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
     add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);

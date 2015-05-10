@@ -78,7 +78,7 @@ $self->addHook = function ($hook, $function, $priority = 10, $accepted_args = 1)
 $self->addAction = function () use ($self) {
     return call_user_func_array(array($self, 'addHook'), func_get_args());
 };
-$self->add_action = &$self->addAction; // Back compat.
+$self->add_action = $self->addAction; // Back compat.
 
 /*
  * Adds a new filter.
@@ -90,7 +90,7 @@ $self->add_action = &$self->addAction; // Back compat.
 $self->addFilter = function () use ($self) {
     return call_user_func_array(array($self, 'addHook'), func_get_args());
 };
-$self->add_filter = &$self->addFilter; // Back compat.
+$self->add_filter = $self->addFilter; // Back compat.
 
 /*
  * Removes a hook (works with both actions & filters).
