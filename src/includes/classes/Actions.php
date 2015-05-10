@@ -9,6 +9,28 @@ namespace WebSharks\ZenCache\Pro;
 class Actions extends AbsBase
 {
     /**
+     * Allowed actions.
+     *
+     * @since 150422 Rewrite.
+     */
+    protected $allowed_actions = array(
+        'wipeCache',
+        'ajaxWipeCache',
+
+        'clearCache',
+        'ajaxClearCache',
+
+        'saveOptions',
+        'restoreDefaultOptions',
+        'exportOptions',
+
+        'proUpdate',
+
+        'dismissNotice',
+        'dismissError',
+    );
+
+    /**
      * Class constructor.
      *
      * @since 150422 Rewrite.
@@ -22,7 +44,9 @@ class Actions extends AbsBase
         }
         foreach ((array) $_REQUEST[GLOBAL_NS] as $_action => $_args) {
             if (is_string($_action) && method_exists($this, $_action)) {
-                $this->{$_action}($_args);
+                if (in_array($_action, $this->allowed_actions, true)) {
+                    $this->{$_action}($_args);
+                }
             }
         }
         unset($_action, $_args); // Housekeeping.

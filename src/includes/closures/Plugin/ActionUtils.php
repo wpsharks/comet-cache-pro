@@ -12,7 +12,9 @@ $self->actions = function () use ($self) {
     if (!empty($_REQUEST[GLOBAL_NS])) {
         new Actions();
     }
-    if (!empty($_REQUEST[GLOBAL_NS.'_auto_cache_cron'])) {
+    if (!empty($_REQUEST[GLOBAL_NS.'_auto_cache_cron'])
+    // Back compat. Allow for the older `__` variation also.
+        || !empty($_REQUEST[GLOBAL_NS.'__auto_cache_cron'])) {
         $self->autoCache();
         exit();
     }

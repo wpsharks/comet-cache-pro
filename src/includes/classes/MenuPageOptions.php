@@ -26,16 +26,16 @@ class MenuPageOptions extends MenuPage
 
         if (is_multisite()) {
             echo '<button type="button" class="plugin-menu-page-wipe-cache" style="float:right; margin-left:15px;" title="'.esc_attr(__('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD)).'"'.
-                 '  data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('wipe_cache' => '1'))), self_admin_url('/admin.php'))).'">'.
+                 '  data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('wipeCache' => '1'))), self_admin_url('/admin.php'))).'">'.
                  '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px;" /></button>'."\n";
         }
         echo '   <button type="button" class="plugin-menu-page-clear-cache" style="float:right;" title="'.esc_attr(__('Clear Cache (Start Fresh)', SLUG_TD).((is_multisite()) ? __('; affects the current site only.', SLUG_TD) : '')).'"'.
-             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('clear_cache' => '1'))), self_admin_url('/admin.php'))).'">'.
+             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('clearCache' => '1'))), self_admin_url('/admin.php'))).'">'.
              '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
 
         echo '   <button type="button" class="plugin-menu-page-restore-defaults"'.// Restores default options.
              '      data-confirmation="'.esc_attr(__('Restore default plugin options? You will lose all of your current settings! Are you absolutely sure about this?', SLUG_TD)).'"'.
-             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('restore_default_options' => '1'))), self_admin_url('/admin.php'))).'">'.
+             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('restoreDefaultOptions' => '1'))), self_admin_url('/admin.php'))).'">'.
              '      '.__('Restore', SLUG_TD).' <i class="fa fa-ambulance"></i></button>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-togglers" title="'.esc_attr(__('All Panels', SLUG_TD)).'">'."\n";
@@ -727,7 +727,7 @@ class MenuPageOptions extends MenuPage
         echo '      <hr />'."\n";
         echo '      <h3>'.sprintf(__('Export Existing Options from this %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
         echo '      <button type="button" class="plugin-menu-page-export-options" style="float:right; margin: 0 0 0 25px;"'.// Exports existing options from this installation.
-             '         data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('export_options' => '1'))), self_admin_url('/admin.php'))).'">'.
+             '         data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('exportOptions' => '1'))), self_admin_url('/admin.php'))).'">'.
              '         '.sprintf(__('%1$s-options.json', SLUG_TD), GLOBAL_NS).' <i class="fa fa-arrow-circle-o-down"></i></button>'."\n";
         echo '      <p>'.sprintf(__('Download your existing options and import them all into another %1$s installation; saves time on future installs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '   </div>'."\n";

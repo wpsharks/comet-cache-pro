@@ -33,7 +33,7 @@
 	plugin.wipeCache = function()
 	{
 		var postVars = {}; // HTTP post vars.
-		postVars[plugin.namespace] = {ajax_wipe_cache: '1'};
+		postVars[plugin.namespace] = {ajaxWipeCache: '1'};
 		postVars['_wpnonce'] = plugin.vars._wpnonce;
 
 		var $wipe = $('#wp-admin-bar-' + plugin.namespace + '-wipe > a');
@@ -49,7 +49,7 @@
 	plugin.clearCache = function()
 	{
 		var postVars = {}; // HTTP post vars.
-		postVars[plugin.namespace] = {ajax_clear_cache: '1'};
+		postVars[plugin.namespace] = {ajaxClearCache: '1'};
 		postVars['_wpnonce'] = plugin.vars._wpnonce;
 
 		var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');

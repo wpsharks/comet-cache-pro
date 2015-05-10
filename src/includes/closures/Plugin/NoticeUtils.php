@@ -31,7 +31,7 @@ $self->allAdminNotices = function () use ($self) {
             $_dismiss = ''; // Initialize/reset.
             if (strpos($_key, 'persistent-') === 0) {
                 $_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
-                $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismiss_notice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
+                $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissNotice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
                 $_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
             }
             if (strpos($_key, 'class-update-nag') !== false) {
@@ -72,7 +72,7 @@ $self->allAdminErrors = function () use ($self) {
             $_dismiss = ''; // Initialize/reset.
             if (strpos($_key, 'persistent-') === 0) {
                 $_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
-                $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismiss_error' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
+                $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissError' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
                 $_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
             }
             echo '<div class="error"><p>'.$_error.$_dismiss.'</p></div>';

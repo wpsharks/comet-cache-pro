@@ -117,16 +117,16 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
     if (!$self->isLikeUserLoggedIn()) {
         return; // Nothing to do.
     }
-    if (!empty($_REQUEST[GLOBAL_NS]['wipe_cache'])) {
+    if (!empty($_REQUEST[GLOBAL_NS]['wipeCache'])) {
         return; // Site owner is clearing cache now.
     }
-    if (!empty($_REQUEST[GLOBAL_NS]['clear_cache'])) {
+    if (!empty($_REQUEST[GLOBAL_NS]['clearCache'])) {
         return; // Site owner is clearing cache now.
     }
-    if (!empty($_REQUEST[GLOBAL_NS]['ajax_wipe_cache'])) {
+    if (!empty($_REQUEST[GLOBAL_NS]['ajaxWipeCache'])) {
         return; // Site owner is clearing cache now.
     }
-    if (!empty($_REQUEST[GLOBAL_NS]['ajax_clear_cache'])) {
+    if (!empty($_REQUEST[GLOBAL_NS]['ajaxClearCache'])) {
         return; // Site owner is clearing cache now.
     }
     if ($self->isPostPutDeleteRequest() || $self->isUncacheableRequestMethod()) {

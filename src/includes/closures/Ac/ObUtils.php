@@ -138,12 +138,16 @@ $self->maybeStartOutputBuffering = function () use ($self) {
         }
     }
     $self->protocol       = $self->isSsl() ? 'https://' : 'http://';
+
     $self->version_salt   = ZENCACHE_VERSION_SALT; // Initialize the version salt.
-    $self->version_salt   = $self->applyFilters(GLOBAL_NS.'\\advanced_cache__version_salt', $self->version_salt);
+    $self->version_salt   = $self->applyFilters(GLOBAL_NS.'\\advanced_cache__version_salt', $self->version_salt); // Back compat.
     $self->version_salt   = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
+
     $self->cache_path     = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $self->version_salt);
+
     $self->cache_file     = ZENCACHE_DIR.'/'.$self->cache_path; // NOT considering a user cache; not yet.
     $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].'/'.ZENCACHE_404_CACHE_FILENAME);
+
     $self->salt_location  = ltrim($self->version_salt.' '.$self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
     if (ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
