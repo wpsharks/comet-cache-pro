@@ -1,15 +1,15 @@
 === ZenCache ===
 
 Stable tag: 150511
-Requires at least: 4.2.1
-Tested up to: 4.2.1
+Requires at least: 4.1
+Tested up to: 4.2.2
 Text Domain: zencache
 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Contributors: WebSharks, JasWSInc, raamdev
-Donate link: http://www.websharks-inc.com/r/wp-theme-plugin-donation/
+Donate link: http://websharks-inc.com/r/wp-theme-plugin-donation/
 Tags: cache, quick cache, zencache, zen cache, quickcache, speed, performance, fast, loading, generation, execution, benchmark, benchmarking, debug, debugging, caching, cash, caching, cacheing, super cache, advanced cache, advanced-cache, wp-cache, wp cache, rocket, static, client-side cache, rss cache, feed cache, gzip compression, query string, get request, page cache, options panel included, w3c validated code, highly extensible
 
 ZenCache is an advanced WordPress caching plugin inspired by simplicity. Speed up your site (BIG time!) with a reliable and fast WordPress cache.

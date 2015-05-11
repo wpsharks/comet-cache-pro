@@ -35,6 +35,9 @@
         "websharks/html-compressor": "dev-master",
         "websharks/sharkicons": "dev-master"
     },
+    "require-dev": {
+        "websharks/wp-i18n-tools": "dev-master"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
 
