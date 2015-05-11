@@ -4,13 +4,104 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZenCache Pro 150511\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/zencache-pro\n"
-"POT-Creation-Date: 2015-05-11 16:14:41+00:00\n"
+"POT-Creation-Date: 2015-05-11 17:52:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: includes/share.php:273 src/includes/closures/Shared/CacheDirUtils.php:24
+msgid "Unable to determine cache directory location."
+msgstr ""
+
+#: includes/share.php:1655 includes/share.php:1797
+msgid "The `options` property w/ a `cache_max_age` key is not defined in this class."
+msgstr ""
+
+#: includes/share.php:1681 src/includes/closures/Shared/CacheDirUtils.php:153
+msgid "Unable to delete files. Rename failure on directory: `%1$s`."
+msgstr ""
+
+#: includes/share.php:1704 includes/share.php:1865 includes/share.php:1971
+#: src/includes/closures/Shared/CacheDirUtils.php:176
+#: src/includes/closures/Shared/CacheDirUtils.php:342
+#: src/includes/closures/Shared/CacheDirUtils.php:450
+msgid "Unable to delete symlink: `%1$s`."
+msgstr ""
+
+#: includes/share.php:1716 includes/share.php:1877 includes/share.php:1979
+#: src/includes/closures/Shared/CacheDirUtils.php:190
+#: src/includes/closures/Shared/CacheDirUtils.php:356
+#: src/includes/closures/Shared/CacheDirUtils.php:459
+msgid "Unable to delete file: `%1$s`."
+msgstr ""
+
+#: includes/share.php:1730 includes/share.php:1891 includes/share.php:1987
+#: src/includes/closures/Shared/CacheDirUtils.php:205
+#: src/includes/closures/Shared/CacheDirUtils.php:371
+#: src/includes/closures/Shared/CacheDirUtils.php:468
+msgid "Unable to delete dir: `%1$s`."
+msgstr ""
+
+#: includes/share.php:1736 includes/share.php:1897 includes/share.php:1993
+#: src/includes/closures/Shared/CacheDirUtils.php:212
+#: src/includes/closures/Shared/CacheDirUtils.php:378
+#: src/includes/closures/Shared/CacheDirUtils.php:475
+msgid "Unexpected resource type: `%1$s`."
+msgstr ""
+
+#: includes/share.php:1742 includes/share.php:1842 includes/share.php:1903
+#: src/includes/closures/Shared/CacheDirUtils.php:218
+#: src/includes/closures/Shared/CacheDirUtils.php:319
+#: src/includes/closures/Shared/CacheDirUtils.php:384
+msgid "Unable to delete files. Rename failure on tmp directory: `%1$s`."
+msgstr ""
+
+#: includes/share.php:1957 includes/share.php:1999
+#: src/includes/closures/Shared/CacheDirUtils.php:438
+#: src/includes/closures/Shared/CacheDirUtils.php:481
+msgid "Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`."
+msgstr ""
+
+#: includes/share.php:2004 src/includes/closures/Shared/CacheDirUtils.php:485
+msgid "Unable to delete directory: `%1$s`."
+msgstr ""
+
+#: includes/share.php:2039 src/includes/closures/Shared/CacheLockUtils.php:25
+msgid "Unable to find the wp-config.php file."
+msgstr ""
+
+#: includes/share.php:2055 src/includes/closures/Shared/CacheLockUtils.php:42
+msgid "No writable tmp directory."
+msgstr ""
+
+#: includes/share.php:2060 src/includes/closures/Shared/CacheLockUtils.php:48
+msgid "Unable to obtain an exclusive lock."
+msgstr ""
+
+#: includes/share.php:2113 src/includes/closures/Shared/I18nUtils.php:15
+msgid "%1$s file"
+msgid_plural "%1$s files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/share.php:2129 src/includes/closures/Shared/I18nUtils.php:29
+msgid "%1$s directory"
+msgid_plural "%1$s directories"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/share.php:2145 src/includes/closures/Shared/I18nUtils.php:43
+msgid "%1$s file/directory"
+msgid_plural "%1$s files/directories"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/share.php:2178 src/includes/closures/Shared/HookUtils.php:40
+msgid "Invalid hook."
+msgstr ""
 
 #: src/includes/classes/AbsBase.php:99
 msgid "Undefined overload property: `%1$s`."
@@ -1483,91 +1574,10 @@ msgstr ""
 msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href=\"http://zencache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:24
-msgid "Unable to determine cache directory location."
-msgstr ""
-
 #: src/includes/closures/Shared/CacheDirUtils.php:126
 #: src/includes/closures/Shared/CacheDirUtils.php:274
 msgid "Requires an instance of Plugin."
 msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:153
-msgid "Unable to delete files. Rename failure on directory: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:176
-#: src/includes/closures/Shared/CacheDirUtils.php:342
-#: src/includes/closures/Shared/CacheDirUtils.php:450
-msgid "Unable to delete symlink: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:190
-#: src/includes/closures/Shared/CacheDirUtils.php:356
-#: src/includes/closures/Shared/CacheDirUtils.php:459
-msgid "Unable to delete file: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:205
-#: src/includes/closures/Shared/CacheDirUtils.php:371
-#: src/includes/closures/Shared/CacheDirUtils.php:468
-msgid "Unable to delete dir: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:212
-#: src/includes/closures/Shared/CacheDirUtils.php:378
-#: src/includes/closures/Shared/CacheDirUtils.php:475
-msgid "Unexpected resource type: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:218
-#: src/includes/closures/Shared/CacheDirUtils.php:319
-#: src/includes/closures/Shared/CacheDirUtils.php:384
-msgid "Unable to delete files. Rename failure on tmp directory: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:438
-#: src/includes/closures/Shared/CacheDirUtils.php:481
-msgid "Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheDirUtils.php:485
-msgid "Unable to delete directory: `%1$s`."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheLockUtils.php:25
-msgid "Unable to find the wp-config.php file."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheLockUtils.php:42
-msgid "No writable tmp directory."
-msgstr ""
-
-#: src/includes/closures/Shared/CacheLockUtils.php:48
-msgid "Unable to obtain an exclusive lock."
-msgstr ""
-
-#: src/includes/closures/Shared/HookUtils.php:40
-msgid "Invalid hook."
-msgstr ""
-
-#: src/includes/closures/Shared/I18nUtils.php:15
-msgid "%1$s file"
-msgid_plural "%1$s files"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/includes/closures/Shared/I18nUtils.php:29
-msgid "%1$s directory"
-msgid_plural "%1$s directories"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/includes/closures/Shared/I18nUtils.php:43
-msgid "%1$s file/directory"
-msgid_plural "%1$s files/directories"
-msgstr[0] ""
-msgstr[1] ""
 
 #. Plugin Name of the plugin/theme
 msgid "ZenCache Pro"

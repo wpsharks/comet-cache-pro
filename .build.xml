@@ -223,6 +223,7 @@
           <fileset dir="${project.basedir}" casesensitive="false">
             <include pattern="readme.txt" />
             <include pattern="plugin.php" />
+            <include pattern="${project_slug}.php" />
             <include pattern="uninstall.php" />
             <include pattern="functions.php" />
             <include pattern="style.css" />
