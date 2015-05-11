@@ -80,7 +80,7 @@ class Actions extends AbsBase
             $eval_output = ob_get_clean();
         }
         $redirect_to = self_admin_url('/admin.php');
-        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'__cache_wiped' => '1');
+        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_cache_wiped' => '1');
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
         wp_redirect($redirect_to).exit();
@@ -152,7 +152,7 @@ class Actions extends AbsBase
             $eval_output = ob_get_clean();
         }
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'__cache_cleared' => '1');
+        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_cache_cleared' => '1');
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
         wp_redirect($redirect_to).exit();
@@ -233,24 +233,24 @@ class Actions extends AbsBase
             update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
         }
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'__updated' => '1');
+        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_updated' => '1');
 
         $this->plugin->autoWipeCache(); // May produce a notice.
 
         if ($this->plugin->options['enable']) {
             if (!($add_wp_cache_to_wp_config = $this->plugin->addWpCacheToWpConfig())) {
-                $query_args[GLOBAL_NS.'__wp_config_wp_cache_add_failure'] = '1';
+                $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
-                $query_args[GLOBAL_NS.'__advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
+                $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
             }
             $this->plugin->updateBlogPaths();
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
-                $query_args[GLOBAL_NS.'__wp_config_wp_cache_remove_failure'] = '1';
+                $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
             }
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
-                $query_args[GLOBAL_NS.'__advanced_cache_remove_failure'] = '1';
+                $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
             }
         }
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
@@ -280,24 +280,24 @@ class Actions extends AbsBase
         $this->plugin->options = $this->plugin->default_options;
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'__restored' => '1');
+        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_restored' => '1');
 
         $this->plugin->autoWipeCache(); // May produce a notice.
 
         if ($this->plugin->options['enable']) {
             if (!($add_wp_cache_to_wp_config = $this->plugin->addWpCacheToWpConfig())) {
-                $query_args[GLOBAL_NS.'__wp_config_wp_cache_add_failure'] = '1';
+                $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
-                $query_args[GLOBAL_NS.'__advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
+                $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
             }
             $this->plugin->updateBlogPaths();
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
-                $query_args[GLOBAL_NS.'__wp_config_wp_cache_remove_failure'] = '1';
+                $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
             }
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
-                $query_args[GLOBAL_NS.'__advanced_cache_remove_failure'] = '1';
+                $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
             }
         }
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);

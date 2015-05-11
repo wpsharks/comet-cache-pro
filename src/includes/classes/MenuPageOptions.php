@@ -61,46 +61,46 @@ class MenuPageOptions extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
-        if (!empty($_REQUEST[GLOBAL_NS.'__updated'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_updated'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
             echo '   <i class="fa fa-thumbs-up"></i> '.__('Options updated successfully.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__restored'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_restored'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
             echo '   <i class="fa fa-thumbs-up"></i> '.__('Default options successfully restored.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__cache_wiped'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_cache_wiped'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
             echo '   <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" /> '.__('Cache wiped across all sites; recreation will occur automatically over time.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__cache_cleared'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_cache_cleared'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
             echo '   <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" /> '.__('Cache cleared for this site; recreation will occur automatically over time.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__wp_config_wp_cache_add_failure'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_wp_config_wp_cache_add_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
             echo '   <i class="fa fa-thumbs-down"></i> '.__('Failed to update your <code>/wp-config.php</code> file automatically. Please add the following line to your <code>/wp-config.php</code> file (right after the opening <code>&lt;?php</code> tag; on it\'s own line). <pre class="code"><code>&lt;?php<br />define(\'WP_CACHE\', TRUE);</code></pre>', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__wp_config_wp_cache_remove_failure'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
             echo '   <i class="fa fa-thumbs-down"></i> '.__('Failed to update your <code>/wp-config.php</code> file automatically. Please remove the following line from your <code>/wp-config.php</code> file, or set <code>WP_CACHE</code> to a <code>FALSE</code> value. <pre class="code"><code>define(\'WP_CACHE\', TRUE);</code></pre>', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__advanced_cache_add_failure'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_advanced_cache_add_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
-            if ($_REQUEST[GLOBAL_NS.'__advanced_cache_add_failure'] === 'zc-advanced-cache') {
+            if ($_REQUEST[GLOBAL_NS.'_advanced_cache_add_failure'] === 'zc-advanced-cache') {
                 echo '<i class="fa fa-thumbs-down"></i> '.sprintf(__('Failed to update your <code>/wp-content/advanced-cache.php</code> file. Cannot write stat file: <code>%1$s/zc-advanced-cache</code>. Please be sure this directory exists (and that it\'s writable): <code>%1$s</code>. Please use directory permissions <code>755</code> or higher (perhaps <code>777</code>). Once you\'ve done this, please try again.', SLUG_TD), esc_html($this->plugin->cacheDir()))."\n";
             } else {
                 echo '<i class="fa fa-thumbs-down"></i> '.__('Failed to update your <code>/wp-content/advanced-cache.php</code> file. Most likely a permissions error. Please create an empty file here: <code>/wp-content/advanced-cache.php</code> (just an empty PHP file, with nothing in it); give it permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
             }
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'__advanced_cache_remove_failure'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_advanced_cache_remove_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
             echo '   <i class="fa fa-thumbs-down"></i> '.__('Failed to remove your <code>/wp-content/advanced-cache.php</code> file. Most likely a permissions error. Please delete (or empty the contents of) this file: <code>/wp-content/advanced-cache.php</code>.', SLUG_TD)."\n";
             echo '</div>'."\n";
