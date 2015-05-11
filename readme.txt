@@ -2,7 +2,7 @@
 
 Stable tag: 150511
 Requires at least: 4.1
-Tested up to: 4.2.2
+Tested up to: 4.3-beta
 Text Domain: zencache
 
 License: GPLv2 or later
