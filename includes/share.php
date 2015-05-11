@@ -10,6 +10,10 @@ namespace zencache // Root namespace.
 	if(!defined('WPINC')) // MUST have WordPress.
 		exit('Do NOT access this file directly: '.basename(__FILE__));
 
+	$_SERVER['ZENCACHE_ALLOWED'] = FALSE;
+	if(!defined('ZENCACHE_ALLOWED')) // Disallow.
+		define('ZENCACHE_ALLOWED', FALSE);
+
 	if(!class_exists('\\'.__NAMESPACE__.'\\share'))
 	{
 		/**
