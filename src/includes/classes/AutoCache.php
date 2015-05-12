@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /**
  * Auto-Cache Engine.
  *
@@ -52,7 +53,7 @@ class AutoCache extends AbsBase
 
         $micro_start_time = microtime(true);
         $start_time       = time(); // Initialize.
-        $total_urls       = $total_time = 0; // Initialize.
+        $total_urls       = $total_time       = 0; // Initialize.
 
         $network_home_url  = rtrim(network_home_url(), '/');
         $network_home_host = parse_url($network_home_url, PHP_URL_HOST);
@@ -354,3 +355,4 @@ class AutoCache extends AbsBase
         }
     }
 }
+/*[/pro]*/

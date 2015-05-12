@@ -7,7 +7,9 @@ namespace WebSharks\ZenCache\Pro;
  * @since 150422 Rewrite.
  */
 $self->maybeIgnoreUserAbort = function () use ($self) {
+    /*[pro strip-from="lite"]*/
     if ($self->isAutoCacheEngine()) {
         ignore_user_abort(true);
     }
+    /*[/pro]*/
 };

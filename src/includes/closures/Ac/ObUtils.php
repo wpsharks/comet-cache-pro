@@ -137,18 +137,18 @@ $self->maybeStartOutputBuffering = function () use ($self) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
         }
     }
-    $self->protocol       = $self->isSsl() ? 'https://' : 'http://';
+    $self->protocol = $self->isSsl() ? 'https://' : 'http://';
 
-    $self->version_salt   = ZENCACHE_VERSION_SALT; // Initialize the version salt.
-    $self->version_salt   = $self->applyFilters(GLOBAL_NS.'\\advanced_cache__version_salt', $self->version_salt); // Back compat.
-    $self->version_salt   = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
+    $self->version_salt = ZENCACHE_VERSION_SALT; // Initialize the version salt.
+    $self->version_salt = $self->applyFilters(GLOBAL_NS.'\\advanced_cache__version_salt', $self->version_salt); // Back compat.
+    $self->version_salt = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
 
-    $self->cache_path     = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $self->version_salt);
+    $self->cache_path = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $self->version_salt);
 
     $self->cache_file     = ZENCACHE_DIR.'/'.$self->cache_path; // NOT considering a user cache; not yet.
     $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].'/'.ZENCACHE_404_CACHE_FILENAME);
 
-    $self->salt_location  = ltrim($self->version_salt.' '.$self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+    $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
     if (ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
@@ -283,12 +283,12 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     }
     /* ------- Otherwise, we need to construct & store a new cache file. ----------------------------------------------- */
 
-    $cache = $self->maybeCompressHtml($cache); // Possible HTML compression.
+    $cache = IS_PRO ? $self->maybeCompressHtml($cache) : $cache; // Possible HTML compression.
 
     if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
         $total_time = number_format(microtime(true) - $self->timer, 5, '.', ''); // Based on the original timer.
         $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file path: %2$s', SLUG_TD), NAME, str_replace(WP_CONTENT_DIR, '', $self->is_404 ? $self->cache_file_404 : $self->cache_file))).' -->';
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, ($self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, (ZENCACHE_WHEN_LOGGED_IN && $self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
         $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', SLUG_TD), NAME, date('M jS, Y @ g:i a T', strtotime('+'.ZENCACHE_MAX_AGE)))).' -->';
     }
     if ($self->is_404) {

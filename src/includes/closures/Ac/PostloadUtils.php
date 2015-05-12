@@ -102,7 +102,7 @@ $self->postload = array(
  */
 $self->user_token = '';
 
-/*pro...*/
+/*[pro strip-from="lite"]*/
 /*
  * Sets a flag for possible invalidation upon certain actions in the postload phase.
  *
@@ -136,8 +136,9 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
         $self->postload['invalidate_when_logged_in'] = true;
     }
 };
-/*...pro*/
+/*[/pro]*/
 
+/*[pro strip-from="lite"]*/
 /*
  * Invalidates cache files for a user (if applicable).
  *
@@ -156,7 +157,9 @@ $self->maybeInvalidateWhenLoggedInPostload = function () use ($self) {
     $regex = $self->buildCachePathRegex('', '.*?\.u\/'.preg_quote($self->user_token, '/').'[.\/]');
     $self->clearFilesFromCacheDir($regex); // Clear matching files.
 };
+/*[/pro]*/
 
+/*[pro strip-from="lite"]*/
 /*
  * Starts output buffering in the postload phase (i.e. a bit later);
  *    when/if user caching is enabled; and if applicable.
@@ -200,6 +203,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
     }
     return; // Only for IDEs not to complain here.
 };
+/*[/pro]*/
 
 /*
  * Filters WP {@link \status_header()} (if applicable).

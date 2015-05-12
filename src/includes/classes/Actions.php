@@ -15,16 +15,22 @@ class Actions extends AbsBase
      */
     protected $allowed_actions = array(
         'wipeCache',
-        'ajaxWipeCache',
-
         'clearCache',
+
+        /*[pro strip-from="lite"]*/
+        'ajaxWipeCache',
         'ajaxClearCache',
+        /*[/pro]*/
 
         'saveOptions',
         'restoreDefaultOptions',
+        /*[pro strip-from="lite"]*/
         'exportOptions',
+        /*[/pro]*/
 
+        /*[pro strip-from="lite"]*/
         'proUpdate',
+        /*[/pro]*/
 
         'dismissNotice',
         'dismissError',
@@ -93,6 +99,41 @@ class Actions extends AbsBase
      *
      * @param mixed Input action argument(s).
      */
+    protected function clearCache($args)
+    {
+        if (!current_user_can($this->plugin->cap)) {
+            return; // Nothing to do.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = $this->plugin->clearCache(true);
+
+        if ($this->plugin->options['cache_clear_s2clean_enable']) {
+            if (function_exists('s2clean')) {
+                $s2clean_counter = s2clean()->md_cache_clear();
+            }
+        }
+        if ($this->plugin->options['cache_clear_eval_code']) {
+            ob_start(); // Buffer output from PHP code.
+            eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
+            $eval_output = ob_get_clean();
+        }
+        $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
+        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_cache_cleared' => '1');
+        $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
+
+        wp_redirect($redirect_to).exit();
+    }
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function ajaxWipeCache($args)
     {
         if (!current_user_can($this->plugin->network_cap)) {
@@ -123,41 +164,9 @@ class Actions extends AbsBase
         }
         exit($response); // JavaScript will take it from here.
     }
+    /*[/pro]*/
 
-    /**
-     * Action handler.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @param mixed Input action argument(s).
-     */
-    protected function clearCache($args)
-    {
-        if (!current_user_can($this->plugin->cap)) {
-            return; // Nothing to do.
-        }
-        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
-            return; // Unauthenticated POST data.
-        }
-        $counter = $this->plugin->clearCache(true);
-
-        if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if (function_exists('s2clean')) {
-                $s2clean_counter = s2clean()->md_cache_clear();
-            }
-        }
-        if ($this->plugin->options['cache_clear_eval_code']) {
-            ob_start(); // Buffer output from PHP code.
-            eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
-            $eval_output = ob_get_clean();
-        }
-        $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-        $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_cache_cleared' => '1');
-        $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
-
-        wp_redirect($redirect_to).exit();
-    }
-
+    /*[pro strip-from="lite"]*/
     /**
      * Action handler.
      *
@@ -195,6 +204,7 @@ class Actions extends AbsBase
         }
         exit($response); // JavaScript will take it from here.
     }
+    /*[/pro]*/
 
     /**
      * Action handler.
@@ -305,6 +315,7 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
+    /*[pro strip-from="lite"]*/
     /**
      * Action handler.
      *
@@ -340,7 +351,9 @@ class Actions extends AbsBase
 
         exit($export); // Deliver the export file.
     }
+    /*[/pro]*/
 
+    /*[pro strip-from="lite"]*/
     /**
      * Action handler.
      *
@@ -417,6 +430,7 @@ class Actions extends AbsBase
 
         wp_redirect($redirect_to).exit();
     }
+    /*[/pro]*/
 
     /**
      * Action handler.

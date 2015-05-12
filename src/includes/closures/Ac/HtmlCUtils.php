@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Runs HTML Compressor (if applicable).
  *
@@ -32,17 +33,17 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     $product_title        = sprintf(__('%1$s HTML Compressor', SLUG_TD), NAME);
 
     $html_compressor_options = array(
-        'benchmark'                      => $benchmark,
-        'product_title'                  => $product_title,
+        'benchmark'     => $benchmark,
+        'product_title' => $product_title,
 
-        'cache_dir_public'               => $cache_dir_public,
-        'cache_dir_url_public'           => $cache_dir_url_public,
-        'cache_dir_private'              => $cache_dir_private,
+        'cache_dir_public'     => $cache_dir_public,
+        'cache_dir_url_public' => $cache_dir_url_public,
+        'cache_dir_private'    => $cache_dir_private,
 
-        'cache_expiration_time'          => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
+        'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
 
-        'regex_css_exclusions'           => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
-        'regex_js_exclusions'            => ZENCACHE_HTMLC_JS_EXCLUSIONS,
+        'regex_css_exclusions' => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
+        'regex_js_exclusions'  => ZENCACHE_HTMLC_JS_EXCLUSIONS,
 
         'compress_combine_head_body_css' => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
         'compress_combine_head_js'       => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
@@ -58,3 +59,4 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
 
     return $compressed_cache;
 };
+/*[/pro]*/

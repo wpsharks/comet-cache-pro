@@ -14,12 +14,14 @@ function wp_cache_postload()
     if (!$advanced_cache->is_running) {
         return; // Not applicable.
     }
+    /*[pro strip-from="lite"]*/
     if (!empty($advanced_cache->postload['invalidate_when_logged_in'])) {
         $advanced_cache->maybeInvalidateWhenLoggedInPostload();
     }
     if (!empty($advanced_cache->postload['when_logged_in'])) {
         $advanced_cache->maybeStartObWhenLoggedInPostload();
     }
+    /*[/pro]*/
     if (!empty($advanced_cache->postload['filter_status_header'])) {
         $advanced_cache->maybeFilterStatusHeaderPostload();
     }

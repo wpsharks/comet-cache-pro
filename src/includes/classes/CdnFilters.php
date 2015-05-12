@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /**
  * CDN Filters.
  *
@@ -429,3 +430,4 @@ class CdnFilters extends AbsBase
         return array_unique(array_merge($wp_media_library_extensions, $font_file_extensions));
     }
 }
+/*[/pro]*/

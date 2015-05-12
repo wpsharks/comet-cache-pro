@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /**
  * Pro Updater Page.
  *
@@ -112,3 +113,4 @@ class MenuPageProUpdater extends MenuPage
         echo '</form>';
     }
 }
+/*[/pro]*/

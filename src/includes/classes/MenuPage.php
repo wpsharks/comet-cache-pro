@@ -25,9 +25,11 @@ class MenuPage extends AbsBase
                     new MenuPageOptions();
                     break;
 
+                /*[pro strip-from="lite"]*/
                 case 'pro-updater':
                     new MenuPageProUpdater();
                     break;
+                /*[/pro]*/
             }
         }
     }
