@@ -102,6 +102,7 @@ $self->postload = array(
  */
 $self->user_token = '';
 
+/*pro...*/
 /*
  * Sets a flag for possible invalidation upon certain actions in the postload phase.
  *
@@ -135,6 +136,7 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
         $self->postload['invalidate_when_logged_in'] = true;
     }
 };
+/*...pro*/
 
 /*
  * Invalidates cache files for a user (if applicable).
