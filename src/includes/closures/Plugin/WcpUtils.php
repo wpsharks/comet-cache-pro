@@ -135,7 +135,7 @@ $self->autoWipeCache = function () use ($self) {
     }
     $counter += $self->wipeCache();
 
-    if ($counter && is_admin() && $self->options['change_notifications_enable']) {
+    if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/wipe.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected significant changes. Found %2$s in the cache; auto-wiping.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter))));
     }
@@ -181,7 +181,7 @@ $self->autoClearCache = function () use ($self) {
     }
     $counter += $self->clearCache();
 
-    if ($counter && is_admin() && $self->options['change_notifications_enable']) {
+    if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache for this site; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter))));
     }
@@ -201,7 +201,7 @@ $self->autoClearCache = function () use ($self) {
 $self->disableAutoWipeCacheRoutines = function () use ($self) {
     $is_disabled = (boolean) $self->applyWpFilters(GLOBAL_NS.'_disable_auto_wipe_cache_routines', false);
 
-    if ($is_disabled && is_admin() && $self->options['change_notifications_enable']) {
+    if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
     }
@@ -221,7 +221,7 @@ $self->disableAutoWipeCacheRoutines = function () use ($self) {
 $self->disableAutoClearCacheRoutines = function () use ($self) {
     $is_disabled = (boolean) $self->applyWpFilters(GLOBAL_NS.'_disable_auto_clear_cache_routines', false);
 
-    if ($is_disabled && is_admin() && $self->options['change_notifications_enable']) {
+    if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
     }

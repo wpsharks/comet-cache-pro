@@ -131,7 +131,7 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
         $_term_counter = $self->clearFilesFromHostCacheDir($_term_regex);
         $counter += $_term_counter; // Add to overall counter.
 
-        if ($_term_counter && $enqueued_notices < 100 && is_admin() && $self->options['change_notifications_enable']) {
+        if ($_term_counter && $enqueued_notices < 100 && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
             $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                                   sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($_term_counter)), esc_html($_term['taxonomy_label']), esc_html($_term['term_name'])));
             $enqueued_notices++; // Increment enqueued notices counter.

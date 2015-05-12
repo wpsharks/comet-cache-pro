@@ -56,7 +56,7 @@ $self->autoClearCustomPostTypeArchiveCache = function ($post_id) use ($self) {
     $regex = $self->buildHostCachePathRegex($custom_post_type_archive_link);
     $counter += $self->clearFilesFromHostCacheDir($regex);
 
-    if ($counter && is_admin() && $self->options['change_notifications_enable']) {
+    if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Custom Post Type: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($custom_post_type_name)));
     }

@@ -75,16 +75,22 @@ class Actions extends AbsBase
         }
         $counter = $this->plugin->wipeCache(true);
 
+        /*[pro strip-from="lite"]*/
         if ($this->plugin->options['cache_clear_s2clean_enable']) {
             if (function_exists('s2clean')) {
                 $s2clean_counter = s2clean()->md_cache_clear();
             }
         }
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         if ($this->plugin->options['cache_clear_eval_code']) {
             ob_start(); // Buffer output from PHP code.
             eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
             $eval_output = ob_get_clean();
         }
+        /*[/pro]*/
+
         $redirect_to = self_admin_url('/admin.php');
         $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_cache_wiped' => '1');
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
@@ -109,16 +115,22 @@ class Actions extends AbsBase
         }
         $counter = $this->plugin->clearCache(true);
 
+        /*[pro strip-from="lite"]*/
         if ($this->plugin->options['cache_clear_s2clean_enable']) {
             if (function_exists('s2clean')) {
                 $s2clean_counter = s2clean()->md_cache_clear();
             }
         }
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         if ($this->plugin->options['cache_clear_eval_code']) {
             ob_start(); // Buffer output from PHP code.
             eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
             $eval_output = ob_get_clean();
         }
+        /*[/pro]*/
+
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
         $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_cache_cleared' => '1');
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);

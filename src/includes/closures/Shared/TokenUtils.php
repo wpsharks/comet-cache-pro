@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * A simple utility flag.
  *
@@ -9,6 +10,7 @@ namespace WebSharks\ZenCache\Pro;
  * @type bool `TRUE` if expired or invalid.
  */
 $self->user_login_cookie_expired_or_invalid = false;
+/*[/pro]*/
 
 /*
  * Produces a token based on the current `$_SERVER['HTTP_HOST']`.
