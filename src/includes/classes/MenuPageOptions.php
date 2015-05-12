@@ -44,7 +44,7 @@ class MenuPageOptions extends MenuPage
         echo '   </div>'."\n";
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
-        if (current_user_can($this->plugin->update_cap)) {
+        if (IS_PRO && current_user_can($this->plugin->update_cap)) {
             echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php'))).'"><i class="fa fa-magic"></i> '.__('Pro Updater', SLUG_TD).'</a>'."\n";
         }
         if (!IS_PRO) {
@@ -109,7 +109,7 @@ class MenuPageOptions extends MenuPage
             echo '   <i class="fa fa-thumbs-down"></i> '.__('Failed to remove your <code>/wp-content/advanced-cache.php</code> file. Most likely a permissions error. Please delete (or empty the contents of) this file: <code>/wp-content/advanced-cache.php</code>.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!empty($_REQUEST[GLOBAL_NS.'_pro_preview'])) {
+        if (!IS_PRO && !empty($_REQUEST[GLOBAL_NS.'_pro_preview'])) {
             echo '<div class="plugin-menu-page-notice info">'."\n";
             echo '<a href="'.add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="fa fa-eye-slash"></i></a>'."\n";
             echo '   <i class="fa fa-eye"></i> '.sprintf(__('<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href="http://%2$s/" target="_blank">upgrading <i class="fa fa-heart-o"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>', SLUG_TD), esc_html(NAME), esc_attr(urlencode(DOMAIN)))."\n";

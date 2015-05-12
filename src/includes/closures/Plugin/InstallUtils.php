@@ -236,17 +236,6 @@ $self->checkAdvancedCache = function () use ($self) {
  *
  * @since 150422 Rewrite.
  *
- * @note Many of the ZenCache option values become PHP Constants in the `advanced-cache.php` file.
- *    We take an option key (e.g. `version_salt`) and prefix it with `zencache_`.
- *    Then we convert it to uppercase (e.g. `ZENCACHE_VERSION_SALT`) and wrap
- *    it with double percent signs to form a replacement codes.
- *    ex: `%%ZENCACHE_VERSION_SALT%%`
- *
- * @note There are a few special options considered by this routine which actually
- *    get converted to regex patterns before they become replacement codes.
- *
- * @note In the case of a version salt, a PHP syntax is performed also.
- *
  * @return bool|null `TRUE` on success. `FALSE` or `NULL` on failure.
  *                   A special `NULL` return value indicates success with a single failure
  *                   that is specifically related to the `zc-advanced-cache` file.
@@ -273,9 +262,11 @@ $self->addAdvancedCache = function () use ($self) {
     }
     $possible_advanced_cache_constant_key_values = array_merge(
         $self->options, // The following additional keys are dynamic.
-        array('cache_dir'               => $self->basePathTo($self->cache_sub_dir),
+        array('cache_dir' => $self->basePathTo($self->cache_sub_dir),
+              /*[pro strip-from="lite"]*/
               'htmlc_cache_dir_public'  => $self->basePathTo($self->htmlc_cache_sub_dir_public),
               'htmlc_cache_dir_private' => $self->basePathTo($self->htmlc_cache_sub_dir_private),
+              /*[/pro]*/
         )
     );
     foreach ($possible_advanced_cache_constant_key_values as $_option => $_value) {
@@ -287,6 +278,7 @@ $self->addAdvancedCache = function () use ($self) {
             case 'exclude_refs': // Converts to regex (caSe insensitive).
             case 'exclude_agents': // Converts to regex (caSe insensitive).
 
+            /*[pro strip-from="lite"]*/
             case 'htmlc_css_exclusions': // Converts to regex (caSe insensitive).
             case 'htmlc_js_exclusions': // Converts to regex (caSe insensitive).
 
@@ -306,7 +298,9 @@ $self->addAdvancedCache = function () use ($self) {
                 $_value = "'".$self->escSq($_value)."'";
 
                 break; // Break switch handler.
+            /*[/pro]*/
 
+            /*[pro strip-from="lite"]*/
             case 'version_salt': // This is PHP code; and we MUST validate syntax.
 
                 if ($_value && !is_wp_error($_response = wp_remote_post('http://phpcodechecker.com/api/', array('body' => array('code' => $_value))))
@@ -319,6 +313,7 @@ $self->addAdvancedCache = function () use ($self) {
                     $_value = "''"; // Use an empty string (default).
                 }
                 break; // Break switch handler.
+            /*[/pro]*/
 
             default: // Default case handler.
 

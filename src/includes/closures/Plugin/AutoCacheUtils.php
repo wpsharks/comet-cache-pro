@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Runs the auto-cache engine.
  *
@@ -22,3 +23,4 @@ $self->autoCache = function () use ($self) {
     }
     new AutoCache();
 };
+/*[/pro]*/

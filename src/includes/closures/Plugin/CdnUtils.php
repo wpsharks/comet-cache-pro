@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Bumps CDN invalidation counter.
  *
@@ -21,3 +22,4 @@ $self->bumpCdnInvalidationCounter = function () use ($self) {
         update_site_option(GLOBAL_NS.'_options', $self->options);
     }
 };
+/*[/pro]*/

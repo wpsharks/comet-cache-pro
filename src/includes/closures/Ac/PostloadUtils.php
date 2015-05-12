@@ -95,6 +95,7 @@ $self->postload = array(
     'set_debug_info'       => ZENCACHE_DEBUGGING_ENABLE,
 );
 
+/*[pro strip-from="lite"]*/
 /*
  * Calculated user token; applicable w/ user postload enabled.
  *
@@ -103,6 +104,7 @@ $self->postload = array(
  * @type string|int An MD5 hash token; or a specific WP user ID.
  */
 $self->user_token = '';
+/*[/pro]*/
 
 /*[pro strip-from="lite"]*/
 /*

@@ -49,9 +49,11 @@ $self->addNetworkMenuPages = function () use ($self) {
 
     add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
-    if (IS_PRO && current_user_can($self->network_cap)) {
+
+    /*[pro strip-from="lite"]*/
+    if (current_user_can($self->network_cap)) {
         add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
-    }
+    } /*[/pro]*/
 };
 
 /*
@@ -70,9 +72,10 @@ $self->addMenuPages = function () use ($self) {
 
     add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
-    if (IS_PRO) {
-        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
-    }
+
+    /*[pro strip-from="lite"]*/
+    add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+    /*[/pro]*/
 };
 
 /*
@@ -132,16 +135,16 @@ $self->menuPageOptions = function () use ($self) {
     new MenuPage('options');
 };
 
+/*[pro strip-from="lite"]*/
 /*
  * Loads admin menu page for pro updater.
  *
  * @since 150422 Rewrite.
  */
 $self->menuPageProUpdater = function () use ($self) {
-    if (IS_PRO) {
-        new MenuPage('pro-updater');
-    }
+    new MenuPage('pro-updater');
 };
+/*[/pro]*/
 
 /*
  * WordPress admin icon color schemes.

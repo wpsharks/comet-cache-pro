@@ -9,6 +9,15 @@ namespace WebSharks\ZenCache\Pro;
 class Plugin extends AbsBaseAp
 {
     /**
+     * Enable plugin hooks?
+     *
+     * @since 150422 Rewrite.
+     *
+     * @type bool If `FALSE`, run without hooks.
+     */
+    public $enable_hooks = true;
+
+    /**
      * Default options.
      *
      * @since 150422 Rewrite.
@@ -71,6 +80,7 @@ class Plugin extends AbsBaseAp
      */
     public $cache_sub_dir = 'cache';
 
+    /*[pro strip-from="lite"]*/
     /**
      * HTML Compressor cache directory (public).
      *
@@ -79,7 +89,9 @@ class Plugin extends AbsBaseAp
      * @type string Public HTML Compressor cache directory; relative to the configured base directory.
      */
     public $htmlc_cache_sub_dir_public = 'htmlc/public';
+    /*[/pro]*/
 
+    /*[pro strip-from="lite"]*/
     /**
      * HTML Compressor cache directory (private).
      *
@@ -88,15 +100,7 @@ class Plugin extends AbsBaseAp
      * @type string Private HTML Compressor cache directory; relative to the configured base directory.
      */
     public $htmlc_cache_sub_dir_private = 'htmlc/private';
-
-    /**
-     * Used by the plugin's uninstall handler.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @type bool If FALSE, run without hooks.
-     */
-    public $enable_hooks = true;
+    /*[/pro]*/
 
     /**
      * Plugin constructor.
@@ -152,74 +156,74 @@ class Plugin extends AbsBaseAp
         $this->default_options = array(
             /* Core/systematic plugin options. */
 
-            'version'                              => VERSION,
-            'crons_setup'                          => '0', // `0` or timestamp.
+            'version'     => VERSION,
+            'crons_setup' => '0', // `0` or timestamp.
 
             /* Primary switch; enable? */
 
-            'enable'                               => '0', // `0|1`.
+            'enable' => '0', // `0|1`.
 
             /* Related to debugging. */
 
-            'debugging_enable'                     => '1',
+            'debugging_enable' => '1',
             // `0|1|2` // 2 indicates greater debugging detail.
 
             /* Related to admin bar. */
 
-            'admin_bar_enable'                     => '1', // `0|1`.
+            'admin_bar_enable' => '1', // `0|1`.
 
             /* Related to cache directory. */
 
-            'base_dir'                             => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
-            'cache_max_age'                        => '7 days', // `strtotime()` compatible.
+            'base_dir'      => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
+            'cache_max_age' => '7 days', // `strtotime()` compatible.
 
             /* Related to automatic cache clearing. */
 
-            'change_notifications_enable'          => '1', // `0|1`.
+            'change_notifications_enable' => '1', // `0|1`.
 
-            'cache_clear_s2clean_enable'           => '0', // `0|1`.
-            'cache_clear_eval_code'                => '', // PHP code.
+            'cache_clear_s2clean_enable' => '0', // `0|1`.
+            'cache_clear_eval_code'      => '', // PHP code.
 
-            'cache_clear_xml_feeds_enable'         => '1', // `0|1`.
+            'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
-            'cache_clear_xml_sitemaps_enable'      => '1', // `0|1`.
-            'cache_clear_xml_sitemap_patterns'     => '/sitemap*.xml',
+            'cache_clear_xml_sitemaps_enable'  => '1', // `0|1`.
+            'cache_clear_xml_sitemap_patterns' => '/sitemap*.xml',
             // Empty string or line-delimited patterns.
 
-            'cache_clear_home_page_enable'         => '1', // `0|1`.
-            'cache_clear_posts_page_enable'        => '1', // `0|1`.
+            'cache_clear_home_page_enable'  => '1', // `0|1`.
+            'cache_clear_posts_page_enable' => '1', // `0|1`.
 
-            'cache_clear_custom_post_type_enable'  => '1', // `0|1`.
-            'cache_clear_author_page_enable'       => '1', // `0|1`.
+            'cache_clear_custom_post_type_enable' => '1', // `0|1`.
+            'cache_clear_author_page_enable'      => '1', // `0|1`.
 
-            'cache_clear_term_category_enable'     => '1', // `0|1`.
-            'cache_clear_term_post_tag_enable'     => '1', // `0|1`.
-            'cache_clear_term_other_enable'        => '0', // `0|1`.
+            'cache_clear_term_category_enable' => '1', // `0|1`.
+            'cache_clear_term_post_tag_enable' => '1', // `0|1`.
+            'cache_clear_term_other_enable'    => '0', // `0|1`.
 
             /* Misc. cache behaviors. */
 
-            'allow_browser_cache'                  => '0', // `0|1`.
-            'when_logged_in'                       => '0', // `0|1|postload`.
-            'get_requests'                         => '0', // `0|1`.
-            'feeds_enable'                         => '0', // `0|1`.
-            'cache_404_requests'                   => '0', // `0|1`.
+            'allow_browser_cache' => '0', // `0|1`.
+            'when_logged_in'      => '0', // `0|1|postload`.
+            'get_requests'        => '0', // `0|1`.
+            'feeds_enable'        => '0', // `0|1`.
+            'cache_404_requests'  => '0', // `0|1`.
 
             /* Related to exclusions. */
 
-            'exclude_uris'                         => '', // Empty string or line-delimited patterns.
-            'exclude_refs'                         => '', // Empty string or line-delimited patterns.
-            'exclude_agents'                       => 'w3c_validator', // Empty string or line-delimited patterns.
+            'exclude_uris'   => '', // Empty string or line-delimited patterns.
+            'exclude_refs'   => '', // Empty string or line-delimited patterns.
+            'exclude_agents' => 'w3c_validator', // Empty string or line-delimited patterns.
 
             /* Related to version salt. */
 
-            'version_salt'                         => '', // Any string value.
+            'version_salt' => '', // Any string value.
 
             /* Related to HTML compressor. */
 
-            'htmlc_enable'                         => '0', // Enable HTML compression?
-            'htmlc_css_exclusions'                 => '', // Empty string or line-delimited patterns.
-            'htmlc_js_exclusions'                  => '.php?', // Empty string or line-delimited patterns.
-            'htmlc_cache_expiration_time'          => '14 days', // `strtotime()` compatible.
+            'htmlc_enable'                => '0', // Enable HTML compression?
+            'htmlc_css_exclusions'        => '', // Empty string or line-delimited patterns.
+            'htmlc_js_exclusions'         => '.php?', // Empty string or line-delimited patterns.
+            'htmlc_cache_expiration_time' => '14 days', // `strtotime()` compatible.
 
             'htmlc_compress_combine_head_body_css' => '1', // `0|1`.
             'htmlc_compress_combine_head_js'       => '1', // `0|1`.
@@ -232,51 +236,51 @@ class Plugin extends AbsBaseAp
 
             /* Related to auto-cache engine. */
 
-            'auto_cache_enable'                    => '0', // `0|1`.
-            'auto_cache_max_time'                  => '900', // In seconds.
-            'auto_cache_delay'                     => '500', // In milliseconds.
-            'auto_cache_sitemap_url'               => 'sitemap.xml', // Relative to `site_url()`.
-            'auto_cache_other_urls'                => '', // A line-delimited list of any other URLs.
-            'auto_cache_user_agent'                => 'WordPress',
+            'auto_cache_enable'      => '0', // `0|1`.
+            'auto_cache_max_time'    => '900', // In seconds.
+            'auto_cache_delay'       => '500', // In milliseconds.
+            'auto_cache_sitemap_url' => 'sitemap.xml', // Relative to `site_url()`.
+            'auto_cache_other_urls'  => '', // A line-delimited list of any other URLs.
+            'auto_cache_user_agent'  => 'WordPress',
 
             /* Related to CDN functionality. */
 
-            'cdn_enable'                           => '0', // `0|1`; enable CDN filters?
+            'cdn_enable' => '0', // `0|1`; enable CDN filters?
 
-            'cdn_host'                             => '', // e.g. `d1v41qemfjie0l.cloudfront.net`
+            'cdn_host' => '', // e.g. `d1v41qemfjie0l.cloudfront.net`
 
-            'cdn_invalidation_var'                 => 'iv', // A query string variable name.
-            'cdn_invalidation_counter'             => '1', // Current version counter.
+            'cdn_invalidation_var'     => 'iv', // A query string variable name.
+            'cdn_invalidation_counter' => '1', // Current version counter.
 
-            'cdn_over_ssl'                         => '0', // `0|1`; enable SSL compat?
+            'cdn_over_ssl' => '0', // `0|1`; enable SSL compat?
 
-            'cdn_whitelisted_extensions'           => '', // Whitelisted extensions.
+            'cdn_whitelisted_extensions' => '', // Whitelisted extensions.
             // This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
             // Defaults to all extensions supported by the WP media library; i.e. `wp_get_mime_types()`.
 
-            'cdn_blacklisted_extensions'           => 'eot,ttf,otf,woff', // Blacklisted extensions.
+            'cdn_blacklisted_extensions' => 'eot,ttf,otf,woff', // Blacklisted extensions.
             // This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
 
-            'cdn_whitelisted_uri_patterns'         => '', // A line-delimited list of inclusion patterns.
+            'cdn_whitelisted_uri_patterns' => '', // A line-delimited list of inclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
 
-            'cdn_blacklisted_uri_patterns'         => '', // A line-delimited list of exclusion patterns.
+            'cdn_blacklisted_uri_patterns' => '', // A line-delimited list of exclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
 
             /* Related to automatic pro updates. */
 
-            'pro_update_check'                     => '1', // `0|1`; enable?
-            'last_pro_update_check'                => '0', // Timestamp.
+            'pro_update_check'      => '1', // `0|1`; enable?
+            'last_pro_update_check' => '0', // Timestamp.
 
-            'pro_update_username'                  => '', // Username.
-            'pro_update_password'                  => '', // Password or license key.
+            'pro_update_username' => '', // Username.
+            'pro_update_password' => '', // Password or license key.
 
             /* Related to uninstallation routines. */
 
-            'uninstall_on_deletion'                => '0', // `0|1`.
+            'uninstall_on_deletion' => '0', // `0|1`.
 
         ); // Default options are merged with those defined by the site owner.
-        $options               = is_array($options = get_option(GLOBAL_NS.'_options')) ? $options : array();
+        $options = is_array($options = get_option(GLOBAL_NS.'_options')) ? $options : array();
         if (is_multisite() && is_array($site_options = get_site_option(GLOBAL_NS.'_options'))) {
             $options = array_merge($options, $site_options); // Multisite options.
         }
@@ -314,28 +318,39 @@ class Plugin extends AbsBaseAp
         add_action('wp_loaded', array($this, 'actions'));
 
         add_action('admin_init', array($this, 'checkVersion'));
-        add_action('admin_init', array($this, 'checkLatestProVersion'));
-        add_action('admin_init', array($this, 'autoClearCacheOnSettingChanges'));
 
+        /*[pro strip-from="lite"]*/
+        add_action('admin_init', array($this, 'checkLatestProVersion'));
+        add_filter('fs_ftp_connection_types', array($this, 'fsFtpConnectionTypes'));
+        add_filter('pre_site_transient_update_plugins', array($this, 'preSiteTransientUpdatePlugins'));
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         add_action('admin_bar_menu', array($this, 'adminBarMenu'));
         add_action('wp_head', array($this, 'adminBarMetaTags'), 0);
         add_action('wp_enqueue_scripts', array($this, 'adminBarStyles'));
         add_action('wp_enqueue_scripts', array($this, 'adminBarScripts'));
+        /*[/pro]*/
 
+        /*[pro strip-from="lite"]*/
         add_action('admin_head', array($this, 'adminBarMetaTags'), 0);
         add_action('admin_enqueue_scripts', array($this, 'adminBarStyles'));
         add_action('admin_enqueue_scripts', array($this, 'adminBarScripts'));
+        /*[/pro]*/
+
         add_action('admin_enqueue_scripts', array($this, 'enqueueAdminStyles'));
         add_action('admin_enqueue_scripts', array($this, 'enqueueAdminScripts'));
 
         add_action('all_admin_notices', array($this, 'allAdminNotices'));
         add_action('all_admin_notices', array($this, 'allAdminErrors'));
 
-        add_action('network_admin_menu', array($this, 'addNetworkMenuPages'));
         add_action('admin_menu', array($this, 'addMenuPages'));
+        add_action('network_admin_menu', array($this, 'addNetworkMenuPages'));
+        add_filter('plugin_action_links_'.plugin_basename(PLUGIN_FILE), array($this, 'addSettingsLink'));
 
-        add_action('upgrader_process_complete', array($this, 'autoClearOnUpgraderProcessComplete'), 10, 2);
+        add_action('admin_init', array($this, 'autoClearCacheOnSettingChanges'));
         add_action('safecss_save_pre', array($this, 'autoClearCacheOnJetpackCustomCss'), 10, 1);
+        add_action('upgrader_process_complete', array($this, 'autoClearOnUpgraderProcessComplete'), 10, 2);
 
         add_action('switch_theme', array($this, 'autoClearCache'));
         add_action('wp_create_nav_menu', array($this, 'autoClearCache'));
@@ -356,13 +371,6 @@ class Plugin extends AbsBaseAp
         add_action('comment_post', array($this, 'autoClearCommentPostCache'));
         add_action('transition_comment_status', array($this, 'autoClearCommentPostCacheTransition'), 10, 3);
 
-        add_action('profile_update', array($this, 'autoClearUserCacheA1'));
-        add_filter('add_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
-        add_filter('update_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
-        add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
-        add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
-        add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
-
         add_action('create_term', array($this, 'autoClearCache'));
         add_action('edit_terms', array($this, 'autoClearCache'));
         add_action('delete_term', array($this, 'autoClearCache'));
@@ -371,33 +379,46 @@ class Plugin extends AbsBaseAp
         add_action('edit_link', array($this, 'autoClearCache'));
         add_action('delete_link', array($this, 'autoClearCache'));
 
-        add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
+        /*[pro strip-from="lite"]*/
+        add_action('profile_update', array($this, 'autoClearUserCacheA1'));
+        add_filter('add_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_filter('update_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
+        add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
+        /*[/pro]*/
 
-        add_filter('fs_ftp_connection_types', array($this, 'fsFtpConnectionTypes'));
-        add_filter('pre_site_transient_update_plugins', array($this, 'preSiteTransientUpdatePlugins'));
-
-        add_filter('plugin_action_links_'.plugin_basename(PLUGIN_FILE), array($this, 'addSettingsLink'));
-
+        /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->options['htmlc_enable']) {
             add_action('wp_print_footer_scripts', array($this, 'htmlCFooterScripts'), -PHP_INT_MAX);
             add_action('wp_print_footer_scripts', array($this, 'htmlCFooterScripts'), PHP_INT_MAX);
         }
+        /*[/pro]*/
+        /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->options['cdn_enable']) {
             add_action('upgrader_process_complete', array($this, 'bumpCdnInvalidationCounter'), 10, 0);
             new CdnFilters(); // Setup CDN filters.
         }
+        /*[/pro]*/
+
+        add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
+
         /* -------------------------------------------------------------- */
 
         add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
-        if (substr($this->options['crons_setup'], -4) !== '-pro' || (integer) $this->options['crons_setup'] < 1398051975) {
+        if ((integer) $this->options['crons_setup'] < 1398051975 || (IS_PRO && substr($this->options['crons_setup'], -4) !== '-pro')) {
+            /*[pro strip-from="lite"]*/
             wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
             wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
-
+            /*[/pro]*/
             wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
             wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
 
-            $this->options['crons_setup'] = time().'-'.(IS_PRO ? '-pro' : '');
+            $this->options['crons_setup'] = (string) time();
+            /*[pro strip-from="lite"]*/
+            $this->options['crons_setup'] .= '-pro';
+            /*[/pro]*/
             update_option(GLOBAL_NS.'_options', $this->options);
             if (is_multisite()) {
                 update_site_option(GLOBAL_NS.'_options', $this->options);

@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Adds marker for the HTML Compressor.
  *
@@ -14,3 +15,4 @@ $self->htmlCFooterScripts = function () use ($self) {
     }
     echo "\n".'<!--footer-scripts-->'."\n";
 };
+/*[/pro]*/

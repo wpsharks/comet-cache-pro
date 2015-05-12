@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Checks for a new pro release once every hour.
  *
@@ -123,3 +124,4 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
     );
     return $transient; // Nodified now.
 };
+/*[/pro]*/

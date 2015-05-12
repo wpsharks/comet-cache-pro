@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Filter WordPress admin bar.
  *
@@ -121,3 +122,4 @@ $self->adminBarScripts = function () use ($self) {
 
     wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
 };
+/*[/pro]*/

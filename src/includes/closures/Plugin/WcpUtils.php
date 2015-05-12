@@ -41,7 +41,9 @@ $self->wipeCache = function ($manually = false, $also_wipe_dir = '') use ($self)
     if ($also_wipe_dir && is_dir($also_wipe_dir)) {
         $counter += $self->deleteAllFilesDirsIn($also_wipe_dir);
     }
+    /*[pro strip-from="lite"]*/
     $counter += $self->wipeHtmlCCache($manually);
+    /*[/pro]*/
 
     return $counter;
 };
@@ -71,7 +73,10 @@ $self->clearCache = function ($manually = false) use ($self) {
 
     $regex = $self->buildHostCachePathRegex('', '.+');
     $counter += $self->clearFilesFromHostCacheDir($regex);
+
+    /*[pro strip-from="lite"]*/
     $counter += $self->clearHtmlCCache($manually);
+    /*[/pro]*/
 
     return $counter;
 };

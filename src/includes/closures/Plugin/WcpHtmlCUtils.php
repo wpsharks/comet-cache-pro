@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Wipes out all HTML Compressor cache files.
  *
@@ -66,3 +67,4 @@ $self->clearHtmlCCache = function ($manually = false) use ($self) {
 
     return $counter;
 };
+/*[/pro]*/

@@ -105,6 +105,7 @@ if (!defined('ZENCACHE_FEEDS_ENABLE')) {
      */
     define('ZENCACHE_FEEDS_ENABLE', '%%ZENCACHE_FEEDS_ENABLE%%');
 }
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_WHEN_LOGGED_IN')) {
     /**
      * Cache logged-in users?
@@ -115,6 +116,7 @@ if (!defined('ZENCACHE_WHEN_LOGGED_IN')) {
      */
     define('ZENCACHE_WHEN_LOGGED_IN', '%%ZENCACHE_WHEN_LOGGED_IN%%');
 }
+/*[/pro]*/
 if (!defined('ZENCACHE_DIR')) {
     /**
      * Directory used to store cache files; relative to `WP_CONTENT_DIR`.
@@ -165,17 +167,6 @@ if (!defined('ZENCACHE_EXCLUDE_AGENTS')) {
      */
     define('ZENCACHE_EXCLUDE_AGENTS', '%%ZENCACHE_EXCLUDE_AGENTS%%');
 }
-if (!defined('ZENCACHE_VERSION_SALT')) {
-    /**
-     * Version salt.
-     *
-     * @since 140422 First documented version.
-     *
-     * @var mixed Any scalar value; e.g. string, integer, boolean;
-     *    or a PHP expression that results in a scalar value.
-     */
-    define('ZENCACHE_VERSION_SALT', '%%ZENCACHE_VERSION_SALT%%');
-}
 if (!defined('ZENCACHE_404_CACHE_FILENAME')) {
     /**
      * 404 file name (if applicable).
@@ -187,6 +178,20 @@ if (!defined('ZENCACHE_404_CACHE_FILENAME')) {
      */
     define('ZENCACHE_404_CACHE_FILENAME', '----404----');
 }
+/*[pro strip-from="lite"]*/
+if (!defined('ZENCACHE_VERSION_SALT')) {
+    /**
+     * Version salt.
+     *
+     * @since 140422 First documented version.
+     *
+     * @var mixed Any scalar value; e.g. string, integer, boolean;
+     *    or a PHP expression that results in a scalar value.
+     */
+    define('ZENCACHE_VERSION_SALT', '%%ZENCACHE_VERSION_SALT%%');
+}
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_ENABLE')) {
     /**
      * Enable HTML compressor?
@@ -197,6 +202,8 @@ if (!defined('ZENCACHE_HTMLC_ENABLE')) {
      */
     define('ZENCACHE_HTMLC_ENABLE', '%%ZENCACHE_HTMLC_ENABLE%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_CSS_EXCLUSIONS')) {
     /**
      * CSS exclusions for the HTML compressor.
@@ -207,6 +214,8 @@ if (!defined('ZENCACHE_HTMLC_CSS_EXCLUSIONS')) {
      */
     define('ZENCACHE_HTMLC_CSS_EXCLUSIONS', '%%ZENCACHE_HTMLC_CSS_EXCLUSIONS%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_JS_EXCLUSIONS')) {
     /**
      * JS exclusions for the HTML compressor.
@@ -217,6 +226,8 @@ if (!defined('ZENCACHE_HTMLC_JS_EXCLUSIONS')) {
      */
     define('ZENCACHE_HTMLC_JS_EXCLUSIONS', '%%ZENCACHE_HTMLC_JS_EXCLUSIONS%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME')) {
     /**
      * Cache expiration time for the HTML compressor.
@@ -227,6 +238,8 @@ if (!defined('ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME')) {
      */
     define('ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME', '%%ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_CACHE_DIR_PUBLIC')) {
     /**
      * Public cache directory for the HTML compressor.
@@ -237,6 +250,8 @@ if (!defined('ZENCACHE_HTMLC_CACHE_DIR_PUBLIC')) {
      */
     define('ZENCACHE_HTMLC_CACHE_DIR_PUBLIC', WP_CONTENT_DIR.'/'.'%%ZENCACHE_HTMLC_CACHE_DIR_PUBLIC%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_CACHE_DIR_PRIVATE')) {
     /**
      * Private cache directory for the HTML compressor.
@@ -247,6 +262,8 @@ if (!defined('ZENCACHE_HTMLC_CACHE_DIR_PRIVATE')) {
      */
     define('ZENCACHE_HTMLC_CACHE_DIR_PRIVATE', WP_CONTENT_DIR.'/'.'%%ZENCACHE_HTMLC_CACHE_DIR_PRIVATE%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) {
     /**
      * Compress/combine `<head>` and `<body>` CSS?
@@ -257,6 +274,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) {
     /**
      * Compress/combine `<head>` JS?
@@ -267,6 +286,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) {
     /**
      * Compress/combine `<!--footer-scripts-->`?
@@ -277,6 +298,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS')) {
     /**
      * Compress/combine remotely hosted CSS/JS files?
@@ -287,6 +310,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS', '%%ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) {
     /**
      * Compress inline `<script>` tags?
@@ -297,6 +322,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE', '%%ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_CSS_CODE')) {
     /**
      * Compress CSS code after combining files?
@@ -307,6 +334,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_CSS_CODE')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_CSS_CODE', '%%ZENCACHE_HTMLC_COMPRESS_CSS_CODE%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_JS_CODE')) {
     /**
      * Compress JS code after combining files?
@@ -317,6 +346,8 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_JS_CODE')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_JS_CODE', '%%ZENCACHE_HTMLC_COMPRESS_JS_CODE%%');
 }
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_COMPRESS_HTML_CODE')) {
     /**
      * Compress the resulting HTML code?
@@ -327,6 +358,7 @@ if (!defined('ZENCACHE_HTMLC_COMPRESS_HTML_CODE')) {
      */
     define('ZENCACHE_HTMLC_COMPRESS_HTML_CODE', '%%ZENCACHE_HTMLC_COMPRESS_HTML_CODE%%');
 }
+/*[/pro]*/
 $GLOBALS[GLOBAL_NS.'_advanced_cache']  = new AdvancedCache();
 $GLOBALS[GLOBAL_NS.'__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 if (!isset($GLOBALS['quick_cache__advanced_cache'])) {
