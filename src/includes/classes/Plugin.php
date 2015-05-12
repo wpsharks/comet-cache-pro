@@ -348,6 +348,8 @@ class Plugin extends AbsBaseAp
         add_action('network_admin_menu', array($this, 'addNetworkMenuPages'));
         add_filter('plugin_action_links_'.plugin_basename(PLUGIN_FILE), array($this, 'addSettingsLink'));
 
+        add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
+
         add_action('admin_init', array($this, 'autoClearCacheOnSettingChanges'));
         add_action('safecss_save_pre', array($this, 'autoClearCacheOnJetpackCustomCss'), 10, 1);
         add_action('upgrader_process_complete', array($this, 'autoClearOnUpgraderProcessComplete'), 10, 2);
@@ -394,31 +396,30 @@ class Plugin extends AbsBaseAp
             add_action('wp_print_footer_scripts', array($this, 'htmlCFooterScripts'), PHP_INT_MAX);
         }
         /*[/pro]*/
+
         /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->options['cdn_enable']) {
             add_action('upgrader_process_complete', array($this, 'bumpCdnInvalidationCounter'), 10, 0);
             new CdnFilters(); // Setup CDN filters.
         }
         /*[/pro]*/
-
-        add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
-
         /* -------------------------------------------------------------- */
 
         add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
-        if ((integer) $this->options['crons_setup'] < 1398051975 || (IS_PRO && substr($this->options['crons_setup'], -4) !== '-pro')) {
-            /*[pro strip-from="lite"]*/
-            wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-            wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
-            /*[/pro]*/
+        if ((integer) $this->options['crons_setup'] < 1398051975
+            || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__) {
+            // Purge routine; i.e., automatic cache cleanup.
             wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
             wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
 
-            $this->options['crons_setup'] = (string) time();
-            /*[pro strip-from="lite"]*/
-            $this->options['crons_setup'] .= '-pro';
+            /*[pro strip-from="lite"]*/ // Auto-cache engine.
+            wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+            wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
             /*[/pro]*/
+
+            $this->options['crons_setup'] = (string) time().'-'.__NAMESPACE__;
+
             update_option(GLOBAL_NS.'_options', $this->options);
             if (is_multisite()) {
                 update_site_option(GLOBAL_NS.'_options', $this->options);

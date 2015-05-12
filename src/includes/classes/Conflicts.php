@@ -33,12 +33,12 @@ class Conflicts
         }
         $conflicting_plugin_slugs = array(
             'quick-cache', 'quick-cache-pro',
-            str_replace('_', '-', SLUG_TD).(IS_PRO ? '' : '-pro'),
+            str_replace('_', '-', GLOBAL_NS).(IS_PRO ? '' : '-pro'),
             'wp-super-cache', 'w3-total-cache', 'hyper-cache', 'wp-rocket',
         );
-        $active_plugins           = (array) get_option('active_plugins', array());
-        $active_sitewide_plugins  = is_multisite() ? array_keys((array) get_site_option('active_sitewide_plugins', array())) : array();
-        $active_plugins           = array_unique(array_merge($active_plugins, $active_sitewide_plugins));
+        $active_plugins          = (array) get_option('active_plugins', array());
+        $active_sitewide_plugins = is_multisite() ? array_keys((array) get_site_option('active_sitewide_plugins', array())) : array();
+        $active_plugins          = array_unique(array_merge($active_plugins, $active_sitewide_plugins));
 
         foreach ($active_plugins as $_active_plugin_basename) {
             if (!($_active_plugin_slug = strstr($_active_plugin_basename, '/', true))) {
@@ -76,7 +76,7 @@ class Conflicts
             return; // Already did this in one plugin or the other.
         }
         add_action('all_admin_notices', function () {
-            $construct_name          = function ($slug_or_ns) {
+            $construct_name = function ($slug_or_ns) {
                 $name = trim(strtolower((string) $slug_or_ns));
                 $name = preg_replace('/[_\-]+(?:lite|pro)$/', '', $name);
                 $name = preg_replace('/[^a-z0-9]/', ' ', $name);

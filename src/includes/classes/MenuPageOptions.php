@@ -109,7 +109,7 @@ class MenuPageOptions extends MenuPage
             echo '   <i class="fa fa-thumbs-down"></i> '.__('Failed to remove your <code>/wp-content/advanced-cache.php</code> file. Most likely a permissions error. Please delete (or empty the contents of) this file: <code>/wp-content/advanced-cache.php</code>.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
-        if (!IS_PRO && !empty($_REQUEST[GLOBAL_NS.'_pro_preview'])) {
+        if (!IS_PRO && $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-notice info">'."\n";
             echo '<a href="'.add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="fa fa-eye-slash"></i></a>'."\n";
             echo '   <i class="fa fa-eye"></i> '.sprintf(__('<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href="http://%2$s/" target="_blank">upgrading <i class="fa fa-heart-o"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>', SLUG_TD), esc_html(NAME), esc_attr(urlencode(DOMAIN)))."\n";
@@ -188,108 +188,130 @@ class MenuPageOptions extends MenuPage
 
         /* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
+        echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview" style="opacity:1;' : '').'">'."\n";
+
+        echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+        echo '      <i class="fa fa-info-circle"></i> '.__('Clearing the Cache', SLUG_TD)."\n";
+        echo '   </a>'."\n";
+
+        echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
-
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="fa fa-info-circle"></i> '.__('Clearing the Cache', SLUG_TD)."\n";
-            echo '   </a>'."\n";
-
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
             echo '      <h2 style="margin-top:0; font-weight:bold;">'.__('Clearing the Cache Manually', SLUG_TD).'</h2>'."\n";
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear-cache-ss.png')).'" class="screenshot" />'."\n";
             echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (see screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g. you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.sprintf(__('Depending on the structure of your site, there could be many reasons to clear the cache. However, the most common reasons are related to Post/Page edits or deletions, Category/Tag edits or deletions, and Theme changes. %1$s handles most scenarios all by itself. However, many site owners like to clear the cache manually; for a variety of reasons (just to force a refresh).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][admin_bar_enable]" style="width:auto;">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['admin_bar_enable'], '1', false).'>'.__('Yes, enable the &quot;Clear Cache&quot; button in the WordPress admin bar.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually; exclude from admin bar.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <hr />'."\n";
-            echo '      <h3>'.__('Running the <a href="http://www.websharks-inc.com/product/s2clean/" target="_blank">s2Clean Theme</a> by WebSharks?', SLUG_TD).'</h3>'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['admin_bar_enable'], '1', false).'>'.__('Yes, enable the &quot;Clear Cache&quot; button in the WordPress admin bar.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="0"'.selected($this->plugin->options['admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually; exclude from admin bar.', SLUG_TD).'</option>'."\n";
+            echo '      </select></p>'."\n";
+            echo '  </div>'."\n";
+            echo '  <hr />'."\n";
+        }
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
+            echo '      <h3>'.__('Running the <a href="http://websharks-inc.com/product/s2clean/" target="_blank">s2Clean Theme</a> by WebSharks?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('If s2Clean is installed, %1$s can be configured to clear the Markdown cache too (if you\'ve enabled Markdown processing with s2Clean). The s2Clean Markdown cache is only cleared when you manually clear the cache (with %1$s); and only if you enable this option here. Note: s2Clean\'s Markdown cache is extremely dynamic. Just like the rest of your site, s2Clean caches do NOT need to be cleared away at all, as this happens automatically when your content changes. However, some developers find this feature useful while developing their site; just to force a refresh.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_s2clean_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '1', false).'>'.__('Yes, if the s2Clean theme is installed; also clear s2Clean-related caches.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '0', false).'>'.__('No, I don\'t use s2Clean; or, I don\'t want s2Clean-related caches cleared.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '1', false).'>'.__('Yes, if the s2Clean theme is installed; also clear s2Clean-related caches.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="0"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '0', false).'>'.__('No, I don\'t use s2Clean; or, I don\'t want s2Clean-related caches cleared.', SLUG_TD).'</option>'."\n";
+            echo '      </select></p>'."\n";
             echo '      <h3>'.__('Process Other Custom PHP Code?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('If you have other custom routines you\'d like to process when the cache is cleared manually, please type your custom PHP code here. The PHP code that you provide is only evaluated when you manually clear the cache (with %1$s); and only if the field below contains PHP code. Note: if your PHP code outputs a message (e.g. if you have <code>echo \'&lt;p&gt;My message&lt;/p&gt;\';</code>); your message will be displayed along with any other notes from %1$s itself. This could be useful to developers that need to clear server caches too (such as <a href="http://www.php.net/manual/en/function.apc-clear-cache.php" target="_blank">APC</a> or <a href="http://www.php.net/manual/en/memcache.flush.php" target="_blank">memcache</a>).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_eval_code]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_eval_code']).'</textarea></p>'."\n";
             echo '      <p class="info" style="margin-top:0;">'.__('<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo \'&lt;p&gt;Also cleared APC cache.&lt;/p&gt;\'; ?&gt;</code>', SLUG_TD).'</p>'."\n";
-            echo '      <hr />'."\n";
-            echo '      <h2 style="font-weight:bold;">'.__('Clearing the Cache Automatically', SLUG_TD).'</h2>'."\n";
-            echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
-            echo '      <p>'.sprintf(__('This is built into the %1$s plugin; e.g. this functionality is "always on". If you edit a Post/Page (or delete one), %1$s will automatically clear the cache file(s) associated with that content. This way a new updated version of the cache will be created automatically the next time this content is accessed. Simple updates like this occur each time you make changes in the Dashboard, and %1$s will notify you of these as they occur. %1$s monitors changes to Posts (of any kind, including Pages), Categories, Tags, Links, Themes (even Users); and more. Notifications in the Dashboard regarding these detections can be enabled/disabled below.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][change_notifications_enable]" style="width:auto;">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when changes are detected &amp; one or more cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['change_notifications_enable'], '0', false).'>'.sprintf(__('No, I don\'t want to know (don\'t really care) what %1$s is doing behind-the-scene.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <hr />'."\n";
-            echo '      <h3>'.__('Auto-Clear Designated "Home Page" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('On many sites, the Home Page (aka: the Front Page) offers an archive view of all Posts (or even Pages). Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the "Home Page"?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_home_page_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_home_page_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the "Home Page".', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_home_page_enable'], '0', false).'>'.__('No, my Home Page does not provide a list of Posts/Pages; e.g. this is not necessary.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <h3>'.__('Auto-Clear Designated "Posts Page" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('On many sites, the Posts Page (aka: the Blog Page) offers an archive view of all Posts (or even Pages). Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the "Posts Page"?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_posts_page_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_posts_page_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the "Posts Page".', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_posts_page_enable'], '0', false).'>'.__('No, I don\'t use a separate Posts Page; e.g. my Home Page IS my Posts Page.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <hr />'."\n";
-            echo '      <h3>'.__('Auto-Clear "Author Page" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('On many sites, each author has a related "Author Page" that offers an archive view of all posts associated with that author. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the related "Author Page"?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_author_page_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_author_page_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the "Author Page".', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_author_page_enable'], '0', false).'>'.__('No, my site doesn\'t use multiple authors and/or I don\'t have any "Author Page" archive views.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <h3>'.__('Auto-Clear "Category Archives" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('On many sites, each post is associated with at least one Category. Each category then has an archive view that contains all the posts within that category. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the associated Category archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_term_category_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_term_category_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the associated Category archive views.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_term_category_enable'], '0', false).'>'.__('No, my site doesn\'t use Categories and/or I don\'t have any Category archive views.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <h3>'.__('Auto-Clear "Tag Archives" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('On many sites, each post may be associated with at least one Tag. Each tag then has an archive view that contains all the posts assigned that tag. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the associated Tag archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_term_post_tag_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_term_post_tag_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the associated Tag archive views.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_term_post_tag_enable'], '0', false).'>'.__('No, my site doesn\'t use Tags and/or I don\'t have any Tag archive views.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <h3>'.__('Auto-Clear "Custom Term Archives" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('Most sites do not use any custom Terms so it should be safe to leave this disabled. However, if your site uses custom Terms and they have their own Term archive views, you may want to clear those when the associated post is cleared. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the associated Tag archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_term_other_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_term_other_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear any associated custom Term archive views.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_term_other_enable'], '0', false).'>'.__('No, my site doesn\'t use any custom Terms and/or I don\'t have any custom Term archive views.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <h3>'.__('Auto-Clear "Custom Post Type Archives" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('Most sites do not use any Custom Post Types so it should be safe to disable this option. However, if your site uses Custom Post Types and they have their own Custom Post Type archive views, you may want to clear those when any associated post is cleared. Therefore, if a single Post with a Custom Post Type is changed in some way; and %1$s clears/resets the cache for that post, would you like %1$s to also clear any existing cache files for the associated Custom Post Type archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_custom_post_type_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_custom_post_type_enable'], '1', false).'>'.__('Yes, if any single Post with a Custom Post Type is cleared/reset; also clear any associated Custom Post Type archive views.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_custom_post_type_enable'], '0', false).'>'.__('No, my site doesn\'t use any Custom Post Types and/or I don\'t have any Custom Post Type archive views.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <hr />'."\n";
-            echo '      <h3>'.__('Auto-Clear "RSS/RDF/ATOM Feeds" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('If you enable Feed Caching (below), this can be quite handy. If enabled, when you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that certain types of Feeds should be cleared to keep your site up-to-date, then %1$s will do this for you automatically. For instance, the blog\'s master feed, the blog\'s master comments feed, feeds associated with comments on a Post/Page, term-related feeds (including mixed term-related feeds), author-related feeds, etc. Under various circumstances (i.e. as you work in the Dashboard) these can be cleared automatically to keep your site up-to-date.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_xml_feeds_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_xml_feeds_enable'], '1', false).'>'.__('Yes, automatically clear RSS/RDF/ATOM Feeds from the cache when certain changes occur.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_xml_feeds_enable'], '0', false).'>'.__('No, I don\'t have Feed Caching enabled, or I prefer not to automatically clear Feeds.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <hr />'."\n";
-            echo '      <h3>'.__('Auto-Clear "XML Sitemaps" Too?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('If you\'re generating XML Sitemaps with a plugin like <a href="http://wordpress.org/plugins/google-sitemap-generator/" target="_blank">Google XML Sitemaps</a>, you can tell %1$s to automatically clear the cache of any XML Sitemaps whenever it clears a Post/Page. Note; this does NOT clear the XML Sitemap itself of course, only the cache. The point being, to clear the cache and allow changes to a Post/Page to be reflected by a fresh copy of your XML Sitemap; sooner rather than later.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_xml_sitemaps_enable]">'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_xml_sitemaps_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the cache for any XML Sitemaps.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_xml_sitemaps_enable'], '0', false).'>'.__('No, my site doesn\'t use any XML Sitemaps and/or I prefer NOT to clear the cache for XML Sitemaps.', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <p><i class="fa fa-level-up fa-rotate-90"></i>&nbsp;&nbsp;&nbsp;'.__('<strong style="font-size:110%;">XML Sitemap Patterns...</strong> A default value of <code>/sitemap*.xml</code> covers all XML Sitemaps for most installations. However, you may customize this further if you deem necessary. One pattern per line please. A wildcard <code>*</code> matches zero or more characters. Searches are performed against the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank">REQUEST_URI</a>; e.g. a request for <code>/sitemap.xml</code> and/or <code>/sitemap-xyz.xml</code> are both matched by the pattern: <code>/sitemap*.xml</code>. If your XML Sitemap was located inside a sub-directory; e.g. <code>/my/sitemaps/xyz.xml</code>; you might add the following pattern on a new line: <code>/my/sitemaps/*.xml</code>', SLUG_TD).'</p>'."\n";
-            echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_xml_sitemap_patterns]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_xml_sitemap_patterns']).'</textarea></p>'."\n";
-            if (is_multisite()) {
-                echo '  <p class="info" style="display:block; margin-top:-15px;">'.__('In a Multisite Network, each child blog (whether it be a sub-domain, a sub-directory, or a mapped domain); will automatically change the leading <code>http://[sub.]domain/[sub-directory]</code> used in pattern matching. In short, there is no need to add sub-domains or sub-directories for each child blog in these patterns. Please include only the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank">REQUEST_URI</a> (i.e. the path) which leads to the XML Sitemap on all child blogs in the network.', SLUG_TD).'</p>'."\n";
-            }
-            echo '   </div>'."\n";
-
-            echo '</div>'."\n";
+            echo '  </div>'."\n";
+            echo '  <hr />'."\n";
         }
+        echo '      <h2 style="font-weight:bold;">'.__('Clearing the Cache Automatically', SLUG_TD).'</h2>'."\n";
+        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
+        echo '      <p>'.sprintf(__('This is built into the %1$s plugin; e.g. this functionality is "always on". If you edit a Post/Page (or delete one), %1$s will automatically clear the cache file(s) associated with that content. This way a new updated version of the cache will be created automatically the next time this content is accessed. Simple updates like this occur each time you make changes in the Dashboard, and %1$s will notify you of these as they occur. %1$s monitors changes to Posts (of any kind, including Pages), Categories, Tags, Links, Themes (even Users); and more.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][change_notifications_enable]" style="width:auto;">'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when changes are detected &amp; one or more cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+            echo '          <option value="0"'.selected($this->plugin->options['change_notifications_enable'], '0', false).'>'.sprintf(__('No, I don\'t want to know (don\'t really care) what %1$s is doing behind-the-scene.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+            echo '      </select></p>'."\n";
+            echo '  </div>'."\n";
+        }
+        echo '      <hr />'."\n";
+
+        echo '      <h3>'.__('Auto-Clear Designated "Home Page" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('On many sites, the Home Page (aka: the Front Page) offers an archive view of all Posts (or even Pages). Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the "Home Page"?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_home_page_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_home_page_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the "Home Page".', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_home_page_enable'], '0', false).'>'.__('No, my Home Page does not provide a list of Posts/Pages; e.g. this is not necessary.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+        echo '      <h3>'.__('Auto-Clear Designated "Posts Page" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('On many sites, the Posts Page (aka: the Blog Page) offers an archive view of all Posts (or even Pages). Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the "Posts Page"?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_posts_page_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_posts_page_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the "Posts Page".', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_posts_page_enable'], '0', false).'>'.__('No, I don\'t use a separate Posts Page; e.g. my Home Page IS my Posts Page.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+        echo '      <hr />'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "Author Page" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('On many sites, each author has a related "Author Page" that offers an archive view of all posts associated with that author. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the related "Author Page"?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_author_page_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_author_page_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the "Author Page".', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_author_page_enable'], '0', false).'>'.__('No, my site doesn\'t use multiple authors and/or I don\'t have any "Author Page" archive views.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "Category Archives" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('On many sites, each post is associated with at least one Category. Each category then has an archive view that contains all the posts within that category. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the associated Category archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_term_category_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_term_category_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the associated Category archive views.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_term_category_enable'], '0', false).'>'.__('No, my site doesn\'t use Categories and/or I don\'t have any Category archive views.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "Tag Archives" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('On many sites, each post may be associated with at least one Tag. Each tag then has an archive view that contains all the posts assigned that tag. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the associated Tag archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_term_post_tag_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_term_post_tag_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the associated Tag archive views.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_term_post_tag_enable'], '0', false).'>'.__('No, my site doesn\'t use Tags and/or I don\'t have any Tag archive views.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "Custom Term Archives" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('Most sites do not use any custom Terms so it should be safe to leave this disabled. However, if your site uses custom Terms and they have their own Term archive views, you may want to clear those when the associated post is cleared. Therefore, if a single Post/Page is changed in some way; and %1$s clears/resets the cache for a single Post/Page, would you like %1$s to also clear any existing cache files for the associated Tag archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_term_other_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_term_other_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear any associated custom Term archive views.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_term_other_enable'], '0', false).'>'.__('No, my site doesn\'t use any custom Terms and/or I don\'t have any custom Term archive views.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "Custom Post Type Archives" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('Most sites do not use any Custom Post Types so it should be safe to disable this option. However, if your site uses Custom Post Types and they have their own Custom Post Type archive views, you may want to clear those when any associated post is cleared. Therefore, if a single Post with a Custom Post Type is changed in some way; and %1$s clears/resets the cache for that post, would you like %1$s to also clear any existing cache files for the associated Custom Post Type archive views?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_custom_post_type_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_custom_post_type_enable'], '1', false).'>'.__('Yes, if any single Post with a Custom Post Type is cleared/reset; also clear any associated Custom Post Type archive views.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_custom_post_type_enable'], '0', false).'>'.__('No, my site doesn\'t use any Custom Post Types and/or I don\'t have any Custom Post Type archive views.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+
+        echo '      <hr />'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "RSS/RDF/ATOM Feeds" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('If you enable Feed Caching (below), this can be quite handy. If enabled, when you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that certain types of Feeds should be cleared to keep your site up-to-date, then %1$s will do this for you automatically. For instance, the blog\'s master feed, the blog\'s master comments feed, feeds associated with comments on a Post/Page, term-related feeds (including mixed term-related feeds), author-related feeds, etc. Under various circumstances (i.e. as you work in the Dashboard) these can be cleared automatically to keep your site up-to-date.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_xml_feeds_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_xml_feeds_enable'], '1', false).'>'.__('Yes, automatically clear RSS/RDF/ATOM Feeds from the cache when certain changes occur.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_xml_feeds_enable'], '0', false).'>'.__('No, I don\'t have Feed Caching enabled, or I prefer not to automatically clear Feeds.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+
+        echo '      <hr />'."\n";
+
+        echo '      <h3>'.__('Auto-Clear "XML Sitemaps" Too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('If you\'re generating XML Sitemaps with a plugin like <a href="http://wordpress.org/plugins/google-sitemap-generator/" target="_blank">Google XML Sitemaps</a>, you can tell %1$s to automatically clear the cache of any XML Sitemaps whenever it clears a Post/Page. Note; this does NOT clear the XML Sitemap itself of course, only the cache. The point being, to clear the cache and allow changes to a Post/Page to be reflected by a fresh copy of your XML Sitemap; sooner rather than later.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_xml_sitemaps_enable]">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['cache_clear_xml_sitemaps_enable'], '1', false).'>'.__('Yes, if any single Post/Page is cleared/reset; also clear the cache for any XML Sitemaps.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_xml_sitemaps_enable'], '0', false).'>'.__('No, my site doesn\'t use any XML Sitemaps and/or I prefer NOT to clear the cache for XML Sitemaps.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
+        echo '      <p><i class="fa fa-level-up fa-rotate-90"></i>&nbsp;&nbsp;&nbsp;'.__('<strong style="font-size:110%;">XML Sitemap Patterns...</strong> A default value of <code>/sitemap*.xml</code> covers all XML Sitemaps for most installations. However, you may customize this further if you deem necessary. One pattern per line please. A wildcard <code>*</code> matches zero or more characters. Searches are performed against the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank">REQUEST_URI</a>; e.g. a request for <code>/sitemap.xml</code> and/or <code>/sitemap-xyz.xml</code> are both matched by the pattern: <code>/sitemap*.xml</code>. If your XML Sitemap was located inside a sub-directory; e.g. <code>/my/sitemaps/xyz.xml</code>; you might add the following pattern on a new line: <code>/my/sitemaps/*.xml</code>', SLUG_TD).'</p>'."\n";
+        echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_xml_sitemap_patterns]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_xml_sitemap_patterns']).'</textarea></p>'."\n";
+        if (is_multisite()) {
+            echo '  <p class="info" style="display:block; margin-top:-15px;">'.__('In a Multisite Network, each child blog (whether it be a sub-domain, a sub-directory, or a mapped domain); will automatically change the leading <code>http://[sub.]domain/[sub-directory]</code> used in pattern matching. In short, there is no need to add sub-domains or sub-directories for each child blog in these patterns. Please include only the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank">REQUEST_URI</a> (i.e. the path) which leads to the XML Sitemap on all child blogs in the network.', SLUG_TD).'</p>'."\n";
+        }
+        echo '   </div>'."\n";
+
+        echo '</div>'."\n";
+
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<div class="plugin-menu-page-panel">'."\n";
