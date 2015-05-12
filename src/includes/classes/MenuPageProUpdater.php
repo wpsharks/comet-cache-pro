@@ -35,8 +35,8 @@ class MenuPageProUpdater extends MenuPage
         if (current_user_can($this->plugin->cap)) {
             echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="fa fa-gears"></i> '.__('Options', SLUG_TD).'</a>'."\n";
         }
-        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', SLUG_TD).'</a>'."\n";
-        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/pro-updater.png').'" alt="'.esc_attr(__('Pro Plugin Updater', SLUG_TD)).'" />'."\n";

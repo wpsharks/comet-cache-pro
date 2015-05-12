@@ -49,7 +49,7 @@ $self->addNetworkMenuPages = function () use ($self) {
 
     add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
-    if (current_user_can($self->network_cap)) {
+    if (IS_PRO && current_user_can($self->network_cap)) {
         add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
     }
 };
@@ -70,7 +70,9 @@ $self->addMenuPages = function () use ($self) {
 
     add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
-    add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+    if (IS_PRO) {
+        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+    }
 };
 
 /*
@@ -136,7 +138,9 @@ $self->menuPageOptions = function () use ($self) {
  * @since 150422 Rewrite.
  */
 $self->menuPageProUpdater = function () use ($self) {
-    new MenuPage('pro-updater');
+    if (IS_PRO) {
+        new MenuPage('pro-updater');
+    }
 };
 
 /*
