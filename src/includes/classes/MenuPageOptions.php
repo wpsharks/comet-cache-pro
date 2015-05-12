@@ -55,7 +55,7 @@ class MenuPageOptions extends MenuPage
         echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-        echo '   <img src="'.$this->plugin->url('/src/client-s/images/options.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
+        echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
         echo '</div>'."\n";
 
