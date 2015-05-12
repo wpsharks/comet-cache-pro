@@ -131,6 +131,7 @@ $self->isLocalhost = function () use ($self) {
     return ($is = false);
 };
 
+/*[pro strip-from="lite"]*/
 /*
  * Is the current request for the Auto-Cache Engine?
  *
@@ -151,6 +152,7 @@ $self->isAutoCacheEngine = function () use ($self) {
     }
     return ($is = false);
 };
+/*[/pro]*/
 
 /*
  * Is the current request for a feed?

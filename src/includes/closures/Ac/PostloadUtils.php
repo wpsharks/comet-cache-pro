@@ -86,11 +86,13 @@ $self->is_maintenance = false;
  * @type array Data and/or flags that work with various postload handlers.
  */
 $self->postload = array(
+    /*[pro strip-from="lite"]*/
     'invalidate_when_logged_in' => false,
     'when_logged_in'            => false,
-    'filter_status_header'      => true,
-    'wp_main_query'             => true,
-    'set_debug_info'            => ZENCACHE_DEBUGGING_ENABLE,
+    /*[/pro]*/
+    'filter_status_header' => true,
+    'wp_main_query'        => true,
+    'set_debug_info'       => ZENCACHE_DEBUGGING_ENABLE,
 );
 
 /*

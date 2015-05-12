@@ -269,7 +269,7 @@ class VsUpgrades extends AbsBase
 
             $this->plugin->enqueueNotice(
                 '<p>'.sprintf(__('<strong>Woohoo! %1$s activated.</strong> :-)', SLUG_TD), esc_html(NAME)).'</p>'.
-                '<p>'.sprintf(__('NOTE: Your Quick Cache options were preserved by %1$s (for more details, visit the <a href="http://zencache.com/r/quick-cache-pro-migration-faq/" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME)).'</p>'.
+                '<p>'.sprintf(__('NOTE: Your Quick Cache options were preserved by %1$s (for more details, visit the <a href="%2$s" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME), esc_attr(IS_PRO ? 'http://zencache.com/r/quick-cache-pro-migration-faq/' : 'http://zencache.com/kb-article/how-to-migrate-from-quick-cache-lite-to-zencache-lite/')).'</p>'.
                 '<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s ⥱ Plugin Options</a>.'.'', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')))).'</p>'
             );
         }

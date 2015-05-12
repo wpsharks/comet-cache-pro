@@ -28,7 +28,7 @@ $self->hostToken = function ($dashify = false) use ($self) {
     if (!is_null($token = &$self->staticKey('hostToken', $dashify))) {
         return $token; // Already cached this.
     }
-    $token  = !empty($_SERVER['HTTP_HOST'])
+    $token = !empty($_SERVER['HTTP_HOST'])
         ? strtolower((string) $_SERVER['HTTP_HOST'])
         : '';
     if ($dashify) {
@@ -141,6 +141,7 @@ $self->hostBaseDirTokens = function ($dashify = false) use ($self) {
     return $tokens;
 };
 
+/*[pro strip-from="lite"]*/
 /*
  * Produces a token based on the current user.
  *
@@ -177,3 +178,4 @@ $self->userToken = function () use ($self) {
     }
     return ($token = '');
 };
+/*[/pro]*/

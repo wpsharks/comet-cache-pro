@@ -1,6 +1,7 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+/*[pro strip-from="lite"]*/
 /*
  * Clears cache files associated with a particular user.
  *
@@ -43,6 +44,7 @@ $self->autoClearUserCache = function ($user_id) use ($self) {
     }
     return $counter;
 };
+/*[/pro]*/
 
 /*
  * Automatically clears cache files associated with a particular user.

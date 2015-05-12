@@ -18,6 +18,8 @@ function wp_cache_postload()
     if (!empty($advanced_cache->postload['invalidate_when_logged_in'])) {
         $advanced_cache->maybeInvalidateWhenLoggedInPostload();
     }
+    /*[/pro]*/
+    /*[pro strip-from="lite"]*/
     if (!empty($advanced_cache->postload['when_logged_in'])) {
         $advanced_cache->maybeStartObWhenLoggedInPostload();
     }

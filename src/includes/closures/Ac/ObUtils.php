@@ -97,7 +97,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
         return $self->maybeSetDebugInfo(NC_DEBUG_UNCACHEABLE_REQUEST);
     }
     if (isset($_SERVER['SERVER_ADDR']) && $self->currentIp() === $_SERVER['SERVER_ADDR']) {
-        if (!$self->isAutoCacheEngine() && !$self->isLocalhost()) {
+        if ((!IS_PRO || !$self->isAutoCacheEngine()) && !$self->isLocalhost()) {
             return $self->maybeSetDebugInfo(NC_DEBUG_SELF_SERVE_REQUEST);
         }
     }
@@ -113,7 +113,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_MS_FILES);
     }
-    if (!ZENCACHE_WHEN_LOGGED_IN && $self->isLikeUserLoggedIn()) {
+    if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
     if (!ZENCACHE_GET_REQUESTS && $self->isGetRequestWQuery() && (!isset($_GET['zcAC']) || !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN))) {
@@ -122,7 +122,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (ZENCACHE_EXCLUDE_URIS && preg_match(ZENCACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_URIS);
     }
-    if (ZENCACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && !$self->isAutoCacheEngine()) {
+    if (ZENCACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$self->isAutoCacheEngine())) {
         if (preg_match(ZENCACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_AGENTS);
         }
@@ -150,7 +150,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
 
     $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
-    if (ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
+    if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
     } elseif (is_file($self->cache_file) && filemtime($self->cache_file) >= strtotime('-'.ZENCACHE_MAX_AGE)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
@@ -223,10 +223,10 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     if (isset($_SERVER['DONOTCACHEPAGE'])) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
     }
-    if (!ZENCACHE_WHEN_LOGGED_IN && $self->is_user_logged_in) {
+    if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->is_user_logged_in) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER);
     }
-    if (!ZENCACHE_WHEN_LOGGED_IN && $self->isLikeUserLoggedIn()) {
+    if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
     if ($self->is_404 && !ZENCACHE_CACHE_404_REQUESTS) {
@@ -283,12 +283,14 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     }
     /* ------- Otherwise, we need to construct & store a new cache file. ----------------------------------------------- */
 
-    $cache = IS_PRO ? $self->maybeCompressHtml($cache) : $cache; // Possible HTML compression.
+    /*[pro strip-from="lite"]*/
+    $cache = $self->maybeCompressHtml($cache); // Possible HTML compression.
+    /*[/pro]*/
 
     if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
         $total_time = number_format(microtime(true) - $self->timer, 5, '.', ''); // Based on the original timer.
         $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file path: %2$s', SLUG_TD), NAME, str_replace(WP_CONTENT_DIR, '', $self->is_404 ? $self->cache_file_404 : $self->cache_file))).' -->';
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, (ZENCACHE_WHEN_LOGGED_IN && $self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, (IS_PRO && ZENCACHE_WHEN_LOGGED_IN && $self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
         $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', SLUG_TD), NAME, date('M jS, Y @ g:i a T', strtotime('+'.ZENCACHE_MAX_AGE)))).' -->';
     }
     if ($self->is_404) {
