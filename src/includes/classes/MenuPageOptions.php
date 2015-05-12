@@ -207,6 +207,7 @@ class MenuPageOptions extends MenuPage
             echo '          <option value="0"'.selected($this->plugin->options['admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually; exclude from admin bar.', SLUG_TD).'</option>'."\n";
             echo '      </select></p>'."\n";
             echo '  </div>'."\n";
+
             echo '  <hr />'."\n";
         }
         if (IS_PRO || $this->plugin->isProPreview()) {
@@ -217,11 +218,18 @@ class MenuPageOptions extends MenuPage
             echo '          <option value="1"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '1', false).'>'.__('Yes, if the s2Clean theme is installed; also clear s2Clean-related caches.', SLUG_TD).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '0', false).'>'.__('No, I don\'t use s2Clean; or, I don\'t want s2Clean-related caches cleared.', SLUG_TD).'</option>'."\n";
             echo '      </select></p>'."\n";
+            echo '  </div>'."\n";
+
+            echo '  <hr />'."\n";
+        }
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
             echo '      <h3>'.__('Process Other Custom PHP Code?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('If you have other custom routines you\'d like to process when the cache is cleared manually, please type your custom PHP code here. The PHP code that you provide is only evaluated when you manually clear the cache (with %1$s); and only if the field below contains PHP code. Note: if your PHP code outputs a message (e.g. if you have <code>echo \'&lt;p&gt;My message&lt;/p&gt;\';</code>); your message will be displayed along with any other notes from %1$s itself. This could be useful to developers that need to clear server caches too (such as <a href="http://www.php.net/manual/en/function.apc-clear-cache.php" target="_blank">APC</a> or <a href="http://www.php.net/manual/en/memcache.flush.php" target="_blank">memcache</a>).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_eval_code]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_eval_code']).'</textarea></p>'."\n";
             echo '      <p class="info" style="margin-top:0;">'.__('<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo \'&lt;p&gt;Also cleared APC cache.&lt;/p&gt;\'; ?&gt;</code>', SLUG_TD).'</p>'."\n";
             echo '  </div>'."\n";
+
             echo '  <hr />'."\n";
         }
         echo '      <h2 style="font-weight:bold;">'.__('Clearing the Cache Automatically', SLUG_TD).'</h2>'."\n";

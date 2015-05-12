@@ -18,6 +18,15 @@ class Plugin extends AbsBaseAp
     public $enable_hooks = true;
 
     /**
+     * Pro-only option keys.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @type array Pro-only option keys.
+     */
+    public $pro_only_option_keys = array();
+
+    /**
      * Default options.
      *
      * @since 150422 Rewrite.
@@ -153,6 +162,49 @@ class Plugin extends AbsBaseAp
 
         load_plugin_textdomain(SLUG_TD); // Text domain.
 
+        $this->pro_only_option_keys = array(
+            'admin_bar_enable',
+            'change_notifications_enable',
+            'cache_clear_s2clean_enable',
+            'cache_clear_eval_code',
+            'when_logged_in',
+            'version_salt',
+
+            'htmlc_enable',
+            'htmlc_css_exclusions',
+            'htmlc_js_exclusions',
+            'htmlc_cache_expiration_time',
+            'htmlc_compress_combine_head_body_css',
+            'htmlc_compress_combine_head_js',
+            'htmlc_compress_combine_footer_js',
+            'htmlc_compress_combine_remote_css_js',
+            'htmlc_compress_inline_js_code',
+            'htmlc_compress_css_code',
+            'htmlc_compress_js_code',
+            'htmlc_compress_html_code',
+
+            'auto_cache_enable',
+            'auto_cache_max_time',
+            'auto_cache_delay',
+            'auto_cache_sitemap_url',
+            'auto_cache_other_urls',
+            'auto_cache_user_agent',
+
+            'cdn_enable',
+            'cdn_host',
+            'cdn_invalidation_var',
+            'cdn_invalidation_counter',
+            'cdn_over_ssl',
+            'cdn_whitelisted_extensions',
+            'cdn_blacklisted_extensions',
+            'cdn_whitelisted_uri_patterns',
+            'cdn_blacklisted_uri_patterns',
+
+            'pro_update_check',
+            'last_pro_update_check',
+            'pro_update_username',
+            'pro_update_password',
+        );
         $this->default_options = array(
             /* Core/systematic plugin options. */
 
@@ -278,8 +330,7 @@ class Plugin extends AbsBaseAp
             /* Related to uninstallation routines. */
 
             'uninstall_on_deletion' => '0', // `0|1`.
-
-        ); // Default options are merged with those defined by the site owner.
+        );
         $options = is_array($options = get_option(GLOBAL_NS.'_options')) ? $options : array();
         if (is_multisite() && is_array($site_options = get_site_option(GLOBAL_NS.'_options'))) {
             $options = array_merge($options, $site_options); // Multisite options.

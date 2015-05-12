@@ -229,6 +229,9 @@ class Actions extends AbsBase
         }
         $args = array_map('trim', stripslashes_deep((array) $args));
 
+        if (!IS_PRO) { // Do not save lite option keys.
+            $args = array_diff_key($args, $this->plugin->pro_only_option_keys);
+        }
         if (isset($args['base_dir'])) {
             $args['base_dir'] = trim($args['base_dir'], '\\/'." \t\n\r\0\x0B");
         }
