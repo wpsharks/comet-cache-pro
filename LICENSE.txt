@@ -1,3 +1,4 @@
+/*[pro strip-from="lite"]*/
 Copyright: © 2015 [WebSharks, Inc.](http://websharks-inc.com)
 
 ------------------------------------------------------------------------------------------------
@@ -28,7 +29,7 @@ Credits / Additional Acknowledgments
 	- Font Awesome <http://fortawesome.github.io/Font-Awesome/>
 
 ------------------------------------------------------------------------------------------------
-
+/*[/pro]*/
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

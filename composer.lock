@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d7cc929872aacf07c8f7833e188dad7d",
+    "hash": "82479d503f0cba92028c73682d22dea5",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/css-minifier.git",
-                "reference": "34332f37ad278569e900d0eb481716faa82ac197"
+                "reference": "69bc4d86cf868aca3b41fd61a1d8b3944eaf516a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/css-minifier/zipball/34332f37ad278569e900d0eb481716faa82ac197",
-                "reference": "34332f37ad278569e900d0eb481716faa82ac197",
+                "url": "https://api.github.com/repos/websharks/css-minifier/zipball/69bc4d86cf868aca3b41fd61a1d8b3944eaf516a",
+                "reference": "69bc4d86cf868aca3b41fd61a1d8b3944eaf516a",
                 "shasum": ""
             },
             "require": {
@@ -58,7 +58,7 @@
                 "css",
                 "websharks"
             ],
-            "time": "2015-05-11 15:26:33"
+            "time": "2015-05-11 20:52:29"
         },
         {
             "name": "websharks/html-compressor",
@@ -66,12 +66,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "774300f53ff14a422b53c311d6f22f0358493c3f"
+                "reference": "1449c504cd1d74eafc054c80f8e2c7d1f387c6e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/774300f53ff14a422b53c311d6f22f0358493c3f",
-                "reference": "774300f53ff14a422b53c311d6f22f0358493c3f",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/1449c504cd1d74eafc054c80f8e2c7d1f387c6e0",
+                "reference": "1449c504cd1d74eafc054c80f8e2c7d1f387c6e0",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-05-11 15:24:08"
+            "time": "2015-05-11 20:57:09"
         },
         {
             "name": "websharks/js-minifier",
@@ -124,12 +124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/js-minifier.git",
-                "reference": "824adcf8d70b8f29c61110bbe2611033749044a5"
+                "reference": "3c1e99af6df9df8f691642fbb769a10e49bfba23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/824adcf8d70b8f29c61110bbe2611033749044a5",
-                "reference": "824adcf8d70b8f29c61110bbe2611033749044a5",
+                "url": "https://api.github.com/repos/websharks/js-minifier/zipball/3c1e99af6df9df8f691642fbb769a10e49bfba23",
+                "reference": "3c1e99af6df9df8f691642fbb769a10e49bfba23",
                 "shasum": ""
             },
             "require": {
@@ -171,7 +171,7 @@
                 "javascript",
                 "websharks"
             ],
-            "time": "2015-05-11 15:21:50"
+            "time": "2015-05-11 20:53:04"
         },
         {
             "name": "websharks/sharkicons",

@@ -26,7 +26,7 @@
     }],
     "support": {
         "source": "https://github.com/websharks/zencache-pro",
-        "issues": "https://github.com/websharks/zencache-pro/issues"
+        "issues": "https://github.com/websharks/zencache/issues"
     },
 
     "require": {

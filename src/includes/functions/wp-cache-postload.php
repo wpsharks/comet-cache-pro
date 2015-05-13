@@ -1,4 +1,6 @@
 <?php
+use WebSharks\ZenCache\Pro as Plugin;
+
 /**
  * Postload event handler; overrides core WP function.
  *
@@ -8,7 +10,7 @@
  */
 function wp_cache_postload()
 {
-    $GLOBAL_NS      = \WebSharks\ZenCache\Pro\GLOBAL_NS;
+    $GLOBAL_NS      = Plugin\GLOBAL_NS;
     $advanced_cache = $GLOBALS[$GLOBAL_NS.'_advanced_cache'];
 
     if (!$advanced_cache->is_running) {
