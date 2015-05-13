@@ -36,8 +36,8 @@ class MenuPageProUpdater extends MenuPage
         if (current_user_can($this->plugin->cap)) {
             echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="fa fa-gears"></i> '.__('Options', SLUG_TD).'</a>'."\n";
         }
-        echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', SLUG_TD).'</a>'."\n";
-        echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/pro-updater.png').'" alt="'.esc_attr(__('Pro Plugin Updater', SLUG_TD)).'" />'."\n";
@@ -70,7 +70,7 @@ class MenuPageProUpdater extends MenuPage
         echo '   <div class="plugin-menu-page-panel-body clearfix open">'."\n";
         echo '      <i class="fa fa-user fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
         echo '      <h3>'.sprintf(__('%1$s™ Authentication', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-        echo '      <p>'.sprintf(__('From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href="http://%2$s/" target="_blank">%2$s</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href="http://%2$s/" target="_blank">%2$s</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under "My Account" when you log in @ <a href="http://%2$s/" target="_blank">%2$s</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="fa fa-smile-o"></i>', SLUG_TD), esc_html(NAME), esc_html(DOMAIN)).'</p>'."\n";
+        echo '      <p>'.sprintf(__('From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href="http://zencache.com/prices/" target="_blank">zencache.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href="http://zencache.com/" target="_blank">zencache.com</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under "My Account" when you log in @ <a href="http://zencache.com/" target="_blank">zencache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="fa fa-smile-o"></i>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <hr />'."\n";
         echo '      <h3>'.sprintf(__('Customer Username', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
         echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[proUpdate][username]" value="'.esc_attr($this->plugin->options['pro_update_username']).'" autocomplete="off" /></p>'."\n";

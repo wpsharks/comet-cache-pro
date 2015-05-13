@@ -49,10 +49,10 @@ class MenuPageOptions extends MenuPage
         }
         if (!IS_PRO) {
             echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1')), self_admin_url('/admin.php'))).'"><i class="fa fa-eye"></i> '.__('Preview Pro Features', SLUG_TD).'</a>'."\n";
-            echo '  <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/prices/').'" target="_blank"><i class="fa fa-heart-o"></i> '.__('Pro Upgrade', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr('http://zencache.com/prices/').'" target="_blank"><i class="fa fa-heart-o"></i> '.__('Pro Upgrade', SLUG_TD).'</a>'."\n";
         }
-        echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter (Subscribe)', SLUG_TD).'</a>'."\n";
-        echo '      <a href="'.esc_attr('http://'.urlencode(DOMAIN).'/r/'.urlencode(GLOBAL_NS).'-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers (Signup)', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
@@ -112,7 +112,7 @@ class MenuPageOptions extends MenuPage
         if (!IS_PRO && $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-notice info">'."\n";
             echo '<a href="'.add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="fa fa-eye-slash"></i></a>'."\n";
-            echo '   <i class="fa fa-eye"></i> '.sprintf(__('<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href="http://%2$s/" target="_blank">upgrading <i class="fa fa-heart-o"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>', SLUG_TD), esc_html(NAME), esc_attr(urlencode(DOMAIN)))."\n";
+            echo '   <i class="fa fa-eye"></i> '.sprintf(__('<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href="http://zencache.com/prices/" target="_blank">upgrading <i class="fa fa-heart-o"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>', SLUG_TD), esc_html(NAME))."\n";
             echo '</div>'."\n";
         }
         if (!$this->plugin->options['enable']) {
@@ -188,7 +188,7 @@ class MenuPageOptions extends MenuPage
 
         /* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
-        echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview" style="opacity:1;' : '').'">'."\n";
+        echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
         echo '      <i class="fa fa-info-circle"></i> '.__('Clearing the Cache', SLUG_TD)."\n";
@@ -198,7 +198,7 @@ class MenuPageOptions extends MenuPage
 
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
-            echo '      <h2 style="margin-top:0; font-weight:bold;">'.__('Clearing the Cache Manually', SLUG_TD).'</h2>'."\n";
+            echo '      <h2 style="margin-top:0;">'.__('Clearing the Cache Manually', SLUG_TD).'</h2>'."\n";
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear-cache-ss.png')).'" class="screenshot" />'."\n";
             echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (see screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g. you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.sprintf(__('Depending on the structure of your site, there could be many reasons to clear the cache. However, the most common reasons are related to Post/Page edits or deletions, Category/Tag edits or deletions, and Theme changes. %1$s handles most scenarios all by itself. However, many site owners like to clear the cache manually; for a variety of reasons (just to force a refresh).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -232,7 +232,7 @@ class MenuPageOptions extends MenuPage
 
             echo '  <hr />'."\n";
         }
-        echo '      <h2 style="font-weight:bold;">'.__('Clearing the Cache Automatically', SLUG_TD).'</h2>'."\n";
+        echo '      <h2 style="margin-top:0;">'.__('Clearing the Cache Automatically', SLUG_TD).'</h2>'."\n";
         echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
         echo '      <p>'.sprintf(__('This is built into the %1$s plugin; e.g. this functionality is "always on". If you edit a Post/Page (or delete one), %1$s will automatically clear the cache file(s) associated with that content. This way a new updated version of the cache will be created automatically the next time this content is accessed. Simple updates like this occur each time you make changes in the Dashboard, and %1$s will notify you of these as they occur. %1$s monitors changes to Posts (of any kind, including Pages), Categories, Tags, Links, Themes (even Users); and more.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         if (IS_PRO || $this->plugin->isProPreview()) {
@@ -379,7 +379,7 @@ class MenuPageOptions extends MenuPage
             echo '      <i class="fa fa-gears"></i> '.__('Logged-In Users', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <i class="fa fa-group fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Caching Enabled for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. Most sites will NOT want to cache content generated while a user is logged-in. Doing so could result in a cache of dynamic content generated specifically for a particular user, where the content being cached may contain details that pertain only to the user that was logged-in when the cache was generated. Imagine visiting a website that says you\'re logged-in as Billy Bob (but you\'re not Billy Bob; NOT good). In short, do NOT turn this on unless you know what you\'re doing.', SLUG_TD).'</p>'."\n";
@@ -524,7 +524,7 @@ class MenuPageOptions extends MenuPage
             echo '      <i class="fa fa-gears"></i> '.__('Auto-Cache Engine', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable the Auto-Cache Engine?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('After using %1$s for awhile (or any other page caching plugin, for that matter); it becomes obvious that at some point (based on your configured Expiration Time) %1$s has to refresh itself. It does this by ditching its cached version of a page, reloading the database-driven content, and then recreating the cache with the latest data. This is a never ending regeneration cycle that is based entirely on your configured Expiration Time.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -559,13 +559,13 @@ class MenuPageOptions extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel"'.(!IS_PRO ? ' pro-preview' : '').'>'."\n";
+            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
             echo '      <i class="fa fa-gears"></i> '.__('HTML Compression', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable WebSharks™ HTML Compression?', SLUG_TD).'</h3>'."\n";
             echo '      <p class="notice" style="display:block;">'.__('This is an experimental feature, however it offers a potentially HUGE speed boost. You can <a href="https://github.com/websharks/html-compressor" target="_blank">learn more here</a>. Please use with caution.', SLUG_TD).'</p>'."\n";
@@ -659,7 +659,7 @@ class MenuPageOptions extends MenuPage
             echo '      <i class="fa fa-gears"></i> '.__('Static CDN Filters', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <i class="fa fa-question-circle fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable Static CDN Filters (e.g. MaxCDN/CloudFront)?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn\'t require any DNS changes either. :-) Please <a href="http://zencache.com/r/static-cdn-filters-general-instructions/" target="_blank">click here</a> for a general set of instructions.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -672,9 +672,9 @@ class MenuPageOptions extends MenuPage
             echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
             echo '         <h3>'.__('CDN Host Name (Absolutely Required)', SLUG_TD).'</h3>'."\n";
             echo '         <p class="info" style="display:block;">'.// This note includes two graphics. One for MaxCDN; another for CloudFront.
-             '            <a href="http://aws.amazon.com/cloudfront/" target="_blank"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/cloudfront-logo.png')).'" style="width:75px; float:right; margin: 8px 10px 0 25px;" /></a>'.
-             '            <a href="https://www.maxcdn.com/websharks/" target="_blank"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/maxcdn-logo.png')).'" style="width:125px; float:right; margin: 20px 0 0 25px;" /></a>'.
-             '            '.__('This one field is really all that\'s necessary to get Static CDN Filters working! However, it does requires a little bit of work on your part. You need to setup and configure a CDN before you can fill in this field. One you configure a CDN, you\'ll receive a host name (provided by your CDN), which you\'ll enter here; e.g. <code>js9dgjsl4llqpp.cloudfront.net</code>. We recommend <a href="https://www.maxcdn.com/websharks/" target="_blank">MaxCDN</a> and/or <a href="http://aws.amazon.com/cloudfront/" target="_blank">Amazon CloudFront</a>, but this should work with many of the most popular CDNs. Please read <a href="http://zencache.com/r/static-cdn-filters-general-instructions/" target="_blank">this article</a> for a general set of instructions. We also have a <a href="http://zencache.com/r/static-cdn-filters-cloudfront/" target="_blank">CloudFront tutorial video</a> that walks you through the process.', SLUG_TD).'</option>'."\n";
+             '              <a href="http://aws.amazon.com/cloudfront/" target="_blank"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/cloudfront-logo.png')).'" style="width:75px; float:right; margin: 8px 10px 0 25px;" /></a>'.
+             '              <a href="https://www.maxcdn.com/websharks/" target="_blank"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/maxcdn-logo.png')).'" style="width:125px; float:right; margin: 20px 0 0 25px;" /></a>'.
+             '            '.__('This one field is really all that\'s necessary to get Static CDN Filters working! However, it does requires a little bit of work on your part. You need to setup and configure a CDN before you can fill in this field. One you configure a CDN, you\'ll receive a host name (provided by your CDN), which you\'ll enter here; e.g. <code>js9dgjsl4llqpp.cloudfront.net</code>. We recommend <a href="https://www.maxcdn.com/websharks/" target="_blank">MaxCDN</a> and/or <a href="http://aws.amazon.com/cloudfront/" target="_blank">Amazon CloudFront</a>, but this should work with many of the most popular CDNs. Please read <a href="http://zencache.com/r/static-cdn-filters-general-instructions/" target="_blank">this article</a> for a general set of instructions. We also have a <a href="http://zencache.com/r/static-cdn-filters-cloudfront/" target="_blank">CloudFront tutorial video</a> that walks you through the process.', SLUG_TD).'</p>'."\n";
             echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_host]" value="'.esc_attr($this->plugin->options['cdn_host']).'" /></p>'."\n";
             echo '         <h3>'.__('CDN Host Supports HTTPS Connections?', SLUG_TD).'</h3>'."\n";
             echo '         <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_over_ssl]" autocomplete="off">'."\n";
@@ -686,7 +686,7 @@ class MenuPageOptions extends MenuPage
             echo '         <hr />'."\n";
             echo '         <h3>'.__('Whitelisted File Extensions (Optional; Comma-Delimited)', SLUG_TD).'</h3>'."\n";
             echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_whitelisted_extensions]" value="'.esc_attr($this->plugin->options['cdn_whitelisted_extensions']).'" /></p>'."\n";
-            echo '         <p>'.__('If you leave this empty a default set of extensions are taken from WordPress itself. The default set of whitelisted file extensions includes everything supported by the WordPress media library. This includes the following: <code style="white-space:normal; word-wrap:break-word;">'.esc_html(implode(',', CdnFilters::defaultWhitelistedExtensions())).'</code>', SLUG_TD).'</p>'."\n";
+            echo '         <p>'.__('If you leave this empty a default set of extensions are taken from WordPress itself. The default set of whitelisted file extensions includes everything supported by the WordPress media library.', SLUG_TD).(IS_PRO ? ' '.__('This includes the following: <code style="white-space:normal; word-wrap:break-word;">'.esc_html(implode(',', CdnFilters::defaultWhitelistedExtensions())).'</code>', SLUG_TD) : '').'</p>'."\n";
             echo '         <h3>'.__('Blacklisted File Extensions (Optional; Comma-Delimited)', SLUG_TD).'</h3>'."\n";
             echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_blacklisted_extensions]" value="'.esc_attr($this->plugin->options['cdn_blacklisted_extensions']).'" /></p>'."\n";
             echo '         <p>'.__('With or without a whitelist, you can force exclusions by explicitly blacklisting certain file extensions of your choosing. Please note, the <code>php</code> extension will never be considered a static resource; i.e. it is automatically blacklisted at all times.', SLUG_TD).'</p>'."\n";
@@ -719,7 +719,7 @@ class MenuPageOptions extends MenuPage
             echo '      <i class="fa fa-gears"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/salt.png')).'" class="screenshot" />'."\n";
             echo '      <h3>'.__('<i class="fa fa-flask"></i> <span style="display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;"><span style="font-weight:bold; font-size:80%;">GEEK ALERT</span></span> This is for VERY advanced users only...', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('<em>Note: Understanding the %1$s <a href="http://zencache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -751,7 +751,7 @@ class MenuPageOptions extends MenuPage
         echo '      <p>'.sprintf(__('<strong>Tip:</strong> %1$s can be disabled temporarily. If you\'re a theme/plugin developer, you can set a flag within your PHP code to disable the cache engine at runtime. Perhaps on a specific page, or in a specific scenario. In your PHP script, set: <code>$_SERVER[\'ZENCACHE_ALLOWED\'] = FALSE;</code> or <code>define(\'ZENCACHE_ALLOWED\', FALSE)</code>. %1$s is also compatible with: <code>define(\'DONOTCACHEPAGE\', TRUE)</code>. It does\'t matter where or when you define one of these, because %1$s is the last thing to run before script execution ends.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <hr />'."\n";
         echo '      <h3>'.sprintf(__('Writing "Advanced Cache" Plugins Specifically for %1$s', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-        echo '      <p>'.sprintf(__('Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href="https://github.com/websharks/zencache/blob/000000-dev/zencache/includes/ac-plugin.example.php" target="_blank">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p>'.sprintf(__('Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href="http://zencache.com/r/ac-plugin-example/" target="_blank">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p class="info">'.sprintf(__('<strong>Why does %1$s have it\'s own plugin architecture?</strong> WordPress loads the <code>advanced-cache.php</code> drop-in file (for caching purposes) very early-on; before any other plugins or a theme. For this reason, %1$s implements it\'s own watered-down version of functions like <code>add_action()</code>, <code>do_action()</code>, <code>add_filter()</code>, <code>apply_filters()</code>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '   </div>'."\n";
 
@@ -766,7 +766,7 @@ class MenuPageOptions extends MenuPage
             echo '      <i class="fa fa-gears"></i> '.__('Import/Export Options', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <i class="fa fa-arrow-circle-o-up fa-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.sprintf(__('Import Options from Another %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
             echo '      <p>'.sprintf(__('Upload your <code>%1$s-options.json</code> file and click "Save All Changes" below. The options provided by your import file will override any that exist currently.', SLUG_TD), GLOBAL_NS).'</p>'."\n";

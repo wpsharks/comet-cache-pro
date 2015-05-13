@@ -1,5 +1,5 @@
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
-@import url('../../../vendor/websharks/sharkicons/src/styles.min.css');
+@import url('../../vendor/websharks/sharkicons/src/styles.min.css');
 
 /*
 Wrap background.
@@ -200,9 +200,6 @@ Menu page styles.
   -webkit-transform: scale(0.98, 0.98);
   transform: scale(0.98, 0.98);
 }
-.plugin-menu-page .pro-preview {
-  opacity: 0.5;
-}
 .plugin-menu-page .info,
 .plugin-menu-page .notice,
 .plugin-menu-page .warning,
@@ -324,6 +321,9 @@ Panel styles.
 .plugin-menu-page-panel-heading.open:after {
   content: '\f077';
 }
+.pro-preview .plugin-menu-page-panel-heading {
+  opacity: 0.5;
+}
 .pro-preview .plugin-menu-page-panel-heading:after {
   font-variant: small-caps !important;
   font-family: sans-serif !important;
@@ -363,6 +363,10 @@ Panel styles.
 }
 .plugin-menu-page-panel-body h3 + p {
   margin-top: 0;
+}
+.plugin-menu-page-panel-body.pro-preview,
+.plugin-menu-page-panel-body .pro-preview {
+  opacity: 0.5;
 }
 
 /*

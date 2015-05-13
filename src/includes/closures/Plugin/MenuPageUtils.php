@@ -93,7 +93,7 @@ $self->addSettingsLink = function ($links) use ($self) {
     $links[] = '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">'.__('Settings', SLUG_TD).'</a>';
     if (!IS_PRO) {
         $links[] = '<br/><a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1')), self_admin_url('/admin.php'))).'">'.__('Preview Pro Features', SLUG_TD).'</a>';
-        $links[] = '<a href="'.esc_attr('http://'.urlencode(DOMAIN).'/').'" target="_blank">'.__('Upgrade', SLUG_TD).'</a>';
+        $links[] = '<a href="'.esc_attr('http://zencache.com/prices/').'" target="_blank">'.__('Upgrade', SLUG_TD).'</a>';
     }
     return $links;
 };
