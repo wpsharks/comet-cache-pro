@@ -72,10 +72,10 @@ class Conflicts
         if (empty($GLOBALS[GLOBAL_NS.'_conflicting_plugin'])) {
             return; // Not conflicts.
         }
-        if (!empty($GLOBALS[GLOBAL_NS.'_conflicting_plugin_lite_pro'])) {
-            return; // Already did this in one plugin or the other.
-        }
         add_action('all_admin_notices', function () {
+            if (!empty($GLOBALS[GLOBAL_NS.'_conflicting_plugin_lite_pro'])) {
+                return; // Already did this in one plugin or the other.
+            }
             $construct_name = function ($slug_or_ns) {
                 $name = trim(strtolower((string) $slug_or_ns));
                 $name = preg_replace('/[_\-]+(?:lite|pro)$/', '', $name);
