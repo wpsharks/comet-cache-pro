@@ -133,18 +133,18 @@ class AutoCache extends AbsBase
             if (filemtime($cache_file_path) >= strtotime('-'.$this->plugin->options['cache_max_age'])) {
                 return; // Cached already.
             }
-            $this->logAutoCacheUrl(
-                $url,
-                wp_remote_get(
-                    $url,
-                    array(
-                        'blocking'   => false,
-                        'user-agent' => $this->plugin->options['auto_cache_user_agent'].
-                            '; '.SLUG_TD.' '.VERSION,
-                    )
-                )
-            );
         }
+        $this->logAutoCacheUrl(
+            $url,
+            wp_remote_get(
+                $url,
+                array(
+                    'blocking'   => false,
+                    'user-agent' => $this->plugin->options['auto_cache_user_agent'].
+                        '; '.SLUG_TD.' '.VERSION,
+                )
+            )
+        );
     }
 
     /**
