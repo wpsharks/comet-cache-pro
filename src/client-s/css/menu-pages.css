@@ -1,5 +1,5 @@
 @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
-@import url('../../submodules/sharkicons/styles.min.css');
+@import url('../../../vendor/websharks/sharkicons/src/styles.min.css');
 
 /*
 Wrap background.
