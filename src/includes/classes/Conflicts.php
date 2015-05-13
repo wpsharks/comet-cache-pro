@@ -16,7 +16,7 @@ class Conflicts
     public static function check()
     {
         if (static::doCheck()) {
-            static::mayEnqueueNotice();
+            static::maybeEnqueueNotice();
         }
         return $GLOBALS[GLOBAL_NS.'_conflicting_plugin'];
     }
@@ -64,7 +64,7 @@ class Conflicts
      *
      * @since 150422 Rewrite.
      */
-    protected function mayEnqueueNotice()
+    protected function maybeEnqueueNotice()
     {
         if (!empty($GLOBALS[GLOBAL_NS.'_uninstalling'])) {
             return; // Not when uninstalling.
@@ -84,12 +84,12 @@ class Conflicts
 
                 return $name; // e.g., `x-cache` becomes `X Cache`.
             };
-            $this_plugin_name = NAME; // This plugin name.
+            $this_plugin_name = NAME; // See `src/includes/stub.php` for details.
             $conflicting_plugin_name = $construct_name($GLOBALS[GLOBAL_NS.'_conflicting_plugin']);
 
             if (strcasecmp($this_plugin_name, $conflicting_plugin_name) === 0) {
                 $this_plugin_name = $this_plugin_name.' '.__('Pro', SLUG_TD);
-                $conflicting_plugin_name = $this_plugin_name.' '.__('Lite', SLUG_TD);
+                $conflicting_plugin_name = $conflicting_plugin_name.' '.__('Lite', SLUG_TD);
                 $GLOBALS[GLOBAL_NS.'_conflicting_plugin_lite_pro'] = true;
             }
             echo '<div class="error">'.
