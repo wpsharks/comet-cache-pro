@@ -281,6 +281,7 @@ $self->addAdvancedCache = function () use ($self) {
             /*[pro strip-from="lite"]*/
             case 'htmlc_css_exclusions': // Converts to regex (caSe insensitive).
             case 'htmlc_js_exclusions': // Converts to regex (caSe insensitive).
+            /*[/pro]*/
 
                 if (($_values = preg_split('/['."\r\n".']+/', $_value, null, PREG_SPLIT_NO_EMPTY))) {
                     $_value = '/(?:'.implode(
@@ -298,7 +299,6 @@ $self->addAdvancedCache = function () use ($self) {
                 $_value = "'".$self->escSq($_value)."'";
 
                 break; // Break switch handler.
-            /*[/pro]*/
 
             /*[pro strip-from="lite"]*/
             case 'version_salt': // This is PHP code; and we MUST validate syntax.
