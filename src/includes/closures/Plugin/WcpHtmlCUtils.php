@@ -1,7 +1,7 @@
 <?php
+/*[pro strip-from="lite"]*/
 namespace WebSharks\ZenCache\Pro;
 
-/*[pro strip-from="lite"]*/
 /*
  * Wipes out all HTML Compressor cache files.
  *
