@@ -448,15 +448,13 @@ class CdnFilters extends AbsBase
      */
     protected function parseCdnHosts()
     {
-        $lines = (string) $this->cdn_hosts;
-        $lines = str_replace(array("\r\n", "\r"), "\n", $lines);
-        $lines = trim(strtolower($lines));
-
+        $lines           = (string) $this->cdn_hosts;
         $this->cdn_hosts = array(); // Initialize.
 
-        if (!($lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY))) {
-            return $this->cdn_hosts; // Nothing to do here.
-        }
+        $lines = str_replace(array("\r\n", "\r"), "\n", $lines);
+        $lines = trim(strtolower($lines)); // Force all mappings to lowercase.
+        $lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY);
+
         foreach ($lines as $_line) {
             $_line = trim($_line);
 
@@ -465,8 +463,18 @@ class CdnFilters extends AbsBase
             }
             $_parts = explode('|', $_line);
 
-            // TODO.
+            if (empty($_parts[0]) || empty($_parts[1])) {
+                continue; // Invalid line.
+            }
+            list($_domain, $_cdn_host)   = $_parts;
+            $this->cdn_hosts[$_domain][] = $_cdn_host;
         }
+        foreach ($this->cdn_hosts as &$_cdn_hosts) {
+            $_cdn_hosts = array_unique($_cdn_hosts);
+        }
+        unset($_line, $_parts, $_domain, $_cdn_host, $_cdn_hosts); // Housekeeping.
+
+        return $this->cdn_hosts;
     }
 }
 /*[/pro]*/
