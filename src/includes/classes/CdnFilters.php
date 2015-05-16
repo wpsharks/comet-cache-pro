@@ -94,6 +94,13 @@ class CdnFilters extends AbsBase
     protected $cdn_blacklisted_uri_patterns;
 
     /**
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @type bool Did the `wp_head` action hook yet?
+     */
+    protected $did_wp_head = false;
+
+    /**
      * Class constructor.
      *
      * @since 150422 Rewrite.
@@ -216,6 +223,12 @@ class CdnFilters extends AbsBase
              */
             return; // Not possible; requires a sub-directory install (for now).
         }
+        $_this = $this; // Needed for closures below.
+
+        add_action('wp_head', function () use ($_this) {
+            $_this->did_wp_head = true;
+        }, PHP_INT_MAX);
+
         add_filter('home_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
         add_filter('site_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
 
