@@ -299,7 +299,8 @@ class Plugin extends AbsBaseAp
 
             'cdn_enable' => '0', // `0|1`; enable CDN filters?
 
-            'cdn_host' => '', // e.g. `d1v41qemfjie0l.cloudfront.net`
+            'cdn_host'  => '', // e.g., `d1v41qemfjie0l.cloudfront.net`
+            'cdn_hosts' => '', // e.g., line-delimited list of CDN hosts.
 
             'cdn_invalidation_var'     => 'iv', // A query string variable name.
             'cdn_invalidation_counter' => '1', // Current version counter.
