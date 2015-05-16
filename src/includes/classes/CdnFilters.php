@@ -38,6 +38,13 @@ class CdnFilters extends AbsBase
     protected $cdn_host;
 
     /**
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @type array An array of all CDN host mappings.
+     */
+    protected $cdn_hosts;
+
+    /**
      * @since 150422 Rewrite.
      *
      * @type bool CDN over SSL connections?
@@ -107,6 +114,8 @@ class CdnFilters extends AbsBase
 
         $this->local_host = strtolower((string) parse_url(network_home_url(), PHP_URL_HOST));
         $this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
+        $this->cdn_hosts  = strtolower($this->plugin->options['cdn_hosts']);
+        $this->parseCdnHosts(); // Convert CDN hosts to an array.
 
         /* Configure invalidation-related properties. */
 
@@ -428,6 +437,36 @@ class CdnFilters extends AbsBase
         $font_file_extensions        = array('eot', 'ttf', 'otf', 'woff');
 
         return array_unique(array_merge($wp_media_library_extensions, $font_file_extensions));
+    }
+
+    /**
+     * Parses a line-delimited list of CDN host mappings.
+     *
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @return array All CDN host mappings.
+     */
+    protected function parseCdnHosts()
+    {
+        $hosts = (string) $this->cdn_hosts;
+        $hosts = str_replace(array("\r\n", "\r"), "\n", $hosts);
+        $hosts = trim(strtolower($hosts));
+
+        $this->cdn_hosts = array(); // Initialize.
+
+        if (!$hosts || !($lines = preg_split('/['."\r\n".']+/', $hosts, null, PREG_SPLIT_NO_EMPTY))) {
+            return $this->cdn_hosts; // Nothing to do here.
+        }
+        foreach ($lines as $_line) {
+            $_line = trim($_line);
+
+            if (!$_line || strpos($_line, '|') === false) {
+                continue; // Invalid line.
+            }
+            $_parts = explode('|', $_line);
+
+            // TODO.
+        }
     }
 }
 /*[/pro]*/
