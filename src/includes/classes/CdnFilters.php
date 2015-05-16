@@ -443,8 +443,6 @@ class CdnFilters extends AbsBase
      * Parses a line-delimited list of CDN host mappings.
      *
      * @since 15xxxx Improving CDN host parsing.
-     *
-     * @return array All CDN host mappings.
      */
     protected function parseCdnHosts()
     {
@@ -469,12 +467,9 @@ class CdnFilters extends AbsBase
             list($_domain, $_cdn_host)   = $_parts;
             $this->cdn_hosts[$_domain][] = $_cdn_host;
         }
-        foreach ($this->cdn_hosts as &$_cdn_hosts) {
-            $_cdn_hosts = array_unique($_cdn_hosts);
-        }
-        unset($_line, $_parts, $_domain, $_cdn_host, $_cdn_hosts); // Housekeeping.
+        unset($_line, $_parts, $_domain, $_cdn_host); // Housekeeping.
 
-        return $this->cdn_hosts;
+        $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
     }
 }
 /*[/pro]*/
