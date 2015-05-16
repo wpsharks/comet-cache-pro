@@ -448,13 +448,13 @@ class CdnFilters extends AbsBase
      */
     protected function parseCdnHosts()
     {
-        $hosts = (string) $this->cdn_hosts;
-        $hosts = str_replace(array("\r\n", "\r"), "\n", $hosts);
-        $hosts = trim(strtolower($hosts));
+        $lines = (string) $this->cdn_hosts;
+        $lines = str_replace(array("\r\n", "\r"), "\n", $lines);
+        $lines = trim(strtolower($lines));
 
         $this->cdn_hosts = array(); // Initialize.
 
-        if (!$hosts || !($lines = preg_split('/['."\r\n".']+/', $hosts, null, PREG_SPLIT_NO_EMPTY))) {
+        if (!($lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY))) {
             return $this->cdn_hosts; // Nothing to do here.
         }
         foreach ($lines as $_line) {
