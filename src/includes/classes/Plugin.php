@@ -192,6 +192,7 @@ class Plugin extends AbsBaseAp
 
             'cdn_enable',
             'cdn_host',
+            'cdn_hosts',
             'cdn_invalidation_var',
             'cdn_invalidation_counter',
             'cdn_over_ssl',
