@@ -14,7 +14,7 @@ $self->enqueueAdminStyles = function () use ($self) {
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS, $self->url('/src/client-s/css/menu-pages.min.css'), $deps, VERSION, 'all');
+    wp_enqueue_style(GLOBAL_NS, $self->url('/src/client-s/css/menu-pages.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -30,7 +30,7 @@ $self->enqueueAdminScripts = function () use ($self) {
     }
     $deps = array('jquery'); // Plugin dependencies.
 
-    wp_enqueue_script(GLOBAL_NS, $self->url('/src/client-s/js/menu-pages.min.js'), $deps, VERSION, true);
+    wp_enqueue_script(GLOBAL_NS, $self->url('/src/client-s/js/menu-pages.js'), $deps, VERSION, true);
 };
 
 /*

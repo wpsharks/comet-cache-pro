@@ -477,20 +477,25 @@ class CdnFilters extends AbsBase
         $lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY);
 
         foreach ($lines as $_line) {
-            $_line = trim($_line);
-
-            if (!$_line || strpos($_line, '|') === false) {
+            if (!($_line = trim($_line))) {
                 continue; // Invalid line.
             }
-            $_parts = explode('|', $_line);
-
+            if (strpos($_line, '=') !== false) {
+                $_parts = explode('=', $_line, 2);
+            } else {
+                $_parts = array($this->local_host, $_line);
+            }
             if (empty($_parts[0]) || empty($_parts[1])) {
                 continue; // Invalid line.
             }
-            list($_domain, $_cdn_host)   = $_parts;
-            $this->cdn_hosts[$_domain][] = $_cdn_host;
+            list($_domain, $_cdn_hosts) = $_parts;
+            foreach (preg_split('/,+/', $_cdn_hosts, null, PREG_SPLIT_NO_EMPTY) as $_cdn_host) {
+                if (($_cdn_host = trim($_cdn_host))) {
+                    $this->cdn_hosts[$_domain][] = $_cdn_host;
+                }
+            }
         }
-        unset($_line, $_parts, $_domain, $_cdn_host); // Housekeeping.
+        unset($_line, $_parts, $_domain, $_cdn_hosts, $_cdn_host); // Housekeeping.
 
         $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
 
