@@ -100,7 +100,7 @@ class CdnFilters extends AbsBase
      *
      * @note This is only public for PHP v5.3 compat.
      */
-    public $did_wp_head_action_hook = false;
+    public $completed_wp_head_action_hook = false;
 
     /**
      * @since 15xxxx Improving CDN host parsing.
@@ -109,7 +109,7 @@ class CdnFilters extends AbsBase
      *
      * @note This is only public for PHP v5.3 compat.
      */
-    public $did_wp_footer_action_hook = false;
+    public $started_wp_footer_action_hook = false;
 
     /**
      * Class constructor.
@@ -225,12 +225,12 @@ class CdnFilters extends AbsBase
         $_this = $this; // Needed for closures below.
 
         add_action('wp_head', function () use ($_this) {
-            $_this->did_wp_head_action_hook = true;
+            $_this->completed_wp_head_action_hook = true;
         }, PHP_INT_MAX); // The very last hook, ideally.
 
         add_action('wp_footer', function () use ($_this) {
-            $_this->did_wp_footer_action_hook = true;
-        }, PHP_INT_MAX); // The very last hook, ideally.
+            $_this->started_wp_footer_action_hook = true;
+        }, -PHP_INT_MAX); // The very first hook, ideally.
 
         add_filter('home_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
         add_filter('site_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
@@ -374,9 +374,9 @@ class CdnFilters extends AbsBase
         }
         $cdn_host = $this->cdn_hosts[$local_file->host][0];
 
-        if (!$this->did_wp_head_action_hook) {
+        if (!$this->completed_wp_head_action_hook) {
             $cdn_host = $this->cdn_hosts[$local_file->host][0];
-        } elseif ($this->did_wp_footer_action_hook) {
+        } elseif ($this->started_wp_footer_action_hook) {
             $cdn_host = end($this->cdn_hosts[$local_file->host]);
         } elseif (($total_cdn_hosts = count($this->cdn_hosts[$local_file->host])) > 1) {
             $cdn_host = $this->cdn_hosts[$local_file->host][mt_rand(0, $total_cdn_hosts - 1)];
