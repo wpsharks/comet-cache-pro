@@ -257,9 +257,9 @@ class CdnFilters extends AbsBase
             }
             $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][__CLASS__] = array(
                 'hook'          => 'part_url', // Filters JS/CSS parts.
-                'function'      => array($this, 'urlFilter'),
+                'function'      => array($this, 'htmlCUrlFilter'),
                 'priority'      => PHP_INT_MAX - 10,
-                'accepted_args' => 1,
+                'accepted_args' => 2,
             );
         }
     }
@@ -278,7 +278,22 @@ class CdnFilters extends AbsBase
      */
     public function urlFilter($url, $path = '', $scheme = null, $blog_id = null)
     {
-        return $this->filterUrl($url, $scheme);
+        return $this->filterUrl($url, $scheme, false, null);
+    }
+
+    /**
+     * Filter URLs that should be served by the CDN.
+     *
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @param string $url Input URL|URI|query; passed by filter.
+     * @param string $for One of `head`, `body`, `foot`.
+     *
+     * @return string The URL after having been filtered.
+     */
+    public function htmlCUrlFilter($url, $for)
+    {
+        return $this->filterUrl($url, null, false, $for);
     }
 
     /**
@@ -321,7 +336,7 @@ class CdnFilters extends AbsBase
         $orig_string = $string; // In case of regex errors.
         $string      = preg_replace_callback($regex_url_attrs, function ($m) use ($_this) {
             unset($m[0]); // Discard full match.
-            $m[6] = $_this->filterUrl($m[6], null, true);
+            $m[6] = $_this->filterUrl($m[6], null, true, null);
             return implode('', $m); // Concatenate all parts.
         }, $string); // End content filter.
 
@@ -336,12 +351,13 @@ class CdnFilters extends AbsBase
      * @param string      $url_uri_query Input URL|URI|query.
      * @param string|null $scheme        `NULL`, `http`, `https`, `login`, `login_post`, `admin`, or `relative`.
      * @param bool        $esc           Defaults to a FALSE value; do not deal with HTML entities.
+     * @param string|null $for           One of `null`, `head`, `body`, `foot`.
      *
      * @return string The URL after having been filtered.
      *
      * @note This is only public for PHP v5.3 compat.
      */
-    public function filterUrl($url_uri_query, $scheme = null, $esc = false)
+    public function filterUrl($url_uri_query, $scheme = null, $esc = false, $for = null)
     {
         if (!($url_uri_query = trim((string) $url_uri_query))) {
             return; // Unparseable.
@@ -374,9 +390,16 @@ class CdnFilters extends AbsBase
         }
         $cdn_host = $this->cdn_hosts[$local_file->host][0];
 
-        if (!$this->completed_wp_head_action_hook) {
+        if (!isset($for)) {
+            if (!$this->completed_wp_head_action_hook) {
+                $for = 'head'; // This will go into the <head>.
+            } elseif ($this->started_wp_footer_action_hook) {
+                $for = 'foot'; // This goes in the footer.
+            }
+        }
+        if ($for === 'head') {
             $cdn_host = $this->cdn_hosts[$local_file->host][0];
-        } elseif ($this->started_wp_footer_action_hook) {
+        } elseif ($for === 'foot') {
             $cdn_host = end($this->cdn_hosts[$local_file->host]);
         } elseif (($total_cdn_hosts = count($this->cdn_hosts[$local_file->host])) > 1) {
             $cdn_host = $this->cdn_hosts[$local_file->host][mt_rand(0, $total_cdn_hosts - 1)];
