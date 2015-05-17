@@ -130,7 +130,7 @@ class CdnFilters extends AbsBase
 
         /* Host-related properties. */
 
-        $this->local_host = strtolower((string) parse_url(network_home_url(), PHP_URL_HOST));
+        $this->local_host = strtolower((string) parse_url(home_url(), PHP_URL_HOST));
         $this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
         $this->cdn_hosts  = strtolower($this->plugin->options['cdn_hosts']);
         $this->parseCdnHosts(); // Convert CDN hosts to an array.
@@ -501,7 +501,7 @@ class CdnFilters extends AbsBase
 
         if (empty($this->cdn_hosts[$this->local_host])) {
             if ($this->cdn_host && (!is_multisite() || is_main_site())) {
-                $this->cdn_hosts[$this->local_host][] = $this->cdn_host;
+                $this->cdn_hosts[strtolower((string) parse_url(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
             }
         }
     }
