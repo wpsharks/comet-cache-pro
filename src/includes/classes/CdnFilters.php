@@ -398,7 +398,7 @@ class CdnFilters extends AbsBase
      *
      * @return object|null An object with: `scheme`, `host`, `uri`, `extension` properties.
      *                     This returns NULL for any URL that is not local, or does not lead to a file.
-     *                     Local, meaning, that we have a CDN host mapping for the associated host/domain name.
+     *                     Local, meaning that we have a CDN host mapping for the associated host/domain name.
      */
     protected function localFile($url_uri_query)
     {
