@@ -497,13 +497,12 @@ class CdnFilters extends AbsBase
         }
         unset($_line, $_parts, $_domain, $_cdn_hosts, $_cdn_host); // Housekeeping.
 
-        $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
-
         if (empty($this->cdn_hosts[$this->local_host])) {
             if ($this->cdn_host && (!is_multisite() || is_main_site())) {
                 $this->cdn_hosts[strtolower((string) parse_url(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
             }
         }
+        $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
     }
 
     /**
