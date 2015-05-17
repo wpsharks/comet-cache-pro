@@ -66,12 +66,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "1449c504cd1d74eafc054c80f8e2c7d1f387c6e0"
+                "reference": "e0928424142e90607e3bbe3c2d3974ec075454a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/1449c504cd1d74eafc054c80f8e2c7d1f387c6e0",
-                "reference": "1449c504cd1d74eafc054c80f8e2c7d1f387c6e0",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/e0928424142e90607e3bbe3c2d3974ec075454a7",
+                "reference": "e0928424142e90607e3bbe3c2d3974ec075454a7",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-05-11 20:57:09"
+            "time": "2015-05-17 05:57:00"
         },
         {
             "name": "websharks/js-minifier",
