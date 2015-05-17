@@ -485,10 +485,12 @@ class CdnFilters extends AbsBase
             } else {
                 $_parts = array($this->local_host, $_line);
             }
+            $_parts = $this->plugin->trimDeep($_parts);
+
             if (empty($_parts[0]) || empty($_parts[1])) {
                 continue; // Invalid line.
             }
-            list($_domain, $_cdn_hosts) = $_parts;
+            list($_domain, $_cdn_hosts) = $_parts; // e.g., `domain = cdn, cdn, cdn`.
             foreach (preg_split('/,+/', $_cdn_hosts, null, PREG_SPLIT_NO_EMPTY) as $_cdn_host) {
                 if (($_cdn_host = trim($_cdn_host))) {
                     $this->cdn_hosts[$_domain][] = $_cdn_host;
@@ -497,12 +499,13 @@ class CdnFilters extends AbsBase
         }
         unset($_line, $_parts, $_domain, $_cdn_hosts, $_cdn_host); // Housekeeping.
 
+        $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
+
         if (empty($this->cdn_hosts[$this->local_host])) {
             if ($this->cdn_host && (!is_multisite() || is_main_site())) {
                 $this->cdn_hosts[strtolower((string) parse_url(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
             }
         }
-        $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
     }
 
     /**
