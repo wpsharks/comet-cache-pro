@@ -97,7 +97,7 @@ $self->adminBarStyles = function () use ($self) {
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
+    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -120,6 +120,6 @@ $self->adminBarScripts = function () use ($self) {
     }
     $deps = array('jquery'); // Plugin dependencies.
 
-    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
+    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.js'), $deps, VERSION, true);
 };
 /*[/pro]*/

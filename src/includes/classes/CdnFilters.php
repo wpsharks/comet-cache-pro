@@ -38,6 +38,13 @@ class CdnFilters extends AbsBase
     protected $cdn_host;
 
     /**
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @type array An array of all CDN host mappings.
+     */
+    protected $cdn_hosts;
+
+    /**
      * @since 150422 Rewrite.
      *
      * @type bool CDN over SSL connections?
@@ -87,6 +94,24 @@ class CdnFilters extends AbsBase
     protected $cdn_blacklisted_uri_patterns;
 
     /**
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @type bool Did the `wp_head` action hook yet?
+     *
+     * @note This is only public for PHP v5.3 compat.
+     */
+    public $completed_wp_head_action_hook = false;
+
+    /**
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @type bool Did the `wp_footer` action hook yet?
+     *
+     * @note This is only public for PHP v5.3 compat.
+     */
+    public $started_wp_footer_action_hook = false;
+
+    /**
      * Class constructor.
      *
      * @since 150422 Rewrite.
@@ -105,8 +130,10 @@ class CdnFilters extends AbsBase
 
         /* Host-related properties. */
 
-        $this->local_host = strtolower((string) parse_url(network_home_url(), PHP_URL_HOST));
+        $this->local_host = strtolower((string) parse_url(home_url(), PHP_URL_HOST));
         $this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
+        $this->cdn_hosts  = strtolower($this->plugin->options['cdn_hosts']);
+        $this->parseCdnHosts(); // Convert CDN hosts to an array.
 
         /* Configure invalidation-related properties. */
 
@@ -189,24 +216,22 @@ class CdnFilters extends AbsBase
         if (!$this->local_host) {
             return; // Not possible.
         }
-        if (!$this->cdn_host) {
+        if (!$this->cdn_hosts) {
             return; // Not possible.
         }
         if (!$this->cdn_over_ssl && is_ssl()) {
             return; // Disable in this case.
         }
-        if (is_multisite() && (!is_main_site() && defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL)) {/*
-             * @TODO this is something we need to look at in the future.
-             *
-             * We expect a single local host name at present.
-             *    However, it MIGHT be feasible to allow for wildcarded host names
-             *    in order to support sub-domain installs in the future.
-             *
-             * ~ Domain mapping will be another thing to look at.
-             *    I don't see an easy way to support domain mapping plugins.
-             */
-            return; // Not possible; requires a sub-directory install (for now).
-        }
+        $_this = $this; // Needed for closures below.
+
+        add_action('wp_head', function () use ($_this) {
+            $_this->completed_wp_head_action_hook = true;
+        }, PHP_INT_MAX); // The very last hook, ideally.
+
+        add_action('wp_footer', function () use ($_this) {
+            $_this->started_wp_footer_action_hook = true;
+        }, -PHP_INT_MAX); // The very first hook, ideally.
+
         add_filter('home_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
         add_filter('site_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
 
@@ -232,9 +257,9 @@ class CdnFilters extends AbsBase
             }
             $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][__CLASS__] = array(
                 'hook'          => 'part_url', // Filters JS/CSS parts.
-                'function'      => array($this, 'urlFilter'),
+                'function'      => array($this, 'htmlCUrlFilter'),
                 'priority'      => PHP_INT_MAX - 10,
-                'accepted_args' => 1,
+                'accepted_args' => 2,
             );
         }
     }
@@ -253,7 +278,22 @@ class CdnFilters extends AbsBase
      */
     public function urlFilter($url, $path = '', $scheme = null, $blog_id = null)
     {
-        return $this->filterUrl($url, $scheme);
+        return $this->filterUrl($url, $scheme, false, null);
+    }
+
+    /**
+     * Filter URLs that should be served by the CDN.
+     *
+     * @since 15xxxx Improving CDN host parsing.
+     *
+     * @param string $url Input URL|URI|query; passed by filter.
+     * @param string $for One of `head`, `body`, `foot`.
+     *
+     * @return string The URL after having been filtered.
+     */
+    public function htmlCUrlFilter($url, $for)
+    {
+        return $this->filterUrl($url, null, false, $for);
     }
 
     /**
@@ -296,7 +336,7 @@ class CdnFilters extends AbsBase
         $orig_string = $string; // In case of regex errors.
         $string      = preg_replace_callback($regex_url_attrs, function ($m) use ($_this) {
             unset($m[0]); // Discard full match.
-            $m[6] = $_this->filterUrl($m[6], null, true);
+            $m[6] = $_this->filterUrl($m[6], null, true, null);
             return implode('', $m); // Concatenate all parts.
         }, $string); // End content filter.
 
@@ -311,20 +351,27 @@ class CdnFilters extends AbsBase
      * @param string      $url_uri_query Input URL|URI|query.
      * @param string|null $scheme        `NULL`, `http`, `https`, `login`, `login_post`, `admin`, or `relative`.
      * @param bool        $esc           Defaults to a FALSE value; do not deal with HTML entities.
+     * @param string|null $for           One of `null`, `head`, `body`, `foot`.
      *
      * @return string The URL after having been filtered.
+     *
+     * @note This is only public for PHP v5.3 compat.
      */
-    public function filterUrl($url_uri_query, $scheme = null, $esc = false)
+    public function filterUrl($url_uri_query, $scheme = null, $esc = false, $for = null)
     {
         if (!($url_uri_query = trim((string) $url_uri_query))) {
             return; // Unparseable.
         }
-        $orig_url_uri_query = $url_uri_query;
-        if ($esc) {
+        $orig_url_uri_query = $url_uri_query; // Needed below.
+
+        if ($esc) { // If escaping, unescape the input value also.
             $url_uri_query = wp_specialchars_decode($url_uri_query, ENT_QUOTES);
         }
         if (!($local_file = $this->localFile($url_uri_query))) {
             return $orig_url_uri_query; // Not a local file.
+        }
+        if (empty($this->cdn_hosts[$local_file->host])) {
+            return $orig_url_uri_query; // Exclude; no host mapping.
         }
         if (!in_array($local_file->extension, $this->cdn_whitelisted_extensions, true)) {
             return $orig_url_uri_query; // Not a whitelisted extension.
@@ -341,7 +388,23 @@ class CdnFilters extends AbsBase
         if (!isset($scheme) && isset($local_file->scheme)) {
             $scheme = $local_file->scheme; // Use original scheme.
         }
-        $url = set_url_scheme('//'.$this->cdn_host.$local_file->uri, $scheme);
+        $cdn_host = $this->cdn_hosts[$local_file->host][0];
+
+        if (!isset($for)) {
+            if (!$this->completed_wp_head_action_hook) {
+                $for = 'head'; // This will go into the <head>.
+            } elseif ($this->started_wp_footer_action_hook) {
+                $for = 'foot'; // This goes in the footer.
+            }
+        }
+        if ($for === 'head') {
+            $cdn_host = $this->cdn_hosts[$local_file->host][0];
+        } elseif ($for === 'foot') {
+            $cdn_host = end($this->cdn_hosts[$local_file->host]);
+        } elseif (($total_cdn_hosts = count($this->cdn_hosts[$local_file->host])) > 1) {
+            $cdn_host = $this->cdn_hosts[$local_file->host][mt_rand(0, $total_cdn_hosts - 1)];
+        }
+        $url = set_url_scheme('//'.$cdn_host.$local_file->uri, $scheme);
 
         if ($this->cdn_invalidation_var && $this->cdn_invalidation_counter) {
             $url = add_query_arg($this->cdn_invalidation_var, $this->cdn_invalidation_counter, $url);
@@ -356,8 +419,9 @@ class CdnFilters extends AbsBase
      *
      * @param string $url_uri_query Input URL|URI|query.
      *
-     * @return object|null An object with: `scheme`, `extension`, `uri` properties.
+     * @return object|null An object with: `scheme`, `host`, `uri`, `extension` properties.
      *                     This returns NULL for any URL that is not local, or does not lead to a file.
+     *                     Local, meaning that we have a CDN host mapping for the associated host/domain name.
      */
     protected function localFile($url_uri_query)
     {
@@ -367,7 +431,10 @@ class CdnFilters extends AbsBase
         if (!($parsed = @parse_url($url_uri_query))) {
             return; // Unparseable.
         }
-        if (!empty($parsed['host']) && strcasecmp($parsed['host'], $this->local_host) !== 0) {
+        if (empty($parsed['host']) && empty($this->cdn_hosts[$this->local_host])) {
+            return; // Not on this host name.
+        }
+        if (!empty($parsed['host']) && empty($this->cdn_hosts[strtolower($parsed['host'])])) {
             return; // Not on this host name.
         }
         if (!isset($parsed['path'][0]) || $parsed['path'][0] !== '/') {
@@ -380,21 +447,25 @@ class CdnFilters extends AbsBase
             return; // A relative path that is not absolute.
         }
         $scheme = null; // Default scheme handling.
+        $host   = $this->local_host; // Default host name.
+        $uri    = $parsed['path']; // Put URI together.
+
         if (!empty($parsed['scheme'])) {
             $scheme = strtolower($parsed['scheme']);
         }
-        if (!($extension = $this->extension($parsed['path']))) {
-            return; // No extension; i.e. not a file.
+        if (!empty($parsed['host'])) {
+            $host = strtolower($parsed['host']);
         }
-        $uri = $parsed['path']; // Put URI together.
-
         if (!empty($parsed['query'])) {
             $uri .= '?'.$parsed['query'];
         }
         if (!empty($parsed['fragment'])) {
             $uri .= '#'.$parsed['fragment'];
         }
-        return (object) compact('scheme', 'extension', 'uri');
+        if (!($extension = $this->extension($parsed['path']))) {
+            return; // No extension; i.e. not a file.
+        }
+        return (object) compact('scheme', 'host', 'uri', 'extension');
     }
 
     /**
@@ -412,6 +483,52 @@ class CdnFilters extends AbsBase
             return ''; // No path.
         }
         return strtolower(ltrim((string) strrchr(basename($path), '.'), '.'));
+    }
+
+    /**
+     * Parses a line-delimited list of CDN host mappings.
+     *
+     * @since 15xxxx Improving CDN host parsing.
+     */
+    protected function parseCdnHosts()
+    {
+        $lines           = (string) $this->cdn_hosts;
+        $this->cdn_hosts = array(); // Initialize.
+
+        $lines = str_replace(array("\r\n", "\r"), "\n", $lines);
+        $lines = trim(strtolower($lines)); // Force all mappings to lowercase.
+        $lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY);
+
+        foreach ($lines as $_line) {
+            if (!($_line = trim($_line))) {
+                continue; // Invalid line.
+            }
+            if (strpos($_line, '=') !== false) {
+                $_parts = explode('=', $_line, 2);
+            } else {
+                $_parts = array($this->local_host, $_line);
+            }
+            $_parts = $this->plugin->trimDeep($_parts);
+
+            if (empty($_parts[0]) || empty($_parts[1])) {
+                continue; // Invalid line.
+            }
+            list($_domain, $_cdn_hosts) = $_parts; // e.g., `domain = cdn, cdn, cdn`.
+            foreach (preg_split('/,+/', $_cdn_hosts, null, PREG_SPLIT_NO_EMPTY) as $_cdn_host) {
+                if (($_cdn_host = trim($_cdn_host))) {
+                    $this->cdn_hosts[$_domain][] = $_cdn_host;
+                }
+            }
+        }
+        unset($_line, $_parts, $_domain, $_cdn_hosts, $_cdn_host); // Housekeeping.
+
+        $this->cdn_hosts = array_map('array_unique', $this->cdn_hosts);
+
+        if (empty($this->cdn_hosts[$this->local_host])) {
+            if ($this->cdn_host && (!is_multisite() || is_main_site())) {
+                $this->cdn_hosts[strtolower((string) parse_url(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
+            }
+        }
     }
 
     /**

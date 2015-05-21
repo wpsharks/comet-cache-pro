@@ -1,6 +1,6 @@
 === ZenCache ===
 
-Stable tag: 150514
+Stable tag: 150517
 Requires at least: 4.1
 Tested up to: 4.3-beta
 Text Domain: zencache
