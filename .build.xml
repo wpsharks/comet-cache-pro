@@ -777,7 +777,13 @@
     <!-- Delete all existing files in repo. -->
 
     <delete includeemptydirs="true" quiet="true">
-      <fileset dir="_repo_dir" />
+      <fileset dir="${_repo_dir}">
+        <patternset>
+          <exclude name="assets/**" />
+          <include name="**" />
+        </patternset>
+      </fileset>
+
     </delete>
 
     <!-- Copy generated Lite variation to repo. -->
@@ -785,12 +791,13 @@
     <copy todir="${_repo_dir}">
       <fileset dir="${project.basedir}/.~build/${project_lite_slug}">
         <exclude pattern=".~build/**" />
+        <exclude pattern="assets/**" />
       </fileset>
     </copy>
 
     <echo msg="Staging changed files ..." />
 
-    <exec command="git add --all *" dir="${_repo_dir}" />
+    <exec command="git add -A" dir="${_repo_dir}" />
     <exec command="git status" dir="${_repo_dir}" passthru="true" />
 
     <echo msg="------------------------------------" />
