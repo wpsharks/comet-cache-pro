@@ -1,0 +1,134 @@
+<?php
+namespace WebSharks\ZenCache\Pro;
+
+/**
+ * API Base Class.
+ *
+ * @since 150422 Rewrite.
+ */
+class ApiBase
+{
+    /**
+     * Current QC plugin instance.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @return \zencache\plugin instance.
+     */
+    public static function plugin()
+    {
+        return $GLOBALS[GLOBAL_NS];
+    }
+
+    /**
+     * Gives you the current version string.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @return string Current version string.
+     */
+    public static function version()
+    {
+        return VERSION; // Via constant.
+    }
+
+    /**
+     * Gives you the current array of configured options.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @return array Current array of options.
+     */
+    public static function options()
+    {
+        return $GLOBALS[GLOBAL_NS]->options;
+    }
+
+    /**
+     * Purges expired cache files, leaving all others intact.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @note This occurs automatically over time via WP Cron;
+     *    but this will force an immediate purge if you so desire.
+     *
+     * @return int Total files purged (if any).
+     */
+    public static function purge()
+    {
+        return $GLOBALS[GLOBAL_NS]->purgeCache();
+    }
+
+    /**
+     * This erases the entire cache for the current blog.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @note In a multisite network this impacts only the current blog,
+     *    it does not clear the cache for other child blogs.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clear()
+    {
+        return $GLOBALS[GLOBAL_NS]->clearCache();
+    }
+
+    /**
+     * This erases the cache for a specific post ID.
+     *
+     * @since 150626 Adding support for new API methods.
+     *
+     * @param int $post_id Post ID.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearPost($post_id)
+    {
+        return $GLOBALS[GLOBAL_NS]->autoClearPostCache($post_id);
+    }
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * This erases the cache for a specific user ID.
+     *
+     * @since 150626 Adding support for new API methods.
+     *
+     * @param int $user_id User ID.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearUser($user_id)
+    {
+        return $GLOBALS[GLOBAL_NS]->autoClearUserCache($user_id);
+    }
+
+    /**
+     * This erases the cache for the current user.
+     *
+     * @since 150626 Adding support for new API methods.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearCurrentUser()
+    {
+        return $GLOBALS[GLOBAL_NS]->autoClearUserCacheCur();
+    }
+    /*[/pro]*/
+
+    /**
+     * This wipes out the entire cache.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @note On a standard WP installation this is the same as zencache::clear();
+     *    but on a multisite installation it impacts the entire network
+     *    (i.e. wipes the cache for all blogs in the network).
+     *
+     * @return int Total files wiped (if any).
+     */
+    public static function wipe()
+    {
+        return $GLOBALS[GLOBAL_NS]->wipeCache();
+    }
+}
