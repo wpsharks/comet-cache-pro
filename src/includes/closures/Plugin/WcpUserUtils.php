@@ -44,6 +44,7 @@ $self->autoClearUserCache = function ($user_id) use ($self) {
     }
     return $counter;
 };
+$self->auto_clear_user_cache = $self->autoClearUserCache; // Back compat.
 
 /*
  * Automatically clears cache files associated with a particular user.
@@ -103,4 +104,5 @@ $self->autoClearUserCacheA4 = function ($_, $__, $___, $user_id) use ($self) {
 $self->autoClearUserCacheCur = function () use ($self) {
     $self->autoClearUserCache(get_current_user_id());
 };
+$self->auto_clear_user_cache_cur = $self->autoClearUserCacheCur; // Back compat.
 /*[/pro]*/

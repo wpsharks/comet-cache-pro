@@ -47,6 +47,7 @@ $self->wipeCache = function ($manually = false, $also_wipe_dir = '') use ($self)
 
     return $counter;
 };
+$self->wipe_cache = $self->wipeCache; // Back compat.
 
 /*
  * Clears cache files for the current host|blog.
@@ -80,6 +81,7 @@ $self->clearCache = function ($manually = false) use ($self) {
 
     return $counter;
 };
+$self->clear_cache = $self->clearCache; // Back compat.
 
 /*
  * Purges expired cache files for the current host|blog.
@@ -108,6 +110,7 @@ $self->purgeCache = function ($manually = false) use ($self) {
 
     return $counter;
 };
+$self->purge_cache = $self->purgeCache; // Back compat.
 
 /*
  * Automatically wipes out all cache files in the cache directory.
