@@ -816,9 +816,9 @@
 
         <!-- Extract changelog for latest version, write to .~commit.msg, then trim last two lines. -->
         <if>
-          <available property="_changelog_exists" file="${project.basedir}/.~build/${project_lite_slug}/CHANGELOG.md" />
+          <available property="_changelog_exists" file="${_repo_dir}/CHANGELOG.md" />
           <then>
-            <loadfile property="_changelog" file="${project.basedir}/.~build/${project_lite_slug}/CHANGELOG.md"/>
+            <loadfile property="_changelog" file="${_repo_dir}/CHANGELOG.md"/>
             <if>
               <contains string="${_changelog}" substring="v${project_version}" />
               <then>
