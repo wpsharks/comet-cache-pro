@@ -38,7 +38,7 @@ class CdnFilters extends AbsBase
     protected $cdn_host;
 
     /**
-     * @since 15xxxx Improving CDN host parsing.
+     * @since 150626 Improving CDN host parsing.
      *
      * @type array An array of all CDN host mappings.
      */
@@ -94,7 +94,7 @@ class CdnFilters extends AbsBase
     protected $cdn_blacklisted_uri_patterns;
 
     /**
-     * @since 15xxxx Improving CDN host parsing.
+     * @since 150626 Improving CDN host parsing.
      *
      * @type bool Did the `wp_head` action hook yet?
      *
@@ -103,7 +103,7 @@ class CdnFilters extends AbsBase
     public $completed_wp_head_action_hook = false;
 
     /**
-     * @since 15xxxx Improving CDN host parsing.
+     * @since 150626 Improving CDN host parsing.
      *
      * @type bool Did the `wp_footer` action hook yet?
      *
@@ -284,7 +284,7 @@ class CdnFilters extends AbsBase
     /**
      * Filter URLs that should be served by the CDN.
      *
-     * @since 15xxxx Improving CDN host parsing.
+     * @since 150626 Improving CDN host parsing.
      *
      * @param string $url Input URL|URI|query; passed by filter.
      * @param string $for One of `head`, `body`, `foot`.
@@ -488,7 +488,7 @@ class CdnFilters extends AbsBase
     /**
      * Parses a line-delimited list of CDN host mappings.
      *
-     * @since 15xxxx Improving CDN host parsing.
+     * @since 150626 Improving CDN host parsing.
      */
     protected function parseCdnHosts()
     {

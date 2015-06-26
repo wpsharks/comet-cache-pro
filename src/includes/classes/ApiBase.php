@@ -75,6 +75,48 @@ class ApiBase
     }
 
     /**
+     * This erases the cache for a specific post ID.
+     *
+     * @since 150626 Adding support for new API methods.
+     *
+     * @param int $post_id Post ID.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearPost($post_id)
+    {
+        return $GLOBALS[GLOBAL_NS]->autoClearPostCache($post_id);
+    }
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * This erases the cache for a specific user ID.
+     *
+     * @since 150626 Adding support for new API methods.
+     *
+     * @param int $user_id User ID.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearUser($user_id)
+    {
+        return $GLOBALS[GLOBAL_NS]->autoClearUserCache($user_id);
+    }
+
+    /**
+     * This erases the cache for the current user.
+     *
+     * @since 150626 Adding support for new API methods.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearCurrentUser()
+    {
+        return $GLOBALS[GLOBAL_NS]->autoClearUserCacheCur();
+    }
+    /*[/pro]*/
+
+    /**
      * This wipes out the entire cache.
      *
      * @since 150422 Rewrite.
