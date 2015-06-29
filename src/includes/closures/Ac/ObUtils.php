@@ -142,7 +142,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     $self->version_salt = ''; // Initialize the version salt.
     /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
     $self->version_salt = ZENCACHE_VERSION_SALT; // Initialize the version salt. /*[/pro]*/
-    $self->version_salt = $self->applyFilters(GLOBAL_NS.'\\advanced_cache__version_salt', $self->version_salt); // Back compat.
+    $self->version_salt = $self->applyFilters(get_class($this).'__version_salt', $self->version_salt);
     $self->version_salt = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
 
     $self->cache_path = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $self->version_salt);
