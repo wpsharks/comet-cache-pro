@@ -205,6 +205,7 @@ class Plugin extends AbsBaseAp
             'last_pro_update_check',
             'pro_update_username',
             'pro_update_password',
+            'last_pro_stats_log',
         );
         $this->default_options = array(
             /* Core/systematic plugin options. */
@@ -329,6 +330,10 @@ class Plugin extends AbsBaseAp
             'pro_update_username' => '', // Username.
             'pro_update_password' => '', // Password or license key.
 
+            /* Related to stats logging. */
+
+            'last_pro_stats_log' => '0', // Timestamp.
+
             /* Related to uninstallation routines. */
 
             'uninstall_on_deletion' => '0', // `0|1`.
@@ -371,6 +376,10 @@ class Plugin extends AbsBaseAp
         add_action('wp_loaded', array($this, 'actions'));
 
         add_action('admin_init', array($this, 'checkVersion'));
+
+        /*[pro strip-from="lite"]*/
+        add_action('admin_init', array($this, 'statsLogPinger'));
+        /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', array($this, 'checkLatestProVersion'));
