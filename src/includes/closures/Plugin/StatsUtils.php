@@ -10,6 +10,9 @@ namespace WebSharks\ZenCache\Pro;
  * @attaches-to `admin_init` hook.
  */
 $self->statsLogPinger = function () use ($self) {
+    if (!$self->applyWpFilters(GLOBAL_NS.'_statsLogPinger_enable', true)) {
+        return; // Stats collection disabled by site.
+    }
     if ($self->options['last_pro_stats_log'] >= strtotime('-1 week')) {
         return; // No reason to keep pinging.
     }
