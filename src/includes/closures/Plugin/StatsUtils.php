@@ -26,6 +26,7 @@ $self->statsLogPinger = function () use ($self) {
     $stats_api_url_args = array(
         'os'              => PHP_OS,
         'php_version'     => PHP_VERSION,
+        'mysql_version'   => $GLOBALS['wpdb']->db_version(),
         'wp_version'      => get_bloginfo('version'),
         'product_version' => VERSION,
         'product'         => SLUG_TD.(IS_PRO ? '-pro' : ''),
