@@ -179,12 +179,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
-                "reference": "712dc3279f0744975d8fc542887e620b1127b1cd"
+                "reference": "aa793546f57ff08fc6b2f37619a7b59c5ebf5241"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/712dc3279f0744975d8fc542887e620b1127b1cd",
-                "reference": "712dc3279f0744975d8fc542887e620b1127b1cd",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/aa793546f57ff08fc6b2f37619a7b59c5ebf5241",
+                "reference": "aa793546f57ff08fc6b2f37619a7b59c5ebf5241",
                 "shasum": ""
             },
             "type": "library",
@@ -216,7 +216,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-05-11 15:20:31"
+            "time": "2015-06-04 23:51:54"
         },
         {
             "name": "websharks/wp-php-rv",

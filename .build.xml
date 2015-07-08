@@ -494,10 +494,12 @@
       <arg value="--title" />
       <arg value="${project_title}" />
 
+      <arg value="--exclude" />
+      <arg value="vendor" />
+
       <arg value="--download" />
       <arg value="--deprecated" />
       <arg value="--todo" />
-      <arg value="--php" />
       <arg value="--debug" />
     </exec>
     <echo msg="------------------------------------" />
@@ -536,7 +538,7 @@
     <echo msg="------------------------------------" />
 
     <echo msg="Creating ZIP file: ${project.basedir}/.~build/${project_slug}.zip" />
-    <zip basedir="${project.basedir}" destfile="${project.basedir}/.~build/${project_slug}.zip">
+    <zip basedir="${project.basedir}" prefix="${project_slug}/" includeemptydirs="false" destfile="${project.basedir}/.~build/${project_slug}.zip">
       <fileset refid="_zip_tgz_fileset" />
     </zip>
     <echo msg="------------------------------------" />
@@ -548,7 +550,7 @@
     <echo msg="------------------------------------" />
 
     <echo msg="Creating TGZ file: ${project.basedir}/.~build/${project_slug}.tar.gz" />
-    <tar basedir="${project.basedir}" destfile="${project.basedir}/.~build/${project_slug}.tar.gz" compression="gzip">
+    <tar basedir="${project.basedir}" prefix="${project_slug}/" includeemptydirs="false" destfile="${project.basedir}/.~build/${project_slug}.tar.gz" compression="gzip">
       <fileset refid="_zip_tgz_fileset" />
     </tar>
     <echo msg="------------------------------------" />
@@ -747,6 +749,121 @@
   </target>
 
   <!-- ============================================  -->
+  <!-- Push lite variation to GitHub repo. -->
+  <!-- ============================================  -->
+
+  <target name="-push-lite-variation" hidden="true">
+
+    <!-- Prepare for lite generation. -->
+
+    <property name="_repo_dir" value="${project.basedir}/.~build/${project_lite_slug}/.~build/${project_lite_slug}-git-repo"/>
+    <property name="_repo_remote_path" value="git@github.com:${project_org}/${project_lite_slug}.git"/>
+
+    <echo msg="Preparing to push ${project_lite_title} to ${_repo_remote_path} ..." />
+    <echo msg="------------------------------------" />
+
+    <delete dir="${_repo_dir}" includeemptydirs="true" quiet="true" />
+
+    <!-- Clone repository. -->
+
+    <echo msg="Cloning the existing remote repo (be patient, this may take awhile) ..." />
+
+    <gitclone repository="${_repo_remote_path}" targetPath="${_repo_dir}" />
+
+    <!-- Switch to "000000-dev" branch. -->
+
+    <gitcheckout repository="${_repo_dir}" branchname="000000-dev" />
+
+    <!-- Delete all existing files in repo. -->
+
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${_repo_dir}">
+        <patternset>
+          <exclude name="assets/**" />
+          <include name="**" />
+        </patternset>
+      </fileset>
+
+    </delete>
+
+    <!-- Copy generated Lite variation to repo. -->
+
+    <copy todir="${_repo_dir}">
+      <fileset dir="${project.basedir}/.~build/${project_lite_slug}">
+        <exclude pattern=".~build/**" />
+        <exclude pattern="assets/**" />
+      </fileset>
+    </copy>
+
+    <echo msg="Staging changed files ..." />
+
+    <exec command="git add -A" dir="${_repo_dir}" />
+    <exec command="git status" dir="${_repo_dir}" passthru="true" />
+
+    <echo msg="------------------------------------" />
+    <echo msg="To make changes or commit these files manually, choose 'no' at the next prompt and visit ${_repo_dir}" />
+    <echo msg="------------------------------------" />
+
+    <!-- Commit changes. -->
+
+    <propertyprompt propertyName="_commit_to_repo" defaultValue="no" promptText="Commit these changes? (yes/no)" />
+
+    <if>
+      <equals arg1="${_commit_to_repo}" arg2="yes" trim="yes" />
+      <then>
+
+        <echo msg="Generating commit message from changelog ..." />
+
+        <!-- Extract changelog for latest version, write to .~commit.msg, then trim last two lines. -->
+        <if>
+          <available property="_changelog_exists" file="${_repo_dir}/CHANGELOG.md" />
+          <then>
+            <loadfile property="_changelog" file="${_repo_dir}/CHANGELOG.md"/>
+            <if>
+              <contains string="${_changelog}" substring="v${project_version}" />
+              <then>
+                <exec command="sed -n -e '/^=\sv{project_version}\s=$/,/^=.*$/w .~commit.msg' CHANGELOG.md" dir="${_repo_dir}" passthru="true" />
+                <exec command="sed -i -e '$d' .~commit.msg; sed -i -e '$d' .~commit.msg" dir="${_repo_dir}" passthru="true" />
+
+                <exec command="cat .~commit.msg" dir="${_repo_dir}" passthru="true" />
+
+                <echo msg="Committing changes ..." />
+                <exec command="git commit -F .~commit.msg" dir="${_repo_dir}" passthru="true" /> <!-- GitCommitTask doesn't support the -F git option. -->
+                <property name="_commit_passed" value="true" />
+              </then>
+              <else>
+                <property name="_commit_passed" value="false" />
+                <echo level="error" msg="Unable to commit: Changelog entry for v${project_version} not found." />
+              </else>
+            </if>
+          </then>
+          <else>
+            <property name="_commit_passed" value="false" />
+            <echo level="error" msg="Unable to commit: CHANGELOG.md file missing." />
+          </else>
+        </if>
+
+        <!-- Push previous commit to remote repo -->
+
+        <if>
+          <istrue value="${_commit_passed}" />
+          <then>
+            <propertyprompt propertyName="_push_to_repo" defaultValue="no" promptText="Push commit to remote repo? (yes/no)" />
+            <if>
+              <equals arg1="${_push_to_repo}" arg2="yes" trim="yes" />
+              <then>
+                <gitpush repository="${_repo_dir}" />
+              </then>
+            </if>
+          </then>
+        </if>
+
+      </then>
+    </if>
+
+  </target>
+
+  <!-- ============================================  -->
   <!-- Default/visible build target. -->
   <!-- ============================================  -->
 
@@ -755,5 +872,12 @@
     <echo msg="Build complete! :-)" />
 
   </target>
+
+  <target name="release" depends="-push-lite-variation">
+
+    <echo msg="Release complete! :-)" />
+
+  </target>
+
 
 </project>

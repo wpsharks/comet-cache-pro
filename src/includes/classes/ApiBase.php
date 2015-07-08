@@ -77,7 +77,7 @@ class ApiBase
     /**
      * This erases the cache for a specific post ID.
      *
-     * @since 15xxxx Adding support for new API methods.
+     * @since 150626 Adding support for new API methods.
      *
      * @param int $post_id Post ID.
      *
@@ -92,7 +92,7 @@ class ApiBase
     /**
      * This erases the cache for a specific user ID.
      *
-     * @since 15xxxx Adding support for new API methods.
+     * @since 150626 Adding support for new API methods.
      *
      * @param int $user_id User ID.
      *
@@ -106,7 +106,7 @@ class ApiBase
     /**
      * This erases the cache for the current user.
      *
-     * @since 15xxxx Adding support for new API methods.
+     * @since 150626 Adding support for new API methods.
      *
      * @return int Total files cleared (if any).
      */
