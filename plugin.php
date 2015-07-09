@@ -13,7 +13,7 @@ if (require(dirname(__FILE__).'/src/vendor/websharks/wp-php-rv/src/includes/chec
             ${__FILE__}['apc_warning'] = '<h3 style="margin:.5em 0 .25em 0;">'.__('<strong>APC EXTENSION WARNING</strong></h3>', 'zencache');
             ${__FILE__}['apc_warning'] .= '<p style="margin-top:0;">'.sprintf(__('<strong>ZenCache says...</strong> It appears that you\'re currently running PHP v%1$s with APC enabled. APC is <a href="http://zencache.com/r/apc-compatibility/" target="_blank">known to contain bugs</a>.', 'zencache'), esc_html(PHP_VERSION)).'</p>';
 
-            ${__FILE__}['apc_warning'] .= __('<h4 style="margin-top:0; font-size:1.25em;"><span class="dashicons dashicons-lightbulb"></span> Options Available (Action Required):</h4>', 'zencache');
+            ${__FILE__}['apc_warning'] .= __('<h4 style="margin:0 0 .5em 0; font-size:1.25em;"><span class="dashicons dashicons-lightbulb"></span> Options Available (Action Required):</h4>', 'zencache');
             ${__FILE__}['apc_warning'] .= '<ul style="margin-left:2em; list-style:disc;">';
             ${__FILE__}['apc_warning'] .= '  <li>'.__('Please add <code>ini_set(\'apc.cache_by_default\', false);</code> to the top of your <code>/wp-config.php</code> file. That will get rid of this message and allow ZenCache to run without issue.', 'zencache').'</li>';
             ${__FILE__}['apc_warning'] .= '  <li>'.__('Or, contact your web hosting provider and ask about upgrading to PHP v5.5+; which includes the new <a href="http://zencache.com/r/php-opcache-extension/" target="_blank">Opcache extension for PHP</a>. The new Opcache extension replaces APC in modern versions of PHP.', 'zencache').'</li>';
