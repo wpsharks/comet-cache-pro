@@ -40,6 +40,8 @@ $self->checkVersion = function () use ($self) {
     if (is_multisite()) {
         update_site_option(GLOBAL_NS.'_options', $self->options);
     }
+    delete_option(GLOBAL_NS.'_apc_warning_bypass');
+
     new VsUpgrades($prev_version);
 
     if ($self->options['enable']) {
@@ -100,6 +102,7 @@ $self->uninstall = function () use ($self) {
     }
     delete_option(GLOBAL_NS.'_notices');
     delete_option(GLOBAL_NS.'_errors');
+    delete_option(GLOBAL_NS.'_apc_warning_bypass');
 
     wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
     wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
