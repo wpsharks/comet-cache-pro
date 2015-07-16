@@ -1,6 +1,6 @@
 === ZenCache ===
 
-Stable tag: 150626
+Stable tag: 150716
 Requires at least: 4.1
 Tested up to: 4.3-beta
 Text Domain: zencache
@@ -327,6 +327,13 @@ Released under the terms of the [GNU General Public License](http://www.gnu.org/
 Requires PHP v5.3.2+. The latest version of ZenCache is a complete rewrite (OOP design). Faster! and even more dependable. NOTE: the free version of Quick Cache (this new LITE version); while it remains fully functional and is more-than-adequate for most sites; is now limited in some ways. The following advanced features from the previous release are no longer available in the lite version: a custom MD5 Version Salt, custom Exclusion Patterns, a Clear Cache button in admin bar. These, and other features; are now available only in the pro version of the plugin. For further details, please see: <http://zencache.com/>.
 
 == Changelog ==
+
+= v150716 =
+
+- **Bug Fix**: Fixed a fatal error that was occurring on some sites after upgrading to v150629. We discovered the fatal error was related to PHP's outdated and buggy APC extension, which is often active on sites running PHP 5.3 and PHP 5.4. We now prevent activation of ZenCache on systems with the APC extension enabled and show a warning message instead. We've written [a KB Article that further explains the APC Extension Warning](http://zencache.com/kb-article/why-does-zencache-show-an-apc-extension-warning/) and offers advice to site owners who are currently running APC. See also [Issue #511](https://github.com/websharks/zencache/issues/511).
+- **Bug Fix**: Fixed a bug in the Dynamic Version Salt filter that was generating PHP notices and warnings. See [Issue #522](https://github.com/websharks/zencache/issues/522).
+- **Bug Fix**: Fixed an issue with backwards compatibility that was preventing some AC Plugins from working properly. See [Issue #514](https://github.com/websharks/zencache/issues/514).
+- **Enhancement**: Added a stats pinger, similar to the WordPress stats collector, that reports the server OS, PHP version, MySQL version, WordPress version, and the ZenCache version, securely and anonymously to WebSharks. See [this KB Article](http://zencache.com/kb-article/what-information-does-zencache-pro-report-to-websharks/) for more information.
 
 = v150626 =
 

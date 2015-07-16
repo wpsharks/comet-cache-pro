@@ -1,3 +1,10 @@
+= v150716 =
+
+- **Bug Fix**: Fixed a fatal error that was occurring on some sites after upgrading to v150629. We discovered the fatal error was related to PHP's outdated and buggy APC extension, which is often active on sites running PHP 5.3 and PHP 5.4. We now prevent activation of ZenCache on systems with the APC extension enabled and show a warning message instead. We've written [a KB Article that further explains the APC Extension Warning](http://zencache.com/kb-article/why-does-zencache-show-an-apc-extension-warning/) and offers advice to site owners who are currently running APC. See also [Issue #511](https://github.com/websharks/zencache/issues/511).
+- **Bug Fix**: Fixed a bug in the Dynamic Version Salt filter that was generating PHP notices and warnings. See [Issue #522](https://github.com/websharks/zencache/issues/522).
+- **Bug Fix**: Fixed an issue with backwards compatibility that was preventing some AC Plugins from working properly. See [Issue #514](https://github.com/websharks/zencache/issues/514).
+- **Enhancement**: Added a stats pinger, similar to the WordPress stats collector, that reports the server OS, PHP version, MySQL version, WordPress version, and the ZenCache version, securely and anonymously to WebSharks. See [this KB Article](http://zencache.com/kb-article/what-information-does-zencache-pro-report-to-websharks/) for more information.
+
 = v150626 =
 
 - **Restructured Codebase**: The entire ZenCache codebase has been restructured to improve performance, enhance flexibility, and make it easier to build in new features!
