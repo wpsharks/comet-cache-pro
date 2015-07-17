@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Pings our stats log w/ anonymous details.
  *
- * @since 15xxxx Adding stats logging.
+ * @since 150716 Adding stats logging.
  *
  * @attaches-to `admin_init` hook.
  */
