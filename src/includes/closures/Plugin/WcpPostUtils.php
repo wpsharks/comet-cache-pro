@@ -48,43 +48,45 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
     if (!is_dir($cache_dir = $self->cacheDir())) {
         return $counter; // Nothing to do.
     }
-    if (!empty($self->pre_post_update_post_permalink[$post_id]) && ($permalink = $self->pre_post_update_post_permalink[$post_id])) {
-        $self->pre_post_update_post_permalink[$post_id] = ''; // Reset; only used for post status transitions
+    if (!($post_type = get_post_type($post_id))) {
+        return $counter; // Nothing to do.
+    }
+    $post_statuses             = $self->postStatuses();
+    $unpublished_post_statuses = array_diff($post_statuses, array('publish'));
+    $is_bbpress_post_type      = in_array($post_type, $self->bbPressPostTypes(), true);
+
+    if (!empty($self->pre_post_update_post_permalink[$post_id])) {
+        $permalink                                      = $self->pre_post_update_post_permalink[$post_id];
+        $self->pre_post_update_post_permalink[$post_id] = ''; // Reset; only used for post status transitions.
     } elseif (!($permalink = get_permalink($post_id))) {
         return $counter; // Nothing we can do.
     }
     if (!($post_status = get_post_status($post_id))) {
         return $counter; // Nothing to do.
     }
-    if ($post_status === 'inherit') {
+    if ($post_status === 'draft' && isset($GLOBALS['pagenow'], $_POST['publish'])
+       && is_admin() && $GLOBALS['pagenow'] === 'post.php' && current_user_can('publish_posts')
+       && strpos(wp_get_referer(), '/post-new.php') !== false
+    ) {
+        $post_status = 'publish'; // A new post being published now.
+    }
+    if (in_array($post_status, array('inherit', 'auto-draft'), true)) {
         return $counter; // Nothing to do.
     }
-    if ($post_status === 'auto-draft') {
-        return $counter; // Nothing to do.
+    if (in_array($post_status, array('draft', 'pending', 'future', 'trash'), true) && !$force) {
+        return $counter; // Nothing to do; i.e., NOT forcing in this case.
     }
-    if ($post_status === 'draft' && !$force) {
-        return $counter; // Nothing to do.
-    }
-    if ($post_status === 'pending' && !$force) {
-        return $counter; // Nothing to do.
-    }
-    if ($post_status === 'future' && !$force) {
-        return $counter; // Nothing to do.
-    }
-    if ($post_status === 'trash' && !$force) {
-        return $counter; // Nothing to do.
-    }
-    if (($type = get_post_type($post_id)) && ($type = get_post_type_object($type)) && !empty($type->labels->singular_name)) {
-        $type_singular_name = $type->labels->singular_name; // Singular name for the post type.
+    if (($post_type_obj = get_post_type_object($post_type)) && !empty($post_type_obj->labels->singular_name)) {
+        $post_type_singular_name = $post_type_obj->labels->singular_name; // Singular name for the post type.
     } else {
-        $type_singular_name = __('Post', SLUG_TD); // Default value.
+        $post_type_singular_name = __('Post', SLUG_TD); // Default value.
     }
     $regex = $self->buildHostCachePathRegex($permalink);
     $counter += $self->clearFilesFromHostCacheDir($regex);
 
     if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($type_singular_name), esc_html($post_id)));
+                              sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter)), esc_html($post_type_singular_name), esc_html($post_id)));
     }
     $counter += $self->autoClearXmlFeedsCache('blog');
     $counter += $self->autoClearXmlFeedsCache('post-terms', $post_id);
@@ -96,13 +98,16 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
     $counter += $self->autoClearPostTermsCache($post_id, $force);
     $counter += $self->autoClearCustomPostTypeArchiveCache($post_id);
 
+    if ($post_type !== 'page' && ($parent_post_id = wp_get_post_parent_id($post_id))) {
+        // Recursion: i.e., nested post types like bbPress forums/topic/replies.
+        $counter += $self->autoClearPostCache($parent_post_id, $force);
+    }
     return $counter;
 };
 $self->auto_clear_post_cache = $self->autoClearPostCache; // Back compat.
 
 /*
- * Automatically clears cache files for a particular post when transitioning
- *    from `publish` or `private` post status to `draft`, `future`, `private`, or `trash`.
+ * Handles post status transitioning.
  *
  * @attaches-to `pre_post_update` hook.
  *
@@ -130,11 +135,13 @@ $self->autoClearPostCacheTransition = function ($post_id, $data) use ($self) {
      * this post status transition. To get around this, we temporarily store the permalink
      * in $self->pre_post_update_post_permalink for `autoClearPostCache()` to use.
      *
-     * See also: https://github.com/websharks/zencache/issues/441
+     * See also: <https://github.com/websharks/zencache/issues/441>
      */
-    if ($old_status === 'publish' && in_array($new_status, array('pending', 'draft'), true)) {
+    if (in_array($new_status, array('pending', 'draft'), true)) {
         $self->pre_post_update_post_permalink[$post_id] = get_permalink($post_id);
     }
+    // Begin post status transition sub-routine now.
+
     if (!is_null($done = &$self->cacheKey('autoClearPostCacheTransition', array($old_status, $new_status, $post_id)))) {
         return $counter; // Already did this.
     }
@@ -143,11 +150,26 @@ $self->autoClearPostCacheTransition = function ($post_id, $data) use ($self) {
     if (!$self->options['enable']) {
         return $counter; // Nothing to do.
     }
-    if ($old_status !== 'publish' && $old_status !== 'private') {
-        return $counter; // MUST be transitioning FROM one of these statuses.
+    if ($new_status === $old_status) {
+        return $counter; // Nothing to do.
     }
-    if (in_array($new_status, array('draft', 'future', 'pending', 'private', 'trash'), true)) {
-        $counter += $self->autoClearPostCache($post_id, true);
+    if (!($post_type = get_post_type($post_id))) {
+        return $counter; // Nothing to do.
+    }
+    $post_statuses             = $self->postStatuses();
+    $unpublished_post_statuses = array_diff($post_statuses, array('publish'));
+    $is_bbpress_post_type      = in_array($post_type, $self->bbPressPostTypes(), true);
+
+    if ($is_bbpress_post_type) {
+        if (in_array($old_status, array('publish', 'private', 'closed', 'spam', 'hidden'), true)) {
+            if (in_array($new_status, $unpublished_post_statuses, true)) {
+                $counter += $self->autoClearPostCache($post_id, true);
+            }
+        }
+    } elseif (in_array($old_status, array('publish', 'private'), true)) {
+        if (in_array($new_status, $unpublished_post_statuses, true)) {
+            $counter += $self->autoClearPostCache($post_id, true);
+        }
     }
     return $counter;
 };

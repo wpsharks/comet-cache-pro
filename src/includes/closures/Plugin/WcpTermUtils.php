@@ -53,20 +53,11 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
     ) {
         $post_status = 'publish'; // A new post being published now.
     }
-    if ($post_status === 'inherit') {
+    if (in_array($post_status, array('inherit', 'auto-draft'), true)) {
         return $counter; // Nothing to do.
     }
-    if ($post_status === 'auto-draft') {
-        return $counter; // Nothing to do.
-    }
-    if ($post_status === 'draft' && !$force) {
-        return $counter; // Nothing to do.
-    }
-    if ($post_status === 'pending' && !$force) {
-        return $counter; // Nothing to do.
-    }
-    if ($post_status === 'future' && !$force) {
-        return $counter; // Nothing to do.
+    if (in_array($post_status, array('draft', 'pending', 'future'), true) && !$force) {
+        return $counter; // Nothing to do; i.e., NOT forcing in this case.
     }
     /*
      * Build an array of available taxonomies for this post (as taxonomy objects).
@@ -122,7 +113,7 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
                 $terms_to_clear[$_i]['taxonomy_label'] = $_term->taxonomy;
             }
         }
-        $_i++; // Array index counter.
+        ++$_i; // Array index counter.
     }
     unset($_term, $_link, $_i);
 
@@ -137,7 +128,7 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
         if ($_term_counter && $enqueued_notices < 100 && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
             $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                                   sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s: <code>%4$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($_term_counter)), esc_html($_term['taxonomy_label']), esc_html($_term['term_name'])));
-            $enqueued_notices++; // Increment enqueued notices counter.
+            ++$enqueued_notices; // Increment enqueued notices counter.
         }
     }
     unset($_term, $_term_regex, $_term_counter); // Housekeeping.
