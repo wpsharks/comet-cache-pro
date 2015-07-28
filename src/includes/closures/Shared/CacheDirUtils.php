@@ -175,7 +175,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                 if (!unlink($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                $counter++; // Increment counter for each link we delete.
+                ++$counter; // Increment counter for each link we delete.
 
                 break; // Break switch handler.
 
@@ -189,7 +189,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                 if (!unlink($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                $counter++; // Increment counter for each file we delete.
+                ++$counter; // Increment counter for each file we delete.
 
                 break; // Break switch handler.
 
@@ -264,9 +264,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
     if (!is_dir($cache_dir = $self->cacheDir())) {
         return $counter; // Nothing to do.
     }
-    $host  = !empty($_SERVER['HTTP_HOST'])
-        ? strtolower((string) $_SERVER['HTTP_HOST'])
-        : '';
+    $host                 = $self->httpHost();
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $cache_dir            = $self->nDirSeps($cache_dir);
 
@@ -312,7 +310,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
         } else {
             $_host_cache_dir_tmp_regex = '/^'.preg_quote($_host_cache_dir_tmp.'/', '/').$_host_cache_dir_tmp_regex;
         }
-        # if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/zc-debug.log', print_r($regex, TRUE)."\n".print_r($_host_cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
+        #if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/zc-debug.log', print_r($regex, TRUE)."\n".print_r($_host_cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
         // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
         if (!rename($_host_cache_dir, $_host_cache_dir_tmp)) {
@@ -341,7 +339,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
                     if (!unlink($_path_name)) {
                         throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                     }
-                    $counter++; // Increment counter for each link we delete.
+                    ++$counter; // Increment counter for each link we delete.
 
                     break; // Break switch handler.
 
@@ -355,7 +353,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
                     if (!unlink($_path_name)) {
                         throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                     }
-                    $counter++; // Increment counter for each file we delete.
+                    ++$counter; // Increment counter for each file we delete.
 
                     break; // Break switch handler.
 
@@ -449,7 +447,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
                 if (!unlink($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                $counter++; // Increment counter for each link we delete.
+                ++$counter; // Increment counter for each link we delete.
 
                 break; // Break switch handler.
 
@@ -458,7 +456,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
                 if (!unlink($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                $counter++; // Increment counter for each file we delete.
+                ++$counter; // Increment counter for each file we delete.
 
                 break; // Break switch handler.
 
@@ -467,7 +465,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
                 if (!rmdir($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                $counter++; // Increment counter for each directory we delete.
+                ++$counter; // Increment counter for each directory we delete.
 
                 break; // Break switch handler.
 
@@ -484,7 +482,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
         if (!rmdir($dir)) {
             throw new \Exception(sprintf(__('Unable to delete directory: `%1$s`.', SLUG_TD), $dir));
         }
-        $counter++; // Increment counter for each directory we delete.
+        ++$counter; // Increment counter for each directory we delete.
     }
     /* ------- End lock state... ------------- */
 

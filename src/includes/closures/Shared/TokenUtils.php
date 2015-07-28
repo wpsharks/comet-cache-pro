@@ -13,14 +13,14 @@ $self->user_login_cookie_expired_or_invalid = false;
 /*[/pro]*/
 
 /*
- * Produces a token based on the current `$_SERVER['HTTP_HOST']`.
+ * Produces a token based on the current host.
  *
  * @since 150422 Rewrite.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
  *
- * @return string Token based on the current `$_SERVER['HTTP_HOST']`.
+ * @return string Token based on the current host.
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
@@ -30,9 +30,7 @@ $self->hostToken = function ($dashify = false) use ($self) {
     if (!is_null($token = &$self->staticKey('hostToken', $dashify))) {
         return $token; // Already cached this.
     }
-    $token = !empty($_SERVER['HTTP_HOST'])
-        ? strtolower((string) $_SERVER['HTTP_HOST'])
-        : '';
+    $token = strtolower($self->httpHost());
     if ($dashify) {
         $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);
         $token = trim($token, '-');

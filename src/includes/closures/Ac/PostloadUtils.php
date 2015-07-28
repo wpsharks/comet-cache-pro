@@ -182,7 +182,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
             return $self->maybeSetDebugInfo(NC_DEBUG_NO_USER_TOKEN);
         }
     }
-    $self->cache_path = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $self->user_token, $self->version_salt);
+    $self->cache_path = $self->buildCachePath($self->protocol.$self->http_host.$_SERVER['REQUEST_URI'], $self->user_token, $self->version_salt);
     $self->cache_file = ZENCACHE_DIR.'/'.$self->cache_path; // NOT considering a user cache; not yet.
 
     if (is_file($self->cache_file) && filemtime($self->cache_file) >= strtotime('-'.ZENCACHE_MAX_AGE)) {

@@ -18,6 +18,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     $url               = trim((string) $url);
     $with_user_token   = trim((string) $with_user_token);
     $with_version_salt = trim((string) $with_version_salt);
+    $current_host      = (string) $self->httpHost();
 
     if ($url && strpos($url, '://') === false) {
         $url = '//'.ltrim($url, '/');
@@ -38,8 +39,8 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     if (!($flags & CACHE_PATH_NO_HOST)) {
         if (!empty($url['host'])) {
             $cache_path .= $url['host'].'/';
-        } elseif (!empty($_SERVER['HTTP_HOST'])) {
-            $cache_path .= (string) $_SERVER['HTTP_HOST'].'/';
+        } elseif ($current_host) {
+            $cache_path .= $current_host.'/';
         }
     }
     if (!($flags & CACHE_PATH_NO_PATH)) {
@@ -182,8 +183,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
     if ($url) {
         $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
-        $host                 = !empty($_SERVER['HTTP_HOST'])
-            ? (string) $_SERVER['HTTP_HOST'] : '';
+        $host                 = $self->httpHost();
         $host_base_dir_tokens = $self->hostBaseDirTokens();
         $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
         $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
@@ -229,14 +229,13 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     $regex_suffix_frag = (string) $regex_suffix_frag; // Force a string value.
     $flags             = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
-    $host                 = !empty($_SERVER['HTTP_HOST'])
-        ? (string) $_SERVER['HTTP_HOST'] : '';
+    $host                 = $self->httpHost();
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
     $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
 
     return '(?:'.implode('|', array_map(function ($pattern) use ($_self, $regex_suffix_frag, $flags, $host_url, $host_cache_path) {
-        $cache_path          = $_self->buildCachePath($host_url.'/'.trim($pattern, '/'), '', '', $flags);
+        $cache_path = $_self->buildCachePath($host_url.'/'.trim($pattern, '/'), '', '', $flags);
         $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $cache_path);
 
         return preg_replace('/\\\\\*/', '.*?', preg_quote($relative_cache_path, '/')).$regex_suffix_frag;

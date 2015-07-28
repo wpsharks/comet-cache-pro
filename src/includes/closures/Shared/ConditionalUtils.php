@@ -123,8 +123,8 @@ $self->isLocalhost = function () use ($self) {
     if (defined('LOCALHOST') && LOCALHOST) {
         return ($is = true);
     }
-    if (!defined('LOCALHOST') && !empty($_SERVER['HTTP_HOST'])) {
-        if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', (string) $_SERVER['HTTP_HOST'])) {
+    if (!defined('LOCALHOST') && ($host = $self->httpHost(false))) {
+        if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', $host)) {
             return ($is = true);
         }
     }

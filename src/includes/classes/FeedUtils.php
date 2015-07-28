@@ -242,8 +242,7 @@ class FeedUtils extends AbsBase
                  | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT
                  | CACHE_PATH_NO_EXT;
 
-        $host                  = !empty($_SERVER['HTTP_HOST'])
-            ? (string) $_SERVER['HTTP_HOST'] : '';
+        $host                  = $this->plugin->httpHost();
         $host_base_dir_tokens  = $this->plugin->hostBaseDirTokens();
         $host_url              = rtrim('http://'.$host.$host_base_dir_tokens, '/');
         $host_cache_path_flags = $flags | CACHE_PATH_NO_QUV; // Add one more flag here.

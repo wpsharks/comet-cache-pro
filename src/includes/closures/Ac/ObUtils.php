@@ -11,6 +11,15 @@ namespace WebSharks\ZenCache\Pro;
 $self->protocol = '';
 
 /*
+ * The `Host:` for this request.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @type string Host name.
+ */
+$self->http_host = '';
+
+/*
  * Calculated version salt; set by site configuration data.
  *
  * @since 150422 Rewrite.
@@ -72,7 +81,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (strcasecmp(PHP_SAPI, 'cli') === 0) {
         return $self->maybeSetDebugInfo(NC_DEBUG_PHP_SAPI_CLI);
     }
-    if (empty($_SERVER['HTTP_HOST'])) {
+    if (!($self->http_host = $self->httpHost())) {
         return $self->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_HTTP_HOST);
     }
     if (empty($_SERVER['REQUEST_URI'])) {
@@ -137,7 +146,8 @@ $self->maybeStartOutputBuffering = function () use ($self) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
         }
     }
-    $self->protocol = $self->isSsl() ? 'https://' : 'http://';
+    $self->protocol  = $self->isSsl() ? 'https://' : 'http://';
+    #$self->http_host = $self->httpHost(); // Already called above.
 
     $self->version_salt = ''; // Initialize the version salt.
     /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
@@ -145,12 +155,12 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     $self->version_salt = $self->applyFilters(get_class($self).'__version_salt', $self->version_salt);
     $self->version_salt = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
 
-    $self->cache_path = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $self->version_salt);
+    $self->cache_path = $self->buildCachePath($self->protocol.$self->http_host.$_SERVER['REQUEST_URI'], '', $self->version_salt);
 
     $self->cache_file     = ZENCACHE_DIR.'/'.$self->cache_path; // NOT considering a user cache; not yet.
-    $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].'/'.ZENCACHE_404_CACHE_FILENAME);
+    $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->buildCachePath($self->protocol.$self->http_host.'/'.ZENCACHE_404_CACHE_FILENAME);
 
-    $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+    $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$self->http_host.$_SERVER['REQUEST_URI']);
 
     if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
