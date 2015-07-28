@@ -53,6 +53,9 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
     ) {
         $post_status = 'publish'; // A new post being published now.
     }
+    if ($post_status === 'inherit') {
+        return $counter; // Nothing to do.
+    }
     if ($post_status === 'auto-draft') {
         return $counter; // Nothing to do.
     }

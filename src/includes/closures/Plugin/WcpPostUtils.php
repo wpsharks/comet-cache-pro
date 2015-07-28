@@ -56,6 +56,9 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
     if (!($post_status = get_post_status($post_id))) {
         return $counter; // Nothing to do.
     }
+    if ($post_status === 'inherit') {
+        return $counter; // Nothing to do.
+    }
     if ($post_status === 'auto-draft') {
         return $counter; // Nothing to do.
     }
