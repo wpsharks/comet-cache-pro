@@ -32,7 +32,7 @@ $self->builtInPostStatuses = function () use ($self) {
     $statuses = array(); // Initialize.
 
     foreach (get_post_stati(array(), 'objects') as $_key => $_status) {
-        if ($_status->_builtin) {
+        if (!empty($_status->_builtin)) {
             $statuses[] = $_status->name;
         }
     }
