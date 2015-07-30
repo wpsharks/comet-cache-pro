@@ -16,11 +16,11 @@ $self->domainMappingSiteUrl = function () use ($self) {
 };
 
 /*
- * Can consider domain mapping?
+ * Filters a URL in order to apply domain mapping.
  *
  * @since 15xxxx Improving multisite compat.
  *
- * @return bool `TRUE` if we can consider domain mapping.
+ * @return string The filtered URL, if possible; Otherwise the original URL.
  */
 $self->domainMappingUrlFilter = function ($url) use ($self) {
     $original_url = (string) $url; // Preserve.
