@@ -15,7 +15,7 @@ namespace WebSharks\ZenCache\Pro;
 $self->cacheDir = function ($rel_path = '') use ($self) {
     $rel_path = (string) $rel_path;
 
-    if (!($self instanceof AdvancedCache)) {
+    if (!$self->isAdvancedCache()) {
         $cache_dir = $self->wpContentBaseDirTo($self->cache_sub_dir);
     } elseif (defined('ZENCACHE_DIR') && \ZENCACHE_DIR) {
         $cache_dir = \ZENCACHE_DIR;
@@ -122,8 +122,8 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
     }
     $cache_dir = $self->nDirSeps($cache_dir);
 
-    if ($check_max_age && $self instanceof AdvancedCache) {
-        throw new \Exception(__('Requires an instance of Plugin.', SLUG_TD));
+    if ($check_max_age && $self->isAdvancedCache()) {
+        throw new \Exception(__('Invalid argument; isAdvancedCache!', SLUG_TD));
     }
     if ($check_max_age && !($max_age = strtotime('-'.$self->options['cache_max_age']))) {
         return $counter; // Invalid cache expiration time.
@@ -251,11 +251,13 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  *
  * @param boolean $check_max_age Check max age? i.e., use purge behavior?
  *
+ * @param boolean $___without_domain_mapping For internal use only.
+ *
  * @return integer Total files deleted by this routine (if any).
  *
  * @throws \Exception If unable to delete a file for any reason.
  */
-$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) use ($self) {
+$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $___without_domain_mapping = false) use ($self) {
     $counter = 0; // Initialize.
 
     if (!($regex = (string) $regex)) {
@@ -268,8 +270,8 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $cache_dir            = $self->nDirSeps($cache_dir);
 
-    if ($check_max_age && $self instanceof AdvancedCache) {
-        throw new \Exception(__('Requires an instance of Plugin.', SLUG_TD));
+    if ($check_max_age && $self->isAdvancedCache()) {
+        throw new \Exception(__('Invalid argument; isAdvancedCache!', SLUG_TD));
     }
     if ($check_max_age && !($max_age = strtotime('-'.$self->options['cache_max_age']))) {
         return $counter; // Invalid cache expiration time.
@@ -290,11 +292,15 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
             In fact, it may improve performance since we are traversing each sub-directory separately;
             i.e., we don't need to glob both `http` and `https` traffic into a single directory scan. */
         $_host_url              = $_host_scheme.'://'.$host.$host_base_dir_tokens;
-        $_host_cache_path_flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
-        $_host_cache_path       = $self->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
-        $_host_cache_dir        = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
+        $_host_cache_path_flags = $___without_domain_mapping ? CACHE_PATH_NO_DOMAIN_MAPPING : 0;
+        $_host_cache_path_flags |= CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+
+        $_host_cache_path = $self->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
+        $_host_cache_dir  = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
 
         if (!$_host_cache_dir || !is_dir($_host_cache_dir)) {
+            // @TODO: a multisite install may have a cache sub-directory.
+            //  e.g., `http/example-com/child1` instead of `http/example-com`
             continue; // Nothing to do.
         }
         $_host_cache_dir_tmp       = $self->addTmpSuffix($_host_cache_dir); // Temporary directory.
@@ -388,6 +394,10 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false) u
 
     $self->cacheUnlock($cache_lock);
 
+    // This runs one additional deletion scan for the unmapped variation.
+    if (!$___without_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
+        $counter += $self->deleteFilesFromHostCacheDir($regex, $check_max_age, true);
+    }
     return $counter;
 };
 

@@ -14,13 +14,22 @@ if (defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
 const CACHE_PATH_DEFAULT = 0;
 
 /**
+ * Allow a domain-mapped cache path.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @type int Part of a bitmask.
+ */
+const CACHE_PATH_NO_DOMAIN_MAPPING = 1;
+
+/**
  * Exclude scheme from cache path.
  *
  * @since 150422 Rewrite.
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_SCHEME = 1;
+const CACHE_PATH_NO_SCHEME = 2;
 
 /**
  * Exclude host (i.e. domain name) from cache path.
@@ -29,7 +38,7 @@ const CACHE_PATH_NO_SCHEME = 1;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_HOST = 2;
+const CACHE_PATH_NO_HOST = 4;
 
 /**
  * Exclude path from cache path.
@@ -38,7 +47,7 @@ const CACHE_PATH_NO_HOST = 2;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_PATH = 4;
+const CACHE_PATH_NO_PATH = 8;
 
 /**
  * Exclude path index (i.e. no default `index`) from cache path.
@@ -47,7 +56,7 @@ const CACHE_PATH_NO_PATH = 4;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_PATH_INDEX = 8;
+const CACHE_PATH_NO_PATH_INDEX = 16;
 
 /**
  * Exclude query, user & version salt from cache path.
@@ -56,7 +65,7 @@ const CACHE_PATH_NO_PATH_INDEX = 8;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_QUV = 16;
+const CACHE_PATH_NO_QUV = 32;
 
 /**
  * Exclude query string from cache path.
@@ -65,7 +74,7 @@ const CACHE_PATH_NO_QUV = 16;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_QUERY = 32;
+const CACHE_PATH_NO_QUERY = 64;
 
 /**
  * Exclude user token from cache path.
@@ -74,7 +83,7 @@ const CACHE_PATH_NO_QUERY = 32;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_USER = 64;
+const CACHE_PATH_NO_USER = 128;
 
 /**
  * Exclude version salt from cache path.
@@ -83,7 +92,7 @@ const CACHE_PATH_NO_USER = 64;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_VSALT = 128;
+const CACHE_PATH_NO_VSALT = 256;
 
 /**
  * Exclude extension from cache path.
@@ -92,7 +101,7 @@ const CACHE_PATH_NO_VSALT = 128;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_NO_EXT = 256;
+const CACHE_PATH_NO_EXT = 512;
 
 /**
  * Allow wildcards in the cache path.
@@ -101,7 +110,7 @@ const CACHE_PATH_NO_EXT = 256;
  *
  * @type int Part of a bitmask.
  */
-const CACHE_PATH_ALLOW_WILDCARDS = 512;
+const CACHE_PATH_ALLOW_WILDCARDS = 1024;
 
 /**
  * Default cache path regex suffix frag.

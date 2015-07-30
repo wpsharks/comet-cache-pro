@@ -2,6 +2,28 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+ * Is AdvancedCache class?
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @return bool `TRUE` if this is the AdvancedCache class.
+ */
+$self->isAdvancedCache = function () use ($self) {
+    return $self instanceof AdvancedCache;
+};
+
+/*
+ * Is Plugin class?
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @return bool `TRUE` if this is the Plugin class.
+ */
+$self->isPlugin = function () use ($self) {
+    return $self instanceof Plugin;
+};
+
+/*
  * Does the current request include a query string?
  *
  * @since 150422 Rewrite.
@@ -123,7 +145,7 @@ $self->isLocalhost = function () use ($self) {
     if (defined('LOCALHOST') && LOCALHOST) {
         return ($is = true);
     }
-    if (!defined('LOCALHOST') && ($host = $self->httpHost(false))) {
+    if (!defined('LOCALHOST') && ($host = $self->httpHost())) {
         if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', $host)) {
             return ($is = true);
         }

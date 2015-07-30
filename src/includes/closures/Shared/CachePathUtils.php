@@ -14,23 +14,23 @@ namespace WebSharks\ZenCache\Pro;
  * @return string The resulting relative `cache/path` based on the input `$url`; i.e. relative to the cache directory.
  */
 $self->buildCachePath = function ($url, $with_user_token = '', $with_version_salt = '', $flags = CACHE_PATH_DEFAULT) use ($self) {
-    $cache_path        = ''; // Initialize.
     $url               = trim((string) $url);
     $with_user_token   = trim((string) $with_user_token);
     $with_version_salt = trim((string) $with_version_salt);
-    $current_host      = (string) $self->httpHost();
 
-    if ($url && strpos($url, '://') === false) {
-        $url = '//'.ltrim($url, '/');
+    $cache_path = ''; // Initialize cache path being built here.
+
+    if (!($flags & CACHE_PATH_NO_DOMAIN_MAPPING) && is_multisite() && $self->canConsiderDomainMapping()) {
+        $current_host = $current_underlying_host = $self->httpHost(true);
+        $url          = $self->domainMappingUrlFilter($url);
+    } else {
+        $current_host = $self->httpHost(); // Real current host name.
     }
-    if ($url && strpos($url, '&amp;') !== false) {
-        $url = str_replace('&amp;', '&', $url);
-    }
-    if (!$url || !($url = parse_url($url))) {
-        return ''; // Invalid URL.
+    if (!$url || !($url = $self->parseUrl($url))) {
+        return ($cache_path = ''); // Not possible.
     }
     if (!($flags & CACHE_PATH_NO_SCHEME)) {
-        if (!empty($url['scheme'])) {
+        if (!empty($url['scheme']) && $url['scheme'] !== '//') {
             $cache_path .= $url['scheme'].'/';
         } else {
             $cache_path .= $self->isSsl() ? 'https/' : 'http/';

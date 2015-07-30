@@ -56,8 +56,8 @@ class AutoCache extends AbsBase
         $total_urls       = $total_time       = 0; // Initialize.
 
         $network_home_url  = rtrim(network_home_url(), '/');
-        $network_home_host = parse_url($network_home_url, PHP_URL_HOST);
-        $network_home_path = parse_url($network_home_url, PHP_URL_PATH);
+        $network_home_host = $this->plugin->parseUrl($network_home_url, PHP_URL_HOST);
+        $network_home_path = $this->plugin->parseUrl($network_home_url, PHP_URL_PATH);
 
         $delay = (integer) $this->plugin->options['auto_cache_delay']; // In milliseconds.
         $delay = $delay > 0 ? $delay * 1000 : 0; // Convert delay to microseconds for `usleep()`.
@@ -78,7 +78,7 @@ class AutoCache extends AbsBase
 
         foreach ($blogs as $_blog) {
             $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = array();
-            $_blog_url          = 'http://'.$_blog->domain.'/'.trim($_blog->path, '/');
+            $_blog_url          = 'http://'.$_blog->domain.'/'.trim($_blog->path, '/'); // @TODO Add support for `PATH_CURRENT_SITE`; i.e., the base directory.
 
             if ($this->plugin->options['auto_cache_sitemap_url']) {
                 $_blog_sitemap_urls = $this->getSitemapUrlsDeep($_blog_url.'/'.$this->plugin->options['auto_cache_sitemap_url']);
@@ -91,7 +91,7 @@ class AutoCache extends AbsBase
             shuffle($_blog_urls); // Randomize the order.
 
             foreach ($_blog_urls as $_url) {
-                $total_urls++; // Counter.
+                ++$total_urls; // Counter.
 
                 $this->autoCacheUrl($_url);
 
