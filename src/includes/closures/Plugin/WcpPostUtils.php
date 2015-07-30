@@ -71,7 +71,7 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
         $post_status = 'publish'; // A new post being published now.
     }
     if (in_array($post_status, array('inherit', 'auto-draft'), true)) {
-        return $counter; // Nothing to do.
+        return $counter; // Nothing to do. Note: `inherit` = revision.
     }
     if (in_array($post_status, array('draft', 'pending', 'future', 'trash'), true) && !$force) {
         return $counter; // Nothing to do; i.e., NOT forcing in this case.

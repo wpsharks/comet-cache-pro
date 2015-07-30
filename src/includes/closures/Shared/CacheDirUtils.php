@@ -196,10 +196,10 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
             case 'dir': // A regular directory; i.e., not a symlink.
 
                 if ($regex !== '/^.+/i') {
-                    break; // Break; not deleting everything.
+                    break; // Not deleting everything.
                 }
                 if ($check_max_age && !empty($max_age)) {
-                    break; // Break; not deleting everything.
+                    break; // Not deleting everything.
                 }
                 if (!rmdir($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
@@ -267,6 +267,8 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
         return $counter; // Nothing to do.
     }
     $host                 = $self->httpHost();
+    $host_base_token      = $self->hostBaseToken();
+    $host_dir_token       = $self->hostDirToken();
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $cache_dir            = $self->nDirSeps($cache_dir);
 
@@ -291,7 +293,8 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
             pages over SSL all the time; so this really should not have a significant performance hit.
             In fact, it may improve performance since we are traversing each sub-directory separately;
             i.e., we don't need to glob both `http` and `https` traffic into a single directory scan. */
-        $_host_url              = $_host_scheme.'://'.$host.$host_base_dir_tokens;
+        $_host_url = $_host_scheme.'://'.$host.$host_base_dir_tokens;
+
         $_host_cache_path_flags = $___without_domain_mapping ? CACHE_PATH_NO_DOMAIN_MAPPING : 0;
         $_host_cache_path_flags |= CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
@@ -300,7 +303,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
 
         if (!$_host_cache_dir || !is_dir($_host_cache_dir)) {
             // @TODO: a multisite install may have a cache sub-directory.
-            //  e.g., `http/example-com/child1` instead of `http/example-com`
+            //  e.g., `http/example-com/base/child1` instead of `http/example-com`
             continue; // Nothing to do.
         }
         $_host_cache_dir_tmp       = $self->addTmpSuffix($_host_cache_dir); // Temporary directory.
@@ -366,10 +369,10 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
                 case 'dir': // A regular directory; i.e., not a symlink.
 
                     if ($regex !== '/^.+/i') {
-                        break; // Break; not deleting everything.
+                        break; // Not deleting everything.
                     }
                     if ($check_max_age && !empty($max_age)) {
-                        break; // Break; not deleting everything.
+                        break; // Not deleting everything.
                     }
                     if (!rmdir($_path_name)) {
                         throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));

@@ -237,7 +237,6 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     return '(?:'.implode('|', array_map(function ($pattern) use ($_self, $regex_suffix_frag, $flags, $host_url, $host_cache_path) {
         $cache_path = $_self->buildCachePath($host_url.'/'.trim($pattern, '/'), '', '', $flags);
         $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $cache_path);
-
         return preg_replace('/\\\\\*/', '.*?', preg_quote($relative_cache_path, '/')).$regex_suffix_frag;
     }, preg_split('/['."\r\n".']+/', $uris, null, PREG_SPLIT_NO_EMPTY))).')';
 };

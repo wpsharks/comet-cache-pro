@@ -55,33 +55,33 @@ class AutoCache extends AbsBase
         $start_time       = time(); // Initialize.
         $total_urls       = $total_time       = 0; // Initialize.
 
-        $network_home_url  = rtrim(network_home_url(), '/');
-        $network_home_host = $this->plugin->parseUrl($network_home_url, PHP_URL_HOST);
-        $network_home_path = $this->plugin->parseUrl($network_home_url, PHP_URL_PATH);
-
         $delay = (integer) $this->plugin->options['auto_cache_delay']; // In milliseconds.
         $delay = $delay > 0 ? $delay * 1000 : 0; // Convert delay to microseconds for `usleep()`.
 
-        if (($other_urls = preg_split('/\s+/', $this->plugin->options['auto_cache_other_urls'], null, PREG_SPLIT_NO_EMPTY))) {
-            $blogs = array((object) array('domain' => $network_home_host, 'path' => $network_home_path, 'other' => $other_urls));
-        } else {
-            $blogs = array((object) array('domain' => $network_home_host, 'path' => $network_home_path));
-        }
+        $other_urls = $this->plugin->options['auto_cache_other_urls'];
+        $other_urls = preg_split('/\s+/', $other_urls, null, PREG_SPLIT_NO_EMPTY);
+
+        $blogs = array((object) array('ID' => null, 'other' => $other_urls));
+
         if (is_multisite()) {
             $wpdb = $this->plugin->wpdb(); // WordPress DB object instance.
-            if (($_child_blogs = $wpdb->get_results('SELECT `domain`, `path` FROM `'.esc_sql($wpdb->blogs)."` WHERE `deleted` <= '0'"))) {
+            if (($_child_blogs = $wpdb->get_results('SELECT `blog_id` AS `ID` FROM `'.esc_sql($wpdb->blogs).'` WHERE `deleted` <= \'0\''))) {
                 $blogs = array_merge($blogs, $_child_blogs);
             }
             unset($_child_blogs); // Housekeeping.
         }
-        shuffle($blogs); // Randomize the order; i.e. don't always start from the top.
+        shuffle($blogs); // Randomize; i.e. don't always start from the top.
 
         foreach ($blogs as $_blog) {
             $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = array();
-            $_blog_url          = 'http://'.$_blog->domain.'/'.trim($_blog->path, '/'); // @TODO Add support for `PATH_CURRENT_SITE`; i.e., the base directory.
 
-            if ($this->plugin->options['auto_cache_sitemap_url']) {
-                $_blog_sitemap_urls = $this->getSitemapUrlsDeep($_blog_url.'/'.$this->plugin->options['auto_cache_sitemap_url']);
+            if (!isset($_blog->ID)) { // `home_url()` if `!is_multisite()`.
+                $_blog_url = rtrim(network_home_url('', 'http'), '/');
+            } else { // This calls upon `switch_to_blog()` to acquire.
+                $_blog_url = rtrim(get_home_url($_blog->ID, '', 'http'), '/');
+            }
+            if (($_blog_sitemap_path = ltrim($this->plugin->options['auto_cache_sitemap_url'], '/'))) {
+                $_blog_sitemap_urls = $this->getSitemapUrlsDeep($_blog_url.'/'.$_blog_sitemap_path);
             }
             if (!empty($_blog->other)) {
                 $_blog_other_urls = array_merge($_blog_urls, $_blog->other);
@@ -104,7 +104,7 @@ class AutoCache extends AbsBase
             }
             unset($_url); // A little housekeeping.
         }
-        unset($_blog, $_blog_sitemap_urls, $_blog_other_urls, $_blog_urls, $_blog_url);
+        unset($_blog, $_blog_url, $_blog_sitemap_path, $_blog_sitemap_urls, $_blog_other_urls, $_blog_urls);
 
         $total_time = number_format(microtime(true) - $micro_start_time, 5, '.', '').' seconds';
 

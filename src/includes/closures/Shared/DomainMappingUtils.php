@@ -53,8 +53,8 @@ $self->domainMappingUrlFilter = function ($url) use ($self) {
     }
     $url_parts['host'] = $domain; // Filter host name.
     if (!empty($url_parts['path']) && $url_parts['path'] !== '/') { // Filter path?
-        if (($host_base_dir = trim($self->hostBaseDirTokens(false, $url_parts['path']), '/'))) {
-            $url_parts['path'] = preg_replace('/^\/'.preg_quote($host_base_dir, '/').'(\/|$)/i', '${1}', $url_parts['path']);
+        if (($host_base_dir_tokens = trim($self->hostBaseDirTokens(false, $url_parts['path']), '/'))) {
+            $url_parts['path'] = preg_replace('/^\/'.preg_quote($host_base_dir_tokens, '/').'(\/|$)/i', '${1}', $url_parts['path']);
         }
     }
     return $self->unParseUrl($url_parts);
