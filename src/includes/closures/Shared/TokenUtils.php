@@ -18,21 +18,23 @@ $self->user_login_cookie_expired_or_invalid = false;
  * @since 150422 Rewrite.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
- *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
+ *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
+ *
+ * @param boolean $consider_domain_mapping Consider?
  *
  * @return string Token based on the current host.
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->hostToken = function ($dashify = false) use ($self) {
+$self->hostToken = function ($dashify = false, $consider_domain_mapping = false) use ($self) {
     $dashify = (integer) $dashify;
 
-    if (!is_null($token = &$self->staticKey('hostToken', $dashify))) {
+    if (!is_null($token = &$self->staticKey('hostToken', array($dashify, $consider_domain_mapping)))) {
         return $token; // Already cached this.
     }
-    $token = strtolower($self->httpHost());
+    $token = strtolower($self->httpHost($consider_domain_mapping));
     if ($dashify) {
-        $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);
+        $token = preg_replace('/[^a-z0-9]/i', '-', $token);
         $token = trim($token, '-');
     }
     return $token;

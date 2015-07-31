@@ -41,11 +41,13 @@ $self->wipeHtmlCCache = function ($manually = false) use ($self) {
  * @param bool $manually Defaults to a `FALSE` value.
  *                       Pass as TRUE if the clearing is done manually by the site owner.
  *
+ * @param boolean $___without_domain_mapping For internal use only.
+ *
  * @throws \Exception If a clearing failure occurs.
  *
  * @return int Total files cleared by this routine (if any).
  */
-$self->clearHtmlCCache = function ($manually = false) use ($self) {
+$self->clearHtmlCCache = function ($manually = false, $___without_domain_mapping = false) use ($self) {
     $counter = 0; // Initialize.
 
     if (!$manually && $self->disableAutoClearCacheRoutines()) {
@@ -53,18 +55,26 @@ $self->clearHtmlCCache = function ($manually = false) use ($self) {
     }
     @set_time_limit(1800); // @TODO Display a warning.
 
-    $host_token = $self->hostToken(true);
-    if (($host_dir_token = $self->hostDirToken(true)) === '/') {
-        $host_dir_token = ''; // Not necessary in this case.
-    }
-    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.$host_dir_token.'/'.$host_token);
-    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.$host_dir_token.'/'.$host_token);
+    // Deals with multisite base & sub-directory installs.
+    // e.g. `htmlc/cache/public/www-example-com` (standard WP installation)
+    // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network)
+    // Note that `www-example-com` (current host) is appended by the HTML compressor.
+
+    $host_token           = $self->hostToken(true, $___without_domain_mapping ? false : true);
+    $host_base_dir_tokens = rtrim($self->hostBaseDirTokens(true), '/');
+
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.$host_base_dir_tokens.'/'.$host_token);
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.$host_base_dir_tokens.'/'.$host_token);
 
     foreach ($htmlc_cache_dirs as $_htmlc_cache_dir) {
         $counter += $self->deleteAllFilesDirsIn($_htmlc_cache_dir);
     }
     unset($_htmlc_cache_dir); // Just a little housekeeping.
 
+    // This runs one additional deletion scan for the unmapped variation.
+    if (!$___without_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
+        $counter += $self->clearHtmlCCache($manually, true);
+    }
     return $counter;
 };
 /*[/pro]*/
