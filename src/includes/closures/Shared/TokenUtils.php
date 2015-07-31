@@ -101,12 +101,13 @@ $self->hostDirToken = function ($dashify = false, $path = null) use ($self) {
     $token = '/'; // Assume NOT multisite; or own domain.
 
     if (is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL)) {
-        if ($path && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
+        if ($path && $path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
             $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
         } else {
             $path_minus_base = $path; // Default value.
         }
         list($token) = explode('/', trim($path_minus_base, '/'));
+        $token       = trim($token, '\\/'." \t\n\r\0\x0B");
         $token       = isset($token[0]) ? '/'.$token.'/' : '/';
 
         if ($token !== '/' // Perhaps NOT the main site?
