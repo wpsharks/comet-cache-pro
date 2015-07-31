@@ -83,27 +83,31 @@ $self->hostBaseToken = function ($dashify = false) use ($self) {
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
  *
- * @param string $uri Defaults to the current Request URI; default behavior.
+ * @param string $path Defaults to the current Request URI path.
  *
  * @return string Produces a token based on the current blog sub-directory
  *    (i.e. in the case of a sub-directory multisite network).
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->hostDirToken = function ($dashify = false, $uri = null) use ($self) {
+$self->hostDirToken = function ($dashify = false, $path = null) use ($self) {
     $dashify = (integer) $dashify;
-    $uri     = isset($uri) ? $uri : $_SERVER['REQUEST_URI'];
-    $uri     = (string) $uri; // Force string value.
-
-    if (!is_null($token = &$self->staticKey('hostDirToken', array($dashify, $uri)))) {
+    if (!isset($path) || !is_string($path)) {
+        $path = (string) $self->parseUrl($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    }
+    if (!is_null($token = &$self->staticKey('hostDirToken', array($dashify, $path)))) {
         return $token; // Already cached this.
     }
     $token = '/'; // Assume NOT multisite; or own domain.
 
     if (is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL)) {
-        $uri_minus_base = $uri ? preg_replace('/^'.preg_quote($self->hostBaseToken(), '/').'/', '', $uri) : '';
-        list($token)    = explode('/', trim($uri_minus_base, '/'));
-        $token          = isset($token[0]) ? '/'.$token.'/' : '/';
+        if ($path && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
+            $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
+        } else {
+            $path_minus_base = $path; // Default value.
+        }
+        list($token) = explode('/', trim($path_minus_base, '/'));
+        $token       = isset($token[0]) ? '/'.$token.'/' : '/';
 
         if ($token !== '/' // Perhaps NOT the main site?
            && (!is_file(($cache_dir = $self->cacheDir()).'/zc-blog-paths')
@@ -127,21 +131,19 @@ $self->hostDirToken = function ($dashify = false, $uri = null) use ($self) {
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
  *
- * @param string $uri Defaults to the current Request URI; default behavior.
+ * @param string $path Defaults to the current Request URI path.
  *
  * @return string Tokens for the current site's base directory & current blog's sub-directory.
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->hostBaseDirTokens = function ($dashify = false, $uri = null) use ($self) {
+$self->hostBaseDirTokens = function ($dashify = false, $path = null) use ($self) {
     $dashify = (integer) $dashify;
-    $uri     = isset($uri) ? $uri : $_SERVER['REQUEST_URI'];
-    $uri     = (string) $uri; // Force string value.
 
-    if (!is_null($tokens = &$self->staticKey('hostBaseDirTokens', array($dashify, $uri)))) {
+    if (!is_null($tokens = &$self->staticKey('hostBaseDirTokens', array($dashify, $path)))) {
         return $tokens; // Already cached this.
     }
-    $tokens = $self->hostBaseToken($dashify).$self->hostDirToken($dashify, $uri);
+    $tokens = $self->hostBaseToken($dashify).$self->hostDirToken($dashify, $path);
     $tokens = preg_replace('/\/{2,}/', '/', $tokens);
 
     return $tokens;

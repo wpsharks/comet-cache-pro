@@ -267,8 +267,6 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
         return $counter; // Nothing to do.
     }
     $host                 = $self->httpHost();
-    $host_base_token      = $self->hostBaseToken();
-    $host_dir_token       = $self->hostDirToken();
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $cache_dir            = $self->nDirSeps($cache_dir);
 
@@ -302,8 +300,8 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
         $_host_cache_dir  = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
 
         if (!$_host_cache_dir || !is_dir($_host_cache_dir)) {
-            // @TODO: a multisite install may have a cache sub-directory.
-            //  e.g., `http/example-com/base/child1` instead of `http/example-com`
+            // NOTE: on a multisite install this may have a cache sub-directory.
+            //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
             continue; // Nothing to do.
         }
         $_host_cache_dir_tmp       = $self->addTmpSuffix($_host_cache_dir); // Temporary directory.

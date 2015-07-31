@@ -21,7 +21,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     $cache_path = ''; // Initialize cache path being built here.
 
     if (!($flags & CACHE_PATH_NO_DOMAIN_MAPPING) && is_multisite() && $self->canConsiderDomainMapping()) {
-        $current_host = $current_underlying_host = $self->httpHost(true);
+        $current_host = $current_possibly_mapped_host = $self->httpHost(true);
         $url          = $self->domainMappingUrlFilter($url);
     } else {
         $current_host = $self->httpHost(); // Real current host name.
