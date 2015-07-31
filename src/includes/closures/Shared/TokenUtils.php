@@ -95,13 +95,15 @@ $self->hostDirToken = function ($dashify = false, $path = null) use ($self) {
     if (!isset($path) || !is_string($path)) {
         $path = (string) $self->parseUrl($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
+    $path = '/'.ltrim($path); // Force leading slash.
+
     if (!is_null($token = &$self->staticKey('hostDirToken', array($dashify, $path)))) {
         return $token; // Already cached this.
     }
     $token = '/'; // Assume NOT multisite; or own domain.
 
     if (is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL)) {
-        if ($path && $path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
+        if ($path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
             $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
         } else {
             $path_minus_base = $path; // Default value.

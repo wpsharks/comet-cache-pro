@@ -37,7 +37,7 @@ $self->domainMappingUrlFilter = function ($url) use ($self) {
     }
     $wpdb        = $self->wpdb(); // Available in Plugin class only.
     $blog_domain = $url_parts['host']; // Host name that appears in the unfiltered URL.
-    $blog_path   = $self->hostDirToken(false, !empty($url_parts['path']) ? '/'.ltrim($url_parts['path']) : '/');
+    $blog_path   = $self->hostDirToken(false, !empty($url_parts['path']) ? $url_parts['path'] : '/');
 
     if (is_null($domain = &$self->cacheKey('domainMappingUrlFilter_map', array($blog_domain, $blog_path)))) {
         if (!($blog_id = (integer) get_blog_id_from_url($blog_domain, $blog_path))) {
