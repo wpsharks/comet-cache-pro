@@ -300,7 +300,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
         $_host_cache_dir  = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
 
         if (!$_host_cache_dir || !is_dir($_host_cache_dir)) {
-            // NOTE: on a multisite install this may have a cache sub-directory.
+            // On a multisite install this may have a cache sub-directory.
             //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
             continue; // Nothing to do.
         }

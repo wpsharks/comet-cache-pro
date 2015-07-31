@@ -63,9 +63,19 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
             }
         }
         if (!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B"))) {
-            $cache_path .= $url['path'].'/';
-            // @TODO websharks/zencache#536 & websharks/zencache#409
-            // We should build an `index/` when this ends with a multisite base.
+            $cache_path .= $url['path'].'/'; // Add the path as it exists.
+
+            // See: websharks/zencache#536 & `deleteFilesFromHostCacheDir()`
+            // We should build an `index/` when this ends with a multisite root.
+            //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
+            if (!($flags & CACHE_PATH_NO_PATH_INDEX)) { // Including a path index?
+                if (is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL)) {
+                    $host_base_dir_tokens = $self->hostBaseDirTokens(false, $url['path']);
+                    if (strcasecmp(trim($url['path'], '/'), trim($host_base_dir_tokens, '/')) === 0) {
+                        $cache_path .= 'index/';
+                    }
+                }
+            }
         } elseif (!($flags & CACHE_PATH_NO_PATH_INDEX)) {
             $cache_path .= 'index/';
         }

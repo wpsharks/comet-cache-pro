@@ -92,10 +92,10 @@ $self->hostBaseToken = function ($dashify = false) use ($self) {
  */
 $self->hostDirToken = function ($dashify = false, $path = null) use ($self) {
     $dashify = (integer) $dashify;
-    if (!isset($path) || !is_string($path)) {
+    if (!isset($path)) { // Use current/default path?
         $path = (string) $self->parseUrl($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
-    $path = '/'.ltrim($path); // Force leading slash.
+    $path = '/'.ltrim((string) $path); // Force a leading slash.
 
     if (!is_null($token = &$self->staticKey('hostDirToken', array($dashify, $path)))) {
         return $token; // Already cached this.
