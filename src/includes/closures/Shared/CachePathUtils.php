@@ -64,6 +64,8 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
         }
         if (!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B"))) {
             $cache_path .= $url['path'].'/';
+            // @TODO websharks/zencache#536 & websharks/zencache#409
+            // We should build an `index/` when this ends with a multisite base.
         } elseif (!($flags & CACHE_PATH_NO_PATH_INDEX)) {
             $cache_path .= 'index/';
         }
