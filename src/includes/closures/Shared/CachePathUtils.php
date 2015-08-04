@@ -171,7 +171,7 @@ $self->buildCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_P
  *       - {@link CACHE_PATH_NO_PATH_INDEX}
  *       - {@link CACHE_PATH_NO_QUV}
  *       - {@link CACHE_PATH_NO_EXT}
- */
+ */ // @TODO review for domain mapping compat and take advantage of recent improvements.
 $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url                           = trim((string) $url);
     $regex_suffix_frag             = (string) $regex_suffix_frag;
@@ -218,7 +218,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
  *       - {@link CACHE_PATH_NO_PATH_INDEX}
  *       - {@link CACHE_PATH_NO_QUV}
  *       - {@link CACHE_PATH_NO_EXT}
- */
+ */// @TODO review for domain mapping compat and take advantage of recent improvements.
 $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     if (!($uris = trim((string) $uris))) {
         return ''; // Nothing to do.

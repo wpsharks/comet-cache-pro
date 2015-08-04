@@ -77,7 +77,7 @@ $self->clearHtmlCCache = function ($manually = false, $___without_domain_mapping
     // This runs one additional deletion scan for the unmapped variation.
     if (!$___without_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
         $counter += $self->clearHtmlCCache($manually, true);
-    }
+    } // @TODO iteration over all mapped domains.
     return $counter;
 };
 /*[/pro]*/

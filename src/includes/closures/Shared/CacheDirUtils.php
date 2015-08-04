@@ -239,7 +239,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  * @return integer Total files deleted by this routine (if any).
  *
  * @throws \Exception If unable to delete a file for any reason.
- */
+ */ // @TODO review for domain mapping compat and take advantage of recent improvements.
 $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $___without_domain_mapping = false) use ($self) {
     $counter = 0; // Initialize.
 
@@ -386,7 +386,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
     // This runs one additional deletion scan for the unmapped variation.
     if (!$___without_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
         $counter += $self->deleteFilesFromHostCacheDir($regex, $check_max_age, true);
-    }
+    } // @TODO review for domain mapping compat and take advantage of recent improvements.
     return $counter;
 };
 
@@ -599,7 +599,7 @@ $self->eraseAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self)
  * @param boolean $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
  *
  * @return integer Total files/directories erased by this routine (if any).
- */
+ */ // @TODO stress test this.
 $self->tryErasingAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self) {
     $counter = 0; // Initialize counter.
     try {
