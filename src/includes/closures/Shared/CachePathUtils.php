@@ -38,18 +38,10 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
         return ($cache_path = ''); // Not possible.
     }
     if (!($flags & CACHE_PATH_NO_SCHEME)) {
-        if (!empty($url['scheme']) && $url['scheme'] !== '//') {
-            $cache_path .= $url['scheme'].'/';
-        } else {
-            $cache_path .= $self->isSsl() ? 'https/' : 'http/';
-        }
+        $cache_path .= $url['scheme'].'/';
     }
     if (!($flags & CACHE_PATH_NO_HOST)) {
-        if (!empty($url['host'])) {
-            $cache_path .= $url['host'].'/';
-        } elseif ($current_host) {
-            $cache_path .= $current_host.'/';
-        }
+        $cache_path .= $url['host'].'/';
     }
     if (!($flags & CACHE_PATH_NO_PATH)) {
         if (isset($url['path'][201])) {
