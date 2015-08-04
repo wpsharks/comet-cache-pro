@@ -61,7 +61,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
             if (isset($url['path'][2001])) {
                 $url['path'] = '/lp-'.sha1($url['path']).'/';
             }
-        }
+        } // @TODO review long path hashes for mulitiste compat. regarding `index/` below ↓
         if (!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B"))) {
             $cache_path .= $url['path'].'/'; // Add the path as it exists.
 
