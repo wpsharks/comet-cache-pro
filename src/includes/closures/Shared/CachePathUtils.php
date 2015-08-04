@@ -34,7 +34,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     if (!$url || !($url = $self->parseUrl($url))) {
         return ($cache_path = ''); // Not possible.
     }
-    if (empty($url['scheme']) || empty($url['host'])) {
+    if (empty($url['scheme']) || $url['scheme'] === '//' || empty($url['host'])) {
         return ($cache_path = ''); // Not possible.
     }
     if (!($flags & CACHE_PATH_NO_SCHEME)) {
