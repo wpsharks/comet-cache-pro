@@ -23,7 +23,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     // Deals with multisite base & sub-directory installs.
     // e.g. `htmlc/cache/public/www-example-com` (standard WP installation)
     // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network)
-    // Note that `www-example-com` (current host) is appended by the HTML compressor.
+    // Note that `www-example-com` (current host slug) is appended by the HTML compressor.
 
     $host_base_dir_tokens = rtrim($self->hostBaseDirTokens(true), '/');
 

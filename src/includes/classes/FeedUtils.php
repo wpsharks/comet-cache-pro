@@ -9,7 +9,7 @@ namespace WebSharks\ZenCache\Pro;
 class FeedUtils extends AbsBase
 {
     /**
-     * @type string WordPress `home_url('/')`.
+     * @type string WordPress `home_url()`.
      *
      * @since 150422 Rewrite.
      */
@@ -45,7 +45,7 @@ class FeedUtils extends AbsBase
     {
         parent::__construct();
 
-        $this->home_url                = home_url('/');
+        $this->home_url                = rtrim(home_url(), '/');
         $this->default_feed            = get_default_feed();
         $this->seo_friendly_permalinks = (boolean) get_option('permalink_structure');
         $this->feed_types              = array_unique(array($this->default_feed, 'rdf', 'rss', 'rss2', 'atom'));
@@ -111,8 +111,8 @@ class FeedUtils extends AbsBase
         }
         if ($this->seo_friendly_permalinks && ($post_author = get_userdata($post->post_author))) {
             foreach ($this->feed_types as $_feed_type) {
-                $variations[] = add_query_arg(urlencode_deep(array('author' => $post->post_author)), $this->home_url.'feed/'.urlencode($_feed_type).'/');
-                $variations[] = add_query_arg(urlencode_deep(array('author' => $post_author->user_nicename)), $this->home_url.'feed/'.urlencode($_feed_type).'/');
+                $variations[] = add_query_arg(urlencode_deep(array('author' => $post->post_author)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
+                $variations[] = add_query_arg(urlencode_deep(array('author' => $post_author->user_nicename)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
             }
         }
         unset($_feed_type); // Housekeeping.
@@ -188,7 +188,7 @@ class FeedUtils extends AbsBase
                     //    ... this covers variations that use: `/tax/term,term/feed/`.
                     //    ... also covers variations that use: `/tax/term/tax/term/feed/`.
                     $variations[$_feed_type.'::.*?(?=[\/\-]?'.$_term_id_or_slug.'[\/\-]).*?'] = $_term_feed_link_with_wildcard;
-                    // NOTE: This may also pick up false-positives. Not much we can do about this.
+                    // This may also pick up false-positives. Not much we can do about this.
                     //    For instance, if another feed has the same word/slug in what is actually a longer/different term.
                     //    Or, if another feed has the same word/slug in what is actually the name of a taxonomy.
                 }
@@ -202,10 +202,10 @@ class FeedUtils extends AbsBase
                     $_taxonomy_query_var = $_taxonomy->query_var;
                 }
                 foreach ($this->feed_types as $_feed_type) {
-                    $variations[] = add_query_arg(urlencode_deep(array($_taxonomy_query_var => $_post_term->term_id)), $this->home_url.'feed/'.urlencode($_feed_type).'/');
+                    $variations[] = add_query_arg(urlencode_deep(array($_taxonomy_query_var => $_post_term->term_id)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
                 }
                 foreach ($this->feed_types as $_feed_type) {
-                    $variations[] = add_query_arg(urlencode_deep(array($_taxonomy_query_var => $_post_term->slug)), $this->home_url.'feed/'.urlencode($_feed_type).'/');
+                    $variations[] = add_query_arg(urlencode_deep(array($_taxonomy_query_var => $_post_term->slug)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
                 }
             }
             unset($_taxonomy, $_taxonomy_query_var, $_feed_type); // Housekeeping.
@@ -242,7 +242,7 @@ class FeedUtils extends AbsBase
                  | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT
                  | CACHE_PATH_NO_EXT;
 
-        $host                  = $this->plugin->httpHost();
+        $host                  = $this->plugin->hostToken();
         $host_base_dir_tokens  = $this->plugin->hostBaseDirTokens();
         $host_url              = rtrim('http://'.$host.$host_base_dir_tokens, '/');
         $host_cache_path_flags = $flags | CACHE_PATH_NO_QUV; // Add one more flag here.

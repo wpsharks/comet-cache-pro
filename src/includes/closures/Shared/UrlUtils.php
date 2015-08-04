@@ -87,3 +87,45 @@ $self->unParseUrl = function (array $parts) use ($self) {
     }
     return $scheme.$user.$pass.$host.$port.$path.$query.$fragment;
 };
+
+/*
+ * Is the current request over SSL?
+ *
+ * @since 150422 Rewrite.
+ *
+ * @return boolean `TRUE` if the current request is over SSL.
+ *
+ * @note The return value of this function is cached to reduce overhead on repeat calls.
+ */
+$self->isSsl = function () use ($self) {
+    if (!is_null($is = &$self->staticKey('isSsl'))) {
+        return $is; // Already cached this.
+    }
+    if (!empty($_SERVER['SERVER_PORT'])) {
+        if ((integer) $_SERVER['SERVER_PORT'] === 443) {
+            return ($is = true);
+        }
+    }
+    if (!empty($_SERVER['HTTPS'])) {
+        if (filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) {
+            return ($is = true);
+        }
+    }
+    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+        if (strcasecmp((string) $_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0) {
+            return ($is = true);
+        }
+    }
+    return ($is = false);
+};
+
+/*
+ * Current URL.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @return string Current URL.
+ */
+$self->currentUrl = function () {
+    return ($self->isSsl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+};

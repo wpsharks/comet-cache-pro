@@ -181,7 +181,7 @@ class AutoCache extends AbsBase
         if (filesize($auto_cache_log_file) > 2097152) {
             rename($auto_cache_log_file, substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
         }
-        $this->plugin->cacheUnlock($cache_lock);
+        $this->plugin->cacheUnlock($cache_lock); // Release.
     }
 
     /**
@@ -213,7 +213,7 @@ class AutoCache extends AbsBase
         if (filesize($auto_cache_log_file) > 2097152) {
             rename($auto_cache_log_file, substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
         }
-        $this->plugin->cacheUnlock($cache_lock);
+        $this->plugin->cacheUnlock($cache_lock); // Release.
     }
 
     /**

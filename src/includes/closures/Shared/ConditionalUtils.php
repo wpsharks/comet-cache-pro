@@ -145,7 +145,7 @@ $self->isLocalhost = function () use ($self) {
     if (defined('LOCALHOST') && LOCALHOST) {
         return ($is = true);
     }
-    if (!defined('LOCALHOST') && ($host = $self->httpHost())) {
+    if (!defined('LOCALHOST') && ($host = $self->hostToken())) {
         if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', $host)) {
             return ($is = true);
         }
@@ -194,37 +194,6 @@ $self->isFeed = function () use ($self) {
     }
     if (!empty($_SERVER['REQUEST_URI'])) {
         if (preg_match('/\/feed(?:[\/?]|$)/', (string) $_SERVER['REQUEST_URI'])) {
-            return ($is = true);
-        }
-    }
-    return ($is = false);
-};
-
-/*
- * Is the current request over SSL?
- *
- * @since 150422 Rewrite.
- *
- * @return boolean `TRUE` if the current request is over SSL.
- *
- * @note The return value of this function is cached to reduce overhead on repeat calls.
- */
-$self->isSsl = function () use ($self) {
-    if (!is_null($is = &$self->staticKey('isSsl'))) {
-        return $is; // Already cached this.
-    }
-    if (!empty($_SERVER['SERVER_PORT'])) {
-        if ((string) $_SERVER['SERVER_PORT'] === '443') {
-            return ($is = true);
-        }
-    }
-    if (!empty($_SERVER['HTTPS'])) {
-        if ((string) $_SERVER['HTTPS'] === '1' || strcasecmp((string) $_SERVER['HTTPS'], 'on') === 0) {
-            return ($is = true);
-        }
-    }
-    if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-        if (strcasecmp((string) $_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0) {
             return ($is = true);
         }
     }

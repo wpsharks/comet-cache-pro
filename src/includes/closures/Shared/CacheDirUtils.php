@@ -15,15 +15,15 @@ namespace WebSharks\ZenCache\Pro;
 $self->cacheDir = function ($rel_path = '') use ($self) {
     $rel_path = (string) $rel_path;
 
-    if (!$self->isAdvancedCache()) {
+    if ($self->isAdvancedCache()) {
+        $cache_dir = defined('ZENCACHE_DIR') ? ZENCACHE_DIR : '';
+    } elseif (!empty($self->cache_sub_dir)) {
         $cache_dir = $self->wpContentBaseDirTo($self->cache_sub_dir);
-    } elseif (defined('ZENCACHE_DIR') && \ZENCACHE_DIR) {
-        $cache_dir = \ZENCACHE_DIR;
     }
     if (empty($cache_dir)) {
         throw new \Exception(__('Unable to determine cache directory location.', SLUG_TD));
     }
-    return $cache_dir.($rel_path ? '/'.ltrim($rel_path) : '');
+    return rtrim($cache_dir, '/').($rel_path ? '/'.ltrim($rel_path) : '');
 };
 
 /*
@@ -95,16 +95,6 @@ $self->purgeFilesFromHostCacheDir = function ($regex) use ($self) {
  *    provided that it always starts with `/^`; including the full absolute cache/host directory path.
  *    e.g. `/^\/cache\/dir\/http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
  *
- *    NOTE: Paths used in any/all regex patterns should be generated with {@link buildCachePath()}.
- *       Recommended flags to {@link buildCachePath()} include the following.
- *
- *       - {@link CACHE_PATH_NO_PATH_INDEX}
- *       - {@link CACHE_PATH_NO_QUV}
- *       - {@link CACHE_PATH_NO_EXT}
- *
- *    **TIP:** There is a variation of {@link buildCachePath()} to assist with this.
- *    Please see: {@link buildCachePathRegex()}. It is much easier to work with :-)
- *
  * @param boolean $check_max_age Check max age? i.e., use purge behavior?
  *
  * @return integer Total files deleted by this routine (if any).
@@ -173,6 +163,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                     }
                 }
                 if (!unlink($_path_name)) {
+                    $self->tryErasingAllFilesDirsIn($cache_dir_tmp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 ++$counter; // Increment counter for each link we delete.
@@ -187,6 +178,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                     }
                 }
                 if (!unlink($_path_name)) {
+                    $self->tryErasingAllFilesDirsIn($cache_dir_tmp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 ++$counter; // Increment counter for each file we delete.
@@ -202,6 +194,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                     break; // Not deleting everything.
                 }
                 if (!rmdir($_path_name)) {
+                    $self->tryErasingAllFilesDirsIn($cache_dir_tmp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 # $counter++; // Increment counter for each directory we delete. ~ NO don't do that here.
@@ -209,17 +202,19 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
                 break; // Break switch handler.
 
             default: // Something else that is totally unexpected here.
+                $self->tryErasingAllFilesDirsIn($cache_dir_tmp, true); // Cleanup if possible.
                 throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
         }
     }
     unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name, $_lstat); // Housekeeping.
 
     if (!rename($cache_dir_tmp, $cache_dir)) {
+        $self->tryErasingAllFilesDirsIn($cache_dir_tmp, true); // Cleanup if possible.
         throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $cache_dir_tmp));
     }
     /* ------- End lock state... ------------- */
 
-    $self->cacheUnlock($cache_lock);
+    $self->cacheUnlock($cache_lock); // Release.
 
     return $counter;
 };
@@ -236,18 +231,6 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  *    Or, this can also be a full/absolute regex pattern against an absolute path;
  *    provided that it always starts with `/^`; including the full absolute cache/host directory path.
  *    e.g. `/^\/cache\/dir\/http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
- *
- *    NOTE: Paths used in any/all regex patterns should be generated with {@link buildCachePath()}.
- *       Recommended flags to {@link buildCachePath()} include the following.
- *
- *       - {@link CACHE_PATH_NO_SCHEME}
- *       - {@link CACHE_PATH_NO_HOST}
- *       - {@link CACHE_PATH_NO_PATH_INDEX}
- *       - {@link CACHE_PATH_NO_QUV}
- *       - {@link CACHE_PATH_NO_EXT}
- *
- *    **TIP:** There is a variation of {@link buildCachePath()} to assist with this.
- *    Please see: {@link buildHostCachePathRegex()}. It is much easier to work with :-)
  *
  * @param boolean $check_max_age Check max age? i.e., use purge behavior?
  *
@@ -266,7 +249,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
     if (!is_dir($cache_dir = $self->cacheDir())) {
         return $counter; // Nothing to do.
     }
-    $host                 = $self->httpHost();
+    $host                 = $self->hostToken();
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $cache_dir            = $self->nDirSeps($cache_dir);
 
@@ -344,6 +327,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
                         }
                     }
                     if (!unlink($_path_name)) {
+                        $self->tryErasingAllFilesDirsIn($_host_cache_dir_tmp, true); // Cleanup if possible.
                         throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                     }
                     ++$counter; // Increment counter for each link we delete.
@@ -358,6 +342,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
                         }
                     }
                     if (!unlink($_path_name)) {
+                        $self->tryErasingAllFilesDirsIn($_host_cache_dir_tmp, true); // Cleanup if possible.
                         throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                     }
                     ++$counter; // Increment counter for each file we delete.
@@ -373,6 +358,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
                         break; // Not deleting everything.
                     }
                     if (!rmdir($_path_name)) {
+                        $self->tryErasingAllFilesDirsIn($_host_cache_dir_tmp, true); // Cleanup if possible.
                         throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                     }
                     # $counter++; // Increment counter for each directory we delete. ~ NO don't do that here.
@@ -380,12 +366,14 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
                     break; // Break switch handler.
 
                 default: // Something else that is totally unexpected here.
+                    $self->tryErasingAllFilesDirsIn($_host_cache_dir_tmp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
             }
         }
         unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name, $_lstat); // Housekeeping.
 
         if (!rename($_host_cache_dir_tmp, $_host_cache_dir)) {
+            $self->tryErasingAllFilesDirsIn($_host_cache_dir_tmp, true); // Cleanup if possible.
             throw new \Exception(sprintf(__('Unable to delete files. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $_host_cache_dir_tmp));
         }
     }
@@ -393,7 +381,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
 
     /* ------- End lock state... ------------- */
 
-    $self->cacheUnlock($cache_lock);
+    $self->cacheUnlock($cache_lock); // Release.
 
     // This runs one additional deletion scan for the unmapped variation.
     if (!$___without_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
@@ -456,6 +444,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
             case 'link': // Symbolic links; i.e., 404 errors.
 
                 if (!unlink($_path_name)) {
+                    $self->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 ++$counter; // Increment counter for each link we delete.
@@ -465,6 +454,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
             case 'file': // Regular files; i.e., not symlinks.
 
                 if (!unlink($_path_name)) {
+                    $self->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 ++$counter; // Increment counter for each file we delete.
@@ -474,6 +464,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
             case 'dir': // A regular directory; i.e., not a symlink.
 
                 if (!rmdir($_path_name)) {
+                    $self->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
                 ++$counter; // Increment counter for each directory we delete.
@@ -481,12 +472,14 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
                 break; // Break switch handler.
 
             default: // Something else that is totally unexpected here.
+                $self->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                 throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
         }
     }
     unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name); // Housekeeping.
 
     if (!rename($dir_temp, $dir)) {
+        $self->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
         throw new \Exception(sprintf(__('Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $dir_temp));
     }
     if ($delete_dir_too) {
@@ -497,7 +490,121 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
     }
     /* ------- End lock state... ------------- */
 
-    $self->cacheUnlock($cache_lock);
+    $self->cacheUnlock($cache_lock); // Release.
 
+    return $counter;
+};
+
+/*
+ * Erase all files/dirs from a directory (for all schemes/hosts);
+ *    including `zc-` prefixed files; or anything else for that matter.
+ *
+ * WARNING: This does NO LOCKING and NO ATOMIC deletions.
+ *
+ * @since 15xxxx Improving recovery under stress.
+ *
+ * @param string  $dir The directory from which to erase files/dirs.
+ *
+ *    SECURITY: This directory MUST be located inside the `/wp-content/` directory.
+ *    Also, it MUST be a sub-directory of `/wp-content/`, NOT the directory itself.
+ *    Also, it cannot be: `mu-plugins`, `themes`, or `plugins`.
+ *
+ * @param boolean $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
+ *
+ * @return integer Total files/directories erased by this routine (if any).
+ *
+ * @throws \Exception If unable to erase a file/directory for any reason.
+ */
+$self->eraseAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self) {
+    $counter = 0; // Initialize.
+
+    if (!($dir = trim((string) $dir)) || !is_dir($dir)) {
+        return $counter; // Nothing to do.
+    }
+    $dir                  = $self->nDirSeps($dir);
+    $wp_content_dir       = $self->nDirSeps(WP_CONTENT_DIR);
+    $wp_content_dir_regex = preg_quote($wp_content_dir, '/');
+
+    if (!preg_match('/^'.$wp_content_dir_regex.'\/[^\/]+/i', $dir)) {
+        return $counter; // Security flag; do nothing in this case.
+    }
+    if (preg_match('/^'.$wp_content_dir_regex.'\/(?:mu\-plugins|themes|plugins)(?:\/|$)/i', $dir)) {
+        return $counter; // Security flag; do nothing in this case.
+    }
+    clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
+
+    foreach (($_dir_regex_iteration = $self->dirRegexIteration($dir, '/.+/')) as $_resource) {
+        $_resource_type = $_resource->getType();
+        $_sub_path_name = $_resource->getSubpathname();
+        $_path_name     = $_resource->getPathname();
+
+        switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
+
+            case 'link': // Symbolic links; i.e., 404 errors.
+
+                if (!unlink($_path_name)) {
+                    throw new \Exception(sprintf(__('Unable to erase symlink: `%1$s`.', SLUG_TD), $_path_name));
+                }
+                ++$counter; // Increment counter for each link we erase.
+
+                break; // Break switch handler.
+
+            case 'file': // Regular files; i.e., not symlinks.
+
+                if (!unlink($_path_name)) {
+                    throw new \Exception(sprintf(__('Unable to erase file: `%1$s`.', SLUG_TD), $_path_name));
+                }
+                ++$counter; // Increment counter for each file we erase.
+
+                break; // Break switch handler.
+
+            case 'dir': // A regular directory; i.e., not a symlink.
+
+                if (!rmdir($_path_name)) {
+                    throw new \Exception(sprintf(__('Unable to erase dir: `%1$s`.', SLUG_TD), $_path_name));
+                }
+                ++$counter; // Increment counter for each directory we erase.
+
+                break; // Break switch handler.
+
+            default: // Something else that is totally unexpected here.
+                throw new \Exception(sprintf(__('Unexpected resource type: `%1$s`.', SLUG_TD), $_resource_type));
+        }
+    }
+    unset($_dir_regex_iteration, $_resource, $_resource_type, $_sub_path_name, $_path_name); // Housekeeping.
+
+    if ($erase_dir_too) {
+        if (!rmdir($dir)) {
+            throw new \Exception(sprintf(__('Unable to erase directory: `%1$s`.', SLUG_TD), $dir));
+        }
+        ++$counter; // Increment counter for each directory we erase.
+    }
+    return $counter;
+};
+
+/*
+ * Try to erase all files/dirs from a directory (for all schemes/hosts);
+ *    including `zc-` prefixed files; or anything else for that matter.
+ *
+ * WARNING: This does NO LOCKING and NO ATOMIC deletions.
+ *
+ * @since 15xxxx Improving recovery under stress.
+ *
+ * @param string  $dir The directory from which to erase files/dirs.
+ *
+ *    SECURITY: This directory MUST be located inside the `/wp-content/` directory.
+ *    Also, it MUST be a sub-directory of `/wp-content/`, NOT the directory itself.
+ *    Also, it cannot be: `mu-plugins`, `themes`, or `plugins`.
+ *
+ * @param boolean $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
+ *
+ * @return integer Total files/directories erased by this routine (if any).
+ */
+$self->tryErasingAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self) {
+    $counter = 0; // Initialize counter.
+    try {
+        $counter += $self->eraseAllFilesDirsIn($dir, $erase_dir_too);
+    } catch (\Exception $exception) {
+    }
     return $counter;
 };

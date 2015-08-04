@@ -58,11 +58,14 @@ $self->clearHtmlCCache = function ($manually = false, $___without_domain_mapping
     // Deals with multisite base & sub-directory installs.
     // e.g. `htmlc/cache/public/www-example-com` (standard WP installation)
     // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network)
-    // Note that `www-example-com` (current host) is appended by the HTML compressor.
+    // Note that `www-example-com` (current host slug) is appended by the HTML compressor.
 
-    $host_token           = $self->hostToken(true, $___without_domain_mapping ? false : true);
-    $host_base_dir_tokens = rtrim($self->hostBaseDirTokens(true), '/');
+    $host_token           = $self->hostToken(true, !$___without_domain_mapping);
+    $host_base_dir_tokens = $_host_base_dir_tokens = rtrim($self->hostBaseDirTokens(true), '/');
 
+    if (!$___without_domain_mapping && $self->isDomainMapping()) {
+        $host_base_dir_tokens = ''; // Not applicable w/ domain mapping.
+    }
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.$host_base_dir_tokens.'/'.$host_token);
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.$host_base_dir_tokens.'/'.$host_token);
 

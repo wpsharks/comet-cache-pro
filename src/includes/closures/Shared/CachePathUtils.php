@@ -18,15 +18,23 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     $with_user_token   = trim((string) $with_user_token);
     $with_version_salt = trim((string) $with_version_salt);
 
+    $is_multisite                = is_multisite();
+    $is_advanced_cache           = $self->isAdvancedCache();
+    $can_consider_domain_mapping = $self->canConsiderDomainMapping();
+
     $cache_path = ''; // Initialize cache path being built here.
 
-    if (!($flags & CACHE_PATH_NO_DOMAIN_MAPPING) && is_multisite() && $self->canConsiderDomainMapping()) {
-        $current_host = $current_possibly_mapped_host = $self->httpHost(true);
-        $url          = $self->domainMappingUrlFilter($url);
-    } else {
-        $current_host = $self->httpHost(); // Real current host name.
+    if ($flags & CACHE_PATH_CONSIDER_DOMAIN_MAPPING && $is_multisite && !$is_advanced_cache && $can_consider_domain_mapping) {
+        if ($flags & CACHE_PATH_REVERSE_DOMAIN_MAPPING) {
+            $url = $self->domainMappingReverseUrlFilter($url);
+        } else {
+            $url = $self->domainMappingUrlFilter($url);
+        }
     }
     if (!$url || !($url = $self->parseUrl($url))) {
+        return ($cache_path = ''); // Not possible.
+    }
+    if (empty($url['scheme']) || empty($url['host'])) {
         return ($cache_path = ''); // Not possible.
     }
     if (!($flags & CACHE_PATH_NO_SCHEME)) {
@@ -68,10 +76,9 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
             // See: websharks/zencache#536 & `deleteFilesFromHostCacheDir()`
             // We should build an `index/` when this ends with a multisite root.
             //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
-            if (!($flags & CACHE_PATH_NO_PATH_INDEX)) { // Including a path index?
-                if (is_multisite() && (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL)) {
-                    $host_base_dir_tokens = $self->hostBaseDirTokens(false, $url['path']);
-                    if (strcasecmp(trim($url['path'], '/'), trim($host_base_dir_tokens, '/')) === 0) {
+            if (!($flags & CACHE_PATH_NO_PATH_INDEX) && $is_multisite) { // Including a path index?
+                if (($host_base_dir_tokens = $self->hostBaseDirTokens(false, $flags & CACHE_PATH_CONSIDER_DOMAIN_MAPPING, $url['path']))) {
+                    if (strcasecmp(trim($host_base_dir_tokens, '/'), trim($url['path'], '/')) === 0) {
                         $cache_path .= 'index/';
                     }
                 }
@@ -116,53 +123,30 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
 };
 
 /*
- * Variation of {@link build_cache_path()} for relative regex.
+ * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * This converts a URL into a relative `cache/path`; i.e. relative to the cache directory,
- *    and then converts that into a regex pattern w/ an optional custom `$regex_suffix_frag`.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
- * @since 150422 Rewrite.
+ * @param string $regex_frag A regex fragment. This CAN be left empty when necessary.
+ *  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+ *  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
  *
- * @param string $url               The input URL to convert. This CAN be left empty when necessary.
- *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
- *                                  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
- * @param string $regex_suffix_frag Regex fragment to come after the relative cache/path.
- *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
- *                                  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
- *                                  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+ * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
+ *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
+ *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
+ *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
  *
- * @return string The resulting relative `cache/path` based on the input `$url`; converted to regex pattern.
- *                Note that `http://` or `https://` is automatically converted to `\/https?\/` here.
- *                This allows the pattern to pick up either scheme.
- *
- * @note This variation of {@link build_cache_path()} automatically forces the following flags.
- *
- *       - {@link CACHE_PATH_NO_PATH_INDEX}
- *       - {@link CACHE_PATH_NO_QUV}
- *       - {@link CACHE_PATH_NO_EXT}
+ * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
  */
-$self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
-    $url                           = trim((string) $url);
-    $regex_suffix_frag             = (string) $regex_suffix_frag;
-    $abs_relative_cache_path_regex = ''; // Initialize.
+$self->buildCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    $regex_frag        = (string) $regex_frag;
+    $regex_suffix_frag = (string) $regex_suffix_frag;
 
-    if ($url) {
-        $flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
-
-        $relative_cache_path           = $self->buildCachePath($url, '', '', $flags);
-        $abs_relative_cache_path       = isset($relative_cache_path[0]) ? '/'.$relative_cache_path : '';
-        $abs_relative_cache_path_regex = preg_quote($abs_relative_cache_path, '/');
-
-        if ($abs_relative_cache_path_regex) {
-            $abs_relative_cache_path_regex = // `http` and `https` schemes.
-            preg_replace('/^\\\\\/https?\\\\\//i', '\/https?\/', $abs_relative_cache_path_regex);
-        }
-    }
-    return '/^'.$abs_relative_cache_path_regex.$regex_suffix_frag.'/i';
+    return '/^'.$regex_frag.$regex_suffix_frag.'/i';
 };
 
 /*
- * Variation of {@link build_cache_path()} for relative regex.
+ * Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
  *
  * This converts a URL into a relative `cache/path`; i.e. relative to the current host|blog directory,
  *    and then converts that into a regex pattern w/ an optional custom `$regex_suffix_frag`.
@@ -172,12 +156,13 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
  * @param string $url               The input URL to convert. This CAN be left empty when necessary.
  *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
  *                                  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
+ *
  * @param string $regex_suffix_frag Regex fragment to come after the relative cache/path.
  *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
  *                                  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
  *                                  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
  *
- * @return string The resulting relative `cache/path` based on the input `$url`; converted to regex pattern.
+ * @return string Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
  *
  * @note This variation of {@link build_cache_path()} automatically forces the following flags.
  *
@@ -195,7 +180,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
     if ($url) {
         $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
-        $host                 = $self->httpHost();
+        $host                 = $self->hostToken();
         $host_base_dir_tokens = $self->hostBaseDirTokens();
         $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
         $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
@@ -217,6 +202,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
  * @since 150422 Rewrite.
  *
  * @param string $uris              A line-delimited list of URIs. These may contain `*` wildcards also.
+ *
  * @param string $regex_suffix_frag Regex fragment to come after each relative cache/path.
  *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
  *                                  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
@@ -241,7 +227,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     $regex_suffix_frag = (string) $regex_suffix_frag; // Force a string value.
     $flags             = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
-    $host                 = $self->httpHost();
+    $host                 = $self->hostToken();
     $host_base_dir_tokens = $self->hostBaseDirTokens();
     $host_url             = rtrim('http://'.$host.$host_base_dir_tokens, '/');
     $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);

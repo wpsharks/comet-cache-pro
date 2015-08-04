@@ -360,10 +360,10 @@ $self->addAdvancedCache = function () use ($self) {
         file_put_contents($cache_dir.'/.htaccess', $self->htaccess_deny);
     }
     if (!is_dir($cache_dir) || !is_writable($cache_dir) || !is_file($cache_dir.'/.htaccess') || !file_put_contents($cache_dir.'/zc-advanced-cache', time())) {
-        $self->cacheUnlock($cache_lock); // Unlock cache.
+        $self->cacheUnlock($cache_lock); // Release.
         return; // Special return value (NULL) in this case.
     }
-    $self->cacheUnlock($cache_lock);
+    $self->cacheUnlock($cache_lock); // Release.
 
     return true;
 };
@@ -512,7 +512,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 
         file_put_contents($cache_dir.'/zc-blog-paths', serialize($paths));
     }
-    $self->cacheUnlock($cache_lock); // Unlock.
+    $self->cacheUnlock($cache_lock); // Release.
 
     return $value; // Pass through untouched (always).
 };

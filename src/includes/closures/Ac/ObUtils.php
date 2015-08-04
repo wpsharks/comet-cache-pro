@@ -81,7 +81,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (strcasecmp(PHP_SAPI, 'cli') === 0) {
         return $self->maybeSetDebugInfo(NC_DEBUG_PHP_SAPI_CLI);
     }
-    if (!($self->http_host = $self->httpHost())) {
+    if (!($self->http_host = $self->hostToken())) {
         return $self->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_HTTP_HOST);
     }
     if (empty($_SERVER['REQUEST_URI'])) {
@@ -147,7 +147,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
         }
     }
     $self->protocol  = $self->isSsl() ? 'https://' : 'http://';
-    #$self->http_host = $self->httpHost(); // Already called above.
+    #$self->http_host = $self->hostToken(); // Already called above.
 
     $self->version_salt = ''; // Initialize the version salt.
     /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
@@ -290,7 +290,7 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
         if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
             throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
         }
-        $self->cacheUnlock($cache_lock); // Unlock cache directory.
+        $self->cacheUnlock($cache_lock); // Release.
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_1ST_TIME_404_SYMLINK);
     }
     /* ------- Otherwise, we need to construct & store a new cache file. ----------------------------------------------- */
@@ -310,11 +310,11 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
             if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
                 throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
             }
-            $self->cacheUnlock($cache_lock); // Unlock cache directory.
+            $self->cacheUnlock($cache_lock); // Release.
             return $cache; // Return the newly built cache; with possible debug information also.
         }
     } elseif (file_put_contents($cache_file_tmp, serialize($self->cacheableHeadersList()).'<!--headers-->'.$cache) && rename($cache_file_tmp, $self->cache_file)) {
-        $self->cacheUnlock($cache_lock); // Unlock cache directory.
+        $self->cacheUnlock($cache_lock); // Release.
         return $cache; // Return the newly built cache; with possible debug information also.
     }
     @unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
