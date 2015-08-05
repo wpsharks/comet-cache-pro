@@ -22,12 +22,14 @@ $self->user_login_cookie_expired_or_invalid = false;
  *
  * @param boolean $consider_domain_mapping Consider?
  *
+ * @param string $consider_domain_mapping_domain A specific domain?
+ *
  * @return string Current host.
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->hostToken = function ($dashify = false, $consider_domain_mapping = false) use ($self) {
-    if (!is_null($token = &$self->staticKey('hostToken', array($dashify, $consider_domain_mapping)))) {
+$self->hostToken = function ($dashify = false, $consider_domain_mapping = false, $consider_domain_mapping_domain = '') use ($self) {
+    if (!is_null($token = &$self->staticKey('hostToken', array($dashify, $consider_domain_mapping, $consider_domain_mapping_domain)))) {
         return $token; // Already cached this.
     }
     $token = ''; // Initialize token value.
@@ -35,7 +37,9 @@ $self->hostToken = function ($dashify = false, $consider_domain_mapping = false)
     if (!is_multisite() || $self->isAdvancedCache()) {
         $token = (string) $_SERVER['HTTP_HOST'];
     } elseif ($consider_domain_mapping && $self->canConsiderDomainMapping()) {
-        if ($self->isDomainMapping()) {
+        if (($consider_domain_mapping_domain = trim((string) $consider_domain_mapping_domain))) {
+            $token = $consider_domain_mapping_domain;
+        } elseif ($self->isDomainMapping()) {
             $token = (string) $_SERVER['HTTP_HOST'];
         } else { // For the current blog ID.
             $token = $self->domainMappingUrlFilter($self->currentUrl());
@@ -65,6 +69,8 @@ $self->hostToken = function ($dashify = false, $consider_domain_mapping = false)
  *
  * @param boolean $consider_domain_mapping Consider?
  *
+ * @param string $consider_domain_mapping_domain A specific domain?
+ *
  * @param boolean $fallback Fallback on blog's domain when mapping?
  *
  * @param integer $blog_id For which blog ID?
@@ -73,14 +79,18 @@ $self->hostToken = function ($dashify = false, $consider_domain_mapping = false)
  *
  * @note The return value of this function is NOT cached in support of `switch_to_blog()`.
  */
-$self->hostTokenForBlog = function ($dashify = false, $consider_domain_mapping = false, $fallback = false, $blog_id = 0) use ($self) {
+$self->hostTokenForBlog = function ($dashify = false, $consider_domain_mapping = false, $consider_domain_mapping_domain = '', $fallback = false, $blog_id = 0) use ($self) {
     if (!is_multisite() || $self->isAdvancedCache()) {
-        return $self->hostToken($dashify, $consider_domain_mapping);
+        return $self->hostToken($dashify, $consider_domain_mapping, $consider_domain_mapping_domain);
     }
     $token = ''; // Initialize token value.
 
     if ($consider_domain_mapping && $self->canConsiderDomainMapping()) {
-        $token = $self->domainMappingBlogDomain($blog_id, $fallback);
+        if (($consider_domain_mapping_domain = trim((string) $consider_domain_mapping_domain))) {
+            $token = $consider_domain_mapping_domain; // Force this value.
+        } else {
+            $token = $self->domainMappingBlogDomain($blog_id, $fallback);
+        }
     } elseif (($blog_details = $self->blogDetails($blog_id))) {
         $token = $blog_details->domain; // Unmapped domain.
     }

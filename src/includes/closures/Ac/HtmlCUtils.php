@@ -5,13 +5,13 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Runs HTML Compressor (if applicable).
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string $cache Input cache file we want to compress.
  *
  * @return string The `$cache` with HTML compression applied (if applicable).
  *
- * @see https://github.com/websharks/HTML-Compressor
+ * @see https://github.com/websharks/html-compressor
  */
 $self->maybeCompressHtml = function ($cache) use ($self) {
     if (!$self->content_url) {
@@ -25,7 +25,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network)
     // Note that `www-example-com` (current host slug) is appended by the HTML compressor.
 
-    $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify.
+    $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify this.
 
     $cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.rtrim($host_base_dir_tokens, '/');
     $cache_dir_url_public = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
