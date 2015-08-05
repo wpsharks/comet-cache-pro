@@ -37,6 +37,8 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     if (empty($url['scheme']) || $url['scheme'] === '//' || empty($url['host'])) {
         return ($cache_path = ''); // Not possible.
     }
+    $url['original_path'] = isset($url['path']) ? $url['path'] : '';
+
     if (!($flags & CACHE_PATH_NO_SCHEME)) {
         $cache_path .= $url['scheme'].'/';
     }
@@ -61,16 +63,16 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
             if (isset($url['path'][2001])) {
                 $url['path'] = '/lp-'.sha1($url['path']).'/';
             }
-        } // @TODO review long path hashes for mulitiste compat. regarding `index/` below ↓
+        } // Now add the path and check for a possible root `index/` suffix.
         if (!empty($url['path']) && strlen($url['path'] = trim($url['path'], '\\/'." \t\n\r\0\x0B"))) {
             $cache_path .= $url['path'].'/'; // Add the path as it exists.
-
             // See: websharks/zencache#536 & `deleteFilesFromHostCacheDir()`
             // We should build an `index/` when this ends with a multisite root.
             //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
+            // We use `$url['original_path']` below, since it could have been modified now.
             if (!($flags & CACHE_PATH_NO_PATH_INDEX) && $is_multisite) { // Including a path index?
-                if (($host_base_dir_tokens = $self->hostBaseDirTokens(false, $flags & CACHE_PATH_CONSIDER_DOMAIN_MAPPING, $url['path']))) {
-                    if (strcasecmp(trim($host_base_dir_tokens, '/'), trim($url['path'], '/')) === 0) {
+                if (($host_base_dir_tokens = $self->hostBaseDirTokens(false, $flags & CACHE_PATH_CONSIDER_DOMAIN_MAPPING, $url['original_path']))) {
+                    if (strcasecmp(trim($host_base_dir_tokens, '/'), trim($url['original_path'], '/')) === 0) {
                         $cache_path .= 'index/';
                     }
                 }
