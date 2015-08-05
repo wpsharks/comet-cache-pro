@@ -53,8 +53,8 @@ $self->clearHtmlCCache = function ($manually = false) use ($self) {
     @set_time_limit(1800); // @TODO Display a warning.
 
     // Deals with multisite base & sub-directory installs.
-    // e.g. `htmlc/cache/public/www-example-com` (standard WP installation)
-    // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network)
+    // e.g. `htmlc/cache/public/www-example-com` (standard WP installation).
+    // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network).
     // Note that `www-example-com` (current host slug) is appended by the HTML compressor.
 
     $host_token           = $self->hostToken(true); // Dashify.

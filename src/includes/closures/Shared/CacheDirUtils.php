@@ -124,9 +124,9 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
 
     clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
 
-    $cache_dir_tmp       = $self->addTmpSuffix($cache_dir); // Temporary directory.
-    $cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
+    $cache_dir_tmp = $self->addTmpSuffix($cache_dir); // Temporary directory.
 
+    $cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
     $cache_dir_tmp_regex = '\\/'.ltrim($cache_dir_tmp_regex, '^\\/'); // Make sure it begins with an escaped `/`.
     $cache_dir_tmp_regex = $self->strIreplaceOnce(preg_quote($cache_dir.'/', '/'), '', $cache_dir_tmp_regex);
 
@@ -291,12 +291,12 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
 
         if (!$_host_cache_dir || !is_dir($_host_cache_dir)) {
             // On a multisite install this may have a cache sub-directory.
-            //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
+            //  e.g., `http/example-com[[-base]-child1][[/base]/child1]` instead of `http/example-com`.
             continue; // Nothing to do.
         }
-        $_host_cache_dir_tmp       = $self->addTmpSuffix($_host_cache_dir); // Temporary directory.
-        $_host_cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
+        $_host_cache_dir_tmp = $self->addTmpSuffix($_host_cache_dir); // Temporary directory.
 
+        $_host_cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
         $_host_cache_dir_tmp_regex = '\\/'.ltrim($_host_cache_dir_tmp_regex, '^\\/'); // Make sure it begins with an escaped `/`.
         $_host_cache_dir_tmp_regex = $self->strIreplaceOnce(preg_quote($_host_cache_path.'/', '/'), '', $_host_cache_dir_tmp_regex);
         $_host_cache_dir_tmp_regex = $self->strIreplaceOnce(preg_quote($_host_cache_dir.'/', '/'), '', $_host_cache_dir_tmp_regex);

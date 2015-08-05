@@ -14,13 +14,19 @@ namespace WebSharks\ZenCache\Pro;
  * @return string The resulting `cache/path` based on the input `$url` & `$flags`.
  */
 $self->buildCachePath = function ($url, $with_user_token = '', $with_version_salt = '', $flags = CACHE_PATH_DEFAULT) use ($self) {
+    # Force parameter types.
+
     $url               = trim((string) $url);
     $with_user_token   = trim((string) $with_user_token);
     $with_version_salt = trim((string) $with_version_salt);
 
+    # Initialize variables.
+
     $is_multisite                = is_multisite();
     $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
     $cache_path                  = ''; // Initialize cache path being built here.
+
+    # Deal w/ domain mapping considerations.
 
     if ($flags & CACHE_PATH_CONSIDER_DOMAIN_MAPPING && $is_multisite && $can_consider_domain_mapping) {
         if ($flags & CACHE_PATH_REVERSE_DOMAIN_MAPPING) {
@@ -29,6 +35,8 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
             $url = $self->domainMappingUrlFilter($url);
         }
     }
+    # Validate the URL we have now.
+
     if (!$url || !($url_parts = $self->parseUrl($url))) {
         return ($cache_path = ''); // Not possible.
     }
@@ -38,17 +46,35 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     if (empty($url_parts['host'])) {
         return ($cache_path = ''); // Not possible.
     }
-    $url_parts['original_path'] = isset($url_parts['path']) ? $url_parts['path'] : '';
+    # Initialize additional variables; based on the parsed URL.
+
+    $is_url_domain_mapped = $is_multisite && $can_consider_domain_mapping && $self->domainMappingBlogId($url);
+    $host_base_dir_tokens = $self->hostBaseDirTokens(false, $is_url_domain_mapped, !empty($url_parts['path']) ? $url_parts['path'] : '/');
+
+    $is_a_multisite_base_dir = $is_multisite && $host_base_dir_tokens && $host_base_dir_tokens !== '/' // Check?
+        && stripos(!empty($url_parts['path']) ? rtrim($url_parts['path'], '/').'/' : '/', $host_base_dir_tokens) === 0;
+
+    $is_a_multisite_base_dir_root = $is_multisite && $is_a_multisite_base_dir // Save time by using the previous check here.
+        && strcasecmp(trim($host_base_dir_tokens, '/'), trim(!empty($url_parts['path']) ? $url_parts['path'] : '/', '/')) === 0;
+
+    # Build and return the cache path.
 
     if (!($flags & CACHE_PATH_NO_SCHEME)) {
         $cache_path .= $url_parts['scheme'].'/';
     }
     if (!($flags & CACHE_PATH_NO_HOST)) {
         $cache_path .= $url_parts['host'].'/';
+
+        // Put multisite sub-roots into a host directory of their own.
+        // e.g., `example-com[[-base]-child1]` instead of `example-com`.
+        if ($is_a_multisite_base_dir && $host_base_dir_tokens && $host_base_dir_tokens !== '/') {
+            $host_base_dir_suffix = preg_replace('/[^a-z0-9.]/i', '-', rtrim($host_base_dir_tokens, '/'));
+            $cache_path           = rtrim($cache_path, '/').$host_base_dir_suffix.'/';
+        }
     }
     if (!($flags & CACHE_PATH_NO_PATH)) {
         if (isset($url_parts['path'][201])) {
-            $url_parts['_path_tmp'] = '/'; // Initialize tmp path.
+            $_path_tmp = '/'; // Initialize tmp path.
             foreach (explode('/', $url_parts['path']) as $_path_component) {
                 if (!isset($_path_component[0])) {
                     continue; // Empty.
@@ -56,10 +82,10 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
                 if (isset($_path_component[201])) {
                     $_path_component = 'lpc-'.sha1($_path_component);
                 }
-                $url_parts['_path_tmp'] .= $_path_component.'/';
+                $_path_tmp .= $_path_component.'/';
             }
-            $url_parts['path'] = $url_parts['_path_tmp']; // Shorter components.
-            unset($_path_component, $url_parts['_path_tmp']); // Housekeeping.
+            $url_parts['path'] = $_path_tmp; // Shorter components.
+            unset($_path_component, $_path_tmp); // Housekeeping.
 
             if (isset($url_parts['path'][2001])) {
                 $url_parts['path'] = '/lp-'.sha1($url_parts['path']).'/';
@@ -68,16 +94,10 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
         if (!empty($url_parts['path']) && strlen($url_parts['path'] = trim($url_parts['path'], '\\/'." \t\n\r\0\x0B"))) {
             $cache_path .= $url_parts['path'].'/'; // Add the path as it exists.
 
-            if (!($flags & CACHE_PATH_NO_PATH_INDEX) && $is_multisite) {
-                // We should build an `index/` when this ends with a multisite root.
-                //  e.g., `http/example-com[[/base]/child1]` instead of `http/example-com`
-                // We use `$url_parts['original_path']` here, since it could have been shortened above.
-                $is_url_domain_mapped = $can_consider_domain_mapping && $self->domainMappingBlogId($url);
-                if (!$is_url_domain_mapped && ($host_base_dir_tokens = $self->hostBaseDirTokens(false, false, $url_parts['original_path']))) {
-                    if (strcasecmp(trim($host_base_dir_tokens, '/'), trim($url_parts['original_path'], '/')) === 0) {
-                        $cache_path .= 'index/';
-                    }
-                }
+            if (!($flags & CACHE_PATH_NO_PATH_INDEX) && $is_multisite && $is_a_multisite_base_dir_root) {
+                // We should build an `index/` when this ends with a multisite [[/base]/child1] root.
+                //  e.g., `http/example-com[[-base]-child1][[/base]/child1]` is a root directory.
+                $cache_path .= 'index/'; // Use an index suffix.
             }
         } elseif (!($flags & CACHE_PATH_NO_PATH_INDEX)) {
             $cache_path .= 'index/';
