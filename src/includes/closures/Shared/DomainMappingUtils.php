@@ -132,7 +132,7 @@ $self->domainMappingReverseUrlFilter = function ($url) use ($self) {
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->domainMappingBlogId = function ($url = '', $domain = '') {
+$self->domainMappingBlogId = function ($url = '', $domain = '') use ($self) {
     $domain = (string) $domain;
     $url    = $domain ? '' : (string) $url;
 
@@ -183,7 +183,7 @@ $self->domainMappingBlogId = function ($url = '', $domain = '') {
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) {
+$self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) use ($self) {
     if (!is_multisite() || !$self->canConsiderDomainMapping()) {
         return ''; // Not possible/applicable.
     }
@@ -233,7 +233,7 @@ $self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) {
  *
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
-$self->domainMappingBlogDomains = function ($blog_id = 0) {
+$self->domainMappingBlogDomains = function ($blog_id = 0) use ($self) {
     if (!is_multisite() || !$self->canConsiderDomainMapping()) {
         return array(); // Not possible/applicable.
     }
