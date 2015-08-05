@@ -46,7 +46,7 @@ class FeedUtils extends AbsBase
         parent::__construct();
 
         $this->home_url                = rtrim(home_url(), '/');
-        $this->default_feed            = get_default_feed();
+        $this->default_feed            = get_default_feed(); // Default feed type.
         $this->seo_friendly_permalinks = (boolean) get_option('permalink_structure');
         $this->feed_types              = array_unique(array($this->default_feed, 'rdf', 'rss', 'rss2', 'atom'));
     }
@@ -216,66 +216,57 @@ class FeedUtils extends AbsBase
     }
 
     /**
-     * Convert variations into regex fragments; relative to the current host|blog directory.
+     * Convert variations into regex fragments for a call to `deleteFilesFromHostCacheDir()`.
      *
-     * @since 150422 Rewrite.
+     * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
      *
-     * @param array $variations An array of variations built by other class members.
+     * @param array $variations An array of variations (URLs) built by other class members.
      *
-     * @return array An array of all feed link variations; converted to regex fragments.
-     *               Regex fragments are relative to the current host|blog directory.
-     *
-     * @note This automatically forces the following {@link build_cache_path()} flags.
-     *
-     *       - {@link CACHE_PATH_NO_SCHEME}
-     *       - {@link CACHE_PATH_NO_HOST}
-     *       - {@link CACHE_PATH_NO_USER}
-     *       - {@link CACHE_PATH_NO_VSALT}
-     *       - {@link CACHE_PATH_NO_EXT}
-     *       - {@link CACHE_PATH_ALLOW_WILDCARDS}; when applicable.
+     * @return array An array of regex fragments for a call to `deleteFilesFromHostCacheDir()`.
      */
     public function convertVariationsToHostCachePathRegexFrags(array $variations)
     {
-        $regex_frags = array(); // Initialize.
+        $regex_frags                 = array();
+        $is_multisite                = is_multisite();
+        $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
+        $flags                       = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST // Default flags.
+                                       | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT | CACHE_PATH_NO_EXT;
+        // Flags: note that we DO allow for query string data in these regex fragments.
 
-        $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
-                 | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT
-                 | CACHE_PATH_NO_EXT;
+        foreach ($variations as $_key => $_url) {
+            $_url = trim((string) $_url); // Force string value.
 
-        $host                  = $this->plugin->hostToken();
-        $host_base_dir_tokens  = $this->plugin->hostBaseDirTokens();
-        $host_url              = rtrim('http://'.$host.$host_base_dir_tokens, '/');
-        $host_cache_path_flags = $flags | CACHE_PATH_NO_QUV; // Add one more flag here.
-        $host_cache_path       = $this->plugin->buildCachePath($host_url, '', '', $host_cache_path_flags);
-
-        foreach ($variations as $_key => $_variation) {
-            if (!$_variation || !is_string($_variation)) {
+            if ($_url && $is_multisite && $can_consider_domain_mapping) {
+                // Shortest possible URI; i.e., consider domain mapping.
+                $_url                  = $self->domainMappingUrlFilter($_url);
+                $_is_url_domain_mapped = $_url && $self->domainMappingBlogId($_url);
+            } else {
+                $_is_url_domain_mapped = false; // No, obviously.
+            }
+            if (!$_url || !($_url_parts = $self->parseUrl($_url)) || empty($_url_parts['host'])) {
                 continue; // Invalid variation.
             }
-            if (is_string($_key) && strpos($_key, '::') !== false && strpos($_variation, '*') !== false) {
-                $_flags                             = $flags | CACHE_PATH_ALLOW_WILDCARDS;
-                list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2);
+            $_host_base_dir_tokens = $self->hostBaseDirTokens(false, $_is_url_domain_mapped, !empty($_url_parts['path']) ? $_url_parts['path'] : '/');
+            $_host_url             = rtrim('http://'.$_url_parts['host'].$_host_base_dir_tokens, '/');
+            $_host_cache_path      = $self->buildCachePath($_host_url, '', '', $flags);
 
-                $_cache_path                = $this->plugin->buildCachePath($_variation, '', '', $_flags);
-                $_relative_cache_path       = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
-                $_relative_cache_path_regex = preg_replace('/\\\\\*/', $_wildcard_regex, preg_quote($_relative_cache_path, '/'));
-
-                $regex_frags[] = $_relative_cache_path_regex;
-
-                unset($_flags, $_feed_type, $_wildcard_regex);// Housekeeping.
-                unset($_cache_path, $_relative_cache_path, $_relative_cache_path_regex);
+            if (is_string($_key) && strpos($_key, '::') !== false && strpos($_url, '*') !== false) {
+                list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2); // This regex replaces wildcards.
+                $_cache_path                        = $this->plugin->buildCachePath($_url, '', '', $flags | CACHE_PATH_ALLOW_WILDCARDS);
+                $_relative_cache_path               = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
+                $_relative_cache_path_regex         = preg_replace('/\\\\\*/', $_wildcard_regex, preg_quote($_relative_cache_path, '/'));
             } else {
-                // This is just a regular variation; i.e. a URL without any regex/wildcard to parse.
-                $_cache_path                = $this->plugin->buildCachePath($_variation, '', '', $flags);
+                $_cache_path                = $this->plugin->buildCachePath($_url, '', '', $flags); // Default flags.
                 $_relative_cache_path       = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
                 $_relative_cache_path_regex = preg_quote($_relative_cache_path, '/');
-
-                $regex_frags[] = $_relative_cache_path_regex;
-
-                unset($_cache_path, $_relative_cache_path, $_relative_cache_path_regex);
+            }
+            if ($_relative_cache_path_regex) {
+                $regex_frags[] = $_relative_cache_path_regex; // No leading slash.
             }
         }
-        unset($_key, $_variation); // Housekeeping.
+        unset($_key, $_url, // Housekeeping; for all temporary vars used above.
+                $_is_url_domain_mapped, $_url_parts, $_host_base_dir_tokens, $_host_url, $_host_cache_path,
+                $_feed_type, $_wildcard_regex, $_cache_path, $_relative_cache_path, $_relative_cache_path_regex);
 
         return $regex_frags;
     }

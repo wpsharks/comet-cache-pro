@@ -25,12 +25,12 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network)
     // Note that `www-example-com` (current host slug) is appended by the HTML compressor.
 
-    $host_base_dir_tokens = rtrim($self->hostBaseDirTokens(true), '/');
+    $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify.
 
-    $cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.$host_base_dir_tokens;
+    $cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.rtrim($host_base_dir_tokens, '/');
     $cache_dir_url_public = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
 
-    $cache_dir_private     = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.$host_base_dir_tokens;
+    $cache_dir_private     = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.rtrim($host_base_dir_tokens, '/');
     $cache_dir_url_private = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_private);
 
     $benchmark     = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
@@ -46,10 +46,10 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
         'cache_dir_private'     => $cache_dir_private,
         'cache_dir_url_private' => $cache_dir_url_private,
 
-        'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
-
         'regex_css_exclusions' => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
         'regex_js_exclusions'  => ZENCACHE_HTMLC_JS_EXCLUSIONS,
+
+        'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
 
         'compress_combine_head_body_css' => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
         'compress_combine_head_js'       => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,

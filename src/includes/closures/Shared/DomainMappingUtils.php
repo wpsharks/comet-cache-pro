@@ -142,7 +142,7 @@ $self->domainMappingBlogId = function ($url = '', $domain = '') {
     if ($url === 'network' || $domain === 'network') {
         $domain = (string) $GLOBALS['current_site']->domain;
     }
-    if (!$domain && $url) {
+    if (!$domain && $url && $url !== 'network') {
         $domain = $self->parseUrl($url, PHP_URL_HOST);
     }
     if (!$url && !$domain && ($blog_details = $self->blogDetails())) {
@@ -208,14 +208,14 @@ $self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) {
             $domain = $self->hostToken();
             $domain = preg_replace('/^www\./i', '', $domain);
             $domain = (string) $wpdb->get_var('SELECT `domain` FROM `'.esc_sql($wpdb->base_prefix.'domain_mapping').'` WHERE `blog_id` = \''.esc_sql($blog_id).'\' AND `domain` IN(\''.esc_sql('www.'.$domain).'\', \''.esc_sql($domain).'\') ORDER BY CHAR_LENGTH(`domain`) DESC LIMIT 1');
-        } elseif (($domains = $self->domainMappingBlogDomains($blog_id)) && count($domains) === 1) {
-            $domain = (string) $domains[0]; // Only one domain, we can use this.
+        } elseif (($domains = $self->domainMappingBlogDomains($blog_id))) {
+            $domain = $domains[0]; // Use the first of all possible domains.
         }
     } else { // A single primary domain in this case; i.e., `active` = primary.
         $domain = (string) $wpdb->get_var('SELECT `domain` FROM `'.esc_sql($wpdb->base_prefix.'domain_mapping').'` WHERE `blog_id` = \''.esc_sql($blog_id).'\' AND `active` = \'1\' LIMIT 1');
     }
     if (!$domain && $fallback && ($blog_details = $self->blogDetails($blog_id))) {
-        $domain = $blog_details->domain;
+        $domain = $blog_details->domain; // Use original domain.
     }
     $wpdb->suppress_errors($suppressing_errors); // Restore.
 
@@ -254,7 +254,7 @@ $self->domainMappingBlogDomains = function ($blog_id = 0) {
     $enforcing_primary_domain = !get_site_option('dm_no_primary_domain'); // Enforcing primary domain?
 
     if (!$enforcing_primary_domain) { // Not enforcing a primary domain, so let's pull all of the domains.
-        $domains = $wpdb->get_col('SELECT `domain` FROM `'.esc_sql($wpdb->base_prefix.'domain_mapping').'` WHERE `blog_id` = \''.esc_sql($blog_id).'\'');
+        $domains = $wpdb->get_col('SELECT `domain` FROM `'.esc_sql($wpdb->base_prefix.'domain_mapping').'` WHERE `blog_id` = \''.esc_sql($blog_id).'\' ORDER BY `active` DESC');
     } else { // Primary domains in this case; i.e., `active` = primary.
         $domains = $wpdb->get_col('SELECT `domain` FROM `'.esc_sql($wpdb->base_prefix.'domain_mapping').'` WHERE `blog_id` = \''.esc_sql($blog_id).'\' AND `active` = \'1\'');
     }

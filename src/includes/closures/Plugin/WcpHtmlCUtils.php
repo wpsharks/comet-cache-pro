@@ -66,8 +66,8 @@ $self->clearHtmlCCache = function ($manually = false, $___without_domain_mapping
     if (!$___without_domain_mapping && $self->isDomainMapping()) {
         $host_base_dir_tokens = ''; // Not applicable w/ domain mapping.
     }
-    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.$host_base_dir_tokens.'/'.$host_token);
-    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.$host_base_dir_tokens.'/'.$host_token);
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
 
     foreach ($htmlc_cache_dirs as $_htmlc_cache_dir) {
         $counter += $self->deleteAllFilesDirsIn($_htmlc_cache_dir);
