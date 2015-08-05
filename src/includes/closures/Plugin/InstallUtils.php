@@ -527,7 +527,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 $self->removeBaseDir = function () use ($self) {
     $counter = 0; // Initialize.
 
-    @set_time_limit(1800); // @TODO When disabled, display a warning.
+    @set_time_limit(1800); // @TODO Display a warning.
 
     return ($counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true));
 };

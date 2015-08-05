@@ -599,7 +599,7 @@ $self->eraseAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self)
  * @param boolean $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
  *
  * @return integer Total files/directories erased by this routine (if any).
- */ // @TODO stress test this.
+ */
 $self->tryErasingAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self) {
     $counter = 0; // Initialize counter.
     try {

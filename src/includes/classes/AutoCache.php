@@ -46,8 +46,7 @@ class AutoCache extends AbsBase
         $max_time = (integer) $this->plugin->options['auto_cache_max_time'];
         $max_time = $max_time > 60 ? $max_time : 900;
 
-        @set_time_limit($max_time); // Max time.
-        // @TODO When disabled, display a warning.
+        @set_time_limit($max_time); // @TODO Display a warning.
 
         ignore_user_abort(true); // Keep running.
 
