@@ -17,18 +17,14 @@ $self->pre_post_update_post_permalink = array();
  *
  * @since 150422 Rewrite.
  *
- * @param bool   $manually      Defaults to a `FALSE` value.
- *                              Pass as TRUE if the wipe is done manually by the site owner.
- * @param string $also_wipe_dir Defaults to an empty string; i.e., only wipe {@link $cache_sub_dir} files.
+ * @param bool $manually TRUE if the wipe is done manually by the site owner.
  *
  * @throws \Exception If a wipe failure occurs.
  *
  * @return int Total files wiped by this routine (if any).
  */
-$self->wipeCache = function ($manually = false, $also_wipe_dir = '') use ($self) {
+$self->wipeCache = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
-
-    $also_wipe_dir = trim((string) $also_wipe_dir);
 
     if (!$manually && $self->disableAutoWipeCacheRoutines()) {
         return $counter; // Nothing to do.
@@ -36,10 +32,7 @@ $self->wipeCache = function ($manually = false, $also_wipe_dir = '') use ($self)
     @set_time_limit(1800); // @TODO Display a warning.
 
     if (is_dir($cache_dir = $self->cacheDir())) {
-        $counter += $self->deleteAllFilesDirsIn($cache_dir);
-    }
-    if ($also_wipe_dir && is_dir($also_wipe_dir)) {
-        $counter += $self->deleteAllFilesDirsIn($also_wipe_dir);
+        $counter += $self->deleteFilesFromCacheDir('/^.+/i');
     }
     /*[pro strip-from="lite"]*/
     $counter += $self->wipeHtmlCCache($manually);

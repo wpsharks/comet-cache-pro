@@ -49,7 +49,7 @@ $self->checkVersion = function () use ($self) {
         $self->addAdvancedCache();
         $self->updateBlogPaths();
     }
-    $self->wipeCache(); // Always wipe the cache; unless disabled by site owner; @see disableAutoWipeCacheRoutines()
+    $self->wipeCache(); // Fresh start now.
 
     $self->enqueueNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
 };
@@ -88,7 +88,7 @@ $self->uninstall = function () use ($self) {
     }
     $self->removeWpCacheFromWpConfig();
     $self->removeAdvancedCache();
-    $self->wipeCache();
+    $self->wipeCache(); // Full wipe now.
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
@@ -397,10 +397,6 @@ $self->removeAdvancedCache = function () use ($self) {
     if (!is_writable($advanced_cache_file)) {
         return false; // Not possible.
     }
-    // Ignore; this is created by ZenCache; and we don't need to obey in this case.
-    #if(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)
-    #	return FALSE; // We may NOT edit any files.
-
     /* Empty the file only. This way permissions are NOT lost in cases where
         a site owner makes this specific file writable for ZenCache. */
     if (file_put_contents($advanced_cache_file, '') !== 0) {
@@ -419,17 +415,19 @@ $self->removeAdvancedCache = function () use ($self) {
  * @note The `advanced-cache.php` file is deleted by this routine.
  */
 $self->deleteAdvancedCache = function () use ($self) {
-    $advanced_cache_file = WP_CONTENT_DIR.'/advanced-cache.php';
+    $cache_dir                 = $self->cacheDir();
+    $advanced_cache_check_file = $cache_dir.'/zc-advanced-cache';
+    $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
 
-    if (!is_file($advanced_cache_file)) {
-        return true; // Already gone.
+    if (is_file($advanced_cache_file)) {
+        if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
+            return false; // Not possible; or outright failure.
+        }
     }
-    // Ignore; this is created by ZenCache; and we don't need to obey in this case.
-    #if(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)
-    #	return FALSE; // We may NOT edit any files.
-
-    if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
-        return false; // Not possible; or outright failure.
+    if (is_file($advanced_cache_check_file)) {
+        if (!is_writable($advanced_cache_check_file) || !unlink($advanced_cache_check_file)) {
+            return false; // Not possible; or outright failure.
+        }
     }
     return true; // Deletion success.
 };
@@ -482,8 +480,7 @@ $self->checkBlogPaths = function () use ($self) {
  * @note While this routine is attached to a WP filter, we also call upon it directly at times.
  */
 $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($self) {
-    $value = // This hook actually rides on a filter.
-        $enable_live_network_counts; // Filter value.
+    $value = $enable_live_network_counts; // This hook actually rides on a filter.
 
     if (!$self->options['enable']) {
         return $value; // Nothing to do.
@@ -506,6 +503,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 
         foreach ($paths as &$_path) {
             // Strip base; these need to match `$host_dir_token`.
+            // @TODO is it necessary to remove the base token here?
             $_path = '/'.ltrim(preg_replace('/^'.preg_quote($self->hostBaseToken(), '/').'/', '', $_path), '/');
         }
         unset($_path); // Housekeeping.
