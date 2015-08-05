@@ -30,7 +30,7 @@ $self->cacheDir = function ($rel_path = '') use ($self) {
  * Clear files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
  *
@@ -44,7 +44,7 @@ $self->clearFilesFromCacheDir = function ($regex) use ($self) {
  * Clear files from the cache directory (for the current host);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromHostCacheDir()}.
  *
@@ -58,7 +58,7 @@ $self->clearFilesFromHostCacheDir = function ($regex) use ($self) {
  * Purge files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
  *
@@ -72,7 +72,7 @@ $self->purgeFilesFromCacheDir = function ($regex) use ($self) {
  * Purge files from the cache directory (for the current host);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromHostCacheDir()}.
  *
@@ -86,7 +86,7 @@ $self->purgeFilesFromHostCacheDir = function ($regex) use ($self) {
  * Delete files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string  $regex A `/[regex pattern]/`; relative to the cache directory.
  *    e.g. `/^http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
@@ -223,7 +223,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  * Delete files from the cache directory (for the current host);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string  $regex A `/[regex pattern]/`; relative to the host cache directory.
  *    e.g. `/^my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
@@ -234,13 +234,16 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  *
  * @param boolean $check_max_age Check max age? i.e., use purge behavior?
  *
- * @param boolean $___without_domain_mapping For internal use only.
+ * @param boolean $___considering_domain_mapping For internal use only.
+ * @param boolean $___consider_domain_mapping_host_token For internal use only.
+ * @param boolean $___consider_domain_mapping_host_base_dir_tokens For internal use only.
  *
  * @return integer Total files deleted by this routine (if any).
  *
  * @throws \Exception If unable to delete a file for any reason.
- */ // @TODO review for domain mapping compat and take advantage of recent improvements.
-$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $___without_domain_mapping = false) use ($self) {
+ */
+$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $___considering_domain_mapping = false,
+                                    $___consider_domain_mapping_host_token = null, $___consider_domain_mapping_host_base_dir_tokens = null) use ($self) {
     $counter = 0; // Initialize.
 
     if (!($regex = (string) $regex)) {
@@ -249,10 +252,17 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
     if (!is_dir($cache_dir = $self->cacheDir())) {
         return $counter; // Nothing to do.
     }
-    $host                 = $self->hostToken();
-    $host_base_dir_tokens = $self->hostBaseDirTokens();
-    $cache_dir            = $self->nDirSeps($cache_dir);
+    $cache_dir            = $self->nDirSeps($cache_dir); // Normalize.
+    $host_token           = $current_host_token           = $self->hostToken();
+    $host_base_dir_tokens = $current_host_base_dir_tokens = $self->hostBaseDirTokens();
 
+    if ($___considering_domain_mapping && isset($___consider_domain_mapping_host_token, $___consider_domain_mapping_host_base_dir_tokens)) {
+        $host_token           = (string) $___consider_domain_mapping_host_token;
+        $host_base_dir_tokens = (string) $___consider_domain_mapping_host_base_dir_tokens;
+    }
+    if (!$host_token) { // Must have a host in the sub-routine below.
+        throw new \Exception(__('Invalid argument; host token empty!', SLUG_TD));
+    }
     if ($check_max_age && $self->isAdvancedCache()) {
         throw new \Exception(__('Invalid argument; isAdvancedCache!', SLUG_TD));
     }
@@ -274,13 +284,10 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
             pages over SSL all the time; so this really should not have a significant performance hit.
             In fact, it may improve performance since we are traversing each sub-directory separately;
             i.e., we don't need to glob both `http` and `https` traffic into a single directory scan. */
-        $_host_url = $_host_scheme.'://'.$host.$host_base_dir_tokens;
-
-        $_host_cache_path_flags = $___without_domain_mapping ? CACHE_PATH_NO_DOMAIN_MAPPING : 0;
-        $_host_cache_path_flags |= CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
-
-        $_host_cache_path = $self->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
-        $_host_cache_dir  = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
+        $_host_url              = $_host_scheme.'://'.$host_token.$host_base_dir_tokens;
+        $_host_cache_path_flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $_host_cache_path       = $self->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
+        $_host_cache_dir        = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
 
         if (!$_host_cache_dir || !is_dir($_host_cache_dir)) {
             // On a multisite install this may have a cache sub-directory.
@@ -383,10 +390,33 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
 
     $self->cacheUnlock($cache_lock); // Release.
 
-    // This runs one additional deletion scan for the unmapped variation.
-    if (!$___without_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
-        $counter += $self->deleteFilesFromHostCacheDir($regex, $check_max_age, true);
-    } // @TODO review for domain mapping compat and take advantage of recent improvements.
+    /* ------- Include domain mapping variations also. ------- */
+
+    if (!$___considering_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
+        $domain_mapping_variations = array(); // Initialize array of domain variations.
+
+        if (($_host_token_for_blog = $self->hostTokenForBlog())) {
+            $_host_base_dir_tokens_for_blog = $self->hostBaseDirTokensForBlog();
+            $domain_mapping_variations[]    = array('host_token' => $_host_token_for_blog, 'host_base_dir_tokens' => $_host_base_dir_tokens_for_blog);
+        } // The original blog host; i.e., without domain mapping.
+        unset($_host_token_for_blog, $_host_base_dir_tokens_for_blog); // Housekeeping.
+
+        foreach ($self->domainMappingBlogDomains() as $_domain_mapping_blog_domain) {
+            if (($_domain_host_token_for_blog = $self->hostTokenForBlog(false, true, $_domain_mapping_blog_domain))) {
+                $_domain_host_base_dir_tokens_for_blog = $self->hostBaseDirTokensForBlog(false, true); // This is only a formality.
+                $domain_mapping_variations[]           = array('host_token' => $_domain_host_token_for_blog, 'host_base_dir_tokens' => $_domain_host_base_dir_tokens_for_blog);
+            }
+        } // This includes all of the domain mappings configured for the current blog ID.
+        unset($_domain_mapping_blog_domain, $_domain_host_token_for_blog, $_domain_host_base_dir_tokens_for_blog); // Housekeeping.
+
+        foreach ($domain_mapping_variations as $_domain_mapping_variation) {
+            if ($_domain_mapping_variation['host_token'] === $current_host_token && $_domain_mapping_variation['host_base_dir_tokens'] === $current_host_base_dir_tokens) {
+                continue; // Exclude current tokens. They were already iterated above.
+            }
+            $counter += $self->deleteFilesFromHostCacheDir($regex, $check_max_age, true, $_domain_mapping_variation['host_token'], $_domain_mapping_variation['host_base_dir_tokens']);
+        }
+        unset($_domain_mapping_variation); // Housekeeping.
+    }
     return $counter;
 };
 
@@ -394,7 +424,7 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
  * Delete all files/dirs from a directory (for all schemes/hosts);
  *    including `zc-` prefixed files; or anything else for that matter.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string  $dir The directory from which to delete files/dirs.
  *
@@ -605,6 +635,7 @@ $self->tryErasingAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($
     try {
         $counter += $self->eraseAllFilesDirsIn($dir, $erase_dir_too);
     } catch (\Exception $exception) {
+        // Fail softly.
     }
     return $counter;
 };
