@@ -228,7 +228,7 @@ class FeedUtils extends AbsBase
     {
         $regex_frags                 = array();
         $is_multisite                = is_multisite();
-        $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
+        $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
         $flags                       = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST // Default flags.
                                        | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT | CACHE_PATH_NO_EXT;
         // Flags: note that we DO allow for query string data in these regex fragments.
@@ -238,17 +238,17 @@ class FeedUtils extends AbsBase
 
             if ($_url && $is_multisite && $can_consider_domain_mapping) {
                 // Shortest possible URI; i.e., consider domain mapping.
-                $_url                  = $self->domainMappingUrlFilter($_url);
-                $_is_url_domain_mapped = $_url && $self->domainMappingBlogId($_url);
+                $_url                  = $this->plugin->domainMappingUrlFilter($_url);
+                $_is_url_domain_mapped = $_url && $this->plugin->domainMappingBlogId($_url);
             } else {
                 $_is_url_domain_mapped = false; // No, obviously.
             }
-            if (!$_url || !($_url_parts = $self->parseUrl($_url)) || empty($_url_parts['host'])) {
+            if (!$_url || !($_url_parts = $this->plugin->parseUrl($_url)) || empty($_url_parts['host'])) {
                 continue; // Invalid variation.
             }
-            $_host_base_dir_tokens = $self->hostBaseDirTokens(false, $_is_url_domain_mapped, !empty($_url_parts['path']) ? $_url_parts['path'] : '/');
+            $_host_base_dir_tokens = $this->plugin->hostBaseDirTokens(false, $_is_url_domain_mapped, !empty($_url_parts['path']) ? $_url_parts['path'] : '/');
             $_host_url             = rtrim('http://'.$_url_parts['host'].$_host_base_dir_tokens, '/');
-            $_host_cache_path      = $self->buildCachePath($_host_url, '', '', $flags);
+            $_host_cache_path      = $this->plugin->buildCachePath($_host_url, '', '', $flags);
 
             if (is_string($_key) && strpos($_key, '::') !== false && strpos($_url, '*') !== false) {
                 list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2); // This regex replaces wildcards.
