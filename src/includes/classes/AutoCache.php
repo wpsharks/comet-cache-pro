@@ -57,15 +57,15 @@ class AutoCache extends AbsBase
         $delay = (integer) $this->plugin->options['auto_cache_delay']; // In milliseconds.
         $delay = $delay > 0 ? $delay * 1000 : 0; // Convert delay to microseconds for `usleep()`.
 
-        $is_multisite                = is_multisite(); // MS network?
-        $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
-
         $other_urls = $this->plugin->options['auto_cache_other_urls'];
         $other_urls = preg_split('/\s+/', $other_urls, null, PREG_SPLIT_NO_EMPTY);
 
         $blogs = array((object) array('ID' => null, 'other' => $other_urls));
 
-        if ($is_multisite) {
+        $is_multisite                = is_multisite(); // Multisite network?
+        $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
+
+        if ($is_multisite) { // Multisite network?
             $wpdb = $this->plugin->wpdb(); // WordPress DB object instance.
             if (($_child_blogs = $wpdb->get_results('SELECT `blog_id` AS `ID` FROM `'.esc_sql($wpdb->blogs).'` WHERE `deleted` <= \'0\''))) {
                 $blogs = array_merge($blogs, $_child_blogs);
@@ -77,7 +77,7 @@ class AutoCache extends AbsBase
         foreach ($blogs as $_blog) {
             $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = array();
 
-            if (!isset($_blog->ID)) { // `home_url()` if `!is_multisite()`.
+            if (!isset($_blog->ID)) { // `home_url()` fallback.
                 $_blog_url = rtrim(network_home_url('', 'http'), '/');
             } else { // This calls upon `switch_to_blog()` to acquire.
                 $_blog_url = rtrim(get_home_url($_blog->ID, '', 'http'), '/');
