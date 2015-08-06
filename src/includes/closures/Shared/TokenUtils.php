@@ -233,7 +233,13 @@ $self->hostDirTokenForBlog = function ($dashify = false, $consider_domain_mappin
         return $token; // Not applicable.
     }
     if (($blog_details = $self->blogDetails($blog_id))) {
-        $token = $blog_details->path; // Unmapped path.
+        $path = $blog_details->path; // e.g., `[/base]/path/` (includes base).
+        if ($path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
+            $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
+        } else {
+            $path_minus_base = $path; // Default value.
+        }
+        list($token) = explode('/', trim($path_minus_base, '/'));
     }
     $token = trim($token, '\\/'." \t\n\r\0\x0B");
     $token = isset($token[0]) ? '/'.$token.'/' : '/';

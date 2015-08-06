@@ -498,15 +498,21 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
         file_put_contents($cache_dir.'/.htaccess', $self->htaccess_deny);
     }
     if (is_dir($cache_dir) && is_writable($cache_dir)) {
-        $paths = // Collect child blog paths from the WordPress database.
+        $paths = // Collect child `[/base]/path/`s from the WordPress database.
             $self->wpdb()->get_col('SELECT `path` FROM `'.esc_sql($self->wpdb()->blogs)."` WHERE `deleted` <= '0'");
 
-        foreach ($paths as &$_path) {
-            // Strip base; these need to match `$host_dir_token`.
-            // @TODO is it necessary to remove the base token here?
-            $_path = '/'.ltrim(preg_replace('/^'.preg_quote($self->hostBaseToken(), '/').'/', '', $_path), '/');
+        $host_base_token = $self->hostBaseToken(); // Pull this once only.
+
+        foreach ($paths as $_key => &$_path) {
+            if ($_path && $_path !== '/' && $host_base_token && $host_base_token !== '/') {
+                // Note that each `path` in the DB looks like: `[/base]/path/` (i.e., it includes base).
+                $_path = '/'.ltrim(preg_replace('/^'.preg_quote($host_base_token, '/').'/', '', $_path), '/');
+            }
+            if (!$_path || $_path === '/') {
+                unset($paths[$_key]); // Exclude main site.
+            }
         }
-        unset($_path); // Housekeeping.
+        unset($_key, $_path); // Housekeeping.
 
         file_put_contents($cache_dir.'/zc-blog-paths', serialize($paths));
     }
