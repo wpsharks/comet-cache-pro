@@ -126,6 +126,6 @@ $self->isSsl = function () use ($self) {
  *
  * @return string Current URL.
  */
-$self->currentUrl = function () {
+$self->currentUrl = function () use ($self) {
     return ($self->isSsl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 };
