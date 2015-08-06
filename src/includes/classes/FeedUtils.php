@@ -257,7 +257,7 @@ class FeedUtils extends AbsBase
                 $_relative_cache_path_regex         = preg_replace('/\\\\\*/', $_wildcard_regex, preg_quote($_relative_cache_path, '/'));
             } else {
                 $_cache_path                = $this->plugin->buildCachePath($_url, '', '', $flags); // Default flags.
-                $_relative_cache_path       = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
+                $_relative_cache_path       = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
                 $_relative_cache_path_regex = preg_quote($_relative_cache_path, '/');
             }
             if ($_relative_cache_path_regex) {
