@@ -57,12 +57,15 @@ class AutoCache extends AbsBase
         $delay = (integer) $this->plugin->options['auto_cache_delay']; // In milliseconds.
         $delay = $delay > 0 ? $delay * 1000 : 0; // Convert delay to microseconds for `usleep()`.
 
+        $is_multisite                = is_multisite(); // MS network?
+        $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
+
         $other_urls = $this->plugin->options['auto_cache_other_urls'];
         $other_urls = preg_split('/\s+/', $other_urls, null, PREG_SPLIT_NO_EMPTY);
 
         $blogs = array((object) array('ID' => null, 'other' => $other_urls));
 
-        if (is_multisite()) {
+        if ($is_multisite) {
             $wpdb = $this->plugin->wpdb(); // WordPress DB object instance.
             if (($_child_blogs = $wpdb->get_results('SELECT `blog_id` AS `ID` FROM `'.esc_sql($wpdb->blogs).'` WHERE `deleted` <= \'0\''))) {
                 $blogs = array_merge($blogs, $_child_blogs);
@@ -79,7 +82,10 @@ class AutoCache extends AbsBase
             } else { // This calls upon `switch_to_blog()` to acquire.
                 $_blog_url = rtrim(get_home_url($_blog->ID, '', 'http'), '/');
             }
-            if (($_blog_sitemap_path = ltrim($this->plugin->options['auto_cache_sitemap_url'], '/'))) {
+            if ($is_multisite && $can_consider_domain_mapping) {
+                $_blog_url = $this->plugin->domainMappingUrlFilter($_blog_url);
+            }
+            if ($_blog_url && ($_blog_sitemap_path = ltrim($this->plugin->options['auto_cache_sitemap_url'], '/'))) {
                 $_blog_sitemap_urls = $this->getSitemapUrlsDeep($_blog_url.'/'.$_blog_sitemap_path);
             }
             if (!empty($_blog->other)) {
