@@ -182,7 +182,7 @@ $self->hostDirToken = function ($dashify = false, $consider_domain_mapping = fal
     if ($consider_domain_mapping && $self->canConsiderDomainMapping()) {
         return $token; // Not applicable.
     }
-    if ($path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
+    if ($path && $path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
         $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
     } else {
         $path_minus_base = $path; // Default value.
@@ -234,7 +234,7 @@ $self->hostDirTokenForBlog = function ($dashify = false, $consider_domain_mappin
     }
     if (($blog_details = $self->blogDetails($blog_id))) {
         $path = $blog_details->path; // e.g., `[/base]/path/` (includes base).
-        if ($path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
+        if ($path && $path !== '/' && ($host_base_token = trim($self->hostBaseToken(), '/'))) {
             $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
         } else {
             $path_minus_base = $path; // Default value.
