@@ -166,7 +166,7 @@ $self->hostDirToken = function ($dashify = false, $consider_domain_mapping = fal
     if (!isset($path)) { // Use current/default path?
         $path = (string) $self->parseUrl($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
-    $path = '/'.ltrim((string) $path); // Force a leading slash.
+    $path = '/'.ltrim((string) $path, '/'); // Force leading slash.
 
     if (!is_null($token = &$self->staticKey('hostDirToken', array($dashify, $consider_domain_mapping, $path)))) {
         return $token; // Already cached this.
