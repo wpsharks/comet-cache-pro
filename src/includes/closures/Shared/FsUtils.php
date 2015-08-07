@@ -276,12 +276,14 @@ $self->bytesAbbr = function ($bytes, $precision = 2) use ($self) {
 $self->abbrBytes = function ($string) use ($self) {
     $string = (string) $string;
     $regex  = '/^(?P<value>[0-9\.]+)\s*(?P<modifier>bytes|byte|kbs|kb|k|mb|m|gb|g|tb|t)$/i';
+
     if (!preg_match($regex, $string, $_m)) {
         return (float) 0;
     }
     $value    = (float) $_m['value'];
     $modifier = strtolower($_m['modifier']);
     unset($_m); // Housekeeping.
+
     switch ($modifier) {
         case 't':
         case 'tb':
