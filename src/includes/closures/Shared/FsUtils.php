@@ -172,40 +172,59 @@ $self->dirRegexIteration = function ($dir, $regex = '') use ($self) {
  *
  * @param string $dir An absolute server directory path.
  * @param string $regex A regex pattern; compares to each full file path.
+ * @param boolean $include_paths Include array of all scanned file paths?
  * @param boolean $check_disk Also check disk statistics?
- * @param boolean $reconsider Bypass cached statistics?
  *
- * @return array `total_size`, `total_links`, `total_files`, `total_dirs`, `disk_free_space`, `disk_total_space`.
+ * @return array Directory stats.
  */
-$self->getDirRegexStats = function ($dir, $regex = '', $check_disk = true, $reconsider = false) use ($self) {
-    if (!is_null($stats = &$self->staticKey('getDirStats', array($dir, $regex, $check_disk))) && !$reconsider) {
-        return $stats; // Already cached this.
-    }
+$self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $check_disk = true) use ($self) {
+    $dir = (string) $dir; // Force string.
+
     $stats = array(
-        'total_size'       => 0,
-        'total_links'      => 0,
-        'total_files'      => 0,
-        'total_dirs'       => 0,
+        'dir'        => $dir,
+        'total_size' => 0,
+
+        'total_links'   => 0,
+        'link_subpaths' => array(),
+
+        'total_files'   => 0,
+        'file_subpaths' => array(),
+
+        'total_dirs'   => 0,
+        'dir_subpaths' => array(),
+
         'disk_free_space'  => 0,
         'disk_total_space' => 0,
     );
-    if (!is_dir($dir = (string) $dir)) {
+    if (!$dir || !is_dir($dir)) {
         return $stats; // Not possible.
     }
     foreach ($self->dirRegexIteration($dir, $regex) as $_resource) {
         switch ($_resource->getType()) { // `link`, `file`, `dir`.
 
             case 'link': // Symbolic links.
+                if ($include_paths) {
+                    $stats['link_subpaths'][] = $_resource->getSubpathname();
+                }
                 ++$stats['total_links']; // Counter.
+
                 break; // Break switch handler.
 
             case 'file': // Regular files; i.e., not symlinks.
+                if ($include_paths) {
+                    $stats['file_subpaths'][] = $_resource->getSubpathname();
+                }
                 $stats['total_size'] += $_resource->getSize();
                 ++$stats['total_files']; // Counter.
+
                 break; // Break switch.
 
             case 'dir': // Regular dirs; i.e., not symlinks.
+                if ($include_paths) {
+                    $stats['dir_subpaths'][] = $_resource->getSubpathname();
+                }
                 ++$stats['total_dirs']; // Counter.
+
                 break; // Break switch.
         }
     }

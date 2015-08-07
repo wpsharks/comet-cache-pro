@@ -7,10 +7,12 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 15xxxx Adding cache directory statistics.
  *
+ * @param boolean $include_paths Include array of all scanned file paths?
+ *
  * @return array Cache directory stats.
  */
-$self->statsForCacheDir = function () use ($self) {
-    return $self->getDirRegexStats($self->cacheDir());
+$self->statsForCacheDir = function ($include_paths = false) use ($self) {
+    return $self->getDirRegexStats($self->cacheDir(), '', $include_paths);
 };
 
 /*
@@ -18,9 +20,11 @@ $self->statsForCacheDir = function () use ($self) {
  *
  * @since 15xxxx Adding cache directory statistics.
  *
+ * @param boolean $include_paths Include array of all scanned file paths?
+ *
  * @return array HTML compressor cache directory stats.
  */
-$self->statsForHtmlCCacheDirs = function () use ($self) {
+$self->statsForHtmlCCacheDirs = function ($include_paths = false) use ($self) {
     $stats = array(); // Initialize the stats array.
 
     $htmlc_cache_dirs   = array(); // Initialize array directories.
@@ -30,7 +34,7 @@ $self->statsForHtmlCCacheDirs = function () use ($self) {
     foreach (array_unique($htmlc_cache_dirs) as $_htmlc_cache_dir) {
         $_check_disk_stats = $stats ? false : true;
 
-        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $_check_disk_stats) as $_key => $_value) {
+        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $include_paths, $_check_disk_stats) as $_key => $_value) {
             $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
         }
         unset($_key, $_value); // Housekeeping.
@@ -75,7 +79,7 @@ $self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
         $_host_cache_dir        = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
         $_check_disk_stats      = $stats || $___considering_domain_mapping ? false : true;
 
-        foreach ($self->getDirRegexStats($_host_cache_dir, '', $_check_disk_stats) as $_key => $_value) {
+        foreach ($self->getDirRegexStats($_host_cache_dir, '', false, $_check_disk_stats) as $_key => $_value) {
             $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
         }
         unset($_key, $_value); // Housekeeping.
@@ -150,7 +154,7 @@ $self->statsForHtmlCHostCacheDirs = function () use ($self) {
     foreach (array_unique($htmlc_cache_dirs) as $_htmlc_cache_dir) {
         $_check_disk_stats = $stats ? false : true;
 
-        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $_check_disk_stats) as $_key => $_value) {
+        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', false, $_check_disk_stats) as $_key => $_value) {
             $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
         }
         unset($_key, $_value); // Housekeeping.
