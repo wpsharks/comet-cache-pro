@@ -28,8 +28,9 @@ $self->enqueueAdminScripts = function () use ($self) {
     if (empty($_GET['page']) || strpos($_GET['page'], GLOBAL_NS) !== 0) {
         return; // NOT a plugin page in the administrative area.
     }
-    $deps = array('jquery'); // Plugin dependencies.
+    $deps = array('jquery', 'chartjs'); // Plugin dependencies.
 
+    wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
     wp_enqueue_script(GLOBAL_NS, $self->url('/src/client-s/js/menu-pages.js'), $deps, VERSION, true);
 };
 
