@@ -36,20 +36,22 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
             )
         );
     }
-    $wp_admin_bar->add_node(
-        array(
-            'parent' => 'top-secondary',
-            'id'     => GLOBAL_NS.'-clear',
-            'title'  => __('Clear Cache', SLUG_TD), 'href' => '#',
-            'meta'   => array(
-                    'title' => is_multisite() && current_user_can($self->network_cap)
-                        ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
-                        : __('Clear Cache (Start Fresh)', SLUG_TD),
-                    'class'    => GLOBAL_NS,
-                    'tabindex' => -1,
-            ),
-        )
-    );
+    if (!is_multisite() || !is_network_admin()) {
+        $wp_admin_bar->add_node(
+            array(
+                'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-clear',
+                'title'  => __('Clear Cache', SLUG_TD), 'href' => '#',
+                'meta'   => array(
+                        'title' => is_multisite() && current_user_can($self->network_cap)
+                            ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
+                            : __('Clear Cache (Start Fresh)', SLUG_TD),
+                        'class'    => GLOBAL_NS,
+                        'tabindex' => -1,
+                ),
+            )
+        );
+    }
 };
 
 /*

@@ -242,8 +242,10 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  *
  * @throws \Exception If unable to delete a file for any reason.
  */
-$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $___considering_domain_mapping = false,
-                                    $___consider_domain_mapping_host_token = null, $___consider_domain_mapping_host_base_dir_tokens = null) use ($self) {
+$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false,
+                                               $___considering_domain_mapping = false,
+                                               $___consider_domain_mapping_host_token = null,
+                                               $___consider_domain_mapping_host_base_dir_tokens = null) use ($self) {
     $counter = 0; // Initialize.
 
     if (!($regex = (string) $regex)) {
@@ -276,14 +278,6 @@ $self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false, $
     clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
 
     foreach (array('http', 'https') as $_host_scheme) {
-        /* This multi-scheme iteration could (alternatively) be accomplished via regex `\/https?\/`.
-            HOWEVER, since this operation is supposed to impact only a single host in a network, and because
-            we want to do atomic deletions, we iterate and rename `$_host_cache_dir` for each scheme.
-
-            It's also worth noting that most high traffic sites will not be in the habit of serving
-            pages over SSL all the time; so this really should not have a significant performance hit.
-            In fact, it may improve performance since we are traversing each sub-directory separately;
-            i.e., we don't need to glob both `http` and `https` traffic into a single directory scan. */
         $_host_url              = $_host_scheme.'://'.$host_token.$host_base_dir_tokens;
         $_host_cache_path_flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
         $_host_cache_path       = $self->buildCachePath($_host_url, '', '', $_host_cache_path_flags);

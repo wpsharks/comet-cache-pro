@@ -153,7 +153,7 @@ $self->dirIteration = function ($dir) use ($self) {
  * @return \RegexIterator Navigable with {@link \foreach()}; where each item
  *    is a {@link \RecursiveDirectoryIterator}.
  */
-$self->dirRegexIteration = function ($dir, $regex = '/.+/') use ($self) {
+$self->dirRegexIteration = function ($dir, $regex = '') use ($self) {
     $dir   = (string) $dir;
     $regex = (string) $regex;
     $regex = !$regex ? '/.+/' : $regex;
@@ -172,15 +172,16 @@ $self->dirRegexIteration = function ($dir, $regex = '/.+/') use ($self) {
  *
  * @param string $dir An absolute server directory path.
  * @param string $regex A regex pattern; compares to each full file path.
+ * @param boolean $check_disk Also check disk statistics?
  * @param boolean $reconsider Bypass cached statistics?
  *
- * @return \stdClass `total_size`, `total_links`, `total_files`, `total_dirs`.
+ * @return array `total_size`, `total_links`, `total_files`, `total_dirs`, `disk_free_space`, `disk_total_space`.
  */
-$self->getDirRegexStats = function ($dir, $regex = '/.+/', $reconsider = false) use ($self) {
-    if (!is_null($stats = &$self->staticKey('getDirStats', array($dir, $regex))) && !$reconsider) {
+$self->getDirRegexStats = function ($dir, $regex = '', $check_disk = true, $reconsider = false) use ($self) {
+    if (!is_null($stats = &$self->staticKey('getDirStats', array($dir, $regex, $check_disk))) && !$reconsider) {
         return $stats; // Already cached this.
     }
-    $stats = (object) array(
+    $stats = array(
         'total_size'       => 0,
         'total_links'      => 0,
         'total_files'      => 0,
@@ -195,24 +196,25 @@ $self->getDirRegexStats = function ($dir, $regex = '/.+/', $reconsider = false) 
         switch ($_resource->getType()) { // `link`, `file`, `dir`.
 
             case 'link': // Symbolic links.
-                ++$stats->total_links; // Counter.
+                ++$stats['total_links']; // Counter.
                 break; // Break switch handler.
 
             case 'file': // Regular files; i.e., not symlinks.
-                $stats->total_size += $_resource->getSize();
-                ++$stats->total_files; // Counter.
+                $stats['total_size'] += $_resource->getSize();
+                ++$stats['total_files']; // Counter.
                 break; // Break switch.
 
             case 'dir': // Regular dirs; i.e., not symlinks.
-                ++$stats->total_dirs; // Counter.
+                ++$stats['total_dirs']; // Counter.
                 break; // Break switch.
         }
     }
     unset($_resource); // Housekeeping.
 
-    $stats->disk_free_space  = disk_free_space($dir);
-    $stats->disk_total_space = disk_total_space($dir);
-
+    if ($check_disk) { // Check disk also?
+        $stats['disk_free_space']  = disk_free_space($dir);
+        $stats['disk_total_space'] = disk_total_space($dir);
+    }
     return $stats;
 };
 
