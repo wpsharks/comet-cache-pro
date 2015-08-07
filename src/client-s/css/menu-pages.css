@@ -377,3 +377,78 @@ Save button styles.
   width: 100%;
   line-height: 1.3em;
 }
+/*
+Animation :: disk-bars.
+Markup: `<div class="animation-disk-bars"><div></div><div></div><div></div><div></div><div></div></div>`
+*/
+
+.plugin-menu-page .animation-disk-bars {
+  width: 100%;
+  box-sizing: border-box;
+}
+.plugin-menu-page .animation-disk-bars > div {
+  width: 19%;
+  height: 5em;
+  margin: 0 .5%;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: currentColor;
+  -webkit-animation: plugin-animation-disk-bars .9s infinite cubic-bezier(.11, .49, .38, .78);
+  -moz-animation: plugin-animation-disk-bars .9s infinite cubic-bezier(.11, .49, .38, .78);
+  -o-animation: plugin-animation-disk-bars .9s infinite cubic-bezier(.11, .49, .38, .78);
+  animation: plugin-animation-disk-bars .9s infinite cubic-bezier(.11, .49, .38, .78);
+}
+.plugin-menu-page .animation-disk-bars > div:nth-child(3) {
+  -webkit-animation-delay: -.9s;
+  -moz-animation-delay: -.9s;
+  -o-animation-delay: -.9s;
+  animation-delay: -.9s;
+}
+.plugin-menu-page .animation-disk-bars > div:nth-child(2),
+.plugin-menu-page .animation-disk-bars > div:nth-child(4) {
+  -webkit-animation-delay: -.65s;
+  -moz-animation-delay: -.65s;
+  -o-animation-delay: -.65s;
+  animation-delay: -.65s;
+}
+.plugin-menu-page .animation-disk-bars > div:nth-child(1),
+.plugin-menu-page .animation-disk-bars > div:nth-child(5) {
+  -webkit-animation-delay: -.4s;
+  -moz-animation-delay: -.4s;
+  -o-animation-delay: -.4s;
+  animation-delay: -.4s;
+}
+@-webkit-keyframes plugin-animation-disk-bars {
+  0% {
+    -webkit-transform: scaley(1);
+    transform: scaley(1);
+  }
+  80% {
+    -webkit-transform: scaley(.3);
+    transform: scaley(.3);
+  }
+  90% {
+    -webkit-transform: scaley(1);
+    transform: scaley(1);
+  }
+}
+@keyframes plugin-animation-disk-bars {
+  0% {
+    -webkit-transform: scaley(1);
+    -moz-transform: scaley(1);
+    -o-transform: scaley(1);
+    transform: scaley(1);
+  }
+  80% {
+    -webkit-transform: scaley(.3);
+    -moz-transform: scaley(.3);
+    -o-transform: scaley(.3);
+    transform: scaley(.3);
+  }
+  90% {
+    -webkit-transform: scaley(1);
+    -moz-transform: scaley(1);
+    -o-transform: scaley(1);
+    transform: scaley(1);
+  }
+}

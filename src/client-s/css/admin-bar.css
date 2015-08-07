@@ -111,7 +111,7 @@ Animation :: spin.
   animation-fill-mode: both;
 }
 /*
-Animation :: zoomInDown.
+Animation :: disk-bars.
 Markup: `<div class="zencache-animation-disk-bars"><div></div><div></div><div></div><div></div><div></div></div>`
 */
 
@@ -186,7 +186,7 @@ Markup: `<div class="zencache-animation-disk-bars"><div></div><div></div><div></
   }
 }
 /*
-Animation :: zoomInDown.
+Animation :: zoom-in-down.
 */
 
 @-webkit-keyframes zencache-animation-zoom-in-down {
@@ -230,10 +230,10 @@ Animation :: zoomInDown.
   animation-duration: .75s;
 }
 /*
-Animation :: bounceOutUp.
+Animation :: bounce-out-up.
 */
 
-@-webkit-keyframes zencache-animation_bounce-out-up {
+@-webkit-keyframes zencache-animation-bounce-out-up {
   20% {
     -webkit-transform: translate3d(0, -10px, 0);
     transform: translate3d(0, -10px, 0);
@@ -250,7 +250,7 @@ Animation :: bounceOutUp.
     transform: translate3d(0, -2000px, 0);
   }
 }
-@keyframes zencache-animation_bounce-out-up {
+@keyframes zencache-animation-bounce-out-up {
   20% {
     -webkit-transform: translate3d(0, -10px, 0);
     transform: translate3d(0, -10px, 0);
@@ -267,9 +267,9 @@ Animation :: bounceOutUp.
     transform: translate3d(0, -2000px, 0);
   }
 }
-.zencache-animation_bounce-out-up {
-  -webkit-animation-name: zencache-animation_bounce-out-up;
-  animation-name: zencache-animation_bounce-out-up;
+.zencache-animation-bounce-out-up {
+  -webkit-animation-name: zencache-animation-bounce-out-up;
+  animation-name: zencache-animation-bounce-out-up;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   -webkit-animation-duration: .75s;
