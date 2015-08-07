@@ -3,6 +3,44 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+ * Cache directory stats.
+ *
+ * @since 15xxxx Adding cache directory statistics.
+ *
+ * @return array Cache directory stats.
+ */
+$self->statsForCacheDir = function () use ($self) {
+    return $self->getDirRegexStats($self->cacheDir());
+};
+
+/*
+ * HTML compressor cache directory stats.
+ *
+ * @since 15xxxx Adding cache directory statistics.
+ *
+ * @return array HTML compressor cache directory stats.
+ */
+$self->statsForHtmlCCacheDirs = function () use ($self) {
+    $stats = array(); // Initialize the stats array.
+
+    $htmlc_cache_dirs   = array(); // Initialize array directories.
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public);
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private);
+
+    foreach (array_unique($htmlc_cache_dirs) as $_htmlc_cache_dir) {
+        $_check_disk_stats = $stats ? false : true;
+
+        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $_check_disk_stats) as $_key => $_value) {
+            $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
+        }
+        unset($_key, $_value); // Housekeeping.
+    }
+    unset($_htmlc_cache_dir); // Final housekeeping.
+
+    return $stats;
+};
+
+/*
  * Cache directory stats for the current host.
  *
  * @since 15xxxx Adding cache directory statistics.
@@ -28,8 +66,6 @@ $self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
     if (!$host_token) { // Must have a host in the sub-routine below.
         throw new \Exception(__('Invalid argument; host token empty!', SLUG_TD));
     }
-    clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
-
     $stats = array(); // Initialize the stats array.
 
     foreach (array('http', 'https') as $_host_scheme) {
@@ -74,6 +110,53 @@ $self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
         }
         unset($_domain_mapping_variation); // Housekeeping.
     }
+    return $stats;
+};
+
+/*
+ * HTML compressor cache directory stats for the current host.
+ *
+ * @since 15xxxx Adding cache directory statistics.
+ *
+ * @return array HTML compressor cache directory stats for the current host.
+ */
+$self->statsForHtmlCHostCacheDirs = function () use ($self) {
+    $stats = array(); // Initialize the stats array.
+
+    $host_token           = $self->hostToken(true); // Dashify.
+    $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify.
+
+    $htmlc_cache_dirs   = array(); // Initialize array of all HTML Compressor directories to clear.
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
+    $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
+
+    if (is_multisite() && $self->canConsiderDomainMapping()) {
+        if (($_host_token_for_blog = $self->hostTokenForBlog(true))) { // Dashify.
+            $_host_base_dir_tokens_for_blog = $self->hostBaseDirTokensForBlog(true); // Dashify.
+            $htmlc_cache_dirs[]             = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.rtrim($_host_base_dir_tokens_for_blog, '/').'/'.$_host_token_for_blog);
+            $htmlc_cache_dirs[]             = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.rtrim($_host_base_dir_tokens_for_blog, '/').'/'.$_host_token_for_blog);
+        }
+        unset($_host_token_for_blog, $_host_base_dir_tokens_for_blog); // Housekeeping.
+
+        foreach ($self->domainMappingBlogDomains() as $_domain_mapping_blog_domain) {
+            if (($_domain_host_token_for_blog = $self->hostTokenForBlog(true, true, $_domain_mapping_blog_domain))) { // Dashify.
+                $_domain_host_base_dir_tokens_for_blog = $self->hostBaseDirTokensForBlog(true, true); // Dashify. This is only a formality.
+                $htmlc_cache_dirs[]                    = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.rtrim($_domain_host_base_dir_tokens_for_blog, '/').'/'.$_domain_host_token_for_blog);
+                $htmlc_cache_dirs[]                    = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.rtrim($_domain_host_base_dir_tokens_for_blog, '/').'/'.$_domain_host_token_for_blog);
+            }
+        }
+        unset($_domain_mapping_blog_domain, $_domain_host_token_for_blog, $_domain_host_base_dir_tokens_for_blog); // Housekeeping.
+    }
+    foreach (array_unique($htmlc_cache_dirs) as $_htmlc_cache_dir) {
+        $_check_disk_stats = $stats ? false : true;
+
+        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $_check_disk_stats) as $_key => $_value) {
+            $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
+        }
+        unset($_key, $_value); // Housekeeping.
+    }
+    unset($_htmlc_cache_dir); // Just a little housekeeping.
+
     return $stats;
 };
 /*[/pro]*/
