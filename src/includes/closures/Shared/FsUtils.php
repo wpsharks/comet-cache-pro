@@ -126,28 +126,6 @@ $self->addTmpSuffix = function ($dir_file) use ($self) {
 };
 
 /*
- * Recursive directory iterator based on a regex pattern.
- *
- * @since 150422 Rewrite.
- *
- * @param string $dir An absolute server directory path.
- * @param string $regex A regex pattern; compares to each full file path.
- *
- * @return \RegexIterator Navigable with {@link \foreach()}; where each item
- *    is a {@link \RecursiveDirectoryIterator}.
- */
-$self->dirRegexIteration = function ($dir, $regex) use ($self) {
-    $dir   = (string) $dir;
-    $regex = (string) $regex;
-
-    $dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
-    $iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
-    $regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
-
-    return $regex_iterator;
-};
-
-/*
  * Recursive directory iterator.
  *
  * @since 15xxxx Adding a few statistics.
@@ -165,17 +143,41 @@ $self->dirIteration = function ($dir) use ($self) {
 };
 
 /*
+ * Recursive directory iterator based on a regex pattern.
+ *
+ * @since 150422 Rewrite.
+ *
+ * @param string $dir An absolute server directory path.
+ * @param string $regex A regex pattern; compares to each full file path.
+ *
+ * @return \RegexIterator Navigable with {@link \foreach()}; where each item
+ *    is a {@link \RecursiveDirectoryIterator}.
+ */
+$self->dirRegexIteration = function ($dir, $regex = '/.+/') use ($self) {
+    $dir   = (string) $dir;
+    $regex = (string) $regex;
+    $regex = !$regex ? '/.+/' : $regex;
+
+    $dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
+    $iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
+    $regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
+
+    return $regex_iterator;
+};
+
+/*
  * Directory stats.
  *
  * @since 15xxxx Adding a few statistics.
  *
  * @param string $dir An absolute server directory path.
+ * @param string $regex A regex pattern; compares to each full file path.
  * @param boolean $reconsider Bypass cached statistics?
  *
  * @return \stdClass `total_size`, `total_links`, `total_files`, `total_dirs`.
  */
-$self->getDirStats = function ($dir, $reconsider = false) use ($self) {
-    if (!is_null($stats = &$self->staticKey('getDirStats', $dir)) && !$reconsider) {
+$self->getDirRegexStats = function ($dir, $regex = '/.+/', $reconsider = false) use ($self) {
+    if (!is_null($stats = &$self->staticKey('getDirStats', array($dir, $regex))) && !$reconsider) {
         return $stats; // Already cached this.
     }
     $stats = (object) array(
@@ -189,7 +191,7 @@ $self->getDirStats = function ($dir, $reconsider = false) use ($self) {
     if (!is_dir($dir = (string) $dir)) {
         return $stats; // Not possible.
     }
-    foreach ($self->dirIteration($dir) as $_resource) {
+    foreach ($self->dirRegexIteration($dir, $regex) as $_resource) {
         switch ($_resource->getType()) { // `link`, `file`, `dir`.
 
             case 'link': // Symbolic links.
