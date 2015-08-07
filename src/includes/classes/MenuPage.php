@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
+// @TODO Cache directory statistics/charts.
+
 /**
  * Menu Page.
  *
