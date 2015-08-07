@@ -167,7 +167,7 @@ class Actions extends AbsBase
             $eval_output = ob_get_clean();
         }
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
-        $response .= __('<p>Cache wiped for all sites; recreation will occur automatically over time.</p>', SLUG_TD);
+        $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
         if (isset($s2clean_counter)) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
@@ -207,7 +207,7 @@ class Actions extends AbsBase
             $eval_output = ob_get_clean();
         }
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
-        $response .= __('<p>Cache cleared for this site; recreation will occur automatically over time.</p>', SLUG_TD);
+        $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
         if (isset($s2clean_counter)) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }

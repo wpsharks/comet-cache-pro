@@ -29,7 +29,7 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
                 'title'  => __('Wipe', SLUG_TD),
                 'href'   => '#',
                 'meta'   => array(
-                        'title'    => __('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD),
+                        'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
                         'class'    => GLOBAL_NS,
                         'tabindex' => -1,
                 ),
@@ -43,7 +43,7 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
             'title'  => __('Clear Cache', SLUG_TD), 'href' => '#',
             'meta'   => array(
                     'title' => is_multisite() && current_user_can($self->network_cap)
-                        ? __('Clear Cache (Start Fresh); affects the current site only.', SLUG_TD)
+                        ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
                         : __('Clear Cache (Start Fresh)', SLUG_TD),
                     'class'    => GLOBAL_NS,
                     'tabindex' => -1,

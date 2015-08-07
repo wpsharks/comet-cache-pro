@@ -9,10 +9,12 @@ Admin Bar.
   content: ' ';
   width: 16px;
   height: 16px;
+
   border: 0;
   padding: 0;
-  vertical-align: middle;
   margin: -3px 0 0 5px;
+
+  vertical-align: middle;
   display: inline-block;
 }
 #wp-admin-bar-zencache-wipe > a:after {
@@ -21,74 +23,84 @@ Admin Bar.
 #wp-admin-bar-zencache-clear > a:after {
   background: url('../images/clear.png');
 }
-#wp-admin-bar-zencache-wipe.wiping > a:after,
-#wp-admin-bar-zencache-clear.clearing > a:after {
+#wp-admin-bar-zencache-wipe.zencache-wiping > a:after,
+#wp-admin-bar-zencache-clear.zencache-clearing > a:after {
   background: url('../images/spinner.png');
-  -webkit-animation: zencache_spinner 1s infinite linear;
-  animation: zencache_spinner 1s infinite linear;
+  -webkit-animation: zencache_animation_spin 1s infinite linear;
+  animation: zencache_animation_spin 1s infinite linear;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 /*
 AJAX Responses.
 */
 
-#zencache-ajax-response.zencache-wipe,
-#zencache-ajax-response.zencache-clear {
-  top: -100%;
+#zencache-ajax-response {
+  top: 100px;
   left: 50%;
   z-index: 10000;
   position: fixed;
+
   color: #FFFFFF;
   text-align: center;
-  font: 14px/1em sans-serif;
-  padding: 10px;
+
   width: 600px;
-  margin: 0 0 0 -250px;
-  border-radius: 3px;
-  border: 1px solid #000000;
-  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin: 0 0 0 -300px;
+
+  border-radius: 5px;
+  box-shadow: 0 0 5px 0 #23282D;
+
   outline: none;
   cursor: pointer;
+
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+
+  display: none;
 }
-#zencache-ajax-response.zencache-wipe {
-  background: #151515 url('../images/wipe-response.png') no-repeat 5px 5px;
+#zencache-ajax-response.zencache-ajax-response-wipe {
+  background: #15181b url('../images/wipe-response.png') no-repeat 5px 5px;
 }
-#zencache-ajax-response.zencache-clear {
-  background: #151515 url('../images/clear-response.png') no-repeat 5px 5px;
+#zencache-ajax-response.zencache-ajax-response-clear {
+  background: #15181b url('../images/clear-response.png') no-repeat 5px 5px;
 }
 #zencache-ajax-response:before {
-  font-size: 130%;
+  top: 5px;
+  right: 8px;
+  position: absolute;
+
+  font: 18px/1em sans-serif;
   content: '\00d7';
-  float: right;
+  opacity: 0.5;
 }
 #zencache-ajax-response:hover {
-  opacity: 0.9;
+  background-color: #0f1113;
 }
 #zencache-ajax-response p {
   margin: 0;
   padding: 0;
-  line-height: 1.1em;
-  opacity: 0.7;
+  font: 15px/1em sans-serif;
+  opacity: 0.35;
 }
 #zencache-ajax-response p:first-child {
   opacity: 1;
 }
 #zencache-ajax-response code {
-  font-size: 16px;
   color: #000000;
+  font-size: 18px;
   border-radius: 3px;
   background: #EEEEEE;
   padding: 1px 3px 1px 3px;
 }
 
 /*
-Animation definitions.
+Animation :: spin.
 */
 
-@keyframes zencache_spinner {
+@keyframes zencache_animation_spin {
   0% {
     transform: rotate(0deg);
   }
@@ -96,7 +108,7 @@ Animation definitions.
     transform: rotate(360deg);
   }
 }
-@-webkit-keyframes zencache_spinner {
+@-webkit-keyframes zencache_animation_spin {
   0% {
     -webkit-transform: rotate(0deg);
   }
@@ -104,4 +116,107 @@ Animation definitions.
     -webkit-transform: rotate(360deg);
   }
 }
+.zencache-animation-spin {
+  -webkit-animation: zencache_animation_spin 1s infinite linear;
+  animation: zencache_animation_spin 1s infinite linear;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+/*
+Animation :: zoomInDown.
+*/
+
+@-webkit-keyframes zencache_animation_zoomInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+@keyframes zencache_animation_zoomInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    transform: scale3d(.1, .1, .1) translate3d(0, -1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    transform: scale3d(.475, .475, .475) translate3d(0, 60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+.zencache-animation-zoomInDown {
+  -webkit-animation-name: zencache_animation_zoomInDown;
+  animation-name: zencache_animation_zoomInDown;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
+}
+
+/*
+Animation :: bounceOutUp.
+*/
+
+@-webkit-keyframes zencache_animation_bounceOutUp {
+  20% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+
+  40%, 45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+}
+
+@keyframes zencache_animation_bounceOutUp {
+  20% {
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0);
+  }
+
+  40%, 45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, 20px, 0);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -2000px, 0);
+    transform: translate3d(0, -2000px, 0);
+  }
+}
+
+.zencache-animation-bounceOutUp {
+  -webkit-animation-name: zencache_animation_bounceOutUp;
+  animation-name: zencache_animation_bounceOutUp;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-duration: .75s;
+  animation-duration: .75s;
+}
+
 /*[/pro]*/
