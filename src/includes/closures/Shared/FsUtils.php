@@ -180,7 +180,6 @@ $self->getDirStats = function ($dir, $reconsider = false) use ($self) {
     }
     $stats = (object) array(
         'total_size'       => 0,
-        'total_resources'  => 0,
         'total_links'      => 0,
         'total_files'      => 0,
         'total_dirs'       => 0,
