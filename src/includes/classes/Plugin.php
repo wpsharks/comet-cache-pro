@@ -201,6 +201,8 @@ class Plugin extends AbsBaseAp
             'cdn_whitelisted_uri_patterns',
             'cdn_blacklisted_uri_patterns',
 
+            'dir_stats_enable',
+
             'pro_update_check',
             'last_pro_update_check',
             'pro_update_username',
@@ -321,6 +323,10 @@ class Plugin extends AbsBaseAp
 
             'cdn_blacklisted_uri_patterns' => '', // A line-delimited list of exclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
+
+            /* Related to cache statistics. */
+
+            'dir_stats_enable' => '1', // `0|1`; enable?
 
             /* Related to automatic pro updates. */
 
