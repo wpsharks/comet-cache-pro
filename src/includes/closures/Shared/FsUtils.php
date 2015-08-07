@@ -148,6 +148,74 @@ $self->dirRegexIteration = function ($dir, $regex) use ($self) {
 };
 
 /*
+ * Recursive directory iterator.
+ *
+ * @since 15xxxx Adding a few statistics.
+ *
+ * @param string $dir An absolute server directory path.
+ *
+ * @return \RegexIterator Navigable with {@link \foreach()}; where each item
+ *    is a {@link \RecursiveDirectoryIterator}.
+ */
+$self->dirIteration = function ($dir) use ($self) {
+    $dir = (string) $dir;
+
+    $dir_iterator = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
+    return new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
+};
+
+/*
+ * Directory stats.
+ *
+ * @since 15xxxx Adding a few statistics.
+ *
+ * @param string $dir An absolute server directory path.
+ * @param boolean $reconsider Bypass cached statistics?
+ *
+ * @return \stdClass `total_size`, `total_links`, `total_files`, `total_dirs`.
+ */
+$self->getDirStats = function ($dir, $reconsider = false) use ($self) {
+    if (!is_null($stats = &$self->staticKey('getDirStats', $dir)) && !$reconsider) {
+        return $stats; // Already cached this.
+    }
+    $stats = (object) array(
+        'total_size'       => 0,
+        'total_resources'  => 0,
+        'total_links'      => 0,
+        'total_files'      => 0,
+        'total_dirs'       => 0,
+        'disk_free_space'  => 0,
+        'disk_total_space' => 0,
+    );
+    if (!is_dir($dir = (string) $dir)) {
+        return $stats; // Not possible.
+    }
+    foreach ($self->dirIteration($dir) as $_resource) {
+        switch ($_resource->getType()) { // `link`, `file`, `dir`.
+
+            case 'link': // Symbolic links.
+                ++$stats->total_links; // Counter.
+                break; // Break switch handler.
+
+            case 'file': // Regular files; i.e., not symlinks.
+                $stats->total_size += $_resource->getSize();
+                ++$stats->total_files; // Counter.
+                break; // Break switch.
+
+            case 'dir': // Regular dirs; i.e., not symlinks.
+                ++$stats->total_dirs; // Counter.
+                break; // Break switch.
+        }
+    }
+    unset($_resource); // Housekeeping.
+
+    $stats->disk_free_space  = disk_free_space($dir);
+    $stats->disk_total_space = disk_total_space($dir);
+
+    return $stats;
+};
+
+/*
  * Apache `.htaccess` rules that deny public access to the contents of a directory.
  *
  * @since 150422 Rewrite.

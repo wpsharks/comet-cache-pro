@@ -72,7 +72,7 @@
 
     $('#' + plugin.namespace + '-ajax-response').off(animationEnd).on(animationEnd, function () {
       plugin.hideAJAXResponseTimeout = setTimeout(plugin.hideAJAXResponse, 2500);
-    }).show().addClass(plugin.namespace + '-animation-zoomInDown');
+    }).show().addClass(plugin.namespace + '-animation-zoom-in-down');
   };
 
   plugin.hideAJAXResponse = function (event, animate) {
@@ -80,7 +80,7 @@
 
     $('#' + plugin.namespace + '-ajax-response').off(animationEnd).on(animationEnd, function () {
       plugin.removeAJAXResponse();
-    }).addClass(plugin.namespace + '-animation-bounceOutUp');
+    }).addClass(plugin.namespace + '-animation-bounce-out-up');
   };
 
   plugin.removeAJAXResponse = function () {
