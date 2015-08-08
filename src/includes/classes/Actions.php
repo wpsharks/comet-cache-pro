@@ -77,7 +77,7 @@ class Actions extends AbsBase
 
         /*[pro strip-from="lite"]*/
         if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if (function_exists('s2clean')) {
+            if ($this->plugin->functionIsPossible('s2clean')) {
                 $s2clean_counter = s2clean()->md_cache_clear();
             }
         }
@@ -117,7 +117,7 @@ class Actions extends AbsBase
 
         /*[pro strip-from="lite"]*/
         if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if (function_exists('s2clean')) {
+            if ($this->plugin->functionIsPossible('s2clean')) {
                 $s2clean_counter = s2clean()->md_cache_clear();
             }
         }
@@ -157,7 +157,7 @@ class Actions extends AbsBase
         $counter = $this->plugin->wipeCache(true);
 
         if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if (function_exists('s2clean')) {
+            if ($this->plugin->functionIsPossible('s2clean')) {
                 $s2clean_counter = s2clean()->md_cache_clear();
             }
         }
@@ -197,7 +197,7 @@ class Actions extends AbsBase
         $counter = $this->plugin->clearCache(true);
 
         if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if (function_exists('s2clean')) {
+            if ($this->plugin->functionIsPossible('s2clean')) {
                 $s2clean_counter = s2clean()->md_cache_clear();
             }
         }

@@ -11,6 +11,24 @@ namespace WebSharks\ZenCache\Pro;
 $self->protocol = '';
 
 /*
+ * Host token for this request.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @type string Host token for this request.
+ */
+$self->host_token = '';
+
+/*
+ * Host base/dir tokens for this request.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @type string Host base/dir tokens for this request.
+ */
+$self->host_base_dir_tokens = '';
+
+/*
  * Calculated version salt; set by site configuration data.
  *
  * @since 150422 Rewrite.
@@ -20,43 +38,47 @@ $self->protocol = '';
 $self->version_salt = '';
 
 /*
- * Calculated cache path for the current request;
- *    absolute relative (no leading/trailing slashes).
+ * Relative cache path for the current request.
  *
  * @since 150422 Rewrite.
  *
- * @type string Absolute relative (no leading/trailing slashes).
- *             Defined by {@link maybeStartOutputBuffering()}.
+ * @type string Cache path for the current request.
  */
 $self->cache_path = '';
 
 /*
- * Calculated cache file location for the current request; absolute path.
+ * Absolute cache file path for the current request.
  *
  * @since 150422 Rewrite.
  *
- * @type string Cache file location for the current request; absolute path.
- *             Defined by {@link maybeStartOutputBuffering()}.
+ * @type string Absolute cache file path for the current request.
  */
 $self->cache_file = '';
 
 /*
- * Centralized 404 cache file location; absolute path.
+ * Relative 404 cache path for the current request.
  *
  * @since 150422 Rewrite.
  *
- * @type string Centralized 404 cache file location; absolute path.
- *             Defined by {@link maybeStartOutputBuffering()}.
+ * @type string 404 cache path for the current request.
+ */
+$self->cache_path_404 = '';
+
+/*
+ * Absolute 404 cache file path for the current request.
+ *
+ * @since 150422 Rewrite.
+ *
+ * @type string Absolute 404 cache file path for the current request.
  */
 $self->cache_file_404 = '';
 
 /*
- * A possible version salt (string value); followed by the current request location.
+ * Version salt followed by the current request location.
  *
  * @since 150422 Rewrite.
  *
- * @type string Version salt (string value); followed by the current request location.
- *             Defined by {@link maybeStartOutputBuffering()}.
+ * @type string Version salt followed by the current request location.
  */
 $self->salt_location = '';
 
@@ -72,7 +94,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (strcasecmp(PHP_SAPI, 'cli') === 0) {
         return $self->maybeSetDebugInfo(NC_DEBUG_PHP_SAPI_CLI);
     }
-    if (empty($_SERVER['HTTP_HOST'])) {
+    if (empty($_SERVER['HTTP_HOST']) || !$self->hostToken()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_HTTP_HOST);
     }
     if (empty($_SERVER['REQUEST_URI'])) {
@@ -137,7 +159,9 @@ $self->maybeStartOutputBuffering = function () use ($self) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
         }
     }
-    $self->protocol = $self->isSsl() ? 'https://' : 'http://';
+    $self->protocol             = $self->isSsl() ? 'https://' : 'http://';
+    $self->host_token           = $self->hostToken();
+    $self->host_base_dir_tokens = $self->hostBaseDirTokens();
 
     $self->version_salt = ''; // Initialize the version salt.
     /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
@@ -145,12 +169,13 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     $self->version_salt = $self->applyFilters(get_class($self).'__version_salt', $self->version_salt);
     $self->version_salt = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
 
-    $self->cache_path = $self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '', $self->version_salt);
+    $self->cache_path = $self->buildCachePath($self->protocol.$self->host_token.$_SERVER['REQUEST_URI'], '', $self->version_salt);
+    $self->cache_file = ZENCACHE_DIR.'/'.$self->cache_path; // Not considering a user cache. That's done in the postload phase.
 
-    $self->cache_file     = ZENCACHE_DIR.'/'.$self->cache_path; // NOT considering a user cache; not yet.
-    $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->buildCachePath($self->protocol.$_SERVER['HTTP_HOST'].'/'.ZENCACHE_404_CACHE_FILENAME);
+    $self->cache_path_404 = $self->buildCachePath($self->protocol.$self->host_token.rtrim($self->host_base_dir_tokens, '/').'/'.ZENCACHE_404_CACHE_FILENAME);
+    $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->cache_path_404; // Not considering a user cache at all here--ever.
 
-    $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+    $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$self->host_token.$_SERVER['REQUEST_URI']);
 
     if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
@@ -280,7 +305,7 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
         if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
             throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
         }
-        $self->cacheUnlock($cache_lock); // Unlock cache directory.
+        $self->cacheUnlock($cache_lock); // Release.
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_1ST_TIME_404_SYMLINK);
     }
     /* ------- Otherwise, we need to construct & store a new cache file. ----------------------------------------------- */
@@ -300,11 +325,11 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
             if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
                 throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
             }
-            $self->cacheUnlock($cache_lock); // Unlock cache directory.
+            $self->cacheUnlock($cache_lock); // Release.
             return $cache; // Return the newly built cache; with possible debug information also.
         }
     } elseif (file_put_contents($cache_file_tmp, serialize($self->cacheableHeadersList()).'<!--headers-->'.$cache) && rename($cache_file_tmp, $self->cache_file)) {
-        $self->cacheUnlock($cache_lock); // Unlock cache directory.
+        $self->cacheUnlock($cache_lock); // Release.
         return $cache; // Return the newly built cache; with possible debug information also.
     }
     @unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.

@@ -47,7 +47,7 @@ class Conflicts
             if (in_array($_active_plugin_slug, $conflicting_plugin_slugs, true)) {
                 if (in_array($_active_plugin_slug, array('quick-cache', 'quick-cache-pro'), true)) {
                     add_action('admin_init', function () use ($_active_plugin_basename) {
-                        if (function_exists('deactivate_plugins')) {
+                        if (function_exists('deactivate_plugins')) { // Can deactivate?
                             deactivate_plugins($_active_plugin_basename, true);
                         }
                     }, -1000);
