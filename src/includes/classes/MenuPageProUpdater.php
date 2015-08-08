@@ -39,9 +39,9 @@ class MenuPageProUpdater extends MenuPage
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="fa fa-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
-		echo '	<div class="plugin-menu-page-version">'<span>Running on Zencache:</span>';.esc_html(VERSION).'</div>'."\n";
+
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/pro-updater.png').'" alt="'.esc_attr(__('Pro Plugin Updater', SLUG_TD)).'" />'."\n";
-		
+
         echo '</div>'."\n";
 
         /* ----------------------------------------------------------------------------------------- */
