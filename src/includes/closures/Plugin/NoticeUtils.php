@@ -2,153 +2,222 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
- * Render admin notices; across all admin dashboard views.
- *
- * @since 150422 Rewrite.
- *
- * @attaches-to `all_admin_notices` hook.
+ * Notice utilities.
  */
-$self->allAdminNotices = function () use ($self) {
-    if (($notices = (is_array($notices = get_option(GLOBAL_NS.'_notices'))) ? $notices : array())) {
-        $notices = $updated_notices = array_unique($notices); // De-dupe.
 
-        foreach (array_keys($updated_notices) as $_key) {
-            if (strpos($_key, 'persistent-') !== 0) {
-                unset($updated_notices[$_key]);
-            }
-        } // Leave persistent notices; ditch others.
-        unset($_key); // Housekeeping after updating notices.
-
-        update_option(GLOBAL_NS.'_notices', $updated_notices);
-    }
-    if (current_user_can($self->cap)) {
-        foreach ($notices as $_key => $_notice) {
-            if ($_key === 'persistent-new-pro-version-available') {
-                if (!current_user_can($self->update_cap)) {
-                    continue; // Not applicable.
-                }
-            }
-            $_dismiss = ''; // Initialize/reset.
-            if (strpos($_key, 'persistent-') === 0) {
-                $_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
-                $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissNotice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
-                $_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
-            }
-            if (strpos($_key, 'class-update-nag') !== false) {
-                $_class = 'update-nag';
-            } elseif (strpos($_key, 'class-error') !== false) {
-                $_class = 'error';
-            } else {
-                $_class = 'updated';
-            }
-            echo '<div class="'.$_class.'"><p>'.$_notice.$_dismiss.'</p></div>';
+/*
+ * Get admin notices.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @param integer $blog_id Optional. Defaults to the current blog ID.
+ *  Use any value `< 0` to indicate the main site.
+ *
+ * @return array All notices.
+ */
+$self->getNotices = function ($blog_id = 0) use ($self) {
+    if (is_multisite()) {
+        if (!($blog_id = (integer) $blog_id)) {
+            $blog_id = (integer) get_current_blog_id();
         }
+        if ($blog_id < 0) { // Blog for main site.
+            $blog_id = (integer) $GLOBALS['current_site']->blog_id;
+        }
+        $blog_suffix = '_'.$blog_id; // Site option suffix.
+        $notices     = get_site_option(GLOBAL_NS.$blog_suffix.'_notices');
+    } else {
+        $notices = get_site_option(GLOBAL_NS.'_notices');
     }
-    unset($_key, $_notice, $_dismiss_css, $_dismiss, $_class); // Housekeeping.
+    if (!is_array($notices)) {
+        $notices = array(); // Force array.
+        $self->updateNotices($notices, $blog_id);
+    }
+    return $notices;
 };
 
 /*
- * Render admin errors; across all admin dashboard views.
+ * Update admin notices.
  *
- * @since 150422 Rewrite.
+ * @since 15xxxx Improving multisite compat.
  *
- * @attaches-to `all_admin_notices` hook.
+ * @param array $notices New array of notices.
+ *
+ * @param integer $blog_id Optional. Defaults to the current blog ID.
+ *  Use any value `< 0` to indicate the main site.
  */
-$self->allAdminErrors = function () use ($self) {
-    if (($errors = (is_array($errors = get_option(GLOBAL_NS.'_errors'))) ? $errors : array())) {
-        $errors = $updated_errors = array_unique($errors); // De-dupe.
-
-        foreach (array_keys($updated_errors) as $_key) {
-            if (strpos($_key, 'persistent-') !== 0) {
-                unset($updated_errors[$_key]);
-            }
-        } // Leave persistent errors; ditch others.
-        unset($_key); // Housekeeping after updating notices.
-
-        update_option(GLOBAL_NS.'_errors', $updated_errors);
-    }
-    if (current_user_can($self->cap)) {
-        foreach ($errors as $_key => $_error) {
-            $_dismiss = ''; // Initialize/reset.
-            if (strpos($_key, 'persistent-') === 0) {
-                $_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
-                $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissError' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
-                $_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
-            }
-            echo '<div class="error"><p>'.$_error.$_dismiss.'</p></div>';
+$self->updateNotices = function (array $notices, $blog_id = 0) use ($self) {
+    if (is_multisite()) {
+        if (!($blog_id = (integer) $blog_id)) {
+            $blog_id = (integer) get_current_blog_id();
         }
+        if ($blog_id < 0) { // Blog for main site.
+            $blog_id = (integer) $GLOBALS['current_site']->blog_id;
+        }
+        $blog_suffix = '_'.$blog_id; // Site option suffix.
+        update_site_option(GLOBAL_NS.$blog_suffix.'_notices', $notices);
+    } else {
+        update_site_option(GLOBAL_NS.'_notices', $notices);
     }
-    unset($_key, $_error, $_dismiss_css, $_dismiss); // Housekeeping.
 };
+
+/*
+ * Notice queue additions.
+ */
 
 /*
  * Enqueue an administrative notice.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Improved 15xxxx.
  *
  * @param string $notice         HTML markup containing the notice itself.
+ *
  * @param string $persistent_key Optional. A unique key which identifies a particular type of persistent notice.
- *                               This defaults to an empty string. If this is passed, the notice is persistent; i.e. it continues to be displayed until dismissed by the site owner.
- * @param bool   $push_to_top    Optional. Defaults to a `FALSE` value.
- *                               If `TRUE`, the notice is pushed to the top of the stack; i.e. displayed above any others.
+ *
+ * @param bool   $push_to_top    Optional. Defaults to a `false` value. If `true`, the notice is pushed to the top of the stack; i.e. displayed above any others.
+ *
+ * @param integer $blog_id Optional. Defaults to the current blog ID. Use any value `< 0` to indicate the main site.
+ *
+ * @param string $class A specific notice class. Defaults to an empty string. Pass as `error` to indicate it's an error.
  */
-$self->enqueueNotice = function ($notice, $persistent_key = '', $push_to_top = false) use ($self) {
+$self->enqueueNotice = function ($notice, $persistent_key = '', $push_to_top = false, $blog_id = 0, $class = '') use ($self) {
     $notice         = (string) $notice;
     $persistent_key = (string) $persistent_key;
+    $blog_id        = (integer) $blog_id;
+    $class          = (string) $class;
 
-    $notices = get_option(GLOBAL_NS.'_notices');
-    if (!is_array($notices)) {
-        $notices = array();
+    if (!$notice) {
+        return; // Nothing to do.
     }
-    if ($persistent_key) {
-        if (strpos($persistent_key, 'persistent-') !== 0) {
-            $persistent_key = 'persistent-'.$persistent_key;
+    $notices = $self->getNotices($blog_id);
+
+    if ($persistent_key) { // Persistent?
+        if (stripos($persistent_key, 'persistent--') !== 0) {
+            $persistent_key = 'persistent--'.$persistent_key;
         }
-        if ($push_to_top) {
-            $notices = array($persistent_key => $notice) + $notices;
-        } else {
-            $notices[$persistent_key] = $notice;
-        }
-    } elseif ($push_to_top) {
-        array_unshift($notices, $notice);
+        $key = $persistent_key; // Hard-coded, persistent key.
     } else {
-        $notices[] = $notice;
+        $key = uniqid('', true); // Auto-generated unique ID key.
     }
-    update_option(GLOBAL_NS.'_notices', $notices);
+    if ($class) { // Add a class key suffix? e.g., is this an error?
+        $key .= '--class-'.$class; // e.g., `class--error`.
+    }
+    if ($push_to_top) { // Prepend key in this case.
+        $notices = array($key => $notice) + $notices;
+    } else {
+        $notices[$key] = $notice; // Append key.
+    }
+    $self->updateNotices($notices, $blog_id);
 };
 
 /*
- * Enqueue an administrative error.
+ * Enqueue an administrative error notice.
  *
- * @since 150422 Rewrite.
- *
- * @param string $error          HTML markup containing the error itself.
- * @param string $persistent_key Optional. A unique key which identifies a particular type of persistent error.
- *                               This defaults to an empty string. If this is passed, the error is persistent; i.e. it continues to be displayed until dismissed by the site owner.
- * @param bool   $push_to_top    Optional. Defaults to a `FALSE` value.
- *                               If `TRUE`, the error is pushed to the top of the stack; i.e. displayed above any others.
+ * @since 150422 Rewrite. Improved 15xxxx.
  */
-$self->enqueueError = function ($error, $persistent_key = '', $push_to_top = false) use ($self) {
-    $error          = (string) $error;
-    $persistent_key = (string) $persistent_key;
+$self->enqueueError = function ($notice, $persistent_key = '', $push_to_top = false, $blog_id = 0) use ($self) {
+    $self->enqueueNotice($notice, $persistent_key, $push_to_top, $blog_id, 'error');
+};
 
-    $errors = get_option(GLOBAL_NS.'_errors');
-    if (!is_array($errors)) {
-        $errors = array();
+/*
+ * Enqueue an administrative notice (main site).
+ *
+ * @since 15xxxx. Improving multisite compat.
+ */
+$self->enqueueMainNotice = function ($notice, $persistent_key = '', $push_to_top = false) use ($self) {
+    $self->enqueueNotice($notice, $persistent_key, $push_to_top, -1, '');
+};
+
+/*
+ * Enqueue an administrative error notice (main site).
+ *
+ * @since 15xxxx. Improving multisite compat.
+ */
+$self->enqueueMainError = function ($notice, $persistent_key = '', $push_to_top = false) use ($self) {
+    $self->enqueueNotice($notice, $persistent_key, $push_to_top, -1, 'error');
+};
+
+/*
+ * Notice queue removals.
+ */
+
+/*
+ * Dismiss an administrative notice.
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @param string $key A unique key which identifies a particular notice.
+ *
+ * @param integer $blog_id The blog ID from which to dismiss the notice.
+ */
+$self->dismissNotice = function ($key, $blog_id = 0) use ($self) {
+    $key     = (string) $key;
+    $blog_id = (integer) $blog_id;
+
+    if (!$key) {
+        return; // Empty.
     }
-    if ($persistent_key) {
-        if (strpos($persistent_key, 'persistent-') !== 0) {
-            $persistent_key = 'persistent-'.$persistent_key;
+    $notices = $self->getNotices($blog_id);
+    unset($notices[$key]); // Dismiss this key.
+    $self->updateNotices($notices, $blog_id);
+};
+
+/*
+ * Dismiss an administrative notice (main site).
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @param string $key A unique key which identifies a particular notice.
+ */
+$self->dismissMainNotice = function ($key) use ($self) {
+    $self->dismissNotice($key, -1);
+};
+
+/*
+ * Notice display handler.
+ */
+
+/*
+ * Render admin notices.
+ *
+ * @since 150422 Rewrite. Improved 15xxxx.
+ *
+ * @attaches-to `all_admin_notices` hook.
+ */
+$self->allAdminNotices = function () use ($self) {
+    if (!($notices = $self->getNotices())) {
+        return; // Nothing to do.
+    }
+    $notices = $updated_notices = array_unique($notices);
+
+    foreach (array_keys($updated_notices) as $_key) {
+        if (!is_string($_key) || stripos($_key, 'persistent--') !== 0) {
+            unset($updated_notices[$_key]);
         }
-        if ($push_to_top) {
-            $errors = array($persistent_key => $error) + $errors;
+    } // Leave persistent notices; ditch others.
+    unset($_key); // Housekeeping after updating notices.
+
+    $self->updateNotices($updated_notices); // Persistent only.
+
+    if (!current_user_can($self->cap)) {
+        return; // Unable to see.
+    }
+    foreach ($notices as $_key => $_notice) {
+        if (is_string($_key) && stripos($_key, 'persistent--') === 0) {
+            $_dismiss_css = 'display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;';
+            $_dismiss     = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissNotice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
+            $_dismiss     = '<a style="'.esc_attr($_dismiss_css).'" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
         } else {
-            $errors[$persistent_key] = $error;
+            $_dismiss_css = $_dismiss = ''; // Empty.
         }
-    } elseif ($push_to_top) {
-        array_unshift($errors, $error);
-    } else {
-        $errors[] = $error;
+        if (stripos($_key, 'new-pro-version-available') !== false && (!IS_PRO || !current_user_can($self->update_cap))) {
+            continue; // Unable to see.
+        }
+        if (stripos($_key, 'class--error') !== false) {
+            $_class = 'error'; // Error notice.
+        } else {
+            $_class = 'updated'; // Notice.
+        }
+        echo '<div class="'.esc_attr($_class).'"><p>'.$_notice.$_dismiss.'</p></div>';
     }
-    update_option(GLOBAL_NS.'_errors', $errors);
+    unset($_key, $_notice, $_dismiss_css, $_dismiss, $_class); // Housekeeping.
 };

@@ -92,7 +92,7 @@ class Conflicts
                 $conflicting_plugin_name = $conflicting_plugin_name.' '.__('Lite', SLUG_TD);
                 $GLOBALS[GLOBAL_NS.'_conflicting_plugin_lite_pro'] = true;
             }
-            echo '<div class="error">'.
+            echo '<div class="error">'.// Error notice.
                  '   <p>'.// Running one or more conflicting plugins at the same time.
                  '      '.sprintf(__('<strong>%1$s</strong> is NOT running. A conflicting plugin, <strong>%2$s</strong>, is currently active. Please deactivate the %2$s plugin to clear this message.', SLUG_TD), esc_html($this_plugin_name), esc_html($conflicting_plugin_name)).
                  '   </p>'.

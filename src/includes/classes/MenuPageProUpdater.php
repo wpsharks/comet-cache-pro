@@ -50,9 +50,9 @@ class MenuPageProUpdater extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
-        if (!empty($_REQUEST[GLOBAL_NS.'__error'])) {
+        if (!empty($_REQUEST[GLOBAL_NS.'_error'])) {
             echo '<div class="plugin-menu-page-error error">'."\n";
-            echo '   <i class="fa fa-thumbs-down"></i> '.esc_html(stripslashes((string) $_REQUEST[GLOBAL_NS.'__error']))."\n";
+            echo '   <i class="fa fa-thumbs-down"></i> '.esc_html(stripslashes((string) $_REQUEST[GLOBAL_NS.'_error']))."\n";
             echo '</div>'."\n";
         }
         /* ----------------------------------------------------------------------------------------- */

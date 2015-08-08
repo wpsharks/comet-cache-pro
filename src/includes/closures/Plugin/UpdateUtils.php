@@ -13,7 +13,7 @@ namespace WebSharks\ZenCache\Pro;
  */
 $self->checkLatestProVersion = function () use ($self) {
     if (!$self->options['pro_update_check']) {
-        return; // Functionality is disabled here.
+        return; // Nothing to do.
     }
     if (!current_user_can($self->update_cap)) {
         return; // Nothing to do.
@@ -21,11 +21,10 @@ $self->checkLatestProVersion = function () use ($self) {
     if ($self->options['last_pro_update_check'] >= strtotime('-1 hour')) {
         return; // No reason to keep checking on this.
     }
-    $self->options['last_pro_update_check'] = time();
-    update_option(GLOBAL_NS.'_options', $self->options);
-    if (is_multisite()) {
-        update_site_option(GLOBAL_NS.'_options', $self->options);
-    }
+    $self->options['last_pro_update_check'] = (string) time();
+
+    update_site_option(GLOBAL_NS.'_options', $self->options);
+
     $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
     $product_api_input_vars = array('product_api' => array('action' => 'latest_pro_version'));
 
@@ -38,7 +37,7 @@ $self->checkLatestProVersion = function () use ($self) {
     $pro_updater_page = network_admin_url('/admin.php'); // Page that initiates an update.
     $pro_updater_page = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), $pro_updater_page);
 
-    $self->enqueueNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($pro_updater_page), esc_html($product_api_response['pro_version'])), 'persistent-new-pro-version-available');
+    $self->enqueueMainNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($pro_updater_page), esc_html($product_api_response['pro_version'])), 'persistent--new-pro-version-available');
 };
 
 /*

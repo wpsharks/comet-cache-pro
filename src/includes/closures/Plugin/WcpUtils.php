@@ -81,14 +81,11 @@ $self->clear_cache = $self->clearCache; // Back compat.
  *
  * @since 150422 Rewrite.
  *
- * @param bool $manually Defaults to a `FALSE` value.
- *                       Pass as TRUE if the purging is done manually by the site owner.
+ * @param bool $manually TRUE if the purging is done manually by the site owner.
  *
  * @throws \Exception If a purge failure occurs.
  *
  * @return int Total files purged by this routine (if any).
- *
- * @attaches-to `'_cron_'.__GLOBAL_NS__.'_cleanup'` via CRON job.
  */
 $self->purgeCache = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
@@ -104,6 +101,36 @@ $self->purgeCache = function ($manually = false) use ($self) {
     return $counter;
 };
 $self->purge_cache = $self->purgeCache; // Back compat.
+
+/*
+ * Purges all expired cache files.
+ *
+ * @since 15xxxx Look at entire cache directory.
+ *
+ * @param bool $manually TRUE if the purging is done manually by the site owner.
+ *
+ * @throws \Exception If a purge failure occurs.
+ *
+ * @return int Total files purged by this routine (if any).
+ *
+ * @attaches-to `'_cron_'.__GLOBAL_NS__.'_cleanup'` via CRON job.
+ *
+ * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
+ * See also: <https://codex.wordpress.org/Function_Reference/wp_is_large_network>
+ */
+$self->purgeCacheDir = function ($manually = false) use ($self) {
+    $counter = 0; // Initialize.
+
+    if (!is_dir($cache_dir = $self->cacheDir())) {
+        return $counter; // Nothing to do.
+    }
+    @set_time_limit(1800); // @TODO Display a warning.
+
+    $regex = $self->buildCachePathRegex('', '.+');
+    $counter += $self->purgeFilesFromCacheDir($regex);
+
+    return $counter;
+};
 
 /*
  * Automatically wipes out all cache files in the cache directory.

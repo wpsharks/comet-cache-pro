@@ -35,12 +35,7 @@ $self->checkVersion = function () use ($self) {
         return; // Nothing to do; i.e., up-to-date.
     }
     $current_version = $self->options['version'] = VERSION;
-
-    update_option(GLOBAL_NS.'_options', $self->options);
-    if (is_multisite()) {
-        update_site_option(GLOBAL_NS.'_options', $self->options);
-    }
-    delete_option(GLOBAL_NS.'_apc_warning_bypass');
+    update_site_option(GLOBAL_NS.'_options', $self->options);
 
     new VsUpgrades($prev_version);
 
@@ -51,7 +46,7 @@ $self->checkVersion = function () use ($self) {
     }
     $self->wipeCache(); // Fresh start now.
 
-    $self->enqueueNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
+    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
 };
 
 /*
@@ -88,24 +83,31 @@ $self->uninstall = function () use ($self) {
     }
     $self->removeWpCacheFromWpConfig();
     $self->removeAdvancedCache();
-    $self->wipeCache(); // Full wipe now.
+    $self->wipeCache();
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
     }
     $self->deleteAdvancedCache();
-    $self->removeBaseDir();
+    $self->deleteBaseDir();
 
-    delete_option(GLOBAL_NS.'_options');
-    if (is_multisite()) {
-        delete_site_option(GLOBAL_NS.'_options');
+    if (is_multisite()) { // Main site CRON jobs.
+        switch_to_blog($GLOBALS['current_site']->blog_id);
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+        restore_current_blog(); // Restore current blog.
+    } else { // Standard WP installation.
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
     }
-    delete_option(GLOBAL_NS.'_notices');
-    delete_option(GLOBAL_NS.'_errors');
-    delete_option(GLOBAL_NS.'_apc_warning_bypass');
+    $wpdb = $self->wpdb(); // WordPress DB.
+    $like = '%'.$wpdb->esc_like(GLOBAL_NS).'%';
 
-    wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-    wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+    if (is_multisite()) { // Site options for a network installation.
+        $wpdb->query('DELETE FROM `'.esc_sql($wpdb->sitemeta).'` WHERE `meta_key` LIKE \''.esc_sql($like).'\'');
+    } else { // Standard WP installation.
+        $wpdb->query('DELETE FROM `'.esc_sql($wpdb->options).'` WHERE `option_name` LIKE \''.esc_sql($like).'\'');
+    }
 };
 
 /*
@@ -310,7 +312,7 @@ $self->addAdvancedCache = function () use ($self) {
                    && is_object($_response = json_decode(wp_remote_retrieve_body($_response))) && !empty($_response->errors) && strcasecmp($_response->errors, 'true') === 0
                 ) {
                     $_value = ''; // PHP syntax errors; empty this.
-                    $self->enqueueError(sprintf(__('<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', SLUG_TD), esc_html(NAME)));
+                    $self->enqueueMainError(sprintf(__('<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', SLUG_TD), esc_html(NAME)));
                 }
                 if (!$_value) {
                     $_value = "''"; // Use an empty string (default).
@@ -522,16 +524,18 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 };
 
 /*
- * Removes the entire base directory.
+ * Deletes base directory.
  *
- * @since 150422 Rewrite.
+ * @since 15xxxx Improving multisite compat.
  *
  * @return int Total files removed by this routine (if any).
  */
-$self->removeBaseDir = function () use ($self) {
+$self->deleteBaseDir = function () use ($self) {
     $counter = 0; // Initialize.
 
     @set_time_limit(1800); // @TODO Display a warning.
 
-    return ($counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true));
+    $counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true);
+
+    return $counter;
 };

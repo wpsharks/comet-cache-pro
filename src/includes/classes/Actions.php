@@ -33,7 +33,6 @@ class Actions extends AbsBase
         /*[/pro]*/
 
         'dismissNotice',
-        'dismissError',
     );
 
     /**
@@ -253,10 +252,8 @@ class Actions extends AbsBase
         if (!trim($this->plugin->options['base_dir'], '\\/'." \t\n\r\0\x0B") || strpos(basename($this->plugin->options['base_dir']), 'wp-') === 0) {
             $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
         }
-        update_option(GLOBAL_NS.'_options', $this->plugin->options);
-        if (is_multisite()) {
-            update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-        }
+        update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
+
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
         $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_updated' => '1');
 
@@ -298,10 +295,7 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        delete_option(GLOBAL_NS.'_options');
-        if (is_multisite()) {
-            delete_site_option(GLOBAL_NS.'_options');
-        }
+        delete_site_option(GLOBAL_NS.'_options');
         $this->plugin->options = $this->plugin->default_options;
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
@@ -415,7 +409,7 @@ class Actions extends AbsBase
                 $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
             }
             $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-            $query_args  = array('page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'__error' => $error);
+            $query_args  = array('page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'_error' => $error);
             $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
             wp_redirect($redirect_to).exit();
@@ -425,13 +419,8 @@ class Actions extends AbsBase
         $this->plugin->options['pro_update_username']   = (string) $args['username'];
         $this->plugin->options['pro_update_password']   = (string) $args['password'];
 
-        update_option(GLOBAL_NS.'_options', $this->plugin->options);
-        if (is_multisite()) {
-            update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-        }
-        $notices = is_array($notices = get_option(GLOBAL_NS.'_notices')) ? $notices : array();
-        unset($notices['persistent-new-pro-version-available']); // Dismiss this notice.
-        update_option(GLOBAL_NS.'_notices', $notices); // Update notices.
+        update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
+        $this->plugin->dismissMainNotice('persistent--new-pro-version-available');
 
         $redirect_to = self_admin_url('/update.php');
         $query_args  = array(
@@ -463,38 +452,7 @@ class Actions extends AbsBase
             return; // Unauthenticated POST data.
         }
         $args = array_map('trim', stripslashes_deep((array) $args));
-        if (empty($args['key'])) {
-            return; // Nothing to dismiss.
-        }
-        $notices = is_array($notices = get_option(GLOBAL_NS.'_notices')) ? $notices : array();
-        unset($notices[$args['key']]); // Dismiss this notice.
-        update_option(GLOBAL_NS.'_notices', $notices);
-
-        wp_redirect(remove_query_arg(GLOBAL_NS)).exit();
-    }
-
-    /**
-     * Action handler.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @param mixed Input action argument(s).
-     */
-    protected function dismissError($args)
-    {
-        if (!current_user_can($this->plugin->cap)) {
-            return; // Nothing to do.
-        }
-        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
-            return; // Unauthenticated POST data.
-        }
-        $args = array_map('trim', stripslashes_deep((array) $args));
-        if (empty($args['key'])) {
-            return; // Nothing to dismiss.
-        }
-        $errors = is_array($errors = get_option(GLOBAL_NS.'_errors')) ? $errors : array();
-        unset($errors[$args['key']]); // Dismiss this error.
-        update_option(GLOBAL_NS.'_errors', $errors);
+        $this->plugin->dismissNotice($args['key']);
 
         wp_redirect(remove_query_arg(GLOBAL_NS)).exit();
     }

@@ -2,7 +2,7 @@
 /*[pro strip-from="lite"]*/
 namespace WebSharks\ZenCache\Pro;
 
-// @TODO Cache directory statistics.
+// @TODO Cache these statistics.
 
 /*
  * Cache directory stats.

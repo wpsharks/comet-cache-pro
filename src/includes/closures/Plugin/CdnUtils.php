@@ -17,9 +17,6 @@ $self->bumpCdnInvalidationCounter = function () use ($self) {
     $self->options['cdn_invalidation_counter'] = // Bump!
         (string) ($self->options['cdn_invalidation_counter'] + 1);
 
-    update_option(GLOBAL_NS.'_options', $self->options);
-    if (is_multisite()) {
-        update_site_option(GLOBAL_NS.'_options', $self->options);
-    }
+    update_site_option(GLOBAL_NS.'_options', $self->options);
 };
 /*[/pro]*/

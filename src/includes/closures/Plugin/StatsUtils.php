@@ -18,10 +18,8 @@ $self->statsLogPinger = function () use ($self) {
     }
     $self->options['last_pro_stats_log'] = (string) time();
 
-    update_option(GLOBAL_NS.'_options', $self->options);
-    if (is_multisite()) {
-        update_site_option(GLOBAL_NS.'_options', $self->options);
-    }
+    update_site_option(GLOBAL_NS.'_options', $self->options);
+
     $stats_api_url      = 'https://www.websharks-inc.com/products/stats-log.php';
     $stats_api_url_args = array(
         'os'              => PHP_OS,
