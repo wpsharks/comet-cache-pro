@@ -93,20 +93,16 @@ class VsUpgrades extends AbsBase
     {
         if (version_compare($this->prev_version, '140605', '<')) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options')) || is_array($existing_options = get_site_option('quick_cache_options'))) {
-                if (!empty($existing_options['cache_dir'])) {
-                    $this->plugin->options['base_dir'] = $existing_options['cache_dir'] = trim($existing_options['cache_dir'], '\\/'." \t\n\r\0\x0B");
-
-                    if ($existing_options['cache_dir']) { // Delete existing directory.
+                if (!empty($existing_options['cache_dir'])) { // Old options have a `cache_dir` key which is no longer used in current version?
+                    if (($existing_options['cache_dir'] = trim($existing_options['cache_dir'], '\\/'." \t\n\r\0\x0B"))) {
                         $this->plugin->deleteAllFilesDirsIn(ABSPATH.$existing_options['cache_dir'], true);
                     }
-                    unset($this->plugin->options['cache_dir']); // Just to be sure.
-
-                    $wp_content_dir_relative = trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'." \t\n\r\0\x0B");
+                    $this->plugin->options['base_dir'] = $existing_options['cache_dir']; // Use old directory.
+                    $wp_content_dir_relative           = trim(str_replace(ABSPATH, '', WP_CONTENT_DIR), '\\/'." \t\n\r\0\x0B");
                     if (!$this->plugin->options['base_dir'] || $this->plugin->options['base_dir'] === $wp_content_dir_relative.'/cache') {
-                        $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
+                        $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir']; // Just use the default base.
                     }
-                    update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-
+                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
                 $this->plugin->enqueueMainNotice(sprintf(__('<strong>%1$s Feature Notice:</strong> This version of %1$s introduces a new <a href="http://zencache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> and several other <a href="http://www.websharks-inc.com/post/quick-cache-v140605-now-available/" target="_blank">new features</a>.', SLUG_TD), esc_html(NAME)));
@@ -125,10 +121,9 @@ class VsUpgrades extends AbsBase
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options')) || is_array($existing_options = get_site_option('quick_cache_options'))) {
                 if (!empty($existing_options['base_dir']) && stripos($existing_options['base_dir'], basename(WP_CONTENT_DIR)) !== false) {
                     $this->plugin->deleteAllFilesDirsIn(ABSPATH.$existing_options['base_dir'], true);
+
                     $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
-
-                    update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-
+                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
 
                     $this->plugin->enqueueMainNotice(
@@ -149,8 +144,7 @@ class VsUpgrades extends AbsBase
     {
         if (version_compare($this->prev_version, '141001', '<')) {
             $this->plugin->options['auto_cache_user_agent'] = $this->plugin->default_options['auto_cache_user_agent'];
-
-            update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
+            $this->plugin->updateOptions($this->plugin->options); // Save/update options.
         }
     }
 
@@ -162,9 +156,7 @@ class VsUpgrades extends AbsBase
     protected function fromLt141009()
     {
         if (version_compare($this->prev_version, '141009', '<')) {
-            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))
-                || is_array($existing_options = get_site_option('quick_cache_options'))
-            ) {
+            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options')) || is_array($existing_options = get_site_option('quick_cache_options'))) {
                 foreach (array('cache_purge_xml_feeds_enable',
                               'cache_purge_xml_sitemaps_enable',
                               'cache_purge_xml_sitemap_patterns',
@@ -177,15 +169,12 @@ class VsUpgrades extends AbsBase
                               'cache_purge_term_other_enable',
                         ) as $_old_purge_option) {
                     if (isset($existing_options[$_old_purge_option][0])) {
-                        $found_old_purge_options                                                  = true;
                         $this->plugin->options[str_replace('purge', 'clear', $_old_purge_option)] = $existing_options[$_old_purge_option][0];
                     }
-                }
-                unset($_old_purge_option); // Housekeeping.
+                } // ↑ Converts `purge` to `clear`.
+                unset($_old_purge_option); // A little housekeeping.
 
-                if (!empty($found_old_purge_options)) {
-                    update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-                }
+                $this->plugin->updateOptions($this->plugin->options); // Save/update options.
             }
         }
     }
@@ -235,8 +224,7 @@ class VsUpgrades extends AbsBase
             $this->plugin->options['base_dir']    = $this->plugin->default_options['base_dir'];
             $this->plugin->options['crons_setup'] = $this->plugin->default_options['crons_setup'];
 
-            update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-
+            $this->plugin->updateOptions($this->plugin->options); // Save/update options.
             $this->plugin->activate(); // Reactivate plugin w/ new options.
 
             $this->plugin->enqueueMainNotice(
@@ -248,20 +236,36 @@ class VsUpgrades extends AbsBase
     }
 
     /**
-     * Before we changed error storage and CDN blacklisted extensions.
+     * Before we changed errors and blog-specific storage on a MS network.
      *
      * @since 15xxxx Improving multisite compat.
      */
     protected function fromLte150807()
     {
         if (version_compare($this->prev_version, '150807', '<=')) {
-            delete_option(GLOBAL_NS.'_errors'); // Old locations.
-            delete_site_option(GLOBAL_NS.'_errors'); // Ditch!
+            delete_site_option(GLOBAL_NS.'_errors'); // No longer necessary.
 
+            if (is_multisite() && is_array($child_blogs = wp_get_sites())) {
+                foreach ($child_blogs as $_child_blog) {
+                    switch_to_blog($_child_blog['blog_id']);
+
+                    delete_option(GLOBAL_NS.'_errors');
+                    delete_option(GLOBAL_NS.'_notices');
+                    delete_option(GLOBAL_NS.'_options');
+                    delete_option(GLOBAL_NS.'_apc_warning_bypass');
+
+                    if ((integer) $_child_blog['blog_id'] !== (integer) $GLOBALS['current_site']->blog_id) {
+                        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+                        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+                    }
+                    restore_current_blog(); // Restore current blog.
+                }
+                unset($_child_blog); // Housekeeping.
+            }
             // @TODO See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
             //if ($this->plugin->options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
             //    $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
-            //    update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
+            //    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
             //}
         }
     }

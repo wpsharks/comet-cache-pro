@@ -114,9 +114,6 @@ $self->purge_cache = $self->purgeCache; // Back compat.
  * @return int Total files purged by this routine (if any).
  *
  * @attaches-to `'_cron_'.__GLOBAL_NS__.'_cleanup'` via CRON job.
- *
- * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
- * See also: <https://codex.wordpress.org/Function_Reference/wp_is_large_network>
  */
 $self->purgeCacheDir = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
@@ -225,7 +222,7 @@ $self->disableAutoWipeCacheRoutines = function () use ($self) {
     $is_disabled = (boolean) $self->applyWpFilters(GLOBAL_NS.'_disable_auto_wipe_cache_routines', false);
 
     if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
-        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+        $self->enqueueMainNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
     }
     return $is_disabled;
@@ -245,7 +242,7 @@ $self->disableAutoClearCacheRoutines = function () use ($self) {
     $is_disabled = (boolean) $self->applyWpFilters(GLOBAL_NS.'_disable_auto_clear_cache_routines', false);
 
     if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
-        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+        $self->enqueueMainNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                               sprintf(__('<strong>%1$s:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
     }
     return $is_disabled;

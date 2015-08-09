@@ -100,6 +100,11 @@ $self->purgeFilesFromHostCacheDir = function ($regex) use ($self) {
  * @return integer Total files deleted by this routine (if any).
  *
  * @throws \Exception If unable to delete a file for any reason.
+ *
+ * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
+ * @TODO Optimize this for extremely large sites. A LOT of files here could slow things down.
+ *  This class member is currently used in wiping and purging for a network. So there is the potential for a LOT of files in a single scan.
+ *  See also: <https://codex.wordpress.org/Function_Reference/wp_is_large_network>
  */
 $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use ($self) {
     $counter = 0; // Initialize.

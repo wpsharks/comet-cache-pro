@@ -50,7 +50,7 @@ class Actions extends AbsBase
         foreach ((array) $_REQUEST[GLOBAL_NS] as $_action => $_args) {
             if (is_string($_action) && method_exists($this, $_action)) {
                 if (in_array($_action, $this->allowed_actions, true)) {
-                    $this->{$_action}($_args);
+                    $this->{$_action}($_args); // Do action!
                 }
             }
         }
@@ -167,6 +167,7 @@ class Actions extends AbsBase
         }
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
+
         if (isset($s2clean_counter)) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
@@ -207,6 +208,7 @@ class Actions extends AbsBase
         }
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
+
         if (isset($s2clean_counter)) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
@@ -234,25 +236,16 @@ class Actions extends AbsBase
         }
         if (!empty($_FILES[GLOBAL_NS]['tmp_name']['import_options'])) {
             $import_file_contents = file_get_contents($_FILES[GLOBAL_NS]['tmp_name']['import_options']);
-            unlink($_FILES[GLOBAL_NS]['tmp_name']['import_options']);
+            unlink($_FILES[GLOBAL_NS]['tmp_name']['import_options']); // Deleted uploaded file.
+
             $args = wp_slash(json_decode($import_file_contents, true));
-            unset($args['crons_setup']); // Unset; CANNOT be imported.
-        }
-        $args = array_map('trim', stripslashes_deep((array) $args));
 
-        if (!IS_PRO) { // Do not save lite option keys.
-            $args = array_diff_key($args, $this->plugin->pro_only_option_keys);
+            unset($args['crons_setup']); // CANNOT be imported!
+            unset($args['last_pro_update_check']); // CANNOT be imported!
+            unset($args['last_pro_stats_log']); // CANNOT be imported!
         }
-        if (isset($args['base_dir'])) {
-            $args['base_dir'] = trim($args['base_dir'], '\\/'." \t\n\r\0\x0B");
-        }
-        $this->plugin->options = array_merge($this->plugin->default_options, $this->plugin->options, $args);
-        $this->plugin->options = array_intersect_key($this->plugin->options, $this->plugin->default_options);
-
-        if (!trim($this->plugin->options['base_dir'], '\\/'." \t\n\r\0\x0B") || strpos(basename($this->plugin->options['base_dir']), 'wp-') === 0) {
-            $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
-        }
-        update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
+        $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
+        $this->plugin->updateOptions($args); // Save/update options.
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
         $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_updated' => '1');
@@ -266,7 +259,7 @@ class Actions extends AbsBase
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
             }
-            $this->plugin->updateBlogPaths();
+            $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
@@ -295,8 +288,7 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        delete_site_option(GLOBAL_NS.'_options');
-        $this->plugin->options = $this->plugin->default_options;
+        $this->plugin->restoreDefaultOptions(); // Restore defaults.
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
         $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_restored' => '1');
@@ -310,7 +302,7 @@ class Actions extends AbsBase
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
             }
-            $this->plugin->updateBlogPaths();
+            $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
@@ -378,7 +370,7 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $args = array_map('trim', stripslashes_deep((array) $args));
+        $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
 
         if (!isset($args['check'])) {
             $args['check'] = $this->plugin->options['pro_update_check'];
@@ -398,13 +390,11 @@ class Actions extends AbsBase
             ),
         );
         $product_api_response = wp_remote_post($product_api_url, array('body' => $product_api_input_vars));
-        $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response), true);
+        $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
 
-        if (!is_array($product_api_response) || !empty($product_api_response['error'])
-           || empty($product_api_response['pro_version']) || empty($product_api_response['pro_zip'])
-        ) {
-            if (!empty($product_api_response['error'])) {
-                $error = (string) $product_api_response['error'];
+        if (!is_object($product_api_response) || !empty($product_api_response->error) || empty($product_api_response->pro_version) || empty($product_api_response->pro_zip)) {
+            if (!empty($product_api_response->error)) {
+                $error = substr((string) $product_api_response->error, 0, 1000);
             } else {
                 $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
             }
@@ -414,21 +404,25 @@ class Actions extends AbsBase
 
             wp_redirect($redirect_to).exit();
         }
-        $this->plugin->options['last_pro_update_check'] = (string) time();
-        $this->plugin->options['pro_update_check']      = (string) $args['check'];
-        $this->plugin->options['pro_update_username']   = (string) $args['username'];
-        $this->plugin->options['pro_update_password']   = (string) $args['password'];
-
-        update_site_option(GLOBAL_NS.'_options', $this->plugin->options);
-        $this->plugin->dismissMainNotice('persistent--new-pro-version-available');
+        $this->plugin->updateOptions(array(
+            'last_pro_update_check' => time(),
+            'pro_update_check'      => $args['check'],
+            'pro_update_username'   => $args['username'],
+            'pro_update_password'   => $args['password'],
+            'latest_pro_version'    => $product_api_response->pro_version,
+        ));
+        $this->plugin->dismissMainNotice('new-pro-version-available');
 
         $redirect_to = self_admin_url('/update.php');
-        $query_args  = array(
-            'action'                         => 'upgrade-plugin',
-            'plugin'                         => plugin_basename(PLUGIN_FILE),
-            '_wpnonce'                       => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
-            GLOBAL_NS.'__update_pro_version' => $product_api_response['pro_version'],
-            GLOBAL_NS.'__update_pro_zip'     => base64_encode($product_api_response['pro_zip']),
+        $query_args  = array( // Like a normal WP plugin.
+            'action'   => 'upgrade-plugin',
+            'plugin'   => plugin_basename(PLUGIN_FILE),
+            '_wpnonce' => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
+
+            // See: `preSiteTransientUpdatePlugins()` where these are picked up.
+            GLOBAL_NS.'_update_pro_version' => $product_api_response->pro_version,
+            GLOBAL_NS.'_update_pro_zip'     => base64_encode($product_api_response->pro_zip),
+            // @TODO Encrypt/decrypt to avoid mod_security issues. Base64 is not enough.
         );
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
@@ -451,7 +445,7 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $args = array_map('trim', stripslashes_deep((array) $args));
+        $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
         $this->plugin->dismissNotice($args['key']);
 
         wp_redirect(remove_query_arg(GLOBAL_NS)).exit();

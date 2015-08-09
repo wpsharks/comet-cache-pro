@@ -28,14 +28,11 @@ $self->activate = function () use ($self) {
  * @attaches-to `admin_init` hook.
  */
 $self->checkVersion = function () use ($self) {
-    $prev_version    = $self->options['version'];
-    $current_version = $self->options['version'];
-
-    if (version_compare($current_version, VERSION, '>=')) {
-        return; // Nothing to do; i.e., up-to-date.
+    $prev_version = $self->options['version'];
+    if (version_compare($prev_version, VERSION, '>=')) {
+        return; // Nothing to do; up-to-date.
     }
-    $current_version = $self->options['version'] = VERSION;
-    update_site_option(GLOBAL_NS.'_options', $self->options);
+    $self->updateOptions(array('version' => VERSION));
 
     new VsUpgrades($prev_version);
 
@@ -46,7 +43,7 @@ $self->checkVersion = function () use ($self) {
     }
     $self->wipeCache(); // Fresh start now.
 
-    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
+    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), array('push_to_top' => true));
 };
 
 /*
@@ -105,6 +102,11 @@ $self->uninstall = function () use ($self) {
 
     if (is_multisite()) { // Site options for a network installation.
         $wpdb->query('DELETE FROM `'.esc_sql($wpdb->sitemeta).'` WHERE `meta_key` LIKE \''.esc_sql($like).'\'');
+
+        switch_to_blog($GLOBALS['current_site']->blog_id); // In case it started as a standard WP installation.
+        $wpdb->query('DELETE FROM `'.esc_sql($wpdb->options).'` WHERE `option_name` LIKE \''.esc_sql($like).'\'');
+        restore_current_blog(); // Restore current blog.
+        //
     } else { // Standard WP installation.
         $wpdb->query('DELETE FROM `'.esc_sql($wpdb->options).'` WHERE `option_name` LIKE \''.esc_sql($like).'\'');
     }
