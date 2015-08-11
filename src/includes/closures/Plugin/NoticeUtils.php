@@ -249,7 +249,7 @@ $self->updateNotices = function (array $notices, $blog_id = 0) use ($self) {
 *
 * @return array Normalized notice array elements.
 */
-$self->normalizeNotice = function (array $notice, array $args = array()) {
+$self->normalizeNotice = function (array $notice, array $args = array()) use ($self) {
     $notice_defaults = array(
        'notice'         => '',
        'only_on_uris'   => '',
