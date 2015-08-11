@@ -1,0 +1,84 @@
+// Animation :: spin.
+
+@mixin zencache-animation-spin {
+  @include animation-duration(1s);
+  @include animation-fill-mode(both);
+  @include animation-timing-function(linear);
+  @include animation-iteration-count(infinite);
+  @include animation-name(zencache-animation-spin);
+}
+
+.zencache-animation-spin {
+  @include zencache-animation-spin;
+}
+
+@include keyframes(zencache-animation-spin) {
+  0% {
+    transform:                rotate(0deg);
+  }
+
+  100% {
+    transform:                rotate(360deg);
+  }
+}
+
+
+// Animation :: zoom-in-down.
+
+@mixin zencache-animation-zoom-in-down {
+  @include animation-duration(0.75s);
+  @include animation-fill-mode(both);
+  @include animation-name(zencache-animation-zoom-in-down);
+}
+
+.zencache-animation-zoom-in-down {
+  @include zencache-animation-zoom-in-down;
+}
+
+@include keyframes(zencache-animation-zoom-in-down) {
+  from {
+    @include transform(scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0));
+    @include animation-timing-function(cubic-bezier(0.55, 0.055, 0.675, 0.19));
+
+    opacity:                  0;
+  }
+
+  60% {
+    @include transform(scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0));
+    @include animation-timing-function(cubic-bezier(0.175, 0.885, 0.32, 1));
+
+    opacity:                  1;
+  }
+}
+
+
+// Animation :: bounce-out-up.
+
+@mixin zencache-animation-bounce-out-up {
+  @include animation-duration(0.75s);
+  @include animation-fill-mode(both);
+  @include animation-name(zencache-animation-bounce-out-up);
+}
+
+.zencache-animation-bounce-out-up {
+  @include zencache-animation-bounce-out-up;
+}
+
+@include keyframes(zencache-animation-bounce-out-up) {
+  20% {
+    @include transform(translate3d(0, -10px, 0));
+  }
+
+  40%,
+  45% {
+    @include transform(translate3d(0, 20px, 0));
+
+    opacity:                  1;
+  }
+
+  100% {
+    @include transform(translate3d(0, -2000px, 0));
+
+    opacity:                  0;
+  }
+}

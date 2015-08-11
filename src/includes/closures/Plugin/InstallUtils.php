@@ -279,8 +279,7 @@ $self->addAdvancedCache = function () use ($self) {
     foreach ($possible_advanced_cache_constant_key_values as $_option => $_value) {
         $_value = (string) $_value; // Force string.
 
-        switch ($_option) {// Some values need tranformations.
-
+        switch ($_option) {
             case 'exclude_uris': // Converts to regex (caSe insensitive).
             case 'exclude_refs': // Converts to regex (caSe insensitive).
             case 'exclude_agents': // Converts to regex (caSe insensitive).

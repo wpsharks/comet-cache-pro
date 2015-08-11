@@ -202,6 +202,8 @@ class Plugin extends AbsBaseAp
             'cdn_blacklisted_uri_patterns',
 
             'dir_stats_enable',
+            'dir_stats_admin_bar_enable',
+            'dir_stats_refresh_time',
 
             'pro_update_check',
             'latest_pro_version',
@@ -325,9 +327,11 @@ class Plugin extends AbsBaseAp
             'cdn_blacklisted_uri_patterns' => '', // A line-delimited list of exclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
 
-            /* Related to cache statistics. */
+            /* Related to cache directory statistics. */
 
-            'dir_stats_enable' => '1', // `0|1`; enable?
+            'dir_stats_enable'           => is_multisite() ? '0' : '1', // `0|1`; enable?
+            'dir_stats_admin_bar_enable' => '1', // `0|1`; enable stats in admin bar?
+            'dir_stats_refresh_time'     => '15 minutes', // `strtotime()` compatible.
 
             /* Related to automatic pro updates. */
 
@@ -347,7 +351,7 @@ class Plugin extends AbsBaseAp
             'uninstall_on_deletion' => '0', // `0|1`.
         );
         $this->default_options = $this->applyWpFilters(GLOBAL_NS.'_default_options', $this->default_options);
-        $this->options         = $this->getOptions(); // Query, filter, validate, and return plugin options.
+        $this->options         = $this->getOptions(); // Filters, validates, and returns plugin options.
 
         $this->cap           = $this->applyWpFilters(GLOBAL_NS.'_cap', $this->cap);
         $this->update_cap    = $this->applyWpFilters(GLOBAL_NS.'_update_cap', $this->update_cap);

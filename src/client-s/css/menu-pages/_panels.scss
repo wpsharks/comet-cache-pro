@@ -1,0 +1,103 @@
+.plugin-menu-page-panel {
+  margin:                     1em 0;
+
+  &:first-child {
+    margin-top:               0;
+  }
+
+  .plugin-menu-page-panel-heading {
+    @include user-select(none);
+
+    text-decoration:          none;
+    padding:                  10px;
+    font-size:                150%;
+    font-weight:              bold;
+    border-radius:            4px;
+    display:                  block;
+    cursor:                   pointer;
+    background:               $panel-heading-bg-color;
+    color:                    $panel-heading-color !important;
+    box-shadow:               0 2px 2px 0 $panel-heading-box-shadow-color;
+
+    &:hover,
+    &.open {
+      color:                  $panel-heading-hover-color !important;
+    }
+
+    &::after {
+      font-size:              80%;
+      content:                '\f078';
+      font-weight:            normal;
+      font-family:            'FontAwesome';
+      float:                  right;
+      margin:                 0 0 0 5px;
+      display:                inline-block;
+    }
+
+    &.open::after {
+      content:                '\f077';
+    }
+
+    @at-root .pro-preview .plugin-menu-page-panel .plugin-menu-page-panel-heading {
+      opacity:                0.5;
+
+      &::after {
+        font-variant:         small-caps !important;
+        font-family:          sans-serif !important;
+        content:              'pro version only' !important;
+      }
+    }
+  }
+
+  .plugin-menu-page-panel-body {
+    width:                    99%;
+    margin:                   0 auto;
+    display:                  none;
+    padding:                  1.2em;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    box-sizing:               border-box;
+    color:                    $panel-body-color;
+    border:                   1px solid $panel-body-border-color;
+    background:               $panel-body-bg-color;
+    box-shadow:               0 1px 1px 0 $panel-body-box-shadow-color-a, 0 3px 1px -1px $panel-body-box-shadow-color-b inset;
+
+    &.open {
+      display:                block;
+    }
+
+    p {
+      font-size:              90%;
+      color:                  $panel-body-p-color;
+    }
+
+    p.notice,
+    p.info,
+    p.warning,
+    p.error {
+      color:                  $panel-body-p-notice-color;
+    }
+
+    h3 {
+      margin:                 0 0 0.5em;
+    }
+
+    h3:first-child {
+      margin-top:             0;
+    }
+
+    h3 + p {
+      margin-top:             0;
+    }
+
+    a.dotted {
+      text-decoration:        none;
+      border-bottom:          1px dotted;
+    }
+
+    &.pro-preview,
+    .pro-preview {
+      opacity:                0.5;
+    }
+  }
+}

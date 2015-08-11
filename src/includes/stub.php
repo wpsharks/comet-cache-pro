@@ -30,4 +30,3 @@ define(__NAMESPACE__.'\\IS_PRO', ${__FILE__}['is_pro']);
 $GLOBALS[GLOBAL_NS] = null;
 
 unset(${__FILE__}); // Housekeeping.
-

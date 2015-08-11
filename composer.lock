@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "82479d503f0cba92028c73682d22dea5",
+    "hash": "491db5aaae98250478e1af7ab2907b39",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -265,6 +265,17 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "package/bourbon",
+            "version": "4.2.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thoughtbot/bourbon/releases/download/v4.2.3/bourbon-v4.2.3.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
+        },
         {
             "name": "websharks/wp-i18n-tools",
             "version": "dev-master",

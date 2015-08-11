@@ -1,0 +1,96 @@
+/*[pro strip-from='lite']*/
+
+$dir-stats-container-bg-color: rgba(0, 0, 0, 0.5);
+
+#wp-admin-bar-zencache-dir-stats {
+  width:                      100px;
+
+  > a {
+    padding:                  0 !important;
+  }
+
+  .-container {
+    width:                    100%;
+    height:                   32px;
+    line-height:              32px;
+    margin:                   5px;
+    display:                  block;
+    position:                 relative;
+    box-sizing:               border-box;
+    border-radius:            5px;
+    background:               $dir-stats-container-bg-color;
+  }
+
+  .-bars {
+    left:                     0;
+    bottom:                   3px;
+    position:                 absolute;
+    width:                    100%;
+    height:                   3px;
+    line-height:              3px;
+    display:                  block;
+    box-sizing:               border-box;
+
+    > span {
+      @include animation-duration(0.9s);
+      @include animation-fill-mode(both);
+      @include animation-iteration-count(infinite);
+      @include animation-name(zencache-animation-dir-stats-bars);
+      @include animation-timing-function(cubic-bezier(0.11, 0.49, 0.38, 0.78));
+
+      width:                  19.4%;
+      height:                 100%;
+      line-height:            100%;
+      margin:                 0 0.5%;
+      box-sizing:             border-box;
+      display:                inline-block;
+      background-color:       currentColor;
+    }
+
+    > span:nth-child(1),
+    > span:nth-child(5) {
+      @include animation-delay(-0.4s);
+
+      margin:                 0;
+    }
+
+    > span:nth-child(2),
+    > span:nth-child(4) {
+      @include animation-delay(-0.65s);
+    }
+
+    > span:nth-child(3) {
+      @include animation-delay(-0.9s);
+    }
+  }
+
+  .-meter {
+    left:                     0;
+    bottom:                   0;
+    position:                 absolute;
+    width:                    100%;
+    height:                   10px;
+    line-height:              10px;
+    opacity:                  0.75;
+    display:                  block;
+    box-sizing:               border-box;
+    background-color:         currentColor;
+  }
+}
+
+@include keyframes(zencache-animation-dir-stats-bars) {
+  0% {
+    @include transform(scaley(1));
+  }
+
+  80% {
+    @include transform(scaley(0.3));
+  }
+
+  90% {
+    @include transform(scaley(1));
+  }
+}
+
+
+/*[/pro]*/

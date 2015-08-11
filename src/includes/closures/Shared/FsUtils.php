@@ -126,23 +126,6 @@ $self->addTmpSuffix = function ($dir_file) use ($self) {
 };
 
 /*
- * Recursive directory iterator.
- *
- * @since 15xxxx Adding a few statistics.
- *
- * @param string $dir An absolute server directory path.
- *
- * @return \RegexIterator Navigable with {@link \foreach()}; where each item
- *    is a {@link \RecursiveDirectoryIterator}.
- */
-$self->dirIteration = function ($dir) use ($self) {
-    $dir = (string) $dir;
-
-    $dir_iterator = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
-    return new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
-};
-
-/*
  * Recursive directory iterator based on a regex pattern.
  *
  * @since 150422 Rewrite.
@@ -156,85 +139,15 @@ $self->dirIteration = function ($dir) use ($self) {
 $self->dirRegexIteration = function ($dir, $regex = '') use ($self) {
     $dir   = (string) $dir;
     $regex = (string) $regex;
-    $regex = !$regex ? '/.+/' : $regex;
 
     $dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
     $iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
-    $regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
 
-    return $regex_iterator;
-};
-
-/*
- * Directory stats.
- *
- * @since 15xxxx Adding a few statistics.
- *
- * @param string $dir An absolute server directory path.
- * @param string $regex A regex pattern; compares to each full file path.
- * @param boolean $include_paths Include array of all scanned file paths?
- * @param boolean $check_disk Also check disk statistics?
- *
- * @return array Directory stats.
- */
-$self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $check_disk = true) use ($self) {
-    $dir = (string) $dir; // Force string.
-
-    $stats = array(
-        'dir'        => $dir,
-        'total_size' => 0,
-
-        'total_links'   => 0,
-        'link_subpaths' => array(),
-
-        'total_files'   => 0,
-        'file_subpaths' => array(),
-
-        'total_dirs'   => 0,
-        'dir_subpaths' => array(),
-
-        'disk_free_space'  => 0,
-        'disk_total_space' => 0,
-    );
-    if (!$dir || !is_dir($dir)) {
-        return $stats; // Not possible.
+    if ($regex && $regex !== '/.*/' && $regex !== '/.+/') { // Apply regex filter?
+        // @TODO Optimize calls to this method in order to avoid the regex iterator when not necessary.
+        return new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
     }
-    foreach ($self->dirRegexIteration($dir, $regex) as $_resource) {
-        switch ($_resource->getType()) { // `link`, `file`, `dir`.
-
-            case 'link': // Symbolic links.
-                if ($include_paths) {
-                    $stats['link_subpaths'][] = $_resource->getSubpathname();
-                }
-                ++$stats['total_links']; // Counter.
-
-                break; // Break switch handler.
-
-            case 'file': // Regular files; i.e., not symlinks.
-                if ($include_paths) {
-                    $stats['file_subpaths'][] = $_resource->getSubpathname();
-                }
-                $stats['total_size'] += $_resource->getSize();
-                ++$stats['total_files']; // Counter.
-
-                break; // Break switch.
-
-            case 'dir': // Regular dirs; i.e., not symlinks.
-                if ($include_paths) {
-                    $stats['dir_subpaths'][] = $_resource->getSubpathname();
-                }
-                ++$stats['total_dirs']; // Counter.
-
-                break; // Break switch.
-        }
-    }
-    unset($_resource); // Housekeeping.
-
-    if ($check_disk) { // Check disk also?
-        $stats['disk_free_space']  = disk_free_space($dir);
-        $stats['disk_total_space'] = disk_total_space($dir);
-    }
-    return $stats;
+    return $iterator_iterator; // Iterate everything.
 };
 
 /*

@@ -9,12 +9,32 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 15xxxx Adding cache directory statistics.
  *
+ * @param boolean $no_cache Do not read or write a cache entry?
  * @param boolean $include_paths Include array of all scanned file paths?
  *
  * @return array Cache directory stats.
+ *
+ * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
+ * @TODO Optimize this for extremely large sites. A LOT of files here could slow things down.
+ *  See also: <https://codex.wordpress.org/Function_Reference/wp_is_large_network>
  */
-$self->statsForCacheDir = function ($include_paths = false) use ($self) {
-    return $self->getDirRegexStats($self->cacheDir(), '', $include_paths);
+$self->statsForCacheDir = function ($no_cache = false, $include_paths = false) use ($self) {
+    if (!$no_cache) { // Allow a cached set of stats?
+        $site_option_cache_key = GLOBAL_NS.'_dir_stats_'; // Identifying prefix.
+        $site_option_cache_key .= md5('statsForCacheDir'.(integer) $include_paths);
+
+        if (is_array($cached = get_site_option($site_option_cache_key)) // Cache exists?
+                && isset($cached['stats'], $cached['time']) && is_array($cached['stats'])
+                && $cached['time'] >= strtotime('-'.$self->options['dir_stats_refresh_time'])) {
+            return $cached['stats']; // Return cached stats.
+        }
+    } // Otherwise, we need to pull a fresh set of stats.
+    $stats = $self->getDirRegexStats($self->cacheDir(), '', $include_paths, true, true);
+
+    if (!$no_cache && !empty($site_option_cache_key)) { // Cache these stats?
+        update_site_option($site_option_cache_key, array('stats' => $stats, 'time' => time()));
+    }
+    return $stats;
 };
 
 /*
@@ -22,12 +42,28 @@ $self->statsForCacheDir = function ($include_paths = false) use ($self) {
  *
  * @since 15xxxx Adding cache directory statistics.
  *
+ * @param boolean $no_cache Do not read or write a cache entry?
  * @param boolean $include_paths Include array of all scanned file paths?
  *
  * @return array HTML compressor cache directory stats.
+ *
+ * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
+ * @TODO Optimize this for extremely large sites. A LOT of files here could slow things down.
+ *  See also: <https://codex.wordpress.org/Function_Reference/wp_is_large_network>
  */
-$self->statsForHtmlCCacheDirs = function ($include_paths = false) use ($self) {
-    $stats = array(); // Initialize the stats array.
+$self->statsForHtmlCCacheDirs = function ($no_cache = false, $include_paths = false) use ($self) {
+    if (!$no_cache) { // Allow a cached set of stats?
+        $site_option_cache_key = GLOBAL_NS.'_dir_stats_'; // Identifying prefix.
+        $site_option_cache_key .= md5('statsForHtmlCCacheDirs'.(integer) $include_paths);
+
+        if (is_array($cached = get_site_option($site_option_cache_key)) // Cache exists?
+                && isset($cached['stats'], $cached['time']) && is_array($cached['stats'])
+                && $cached['time'] >= strtotime('-'.$self->options['dir_stats_refresh_time'])) {
+            return $cached['stats']; // Return cached stats.
+        }
+    } // Otherwise, we need to pull a fresh set of stats.
+
+    $stats = array(); // Initialize stats array.
 
     $htmlc_cache_dirs   = array(); // Initialize array directories.
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public);
@@ -36,13 +72,16 @@ $self->statsForHtmlCCacheDirs = function ($include_paths = false) use ($self) {
     foreach (array_unique($htmlc_cache_dirs) as $_htmlc_cache_dir) {
         $_check_disk_stats = $stats ? false : true;
 
-        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $include_paths, $_check_disk_stats) as $_key => $_value) {
+        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', $include_paths, $_check_disk_stats, true) as $_key => $_value) {
             $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
         }
         unset($_key, $_value); // Housekeeping.
     }
     unset($_htmlc_cache_dir); // Final housekeeping.
 
+    if (!$no_cache && !empty($site_option_cache_key)) { // Cache these stats?
+        update_site_option($site_option_cache_key, array('stats' => $stats, 'time' => time()));
+    }
     return $stats;
 };
 
@@ -51,15 +90,35 @@ $self->statsForHtmlCCacheDirs = function ($include_paths = false) use ($self) {
  *
  * @since 15xxxx Adding cache directory statistics.
  *
+ * @param boolean $no_cache Do not read or write a cache entry?
+ *
  * @param boolean $___considering_domain_mapping For internal use only.
  * @param boolean $___consider_domain_mapping_host_token For internal use only.
  * @param boolean $___consider_domain_mapping_host_base_dir_tokens For internal use only.
  *
  * @return array Cache directory stats for the current host.
  */
-$self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
-                                        $___consider_domain_mapping_host_token = null,
-                                        $___consider_domain_mapping_host_base_dir_tokens = null) use ($self) {
+$self->statsForHostCacheDir = function (
+    $no_cache = false,
+    $___considering_domain_mapping = false,
+    $___consider_domain_mapping_host_token = null,
+    $___consider_domain_mapping_host_base_dir_tokens = null
+) use ($self) {
+
+    if (!$no_cache) { // Allow a cached set of stats?
+        if (is_multisite()) {
+            $site_option_cache_key = GLOBAL_NS.'_dir_stats_'; // Identifying prefix.
+        } else {
+            $site_option_cache_key = GLOBAL_NS.'_dir_stats_'; // Identifying prefix.
+        }
+        $site_option_cache_key .= md5('statsForHostCacheDir'.(integer) $include_paths);
+
+        if (is_array($cached = get_site_option($site_option_cache_key)) // Cache exists?
+                && isset($cached['stats'], $cached['time']) && is_array($cached['stats'])
+                && $cached['time'] >= strtotime('-'.$self->options['dir_stats_refresh_time'])) {
+            return $cached['stats']; // Return cached stats.
+        }
+    } // Otherwise, we need to pull a fresh set of stats.
 
     $cache_dir            = $self->nDirSeps($cache_dir); // Normalize.
     $host_token           = $current_host_token           = $self->hostToken();
@@ -81,7 +140,7 @@ $self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
         $_host_cache_dir        = $self->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
         $_check_disk_stats      = $stats || $___considering_domain_mapping ? false : true;
 
-        foreach ($self->getDirRegexStats($_host_cache_dir, '', false, $_check_disk_stats) as $_key => $_value) {
+        foreach ($self->getDirRegexStats($_host_cache_dir, '', false, $_check_disk_stats, $no_cache) as $_key => $_value) {
             $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
         }
         unset($_key, $_value); // Housekeeping.
@@ -109,7 +168,7 @@ $self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
             if ($_domain_mapping_variation['host_token'] === $current_host_token && $_domain_mapping_variation['host_base_dir_tokens'] === $current_host_base_dir_tokens) {
                 continue; // Exclude current tokens. They were already iterated above.
             }
-            foreach ($self->statsForHostCacheDir(true, $_domain_mapping_variation['host_token'], $_domain_mapping_variation['host_base_dir_tokens']) as $_key => $_value) {
+            foreach ($self->statsForHostCacheDir($no_cache, true, $_domain_mapping_variation['host_token'], $_domain_mapping_variation['host_base_dir_tokens']) as $_key => $_value) {
                 $stats[$_key] += $_value; // Increment stats for each domain mapping variation.
             }
             unset($_key, $_value); // Housekeeping.
@@ -124,9 +183,11 @@ $self->statsForHostCacheDir = function ($___considering_domain_mapping = false,
  *
  * @since 15xxxx Adding cache directory statistics.
  *
+ * @param boolean $no_cache Do not read or write a cache entry?
+ *
  * @return array HTML compressor cache directory stats for the current host.
  */
-$self->statsForHtmlCHostCacheDirs = function () use ($self) {
+$self->statsForHtmlCHostCacheDirs = function ($no_cache = false) use ($self) {
     $stats = array(); // Initialize the stats array.
 
     $host_token           = $self->hostToken(true); // Dashify.
@@ -156,13 +217,88 @@ $self->statsForHtmlCHostCacheDirs = function () use ($self) {
     foreach (array_unique($htmlc_cache_dirs) as $_htmlc_cache_dir) {
         $_check_disk_stats = $stats ? false : true;
 
-        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', false, $_check_disk_stats) as $_key => $_value) {
+        foreach ($self->getDirRegexStats($_htmlc_cache_dir, '', false, $_check_disk_stats, $no_cache) as $_key => $_value) {
             $stats[$_key] = isset($stats[$_key]) ? $stats[$_key] + $_value : $_value;
         }
         unset($_key, $_value); // Housekeeping.
     }
     unset($_htmlc_cache_dir); // Just a little housekeeping.
 
+    return $stats;
+};
+
+/*
+ * Directory stats.
+ *
+ * @since 15xxxx Adding a few statistics.
+ *
+ * @param string $dir An absolute server directory path.
+ * @param string $regex A regex pattern; compares to each full file path.
+ * @param boolean $include_paths Include array of all scanned file paths?
+ * @param boolean $check_disk Also check disk statistics?
+ * @param boolean $no_cache Do not read/write cache?
+ *
+ * @return array Directory stats.
+ */
+$self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $check_disk = true, $no_cache = false) use ($self) {
+    $dir        = (string) $dir; // Force string.
+    $cache_keys = array($dir, $regex, $include_paths, $check_disk);
+    if (!$no_cache && !is_null($stats = &$self->staticKey('getDirRegexStats', $cache_keys))) {
+        return $stats; // Already cached this.
+    }
+    $stats = array(
+        'dir'        => $dir,
+        'total_size' => 0,
+
+        'total_links'   => 0,
+        'link_subpaths' => array(),
+
+        'total_files'   => 0,
+        'file_subpaths' => array(),
+
+        'total_dirs'   => 0,
+        'dir_subpaths' => array(),
+
+        'disk_free_space'  => 0,
+        'disk_total_space' => 0,
+    );
+    if (!$dir || !is_dir($dir) || !$self->options['dir_stats_enable']) {
+        return $stats; // Not possible.
+    }
+    foreach ($self->dirRegexIteration($dir, $regex) as $_resource) {
+        switch ($_resource->getType()) { // `link`, `file`, `dir`.
+            case 'link':
+                if ($include_paths) {
+                    $stats['link_subpaths'][] = $_resource->getSubpathname();
+                }
+                ++$stats['total_links']; // Counter.
+
+                break; // Break switch handler.
+
+            case 'file':
+                if ($include_paths) {
+                    $stats['file_subpaths'][] = $_resource->getSubpathname();
+                }
+                $stats['total_size'] += $_resource->getSize();
+                ++$stats['total_files']; // Counter.
+
+                break; // Break switch.
+
+            case 'dir':
+                if ($include_paths) {
+                    $stats['dir_subpaths'][] = $_resource->getSubpathname();
+                }
+                ++$stats['total_dirs']; // Counter.
+
+                break; // Break switch.
+        }
+    }
+    unset($_resource); // Housekeeping.
+
+    if ($check_disk) { // Check disk also?
+        $stats['disk_free_space']  = disk_free_space($dir);
+        $stats['disk_total_space'] = disk_total_space($dir);
+    }
     return $stats;
 };
 /*[/pro]*/

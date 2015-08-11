@@ -32,7 +32,9 @@ $self->statsLogPinger = function () use ($self) {
     );
     $stats_api_url = add_query_arg(urlencode_deep($stats_api_url_args), $stats_api_url);
 
-    wp_remote_get($stats_api_url, array(
+    wp_remote_get(
+        $stats_api_url,
+        array(
             'blocking'  => false,
             'sslverify' => false,
         )

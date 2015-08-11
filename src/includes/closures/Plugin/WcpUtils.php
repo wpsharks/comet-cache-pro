@@ -114,6 +114,10 @@ $self->purge_cache = $self->purgeCache; // Back compat.
  * @return int Total files purged by this routine (if any).
  *
  * @attaches-to `'_cron_'.__GLOBAL_NS__.'_cleanup'` via CRON job.
+ *
+ * @TODO Disable automatically when load average is high.
+ *  See: <https://github.com/websharks/zencache/issues/347>
+ *  Note: this is impact the AdvancedCache expiration check also.
  */
 $self->purgeCacheDir = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.

@@ -61,7 +61,7 @@ $self->updateOptions = function (array $options) use ($self) {
  *
  * @return array Plugin options after update.
  */
-$self->restoreDefaultOptions = function (array $options) use ($self) {
+$self->restoreDefaultOptions = function () use ($self) {
     delete_site_option(GLOBAL_NS.'_options'); // Force restore.
     $self->options = $self->default_options; // In real-time.
     return $self->getOptions();

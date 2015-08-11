@@ -7,7 +7,9 @@
     $window = $(window),
     $document = $(document);
 
-  var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+  var animationEnd = // All vendor prefixes.
+    'webkitAnimationEnd mozAnimationEnd MSAnimationEnd' +
+    ' oanimationend animationend';
 
   plugin.onReady = function () // DOM ready event handler.
     {
@@ -16,32 +18,8 @@
 
       $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
       $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
-      $document.on('click', '#' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
+      $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
     };
-
-  plugin.clearCache = function () {
-    var postVars = {
-      _wpnonce: plugin.vars._wpnonce
-    }; // HTTP post vars.
-    postVars[plugin.namespace] = {
-      ajaxClearCache: '1'
-    };
-    var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
-
-    plugin.removeAJAXResponse(); // Remove response w/o delay.
-    $clear.parent().addClass(plugin.namespace + '-clearing');
-    $clear.attr('disabled', 'disabled'); // Disable.
-
-    $.post(plugin.vars.ajaxURL, postVars, function (data) {
-      plugin.removeAJAXResponse(); // Remove response w/o delay.
-      $clear.parent().removeClass(plugin.namespace + '-clearing');
-      $clear.removeAttr('disabled'); // Re-enable.
-
-      var $response = $('<div id="' + plugin.namespace + '-ajax-response" class="' + plugin.namespace + '-ajax-response-clear">' + data + '</div>');
-      $('body').append($response); // Append response.
-      plugin.showAJAXResponse(); // Show response.
-    });
-  };
 
   plugin.wipeCache = function () {
     var postVars = {
@@ -52,16 +30,40 @@
     };
     var $wipe = $('#wp-admin-bar-' + plugin.namespace + '-wipe > a');
 
-    plugin.removeAJAXResponse(); // Remove response w/o delay.
-    $wipe.parent().addClass(plugin.namespace + '-wiping');
-    $wipe.attr('disabled', 'disabled'); // Disable.
+    plugin.removeAJAXResponse();
+    $wipe.parent().addClass('-wiping');
+    $wipe.attr('disabled', 'disabled');
 
     $.post(plugin.vars.ajaxURL, postVars, function (data) {
-      plugin.removeAJAXResponse(); // Remove response w/o delay.
-      $wipe.parent().removeClass(plugin.namespace + '-wiping');
-      $wipe.removeAttr('disabled'); // Re-enable.
+      plugin.removeAJAXResponse();
+      $wipe.parent().removeClass('-wiping');
+      $wipe.removeAttr('disabled');
 
-      var $response = $('<div id="' + plugin.namespace + '-ajax-response" class="' + plugin.namespace + '-ajax-response-wipe">' + data + '</div>');
+      var $response = $('<div class="' + plugin.namespace + '-ajax-response -wipe">' + data + '</div>');
+      $('body').append($response); // Append response.
+      plugin.showAJAXResponse(); // Show response.
+    });
+  };
+
+  plugin.clearCache = function () {
+    var postVars = {
+      _wpnonce: plugin.vars._wpnonce
+    }; // HTTP post vars.
+    postVars[plugin.namespace] = {
+      ajaxClearCache: '1'
+    };
+    var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
+
+    plugin.removeAJAXResponse();
+    $clear.parent().addClass('-clearing');
+    $clear.attr('disabled', 'disabled');
+
+    $.post(plugin.vars.ajaxURL, postVars, function (data) {
+      plugin.removeAJAXResponse();
+      $clear.parent().removeClass('-clearing');
+      $clear.removeAttr('disabled');
+
+      var $response = $('<div class="' + plugin.namespace + '-ajax-response -clear">' + data + '</div>');
       $('body').append($response); // Append response.
       plugin.showAJAXResponse(); // Show response.
     });
@@ -70,15 +72,20 @@
   plugin.showAJAXResponse = function () {
     clearTimeout(plugin.hideAJAXResponseTimeout);
 
-    $('#' + plugin.namespace + '-ajax-response').off(animationEnd).on(animationEnd, function () {
+    $('.' + plugin.namespace + '-ajax-response').off(animationEnd).on(animationEnd, function () {
       plugin.hideAJAXResponseTimeout = setTimeout(plugin.hideAJAXResponse, 2500);
-    }).show().addClass(plugin.namespace + '-animation-zoom-in-down');
+    }).addClass(plugin.namespace + '-animation-zoom-in-down').show()
+
+    .on('mouseover', function () { // Do not auto-hide if hovered.
+      clearTimeout(plugin.hideAJAXResponseTimeout);
+      $(this).addClass('-hovered');
+    });
   };
 
   plugin.hideAJAXResponse = function (event, animate) {
     clearTimeout(plugin.hideAJAXResponseTimeout);
 
-    $('#' + plugin.namespace + '-ajax-response').off(animationEnd).on(animationEnd, function () {
+    $('.' + plugin.namespace + '-ajax-response').off(animationEnd).on(animationEnd, function () {
       plugin.removeAJAXResponse();
     }).addClass(plugin.namespace + '-animation-bounce-out-up');
   };
@@ -86,7 +93,7 @@
   plugin.removeAJAXResponse = function () {
     clearTimeout(plugin.hideAJAXResponseTimeout);
 
-    $('#' + plugin.namespace + '-ajax-response').off(animationEnd).remove();
+    $('.' + plugin.namespace + '-ajax-response').off(animationEnd).remove();
   };
 
   $document.ready(plugin.onReady); // On DOM ready.

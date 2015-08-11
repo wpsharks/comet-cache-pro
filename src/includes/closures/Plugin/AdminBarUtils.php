@@ -54,6 +54,28 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
             )
         );
     }
+    if ($self->options['dir_stats_admin_bar_enable']) {
+        // Build the miniature directory stats graph.
+        // Goes into an `<a>` tag, so these need to be inline tags.
+        $stats = '<span class="-container">'; // Primary container.
+        $stats .= '<span class="-bars"><span></span><span></span><span></span><span></span><span></span></span>';
+        $stats .= '<span class="-meter"></span>';
+        $stats .= '</span>'; // Close container.
+
+        $wp_admin_bar->add_node(
+            array(
+                'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-dir-stats',
+                'title'  => $stats,
+                'href'   => '#',
+                'meta'   => array(
+                        'title'    => __('Cache directory statistics.', SLUG_TD),
+                        'class'    => GLOBAL_NS,
+                        'tabindex' => -1,
+                ),
+            )
+        );
+    }
 };
 
 /*

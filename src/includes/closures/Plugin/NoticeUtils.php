@@ -149,7 +149,7 @@ $self->allAdminNotices = function () use ($self) {
         }
         # Display this notice. If not persistent, we can dismiss it too.
 
-        echo '<div class="'.esc_attr($_notice['class']).'"><p>'.$_notice.$_dismiss.'</p></div>';
+        echo '<div class="'.esc_attr($_notice['class']).'"><p>'.$_notice['notice'].$_dismiss.'</p></div>';
 
         if (!$_notice['persistent_key']) { // If not persistent, dismiss.
             unset($notices[$_key]); // Dismiss; this notice has been displayed now.
@@ -197,7 +197,7 @@ $self->getNotices = function ($blog_id = 0) use ($self) {
         $self->updateNotices($notices, $blog_id);
     }
     foreach ($notices as $_key => &$_notice) {
-        if (!is_string($_key) || !is_array($_notice)) {
+        if (!is_string($_key) || !is_array($_notice) || empty($_notice['notice'])) {
             unset($notices[$_key]); // Old notice.
         }
         $_notice = $self->normalizeNotice($_notice);
@@ -250,7 +250,7 @@ $self->updateNotices = function (array $notices, $blog_id = 0) use ($self) {
 * @return array Normalized notice array elements.
 */
 $self->normalizeNotice = function (array $notice, array $args = array()) {
-   $notice_defaults = array(
+    $notice_defaults = array(
        'notice'         => '',
        'only_on_uris'   => '',
        'persistent_key' => '',
@@ -258,30 +258,30 @@ $self->normalizeNotice = function (array $notice, array $args = array()) {
        'push_to_top'    => false,
        'class'          => 'updated',
        'cap_required'   => $self->cap,
-   );
-   $notice = array_merge($notice_defaults, $notice, $args);
-   $notice = array_intersect_key($notice, $notice_defaults);
+    );
+    $notice = array_merge($notice_defaults, $notice, $args);
+    $notice = array_intersect_key($notice, $notice_defaults);
 
-   foreach ($notice as $_key => &$_value) {
-       switch ($_key) {
-           case 'notice':
-           case 'only_on_uris':
-           case 'persistent_key':
-               $_value = trim((string) $_value);
-               break; // Stop here.
+    foreach ($notice as $_key => &$_value) {
+        switch ($_key) {
+            case 'notice':
+            case 'only_on_uris':
+            case 'persistent_key':
+                $_value = trim((string) $_value);
+                break; // Stop here.
 
-           case 'is_transient':
-           case 'push_to_top':
-               $_value = (boolean) $_value;
-               break; // Stop here.
+            case 'is_transient':
+            case 'push_to_top':
+                $_value = (boolean) $_value;
+                break; // Stop here.
 
-           case 'class':
-           case 'cap_required':
-               $_value = trim((string) $_value);
-               break; // Stop here.
-       }
-   } // ↑ Typecast each of the array elements.
-   unset($_key, $_value); // A little housekeeping.
+            case 'class':
+            case 'cap_required':
+                $_value = trim((string) $_value);
+                break; // Stop here.
+        }
+    } // ↑ Typecast each of the array elements.
+    unset($_key, $_value); // A little housekeeping.
 
-   return $notice; // Normalized.
+    return $notice; // Normalized.
 };

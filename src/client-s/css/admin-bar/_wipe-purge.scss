@@ -1,0 +1,38 @@
+/*[pro strip-from='lite']*/
+
+#wp-admin-bar-zencache-wipe,
+#wp-admin-bar-zencache-clear {
+  > a::after {
+    content:                  ' ';
+    width:                    16px;
+    height:                   16px;
+    padding:                  0;
+    margin:                  -3px 0 0 5px;
+    border:                   0;
+    vertical-align:           middle;
+    display:                  inline-block;
+  }
+
+  &.-wiping,
+  &.-clearing {
+    > a::after {
+      @include zencache-animation-spin;
+
+      background:             url('../images/spinner.png');
+    }
+  }
+}
+
+#wp-admin-bar-zencache-wipe {
+  > a::after {
+    background:               url('../images/wipe.png');
+  }
+}
+
+#wp-admin-bar-zencache-clear {
+  > a::after {
+    background:               url('../images/clear.png');
+  }
+}
+
+/*[/pro]*/

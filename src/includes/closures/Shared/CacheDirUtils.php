@@ -247,10 +247,13 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  *
  * @throws \Exception If unable to delete a file for any reason.
  */
-$self->deleteFilesFromHostCacheDir = function ($regex, $check_max_age = false,
-                                               $___considering_domain_mapping = false,
-                                               $___consider_domain_mapping_host_token = null,
-                                               $___consider_domain_mapping_host_base_dir_tokens = null) use ($self) {
+$self->deleteFilesFromHostCacheDir = function (
+    $regex,
+    $check_max_age = false,
+    $___considering_domain_mapping = false,
+    $___consider_domain_mapping_host_token = null,
+    $___consider_domain_mapping_host_base_dir_tokens = null
+) use ($self) {
     $counter = 0; // Initialize.
 
     if (!($regex = (string) $regex)) {

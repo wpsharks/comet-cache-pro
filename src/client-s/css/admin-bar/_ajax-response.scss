@@ -1,0 +1,74 @@
+/*[pro strip-from='lite']*/
+
+$ajax-response-text-color: #fff;
+$ajax-response-bg-color: #15181b;
+$ajax-response-bg-hover-color: #000;
+$ajax-response-box-shadow-color: #23282d;
+$ajax-response-code-color: #000;
+$ajax-response-code-bg-color: #eee;
+
+.zencache-ajax-response {
+  @include user-select(none);
+
+  left:                       50%;
+  top:                        100px;
+  z-index:                    10000;
+  position:                   fixed;
+  width:                      600px;
+  height:                     auto;
+  padding:                    15px;
+  margin:                     0 0 0 -300px;
+  text-align:                 center;
+  color:                      $ajax-response-text-color;
+  outline:                    none;
+  cursor:                     pointer;
+  display:                    none;
+  box-sizing:                 border-box;
+  border-radius:              5px;
+
+  // Background defined below.
+  box-shadow:                 0 0 5px 0 $ajax-response-box-shadow-color;
+
+  &.-wipe {
+    background:               $ajax-response-bg-color url('../images/wipe-response.png') no-repeat 5px 5px;
+  }
+
+  &.-clear {
+    background:               $ajax-response-bg-color url('../images/clear-response.png') no-repeat 5px 5px;
+  }
+
+  &:hover,
+  &.-hovered {
+    background-color:         $ajax-response-bg-hover-color;
+  }
+
+  &::before {
+    top:                      5px;
+    right:                    8px;
+    position:                 absolute;
+    opacity:                  0.5;
+    content:                  '\00d7';
+    font:                     18px/1em sans-serif;
+  }
+
+  p {
+    margin:                   0;
+    padding:                  0;
+    opacity:                  0.35;
+    font:                     15px/1em sans-serif;
+  }
+
+  p:first-child {
+    opacity:                  1;
+  }
+
+  code {
+    padding:                  1px 3px;
+    font-size:                18px;
+    border-radius:            3px;
+    color:                    $ajax-response-code-color;
+    background:               $ajax-response-code-bg-color;
+  }
+}
+
+/*[/pro]*/

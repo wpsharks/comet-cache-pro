@@ -185,7 +185,7 @@ abstract class AbsBase
                 case 'NULL':
                 case 'resource':
                 case 'unknown type':
-                default: // Default case handler.
+                default:
                     $_key = "\0".(string) $_arg;
             }
             if (!isset($cache_key[$_key])) {
