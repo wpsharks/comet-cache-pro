@@ -1,7 +1,9 @@
 (function ($) {
   'use strict'; // Standards.
 
-  var plugin = {},
+  var plugin = {
+      namespace: 'zencache'
+    },
     $window = $(window),
     $document = $(document);
 
@@ -17,8 +19,8 @@
         $('.plugin-menu-page-panel-heading', $menuPage).removeClass('open')
           .next('.plugin-menu-page-panel-body').removeClass('open');
       });
-      $('.plugin-menu-page-panel-heading', $menuPage).on('click', function (e) {
-        e.preventDefault(); // Prevent click event.
+      $('.plugin-menu-page-panel-heading', $menuPage).on('click', function (event) {
+        plugin.preventDefault(event);
 
         var $this = $(this);
 
@@ -43,21 +45,21 @@
           else $thisPanel.find('.plugin-menu-page-panel-if-enabled').css('opacity', 0.4).find(':input').attr('readonly', 'readonly');
         })
         .trigger('change'); // Initialize.
-      $('[data-toggle-target]', $menuPage).on('click', function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+
+      $('[data-toggle-target]', $menuPage).on('click', function (event) {
+        plugin.preventDefault(event);
 
         var $this = $(this),
           $target = $($this.data('toggleTarget'));
 
         if ($target.is(':visible')) {
           $target.hide();
-          $this.find('.fa').removeClass('fa-eye-slash')
-            .addClass('fa-eye');
+          $this.find('.fa').removeClass('si-eye-slash')
+            .addClass('si-eye');
         } else {
           $target.show();
-          $this.find('.fa').removeClass('fa-eye')
-            .addClass('fa-eye-slash');
+          $this.find('.fa').removeClass('si-eye')
+            .addClass('si-eye-slash');
         }
       });
       $('textarea[name$="\[cdn_hosts\]"]', $menuPage).on('input propertychange', function () {
@@ -79,5 +81,15 @@
         }
       });
     };
+
+  plugin.preventDefault = function (event, stopImmediatePropagation) {
+    if (event) {
+      event.preventDefault();
+      if (stopImmediatePropagation) {
+        event.stopImmediatePropagation();
+      }
+    }
+  };
   $document.ready(plugin.onReady); // On DOM ready.
+
 })(jQuery);

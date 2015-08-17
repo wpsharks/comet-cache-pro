@@ -18,6 +18,7 @@ class Actions extends AbsBase
         'clearCache',
 
         /*[pro strip-from="lite"]*/
+        'ajaxDirStats',
         'ajaxWipeCache',
         'ajaxClearCache',
         /*[/pro]*/
@@ -141,6 +142,48 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
+     * @since 15xxxx Directory stats.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxDirStats($args)
+    {
+        if (!current_user_can($this->plugin->cap)) {
+            return; // Nothing to do.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        if (!$this->plugin->options['dir_stats_enable']) {
+            exit(); // Not applicable.
+        }
+        if (!$this->plugin->options['dir_stats_admin_bar_enable']) {
+            exit(); // Not applicable.
+        }
+        $dir_stats = DirStats::instance(); // Directory stats.
+
+        if (!is_multisite()  || current_user_can($this->plugin->network_cap)) {
+            $dir_stats_data = array(
+                'forCache'         => $dir_stats->forCache(),
+                'forHtmlCCache'    => $dir_stats->forHtmlCCache(),
+                'largestCacheSize' => $dir_stats->largestCacheSize(),
+            );
+        } else { // Stats for a child blog owner w/o access to more info.
+            $dir_stats_data = array(
+                'forHostCache'         => $dir_stats->forHostCache(),
+                'forHtmlCHostCache'    => $dir_stats->forHtmlCHostCache(),
+                'largestHostCacheSize' => $dir_stats->largestHostCacheSize(),
+            );
+        }
+        header('Content-Type: application/json; charset=UTF-8');
+        exit(json_encode($dir_stats_data)); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
@@ -257,7 +300,7 @@ class Actions extends AbsBase
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
-                $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
+                $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
             $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
@@ -300,7 +343,7 @@ class Actions extends AbsBase
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
-                $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'zc-advanced-cache' : '1';
+                $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
             $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {

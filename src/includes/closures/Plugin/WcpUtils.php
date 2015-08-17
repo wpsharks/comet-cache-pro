@@ -13,15 +13,15 @@ namespace WebSharks\ZenCache\Pro;
 $self->pre_post_update_post_permalink = array();
 
 /*
- * Wipes out all cache files in the cache directory.
+ * Wipes out all cache files.
  *
  * @since 150422 Rewrite.
  *
- * @param bool $manually TRUE if the wipe is done manually by the site owner.
+ * @param bool $manually TRUE if wiping is done manually.
  *
  * @throws \Exception If a wipe failure occurs.
  *
- * @return int Total files wiped by this routine (if any).
+ * @return int Total files wiped by this routine.
  */
 $self->wipeCache = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
@@ -32,27 +32,33 @@ $self->wipeCache = function ($manually = false) use ($self) {
     @set_time_limit(1800); // @TODO Display a warning.
 
     if (is_dir($cache_dir = $self->cacheDir())) {
-        $counter += $self->deleteFilesFromCacheDir('/^.+/i');
+        $regex = $self->buildCachePathRegex('', '.+');
+        $counter += $self->wipeFilesFromCacheDir($regex);
     }
     /*[pro strip-from="lite"]*/
     $counter += $self->wipeHtmlCCache($manually);
     /*[/pro]*/
 
+    /*[pro strip-from="lite"]*/
+    if ($self->options['dir_stats_enable']) {
+        $dir_stats = DirStats::instance();
+        $dir_stats->wipeCache();
+    }
+    /*[/pro]*/
     return $counter;
 };
 $self->wipe_cache = $self->wipeCache; // Back compat.
 
 /*
- * Clears cache files for the current host|blog.
+ * Clears cache files (current blog).
  *
  * @since 150422 Rewrite.
  *
- * @param bool $manually Defaults to a `FALSE` value.
- *                       Pass as TRUE if the clearing is done manually by the site owner.
+ * @param bool $manually TRUE if clearing is done manually.
  *
  * @throws \Exception If a clearing failure occurs.
  *
- * @return int Total files cleared by this routine (if any).
+ * @return int Total files cleared by this routine.
  */
 $self->clearCache = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
@@ -60,81 +66,95 @@ $self->clearCache = function ($manually = false) use ($self) {
     if (!$manually && $self->disableAutoClearCacheRoutines()) {
         return $counter; // Nothing to do.
     }
-    if (!is_dir($cache_dir = $self->cacheDir())) {
-        return ($counter += $self->clearHtmlCCache($manually));
-    }
     @set_time_limit(1800); // @TODO Display a warning.
 
-    $regex = $self->buildHostCachePathRegex('', '.+');
-    $counter += $self->clearFilesFromHostCacheDir($regex);
-
+    if (is_dir($cache_dir = $self->cacheDir())) {
+        $regex = $self->buildHostCachePathRegex('', '.+');
+        $counter += $self->clearFilesFromHostCacheDir($regex);
+    }
     /*[pro strip-from="lite"]*/
     $counter += $self->clearHtmlCCache($manually);
     /*[/pro]*/
 
+    /*[pro strip-from="lite"]*/
+    if ($self->options['dir_stats_enable']) {
+        $dir_stats = DirStats::instance();
+        $dir_stats->clearHostCache();
+    }
+    /*[/pro]*/
     return $counter;
 };
 $self->clear_cache = $self->clearCache; // Back compat.
 
 /*
- * Purges expired cache files for the current host|blog.
+ * Purges expired cache files (current blog).
  *
  * @since 150422 Rewrite.
  *
- * @param bool $manually TRUE if the purging is done manually by the site owner.
+ * @param bool $manually TRUE if purging is done manually.
  *
  * @throws \Exception If a purge failure occurs.
  *
- * @return int Total files purged by this routine (if any).
+ * @return int Total files purged by this routine.
  */
 $self->purgeCache = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
 
-    if (!is_dir($cache_dir = $self->cacheDir())) {
+    if (!$manually && $self->disableAutoPurgeCacheRoutines()) {
         return $counter; // Nothing to do.
     }
     @set_time_limit(1800); // @TODO Display a warning.
 
-    $regex = $self->buildHostCachePathRegex('', '.+');
-    $counter += $self->purgeFilesFromHostCacheDir($regex);
-
+    if (is_dir($cache_dir = $self->cacheDir())) {
+        $regex = $self->buildHostCachePathRegex('', '.+');
+        $counter += $self->purgeFilesFromHostCacheDir($regex);
+    }
+    /*[pro strip-from="lite"]*/
+    if ($self->options['dir_stats_enable']) {
+        $dir_stats = DirStats::instance();
+        $dir_stats->clearHostCache();
+    }
+    /*[/pro]*/
     return $counter;
 };
 $self->purge_cache = $self->purgeCache; // Back compat.
 
 /*
- * Purges all expired cache files.
+ * Wurges (purges) all expired cache files; like wipe, but expired files only.
  *
  * @since 15xxxx Look at entire cache directory.
  *
- * @param bool $manually TRUE if the purging is done manually by the site owner.
+ * @param bool $manually TRUE if wurging is done manually.
  *
- * @throws \Exception If a purge failure occurs.
+ * @throws \Exception If a wurge failure occurs.
  *
- * @return int Total files purged by this routine (if any).
- *
- * @attaches-to `'_cron_'.__GLOBAL_NS__.'_cleanup'` via CRON job.
- *
- * @TODO Disable automatically when load average is high.
- *  See: <https://github.com/websharks/zencache/issues/347>
- *  Note: this is impact the AdvancedCache expiration check also.
+ * @return int Total files wurged by this routine.
  */
-$self->purgeCacheDir = function ($manually = false) use ($self) {
+$self->wurgeCache = function ($manually = false) use ($self) {
     $counter = 0; // Initialize.
 
-    if (!is_dir($cache_dir = $self->cacheDir())) {
+    if (!$manually && $self->disableAutoPurgeCacheRoutines()) {
         return $counter; // Nothing to do.
     }
     @set_time_limit(1800); // @TODO Display a warning.
 
-    $regex = $self->buildCachePathRegex('', '.+');
-    $counter += $self->purgeFilesFromCacheDir($regex);
-
+    if (is_dir($cache_dir = $self->cacheDir())) {
+        $regex = $self->buildCachePathRegex('', '.+');
+        $counter += $self->wurgeFilesFromCacheDir($regex);
+    }
+    /*[pro strip-from="lite"]*/
+    if ($self->options['dir_stats_enable']) {
+        $dir_stats = DirStats::instance();
+        $dir_stats->wipeCache();
+    }
+    /*[/pro]*/
     return $counter;
 };
 
 /*
- * Automatically wipes out all cache files in the cache directory.
+ * Automatically wipes out all cache files.
+ *
+ * @attaches-to Nothing at this time.
  *
  * @since 150422 Rewrite.
  *
@@ -167,7 +187,7 @@ $self->autoWipeCache = function () use ($self) {
 };
 
 /*
- * Automatically clears all cache files for the current blog.
+ * Automatically clears all cache files (current host).
  *
  * @attaches-to `switch_theme` hook.
  *
@@ -213,7 +233,75 @@ $self->autoClearCache = function () use ($self) {
 };
 
 /*
- * Allows a site owner to disable the wipe cache routines.
+ * Automatically purges all cache files (current host).
+ *
+ * @attaches-to Nothing at this time.
+ *
+ * @since 15xxxx While working on directory stats.
+ *
+ * @return int Total files purged by this routine.
+ *
+ * @note Unlike many of the other `auto_` methods, this one is NOT currently attached to any hooks.
+ */
+$self->autoPurgeCache = function () use ($self) {
+    $counter = 0; // Initialize.
+
+    if (!is_null($done = &$self->cacheKey('autoPurgeCache'))) {
+        return $counter; // Already did this.
+    }
+    $done = true; // Flag as having been done.
+
+    if (!$self->options['enable']) {
+        return $counter; // Nothing to do.
+    }
+    if ($self->disableAutoPurgeCacheRoutines()) {
+        return $counter; // Nothing to do.
+    }
+    $counter += $self->purgeCache();
+
+    if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
+        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+                              sprintf(__('<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache for this site that were expired; auto-purging.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter))));
+    }
+    return $counter;
+};
+
+/*
+ * Automatically wurges all cache files.
+ *
+ * @attaches-to Nothing at this time.
+ *
+ * @since 15xxxx While working on directory stats.
+ *
+ * @return int Total files wurged by this routine.
+ *
+ * @note Unlike many of the other `auto_` methods, this one is NOT currently attached to any hooks.
+ */
+$self->autoWurgeCache = function () use ($self) {
+    $counter = 0; // Initialize.
+
+    if (!is_null($done = &$self->cacheKey('autoWurgeCache'))) {
+        return $counter; // Already did this.
+    }
+    $done = true; // Flag as having been done.
+
+    if (!$self->options['enable']) {
+        return $counter; // Nothing to do.
+    }
+    if ($self->disableAutoPurgeCacheRoutines()) {
+        return $counter; // Nothing to do.
+    }
+    $counter += $self->wurgeCache();
+
+    if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
+        $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+                              sprintf(__('<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache that were expired; auto-purging.', SLUG_TD), esc_html(NAME), esc_html($self->i18nFiles($counter))));
+    }
+    return $counter;
+};
+
+/*
+ * Allows a site owner to disable the automatic cache wiping routines.
  *
  * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_wipe_cache_routines` to return TRUE,
  *    in which case this method returns TRUE, otherwise it returns FALSE.
@@ -227,13 +315,13 @@ $self->disableAutoWipeCacheRoutines = function () use ($self) {
 
     if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueMainNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                              sprintf(__('<strong>%1$s:</strong> detected significant changes that would normally trigger a wipe cache routine, however wipe cache routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
+                              sprintf(__('<strong>%1$s:</strong> detected significant changes that would normally trigger cache wiping routines. However, cache wiping routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
     }
     return $is_disabled;
 };
 
 /*
- * Allows a site owner to disable the clear and wipe cache routines.
+ * Allows a site owner to disable the automatic cache clearing routines.
  *
  * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_clear_cache_routines` to return TRUE,
  *    in which case this method returns TRUE, otherwise it returns FALSE.
@@ -247,7 +335,27 @@ $self->disableAutoClearCacheRoutines = function () use ($self) {
 
     if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueMainNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                              sprintf(__('<strong>%1$s:</strong> detected important site changes that would normally trigger a clear cache routine. However, clear cache routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
+                              sprintf(__('<strong>%1$s:</strong> detected important site changes that would normally trigger cache clearing routines. However, cache clearing routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
+    }
+    return $is_disabled;
+};
+
+/*
+ * Allows a site owner to disable the automatic cache purging routines.
+ *
+ * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_purge_cache_routines` to return TRUE,
+ *    in which case this method returns TRUE, otherwise it returns FALSE.
+ *
+ * @since 15xxxx While working on directory stats.
+ *
+ * @return bool `TRUE` if disabled; and this also creates a dashboard notice in some cases.
+ */
+$self->disableAutoPurgeCacheRoutines = function () use ($self) {
+    $is_disabled = (boolean) $self->applyWpFilters(GLOBAL_NS.'_disable_auto_purge_cache_routines', false);
+
+    if ($is_disabled && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
+        $self->enqueueMainNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
+                              sprintf(__('<strong>%1$s:</strong> detected important site changes that would normally trigger cache purging routines. However, cache purging routines have been disabled by a site administrator. [<a href="http://zencache.com/r/kb-clear-and-wipe-cache-routines/" target="_blank">?</a>]', SLUG_TD), esc_html(NAME)));
     }
     return $is_disabled;
 };

@@ -184,7 +184,7 @@ $self->getNotices = function ($blog_id = 0) use ($self) {
             $blog_id = (integer) get_current_blog_id();
         }
         if ($blog_id < 0) { // Blog for main site.
-            $blog_id = (integer) $GLOBALS['current_site']->blog_id;
+            $blog_id = (integer) get_current_site()->blog_id;
         }
         $blog_suffix = '_'.$blog_id; // Site option suffix.
         $notices     = get_site_option(GLOBAL_NS.$blog_suffix.'_notices');
@@ -225,7 +225,7 @@ $self->updateNotices = function (array $notices, $blog_id = 0) use ($self) {
             $blog_id = (integer) get_current_blog_id();
         }
         if ($blog_id < 0) { // Blog for main site.
-            $blog_id = (integer) $GLOBALS['current_site']->blog_id;
+            $blog_id = (integer) get_current_site()->blog_id;
         }
         $blog_suffix = '_'.$blog_id; // Site option suffix.
         update_site_option(GLOBAL_NS.$blog_suffix.'_notices', $notices);

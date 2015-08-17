@@ -9,53 +9,68 @@ $ajax-response-code-bg-color: #eee;
 
 .zencache-ajax-response {
   @include user-select(none);
+  @include sharkicon(times-circle, after);
 
+  display:                    none;
   left:                       50%;
   top:                        100px;
   z-index:                    10000;
   position:                   fixed;
-  width:                      600px;
+  width:                      700px;
   height:                     auto;
+  min-height:                 64px;
   padding:                    15px;
-  margin:                     0 0 0 -300px;
   text-align:                 center;
-  color:                      $ajax-response-text-color;
   outline:                    none;
   cursor:                     pointer;
-  display:                    none;
-  box-sizing:                 border-box;
   border-radius:              5px;
-
-  // Background defined below.
+  box-sizing:                 border-box;
+  margin:                     0 0 0 -350px;
+  background:                 $ajax-response-bg-color;
+  color:                      $ajax-response-text-color;
   box-shadow:                 0 0 5px 0 $ajax-response-box-shadow-color;
-
-  &.-wipe {
-    background:               $ajax-response-bg-color url('../images/wipe-response.png') no-repeat 5px 5px;
-  }
-
-  &.-clear {
-    background:               $ajax-response-bg-color url('../images/clear-response.png') no-repeat 5px 5px;
-  }
 
   &:hover,
   &.-hovered {
     background-color:         $ajax-response-bg-hover-color;
   }
 
-  &::before {
+  &.-wipe,
+  &.-clear {
+    &::before {
+      left:                   0;
+      top:                    0;
+      width:                  64px;
+      height:                 64px;
+      position:               absolute;
+    }
+  }
+
+  &.-wipe {
+    &::before {
+      content:                url('../images/wipe-response.png');
+    }
+  }
+
+  &.-clear {
+    &::before {
+      content:                url('../images/clear-response.png');
+    }
+  }
+
+  &::after {
     top:                      5px;
     right:                    8px;
-    position:                 absolute;
     opacity:                  0.5;
-    content:                  '\00d7';
-    font:                     18px/1em sans-serif;
+    font-size:                120%;
+    position:                 absolute;
   }
 
   p {
     margin:                   0;
     padding:                  0;
     opacity:                  0.35;
-    font:                     15px/1em sans-serif;
+    font:                     15px/1.2em sans-serif;
   }
 
   p:first-child {

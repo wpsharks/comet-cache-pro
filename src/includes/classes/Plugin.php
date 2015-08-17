@@ -203,7 +203,9 @@ class Plugin extends AbsBaseAp
 
             'dir_stats_enable',
             'dir_stats_admin_bar_enable',
+            'dir_stats_auto_refresh_max_resources',
             'dir_stats_refresh_time',
+            'dir_stats_history_days',
 
             'pro_update_check',
             'latest_pro_version',
@@ -329,9 +331,11 @@ class Plugin extends AbsBaseAp
 
             /* Related to cache directory statistics. */
 
-            'dir_stats_enable'           => is_multisite() ? '0' : '1', // `0|1`; enable?
-            'dir_stats_admin_bar_enable' => '1', // `0|1`; enable stats in admin bar?
-            'dir_stats_refresh_time'     => '15 minutes', // `strtotime()` compatible.
+            'dir_stats_enable'                     => is_multisite() ? '0' : '1', // `0|1`; enable?
+            'dir_stats_admin_bar_enable'           => '1', // `0|1`; enable stats in admin bar?
+            'dir_stats_auto_refresh_max_resources' => '1500', // Don't use cache if less than this.
+            'dir_stats_refresh_time'               => '15 minutes', // `strtotime()` compatible.
+            'dir_stats_history_days'               => '30', // Numeric; number of days.
 
             /* Related to automatic pro updates. */
 
@@ -476,7 +480,7 @@ class Plugin extends AbsBaseAp
                 /*[/pro]*/
                 $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__));
             }
-            add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'purgeCacheDir'));
+            add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'cleanupCache'));
 
             /*[pro strip-from="lite"]*/ // Auto-cache engine.
             add_action('_cron_'.GLOBAL_NS.'_auto_cache', array($this, 'autoCache'));

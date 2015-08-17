@@ -27,16 +27,16 @@ $self->cacheDir = function ($rel_path = '') use ($self) {
 };
 
 /*
- * Clear files from the cache directory (for all hosts/blogs);
+ * Wipe files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 15xxxx While working on directory stats.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
  *
- * @return integer Total files cleared by this routine (if any).
+ * @return integer Total files wiped by this routine.
  */
-$self->clearFilesFromCacheDir = function ($regex) use ($self) {
+$self->wipeFilesFromCacheDir = function ($regex) use ($self) {
     return $self->deleteFilesFromCacheDir($regex);
 };
 
@@ -55,16 +55,16 @@ $self->clearFilesFromHostCacheDir = function ($regex) use ($self) {
 };
 
 /*
- * Purge files from the cache directory (for all hosts/blogs);
+ * Wurge (purge) files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 15xxxx While working on directory stats.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
  *
- * @return integer Total files purged by this routine (if any).
+ * @return integer Total files wurged by this routine.
  */
-$self->purgeFilesFromCacheDir = function ($regex) use ($self) {
+$self->wurgeFilesFromCacheDir = function ($regex) use ($self) {
     return $self->deleteFilesFromCacheDir($regex, true);
 };
 
@@ -141,7 +141,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
     } else {
         $cache_dir_tmp_regex = '/^'.preg_quote($cache_dir_tmp.'/', '/').$cache_dir_tmp_regex;
     }
-    # if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/zc-debug.log', print_r($regex, TRUE)."\n".print_r($cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
+    # if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/'.strtolower(SHORT_NAME).'-debug.log', print_r($regex, TRUE)."\n".print_r($cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
     // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
     if (!rename($cache_dir, $cache_dir_tmp)) {
@@ -153,7 +153,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
         $_path_name     = $_resource->getPathname();
 
         if ($_resource_type !== 'dir' && strpos($_sub_path_name, '/') === false) {
-            continue; // Don't delete links/files in the immediate directory; e.g. `zc-advanced-cache` or `.htaccess`, etc.
+            continue; // Don't delete links/files in the immediate directory; e.g. `[SHORT_NAME]-advanced-cache` or `.htaccess`, etc.
             // Actual `http|https/...` cache links/files are nested. Links/files in the immediate directory are for other purposes.
         }
         switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
@@ -309,7 +309,7 @@ $self->deleteFilesFromHostCacheDir = function (
         } else {
             $_host_cache_dir_tmp_regex = '/^'.preg_quote($_host_cache_dir_tmp.'/', '/').$_host_cache_dir_tmp_regex;
         }
-        #if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/zc-debug.log', print_r($regex, TRUE)."\n".print_r($_host_cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
+        #if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/'.strtolower(SHORT_NAME).'-debug.log', print_r($regex, TRUE)."\n".print_r($_host_cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
         // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
         if (!rename($_host_cache_dir, $_host_cache_dir_tmp)) {
@@ -321,7 +321,7 @@ $self->deleteFilesFromHostCacheDir = function (
             $_path_name     = $_resource->getPathname();
 
             if ($_host_cache_dir === $cache_dir && $_resource_type !== 'dir' && strpos($_sub_path_name, '/') === false) {
-                continue; // Don't delete links/files in the immediate directory; e.g. `zc-advanced-cache` or `.htaccess`, etc.
+                continue; // Don't delete links/files in the immediate directory; e.g. `[SHORT_NAME]-advanced-cache` or `.htaccess`, etc.
                 // Actual `http|https/...` cache links/files are nested. Links/files in the immediate directory are for other purposes.
             }
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
@@ -424,7 +424,7 @@ $self->deleteFilesFromHostCacheDir = function (
 
 /*
  * Delete all files/dirs from a directory (for all schemes/hosts);
- *    including `zc-` prefixed files; or anything else for that matter.
+ *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
  *
  * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
@@ -499,7 +499,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
                     $self->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                     throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                ++$counter; // Increment counter for each directory we delete.
+                # ++$counter; // Increment counter for each directory we delete. ~ NO don't do that here.
 
                 break; // Break switch handler.
 
@@ -529,7 +529,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
 
 /*
  * Erase all files/dirs from a directory (for all schemes/hosts);
- *    including `zc-` prefixed files; or anything else for that matter.
+ *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
  *
  * WARNING: This does NO LOCKING and NO ATOMIC deletions.
  *
@@ -595,7 +595,7 @@ $self->eraseAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self)
                 if (!rmdir($_path_name)) {
                     throw new \Exception(sprintf(__('Unable to erase dir: `%1$s`.', SLUG_TD), $_path_name));
                 }
-                ++$counter; // Increment counter for each directory we erase.
+                # ++$counter; // Increment counter for each directory we erase. ~ NO don't do that here.
 
                 break; // Break switch handler.
 
@@ -616,7 +616,7 @@ $self->eraseAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self)
 
 /*
  * Try to erase all files/dirs from a directory (for all schemes/hosts);
- *    including `zc-` prefixed files; or anything else for that matter.
+ *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
  *
  * WARNING: This does NO LOCKING and NO ATOMIC deletions.
  *

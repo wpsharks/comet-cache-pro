@@ -306,7 +306,7 @@ msgid "close"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:115
-msgid "<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href=\"http://zencache.com/prices/\" target=\"_blank\">upgrading <i class=\"fa fa-heart-o\"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>"
+msgid "<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href=\"http://zencache.com/prices/\" target=\"_blank\">upgrading <i class=\"si si-heart-o\"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:120
@@ -338,7 +338,7 @@ msgid "No, disable."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:146
-msgid "<strong>HUGE Time-Saver:</strong> Approx. 95%% of all WordPress sites running %1$s, simply enable it here; and that's it :-) <strong>No further configuration is necessary (really).</strong> All of the other options (down below) are already tuned for the BEST performance on a typical WordPress installation. Simply enable %1$s here and click \"Save All Changes\". If you get any warnings please follow the instructions given. Otherwise, you're good <i class=\"fa fa-smile-o\"></i>. This plugin is designed to run just fine like it is. Take it for a spin right away; you can always fine-tune things later if you deem necessary."
+msgid "<strong>HUGE Time-Saver:</strong> Approx. 95%% of all WordPress sites running %1$s, simply enable it here; and that's it :-) <strong>No further configuration is necessary (really).</strong> All of the other options (down below) are already tuned for the BEST performance on a typical WordPress installation. Simply enable %1$s here and click \"Save All Changes\". If you get any warnings please follow the instructions given. Otherwise, you're good <i class=\"si si-smile-o\"></i>. This plugin is designed to run just fine like it is. Take it for a spin right away; you can always fine-tune things later if you deem necessary."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:149
@@ -354,7 +354,7 @@ msgid "Once %1$s has been enabled, <strong>you'll need to log out (and/or clear 
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:152
-msgid "<strong>To verify that %1$s is working</strong>, navigate your site like a normal visitor would. Right-click on any page (choose View Source), then scroll to the very bottom of the document. At the bottom, you'll find comments that show %1$s stats and information. You should also notice that page-to-page navigation is <i class=\"fa fa-flash\"></i> <strong>lightning fast</strong> now that %1$s is running; and it gets faster over time!"
+msgid "<strong>To verify that %1$s is working</strong>, navigate your site like a normal visitor would. Right-click on any page (choose View Source), then scroll to the very bottom of the document. At the bottom, you'll find comments that show %1$s stats and information. You should also notice that page-to-page navigation is <i class=\"si si-flash\"></i> <strong>lightning fast</strong> now that %1$s is running; and it gets faster over time!"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:154
@@ -642,7 +642,7 @@ msgid "Keep in mind that your Expiration Time is only one part of the big pictur
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:340
-msgid "All of that being said, you could set this to just <code>60 seconds</code> and you would still see huge differences in speed and performance. If you're just starting out with %1$s (perhaps a bit nervous about old cache files being served to your visitors); you could set this to something like <code>30 minutes</code>, and experiment with it while you build confidence in %1$s. It's not necessary to do so, but many site owners have reported this makes them feel like they're more-in-control when the cache has a short expiration time. All-in-all, it's a matter of preference <i class=\"fa fa-smile-o\"></i>."
+msgid "All of that being said, you could set this to just <code>60 seconds</code> and you would still see huge differences in speed and performance. If you're just starting out with %1$s (perhaps a bit nervous about old cache files being served to your visitors); you could set this to something like <code>30 minutes</code>, and experiment with it while you build confidence in %1$s. It's not necessary to do so, but many site owners have reported this makes them feel like they're more-in-control when the cache has a short expiration time. All-in-all, it's a matter of preference <i class=\"si si-smile-o\"></i>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:342
@@ -1063,7 +1063,7 @@ msgid "%1$s fully supports GZIP compression on its output. However, it does not 
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:645
-msgid "If you want to enable GZIP, create an <code>.htaccess</code> file in your WordPress® installation directory, and put the following few lines in it. Alternatively, if you already have an <code>.htaccess</code> file, just add these lines to it, and that is all there is to it. GZIP is now enabled in the recommended way! See also: <a href=\"https://developers.google.com/speed/articles/gzip\" target=\"_blank\"><i class=\"fa fa-youtube-play\"></i> video about GZIP Compression</a>."
+msgid "If you want to enable GZIP, create an <code>.htaccess</code> file in your WordPress® installation directory, and put the following few lines in it. Alternatively, if you already have an <code>.htaccess</code> file, just add these lines to it, and that is all there is to it. GZIP is now enabled in the recommended way! See also: <a href=\"https://developers.google.com/speed/articles/gzip\" target=\"_blank\"><i class=\"si si-youtube-play\"></i> video about GZIP Compression</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:659
@@ -1191,7 +1191,7 @@ msgid "Dynamic Version Salt"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:759
-msgid "<i class=\"fa fa-flask\"></i> <span style=\"display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;\"><span style=\"font-weight:bold; font-size:80%;\">GEEK ALERT</span></span> This is for VERY advanced users only..."
+msgid "<i class=\"si si-flask\"></i> <span style=\"display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;\"><span style=\"font-weight:bold; font-size:80%;\">GEEK ALERT</span></span> This is for VERY advanced users only..."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:760
@@ -1306,7 +1306,7 @@ msgid "%1$s™ Authentication"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:73
-msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://zencache.com/prices/\" target=\"_blank\">zencache.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href=\"http://zencache.com/\" target=\"_blank\">zencache.com</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://zencache.com/\" target=\"_blank\">zencache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"fa fa-smile-o\"></i>"
+msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://zencache.com/prices/\" target=\"_blank\">zencache.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href=\"http://zencache.com/\" target=\"_blank\">zencache.com</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://zencache.com/\" target=\"_blank\">zencache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"si si-smile-o\"></i>"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:75

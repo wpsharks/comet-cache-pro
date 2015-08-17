@@ -1,0 +1,80 @@
+// Animation :: spin.
+
+@mixin zencache-admin-bar-animation-spin {
+  @include animation-duration(0.75s);
+  @include animation-fill-mode(both);
+  @include animation-timing-function(linear);
+  @include animation-iteration-count(infinite);
+  @include animation-name(zencache-admin-bar-animation-spin);
+}
+
+.zencache-admin-bar-animation-spin {
+  @include zencache-admin-bar-animation-spin;
+}
+
+@include keyframes(zencache-admin-bar-animation-spin) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+
+  100% {
+    @include transform(rotate(360deg));
+  }
+}
+
+// Animation :: zoom-in-down.
+
+@mixin zencache-admin-bar-animation-zoom-in-down {
+  @include animation-duration(0.75s);
+  @include animation-fill-mode(both);
+  @include animation-name(zencache-admin-bar-animation-zoom-in-down);
+}
+
+.zencache-admin-bar-animation-zoom-in-down {
+  @include zencache-admin-bar-animation-zoom-in-down;
+}
+
+@include keyframes(zencache-admin-bar-animation-zoom-in-down) {
+  from {
+    @include transform(scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0));
+    @include animation-timing-function(cubic-bezier(0.55, 0.055, 0.675, 0.19));
+
+    opacity:                  0;
+  }
+
+  60% {
+    @include transform(scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0));
+    @include animation-timing-function(cubic-bezier(0.175, 0.885, 0.32, 1));
+
+    opacity:                  1;
+  }
+}
+
+// Animation :: zoom-out-up.
+
+@mixin zencache-admin-bar-animation-zoom-out-up {
+  @include animation-duration(0.15s);
+  @include animation-fill-mode(both);
+  @include animation-name(zencache-admin-bar-animation-zoom-out-up);
+}
+
+.zencache-admin-bar-animation-zoom-out-up {
+  @include zencache-admin-bar-animation-zoom-out-up;
+}
+
+@include keyframes(zencache-admin-bar-animation-zoom-out-up) {
+  40% {
+    @include transform(scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0));
+    @include animation-timing-function(cubic-bezier(0.55, 0.055, 0.675, 0.19));
+
+    opacity:                  1;
+  }
+
+  100% {
+    @include transform-origin(center bottom);
+    @include transform(scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0));
+    @include animation-timing-function(cubic-bezier(0.175, 0.885, 0.32, 1));
+
+    opacity:                  0;
+  }
+}

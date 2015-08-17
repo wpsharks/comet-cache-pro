@@ -191,11 +191,11 @@ $self->hostDirToken = function ($dashify = false, $consider_domain_mapping = fal
     $token       = trim($token, '\\/'." \t\n\r\0\x0B");
     $token       = isset($token[0]) ? '/'.$token.'/' : '/';
 
-    if ($token !== '/' // Perhaps NOT the main site?
-       && (!is_file(($cache_dir = $self->cacheDir()).'/zc-blog-paths')
-           || !in_array($token, unserialize(file_get_contents($cache_dir.'/zc-blog-paths')), true))
-    ) {
-        $token = '/'; // NOT a real/valid child blog path.
+    if ($token !== '/') { // Perhaps NOT the main site?
+        $blog_paths_file = $self->cacheDir().'/'.strtolower(SHORT_NAME).'-blog-paths';
+        if (!is_file($blog_paths_file) || !in_array($token, unserialize(file_get_contents($blog_paths_file)), true)) {
+            $token = '/'; // NOT a real/valid child blog path.
+        }
     }
     if ($token !== '/' && $dashify) {
         $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);
@@ -244,11 +244,11 @@ $self->hostDirTokenForBlog = function ($dashify = false, $consider_domain_mappin
     $token = trim($token, '\\/'." \t\n\r\0\x0B");
     $token = isset($token[0]) ? '/'.$token.'/' : '/';
 
-    if ($token !== '/' // Perhaps NOT the main site?
-       && (!is_file(($cache_dir = $self->cacheDir()).'/zc-blog-paths')
-           || !in_array($token, unserialize(file_get_contents($cache_dir.'/zc-blog-paths')), true))
-    ) {
-        $token = '/'; // NOT a real/valid child blog path.
+    if ($token !== '/') { // Perhaps NOT the main site?
+        $blog_paths_file = $self->cacheDir().'/'.strtolower(SHORT_NAME).'-blog-paths';
+        if (!is_file($blog_paths_file) || !in_array($token, unserialize(file_get_contents($blog_paths_file)), true)) {
+            $token = '/'; // NOT a real/valid child blog path.
+        }
     }
     if ($token !== '/' && $dashify) {
         $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);

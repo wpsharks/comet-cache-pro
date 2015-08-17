@@ -89,7 +89,7 @@ $self->uninstall = function () use ($self) {
     $self->deleteBaseDir();
 
     if (is_multisite()) { // Main site CRON jobs.
-        switch_to_blog($GLOBALS['current_site']->blog_id);
+        switch_to_blog(get_current_site()->blog_id);
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
         restore_current_blog(); // Restore current blog.
@@ -103,7 +103,7 @@ $self->uninstall = function () use ($self) {
     if (is_multisite()) { // Site options for a network installation.
         $wpdb->query('DELETE FROM `'.esc_sql($wpdb->sitemeta).'` WHERE `meta_key` LIKE \''.esc_sql($like).'\'');
 
-        switch_to_blog($GLOBALS['current_site']->blog_id); // In case it started as a standard WP installation.
+        switch_to_blog(get_current_site()->blog_id); // In case it started as a standard WP installation.
         $wpdb->query('DELETE FROM `'.esc_sql($wpdb->options).'` WHERE `option_name` LIKE \''.esc_sql($like).'\'');
         restore_current_blog(); // Restore current blog.
         //
@@ -200,7 +200,7 @@ $self->removeWpCacheFromWpConfig = function () use ($self) {
 };
 
 /*
- * Checks to make sure the `zc-advanced-cache` file still exists;
+ * Checks to make sure the `advanced-cache.php` file still exists;
  *    and if it doesn't, the `advanced-cache.php` is regenerated automatically.
  *
  * @since 150422 Rewrite.
@@ -223,8 +223,9 @@ $self->checkAdvancedCache = function () use ($self) {
     if (!empty($_REQUEST[GLOBAL_NS])) {
         return; // Skip on plugin actions.
     }
-    $cache_dir           = $self->cacheDir();
-    $advanced_cache_file = WP_CONTENT_DIR.'/advanced-cache.php';
+    $cache_dir                 = $self->cacheDir();
+    $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
+    $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
 
     // Fixes zero-byte advanced-cache.php bug related to migrating from Quick Cache
     //      See: <https://github.com/websharks/zencache/issues/432>
@@ -232,7 +233,7 @@ $self->checkAdvancedCache = function () use ($self) {
     // Also fixes a missing `define('WP_CACHE', TRUE)` bug related to migrating from Quick Cache
     //      See <https://github.com/websharks/zencache/issues/450>
 
-    if (!is_file($cache_dir.'/zc-advanced-cache') || !is_file($advanced_cache_file) || filesize($advanced_cache_file) === 0) {
+    if (!is_file($advanced_cache_check_file) || !is_file($advanced_cache_file) || filesize($advanced_cache_file) === 0) {
         $self->addAdvancedCache();
         $self->addWpCacheToWpConfig();
     }
@@ -245,15 +246,16 @@ $self->checkAdvancedCache = function () use ($self) {
  *
  * @return bool|null `TRUE` on success. `FALSE` or `NULL` on failure.
  *                   A special `NULL` return value indicates success with a single failure
- *                   that is specifically related to the `zc-advanced-cache` file.
+ *                   that is specifically related to the `[SHORT_NAME]-advanced-cache` file.
  */
 $self->addAdvancedCache = function () use ($self) {
     if (!$self->removeAdvancedCache()) {
         return false; // Still exists.
     }
-    $cache_dir               = $self->cacheDir();
-    $advanced_cache_file     = WP_CONTENT_DIR.'/advanced-cache.php';
-    $advanced_cache_template = dirname(dirname(dirname(__FILE__))).'/templates/advanced-cache.txt';
+    $cache_dir                 = $self->cacheDir();
+    $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
+    $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
+    $advanced_cache_template   = dirname(dirname(dirname(__FILE__))).'/templates/advanced-cache.txt';
 
     if (is_file($advanced_cache_file) && !is_writable($advanced_cache_file)) {
         return false; // Not possible to create.
@@ -362,9 +364,9 @@ $self->addAdvancedCache = function () use ($self) {
     if (is_writable($cache_dir) && !is_file($cache_dir.'/.htaccess')) {
         file_put_contents($cache_dir.'/.htaccess', $self->htaccess_deny);
     }
-    if (!is_dir($cache_dir) || !is_writable($cache_dir) || !is_file($cache_dir.'/.htaccess') || !file_put_contents($cache_dir.'/zc-advanced-cache', time())) {
+    if (!is_dir($cache_dir) || !is_writable($cache_dir) || !is_file($cache_dir.'/.htaccess') || !file_put_contents($advanced_cache_check_file, time())) {
         $self->cacheUnlock($cache_lock); // Release.
-        return; // Special return value (NULL) in this case.
+        return; // Special return value (NULL).
     }
     $self->cacheUnlock($cache_lock); // Release.
 
@@ -419,8 +421,8 @@ $self->removeAdvancedCache = function () use ($self) {
  */
 $self->deleteAdvancedCache = function () use ($self) {
     $cache_dir                 = $self->cacheDir();
-    $advanced_cache_check_file = $cache_dir.'/zc-advanced-cache';
     $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
+    $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
 
     if (is_file($advanced_cache_file)) {
         if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
@@ -436,8 +438,8 @@ $self->deleteAdvancedCache = function () use ($self) {
 };
 
 /*
- * Checks to make sure the `zc-blog-paths` file still exists;
- *    and if it doesn't, the `zc-blog-paths` file is regenerated automatically.
+ * Checks to make sure the `[SHORT_NAME]-blog-paths` file still exists;
+ *    and if it doesn't, the `[SHORT_NAME]-blog-paths` file is regenerated automatically.
  *
  * @since 150422 Rewrite.
  *
@@ -445,10 +447,10 @@ $self->deleteAdvancedCache = function () use ($self) {
  *
  * @note This runs so that remote deployments which completely wipe out an
  *    existing set of website files (like the AWS Elastic Beanstalk does) will NOT cause ZenCache
- *    to stop functioning due to the lack of a `zc-blog-paths` file, which is generated by ZenCache.
+ *    to stop functioning due to the lack of a `[SHORT_NAME]-blog-paths` file, which is generated by ZenCache.
  *
  *    For instance, if you have a Git repo with all of your site files; when you push those files
- *    to your website to deploy them, you most likely do NOT have the `zc-blog-paths` file.
+ *    to your website to deploy them, you most likely do NOT have the `[SHORT_NAME]-blog-paths` file.
  *    ZenCache creates this file on its own. Thus, if it's missing (and QC is active)
  *    we simply regenerate the file automatically to keep ZenCache running.
  */
@@ -462,15 +464,16 @@ $self->checkBlogPaths = function () use ($self) {
     if (!empty($_REQUEST[GLOBAL_NS])) {
         return; // Skip on plugin actions.
     }
-    $cache_dir = $self->cacheDir();
+    $cache_dir       = $self->cacheDir();
+    $blog_paths_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-blog-paths';
 
-    if (!is_file($cache_dir.'/zc-blog-paths')) {
+    if (!is_file($blog_paths_file)) {
         $self->updateBlogPaths();
     }
 };
 
 /*
- * Creates and/or updates the `zc-blog-paths` file.
+ * Creates and/or updates the `[SHORT_NAME]-blog-paths` file.
  *
  * @since 150422 Rewrite.
  *
@@ -491,7 +494,9 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
     if (!is_multisite()) {
         return $value; // N/A.
     }
-    $cache_dir  = $self->cacheDir();
+    $cache_dir       = $self->cacheDir();
+    $blog_paths_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-blog-paths';
+
     $cache_lock = $self->cacheLock();
 
     if (!is_dir($cache_dir)) {
@@ -517,7 +522,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
         }
         unset($_key, $_path); // Housekeeping.
 
-        file_put_contents($cache_dir.'/zc-blog-paths', serialize($paths));
+        file_put_contents($blog_paths_file, serialize($paths));
     }
     $self->cacheUnlock($cache_lock); // Release.
 

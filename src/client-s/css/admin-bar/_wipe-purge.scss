@@ -2,36 +2,44 @@
 
 #wp-admin-bar-zencache-wipe,
 #wp-admin-bar-zencache-clear {
-  > a::after {
-    content:                  ' ';
-    width:                    16px;
-    height:                   16px;
-    padding:                  0;
-    margin:                  -3px 0 0 5px;
-    border:                   0;
-    vertical-align:           middle;
-    display:                  inline-block;
-  }
-
-  &.-wiping,
-  &.-clearing {
-    > a::after {
-      @include zencache-animation-spin;
-
-      background:             url('../images/spinner.png');
+  > a {
+    &::after {
+      border:                 0;
+      padding:                0;
+      content:                ' ';
+      width:                  16px;
+      height:                 16px;
+      line-height:            16px;
+      vertical-align:         middle;
+      margin:                -3px 0 0 5px;
+      display:                inline-block;
     }
   }
-}
 
-#wp-admin-bar-zencache-wipe {
-  > a::after {
-    background:               url('../images/wipe.png');
+  &.-wipe {
+    > a {
+      &::after {
+        content:              url('../images/wipe.png');
+      }
+    }
   }
-}
 
-#wp-admin-bar-zencache-clear {
-  > a::after {
-    background:               url('../images/clear.png');
+  &.-clear {
+    > a {
+      &::after {
+        content:              url('../images/clear.png');
+      }
+    }
+  }
+
+  &.-processing {
+    > a {
+      &::after {
+        @include zencache-admin-bar-animation-spin;
+
+        content:              url('../images/spinner.png');
+      }
+    }
   }
 }
 

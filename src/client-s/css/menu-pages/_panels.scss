@@ -7,6 +7,7 @@
 
   .plugin-menu-page-panel-heading {
     @include user-select(none);
+    @include sharkicon(chevron-down, after);
 
     text-decoration:          none;
     padding:                  10px;
@@ -26,16 +27,12 @@
 
     &::after {
       font-size:              80%;
-      content:                '\f078';
-      font-weight:            normal;
-      font-family:            'FontAwesome';
       float:                  right;
       margin:                 0 0 0 5px;
-      display:                inline-block;
     }
 
     &.open::after {
-      content:                '\f077';
+      content:                map-get($sharkicons, chevron-up);
     }
 
     @at-root .pro-preview .plugin-menu-page-panel .plugin-menu-page-panel-heading {

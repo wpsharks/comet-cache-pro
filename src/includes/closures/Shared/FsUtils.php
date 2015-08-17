@@ -219,6 +219,101 @@ $self->abbrBytes = function ($string) use ($self) {
 };
 
 /*
+ * Directory stats.
+ *
+ * @since 15xxxx Adding a few statistics.
+ *
+ * @param string $dir An absolute server directory path.
+ * @param string $regex A regex pattern; compares to each full file path.
+ * @param boolean $include_paths Include array of all scanned file paths?
+ * @param boolean $check_disk Also check disk statistics?
+ * @param boolean $no_cache Do not read/write cache?
+ *
+ * @return array Directory stats.
+ */
+$self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $check_disk = true, $no_cache = false) use ($self) {
+    $dir        = (string) $dir; // Force string.
+    $cache_keys = array($dir, $regex, $include_paths, $check_disk);
+    if (!$no_cache && !is_null($stats = &$self->staticKey('getDirRegexStats', $cache_keys))) {
+        return $stats; // Already cached this.
+    }
+    $stats = array(
+        'total_size'        => 0,
+        'total_resources'   => 0,
+        'total_links_files' => 0,
+
+        'total_links'   => 0,
+        'link_subpaths' => array(),
+
+        'total_files'   => 0,
+        'file_subpaths' => array(),
+
+        'total_dirs'   => 0,
+        'dir_subpaths' => array(),
+
+        'disk_total_space' => 0,
+        'disk_free_space'  => 0,
+    );
+    if (!$dir || !is_dir($dir)) {
+        return $stats; // Not possible.
+    }
+    $short_name_lc = strtolower(SHORT_NAME); // Once only.
+
+    foreach ($self->dirRegexIteration($dir, $regex) as $_resource) {
+        $_resource_sub_path = $_resource->getSubpathname();
+        $_resource_basename = basename($_resource_sub_path);
+
+        if ($_resource_basename === '.DS_Store') {
+            continue; // Ignore `.htaccess`.
+        }
+        if ($_resource_basename === '.htaccess') {
+            continue; // Ignore `.htaccess`.
+        }
+        if (stripos($_resource_sub_path, $short_name_lc.'-') === 0) {
+            continue; // Ignore [SHORT_NAME] files in base.
+        }
+        switch ($_resource->getType()) { // `link`, `file`, `dir`.
+            case 'link':
+                if ($include_paths) {
+                    $stats['link_subpaths'][] = $_sub_path;
+                }
+                ++$stats['total_resources'];
+                ++$stats['total_links_files'];
+                ++$stats['total_links'];
+
+                break; // Break switch.
+
+            case 'file':
+                if ($include_paths) {
+                    $stats['file_subpaths'][] = $_sub_path;
+                }
+                $stats['total_size'] += $_resource->getSize();
+                ++$stats['total_resources'];
+                ++$stats['total_links_files'];
+                ++$stats['total_files'];
+
+                break; // Break switch.
+
+            case 'dir':
+                if ($include_paths) {
+                    $stats['dir_subpaths'][] = $_sub_path;
+                }
+                ++$stats['total_resources'];
+                ++$stats['total_dirs'];
+
+                break; // Break switch.
+        }
+    }
+    unset($_resource, $_resource_sub_path, $_resource_basename); // Housekeeping.
+
+    if ($check_disk) { // Check disk also?
+        $stats['disk_total_space'] = disk_total_space($dir);
+        $stats['disk_free_space']  = disk_free_space($dir);
+    }
+    return $stats;
+};
+
+/*
  * Apache `.htaccess` rules that deny public access to the contents of a directory.
  *
  * @since 150422 Rewrite.

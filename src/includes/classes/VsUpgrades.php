@@ -60,7 +60,7 @@ class VsUpgrades extends AbsBase
             delete_site_option('ws_plugin__qcache_configured');
 
             if (is_multisite()) { // Main site CRON jobs.
-                switch_to_blog($GLOBALS['current_site']->blog_id);
+                switch_to_blog(get_current_site()->blog_id);
                 wp_clear_scheduled_hook('ws_plugin__qcache_garbage_collector__schedule');
                 wp_clear_scheduled_hook('ws_plugin__qcache_auto_cache_engine__schedule');
                 restore_current_blog(); // Restore.
@@ -194,7 +194,7 @@ class VsUpgrades extends AbsBase
             delete_site_option('quick_cache_options');
 
             if (is_multisite()) { // Main site CRON jobs.
-                switch_to_blog($GLOBALS['current_site']->blog_id);
+                switch_to_blog(get_current_site()->blog_id);
                 wp_clear_scheduled_hook('_cron_quick_cache_auto_cache');
                 wp_clear_scheduled_hook('_cron_quick_cache_cleanup');
                 restore_current_blog(); // Restore.
@@ -246,6 +246,7 @@ class VsUpgrades extends AbsBase
             delete_site_option(GLOBAL_NS.'_errors'); // No longer necessary.
 
             if (is_multisite() && is_array($child_blogs = wp_get_sites())) {
+                $current_site = get_current_site(); // Current site.
                 foreach ($child_blogs as $_child_blog) {
                     switch_to_blog($_child_blog['blog_id']);
 
@@ -254,7 +255,7 @@ class VsUpgrades extends AbsBase
                     delete_option(GLOBAL_NS.'_options');
                     delete_option(GLOBAL_NS.'_apc_warning_bypass');
 
-                    if ((integer) $_child_blog['blog_id'] !== (integer) $GLOBALS['current_site']->blog_id) {
+                    if ((integer) $_child_blog['blog_id'] !== (integer) $current_site->blog_id) {
                         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
                         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
                     }

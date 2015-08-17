@@ -179,15 +179,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
-                "reference": "aa793546f57ff08fc6b2f37619a7b59c5ebf5241"
+                "reference": "b9ed1f30c66617768c82596cb54b7507c235b047"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/aa793546f57ff08fc6b2f37619a7b59c5ebf5241",
-                "reference": "aa793546f57ff08fc6b2f37619a7b59c5ebf5241",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/b9ed1f30c66617768c82596cb54b7507c235b047",
+                "reference": "b9ed1f30c66617768c82596cb54b7507c235b047",
                 "shasum": ""
             },
+            "require-dev": {
+                "package/bourbon": "4.2.3"
+            },
             "type": "library",
+            "autoload": {
+                "psr-4": []
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0+"
@@ -216,7 +222,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-06-04 23:51:54"
+            "time": "2015-08-15 02:47:56"
         },
         {
             "name": "websharks/wp-php-rv",
