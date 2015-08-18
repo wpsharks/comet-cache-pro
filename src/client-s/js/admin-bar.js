@@ -141,7 +141,9 @@
     }
     plugin.dirStatsRunning = true;
 
-    var canSeeMore = !plugin.vars.isMultisite || plugin.vars.currentUserHasNetworkCap,
+    var canSeeMore = !plugin.vars.isMultisite || plugin.vars.currentUserHasNetworkCap;
+
+    var $body = $('body'), // Needed below.
 
       $stats = $('#wp-admin-bar-' + plugin.namespace + '-dir-stats'),
 
@@ -159,9 +161,9 @@
       $diskFree = $disk.find('.-free'),
       $diskSize = $disk.find('.-size'),
 
-      $moreInfo = $container.find('.-more-info'),
+      $moreInfo = $container.find('.-more-info');
 
-      beforeData = function () {
+    var beforeData = function () {
         if (!$stats.hasClass('hover')) {
           plugin.dirStatsRunning = false;
           return; // Hidden now.
@@ -205,13 +207,13 @@
         $chart.css('display', 'block');
 
         var chart = null, // Initialize.
-          chartDimensions = null, // Initialize.
+          chartDimensions = null; // Initialize.
 
-          forCache = canSeeMore ? 'forCache' : 'forHostCache',
+        var forCache = canSeeMore ? 'forCache' : 'forHostCache',
           forHtmlCCache = canSeeMore ? 'forHtmlCCache' : 'forHtmlCHostCache',
-          largestCacheSize = canSeeMore ? 'largestCacheSize' : 'largestHostCacheSize',
+          largestCacheSize = canSeeMore ? 'largestCacheSize' : 'largestHostCacheSize';
 
-          largestSize = plugin.dirStatsData[largestCacheSize].size,
+        var largestSize = plugin.dirStatsData[largestCacheSize].size,
           largestSizeInDays = plugin.dirStatsData[largestCacheSize].days,
 
           forCache_totalLinksFiles = plugin.dirStatsData[forCache].stats.total_links_files,
@@ -225,64 +227,91 @@
           forCache_diskSize = plugin.dirStatsData[forCache].stats.disk_total_space,
           forCache_diskFree = plugin.dirStatsData[forCache].stats.disk_free_space,
 
-          chartOptions = { // Chart.js config. options.
-            responsive: true,
-            animationSteps: 35,
+          forHostCache_totalLinksFiles = 0,
+          forHtmlCHostCache_totalLinksFiles = 0,
+          hostTotalLinksFiles = 0,
+          forHostCache_totalSize = 0,
+          forHtmlCHostCache_totalSize = 0,
+          hostTotalSize = 0; // Initializing only, for now.
 
-            scaleSteps: 10,
-            scaleStepWidth: 1,
-            scaleFontSize: 10,
-            scaleShowLine: true,
-            scaleBeginAtZero: false,
-            scaleStartValue: 10000000,
-            scaleFontFamily: 'sans-serif',
-            scaleShowLabelBackdrop: true,
-            scaleBackdropPaddingY: 2,
-            scaleBackdropPaddingX: 4,
-            scaleFontColor: 'rgba(0,0,0,1)',
-            scaleBackdropColor: 'rgba(255,255,255,1)',
-            scaleLineColor: $('body').hasClass('admin-color-light') ?
-              'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)',
-            scaleLabel: function (payload) {
-              return plugin.bytesToSizeLabel(payload.value);
-            },
+        if (plugin.vars.isMultisite && plugin.vars.currentUserHasNetworkCap) {
+          forHostCache_totalLinksFiles = plugin.dirStatsData.forHostCache.stats.total_links_files;
+          forHtmlCHostCache_totalLinksFiles = plugin.dirStatsData.forHtmlCHostCache.stats.total_links_files;
+          hostTotalLinksFiles = forHostCache_totalLinksFiles + forHtmlCHostCache_totalLinksFiles;
 
-            tooltipFontSize: 12,
-            tooltipFillColor: 'rgba(0,0,0,1)',
-            tooltipFontFamily: 'Georgia, serif',
-            tooltipTemplate: function (payload) {
-              return payload.label + ': ' + plugin.bytesToSizeLabel(payload.value);
-            },
+          forHostCache_totalSize = plugin.dirStatsData.forHostCache.stats.total_size;
+          forHtmlCHostCache_totalSize = plugin.dirStatsData.forHtmlCHostCache.stats.total_size;
+          hostTotalSize = forHostCache_totalSize + forHtmlCHostCache_totalSize;
+        }
+        var chartOptions = { // Chart.js config. options.
+          responsive: true,
+          animationSteps: 35,
 
-            segmentShowStroke: true,
-            segmentStrokeWidth: 1,
-            segmentStrokeColor: $('body').hasClass('admin-color-light') ?
-              'rgba(0,0,0,1)' : 'rgba(255,255,255,1)'
-          }, // ↑ Merged w/ global config. options.
+          scaleSteps: 10,
+          scaleStepWidth: 1,
+          scaleFontSize: 10,
+          scaleShowLine: true,
+          scaleBeginAtZero: true,
+          scaleFontFamily: 'sans-serif',
+          scaleShowLabelBackdrop: true,
+          scaleBackdropPaddingY: 2,
+          scaleBackdropPaddingX: 4,
+          scaleFontColor: 'rgba(0,0,0,1)',
+          scaleBackdropColor: 'rgba(255,255,255,1)',
+          scaleLineColor: $('body').hasClass('admin-color-light') ?
+            'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)',
+          scaleLabel: function (payload) {
+            return plugin.bytesToSizeLabel(payload.value);
+          },
 
-          chartData = [{
-            value: largestSize,
-            label: plugin.vars.i18n.xDayHigh
-              .replace('%s', largestSizeInDays),
-            color: '#ff5050',
-            highlight: '#c63f3f'
-          }, {
-            value: totalSize,
-            label: plugin.vars.i18n.currentTotalSize,
-            color: '#46bf52',
-            highlight: '#33953e'
-          }, {
-            value: forCache_totalSize,
-            label: plugin.vars.i18n.pageCache,
-            color: '#0096CC',
-            highlight: '#057ca7'
-          }, {
-            value: forHtmlCCache_totalSize,
-            label: plugin.vars.i18n.htmlCompressor,
-            color: '#FFC870',
-            highlight: '#d6a85d'
-          }];
+          tooltipFontSize: 12,
+          tooltipFillColor: 'rgba(0,0,0,1)',
+          tooltipFontFamily: 'Georgia, serif',
+          tooltipTemplate: function (payload) {
+            return payload.label + ': ' + plugin.bytesToSizeLabel(payload.value);
+          },
 
+          segmentShowStroke: true,
+          segmentStrokeWidth: 1,
+          segmentStrokeColor: $('body').hasClass('admin-color-light') ?
+            'rgba(0,0,0,1)' : 'rgba(255,255,255,1)'
+        }; // ↑ Merged w/ global config. options.
+
+        var chartData = [];
+
+        chartData.push({
+          value: largestSize,
+          label: plugin.vars.i18n.xDayHigh
+            .replace('%s', largestSizeInDays),
+          color: '#ff5050',
+          highlight: '#c63f3f'
+        });
+        chartData.push({
+          value: totalSize,
+          label: plugin.vars.i18n.currentTotalSize,
+          color: '#46bf52',
+          highlight: '#33953e'
+        });
+        chartData.push({
+          value: forCache_totalSize,
+          label: plugin.vars.i18n.pageCache,
+          color: '#0096CC',
+          highlight: '#057ca7'
+        });
+        chartData.push({
+          value: forHtmlCCache_totalSize,
+          label: plugin.vars.i18n.htmlCompressor,
+          color: '#FFC870',
+          highlight: '#d6a85d'
+        });
+        if (plugin.vars.isMultisite && plugin.vars.currentUserHasNetworkCap) {
+          chartData.push({
+            value: hostTotalSize,
+            label: plugin.vars.i18n.currentSiteSize,
+            color: '#46bfb4',
+            highlight: '#348f87'
+          });
+        }
         if ((chart = $stats.data('chart'))) {
           chart.destroy(); // Destroy previous.
         }

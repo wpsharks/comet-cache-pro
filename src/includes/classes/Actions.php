@@ -160,14 +160,21 @@ class Actions extends AbsBase
         if (!$this->plugin->options['dir_stats_admin_bar_enable']) {
             exit(); // Not applicable.
         }
-        $dir_stats = DirStats::instance(); // Directory stats.
+        $dir_stats    = DirStats::instance(); // Directory stats.
+        $is_multisite = is_multisite(); // Once only.
 
-        if (!is_multisite()  || current_user_can($this->plugin->network_cap)) {
+        if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
             $dir_stats_data = array(
                 'forCache'         => $dir_stats->forCache(),
                 'forHtmlCCache'    => $dir_stats->forHtmlCCache(),
                 'largestCacheSize' => $dir_stats->largestCacheSize(),
             );
+            if ($is_multisite) {
+                $dir_stats_data = array(
+                    'forHostCache'      => $dir_stats->forHostCache(),
+                    'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
+                );
+            }
         } else { // Stats for a child blog owner w/o access to more info.
             $dir_stats_data = array(
                 'forHostCache'         => $dir_stats->forHostCache(),

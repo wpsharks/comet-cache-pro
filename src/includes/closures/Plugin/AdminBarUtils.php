@@ -139,6 +139,7 @@ $self->adminBarMetaTags = function () use ($self) {
         '_wpnonce'                 => wp_create_nonce(),
         'isMultisite'              => is_multisite(), // Network?
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
+        'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
         'i18n'                     => array(
             'name'             => NAME,
@@ -147,6 +148,7 @@ $self->adminBarMetaTags = function () use ($self) {
             'pageCache'        => __('Page Cache', SLUG_TD),
             'htmlCompressor'   => __('HTML Compressor', SLUG_TD),
             'currentTotalSize' => __('Current Total Size', SLUG_TD),
+            'currentSiteSize'  => __('Current Site Size', SLUG_TD),
             'xDayHigh'         => __('%s Day High', SLUG_TD),
         ),
     );
