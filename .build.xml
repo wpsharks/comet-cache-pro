@@ -707,6 +707,7 @@
           </fileset>
           <filterchain>
             <replaceregexp>
+              <regexp pattern="\/\*\!\[pro strip\-from\=['&quot;]lite['&quot;]\]\*\/(?:.*?)\/\*\!\[\/pro\]\*\/" replace="" modifiers="s" />
               <regexp pattern="\/\*\[pro strip\-from\=['&quot;]lite['&quot;]\]\*\/(?:.*?)\/\*\[\/pro\]\*\/" replace="" modifiers="s" />
             </replaceregexp>
           </filterchain>

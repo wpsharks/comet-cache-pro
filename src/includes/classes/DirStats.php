@@ -735,13 +735,13 @@ class DirStats extends AbsBase
     }
 
     /**
-     * Largest cache size in last X days.
+     * Largest cache size in last X days (current host).
      *
      * @since 15xxxx Adding cache directory statistics.
      *
      * @param int $last_x_days Last X days (optional).
      *
-     * @return \stdClass Largest cache size in last X days.
+     * @return \stdClass Largest cache size in last X days (current host).
      */
     public function largestHostCacheSize($last_x_days = null)
     {
@@ -773,6 +773,88 @@ class DirStats extends AbsBase
         unset($_key, $_time, $_stats); // Housekeeping.
 
         return (object) array('days' => $last_x_days, 'size' => $largest_size);
+    }
+
+    /**
+     * Largest cache count in last X days.
+     *
+     * @since 15xxxx Adding cache directory statistics.
+     *
+     * @param int $last_x_days Last X days (optional).
+     *
+     * @return \stdClass Largest cache count in last X days.
+     */
+    public function largestCacheCount($last_x_days = null)
+    {
+        if (!is_integer($last_x_days) || $last_x_days <= 0) {
+            $last_x_days = max(1, $this->plugin->options['dir_stats_history_days']);
+        }
+        $largest_count  = 0; // Initialize.
+        $largest_counts = array(); // Initialize.
+
+        $history_cache   = $this->getHistoryCache();
+        $history_max_age = strtotime('-'.$last_x_days.' days');
+
+        foreach ($this->allowed_history_cache_keys as $_key) {
+            if (empty($history_cache[$_key]) || !is_array($history_cache[$_key])) {
+                continue; // Not possible at this time.
+            }
+            $largest_counts[$_key] = 0; // Initialize largest count for this key.
+
+            foreach ($history_cache[$_key] as $_time => $_stats) { // Each time in this key.
+                if (!$_time || !isset($_stats->stats, $_stats->time) || !is_object($_stats->stats)) {
+                    continue; // Not possible w/ these stats.
+                }
+                if ($_time >= $history_max_age && $_stats->time >= $history_max_age && isset($_stats->stats->total_links_files)) {
+                    $largest_counts[$_key] = max($largest_counts[$_key], $_stats->stats->total_links_files);
+                }
+            }
+            $largest_count += $largest_counts[$_key]; // Collectively.
+        }
+        unset($_key, $_time, $_stats); // Housekeeping.
+
+        return (object) array('days' => $last_x_days, 'count' => $largest_count);
+    }
+
+    /**
+     * Largest cache count in last X days (current host).
+     *
+     * @since 15xxxx Adding cache directory statistics.
+     *
+     * @param int $last_x_days Last X days (optional).
+     *
+     * @return \stdClass Largest cache count in last X days (current host).
+     */
+    public function largestHostCacheCount($last_x_days = null)
+    {
+        if (!is_integer($last_x_days) || $last_x_days <= 0) {
+            $last_x_days = max(1, $this->plugin->options['dir_stats_history_days']);
+        }
+        $largest_count  = 0; // Initialize.
+        $largest_counts = array(); // Initialize.
+
+        $host_history_cache   = $this->getHostHistoryCache();
+        $host_history_max_age = strtotime('-'.$last_x_days.' days');
+
+        foreach ($this->allowed_host_history_cache_keys as $_key) {
+            if (empty($host_history_cache[$_key]) || !is_array($host_history_cache[$_key])) {
+                continue; // Not possible at this time.
+            }
+            $largest_counts[$_key] = 0; // Initialize largest count for this key.
+
+            foreach ($host_history_cache[$_key] as $_time => $_stats) { // Each time in this key.
+                if (!$_time || !isset($_stats->stats, $_stats->time) || !is_object($_stats->stats)) {
+                    continue; // Not possible w/ these stats.
+                }
+                if ($_time >= $host_history_max_age && $_stats->time >= $host_history_max_age && isset($_stats->stats->total_links_files)) {
+                    $largest_counts[$_key] = max($largest_counts[$_key], $_stats->stats->total_links_files);
+                }
+            }
+            $largest_count += $largest_counts[$_key]; // Collectively.
+        }
+        unset($_key, $_time, $_stats); // Housekeeping.
+
+        return (object) array('days' => $last_x_days, 'count' => $largest_count);
     }
 }
 /*[/pro]*/

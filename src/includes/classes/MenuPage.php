@@ -1,8 +1,6 @@
 <?php
 namespace WebSharks\ZenCache\Pro;
 
-// @TODO Cache directory statistics/charts.
-
 /**
  * Menu Page.
  *
@@ -26,6 +24,12 @@ class MenuPage extends AbsBase
                 case 'options':
                     new MenuPageOptions();
                     break;
+
+                /*[pro strip-from="lite"]*/
+                case 'dir-stats':
+                    new MenuPageDirStats();
+                    break;
+                /*[/pro]*/
 
                 /*[pro strip-from="lite"]*/
                 case 'pro-updater':

@@ -165,9 +165,10 @@ class Actions extends AbsBase
 
         if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
             $dir_stats_data = array(
-                'forCache'         => $dir_stats->forCache(),
-                'forHtmlCCache'    => $dir_stats->forHtmlCCache(),
-                'largestCacheSize' => $dir_stats->largestCacheSize(),
+                'forCache'          => $dir_stats->forCache(),
+                'forHtmlCCache'     => $dir_stats->forHtmlCCache(),
+                'largestCacheSize'  => $dir_stats->largestCacheSize(),
+                'largestCacheCount' => $dir_stats->largestCacheCount(),
             );
             if ($is_multisite) {
                 $dir_stats_data = array(
@@ -177,9 +178,10 @@ class Actions extends AbsBase
             }
         } else { // Stats for a child blog owner w/o access to more info.
             $dir_stats_data = array(
-                'forHostCache'         => $dir_stats->forHostCache(),
-                'forHtmlCHostCache'    => $dir_stats->forHtmlCHostCache(),
-                'largestHostCacheSize' => $dir_stats->largestHostCacheSize(),
+                'forHostCache'          => $dir_stats->forHostCache(),
+                'forHtmlCHostCache'     => $dir_stats->forHtmlCHostCache(),
+                'largestHostCacheSize'  => $dir_stats->largestHostCacheSize(),
+                'largestHostCacheCount' => $dir_stats->largestHostCacheCount(),
             );
         }
         header('Content-Type: application/json; charset=UTF-8');

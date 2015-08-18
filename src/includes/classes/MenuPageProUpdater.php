@@ -25,7 +25,7 @@ class MenuPageProUpdater extends MenuPage
 
         echo '<div class="plugin-menu-page-heading">'."\n";
 
-        echo '   <button type="submit" style="float:right; margin-right:1.5em;">'.__('Update Now', SLUG_TD).' <i class="si si-magic"></i></button>'."\n";
+        echo '   <button type="submit" style="float:right;">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-togglers" title="'.esc_attr(__('All Panels', SLUG_TD)).'">'."\n";
         echo '      <button type="button" class="plugin-menu-page-panels-open"><i class="si si-chevron-down"></i></button>'."\n";
@@ -34,7 +34,7 @@ class MenuPageProUpdater extends MenuPage
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
         if (current_user_can($this->plugin->cap)) {
-            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="si si-gears"></i> '.__('Options', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="si si-cogs"></i> '.__('Options', SLUG_TD).'</a>'."\n";
         }
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
@@ -104,7 +104,7 @@ class MenuPageProUpdater extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<div class="plugin-menu-page-save">'."\n";
-        echo '   <button type="submit">'.__('Update Now', SLUG_TD).' <i class="si si-magic"></i></button>'."\n";
+        echo '   <button type="submit">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
         echo '</div>'."\n";
 
         /* ----------------------------------------------------------------------------------------- */

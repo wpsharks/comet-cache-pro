@@ -5,9 +5,16 @@
 @include sharkicon-short-classes;
 
 @import 'menu-pages/colors';
+@import 'menu-pages/animations';
+@import 'menu-pages/html-tag';
 @import 'menu-pages/wpwrap';
 @import 'menu-pages/elements';
 @import 'menu-pages/heading';
+@import 'menu-pages/body';
 @import 'menu-pages/sections';
 @import 'menu-pages/panels';
 @import 'menu-pages/save';
+
+/*![pro strip-from='lite']*/
+@import 'menu-pages/dir-stats';
+/*![/pro]*/

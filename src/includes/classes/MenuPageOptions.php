@@ -325,7 +325,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('Directory / Expiration Time', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('Directory / Expiration Time', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -350,7 +350,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('Client-Side Cache', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('Client-Side Cache', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -376,7 +376,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-gears"></i> '.__('Logged-In Users', SLUG_TD)."\n";
+            echo '      <i class="si si-cogs"></i> '.__('Logged-In Users', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
@@ -401,7 +401,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('GET Requests', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('GET Requests', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -423,7 +423,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('404 Requests', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('404 Requests', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -445,7 +445,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('RSS, RDF, and Atom Feeds', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('RSS, RDF, and Atom Feeds', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -466,7 +466,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('URI Exclusion Patterns', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('URI Exclusion Patterns', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -484,7 +484,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('HTTP Referrer Exclusion Patterns', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('HTTP Referrer Exclusion Patterns', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -502,7 +502,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('User-Agent Exclusion Patterns', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('User-Agent Exclusion Patterns', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -521,7 +521,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-gears"></i> '.__('Auto-Cache Engine', SLUG_TD)."\n";
+            echo '      <i class="si si-cogs"></i> '.__('Auto-Cache Engine', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
@@ -562,7 +562,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-gears"></i> '.__('HTML Compression', SLUG_TD)."\n";
+            echo '      <i class="si si-cogs"></i> '.__('HTML Compression', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
@@ -634,7 +634,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('GZIP Compression', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('GZIP Compression', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -656,7 +656,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-gears"></i> '.__('Static CDN Filters', SLUG_TD)."\n";
+            echo '      <i class="si si-cogs"></i> '.__('Static CDN Filters', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
@@ -751,7 +751,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-gears"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
+            echo '      <i class="si si-cogs"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
@@ -777,7 +777,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-gears"></i> '.__('Theme/Plugin Developers', SLUG_TD)."\n";
+        echo '      <i class="si si-cogs"></i> '.__('Theme/Plugin Developers', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -798,7 +798,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-gears"></i> '.__('Import/Export Options', SLUG_TD)."\n";
+            echo '      <i class="si si-cogs"></i> '.__('Import/Export Options', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";

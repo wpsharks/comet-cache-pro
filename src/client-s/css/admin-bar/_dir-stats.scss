@@ -77,7 +77,7 @@ $dir-stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
         }
       }
 
-      .-chart {
+      .-chart-a {
         width:                250px;
         height:               250px;
       }
@@ -113,6 +113,11 @@ $dir-stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
             margin:           0 .5em 0 0;
           }
         }
+
+        .-dir {
+          opacity:            0.75;
+          font-family:        monospace;
+        }
       }
 
       .-disk {
@@ -141,6 +146,11 @@ $dir-stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
             margin:           0 .5em 0 0;
           }
         }
+      }
+
+      .-chart-b {
+        width:                250px;
+        height:               100px;
       }
 
       .-more-info {

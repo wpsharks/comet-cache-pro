@@ -89,19 +89,22 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
 
                 'title' => '<div class="-refreshing"></div>'.
 
-                            '<canvas class="-chart"></canvas>'.
+                            '<canvas class="-chart-a"></canvas>'.
 
                             '<div class="-totals">'.
                             '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
-                            '  <div class="-files"><span>&nbsp;</span></div>'.
-                            '  <div class="-size"><span>&nbsp;</span></div>'.
+                            '  <div class="-files"><span class="-value">&nbsp;</span></div>'.
+                            '  <div class="-size"><span class="-value">&nbsp;</span></div>'.
+                            '  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$self->options['base_dir'].'/*').'</div>'.
                             '</div>'.
 
                             '<div class="-disk">'.
                             '  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'.
-                            '  <div class="-size"><span>&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
-                            '  <div class="-free"><span>&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
+                            '  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
+                            '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
                             '</div>'.
+
+                            // '<canvas class="-chart-b"></canvas>'.
 
                             '<div class="-more-info">'.
                             '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-dir-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
@@ -142,18 +145,18 @@ $self->adminBarMetaTags = function () use ($self) {
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
         'i18n'                     => array(
-            'name'             => NAME,
-            'file'             => __('file', SLUG_TD),
-            'files'            => __('files', SLUG_TD),
-            'pageCache'        => __('Page Cache', SLUG_TD),
-            'htmlCompressor'   => __('HTML Compressor', SLUG_TD),
-            'currentTotalSize' => __('Current Total Size', SLUG_TD),
-            'currentSiteSize'  => __('Current Site Size', SLUG_TD),
-            'xDayHigh'         => __('%s Day High', SLUG_TD),
+            'name'           => NAME,
+            'file'           => __('file', SLUG_TD),
+            'files'          => __('files', SLUG_TD),
+            'pageCache'      => __('Page Cache', SLUG_TD),
+            'htmlCompressor' => __('HTML Compressor', SLUG_TD),
+            'currentTotal'   => __('Current Total', SLUG_TD),
+            'currentSite'    => __('Current Site', SLUG_TD),
+            'xDayHigh'       => __('%s Day High', SLUG_TD),
         ),
     );
-    echo '<meta property="'.esc_attr(GLOBAL_NS).':vars" content="data-json"'.
-         ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-vars" />'."\n";
+    echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
+         ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
 };
 
 /*
@@ -176,7 +179,7 @@ $self->adminBarStyles = function () use ($self) {
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.css'), $deps, VERSION, 'all');
+    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -203,6 +206,6 @@ $self->adminBarScripts = function () use ($self) {
         $deps[] = 'chartjs'; // Add ChartJS dependency.
         wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
     }
-    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.js'), $deps, VERSION, true);
+    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
 };
 /*[/pro]*/
