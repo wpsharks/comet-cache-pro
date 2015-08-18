@@ -90,6 +90,7 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
                 'title' => '<div class="-refreshing"></div>'.
 
                             '<canvas class="-chart-a"></canvas>'.
+                            // '<canvas class="-chart-b"></canvas>'.
 
                             '<div class="-totals">'.
                             '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
@@ -103,8 +104,6 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
                             '  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
                             '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
                             '</div>'.
-
-                            // '<canvas class="-chart-b"></canvas>'.
 
                             '<div class="-more-info">'.
                             '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-dir-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.

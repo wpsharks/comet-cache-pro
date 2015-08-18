@@ -78,9 +78,8 @@ $ajax-response-code-bg-color: #eee;
   }
 
   code {
-    padding:                  1px 3px;
-    font-size:                18px;
     border-radius:            3px;
+    padding:                  1px 3px;
     color:                    $ajax-response-code-color;
     background:               $ajax-response-code-bg-color;
   }

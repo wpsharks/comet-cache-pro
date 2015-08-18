@@ -70,6 +70,7 @@
         }
 
         .-dir {
+          font-size:          90%;
           opacity:            0.75;
           font-family:        monospace;
         }
@@ -132,6 +133,8 @@
 
         .-canvas {
           width:              100%;
+          min-width:          100%;
+          height:             auto;
         }
       }
     }

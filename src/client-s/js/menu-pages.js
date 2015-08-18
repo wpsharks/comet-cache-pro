@@ -152,8 +152,8 @@
         $totals.css('visibility', 'hidden');
         $disk.css('visibility', 'hidden');
 
-        if (!canSeeMore) {
-          $totalDir.hide();
+        if (!canSeeMore || $.trim($totalDir.text()).length > 30) {
+          $totalDir.hide(); // Hide this.
         }
         if (!plugin.dirStatsData) {
           var postVars = {
@@ -225,11 +225,14 @@
         }
         var chartAOptions = { // Chart.js config. options.
             responsive: true,
+            maintainAspectRatio: true,
+
             animationSteps: 35,
 
             scaleFontSize: 14,
             scaleShowLine: true,
             scaleBeginAtZero: true,
+            scaleIntegersOnly: true,
             scaleFontFamily: 'sans-serif',
             scaleShowLabelBackdrop: true,
             scaleBackdropPaddingY: 2,
@@ -238,18 +241,16 @@
             scaleBackdropColor: 'rgba(255,255,255,1)',
             scaleLineColor: 'rgba(0,0,0,0.15)',
             scaleLabel: function (payload) {
-              return plugin.numberFormat(payload.value) + // e.g., X file(s).
+              return plugin.numberFormat(Number(payload.value)) +
                 ' ' + (payload.value === 1 ? plugin.vars.i18n.file : plugin.vars.i18n.files);
             },
-
             tooltipFontSize: 18,
             tooltipFillColor: 'rgba(0,0,0,1)',
             tooltipFontFamily: 'Georgia, serif',
             tooltipTemplate: function (payload) {
-              return payload.label + ': ' + plugin.numberFormat(payload.value) + // e.g., X file(s).
+              return payload.label + ': ' + plugin.numberFormat(Number(payload.value)) +
                 ' ' + (payload.value === 1 ? plugin.vars.i18n.file : plugin.vars.i18n.files);
             },
-
             segmentShowStroke: true,
             segmentStrokeWidth: 2,
             segmentStrokeColor: 'rgba(255,255,255,1)'
@@ -257,10 +258,10 @@
 
           chartBOptions = $.extend({}, chartAOptions, {
             scaleLabel: function (payload) {
-              return plugin.bytesToSizeLabel(payload.value);
+              return plugin.bytesToSizeLabel(Number(payload.value));
             },
             tooltipTemplate: function (payload) {
-              return payload.label + ': ' + plugin.bytesToSizeLabel(payload.value);
+              return payload.label + ': ' + plugin.bytesToSizeLabel(Number(payload.value));
             },
           });
 
@@ -351,19 +352,23 @@
             .attr('height', parseInt(chartBDimensions.height))
             .css(chartBDimensions); // Restore.
         }
-        if ($chartA.length) {
-          chartA = new Chart($chartA.find('.-canvas')[0].getContext('2d')).Pie(chartAData, chartAOptions);
+        if ($chartA.length && chartAData[0].value > 0) {
+          chartA = new Chart($chartA.find('.-canvas')[0].getContext('2d')).PolarArea(chartAData, chartAOptions);
           $stats.data('chartA', chartA).data('chartADimensions', {
             width: $chartA.find('.-canvas').width() + 'px',
             height: $chartA.find('.-canvas').height() + 'px'
           });
+        } else {
+          $chartA.hide(); // Hide if not showing.
         }
-        if ($chartB.length) {
+        if ($chartB.length && chartBData[0].value > 0) {
           chartB = new Chart($chartB.find('.-canvas')[0].getContext('2d')).PolarArea(chartBData, chartBOptions);
           $stats.data('chartB', chartB).data('chartBDimensions', {
             width: $chartB.find('.-canvas').width() + 'px',
             height: $chartB.find('.-canvas').height() + 'px'
           });
+        } else {
+          $chartB.hide(); // Hide if not showing.
         }
         $totals.css('visibility', 'visible'); // Make this visible now.
         $totalFiles.find('.-value').html(plugin.escHtml(plugin.numberFormat(totalLinksFiles) + ' ' + (totalLinksFiles === 1 ? plugin.vars.i18n.file : plugin.vars.i18n.files)));
@@ -380,10 +385,10 @@
   /*![/pro]*/
 
   plugin.bytesToSizeLabel = function (bytes, decimals) {
-    if (isNaN(bytes) || bytes <= 1) {
+    if (typeof bytes !== 'number' || bytes <= 1) {
       return bytes === 1 ? '1 byte' : '0 bytes';
     } // See: <http://jas.xyz/1gOCXob>
-    if (isNaN(decimals) || decimals <= 0) {
+    if (typeof decimals !== 'number' || decimals <= 0) {
       decimals = 0; // Default; integer.
     }
     var base = 1024, // 1 Kilobyte base (binary).
@@ -395,10 +400,10 @@
   };
 
   plugin.numberFormat = function (number, decimals) {
-    if (isNaN(number)) {
+    if (typeof number !== 'number') {
       return String(number);
     } // See: <http://jas.xyz/1JlFD9P>
-    if (isNaN(decimals) || decimals <= 0) {
+    if (typeof decimals !== 'number' || decimals <= 0) {
       decimals = 0; // Default; integer.
     }
     return number.toFixed(decimals).replace(/./g, function (m, o, s) {

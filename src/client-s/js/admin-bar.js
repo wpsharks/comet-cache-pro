@@ -19,7 +19,10 @@
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
 
-    var $dirStats = $('#wp-admin-bar-' + plugin.namespace + '-dir-stats');
+    var $dirStats = $('#wp-admin-bar-' + plugin.namespace + '-dir-stats'),
+      $dirStatsWrapper = $dirStats.find('.-wrapper'),
+      $dirStatsContainer = $dirStatsWrapper.find('.-container');
+
     if ($dirStats.length && plugin.MutationObserver) { // Possible?
       (new plugin.MutationObserver(function (mutations) {
         $.each(mutations, function (index, mutation) {
@@ -40,6 +43,7 @@
       }))
       .observe($dirStats[0], {
         attributes: true,
+        attributeOldValue: true,
         childList: true,
         characterData: true
       }); // See: <http://jas.xyz/1JlzCdi>
@@ -177,13 +181,16 @@
         $chartA.hide(); // Hide.
         $chartB.hide(); // Hide.
 
+        $totals.removeClass('-no-charts');
         $totals.css('visibility', 'hidden');
         $disk.css('visibility', 'hidden');
 
+        if (!canSeeMore || $.trim($totalDir.text()).length > 30) {
+          $totalDir.hide(); // Hide this.
+        }
         if (canSeeMore) { // Will display?
           $moreInfo.css('visibility', 'hidden');
         } else { // Not showing.
-          $totalDir.hide();
           $moreInfo.hide();
         }
         if (!plugin.dirStatsData) {
@@ -260,34 +267,33 @@
         }
         var chartAOptions = { // Chart.js config. options.
             responsive: true,
+            maintainAspectRatio: true,
+
             animationSteps: 35,
 
             scaleFontSize: 10,
             scaleShowLine: true,
             scaleBeginAtZero: true,
+            scaleIntegersOnly: true,
             scaleFontFamily: 'sans-serif',
             scaleShowLabelBackdrop: true,
             scaleBackdropPaddingY: 2,
             scaleBackdropPaddingX: 4,
             scaleFontColor: 'rgba(0,0,0,1)',
             scaleBackdropColor: 'rgba(255,255,255,1)',
-            scaleLineColor: $('body').hasClass('admin-color-light') ?
-              'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)',
+            scaleLineColor: $('body').hasClass('admin-color-light') ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)',
             scaleLabel: function (payload) {
-              return plugin.bytesToSizeLabel(payload.value);
+              return plugin.bytesToSizeLabel(Number(payload.value));
             },
-
             tooltipFontSize: 12,
             tooltipFillColor: 'rgba(0,0,0,1)',
             tooltipFontFamily: 'Georgia, serif',
             tooltipTemplate: function (payload) {
-              return payload.label + ': ' + plugin.bytesToSizeLabel(payload.value);
+              return payload.label + ': ' + plugin.bytesToSizeLabel(Number(payload.value));
             },
-
             segmentShowStroke: true,
             segmentStrokeWidth: 1,
-            segmentStrokeColor: $('body').hasClass('admin-color-light') ?
-              'rgba(0,0,0,1)' : 'rgba(255,255,255,1)'
+            segmentStrokeColor: $('body').hasClass('admin-color-light') ? 'rgba(0,0,0,1)' : 'rgba(255,255,255,1)'
           }, // ↑ Merged w/ global config. options.
 
           chartBOptions = chartAOptions;
@@ -346,19 +352,26 @@
             .attr('height', parseInt(chartBDimensions.height))
             .css(chartBDimensions); // Restore.
         }
-        if ($chartA.length) {
+        if ($chartA.length && chartAData[0].value > 0) {
           chartA = new Chart($chartA[0].getContext('2d')).PolarArea(chartAData, chartAOptions);
           $stats.data('chartA', chartA).data('chartADimensions', {
             width: $chartA.width() + 'px',
             height: $chartA.height() + 'px'
           });
+        } else {
+          $chartA.hide(); // Hide if not showing.
         }
-        if ($chartB.length) {
+        if ($chartB.length && chartBData[0].value > 0) {
           chartB = new Chart($chartB[0].getContext('2d')).PolarArea(chartBData, chartBOptions);
           $stats.data('chartB', chartB).data('chartBDimensions', {
             width: $chartB.width() + 'px',
             height: $chartB.height() + 'px'
           });
+        } else {
+          $chartB.hide(); // Hide if not showing.
+        }
+        if ($chartA.is(':hidden') && $chartB.is(':hidden')) {
+          $totals.addClass('-no-charts');
         }
         $totals.css('visibility', 'visible'); // Make this visible now.
         $totalFiles.find('.-value').html(plugin.escHtml(plugin.numberFormat(totalLinksFiles) + ' ' + (totalLinksFiles === 1 ? plugin.vars.i18n.file : plugin.vars.i18n.files)));
@@ -377,10 +390,10 @@
   };
 
   plugin.bytesToSizeLabel = function (bytes, decimals) {
-    if (isNaN(bytes) || bytes <= 1) {
+    if (typeof bytes !== 'number' || bytes <= 1) {
       return bytes === 1 ? '1 byte' : '0 bytes';
     } // See: <http://jas.xyz/1gOCXob>
-    if (isNaN(decimals) || decimals <= 0) {
+    if (typeof decimals !== 'number' || decimals <= 0) {
       decimals = 0; // Default; integer.
     }
     var base = 1024, // 1 Kilobyte base (binary).
@@ -392,10 +405,10 @@
   };
 
   plugin.numberFormat = function (number, decimals) {
-    if (isNaN(number)) {
+    if (typeof number !== 'number') {
       return String(number);
     } // See: <http://jas.xyz/1JlFD9P>
-    if (isNaN(decimals) || decimals <= 0) {
+    if (typeof decimals !== 'number' || decimals <= 0) {
       decimals = 0; // Default; integer.
     }
     return number.toFixed(decimals).replace(/./g, function (m, o, s) {
