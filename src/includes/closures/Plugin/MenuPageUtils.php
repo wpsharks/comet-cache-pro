@@ -40,6 +40,7 @@ $self->enqueueAdminScripts = function () use ($self) {
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
         'i18n'                     => array(
             'name'           => NAME,
+            'perSymbol'      => __('%', SLUG_TD),
             'file'           => __('file', SLUG_TD),
             'files'          => __('files', SLUG_TD),
             'pageCache'      => __('Page Cache', SLUG_TD),
@@ -69,8 +70,8 @@ $self->addNetworkMenuPages = function () use ($self) {
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
 
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
-        add_submenu_page(GLOBAL_NS, __('Cache Dir Stats.', SLUG_TD), __('Cache Dir Stats.', SLUG_TD), $self->network_cap, GLOBAL_NS.'-dir-stats', array($self, 'menuPageDirStats'));
+    if ($self->options['stats_enable']) {
+        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->network_cap, GLOBAL_NS.'-stats', array($self, 'menuPageStats'));
     } /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
@@ -97,8 +98,8 @@ $self->addMenuPages = function () use ($self) {
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
 
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
-        add_submenu_page(GLOBAL_NS, __('Cache Dir Stats.', SLUG_TD), __('Cache Dir Stats.', SLUG_TD), $self->cap, GLOBAL_NS.'-dir-stats', array($self, 'menuPageDirStats'));
+    if ($self->options['stats_enable']) {
+        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->cap, GLOBAL_NS.'-stats', array($self, 'menuPageStats'));
     } /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
@@ -165,12 +166,12 @@ $self->menuPageOptions = function () use ($self) {
 
 /*[pro strip-from="lite"]*/
 /*
- * Loads admin menu page for directory stats.
+ * Loads admin menu page for stats.
  *
  * @since 15xxxx Directory stats.
  */
-$self->menuPageDirStats = function () use ($self) {
-    new MenuPage('dir-stats');
+$self->menuPageStats = function () use ($self) {
+    new MenuPage('stats');
 };
 /*[/pro]*/
 

@@ -10,8 +10,8 @@
     $document = $(document);
 
   plugin.onReady = function () {
-    plugin.dirStatsData = null;
-    plugin.dirStatsRunning = false;
+    plugin.statsData = null;
+    plugin.statsRunning = false;
     plugin.hideAJAXResponseTimeout = null;
     plugin.vars = $('#' + plugin.namespace + '-admin-bar-vars').data('json');
 
@@ -19,11 +19,11 @@
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
 
-    var $dirStats = $('#wp-admin-bar-' + plugin.namespace + '-dir-stats'),
-      $dirStatsWrapper = $dirStats.find('.-wrapper'),
-      $dirStatsContainer = $dirStatsWrapper.find('.-container');
+    var $stats = $('#wp-admin-bar-' + plugin.namespace + '-stats'),
+      $statsWrapper = $stats.find('.-wrapper'),
+      $statsContainer = $statsWrapper.find('.-container');
 
-    if ($dirStats.length && plugin.MutationObserver) { // Possible?
+    if ($stats.length && plugin.MutationObserver) { // Possible?
       (new plugin.MutationObserver(function (mutations) {
         $.each(mutations, function (index, mutation) {
           if (mutation.type !== 'attributes') {
@@ -36,24 +36,24 @@
             newValue = $(mutation.target).prop(mutation.attributeName);
 
           if (!/\bhover\b/i.test(oldValue) && /\bhover\b/i.test(newValue)) {
-            plugin.dirStats(); // Received `hover` class.
+            plugin.stats(); // Received `hover` class.
           }
           return false; // Stop iterating now.
         });
       }))
-      .observe($dirStats[0], {
+      .observe($stats[0], {
         attributes: true,
         attributeOldValue: true,
         childList: true,
         characterData: true
       }); // See: <http://jas.xyz/1JlzCdi>
-      $dirStats.find('> a').on('click', plugin.preventDefault);
+      $stats.find('> a').on('click', plugin.preventDefault);
     }
   };
 
   plugin.wipeCache = function (event) {
     plugin.preventDefault(event);
-    plugin.dirStatsData = null;
+    plugin.statsData = null;
 
     var postVars = {
       _wpnonce: plugin.vars._wpnonce
@@ -80,7 +80,7 @@
 
   plugin.clearCache = function (event) {
     plugin.preventDefault(event);
-    plugin.dirStatsData = null;
+    plugin.statsData = null;
 
     var postVars = {
       _wpnonce: plugin.vars._wpnonce
@@ -140,17 +140,18 @@
       .off(plugin.animationEndEvents).remove();
   };
 
-  plugin.dirStats = function () {
-    if (plugin.dirStatsRunning) {
+  plugin.stats = function () {
+    if (plugin.statsRunning) {
       return; // Still running.
     }
-    plugin.dirStatsRunning = true;
+    plugin.statsRunning = true;
 
-    var canSeeMore = !plugin.vars.isMultisite || plugin.vars.currentUserHasNetworkCap;
+    var canSeeMore = !plugin.vars.isMultisite ||
+      plugin.vars.currentUserHasNetworkCap;
 
     var $body = $('body'), // Needed below.
 
-      $stats = $('#wp-admin-bar-' + plugin.namespace + '-dir-stats'),
+      $stats = $('#wp-admin-bar-' + plugin.namespace + '-stats'),
 
       $wrapper = $stats.find('.-wrapper'),
       $container = $wrapper.find('.-container'),
@@ -173,7 +174,7 @@
 
     var beforeData = function () {
         if (!$stats.hasClass('hover')) {
-          plugin.dirStatsRunning = false;
+          plugin.statsRunning = false;
           return; // Hidden now.
         }
         $refreshing.show();
@@ -183,17 +184,17 @@
 
         $totals.removeClass('-no-charts');
         $totals.css('visibility', 'hidden');
-        $disk.css('visibility', 'hidden');
-
         if (!canSeeMore || $.trim($totalDir.text()).length > 30) {
           $totalDir.hide(); // Hide this.
         }
+        $disk.css('visibility', 'hidden');
+
         if (canSeeMore) { // Will display?
           $moreInfo.css('visibility', 'hidden');
         } else { // Not showing.
           $moreInfo.hide();
         }
-        if (!plugin.dirStatsData) {
+        if (!plugin.statsData) {
           var postVars = {
             _wpnonce: plugin.vars._wpnonce
           }; // HTTP post vars.
@@ -201,7 +202,8 @@
             ajaxDirStats: '1'
           };
           $.post(plugin.vars.ajaxURL, postVars, function (data) {
-            plugin.dirStatsData = data;
+            console.log('Admin Bar :: statsData :: %o', data);
+            plugin.statsData = data;
             afterData();
           });
         } else {
@@ -209,12 +211,12 @@
         }
       },
       afterData = function () {
-        if (!plugin.dirStatsData) {
-          plugin.dirStatsRunning = false;
+        if (!plugin.statsData) {
+          plugin.statsRunning = false;
           return; // Not possible.
         }
         if (!$stats.hasClass('hover')) {
-          plugin.dirStatsRunning = false;
+          plugin.statsRunning = false;
           return; // Hidden now.
         }
         $refreshing.hide();
@@ -232,22 +234,22 @@
           largestCacheSize = canSeeMore ? 'largestCacheSize' : 'largestHostCacheSize',
           largestCacheCount = canSeeMore ? 'largestCacheCount' : 'largestHostCacheCount';
 
-        var largestSize = plugin.dirStatsData[largestCacheSize].size,
-          largestSizeInDays = plugin.dirStatsData[largestCacheSize].days,
+        var largestSize = plugin.statsData[largestCacheSize].size,
+          largestSizeInDays = plugin.statsData[largestCacheSize].days,
 
-          largestCount = plugin.dirStatsData[largestCacheCount].count,
-          largestCountInDays = plugin.dirStatsData[largestCacheCount].days,
+          largestCount = plugin.statsData[largestCacheCount].count,
+          largestCountInDays = plugin.statsData[largestCacheCount].days,
 
-          forCache_totalLinksFiles = plugin.dirStatsData[forCache].stats.total_links_files,
-          forHtmlCCache_totalLinksFiles = plugin.dirStatsData[forHtmlCCache].stats.total_links_files,
+          forCache_totalLinksFiles = plugin.statsData[forCache].stats.total_links_files,
+          forHtmlCCache_totalLinksFiles = plugin.statsData[forHtmlCCache].stats.total_links_files,
           totalLinksFiles = forCache_totalLinksFiles + forHtmlCCache_totalLinksFiles,
 
-          forCache_totalSize = plugin.dirStatsData[forCache].stats.total_size,
-          forHtmlCCache_totalSize = plugin.dirStatsData[forHtmlCCache].stats.total_size,
+          forCache_totalSize = plugin.statsData[forCache].stats.total_size,
+          forHtmlCCache_totalSize = plugin.statsData[forHtmlCCache].stats.total_size,
           totalSize = forCache_totalSize + forHtmlCCache_totalSize,
 
-          forCache_diskSize = plugin.dirStatsData[forCache].stats.disk_total_space,
-          forCache_diskFree = plugin.dirStatsData[forCache].stats.disk_free_space,
+          forCache_diskSize = plugin.statsData[forCache].stats.disk_total_space,
+          forCache_diskFree = plugin.statsData[forCache].stats.disk_free_space,
 
           forHostCache_totalLinksFiles = 0,
           forHtmlCHostCache_totalLinksFiles = 0,
@@ -257,15 +259,38 @@
           hostTotalSize = 0; // Initializing only, for now.
 
         if (plugin.vars.isMultisite && plugin.vars.currentUserHasNetworkCap) {
-          forHostCache_totalLinksFiles = plugin.dirStatsData.forHostCache.stats.total_links_files;
-          forHtmlCHostCache_totalLinksFiles = plugin.dirStatsData.forHtmlCHostCache.stats.total_links_files;
+          forHostCache_totalLinksFiles = plugin.statsData.forHostCache.stats.total_links_files;
+          forHtmlCHostCache_totalLinksFiles = plugin.statsData.forHtmlCHostCache.stats.total_links_files;
           hostTotalLinksFiles = forHostCache_totalLinksFiles + forHtmlCHostCache_totalLinksFiles;
 
-          forHostCache_totalSize = plugin.dirStatsData.forHostCache.stats.total_size;
-          forHtmlCHostCache_totalSize = plugin.dirStatsData.forHtmlCHostCache.stats.total_size;
+          forHostCache_totalSize = plugin.statsData.forHostCache.stats.total_size;
+          forHtmlCHostCache_totalSize = plugin.statsData.forHtmlCHostCache.stats.total_size;
           hostTotalSize = forHostCache_totalSize + forHtmlCHostCache_totalSize;
         }
-        var chartAOptions = { // Chart.js config. options.
+        var chartScale = function (data, steps) {
+            if (!(data instanceof Array)) {
+              return {}; // Not possible.
+            }
+            if (typeof steps !== 'number' || steps <= 0) {
+              steps = 10; // Default number of steps.
+            }
+            var values = []; // Initialize.
+            $.each(data, function (index, payload) {
+              values.push(Number(payload.value));
+            });
+            var min = Math.min.apply(null, values),
+              max = Math.max.apply(null, values),
+              stepWidth = Math.ceil((max - min) / steps);
+
+            return {
+              scaleSteps: steps,
+              scaleStartValue: 0,
+              scaleStepWidth: stepWidth,
+              scaleIntegersOnly: true,
+              scaleOverride: true
+            };
+          },
+          chartAOptions = {
             responsive: true,
             maintainAspectRatio: true,
 
@@ -273,8 +298,6 @@
 
             scaleFontSize: 10,
             scaleShowLine: true,
-            scaleBeginAtZero: true,
-            scaleIntegersOnly: true,
             scaleFontFamily: 'sans-serif',
             scaleShowLabelBackdrop: true,
             scaleBackdropPaddingY: 2,
@@ -334,7 +357,10 @@
             highlight: '#348f87'
           });
         }
-        chartBData = chartAData;
+        $.extend(chartAOptions, chartScale(chartAData, 5));
+
+        chartBData = chartAData; // Same for now.
+        $.extend(chartBOptions, chartScale(chartBData, 5));
 
         if ((chartA = $stats.data('chartA'))) {
           chartA.destroy(); // Destroy previous.
@@ -359,6 +385,7 @@
             height: $chartA.height() + 'px'
           });
         } else {
+          chartA = null; // Nullify.
           $chartA.hide(); // Hide if not showing.
         }
         if ($chartB.length && chartBData[0].value > 0) {
@@ -368,9 +395,10 @@
             height: $chartB.height() + 'px'
           });
         } else {
+          chartB = null; // Nullify.
           $chartB.hide(); // Hide if not showing.
         }
-        if ($chartA.is(':hidden') && $chartB.is(':hidden')) {
+        if (!chartA && !chartB) {
           $totals.addClass('-no-charts');
         }
         $totals.css('visibility', 'visible'); // Make this visible now.
@@ -384,7 +412,7 @@
         if (canSeeMore) { // Will display this?
           $moreInfo.css('visibility', 'visible');
         }
-        plugin.dirStatsRunning = false;
+        plugin.statsRunning = false;
       };
     beforeData(); // Begin w/ data acquisition.
   };

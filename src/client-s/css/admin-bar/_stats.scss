@@ -1,29 +1,29 @@
 /*[pro strip-from='lite']*/
 
-$dir-stats-more-info-color: #fff;
-$dir-stats-more-info-bg-color: #00a0d2;
-$dir-stats-more-info-border-color: #0073aa;
-$dir-stats-more-info-box-shadow-color-a: rgba(120, 200, 230, 0.5);
-$dir-stats-more-info-box-shadow-color-b: rgba(0, 0, 0, 0.15);
+$stats-more-info-color: #fff;
+$stats-more-info-bg-color: #00a0d2;
+$stats-more-info-border-color: #0073aa;
+$stats-more-info-box-shadow-color-a: rgba(120, 200, 230, 0.5);
+$stats-more-info-box-shadow-color-b: rgba(0, 0, 0, 0.15);
 
-$dir-stats-more-info-hover-color: #fff;
-$dir-stats-more-info-hover-bg-color: #0091cd;
-$dir-stats-more-info-hover-border-color: #0073aa;
-$dir-stats-more-info-hover-box-shadow-color: rgba(120, 200, 230, 0.6);
+$stats-more-info-hover-color: #fff;
+$stats-more-info-hover-bg-color: #0091cd;
+$stats-more-info-hover-border-color: #0073aa;
+$stats-more-info-hover-box-shadow-color: rgba(120, 200, 230, 0.6);
 
-$dir-stats-more-info-focus-color: rgba(255, 255, 255, 0.95);
-$dir-stats-more-info-focus-bg-color: #0073aa;
-$dir-stats-more-info-focus-border-color: #0e3950;
-$dir-stats-more-info-focus-box-shadow-color-a: rgba(120, 200, 230, 0.6);
-$dir-stats-more-info-focus-box-shadow-color-b: #5b9dd9;
-$dir-stats-more-info-focus-box-shadow-color-c: rgba(30, 140, 190, 0.8);
+$stats-more-info-focus-color: rgba(255, 255, 255, 0.95);
+$stats-more-info-focus-bg-color: #0073aa;
+$stats-more-info-focus-border-color: #0e3950;
+$stats-more-info-focus-box-shadow-color-a: rgba(120, 200, 230, 0.6);
+$stats-more-info-focus-box-shadow-color-b: #5b9dd9;
+$stats-more-info-focus-box-shadow-color-c: rgba(30, 140, 190, 0.8);
 
-$dir-stats-more-info-active-color: rgba(255, 255, 255, 0.95);
-$dir-stats-more-info-active-bg-color: #0073aa;
-$dir-stats-more-info-active-border-color: #005082;
-$dir-stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
+$stats-more-info-active-color: rgba(255, 255, 255, 0.95);
+$stats-more-info-active-bg-color: #0073aa;
+$stats-more-info-active-border-color: #005082;
+$stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
 
-#wp-admin-bar-zencache-dir-stats {
+#wp-admin-bar-zencache-stats {
   > a {
     @include sharkicon(pie-chart, after);
 
@@ -165,30 +165,30 @@ $dir-stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
           text-align:         center;
 
           // Color coordination w/ WordPress.
-          color:              $dir-stats-more-info-color !important;
-          background:         $dir-stats-more-info-bg-color !important;
-          border:             1px solid $dir-stats-more-info-border-color !important;
-          box-shadow:         inset 0 1px 0 $dir-stats-more-info-box-shadow-color-a, 0 1px 0 $dir-stats-more-info-box-shadow-color-b !important;
+          color:              $stats-more-info-color !important;
+          background:         $stats-more-info-bg-color !important;
+          border:             1px solid $stats-more-info-border-color !important;
+          box-shadow:         inset 0 1px 0 $stats-more-info-box-shadow-color-a, 0 1px 0 $stats-more-info-box-shadow-color-b !important;
 
           &:hover {
-            color:            $dir-stats-more-info-hover-color !important;
-            background:       $dir-stats-more-info-hover-bg-color !important;
-            border:           1px solid $dir-stats-more-info-hover-border-color !important;
-            box-shadow:       inset 0 1px 0 $dir-stats-more-info-hover-box-shadow-color !important;
+            color:            $stats-more-info-hover-color !important;
+            background:       $stats-more-info-hover-bg-color !important;
+            border:           1px solid $stats-more-info-hover-border-color !important;
+            box-shadow:       inset 0 1px 0 $stats-more-info-hover-box-shadow-color !important;
           }
 
           &:focus {
-            color:            $dir-stats-more-info-focus-color !important;
-            background:       $dir-stats-more-info-focus-bg-color !important;
-            border:           1px solid $dir-stats-more-info-focus-border-color !important;
-            box-shadow:       inset 0 1px 0 $dir-stats-more-info-focus-box-shadow-color-a, 0 0 0 1px $dir-stats-more-info-focus-box-shadow-color-b, 0 0 2px 1px $dir-stats-more-info-focus-box-shadow-color-c !important;
+            color:            $stats-more-info-focus-color !important;
+            background:       $stats-more-info-focus-bg-color !important;
+            border:           1px solid $stats-more-info-focus-border-color !important;
+            box-shadow:       inset 0 1px 0 $stats-more-info-focus-box-shadow-color-a, 0 0 0 1px $stats-more-info-focus-box-shadow-color-b, 0 0 2px 1px $stats-more-info-focus-box-shadow-color-c !important;
           }
 
           &:active {
-            color:            $dir-stats-more-info-active-color !important;
-            background:       $dir-stats-more-info-active-bg-color !important;
-            border:           1px solid $dir-stats-more-info-active-border-color !important;
-            box-shadow:       inset 0 1px 0 $dir-stats-more-info-active-box-shadow-color !important;
+            color:            $stats-more-info-active-color !important;
+            background:       $stats-more-info-active-bg-color !important;
+            border:           1px solid $stats-more-info-active-border-color !important;
+            box-shadow:       inset 0 1px 0 $stats-more-info-active-box-shadow-color !important;
           }
         }
       }

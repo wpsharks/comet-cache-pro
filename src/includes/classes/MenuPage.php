@@ -26,8 +26,8 @@ class MenuPage extends AbsBase
                     break;
 
                 /*[pro strip-from="lite"]*/
-                case 'dir-stats':
-                    new MenuPageDirStats();
+                case 'stats':
+                    new MenuPageStats();
                     break;
                 /*[/pro]*/
 

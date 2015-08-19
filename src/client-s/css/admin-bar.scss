@@ -6,7 +6,8 @@
 @include sharkicons-font('../../vendor/websharks/sharkicons/src');
 
 @import 'admin-bar/animations';
-@import 'admin-bar/dir-stats';
+
+@import 'admin-bar/stats';
 @import 'admin-bar/wipe-purge';
 @import 'admin-bar/ajax-response';
 

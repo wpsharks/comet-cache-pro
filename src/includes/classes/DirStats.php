@@ -547,7 +547,7 @@ class DirStats extends AbsBase
             }
         } // Otherwise, we need to pull a fresh set of stats.
 
-        $cache_dir            = $this->plugin->nDirSeps($cache_dir);
+        $cache_dir            = $this->plugin->nDirSeps($this->plugin->cacheDir());
         $host_token           = $current_host_token           = $this->plugin->hostToken();
         $host_base_dir_tokens = $current_host_base_dir_tokens = $this->plugin->hostBaseDirTokens();
 

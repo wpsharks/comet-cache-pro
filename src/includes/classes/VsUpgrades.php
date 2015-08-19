@@ -263,6 +263,12 @@ class VsUpgrades extends AbsBase
                 }
                 unset($_child_blog); // Housekeeping.
             }
+            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
+                if (isset($existing_options['admin_bar_enable'])) {
+                    $this->plugin->options['cache_clear_admin_bar_enable'] = $existing_options['admin_bar_enable'];
+                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                }
+            }
             // @TODO See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
             //if ($this->plugin->options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
             //    $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];

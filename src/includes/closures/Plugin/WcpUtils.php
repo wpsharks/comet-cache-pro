@@ -40,7 +40,15 @@ $self->wipeCache = function ($manually = false) use ($self) {
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
+    if (!$manually) {
+        $this->plugin->wipeS2CleanCache();
+        $this->plugin->wipeEvalCode();
+        $this->plugin->wipeOpcache();
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    if ($self->options['stats_enable']) {
         $dir_stats = DirStats::instance();
         $dir_stats->wipeCache();
     }
@@ -77,7 +85,15 @@ $self->clearCache = function ($manually = false) use ($self) {
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
+    if (!$manually) {
+        $this->plugin->clearS2CleanCache();
+        $this->plugin->clearEvalCode();
+        $this->plugin->clearOpcache();
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    if ($self->options['stats_enable']) {
         $dir_stats = DirStats::instance();
         $dir_stats->clearHostCache();
     }
@@ -110,7 +126,7 @@ $self->purgeCache = function ($manually = false) use ($self) {
         $counter += $self->purgeFilesFromHostCacheDir($regex);
     }
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
+    if ($self->options['stats_enable']) {
         $dir_stats = DirStats::instance();
         $dir_stats->clearHostCache();
     }
@@ -143,7 +159,7 @@ $self->wurgeCache = function ($manually = false) use ($self) {
         $counter += $self->wurgeFilesFromCacheDir($regex);
     }
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
+    if ($self->options['stats_enable']) {
         $dir_stats = DirStats::instance();
         $dir_stats->wipeCache();
     }

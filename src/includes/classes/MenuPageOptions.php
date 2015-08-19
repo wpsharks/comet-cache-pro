@@ -191,7 +191,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-info-circle"></i> '.__('Clearing the Cache', SLUG_TD)."\n";
+        echo '      <i class="si si-broom"></i> '.__('Clearing the Cache', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -202,20 +202,32 @@ class MenuPageOptions extends MenuPage
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear-cache-ss.png')).'" class="screenshot" />'."\n";
             echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (see screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g. you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.sprintf(__('Depending on the structure of your site, there could be many reasons to clear the cache. However, the most common reasons are related to Post/Page edits or deletions, Category/Tag edits or deletions, and Theme changes. %1$s handles most scenarios all by itself. However, many site owners like to clear the cache manually; for a variety of reasons (just to force a refresh).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][admin_bar_enable]" style="width:auto;">'."\n";
-            echo '          <option value="1"'.selected($this->plugin->options['admin_bar_enable'], '1', false).'>'.__('Yes, enable the &quot;Clear Cache&quot; button in the WordPress admin bar.', SLUG_TD).'</option>'."\n";
-            echo '          <option value="0"'.selected($this->plugin->options['admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually; exclude from admin bar.', SLUG_TD).'</option>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_enable]" style="width:auto;">'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '1', false).'>'.__('Yes, enable the &quot;Clear Cache&quot; button in the WordPress admin bar.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="0"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually; exclude from admin bar.', SLUG_TD).'</option>'."\n";
             echo '      </select></p>'."\n";
             echo '  </div>'."\n";
 
             echo '  <hr />'."\n";
         }
-        if (IS_PRO || $this->plugin->isProPreview()) {
+        if ((IS_PRO || $this->plugin->isProPreview()) && $this->plugin->functionIsPossible('opcache_reset')) {
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
-            echo '      <h3>'.__('Running the <a href="http://websharks-inc.com/product/s2clean/" target="_blank">s2Clean Theme</a> by WebSharks?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('If s2Clean is installed, %1$s can be configured to clear the Markdown cache too (if you\'ve enabled Markdown processing with s2Clean). The s2Clean Markdown cache is only cleared when you manually clear the cache (with %1$s); and only if you enable this option here. Note: s2Clean\'s Markdown cache is extremely dynamic. Just like the rest of your site, s2Clean caches do NOT need to be cleared away at all, as this happens automatically when your content changes. However, some developers find this feature useful while developing their site; just to force a refresh.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <h3>'.__('Automatically Clear the <a href="http://zencache.com/r/php-opcache/" target="_blank">PHP OPCache</a> Too?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('It\'s a good idea to automatically clear the PHP opcode cache whenever %1$s handles cache clearing. This way all PHP files in the server\'s opcode cache are purged from memory also.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_opcache_enable]">'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_opcache_enable'], '1', false).'>'.__('Yes, if the PHP OPCache extension is enabled, also clear the PHP opcode cache.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="0"'.selected($this->plugin->options['cache_clear_opcache_enable'], '0', false).'>'.__('No, I don\'t use the PHP OPCache extension; or, I don\'t want the opcode cache cleared.', SLUG_TD).'</option>'."\n";
+            echo '      </select></p>'."\n";
+            echo '  </div>'."\n";
+
+            echo '  <hr />'."\n";
+        }
+        if ((IS_PRO || $this->plugin->isProPreview()) && $this->plugin->functionIsPossible('s2clean')) {
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
+            echo '      <h3>'.__('Automatically Clear the <a href="http://websharks-inc.com/product/s2clean/" target="_blank">s2Clean</a> Cache Too?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('If the s2Clean theme is installed, %1$s can be configured to clear the Markdown cache too (if you\'ve enabled Markdown processing with s2Clean).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_s2clean_enable]">'."\n";
-            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '1', false).'>'.__('Yes, if the s2Clean theme is installed; also clear s2Clean-related caches.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '1', false).'>'.__('Yes, if the s2Clean theme is installed, also clear s2Clean-related caches.', SLUG_TD).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['cache_clear_s2clean_enable'], '0', false).'>'.__('No, I don\'t use s2Clean; or, I don\'t want s2Clean-related caches cleared.', SLUG_TD).'</option>'."\n";
             echo '      </select></p>'."\n";
             echo '  </div>'."\n";
@@ -224,8 +236,8 @@ class MenuPageOptions extends MenuPage
         }
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
-            echo '      <h3>'.__('Process Other Custom PHP Code?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('If you have other custom routines you\'d like to process when the cache is cleared manually, please type your custom PHP code here. The PHP code that you provide is only evaluated when you manually clear the cache (with %1$s); and only if the field below contains PHP code. Note: if your PHP code outputs a message (e.g. if you have <code>echo \'&lt;p&gt;My message&lt;/p&gt;\';</code>); your message will be displayed along with any other notes from %1$s itself. This could be useful to developers that need to clear server caches too (such as <a href="http://www.php.net/manual/en/function.apc-clear-cache.php" target="_blank">APC</a> or <a href="http://www.php.net/manual/en/memcache.flush.php" target="_blank">memcache</a>).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <h3>'.__('Evaluate Custom PHP Code when Clearing the Cache?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('If you have any custom routines you\'d like to process when the cache is cleared manually, please enter PHP code here. If your PHP code outputs a message, it will be displayed along with any other notes from %1$s itself. This feature is intended for developers, and it may come in handy if you need to clear any system caches not already covered by %1$s configuration options.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_eval_code]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_eval_code']).'</textarea></p>'."\n";
             echo '      <p class="info" style="margin-top:0;">'.__('<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo \'&lt;p&gt;Also cleared APC cache.&lt;/p&gt;\'; ?&gt;</code>', SLUG_TD).'</p>'."\n";
             echo '  </div>'."\n";
@@ -320,6 +332,37 @@ class MenuPageOptions extends MenuPage
 
         echo '</div>'."\n";
 
+        /* ----------------------------------------------------------------------------------------- */
+
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+
+            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '      <i class="si si-pie-chart"></i> '.__('Cache-Related Statistics', SLUG_TD)."\n";
+            echo '   </a>'."\n";
+
+            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '      <i class="si si-pie-chart si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+            echo '      <h3>'.__('Enable Cache-Related Stats &amp; Charts?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('%1$s can collect and display cache-related statistics (including charts). Stats are displayed in the WordPress Admin Bar, and also in your Dashboard under: <strong>%1$s → Stats/Charts</strong>. Cache-related stats provide you with a quick look at what\'s happening behind-the-scenes. Your site grows faster and faster as the cache grows larger in size.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][stats_enable]">'."\n";
+            echo '            <option value="1"'.selected($this->plugin->options['stats_enable'], '1', false).'>'.__('Yes, enable stats collection &amp; the menu page in WordPress for viewing stats.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['stats_enable'], '0', false).'>'.__('No, I have a VERY large site and I want to avoid any unnecessary directory scans.', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s does a great job of collecting stats, in ways that don\'t cause a performance issue. In addition, as your cache grows larger than several hundred files in total size, statistics are collected less often and at longer intervals. All of that being said, if you run a VERY large site (e.g., more than 20K posts), you might want to disable stats collection in favor of blazing fast speeds not impeded by any directory scans needed to collect stats.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <hr />'."\n";
+
+            echo '      <div class="plugin-menu-page-panel-if-enabled">'."\n";
+            echo '          <h3>'.__('Show Stats in the WordPress Admin Bar?', SLUG_TD).'</h3>'."\n";
+            echo '          <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][stats_admin_bar_enable]">'."\n";
+            echo '              <option value="1"'.selected($this->plugin->options['stats_admin_bar_enable'], '1', false).'>'.__('Yes, enable stats in the WordPress admin bar.', SLUG_TD).'</option>'."\n";
+            echo '              <option value="0"'.selected($this->plugin->options['stats_admin_bar_enable'], '0', false).'>'.__('No, I\'ll review stats from the menu page in WordPress if I need to.', SLUG_TD).'</option>'."\n";
+            echo '          </select></p>'."\n";
+            echo '      </div>'."\n";
+            echo '   </div>'."\n";
+
+            echo '</div>'."\n";
+        }
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<div class="plugin-menu-page-panel">'."\n";
@@ -685,8 +728,8 @@ class MenuPageOptions extends MenuPage
             echo '         <h3>'.__('Multiple CDN Host Names for Domain Sharding and Multisite Networks (Optional)', SLUG_TD).'</h3>'."\n";
             echo '         <p>'.sprintf(__('%1$s also supports multiple CDN Host Names for any given domain. Using multiple CDN Host Names (instead of just one, as seen above) is referred to as <strong><a href="http://zencache.com/r/domain-sharding/" target="_blank">Domain Sharding</a></strong> (<a href="http://zencache.com/r/domain-sharding/" target="_blank">click here to learn more</a>). If you configure multiple CDN Host Names (i.e., if you implement Domain Sharding), %1$s will use the first one that you list for static resources loaded in the HTML <code>&lt;head&gt;</code> section, the last one for static resources loaded in the footer, and it will choose one at random for all other static resource locations. Configuring multiple CDN Host Names can improve speed! This is a way for advanced site owners to work around concurrency limits in popular browsers; i.e., making it possible for browsers to download many more resources simultaneously, resulting in a faster overall completion time. In short, this tells the browser that your website will not be overloaded by concurrent requests, because static resources are in fact being served by a content-delivery network (i.e., multiple CDN host names). If you use this functionality for Domain Sharding, we suggest that you setup one CDN Distribution (aka: Pull Zone), and then create multiple CNAME records pointing to that distribution. You can enter each of your CNAMES in the field below, as instructed.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '         <p class="info" style="display:block;">'.sprintf(__('<strong>On WordPress Multisite Network installations</strong>, this field also allows you to configure different CDN Host Names for each domain (or sub-domain) that you run from a single installation of WordPress. For more information about configuring Static CDN Filters on a WordPress Multisite Network, see this tutorial: <a href="http://zencache.com/r/static-cdn-filters-for-wordpress-multisite-networks/" target="_blank">Static CDN Filters for WordPress Multisite Networks</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '         <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_hosts]" rows="5" spellcheck="false" autocomplete="off" placeholder="'.esc_attr('e.g., '.$this->plugin->hostToken(false, true).' = cdn1.'.$this->plugin->hostToken(false,true).', cdn2.'.$this->plugin->hostToken(false,true).', cdn3.'.$this->plugin->hostToken(false,true)).'" wrap="off" style="white-space:nowrap;">'.esc_textarea($this->plugin->options['cdn_hosts']).'</textarea></p>'."\n";
-            echo '         <p style="margin-top:0;">'.sprintf(__('<strong>↑ Syntax:</strong> This is a line-delimited list of domain mappings. Each line should start with your WordPress domain name (e.g., <code>%1$s</code>), followed by an <code>=</code> sign, followed by a comma-delimited list of CDN Host Names associated with the domain in that line. If you\'re running a Multisite Network installation of WordPress, you might have multiple configuration lines. Otherwise, you should only need one line to configure multiple CDN Host Names for a standard WordPress installation.', SLUG_TD), esc_html($this->plugin->hostToken(false,true))).'</p>'."\n";
+            echo '         <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_hosts]" rows="5" spellcheck="false" autocomplete="off" placeholder="'.esc_attr('e.g., '.$this->plugin->hostToken(false, true).' = cdn1.'.$this->plugin->hostToken(false, true).', cdn2.'.$this->plugin->hostToken(false, true).', cdn3.'.$this->plugin->hostToken(false, true)).'" wrap="off" style="white-space:nowrap;">'.esc_textarea($this->plugin->options['cdn_hosts']).'</textarea></p>'."\n";
+            echo '         <p style="margin-top:0;">'.sprintf(__('<strong>↑ Syntax:</strong> This is a line-delimited list of domain mappings. Each line should start with your WordPress domain name (e.g., <code>%1$s</code>), followed by an <code>=</code> sign, followed by a comma-delimited list of CDN Host Names associated with the domain in that line. If you\'re running a Multisite Network installation of WordPress, you might have multiple configuration lines. Otherwise, you should only need one line to configure multiple CDN Host Names for a standard WordPress installation.', SLUG_TD), esc_html($this->plugin->hostToken(false, true))).'</p>'."\n";
 
             echo '         <hr />'."\n";
 

@@ -3,6 +3,25 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+ * Showing admin bar.
+ *
+ * @since 15xxxx Improving admin bar.
+ *
+ * @return boolean True if showing.
+ */
+$self->adminBarShowing = function () use ($self) {
+    if (!is_null($showing = &$self->cacheKey('adminBarShowing'))) {
+        return $showing; // Already cached this.
+    }
+    $showing = $self->options['enable']
+        && ($self->options['cache_clear_admin_bar_enable']
+            || ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']))
+        && current_user_can($self->cap) && is_admin_bar_showing();
+
+    return $showing; // True or false.
+};
+
+/*
  * Filter WordPress admin bar.
  *
  * @since 150422 Rewrite.
@@ -11,56 +30,52 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @param $wp_admin_bar \WP_Admin_Bar
  */
-$self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
-    if (!$self->options['enable']) {
+$self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
+    if ($self->options['cache_clear_admin_bar_enable']) {
+        if (is_multisite() && current_user_can($self->network_cap)) {
+            $wp_admin_bar->add_menu(
+                array(
+                    'parent' => 'top-secondary',
+                    'id'     => GLOBAL_NS.'-wipe',
+
+                    'title' => __('Wipe', SLUG_TD),
+                    'href'  => '#',
+
+                    'meta' => array(
+                            'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
+                            'class'    => '-wipe',
+                            'tabindex' => -1,
+                    ),
+                )
+            );
+        }
+        if (!is_multisite() || !is_network_admin()) {
+            $wp_admin_bar->add_menu(
+                array(
+                    'parent' => 'top-secondary',
+                    'id'     => GLOBAL_NS.'-clear',
+
+                    'title' => __('Clear Cache', SLUG_TD),
+                    'href'  => '#',
+                    'meta'  => array(
+                            'title' => is_multisite() && current_user_can($self->network_cap)
+                                ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
+                                : __('Clear Cache (Start Fresh)', SLUG_TD),
+                            'class'    => '-clear',
+                            'tabindex' => -1,
+                    ),
+                )
+            );
+        }
     }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
-        return; // Nothing to do.
-    }
-    if (is_multisite() && current_user_can($self->network_cap)) {
+    if ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']) {
         $wp_admin_bar->add_menu(
             array(
                 'parent' => 'top-secondary',
-                'id'     => GLOBAL_NS.'-wipe',
-
-                'title' => __('Wipe', SLUG_TD),
-                'href'  => '#',
-
-                'meta' => array(
-                        'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
-                        'class'    => '-wipe',
-                        'tabindex' => -1,
-                ),
-            )
-        );
-    }
-    if (!is_multisite() || !is_network_admin()) {
-        $wp_admin_bar->add_menu(
-            array(
-                'parent' => 'top-secondary',
-                'id'     => GLOBAL_NS.'-clear',
-
-                'title' => __('Clear Cache', SLUG_TD),
-                'href'  => '#',
-                'meta'  => array(
-                        'title' => is_multisite() && current_user_can($self->network_cap)
-                            ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
-                            : __('Clear Cache (Start Fresh)', SLUG_TD),
-                        'class'    => '-clear',
-                        'tabindex' => -1,
-                ),
-            )
-        );
-    }
-    if ($self->options['dir_stats_enable'] && $self->options['dir_stats_admin_bar_enable']) {
-        $wp_admin_bar->add_menu(
-            array(
-                'parent' => 'top-secondary',
-                'id'     => GLOBAL_NS.'-dir-stats',
+                'id'     => GLOBAL_NS.'-stats',
 
                 'title' => __('Cache Stats', SLUG_TD),
                 'href'  => '#',
@@ -74,8 +89,8 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
         );
         $wp_admin_bar->add_group(
             array(
-                'parent' => GLOBAL_NS.'-dir-stats',
-                'id'     => GLOBAL_NS.'-dir-stats-wrapper',
+                'parent' => GLOBAL_NS.'-stats',
+                'id'     => GLOBAL_NS.'-stats-wrapper',
 
                 'meta' => array(
                     'class' => '-wrapper',
@@ -84,8 +99,8 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
         );
         $wp_admin_bar->add_menu(
             array(
-                'parent' => GLOBAL_NS.'-dir-stats-wrapper',
-                'id'     => GLOBAL_NS.'-dir-stats-container',
+                'parent' => GLOBAL_NS.'-stats-wrapper',
+                'id'     => GLOBAL_NS.'-stats-container',
 
                 'title' => '<div class="-refreshing"></div>'.
 
@@ -106,7 +121,7 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
                             '</div>'.
 
                             '<div class="-more-info">'.
-                            '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-dir-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
+                            '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
                             '</div>'.
 
                             '<div class="-spacer"></div>',
@@ -121,20 +136,14 @@ $self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
 };
 
 /*
- * Injects `<meta>` tag w/ JSON-encoded data for WordPress admin bar.
+ * Injects `<meta>` tag w/ JSON-encoded data.
  *
  * @since 150422 Rewrite.
  *
  * @attaches-to `admin_head` hook.
  */
 $self->adminBarMetaTags = function () use ($self) {
-    if (!$self->options['enable']) {
-        return; // Nothing to do.
-    }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
     $vars = array(
@@ -145,6 +154,7 @@ $self->adminBarMetaTags = function () use ($self) {
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
         'i18n'                     => array(
             'name'           => NAME,
+            'perSymbol'      => __('%', SLUG_TD),
             'file'           => __('file', SLUG_TD),
             'files'          => __('files', SLUG_TD),
             'pageCache'      => __('Page Cache', SLUG_TD),
@@ -167,13 +177,7 @@ $self->adminBarMetaTags = function () use ($self) {
  * @attaches-to `admin_enqueue_scripts` hook.
  */
 $self->adminBarStyles = function () use ($self) {
-    if (!$self->options['enable']) {
-        return; // Nothing to do.
-    }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
     $deps = array(); // Plugin dependencies.
@@ -190,18 +194,12 @@ $self->adminBarStyles = function () use ($self) {
  * @attaches-to `admin_enqueue_scripts` hook.
  */
 $self->adminBarScripts = function () use ($self) {
-    if (!$self->options['enable']) {
-        return; // Nothing to do.
-    }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
     $deps = array('jquery', 'admin-bar'); // Plugin dependencies.
 
-    if ($self->options['dir_stats_enable'] && $self->options['dir_stats_admin_bar_enable']) {
+    if ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']) {
         $deps[] = 'chartjs'; // Add ChartJS dependency.
         wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
     }

@@ -3,11 +3,11 @@
 namespace WebSharks\ZenCache\Pro;
 
 /**
- * Dir Stats Page.
+ * Stats Page.
  *
  * @since 15xxxx Directory stats.
  */
-class MenuPageDirStats extends MenuPage
+class MenuPageStats extends MenuPage
 {
     /**
      * Constructor.
@@ -24,19 +24,16 @@ class MenuPageDirStats extends MenuPage
 
         echo '<div class="plugin-menu-page-heading">'."\n";
 
-        echo '   <button type="button" class="plugin-menu-page-dir-stats-button" style="float:right;">'.
+        echo '   <button type="button" class="plugin-menu-page-stats-button" style="float:right;">'.
                     __('Refresh Stats/Charts', SLUG_TD).' <i class="si si-refresh"></i>'.
                  '</button>'."\n";
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
-        if (current_user_can($this->plugin->cap)) {
-            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="si si-cogs"></i> '.__('Options', SLUG_TD).'</a>'."\n";
-        }
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-        echo '   <img src="'.$this->plugin->url('/src/client-s/images/dir-stats.png').'" alt="'.esc_attr(__('Cache Directory Stats', SLUG_TD)).'" />'."\n";
+        echo '   <img src="'.$this->plugin->url('/src/client-s/images/stats.png').'" alt="'.esc_attr(__('Statistics', SLUG_TD)).'" />'."\n";
 
         echo '</div>'."\n";
 
@@ -50,7 +47,7 @@ class MenuPageDirStats extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
-        echo '  <div class="plugin-menu-page-dir-stats">'."\n";
+        echo '  <div class="plugin-menu-page-stats">'."\n";
         echo '      <div class="-wrapper">'."\n";
         echo '          <div class="-container">'."\n";
 
@@ -69,6 +66,12 @@ class MenuPageDirStats extends MenuPage
         echo '                  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'."\n";
         echo '              </div>'."\n";
 
+        echo '              <div class="-system">'."\n";
+        echo '                  <div class="-heading">'.__('Current System Health', SLUG_TD).'</div>'."\n";
+        echo '                  <div class="-memory-usage">'.__('Memory Usage:', SLUG_TD).' <span class="-value">&nbsp;</span></div>'."\n";
+        echo '                  <div class="-load-average">'.__('Load Average:', SLUG_TD).' <span class="-value">&nbsp;</span></div>'."\n";
+        echo '              </div>'."\n";
+
         echo '              <div class="-chart-divider"></div>'."\n";
 
         echo '              <div class="-chart-a">'."\n";
@@ -76,11 +79,33 @@ class MenuPageDirStats extends MenuPage
         echo '                  <canvas class="-canvas"></canvas>'."\n";
         echo '              </div>'."\n";
 
-        echo '              <div class="-chart-divider"></div>'."\n";
-
         echo '              <div class="-chart-b">'."\n";
         echo '                  <div class="-heading">'.__('Cache File Sizes', SLUG_TD).'</div>'."\n";
         echo '                  <canvas class="-canvas"></canvas>'."\n";
+        echo '              </div>'."\n";
+
+        echo '              <div class="-chart-divider"></div>'."\n";
+
+        echo '              <div class="-opcache">'."\n";
+        echo '                  <div class="-memory">'."\n";
+        echo '                      <div class="-heading">'.__('OPCache Memory', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-free"><span class="-value">&nbsp;</span> '.__('free', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-used"><span class="-value">&nbsp;</span> '.__('used', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-wasted"><span class="-value">&nbsp;</span> '.__('wasted', SLUG_TD).'</div>'."\n";
+        echo '                  </div>'."\n";
+
+        echo '                  <div class="-totals">'."\n";
+        echo '                      <div class="-heading">'.__('OPCache Totals', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-scripts"><span class="-value">&nbsp;</span> '.__('cached scripts', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-keys"><span class="-value">&nbsp;</span> '.__('total cached keys', SLUG_TD).'</div>'."\n";
+        echo '                  </div>'."\n";
+
+        echo '                  <div class="-hits-misses">'."\n";
+        echo '                      <div class="-heading">'.__('OPCache Hits/Misses', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-hits"><span class="-value">&nbsp;</span> '.__('hits', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-misses"><span class="-value">&nbsp;</span> '.__('misses', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-hit-rate"><span class="-value">&nbsp;</span> '.__('hit rate', SLUG_TD).'</div>'."\n";
+        echo '                  </div>'."\n";
         echo '              </div>'."\n";
 
         echo '          </div>'."\n";

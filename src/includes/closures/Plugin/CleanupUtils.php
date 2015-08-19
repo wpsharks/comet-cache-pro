@@ -17,7 +17,7 @@ $self->cleanupCache = function () use ($self) {
         return; // Nothing to do.
     }
     /*[pro strip-from="lite"]*/
-    if ($self->options['dir_stats_enable']) {
+    if ($self->options['stats_enable']) {
         $dir_stats = DirStats::instance();
         $dir_stats->forCache(true);
     }

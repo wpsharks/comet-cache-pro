@@ -163,8 +163,9 @@ class Plugin extends AbsBaseAp
         load_plugin_textdomain(SLUG_TD); // Text domain.
 
         $this->pro_only_option_keys = array(
-            'admin_bar_enable',
             'change_notifications_enable',
+            'cache_clear_admin_bar_enable',
+            'cache_clear_opcache_enable',
             'cache_clear_s2clean_enable',
             'cache_clear_eval_code',
             'when_logged_in',
@@ -201,11 +202,12 @@ class Plugin extends AbsBaseAp
             'cdn_whitelisted_uri_patterns',
             'cdn_blacklisted_uri_patterns',
 
-            'dir_stats_enable',
-            'dir_stats_admin_bar_enable',
-            'dir_stats_auto_refresh_max_resources',
-            'dir_stats_refresh_time',
+            'stats_enable',
+            'stats_admin_bar_enable',
+
             'dir_stats_history_days',
+            'dir_stats_refresh_time',
+            'dir_stats_auto_refresh_max_resources',
 
             'pro_update_check',
             'latest_pro_version',
@@ -231,7 +233,7 @@ class Plugin extends AbsBaseAp
 
             /* Related to admin bar. */
 
-            'admin_bar_enable' => '1', // `0|1`.
+            'cache_clear_admin_bar_enable' => '1', // `0|1`.
 
             /* Related to cache directory. */
 
@@ -242,6 +244,7 @@ class Plugin extends AbsBaseAp
 
             'change_notifications_enable' => '1', // `0|1`.
 
+            'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.
 
@@ -329,10 +332,11 @@ class Plugin extends AbsBaseAp
             'cdn_blacklisted_uri_patterns' => '', // A line-delimited list of exclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
 
-            /* Related to cache directory statistics. */
+            /* Related to statistics/charts. */
 
-            'dir_stats_enable'                     => is_multisite() ? '0' : '1', // `0|1`; enable?
-            'dir_stats_admin_bar_enable'           => '1', // `0|1`; enable stats in admin bar?
+            'stats_enable'           => is_multisite() && wp_is_large_network() ? '0' : '1',
+            'stats_admin_bar_enable' => '1', // `0|1`; enable stats in admin bar?
+
             'dir_stats_auto_refresh_max_resources' => '1500', // Don't use cache if less than this.
             'dir_stats_refresh_time'               => '15 minutes', // `strtotime()` compatible.
             'dir_stats_history_days'               => '30', // Numeric; number of days.

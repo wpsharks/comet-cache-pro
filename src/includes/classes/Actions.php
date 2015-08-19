@@ -18,13 +18,18 @@ class Actions extends AbsBase
         'clearCache',
 
         /*[pro strip-from="lite"]*/
+        'ajaxStats',
         'ajaxDirStats',
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         'ajaxWipeCache',
         'ajaxClearCache',
         /*[/pro]*/
 
         'saveOptions',
         'restoreDefaultOptions',
+
         /*[pro strip-from="lite"]*/
         'exportOptions',
         /*[/pro]*/
@@ -76,19 +81,9 @@ class Actions extends AbsBase
         $counter = $this->plugin->wipeCache(true);
 
         /*[pro strip-from="lite"]*/
-        if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if ($this->plugin->functionIsPossible('s2clean')) {
-                $s2clean_counter = s2clean()->md_cache_clear();
-            }
-        }
-        /*[/pro]*/
-
-        /*[pro strip-from="lite"]*/
-        if ($this->plugin->options['cache_clear_eval_code']) {
-            ob_start(); // Buffer output from PHP code.
-            eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
-            $eval_output = ob_get_clean();
-        }
+        $this->plugin->wipeS2CleanCache();
+        $this->plugin->wipeEvalCode();
+        $this->plugin->wipeOpcache();
         /*[/pro]*/
 
         $redirect_to = self_admin_url('/admin.php');
@@ -116,19 +111,9 @@ class Actions extends AbsBase
         $counter = $this->plugin->clearCache(true);
 
         /*[pro strip-from="lite"]*/
-        if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if ($this->plugin->functionIsPossible('s2clean')) {
-                $s2clean_counter = s2clean()->md_cache_clear();
-            }
-        }
-        /*[/pro]*/
-
-        /*[pro strip-from="lite"]*/
-        if ($this->plugin->options['cache_clear_eval_code']) {
-            ob_start(); // Buffer output from PHP code.
-            eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
-            $eval_output = ob_get_clean();
-        }
+        $this->plugin->clearS2CleanCache();
+        $this->plugin->clearEvalCode();
+        $this->plugin->clearOpcache();
         /*[/pro]*/
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
@@ -146,6 +131,58 @@ class Actions extends AbsBase
      *
      * @param mixed Input action argument(s).
      */
+    protected function ajaxStats($args)
+    {
+        if (!current_user_can($this->plugin->cap)) {
+            return; // Nothing to do.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        if (!$this->plugin->options['stats_enable']) {
+            exit(); // Not applicable.
+        }
+        $dir_stats    = DirStats::instance();
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
+            $stats_data = array(
+                'forCache'          => $dir_stats->forCache(),
+                'forHtmlCCache'     => $dir_stats->forHtmlCCache(),
+                'largestCacheSize'  => $dir_stats->largestCacheSize(),
+                'largestCacheCount' => $dir_stats->largestCacheCount(),
+
+                'sysLoadAverages'  => $this->plugin->sysLoadAverages(),
+                'sysMemoryStatus'  => $this->plugin->sysMemoryStatus(),
+                'sysOpcacheStatus' => $this->plugin->sysOpcacheStatus(),
+            );
+            if ($is_multisite) {
+                $stats_data = array_merge($stats_data, array(
+                    'forHostCache'      => $dir_stats->forHostCache(),
+                    'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
+                ));
+            }
+        } else { // Stats for a child blog owner w/o access to more info.
+            $stats_data = array(
+                'forHostCache'          => $dir_stats->forHostCache(),
+                'forHtmlCHostCache'     => $dir_stats->forHtmlCHostCache(),
+                'largestHostCacheSize'  => $dir_stats->largestHostCacheSize(),
+                'largestHostCacheCount' => $dir_stats->largestHostCacheCount(),
+            );
+        }
+        header('Content-Type: application/json; charset=UTF-8');
+        exit(json_encode($stats_data)); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Directory stats.
+     *
+     * @param mixed Input action argument(s).
+     */
     protected function ajaxDirStats($args)
     {
         if (!current_user_can($this->plugin->cap)) {
@@ -154,14 +191,11 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        if (!$this->plugin->options['dir_stats_enable']) {
+        if (!$this->plugin->options['stats_enable']) {
             exit(); // Not applicable.
         }
-        if (!$this->plugin->options['dir_stats_admin_bar_enable']) {
-            exit(); // Not applicable.
-        }
-        $dir_stats    = DirStats::instance(); // Directory stats.
-        $is_multisite = is_multisite(); // Once only.
+        $dir_stats    = DirStats::instance();
+        $is_multisite = is_multisite();
 
         if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
             $dir_stats_data = array(
@@ -171,10 +205,10 @@ class Actions extends AbsBase
                 'largestCacheCount' => $dir_stats->largestCacheCount(),
             );
             if ($is_multisite) {
-                $dir_stats_data = array(
+                $dir_stats_data = array_merge($dir_stats_data, array(
                     'forHostCache'      => $dir_stats->forHostCache(),
                     'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
-                );
+                ));
             }
         } else { // Stats for a child blog owner w/o access to more info.
             $dir_stats_data = array(
@@ -205,25 +239,21 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $counter = $this->plugin->wipeCache(true);
+        $counter         = $this->plugin->wipeCache(true);
+        $s2clean_counter = $this->plugin->wipeS2CleanCache();
+        $eval_output     = $this->plugin->wipeEvalCode();
+        $opcache_counter = $this->plugin->wipeOpcache();
 
-        if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if ($this->plugin->functionIsPossible('s2clean')) {
-                $s2clean_counter = s2clean()->md_cache_clear();
-            }
-        }
-        if ($this->plugin->options['cache_clear_eval_code']) {
-            ob_start(); // Buffer output from PHP code.
-            eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
-            $eval_output = ob_get_clean();
-        }
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
 
-        if (isset($s2clean_counter)) {
+        if ($opcache_counter) {
+            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
+        }
+        if ($s2clean_counter) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
-        if (!empty($eval_output)) {
+        if ($eval_output) {
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
         }
         exit($response); // JavaScript will take it from here.
@@ -246,25 +276,21 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $counter = $this->plugin->clearCache(true);
+        $counter         = $this->plugin->clearCache(true);
+        $s2clean_counter = $this->plugin->clearS2CleanCache();
+        $eval_output     = $this->plugin->clearEvalCode();
+        $opcache_counter = $this->plugin->clearOpcache();
 
-        if ($this->plugin->options['cache_clear_s2clean_enable']) {
-            if ($this->plugin->functionIsPossible('s2clean')) {
-                $s2clean_counter = s2clean()->md_cache_clear();
-            }
-        }
-        if ($this->plugin->options['cache_clear_eval_code']) {
-            ob_start(); // Buffer output from PHP code.
-            eval('?>'.$this->plugin->options['cache_clear_eval_code'].'<?php ');
-            $eval_output = ob_get_clean();
-        }
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
 
-        if (isset($s2clean_counter)) {
+        if ($opcache_counter) {
+            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
+        }
+        if ($s2clean_counter) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
         }
-        if (!empty($eval_output)) {
+        if ($eval_output) {
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
         }
         exit($response); // JavaScript will take it from here.
