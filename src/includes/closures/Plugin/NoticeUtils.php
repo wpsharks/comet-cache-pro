@@ -132,6 +132,9 @@ $self->allAdminNotices = function () use ($self) {
         }
         # Current user can see this notice?
 
+        if (!current_user_can($self->cap)) {
+            continue; // Current user unable to see.
+        }
         if ($_notice['cap_required'] && !current_user_can($_notice['cap_required'])) {
             continue; // Current user unable to see this notice.
         }
@@ -143,7 +146,7 @@ $self->allAdminNotices = function () use ($self) {
         # If persistent, allow a site owner to dismiss.
 
         $_dismiss = ''; // Reset this to its default state.
-        if ($_notice['persistent_key']) { // A persistent notice?
+        if ($_notice['persistent_key']) { // See above. The `dismissNotice()` action requires `$self->cap` always.
             $_dismiss = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissNotice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
             $_dismiss = '<a style="display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
         }
@@ -257,7 +260,8 @@ $self->normalizeNotice = function (array $notice, array $args = array()) use ($s
        'is_transient'   => true,
        'push_to_top'    => false,
        'class'          => 'updated',
-       'cap_required'   => $self->cap,
+       'cap_required'   => '', // `$self->cap` always.
+       // i.e., this cap is in addition to `$self->cap`.
     );
     $notice = array_merge($notice_defaults, $notice, $args);
     $notice = array_intersect_key($notice, $notice_defaults);

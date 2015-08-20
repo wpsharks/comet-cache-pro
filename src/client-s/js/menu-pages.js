@@ -22,7 +22,7 @@
     $('[data-action]', plugin.$menuPage).on('click', plugin.doDataAction);
     $('[data-toggle-target]', plugin.$menuPage).on('click', plugin.doDataToggleTarget);
 
-    $('select[name$="_enable\\]"], select[name$="_enable_flavor\\]"]', plugin.$menuPage).not('.no-if-enabled').on('change', plugin.enableDisable).trigger('change');
+    $('select[name$="_enable\\]"]', plugin.$menuPage).not('.-no-if-enabled').on('change', plugin.enableDisable).trigger('change');
     $('textarea[name$="\[cdn_hosts\]"]', plugin.$menuPage).on('input propertychange', plugin.handleCdnHostsChange);
 
     /*![pro strip-from='lite']*/
@@ -67,11 +67,36 @@
     var $this = $(this),
       thisValue = $this.val(),
       thisName = $this.attr('name'),
-      $thisPanel = $this.closest('.plugin-menu-page-panel');
+      enabled = Number(thisValue) >= 1,
 
-    if ((thisName.indexOf('_enable]') !== -1 && (thisValue === '' || thisValue === '1')) || (thisName.indexOf('_flavor]') !== -1 && thisValue !== '0'))
-      $thisPanel.find('.plugin-menu-page-panel-if-enabled').css('opacity', 1).find(':input').removeAttr('readonly');
-    else $thisPanel.find('.plugin-menu-page-panel-if-enabled').css('opacity', 0.4).find(':input').attr('readonly', 'readonly');
+      $thisPanelBody = $this.closest('.plugin-menu-page-panel-body'),
+
+      targetIfEnabled = $this.data('target'), // Optional specifier.
+      $targetIfEnableds = targetIfEnabled ? $(targetIfEnabled, $thisPanelBody)
+      .filter('.plugin-menu-page-panel-if-enabled') : null,
+
+      $parentIfEnabled = $this.closest('.plugin-menu-page-panel-if-enabled'),
+      $childIfEnableds = $parentIfEnabled.find('> .plugin-menu-page-panel-if-enabled'),
+
+      $panelIfEnableds = $thisPanelBody.find('> .plugin-menu-page-panel-if-enabled');
+
+    if (enabled) {
+      if (targetIfEnabled) {
+        $targetIfEnableds.css('opacity', 1).find(':input').removeAttr('readonly');
+      } else if ($parentIfEnabled.length) {
+        $childIfEnableds.css('opacity', 1).find(':input').removeAttr('readonly');
+      } else {
+        $panelIfEnableds.css('opacity', 1).find(':input').removeAttr('readonly');
+      }
+    } else {
+      if (targetIfEnabled) {
+        $targetIfEnableds.css('opacity', 0.4).find(':input').attr('readonly', 'readonly');
+      } else if ($parentIfEnabled.length) {
+        $childIfEnableds.css('opacity', 0.4).find(':input').attr('readonly', 'readonly');
+      } else {
+        $panelIfEnableds.css('opacity', 0.4).find(':input').attr('readonly', 'readonly');
+      }
+    }
   };
 
   plugin.doDataToggleTarget = function (event) {

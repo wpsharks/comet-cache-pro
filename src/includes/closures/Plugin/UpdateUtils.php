@@ -18,6 +18,9 @@ $self->checkLatestProVersion = function () use ($self) {
     if (!current_user_can($self->update_cap)) {
         return; // Nothing to do.
     }
+    if (is_multisite() && !current_user_can($self->network_cap)) {
+        return; // Nothing to do.
+    }
     if ($self->options['last_pro_update_check'] >= strtotime('-1 hour')) {
         return; // No reason to keep checking on this.
     }
@@ -53,6 +56,9 @@ $self->checkLatestProVersion = function () use ($self) {
 $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
     if (!current_user_can($self->update_cap)) {
         return $transient; // Nothing to do here.
+    }
+    if (is_multisite() && !current_user_can($self->network_cap)) {
+        return; // Nothing to do.
     }
     if (!is_admin() || $GLOBALS['pagenow'] !== 'update.php') {
         return $transient; // Nothing to do here.
@@ -100,6 +106,9 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
 $self->fsFtpConnectionTypes = function ($types) use ($self) {
     if (!current_user_can($self->update_cap)) {
         return $transient; // Nothing to do here.
+    }
+    if (is_multisite() && !current_user_can($self->network_cap)) {
+        return; // Nothing to do.
     }
     if (!is_admin() || $GLOBALS['pagenow'] !== 'update.php') {
         return $types; // Nothing to do here.

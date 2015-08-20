@@ -12,6 +12,7 @@
     text-decoration:          none;
     padding:                  10px;
     font-size:                150%;
+    line-height:              1.125em;
     font-weight:              bold;
     border-radius:            4px;
     display:                  block;
@@ -43,6 +44,12 @@
         font-family:          sans-serif !important;
         content:              'pro version only' !important;
       }
+    }
+
+    > .si {
+      text-align:             center;
+      width:                  1.28571429em;
+      margin-right:          .25em;
     }
   }
 

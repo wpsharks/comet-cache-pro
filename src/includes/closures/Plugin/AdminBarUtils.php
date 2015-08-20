@@ -7,17 +7,89 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 15xxxx Improving admin bar.
  *
+ * @param boolean $feature Check something specific?
+ *
  * @return boolean True if showing.
  */
-$self->adminBarShowing = function () use ($self) {
-    if (!is_null($showing = &$self->cacheKey('adminBarShowing'))) {
+$self->adminBarShowing = function ($feature = '') use ($self) {
+    $feature = trim(strtolower((string) $feature));
+    if (!is_null($showing = &$self->cacheKey('adminBarShowing', $feature))) {
         return $showing; // Already cached this.
     }
-    $showing = $self->options['enable']
-        && ($self->options['cache_clear_admin_bar_enable']
-            || ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']))
-        && current_user_can($self->cap) && is_admin_bar_showing();
+    $is_multisite = is_multisite(); // Call this once only.
 
+    if (($showing = $self->options['enable'] && is_admin_bar_showing())) {
+        switch ($feature) {
+            case 'cache_wipe':
+                $showing = $self->options['cache_clear_admin_bar_enable'] && $is_multisite;
+                break;
+
+            case 'cache_clear':
+                $showing = $self->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $self->isMenuPage(GLOBAL_NS.'*'));
+                // `$self->isMenuPage(GLOBAL_NS.'*')` shows "Cache Clear" button in Network Admin when configuring options; i.e., avoids confusion.
+                break;
+
+            case 'stats':
+                $showing = $self->options['stats_enable'] && $self->options['stats_admin_bar_enable'];
+                break;
+
+            default: // Default case handler.
+                $showing = ($self->options['cache_clear_admin_bar_enable'] && $is_multisite)
+                            || ($self->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $self->isMenuPage(GLOBAL_NS.'*')))
+                            || ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']);
+                break;
+        }
+    }
+    if ($showing) {
+        $current_user_can_cap         = current_user_can($self->cap);
+        $current_user_can_network_cap = current_user_can($self->network_cap);
+        $current_user_can_wipe_cache  = $current_user_can_clear_cache  = $current_user_can_see_stats  = false;
+        $cache_clear_roles_caps       = preg_split('/,+/', $self->options['cache_clear_admin_bar_roles_caps'], null, PREG_SPLIT_NO_EMPTY);
+        $stats_roles_caps             = preg_split('/,+/', $self->options['stats_admin_bar_roles_caps'], null, PREG_SPLIT_NO_EMPTY);
+
+        if ($is_multisite && $current_user_can_network_cap) {
+            $current_user_can_wipe_cache = true; // They're a plugin administrator.
+        }
+        if ((!$is_multisite && $current_user_can_cap) || ($is_multisite && $current_user_can_network_cap)) {
+            $current_user_can_clear_cache = true; // They're a plugin administrator.
+        } elseif ($is_multisite && $current_user_can_cap) { // A plugin user?
+            foreach ($cache_clear_roles_caps as $_role_cap) {
+                if ($_role_cap && current_user_can($_role_cap)) {
+                    $current_user_can_clear_cache = true;
+                    break; // Got what we needed here.
+                }
+            }
+        }
+        if ((!$is_multisite && $current_user_can_cap) || ($is_multisite && $current_user_can_network_cap)) {
+            $current_user_can_see_stats = true; // They're a plugin administrator.
+        } elseif ($is_multisite && $current_user_can_cap) { // A plugin user?
+            foreach ($stats_roles_caps as $_role_cap) {
+                if ($_role_cap && current_user_can($_role_cap)) {
+                    $current_user_can_see_stats = true;
+                    break; // Got what we needed here.
+                }
+            }
+        }
+        switch ($feature) {
+            case 'cache_wipe':
+                $showing = $current_user_can_wipe_cache;
+                break;
+
+            case 'cache_clear':
+                $showing = $current_user_can_clear_cache;
+                break;
+
+            case 'stats':
+                $showing = $current_user_can_see_stats;
+                break;
+
+            default: // Default case handler.
+                $showing = $current_user_can_wipe_cache
+                    || $current_user_can_clear_cache
+                    || $current_user_can_see_stats;
+                break;
+        }
+    }
     return $showing; // True or false.
 };
 
@@ -34,44 +106,42 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
     if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    if ($self->options['cache_clear_admin_bar_enable']) {
-        if (is_multisite() && current_user_can($self->network_cap)) {
-            $wp_admin_bar->add_menu(
-                array(
-                    'parent' => 'top-secondary',
-                    'id'     => GLOBAL_NS.'-wipe',
+    if ($self->adminBarShowing('cache_wipe')) {
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-wipe',
 
-                    'title' => __('Wipe', SLUG_TD),
-                    'href'  => '#',
+                'title' => __('Wipe', SLUG_TD),
+                'href'  => '#',
 
-                    'meta' => array(
-                            'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
-                            'class'    => '-wipe',
-                            'tabindex' => -1,
-                    ),
-                )
-            );
-        }
-        if (!is_multisite() || !is_network_admin()) {
-            $wp_admin_bar->add_menu(
-                array(
-                    'parent' => 'top-secondary',
-                    'id'     => GLOBAL_NS.'-clear',
-
-                    'title' => __('Clear Cache', SLUG_TD),
-                    'href'  => '#',
-                    'meta'  => array(
-                            'title' => is_multisite() && current_user_can($self->network_cap)
-                                ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
-                                : __('Clear Cache (Start Fresh)', SLUG_TD),
-                            'class'    => '-clear',
-                            'tabindex' => -1,
-                    ),
-                )
-            );
-        }
+                'meta' => array(
+                        'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
+                        'class'    => '-wipe',
+                        'tabindex' => -1,
+                ),
+            )
+        );
     }
-    if ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']) {
+    if ($self->adminBarShowing('cache_clear')) {
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-clear',
+
+                'title' => __('Clear Cache', SLUG_TD),
+                'href'  => '#',
+                'meta'  => array(
+                        'title' => is_multisite() && current_user_can($self->network_cap)
+                            ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
+                            : __('Clear Cache (Start Fresh)', SLUG_TD),
+                        'class'    => '-clear',
+                        'tabindex' => -1,
+                ),
+            )
+        );
+    }
+    if ($self->adminBarShowing('stats')) {
         $wp_admin_bar->add_menu(
             array(
                 'parent' => 'top-secondary',
@@ -149,6 +219,7 @@ $self->adminBarMetaTags = function () use ($self) {
     $vars = array(
         '_wpnonce'                 => wp_create_nonce(),
         'isMultisite'              => is_multisite(), // Network?
+        'currentUserHasCap'        => current_user_can($self->cap),
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
@@ -199,7 +270,7 @@ $self->adminBarScripts = function () use ($self) {
     }
     $deps = array('jquery', 'admin-bar'); // Plugin dependencies.
 
-    if ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']) {
+    if ($self->adminBarShowing('stats')) {
         $deps[] = 'chartjs'; // Add ChartJS dependency.
         wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
     }
