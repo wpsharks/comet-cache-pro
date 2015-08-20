@@ -395,7 +395,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-cogs"></i> '.__('Directory / Expiration Time', SLUG_TD)."\n";
+        echo '      <i class="si si-clock-o"></i> '.__('Directory / Expiration Time', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
