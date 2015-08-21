@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Is bbPress active?
  *
- * @since 15xxxx Improving bbPress support.
+ * @since 150821 Improving bbPress support.
  *
  * @return bool `TRUE` if bbPress is active.
  */
@@ -15,7 +15,7 @@ $self->isBbPressActive = function () use ($self) {
 /*
  * bbPress post types.
  *
- * @since 15xxxx Improving bbPress support.
+ * @since 150821 Improving bbPress support.
  *
  * @return array All bbPress post types.
  */
@@ -37,7 +37,7 @@ $self->bbPressPostTypes = function () use ($self) {
 /*
  * bbPress post statuses.
  *
- * @since 15xxxx Improving bbPress support.
+ * @since 150821 Improving bbPress support.
  *
  * @return array All bbPress post statuses.
  */
