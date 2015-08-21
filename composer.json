@@ -32,7 +32,7 @@
   "require": {
     "php": ">=5.3",
     "websharks/wp-php-rv": "150511",
-    "websharks/html-compressor": "150820",
+    "websharks/html-compressor": "150821",
     "websharks/sharkicons": "150820"
   },
   "require-dev": {
