@@ -41,7 +41,7 @@ $self->currentUserCanClearCache = function () use ($self) {
  * @return boolean Current user can see stats?
  */
 $self->currentUserCanSeeStats = function () use ($self) {
-    if (!is_null($can = &$self->cacheKey('currentUserCanClearCache'))) {
+    if (!is_null($can = &$self->cacheKey('currentUserCanSeeStats'))) {
         return $can; // Already cached this.
     }
     $is_multisite = is_multisite();

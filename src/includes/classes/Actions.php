@@ -211,7 +211,7 @@ class Actions extends AbsBase
     protected function ajaxStats($args)
     {
         if (!$this->plugin->currentUserCanSeeStats()) {
-            return; // Not allowed to clear.
+            return; // Not allowed to see stats.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
@@ -264,7 +264,7 @@ class Actions extends AbsBase
     protected function ajaxDirStats($args)
     {
         if (!$this->plugin->currentUserCanSeeStats()) {
-            return; // Not allowed to clear.
+            return; // Not allowed to see stats.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
