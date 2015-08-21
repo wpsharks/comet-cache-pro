@@ -163,8 +163,9 @@ class Plugin extends AbsBaseAp
         load_plugin_textdomain(SLUG_TD); // Text domain.
 
         $this->pro_only_option_keys = array(
-            'admin_bar_enable',
             'change_notifications_enable',
+            'cache_clear_admin_bar_enable',
+            'cache_clear_opcache_enable',
             'cache_clear_s2clean_enable',
             'cache_clear_eval_code',
             'when_logged_in',
@@ -201,7 +202,15 @@ class Plugin extends AbsBaseAp
             'cdn_whitelisted_uri_patterns',
             'cdn_blacklisted_uri_patterns',
 
+            'stats_enable',
+            'stats_admin_bar_enable',
+
+            'dir_stats_history_days',
+            'dir_stats_refresh_time',
+            'dir_stats_auto_refresh_max_resources',
+
             'pro_update_check',
+            'latest_pro_version',
             'last_pro_update_check',
             'pro_update_username',
             'pro_update_password',
@@ -224,7 +233,7 @@ class Plugin extends AbsBaseAp
 
             /* Related to admin bar. */
 
-            'admin_bar_enable' => '1', // `0|1`.
+            'cache_clear_admin_bar_enable' => '1', // `0|1`.
 
             /* Related to cache directory. */
 
@@ -235,6 +244,7 @@ class Plugin extends AbsBaseAp
 
             'change_notifications_enable' => '1', // `0|1`.
 
+            'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.
 
@@ -322,9 +332,19 @@ class Plugin extends AbsBaseAp
             'cdn_blacklisted_uri_patterns' => '', // A line-delimited list of exclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
 
+            /* Related to statistics/charts. */
+
+            'stats_enable'           => is_multisite() && wp_is_large_network() ? '0' : '1',
+            'stats_admin_bar_enable' => '1', // `0|1`; enable stats in admin bar?
+
+            'dir_stats_auto_refresh_max_resources' => '1500', // Don't use cache if less than this.
+            'dir_stats_refresh_time'               => '15 minutes', // `strtotime()` compatible.
+            'dir_stats_history_days'               => '30', // Numeric; number of days.
+
             /* Related to automatic pro updates. */
 
             'pro_update_check'      => '1', // `0|1`; enable?
+            'latest_pro_version'    => VERSION, // Latest version.
             'last_pro_update_check' => '0', // Timestamp.
 
             'pro_update_username' => '', // Username.
@@ -338,27 +358,9 @@ class Plugin extends AbsBaseAp
 
             'uninstall_on_deletion' => '0', // `0|1`.
         );
-        $options = is_array($options = get_option(GLOBAL_NS.'_options')) ? $options : array();
-        if (is_multisite() && is_array($site_options = get_site_option(GLOBAL_NS.'_options'))) {
-            $options = array_merge($options, $site_options); // Multisite options.
-        }
-        if (!$options && is_multisite() && is_array($quick_cache_site_options = get_site_option('quick_cache_options'))) {
-            $options                = $quick_cache_site_options;
-            $options['crons_setup'] = $this->default_options['crons_setup'];
-        }
-        if (!$options && is_array($quick_cache_options = get_option('quick_cache_options'))) {
-            $options                = $quick_cache_options;
-            $options['crons_setup'] = $this->default_options['crons_setup'];
-        }
-        $this->default_options = $this->applyWpFilters(GLOBAL_NS.'_default_options', $this->default_options, get_defined_vars());
-        $this->options         = array_merge($this->default_options, $options); // This considers old options also.
-        $this->options         = $this->applyWpFilters(GLOBAL_NS.'_options', $this->options, get_defined_vars());
-        $this->options         = array_intersect_key($this->options, $this->default_options);
+        $this->default_options = $this->applyWpFilters(GLOBAL_NS.'_default_options', $this->default_options);
+        $this->options         = $this->getOptions(); // Filters, validates, and returns plugin options.
 
-        $this->options['base_dir'] = trim($this->options['base_dir'], '\\/'." \t\n\r\0\x0B");
-        if (!$this->options['base_dir']) {
-            $this->options['base_dir'] = $this->default_options['base_dir'];
-        }
         $this->cap           = $this->applyWpFilters(GLOBAL_NS.'_cap', $this->cap);
         $this->update_cap    = $this->applyWpFilters(GLOBAL_NS.'_update_cap', $this->update_cap);
         $this->network_cap   = $this->applyWpFilters(GLOBAL_NS.'_network_cap', $this->network_cap);
@@ -403,11 +405,11 @@ class Plugin extends AbsBaseAp
         add_action('admin_enqueue_scripts', array($this, 'enqueueAdminStyles'));
         add_action('admin_enqueue_scripts', array($this, 'enqueueAdminScripts'));
 
-        add_action('all_admin_notices', array($this, 'allAdminNotices'));
-        add_action('all_admin_notices', array($this, 'allAdminErrors'));
-
         add_action('admin_menu', array($this, 'addMenuPages'));
         add_action('network_admin_menu', array($this, 'addNetworkMenuPages'));
+
+        add_action('all_admin_notices', array($this, 'allAdminNotices'));
+
         add_filter('plugin_action_links_'.plugin_basename(PLUGIN_FILE), array($this, 'addSettingsLink'));
 
         add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
@@ -469,29 +471,25 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
         /* -------------------------------------------------------------- */
 
-        add_filter('cron_schedules', array($this, 'extendCronSchedules'));
+        if (!is_multisite() || is_main_site()) { // Main site only.
+            add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
-        if ((integer) $this->options['crons_setup'] < 1398051975
-            || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__) {
-            // Purge routine; i.e., automatic cache cleanup.
-            wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-            wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
+            if ((integer) $this->options['crons_setup'] < 1439005906 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__) {
+                wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+                wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
+
+                /*[pro strip-from="lite"]*/ // Auto-cache engine.
+                wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+                wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
+                /*[/pro]*/
+                $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__));
+            }
+            add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'cleanupCache'));
 
             /*[pro strip-from="lite"]*/ // Auto-cache engine.
-            wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-            wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
+            add_action('_cron_'.GLOBAL_NS.'_auto_cache', array($this, 'autoCache'));
             /*[/pro]*/
-
-            $this->options['crons_setup'] = (string) time().'-'.__NAMESPACE__;
-
-            update_option(GLOBAL_NS.'_options', $this->options);
-            if (is_multisite()) {
-                update_site_option(GLOBAL_NS.'_options', $this->options);
-            }
         }
-        add_action('_cron_'.GLOBAL_NS.'_auto_cache', array($this, 'autoCache'));
-        add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'purgeCache'));
-
         /* -------------------------------------------------------------- */
 
         $this->doWpAction('after_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());

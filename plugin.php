@@ -6,9 +6,9 @@ $GLOBALS['wp_php_rv'] = '5.3.2'; //php-required-version//
 
 if (require(dirname(__FILE__).'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
     if (!empty($_REQUEST['zencache_apc_warning_bypass']) && is_admin()) {
-        update_option('zencache_apc_warning_bypass', time());
+        update_site_option('zencache_apc_warning_bypass', time());
     }
-    if (extension_loaded('apc') && filter_var(ini_get('apc.enabled'), FILTER_VALIDATE_BOOLEAN) && filter_var(ini_get('apc.cache_by_default'), FILTER_VALIDATE_BOOLEAN) && stripos((string) ini_get('apc.filters'), 'zencache') === false && !get_option('zencache_apc_warning_bypass')) {
+    if (extension_loaded('apc') && filter_var(ini_get('apc.enabled'), FILTER_VALIDATE_BOOLEAN) && filter_var(ini_get('apc.cache_by_default'), FILTER_VALIDATE_BOOLEAN) && stripos((string) ini_get('apc.filters'), 'zencache') === false && !get_site_option('zencache_apc_warning_bypass')) {
         if (empty($_REQUEST['zencache_apc_warning_bypass']) && is_admin()) {
             ${__FILE__}['apc_warning'] = '<h3 style="margin:.5em 0 .25em 0;">'.__('<strong>APC EXTENSION WARNING</strong></h3>', 'zencache');
             ${__FILE__}['apc_warning'] .= '<p style="margin-top:0;">'.sprintf(__('<strong>ZenCache says...</strong> It appears that you\'re currently running PHP v%1$s with APC enabled. APC is <a href="http://zencache.com/r/apc-compatibility/" target="_blank">known to contain bugs</a>.', 'zencache'), esc_html(PHP_VERSION)).'</p>';

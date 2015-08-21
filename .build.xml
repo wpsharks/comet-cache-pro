@@ -707,7 +707,8 @@
           </fileset>
           <filterchain>
             <replaceregexp>
-              <regexp pattern="\/\*\[pro strip\-from\=&quot;lite&quot;\]\*\/(?:.*?)\/\*\[\/pro\]\*\/" replace="" modifiers="s" />
+              <regexp pattern="\/\*\!\[pro strip\-from\=['&quot;]lite['&quot;]\]\*\/(?:.*?)\/\*\!\[\/pro\]\*\/" replace="" modifiers="s" />
+              <regexp pattern="\/\*\[pro strip\-from\=['&quot;]lite['&quot;]\]\*\/(?:.*?)\/\*\[\/pro\]\*\/" replace="" modifiers="s" />
             </replaceregexp>
           </filterchain>
         </reflexive>
@@ -777,13 +778,7 @@
     <!-- Delete all existing files in repo. -->
 
     <delete includeemptydirs="true" quiet="true">
-      <fileset dir="${_repo_dir}">
-        <patternset>
-          <exclude name="assets/**" />
-          <include name="**" />
-        </patternset>
-      </fileset>
-
+      <fileset dir="_repo_dir" />
     </delete>
 
     <!-- Copy generated Lite variation to repo. -->
@@ -791,13 +786,12 @@
     <copy todir="${_repo_dir}">
       <fileset dir="${project.basedir}/.~build/${project_lite_slug}">
         <exclude pattern=".~build/**" />
-        <exclude pattern="assets/**" />
       </fileset>
     </copy>
 
     <echo msg="Staging changed files ..." />
 
-    <exec command="git add -A" dir="${_repo_dir}" />
+    <exec command="git add --all *" dir="${_repo_dir}" />
     <exec command="git status" dir="${_repo_dir}" passthru="true" />
 
     <echo msg="------------------------------------" />
@@ -816,9 +810,9 @@
 
         <!-- Extract changelog for latest version, write to .~commit.msg, then trim last two lines. -->
         <if>
-          <available property="_changelog_exists" file="${_repo_dir}/CHANGELOG.md" />
+          <available property="_changelog_exists" file="${project.basedir}/.~build/${project_lite_slug}/CHANGELOG.md" />
           <then>
-            <loadfile property="_changelog" file="${_repo_dir}/CHANGELOG.md"/>
+            <loadfile property="_changelog" file="${project.basedir}/.~build/${project_lite_slug}/CHANGELOG.md"/>
             <if>
               <contains string="${_changelog}" substring="v${project_version}" />
               <then>

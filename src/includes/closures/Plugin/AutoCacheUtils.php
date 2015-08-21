@@ -3,11 +3,11 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
- * Runs the auto-cache engine.
+ * Runs the auto-cache engine via CRON job.
  *
  * @since 150422 Rewrite.
  *
- * @attaches-to `_cron_zencache_auto_cache` hook.
+ * @attaches-to `_cron_'.__GLOBAL_NS__.'_auto_cache`
  */
 $self->autoCache = function () use ($self) {
     if (!$self->options['enable']) {

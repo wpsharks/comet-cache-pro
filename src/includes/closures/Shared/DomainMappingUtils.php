@@ -140,7 +140,7 @@ $self->domainMappingBlogId = function ($url = '', $domain = '') use ($self) {
         return 0; // Not possible/applicable.
     }
     if ($url === 'network' || $domain === 'network') {
-        $domain = (string) $GLOBALS['current_site']->domain;
+        $domain = (string) get_current_site()->domain;
     }
     if (!$domain && $url && $url !== 'network') {
         $domain = $self->parseUrl($url, PHP_URL_HOST);
@@ -188,7 +188,7 @@ $self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) use 
         return ''; // Not possible/applicable.
     }
     if (($blog_id = (integer) $blog_id) < 0) {
-        $blog_id = (integer) $GLOBALS['current_site']->blog_id;
+        $blog_id = (integer) get_current_site()->blog_id;
     }
     if (!$blog_id) {
         $blog_id = (integer) get_current_blog_id();
@@ -238,7 +238,7 @@ $self->domainMappingBlogDomains = function ($blog_id = 0) use ($self) {
         return array(); // Not possible/applicable.
     }
     if (($blog_id = (integer) $blog_id) < 0) {
-        $blog_id = (integer) $GLOBALS['current_site']->blog_id;
+        $blog_id = (integer) get_current_site()->blog_id;
     }
     if (!$blog_id) {
         $blog_id = (integer) get_current_blog_id();

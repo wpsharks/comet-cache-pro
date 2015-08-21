@@ -63,6 +63,23 @@ abstract class AbsBase
     }
 
     /**
+     * Instance (singleton).
+     *
+     * @since 15xxxx Directory stats.
+     *
+     * @return AbsBase Instance.
+     */
+    public static function instance()
+    {
+        static $instance; // Per class.
+
+        if (isset($instance)) {
+            return $instance;
+        }
+        return ($instance = new static());
+    }
+
+    /**
      * Magic/overload `isset()` checker.
      *
      * @param string $property Property to check.
@@ -185,7 +202,7 @@ abstract class AbsBase
                 case 'NULL':
                 case 'resource':
                 case 'unknown type':
-                default: // Default case handler.
+                default:
                     $_key = "\0".(string) $_arg;
             }
             if (!isset($cache_key[$_key])) {

@@ -44,22 +44,17 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
     $utils      = new FeedUtils(); // Feed utilities.
     $variations = $variation_regex_frags = array(); // Initialize.
 
-    switch ($type) {// Handle clearing based on the `$type`.
+    switch ($type) { // Handle clearing based on the `$type`.
 
         case 'blog': // The blog feed; i.e. `/feed/` on most WP installs.
-
             $variations = array_merge($variations, $utils->feedLinkVariations());
-
             break; // Break switch handler.
 
         case 'blog-comments': // The blog comments feed; i.e. `/comments/feed/` on most WP installs.
-
             $variations = array_merge($variations, $utils->feedLinkVariations('comments_'));
-
             break; // Break switch handler.
 
         case 'post-comments': // Feeds related to comments that a post has.
-
             if (!$post_id) {
                 break; // Break switch handler.
             }
@@ -67,11 +62,9 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
                 break; // Break switch handler.
             }
             $variations = array_merge($variations, $utils->postCommentsFeedLinkVariations($post));
-
             break; // Break switch handler.
 
         case 'post-authors': // Feeds related to authors that a post has.
-
             if (!$post_id) {
                 break; // Break switch handler.
             }
@@ -79,11 +72,9 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
                 break; // Break switch handler.
             }
             $variations = array_merge($variations, $utils->postAuthorFeedLinkVariations($post));
-
             break; // Break switch handler.
 
         case 'post-terms': // Feeds related to terms that a post has.
-
             if (!$post_id) {
                 break; // Break switch handler.
             }
@@ -91,11 +82,9 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
                 break; // Break switch handler.
             }
             $variations = array_merge($variations, $utils->postTermFeedLinkVariations($post, true));
-
             break; // Break switch handler.
 
         case 'custom-post-type': // Feeds related to a custom post type archive view.
-
             if (!$post_id) {
                 break; // Break switch handler.
             }
@@ -103,7 +92,6 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
                 break; // Break switch handler.
             }
             $variations = array_merge($variations, $utils->postTypeArchiveFeedLinkVariations($post));
-
             break; // Break switch handler.
 
         // @TODO Possibly consider search-related feeds in the future.

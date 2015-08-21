@@ -312,6 +312,7 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
 
     /*[pro strip-from="lite"]*/
     $cache = $self->maybeCompressHtml($cache); // Possible HTML compression.
+    // @TODO Figure out how to accomplish this without locking the cache directory for too long.
     /*[/pro]*/
 
     if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
