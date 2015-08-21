@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Get blog details.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param integer $blog_id For which blog ID?
  *

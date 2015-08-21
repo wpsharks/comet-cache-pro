@@ -31,9 +31,9 @@
 
     "require": {
         "php": ">=5.3",
-        "websharks/wp-php-rv": "dev-master",
-        "websharks/html-compressor": "dev-master",
-        "websharks/sharkicons": "dev-master"
+        "websharks/wp-php-rv": "150511",
+        "websharks/html-compressor": "150819",
+        "websharks/sharkicons": "150814"
     },
     "require-dev": {
         "websharks/wp-i18n-tools": "dev-master"

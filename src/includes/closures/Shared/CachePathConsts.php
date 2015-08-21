@@ -16,7 +16,7 @@ const CACHE_PATH_DEFAULT = 0;
 /**
  * Use a domain-mapped cache path.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @type int Part of a bitmask.
  */
@@ -25,7 +25,7 @@ const CACHE_PATH_CONSIDER_DOMAIN_MAPPING = 1;
 /**
  * Generate an unmapped cache path?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @type int Part of a bitmask.
  */

@@ -531,7 +531,7 @@ $self->deleteAllFilesDirsIn = function ($dir, $delete_dir_too = false) use ($sel
  *
  * WARNING: This does NO LOCKING and NO ATOMIC deletions.
  *
- * @since 15xxxx Improving recovery under stress.
+ * @since 150821 Improving recovery under stress.
  *
  * @param string  $dir The directory from which to erase files/dirs.
  *
@@ -618,7 +618,7 @@ $self->eraseAllFilesDirsIn = function ($dir, $erase_dir_too = false) use ($self)
  *
  * WARNING: This does NO LOCKING and NO ATOMIC deletions.
  *
- * @since 15xxxx Improving recovery under stress.
+ * @since 150821 Improving recovery under stress.
  *
  * @param string  $dir The directory from which to erase files/dirs.
  *
