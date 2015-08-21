@@ -5,13 +5,13 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Runs HTML Compressor (if applicable).
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
  *
  * @param string $cache Input cache file we want to compress.
  *
  * @return string The `$cache` with HTML compression applied (if applicable).
  *
- * @see https://github.com/websharks/HTML-Compressor
+ * @see https://github.com/websharks/html-compressor
  */
 $self->maybeCompressHtml = function ($cache) use ($self) {
     if (!$self->content_url) {
@@ -20,17 +20,21 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     if (!ZENCACHE_HTMLC_ENABLE) {
         return $cache; // Nothing to do here.
     }
-    if (($host_dir_token = $self->hostDirToken(true)) === '/') {
-        $host_dir_token = ''; // Not necessary.
-    }
-    // Deals with multisite sub-directory installs.
-    // e.g. `wp-content/cache/zencache/htmlc/cache/public/www-example-com` (main site)
-    // e.g. `wp-content/cache/zencache/htmlc/cache/public/sub/www-example-com`
-    $cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.$host_dir_token;
-    $cache_dir_private    = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.$host_dir_token;
+    // Deals with multisite base & sub-directory installs.
+    // e.g. `htmlc/cache/public/www-example-com` (standard WP installation).
+    // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network).
+    // Note that `www-example-com` (current host slug) is appended by the HTML compressor.
+
+    $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify this.
+
+    $cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.rtrim($host_base_dir_tokens, '/');
     $cache_dir_url_public = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
-    $benchmark            = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
-    $product_title        = sprintf(__('%1$s HTML Compressor', SLUG_TD), NAME);
+
+    $cache_dir_private     = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.rtrim($host_base_dir_tokens, '/');
+    $cache_dir_url_private = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_private);
+
+    $benchmark     = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
+    $product_title = sprintf(__('%1$s HTML Compressor', SLUG_TD), NAME);
 
     $html_compressor_options = array(
         'benchmark'     => $benchmark,
@@ -38,12 +42,14 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
 
         'cache_dir_public'     => $cache_dir_public,
         'cache_dir_url_public' => $cache_dir_url_public,
-        'cache_dir_private'    => $cache_dir_private,
 
-        'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
+        'cache_dir_private'     => $cache_dir_private,
+        'cache_dir_url_private' => $cache_dir_url_private,
 
         'regex_css_exclusions' => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
         'regex_js_exclusions'  => ZENCACHE_HTMLC_JS_EXCLUSIONS,
+
+        'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
 
         'compress_combine_head_body_css' => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
         'compress_combine_head_js'       => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,

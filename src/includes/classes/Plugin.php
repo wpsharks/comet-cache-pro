@@ -462,7 +462,9 @@ class Plugin extends AbsBaseAp
         /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->options['cdn_enable']) {
             add_action('upgrader_process_complete', array($this, 'bumpCdnInvalidationCounter'), 10, 0);
-            new CdnFilters(); // Setup CDN filters.
+            if (!is_admin()) { // Don't even bother in the admin area.
+                new CdnFilters(); // Setup CDN filters.
+            }
         }
         /*[/pro]*/
         /* -------------------------------------------------------------- */

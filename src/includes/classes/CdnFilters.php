@@ -130,7 +130,7 @@ class CdnFilters extends AbsBase
 
         /* Host-related properties. */
 
-        $this->local_host = strtolower((string) parse_url(home_url(), PHP_URL_HOST));
+        $this->local_host = strtolower($this->plugin->hostToken());
         $this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
         $this->cdn_hosts  = strtolower($this->plugin->options['cdn_hosts']);
         $this->parseCdnHosts(); // Convert CDN hosts to an array.
@@ -348,44 +348,44 @@ class CdnFilters extends AbsBase
      *
      * @since 150422 Rewrite.
      *
-     * @param string      $url_uri_query Input URL|URI|query.
-     * @param string|null $scheme        `NULL`, `http`, `https`, `login`, `login_post`, `admin`, or `relative`.
-     * @param bool        $esc           Defaults to a FALSE value; do not deal with HTML entities.
-     * @param string|null $for           One of `null`, `head`, `body`, `foot`.
+     * @param string      $url_uri_qsl Input URL, URI, or query string w/ a leading `?`.
+     * @param string|null $scheme      `NULL`, `http`, `https`, `login`, `login_post`, `admin`, or `relative`.
+     * @param bool        $esc         Defaults to a FALSE value; do not deal with HTML entities.
+     * @param string|null $for         One of `null`, `head`, `body`, `foot`.
      *
      * @return string The URL after having been filtered.
      *
      * @note This is only public for PHP v5.3 compat.
      */
-    public function filterUrl($url_uri_query, $scheme = null, $esc = false, $for = null)
+    public function filterUrl($url_uri_qsl, $scheme = null, $esc = false, $for = null)
     {
-        if (!($url_uri_query = trim((string) $url_uri_query))) {
+        if (!($url_uri_qsl = trim((string) $url_uri_qsl))) {
             return; // Unparseable.
         }
-        $orig_url_uri_query = $url_uri_query; // Needed below.
+        $orig_url_uri_qsl = $url_uri_qsl; // Needed below.
 
         if ($esc) { // If escaping, unescape the input value also.
-            $url_uri_query = wp_specialchars_decode($url_uri_query, ENT_QUOTES);
+            $url_uri_qsl = wp_specialchars_decode($url_uri_qsl, ENT_QUOTES);
         }
-        if (!($local_file = $this->localFile($url_uri_query))) {
-            return $orig_url_uri_query; // Not a local file.
+        if (!($local_file = $this->localFile($url_uri_qsl))) {
+            return $orig_url_uri_qsl; // Not a local file.
         }
         if (empty($this->cdn_hosts[$local_file->host])) {
-            return $orig_url_uri_query; // Exclude; no host mapping.
+            return $orig_url_uri_qsl; // Exclude; no host mapping.
         }
         if (!in_array($local_file->extension, $this->cdn_whitelisted_extensions, true)) {
-            return $orig_url_uri_query; // Not a whitelisted extension.
+            return $orig_url_uri_qsl; // Not a whitelisted extension.
         }
         if ($this->cdn_blacklisted_extensions && in_array($local_file->extension, $this->cdn_blacklisted_extensions, true)) {
-            return $orig_url_uri_query; // Exclude; it's a blacklisted extension.
+            return $orig_url_uri_qsl; // Exclude; it's a blacklisted extension.
         }
         if ($this->cdn_whitelisted_uri_patterns && !preg_match($this->cdn_whitelisted_uri_patterns, $local_file->uri)) {
-            return $orig_url_uri_query; // Exclude; not a whitelisted URI pattern.
+            return $orig_url_uri_qsl; // Exclude; not a whitelisted URI pattern.
         }
         if ($this->cdn_blacklisted_uri_patterns && preg_match($this->cdn_blacklisted_uri_patterns, $local_file->uri)) {
-            return $orig_url_uri_query; // Exclude; it's a blacklisted URI pattern.
+            return $orig_url_uri_qsl; // Exclude; it's a blacklisted URI pattern.
         }
-        if (!isset($scheme) && isset($local_file->scheme)) {
+        if (!isset($scheme) && isset($local_file->scheme) && $local_file->scheme !== '//') {
             $scheme = $local_file->scheme; // Use original scheme.
         }
         $cdn_host = $this->cdn_hosts[$local_file->host][0];
@@ -417,18 +417,18 @@ class CdnFilters extends AbsBase
      *
      * @since 150422 Rewrite.
      *
-     * @param string $url_uri_query Input URL|URI|query.
+     * @param string $url_uri_qsl Input URL, URI, or query string w/ a leading `?`.
      *
      * @return object|null An object with: `scheme`, `host`, `uri`, `extension` properties.
      *                     This returns NULL for any URL that is not local, or does not lead to a file.
      *                     Local, meaning that we have a CDN host mapping for the associated host/domain name.
      */
-    protected function localFile($url_uri_query)
+    protected function localFile($url_uri_qsl)
     {
-        if (!($url_uri_query = trim((string) $url_uri_query))) {
+        if (!($url_uri_qsl = trim((string) $url_uri_qsl))) {
             return; // Unparseable.
         }
-        if (!($parsed = @parse_url($url_uri_query))) {
+        if (!($parsed = @$this->plugin->parseUrl($url_uri_qsl))) {
             return; // Unparseable.
         }
         if (empty($parsed['host']) && empty($this->cdn_hosts[$this->local_host])) {
@@ -526,7 +526,7 @@ class CdnFilters extends AbsBase
 
         if (empty($this->cdn_hosts[$this->local_host])) {
             if ($this->cdn_host && (!is_multisite() || is_main_site())) {
-                $this->cdn_hosts[strtolower((string) parse_url(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
+                $this->cdn_hosts[strtolower((string) $this->plugin->parseUrl(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
             }
         }
     }

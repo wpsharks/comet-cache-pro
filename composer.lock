@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "82479d503f0cba92028c73682d22dea5",
+    "hash": "d3cf0e36b33c0288fca3dd5b68a31990",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/css-minifier.git",
-                "reference": "69bc4d86cf868aca3b41fd61a1d8b3944eaf516a"
+                "reference": "da1d0254c41e1f59c7337aa444d743e6056046ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/css-minifier/zipball/69bc4d86cf868aca3b41fd61a1d8b3944eaf516a",
-                "reference": "69bc4d86cf868aca3b41fd61a1d8b3944eaf516a",
+                "url": "https://api.github.com/repos/websharks/css-minifier/zipball/da1d0254c41e1f59c7337aa444d743e6056046ff",
+                "reference": "da1d0254c41e1f59c7337aa444d743e6056046ff",
                 "shasum": ""
             },
             "require": {
@@ -58,20 +58,20 @@
                 "css",
                 "websharks"
             ],
-            "time": "2015-05-11 20:52:29"
+            "time": "2015-08-21 03:19:25"
         },
         {
             "name": "websharks/html-compressor",
-            "version": "dev-master",
+            "version": "150819",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "e0928424142e90607e3bbe3c2d3974ec075454a7"
+                "reference": "ac0cbd4f53384792cbe3aa7003b07552da5fd7e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/e0928424142e90607e3bbe3c2d3974ec075454a7",
-                "reference": "e0928424142e90607e3bbe3c2d3974ec075454a7",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/ac0cbd4f53384792cbe3aa7003b07552da5fd7e2",
+                "reference": "ac0cbd4f53384792cbe3aa7003b07552da5fd7e2",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-05-17 05:57:00"
+            "time": "2015-08-19 01:05:21"
         },
         {
             "name": "websharks/js-minifier",
@@ -175,19 +175,25 @@
         },
         {
             "name": "websharks/sharkicons",
-            "version": "dev-master",
+            "version": "150814",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
-                "reference": "aa793546f57ff08fc6b2f37619a7b59c5ebf5241"
+                "reference": "3cb769178b9455b9df8ddd005b1f49cf4a6c0254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/aa793546f57ff08fc6b2f37619a7b59c5ebf5241",
-                "reference": "aa793546f57ff08fc6b2f37619a7b59c5ebf5241",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/3cb769178b9455b9df8ddd005b1f49cf4a6c0254",
+                "reference": "3cb769178b9455b9df8ddd005b1f49cf4a6c0254",
                 "shasum": ""
             },
+            "require-dev": {
+                "package/bourbon": "4.2.3"
+            },
             "type": "library",
+            "autoload": {
+                "psr-4": []
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0+"
@@ -216,21 +222,24 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-06-04 23:51:54"
+            "time": "2015-08-14 14:11:58"
         },
         {
             "name": "websharks/wp-php-rv",
-            "version": "dev-master",
+            "version": "150511",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/wp-php-rv.git",
-                "reference": "1a59ba447e71687dfd2d299cc00ef3bb05707f34"
+                "reference": "ed0a58f3647e59c740560235da1e61904dca8d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/1a59ba447e71687dfd2d299cc00ef3bb05707f34",
-                "reference": "1a59ba447e71687dfd2d299cc00ef3bb05707f34",
+                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/ed0a58f3647e59c740560235da1e61904dca8d84",
+                "reference": "ed0a58f3647e59c740560235da1e61904dca8d84",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -261,7 +270,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-05-11 15:20:11"
+            "time": "2015-05-10 10:30:04"
         }
     ],
     "packages-dev": [
@@ -316,9 +325,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "websharks/wp-php-rv": 20,
-        "websharks/html-compressor": 20,
-        "websharks/sharkicons": 20,
         "websharks/wp-i18n-tools": 20
     },
     "prefer-stable": true,

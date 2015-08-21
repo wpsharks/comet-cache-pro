@@ -49,7 +49,7 @@ $self->checkVersion = function () use ($self) {
         $self->addAdvancedCache();
         $self->updateBlogPaths();
     }
-    $self->wipeCache(); // Always wipe the cache; unless disabled by site owner; @see disableAutoWipeCacheRoutines()
+    $self->wipeCache(); // Fresh start now.
 
     $self->enqueueNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
 };
@@ -88,7 +88,7 @@ $self->uninstall = function () use ($self) {
     }
     $self->removeWpCacheFromWpConfig();
     $self->removeAdvancedCache();
-    $self->wipeCache();
+    $self->wipeCache(); // Full wipe now.
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
@@ -174,8 +174,8 @@ $self->removeWpCacheFromWpConfig = function () use ($self) {
     if (!preg_match('/([\'"])WP_CACHE\\1/i', $wp_config_file_contents)) {
         return $wp_config_file_contents; // Already gone.
     }
-    if (preg_match('/define\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:0|FALSE|NULL|([\'"])0?\\2)\s*\)\s*;/i', $wp_config_file_contents)) {
-        return $wp_config_file_contents; // It's already disabled; no need to modify this file.
+    if (preg_match('/define\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:0|FALSE|NULL|([\'"])0?\\2)\s*\)\s*;/i', $wp_config_file_contents) && !is_writable($wp_config_file)) {
+        return $wp_config_file_contents; // It's already disabled, and since we can't write to this file let's let this slide.
     }
     if (!($wp_config_file_contents = preg_replace('/define\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[0-9\.]+|TRUE|FALSE|NULL|([\'"])[^\'"]*\\2)\s*\)\s*;/i', '', $wp_config_file_contents))) {
         return ''; // Failure; something went terribly wrong here.
@@ -360,10 +360,10 @@ $self->addAdvancedCache = function () use ($self) {
         file_put_contents($cache_dir.'/.htaccess', $self->htaccess_deny);
     }
     if (!is_dir($cache_dir) || !is_writable($cache_dir) || !is_file($cache_dir.'/.htaccess') || !file_put_contents($cache_dir.'/zc-advanced-cache', time())) {
-        $self->cacheUnlock($cache_lock); // Unlock cache.
+        $self->cacheUnlock($cache_lock); // Release.
         return; // Special return value (NULL) in this case.
     }
-    $self->cacheUnlock($cache_lock);
+    $self->cacheUnlock($cache_lock); // Release.
 
     return true;
 };
@@ -397,10 +397,6 @@ $self->removeAdvancedCache = function () use ($self) {
     if (!is_writable($advanced_cache_file)) {
         return false; // Not possible.
     }
-    // Ignore; this is created by ZenCache; and we don't need to obey in this case.
-    #if(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)
-    #	return FALSE; // We may NOT edit any files.
-
     /* Empty the file only. This way permissions are NOT lost in cases where
         a site owner makes this specific file writable for ZenCache. */
     if (file_put_contents($advanced_cache_file, '') !== 0) {
@@ -419,17 +415,19 @@ $self->removeAdvancedCache = function () use ($self) {
  * @note The `advanced-cache.php` file is deleted by this routine.
  */
 $self->deleteAdvancedCache = function () use ($self) {
-    $advanced_cache_file = WP_CONTENT_DIR.'/advanced-cache.php';
+    $cache_dir                 = $self->cacheDir();
+    $advanced_cache_check_file = $cache_dir.'/zc-advanced-cache';
+    $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
 
-    if (!is_file($advanced_cache_file)) {
-        return true; // Already gone.
+    if (is_file($advanced_cache_file)) {
+        if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
+            return false; // Not possible; or outright failure.
+        }
     }
-    // Ignore; this is created by ZenCache; and we don't need to obey in this case.
-    #if(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)
-    #	return FALSE; // We may NOT edit any files.
-
-    if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
-        return false; // Not possible; or outright failure.
+    if (is_file($advanced_cache_check_file)) {
+        if (!is_writable($advanced_cache_check_file) || !unlink($advanced_cache_check_file)) {
+            return false; // Not possible; or outright failure.
+        }
     }
     return true; // Deletion success.
 };
@@ -482,8 +480,7 @@ $self->checkBlogPaths = function () use ($self) {
  * @note While this routine is attached to a WP filter, we also call upon it directly at times.
  */
 $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($self) {
-    $value = // This hook actually rides on a filter.
-        $enable_live_network_counts; // Filter value.
+    $value = $enable_live_network_counts; // This hook actually rides on a filter.
 
     if (!$self->options['enable']) {
         return $value; // Nothing to do.
@@ -501,18 +498,25 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
         file_put_contents($cache_dir.'/.htaccess', $self->htaccess_deny);
     }
     if (is_dir($cache_dir) && is_writable($cache_dir)) {
-        $paths = // Collect child blog paths from the WordPress database.
+        $paths = // Collect child `[/base]/path/`s from the WordPress database.
             $self->wpdb()->get_col('SELECT `path` FROM `'.esc_sql($self->wpdb()->blogs)."` WHERE `deleted` <= '0'");
 
-        foreach ($paths as &$_path) {
-            // Strip base; these need to match `$host_dir_token`.
-            $_path = '/'.ltrim(preg_replace('/^'.preg_quote($self->hostBaseToken(), '/').'/', '', $_path), '/');
+        $host_base_token = $self->hostBaseToken(); // Pull this once only.
+
+        foreach ($paths as $_key => &$_path) {
+            if ($_path && $_path !== '/' && $host_base_token && $host_base_token !== '/') {
+                // Note that each `path` in the DB looks like: `[/base]/path/` (i.e., it includes base).
+                $_path = '/'.ltrim(preg_replace('/^'.preg_quote($host_base_token, '/').'/', '', $_path), '/');
+            }
+            if (!$_path || $_path === '/') {
+                unset($paths[$_key]); // Exclude main site.
+            }
         }
-        unset($_path); // Housekeeping.
+        unset($_key, $_path); // Housekeeping.
 
         file_put_contents($cache_dir.'/zc-blog-paths', serialize($paths));
     }
-    $self->cacheUnlock($cache_lock); // Unlock.
+    $self->cacheUnlock($cache_lock); // Release.
 
     return $value; // Pass through untouched (always).
 };
@@ -527,7 +531,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 $self->removeBaseDir = function () use ($self) {
     $counter = 0; // Initialize.
 
-    @set_time_limit(1800); // @TODO When disabled, display a warning.
+    @set_time_limit(1800); // @TODO Display a warning.
 
     return ($counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true));
 };

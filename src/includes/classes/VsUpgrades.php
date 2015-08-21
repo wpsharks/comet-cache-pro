@@ -104,7 +104,7 @@ class VsUpgrades extends AbsBase
                         $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
                     }
                     if ($existing_options['cache_dir']) {
-                        $this->plugin->wipeCache(false, ABSPATH.$existing_options['cache_dir']);
+                        $this->plugin->deleteAllFilesDirsIn(ABSPATH.$existing_options['cache_dir'], true);
                     }
                     unset($this->plugin->options['cache_dir']); // Just to be sure.
 
@@ -136,7 +136,7 @@ class VsUpgrades extends AbsBase
                || is_array($existing_options = get_option('quick_cache_options'))
             ) {
                 if (!empty($existing_options['base_dir']) && stripos($existing_options['base_dir'], basename(WP_CONTENT_DIR)) !== false) {
-                    $this->plugin->wipeCache(false, ABSPATH.$existing_options['base_dir']);
+                    $this->plugin->deleteAllFilesDirsIn(ABSPATH.$existing_options['base_dir'], true);
                     $this->plugin->options['base_dir'] = $this->plugin->default_options['base_dir'];
 
                     update_option(GLOBAL_NS.'_options', $this->plugin->options);

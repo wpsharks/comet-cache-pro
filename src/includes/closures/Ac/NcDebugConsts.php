@@ -23,7 +23,7 @@ const NC_DEBUG_PHP_SAPI_CLI = 'nc_debug_php_sapi_cli';
 const NC_DEBUG_QCAC_GET_VAR = 'nc_debug_zcac_get_var';
 
 /**
- * No-cache because of a missing `$_SERVER['HTTP_HOST']`.
+ * No-cache because of a missing http host.
  *
  * @since 140422 First documented version.
  *
