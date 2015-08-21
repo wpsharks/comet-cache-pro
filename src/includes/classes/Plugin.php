@@ -80,6 +80,28 @@ class Plugin extends AbsBaseAp
      */
     public $uninstall_cap = 'delete_plugins';
 
+    /*[pro strip-from="lite"]*/
+    /**
+     * WordPress capability.
+     *
+     * @since 15xxxx Cache clearing cap.
+     *
+     * @type string WordPress capability.
+     */
+    public $clear_min_cap = 'edit_posts';
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * WordPress capability.
+     *
+     * @since 15xxxx Cache clearing cap.
+     *
+     * @type string WordPress capability.
+     */
+    public $stats_min_cap = 'edit_posts';
+    /*[/pro]*/
+
     /**
      * Cache directory.
      *
@@ -370,7 +392,10 @@ class Plugin extends AbsBaseAp
         $this->update_cap    = $this->applyWpFilters(GLOBAL_NS.'_update_cap', $this->update_cap);
         $this->network_cap   = $this->applyWpFilters(GLOBAL_NS.'_network_cap', $this->network_cap);
         $this->uninstall_cap = $this->applyWpFilters(GLOBAL_NS.'_uninstall_cap', $this->uninstall_cap);
-
+        /*[pro strip-from="lite"]*/
+        $this->clear_min_cap = $this->applyWpFilters(GLOBAL_NS.'_clear_min_cap', $this->clear_min_cap);
+        $this->stats_min_cap = $this->applyWpFilters(GLOBAL_NS.'_stats_min_cap', $this->stats_min_cap);
+        /*[/pro]*/
         /* -------------------------------------------------------------- */
 
         if (!$this->enable_hooks) {

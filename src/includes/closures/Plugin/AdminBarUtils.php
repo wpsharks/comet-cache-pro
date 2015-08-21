@@ -41,35 +41,10 @@ $self->adminBarShowing = function ($feature = '') use ($self) {
         }
     }
     if ($showing) {
-        $current_user_can_cap         = current_user_can($self->cap);
-        $current_user_can_network_cap = current_user_can($self->network_cap);
-        $current_user_can_wipe_cache  = $current_user_can_clear_cache  = $current_user_can_see_stats  = false;
-        $cache_clear_roles_caps       = preg_split('/,+/', $self->options['cache_clear_admin_bar_roles_caps'], null, PREG_SPLIT_NO_EMPTY);
-        $stats_roles_caps             = preg_split('/,+/', $self->options['stats_admin_bar_roles_caps'], null, PREG_SPLIT_NO_EMPTY);
+        $current_user_can_wipe_cache  = $is_multisite && current_user_can($self->network_cap);
+        $current_user_can_clear_cache = $self->currentUserCanClearCache();
+        $current_user_can_see_stats   = $self->currentUserCanSeeStats();
 
-        if ($is_multisite && $current_user_can_network_cap) {
-            $current_user_can_wipe_cache = true; // They're a plugin administrator.
-        }
-        if ((!$is_multisite && $current_user_can_cap) || ($is_multisite && $current_user_can_network_cap)) {
-            $current_user_can_clear_cache = true; // They're a plugin administrator.
-        } elseif ($is_multisite && $current_user_can_cap) { // A plugin user?
-            foreach ($cache_clear_roles_caps as $_role_cap) {
-                if ($_role_cap && current_user_can($_role_cap)) {
-                    $current_user_can_clear_cache = true;
-                    break; // Got what we needed here.
-                }
-            }
-        }
-        if ((!$is_multisite && $current_user_can_cap) || ($is_multisite && $current_user_can_network_cap)) {
-            $current_user_can_see_stats = true; // They're a plugin administrator.
-        } elseif ($is_multisite && $current_user_can_cap) { // A plugin user?
-            foreach ($stats_roles_caps as $_role_cap) {
-                if ($_role_cap && current_user_can($_role_cap)) {
-                    $current_user_can_see_stats = true;
-                    break; // Got what we needed here.
-                }
-            }
-        }
         switch ($feature) {
             case 'cache_wipe':
                 $showing = $current_user_can_wipe_cache;
@@ -90,7 +65,7 @@ $self->adminBarShowing = function ($feature = '') use ($self) {
                 break;
         }
     }
-    return $showing; // True or false.
+    return $showing;
 };
 
 /*

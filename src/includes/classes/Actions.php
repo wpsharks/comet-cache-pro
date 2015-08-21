@@ -102,8 +102,8 @@ class Actions extends AbsBase
      */
     protected function clearCache($args)
     {
-        if (!current_user_can($this->plugin->cap)) {
-            return; // Nothing to do.
+        if (!$this->plugin->currentUserCanClearCache()) {
+            return; // Not allowed to clear.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
@@ -122,106 +122,6 @@ class Actions extends AbsBase
 
         wp_redirect($redirect_to).exit();
     }
-
-    /*[pro strip-from="lite"]*/
-    /**
-     * Action handler.
-     *
-     * @since 15xxxx Directory stats.
-     *
-     * @param mixed Input action argument(s).
-     */
-    protected function ajaxStats($args)
-    {
-        if (!current_user_can($this->plugin->cap)) {
-            return; // Nothing to do.
-        }
-        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
-            return; // Unauthenticated POST data.
-        }
-        if (!$this->plugin->options['stats_enable']) {
-            exit(); // Not applicable.
-        }
-        $dir_stats    = DirStats::instance();
-        $is_multisite = is_multisite();
-
-        if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
-            $stats_data = array(
-                'forCache'          => $dir_stats->forCache(),
-                'forHtmlCCache'     => $dir_stats->forHtmlCCache(),
-                'largestCacheSize'  => $dir_stats->largestCacheSize(),
-                'largestCacheCount' => $dir_stats->largestCacheCount(),
-
-                'sysLoadAverages'  => $this->plugin->sysLoadAverages(),
-                'sysMemoryStatus'  => $this->plugin->sysMemoryStatus(),
-                'sysOpcacheStatus' => $this->plugin->sysOpcacheStatus(),
-            );
-            if ($is_multisite) {
-                $stats_data = array_merge($stats_data, array(
-                    'forHostCache'      => $dir_stats->forHostCache(),
-                    'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
-                ));
-            }
-        } else { // Stats for a child blog owner w/o access to more info.
-            $stats_data = array(
-                'forHostCache'          => $dir_stats->forHostCache(),
-                'forHtmlCHostCache'     => $dir_stats->forHtmlCHostCache(),
-                'largestHostCacheSize'  => $dir_stats->largestHostCacheSize(),
-                'largestHostCacheCount' => $dir_stats->largestHostCacheCount(),
-            );
-        }
-        header('Content-Type: application/json; charset=UTF-8');
-        exit(json_encode($stats_data)); // JavaScript will take it from here.
-    }
-    /*[/pro]*/
-
-    /*[pro strip-from="lite"]*/
-    /**
-     * Action handler.
-     *
-     * @since 15xxxx Directory stats.
-     *
-     * @param mixed Input action argument(s).
-     */
-    protected function ajaxDirStats($args)
-    {
-        if (!current_user_can($this->plugin->cap)) {
-            return; // Nothing to do.
-        }
-        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
-            return; // Unauthenticated POST data.
-        }
-        if (!$this->plugin->options['stats_enable']) {
-            exit(); // Not applicable.
-        }
-        $dir_stats    = DirStats::instance();
-        $is_multisite = is_multisite();
-
-        if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
-            $dir_stats_data = array(
-                'forCache'          => $dir_stats->forCache(),
-                'forHtmlCCache'     => $dir_stats->forHtmlCCache(),
-                'largestCacheSize'  => $dir_stats->largestCacheSize(),
-                'largestCacheCount' => $dir_stats->largestCacheCount(),
-            );
-            if ($is_multisite) {
-                $dir_stats_data = array_merge($dir_stats_data, array(
-                    'forHostCache'      => $dir_stats->forHostCache(),
-                    'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
-                ));
-            }
-        } else { // Stats for a child blog owner w/o access to more info.
-            $dir_stats_data = array(
-                'forHostCache'          => $dir_stats->forHostCache(),
-                'forHtmlCHostCache'     => $dir_stats->forHtmlCHostCache(),
-                'largestHostCacheSize'  => $dir_stats->largestHostCacheSize(),
-                'largestHostCacheCount' => $dir_stats->largestHostCacheCount(),
-            );
-        }
-        header('Content-Type: application/json; charset=UTF-8');
-        exit(json_encode($dir_stats_data)); // JavaScript will take it from here.
-    }
-    /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
     /**
@@ -270,8 +170,8 @@ class Actions extends AbsBase
      */
     protected function ajaxClearCache($args)
     {
-        if (!current_user_can($this->plugin->cap)) {
-            return; // Nothing to do.
+        if (!$this->plugin->currentUserCanClearCache()) {
+            return; // Not allowed to clear.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
@@ -297,6 +197,108 @@ class Actions extends AbsBase
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
         }
         exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Directory stats.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxStats($args)
+    {
+        if (!$this->plugin->currentUserCanSeeStats()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        if (!$this->plugin->options['stats_enable']) {
+            exit(); // Not applicable.
+        }
+        $dir_stats    = DirStats::instance();
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
+            $stats_data = array(
+                'forCache'          => $dir_stats->forCache(),
+                'forHtmlCCache'     => $dir_stats->forHtmlCCache(),
+                'largestCacheSize'  => $dir_stats->largestCacheSize(),
+                'largestCacheCount' => $dir_stats->largestCacheCount(),
+
+                'sysLoadAverages'  => $this->plugin->sysLoadAverages(),
+                'sysMemoryStatus'  => $this->plugin->sysMemoryStatus(),
+                'sysOpcacheStatus' => $this->plugin->sysOpcacheStatus(),
+            );
+            if ($is_multisite) {
+                $stats_data = array_merge($stats_data, array(
+                    'forHostCache'      => $dir_stats->forHostCache(),
+                    'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
+                ));
+            }
+        } else { // Stats for a child blog owner.
+            $stats_data = array(
+                'forHostCache'          => $dir_stats->forHostCache(),
+                'forHtmlCHostCache'     => $dir_stats->forHtmlCHostCache(),
+                'largestHostCacheSize'  => $dir_stats->largestHostCacheSize(),
+                'largestHostCacheCount' => $dir_stats->largestHostCacheCount(),
+            );
+        }
+        header('Content-Type: application/json; charset=UTF-8');
+
+        exit(json_encode($stats_data)); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Directory stats.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxDirStats($args)
+    {
+        if (!$this->plugin->currentUserCanSeeStats()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        if (!$this->plugin->options['stats_enable']) {
+            exit(); // Not applicable.
+        }
+        $dir_stats    = DirStats::instance();
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite  || current_user_can($this->plugin->network_cap)) {
+            $dir_stats_data = array(
+                'forCache'          => $dir_stats->forCache(),
+                'forHtmlCCache'     => $dir_stats->forHtmlCCache(),
+                'largestCacheSize'  => $dir_stats->largestCacheSize(),
+                'largestCacheCount' => $dir_stats->largestCacheCount(),
+            );
+            if ($is_multisite) {
+                $dir_stats_data = array_merge($dir_stats_data, array(
+                    'forHostCache'      => $dir_stats->forHostCache(),
+                    'forHtmlCHostCache' => $dir_stats->forHtmlCHostCache(),
+                ));
+            }
+        } else { // Stats for a child blog owner.
+            $dir_stats_data = array(
+                'forHostCache'          => $dir_stats->forHostCache(),
+                'forHtmlCHostCache'     => $dir_stats->forHtmlCHostCache(),
+                'largestHostCacheSize'  => $dir_stats->largestHostCacheSize(),
+                'largestHostCacheCount' => $dir_stats->largestHostCacheCount(),
+            );
+        }
+        header('Content-Type: application/json; charset=UTF-8');
+
+        exit(json_encode($dir_stats_data)); // JavaScript will take it from here.
     }
     /*[/pro]*/
 
