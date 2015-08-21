@@ -312,7 +312,6 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
 
     /*[pro strip-from="lite"]*/
     $cache = $self->maybeCompressHtml($cache); // Possible HTML compression.
-    // @TODO Figure out how to accomplish this without locking the cache directory for too long.
     /*[/pro]*/
 
     if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
@@ -334,6 +333,5 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
         return $cache; // Return the newly built cache; with possible debug information also.
     }
     @unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
-
     throw new \Exception(sprintf(__('%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), NAME, $_SERVER['REQUEST_URI'], ZENCACHE_DIR));
 };
