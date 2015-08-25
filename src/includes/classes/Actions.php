@@ -72,7 +72,7 @@ class Actions extends AbsBase
      */
     protected function wipeCache($args)
     {
-        if (!current_user_can($this->plugin->network_cap)) {
+        if (!is_multisite() || !current_user_can($this->plugin->network_cap)) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -233,7 +233,7 @@ class Actions extends AbsBase
      */
     protected function ajaxWipeCache($args)
     {
-        if (!current_user_can($this->plugin->network_cap)) {
+        if (!is_multisite() || !current_user_can($this->plugin->network_cap)) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -282,8 +282,11 @@ class Actions extends AbsBase
         $opcache_counter = $this->plugin->clearOpcache();
 
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
-        $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
-
+        if (is_multisite() && is_main_site()) {
+            $response .= __('<p>Cache cleared for main site. Recreation will occur automatically over time.</p>', SLUG_TD);
+        } else {
+            $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
+        }
         if ($opcache_counter) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
@@ -307,6 +310,9 @@ class Actions extends AbsBase
     protected function saveOptions($args)
     {
         if (!current_user_can($this->plugin->cap)) {
+            return; // Nothing to do.
+        }
+        if (is_multisite() && !current_user_can($this->plugin->network_cap)) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -363,6 +369,9 @@ class Actions extends AbsBase
         if (!current_user_can($this->plugin->cap)) {
             return; // Nothing to do.
         }
+        if (is_multisite() && !current_user_can($this->plugin->network_cap)) {
+            return; // Nothing to do.
+        }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
@@ -407,6 +416,9 @@ class Actions extends AbsBase
         if (!current_user_can($this->plugin->cap)) {
             return; // Nothing to do.
         }
+        if (is_multisite() && !current_user_can($this->plugin->network_cap)) {
+            return; // Nothing to do.
+        }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
@@ -443,6 +455,9 @@ class Actions extends AbsBase
     protected function proUpdate($args)
     {
         if (!current_user_can($this->plugin->update_cap)) {
+            return; // Nothing to do.
+        }
+        if (is_multisite() && !current_user_can($this->plugin->network_cap)) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {

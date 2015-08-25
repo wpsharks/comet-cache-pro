@@ -35,6 +35,7 @@ $self->enqueueAdminScripts = function () use ($self) {
     wp_localize_script(GLOBAL_NS, GLOBAL_NS.'_menu_page_vars', array(
         '_wpnonce'                 => wp_create_nonce(),
         'isMultisite'              => is_multisite(), // Network?
+        'currentUserHasCap'        => current_user_can($self->cap),
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
@@ -206,3 +207,36 @@ $self->wp_admin_icon_colors = array(
     'ocean'     => array('base' => '#F2FCFF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
     'coffee'    => array('base' => '#F3F2F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
 );
+
+/*
+ * On a specific menu page?
+ *
+ * @since 15xxxx Improving multisite compat.
+ *
+ * @param string $which Which page to check; may contain wildcards.
+ *
+ * @return boolean True if is the menu page.
+ */
+$self->isMenuPage = function ($which) use ($self) {
+    if (!($which = trim((string) $which))) {
+        return false; // Empty.
+    }
+    if (!is_admin()) {
+        return false;
+    }
+    $page = $pagenow = ''; // Initialize.
+
+    if (!empty($_REQUEST['page'])) {
+        $page = (string) $_REQUEST['page'];
+    }
+    if (!empty($GLOBALS['pagenow'])) {
+        $pagenow = (string) $GLOBALS['pagenow'];
+    }
+    if ($page && fnmatch($which, $page, FNM_CASEFOLD)) {
+        return true; // Wildcard match.
+    }
+    if ($pagenow && fnmatch($which, $pagenow, FNM_CASEFOLD)) {
+        return true; // Wildcard match.
+    }
+    return false; // Nope.
+};

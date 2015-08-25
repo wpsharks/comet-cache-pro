@@ -164,10 +164,14 @@ class Plugin extends AbsBaseAp
 
         $this->pro_only_option_keys = array(
             'change_notifications_enable',
+
             'cache_clear_admin_bar_enable',
+            'cache_clear_admin_bar_roles_caps',
+
             'cache_clear_opcache_enable',
             'cache_clear_s2clean_enable',
             'cache_clear_eval_code',
+
             'when_logged_in',
             'version_salt',
 
@@ -204,6 +208,7 @@ class Plugin extends AbsBaseAp
 
             'stats_enable',
             'stats_admin_bar_enable',
+            'stats_admin_bar_roles_caps',
 
             'dir_stats_history_days',
             'dir_stats_refresh_time',
@@ -231,18 +236,17 @@ class Plugin extends AbsBaseAp
             'debugging_enable' => '1',
             // `0|1|2` // 2 indicates greater debugging detail.
 
-            /* Related to admin bar. */
-
-            'cache_clear_admin_bar_enable' => '1', // `0|1`.
-
             /* Related to cache directory. */
 
             'base_dir'      => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age' => '7 days', // `strtotime()` compatible.
 
-            /* Related to automatic cache clearing. */
+            /* Related to cache clearing. */
 
             'change_notifications_enable' => '1', // `0|1`.
+
+            'cache_clear_admin_bar_enable'     => '1', // `0|1`.
+            'cache_clear_admin_bar_roles_caps' => '', // Comma-delimited list of roles/caps.
 
             'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
@@ -334,8 +338,9 @@ class Plugin extends AbsBaseAp
 
             /* Related to statistics/charts. */
 
-            'stats_enable'           => is_multisite() && wp_is_large_network() ? '0' : '1',
-            'stats_admin_bar_enable' => '1', // `0|1`; enable stats in admin bar?
+            'stats_enable'               => is_multisite() && wp_is_large_network() ? '0' : '1',
+            'stats_admin_bar_enable'     => '1', // `0|1`; enable stats in admin bar?
+            'stats_admin_bar_roles_caps' => '', // Comma-delimited list of roles/caps.
 
             'dir_stats_auto_refresh_max_resources' => '1500', // Don't use cache if less than this.
             'dir_stats_refresh_time'               => '15 minutes', // `strtotime()` compatible.
