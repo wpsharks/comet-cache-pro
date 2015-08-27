@@ -439,7 +439,7 @@ class MenuPageOptions extends MenuPage
         echo '      <p class="info">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with PHP\'s <a href="http://php.net/manual/en/function.strtotime.php" target="_blank" style="text-decoration:none;"><code>strtotime()</code></a> function. Examples: <code>30 seconds</code>, <code>2 hours</code>, <code>7 days</code>, <code>6 months</code>, <code>1 year</code>.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s will never serve a cache file that is older than what you specify here (even if one exists in your cache directory; stale cache files are never used). In addition, a WP Cron job will automatically cleanup your cache directory (once daily); purging expired cache files periodically. This prevents a HUGE cache from building up over time, creating a potential storage issue.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         if (IS_PRO || $this->plugin->isProPreview()) {
-            $_sys_getloadavg_unavailable = (!$this->plugin->sysLoadAverages() && stripos(PHP_OS, 'win') === 0 ? TRUE : FALSE);
+            $_sys_getloadavg_unavailable = (!$this->plugin->sysLoadAverages() || stripos(PHP_OS, 'win') === 0 ? TRUE : FALSE);
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
             echo '      <hr />'."\n";
             echo '      <h3 style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.__('Disable Cache Expiration If Server Load Average is High?', SLUG_TD).'</h3>'."\n";
