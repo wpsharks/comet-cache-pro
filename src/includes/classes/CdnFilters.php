@@ -253,7 +253,13 @@ class CdnFilters extends AbsBase
             if (empty($GLOBALS['WebSharks\\HtmlCompressor_early_hooks']) || !is_array($GLOBALS['WebSharks\\HtmlCompressor_early_hooks'])) {
                 $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'] = array(); // Initialize.
             }
-            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][__CLASS__] = array(
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = array(
+                'hook'          => 'css_url()', // Filters CSS `url()`s.
+                'function'      => array($this, 'htmlCUrlFilter'),
+                'priority'      => PHP_INT_MAX - 10,
+                'accepted_args' => 1,
+            );
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = array(
                 'hook'          => 'part_url', // Filters JS/CSS parts.
                 'function'      => array($this, 'htmlCUrlFilter'),
                 'priority'      => PHP_INT_MAX - 10,
@@ -285,11 +291,11 @@ class CdnFilters extends AbsBase
      * @since 150626 Improving CDN host parsing.
      *
      * @param string $url Input URL|URI|query; passed by filter.
-     * @param string $for One of `head`, `body`, `foot`.
+     * @param string $for One of `head`, `body`, `foot`. Defaults to `body`.
      *
      * @return string The URL after having been filtered.
      */
-    public function htmlCUrlFilter($url, $for)
+    public function htmlCUrlFilter($url, $for = 'body')
     {
         return $this->filterUrl($url, null, false, $for);
     }
