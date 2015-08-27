@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * All post statuses.
  *
- * @since 15xxxx Improving bbPress support.
+ * @since 150821 Improving bbPress support.
  *
  * @return array All post statuses.
  */
@@ -21,7 +21,7 @@ $self->postStatuses = function () use ($self) {
 /*
  * All built-in post statuses.
  *
- * @since 15xxxx Improving bbPress support.
+ * @since 150821 Improving bbPress support.
  *
  * @return array All built-in post statuses.
  */

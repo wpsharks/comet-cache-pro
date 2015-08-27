@@ -62,7 +62,7 @@ $self->hostToken = function ($dashify = false, $consider_domain_mapping = false,
 /*
  * Host for a specific blog.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
@@ -207,7 +207,7 @@ $self->hostDirToken = function ($dashify = false, $consider_domain_mapping = fal
 /*
  * A blog's sub-directory.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
@@ -286,7 +286,7 @@ $self->hostBaseDirTokens = function ($dashify = false, $consider_domain_mapping 
 /*
  * A site's base directory & a blog's sub-directory.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param boolean $dashify Optional, defaults to a `FALSE` value.
  *    If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
