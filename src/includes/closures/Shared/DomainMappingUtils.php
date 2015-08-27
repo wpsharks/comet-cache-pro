@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Can consider domain mapping?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @return bool `TRUE` if we can consider domain mapping.
  *
@@ -24,7 +24,7 @@ $self->canConsiderDomainMapping = function () use ($self) {
 /*
  * Domain mapping?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @return integer Domain mapping ID; else `0` (false).
  *
@@ -44,7 +44,7 @@ $self->isDomainMapping = function () use ($self) {
 /*
  * Filters a URL in order to apply domain mapping.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param string $url The input URL to filter.
  *
@@ -86,7 +86,7 @@ $self->domainMappingUrlFilter = function ($url) use ($self) {
 /*
  * Filters a URL in order to remove domain mapping.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param string $url The input URL to filter.
  *
@@ -123,7 +123,7 @@ $self->domainMappingReverseUrlFilter = function ($url) use ($self) {
 /*
  * Converts a host into a mapped blog ID.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param string $url URL containing the domain to convert.
  * @param string $domain The domain to convert. Override URL is provided.
@@ -173,7 +173,7 @@ $self->domainMappingBlogId = function ($url = '', $domain = '') use ($self) {
 /*
  * Converts a blog ID into a mapped domain.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param integer $blog_id The blog ID.
  *
@@ -225,7 +225,7 @@ $self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) use 
 /*
  * Converts a blog ID into mapped domains (plural).
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param integer $blog_id The blog ID.
  *

@@ -28,7 +28,6 @@
     "source": "https://github.com/websharks/zencache-pro",
     "issues": "https://github.com/websharks/zencache/issues"
   },
-
   "require": {
     "php": ">=5.3",
     "websharks/wp-php-rv": "150511",
@@ -47,7 +46,6 @@
       "WebSharks\\ZenCache\\Pro\\": "src/includes/classes/"
     }
   },
-
   "config": {
     "vendor-dir": "src/vendor",
     "preferred-install": "dist"
