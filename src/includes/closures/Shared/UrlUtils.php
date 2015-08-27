@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Parses a URL.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param string $url_uri_qsl Input URL, URI, or query string w/ a leading `?`.
  * @param int    $component   Optional component to retrieve.
@@ -38,7 +38,7 @@ $self->parseUrl = function ($url_uri_qsl, $component = -1) use ($self) {
 /*
  * Unparses a URL.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @param array $parts Input URL parts.
  *
@@ -122,7 +122,7 @@ $self->isSsl = function () use ($self) {
 /*
  * Current URL.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @return string Current URL.
  */

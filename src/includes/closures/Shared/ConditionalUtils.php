@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Is AdvancedCache class?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @return bool `TRUE` if this is the AdvancedCache class.
  */
@@ -15,7 +15,7 @@ $self->isAdvancedCache = function () use ($self) {
 /*
  * Is Plugin class?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @return bool `TRUE` if this is the Plugin class.
  */
