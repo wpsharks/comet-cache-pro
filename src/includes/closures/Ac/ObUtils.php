@@ -13,7 +13,7 @@ $self->protocol = '';
 /*
  * Host token for this request.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @type string Host token for this request.
  */
@@ -22,7 +22,7 @@ $self->host_token = '';
 /*
  * Host base/dir tokens for this request.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 150821 Improving multisite compat.
  *
  * @type string Host base/dir tokens for this request.
  */
