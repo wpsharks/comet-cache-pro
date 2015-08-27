@@ -176,7 +176,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
     $self->cache_path = $self->buildCachePath($self->protocol.$self->host_token.$_SERVER['REQUEST_URI'], $self->user_token, $self->version_salt);
     $self->cache_file = ZENCACHE_DIR.'/'.$self->cache_path; // Now considering a user token.
 
-    if (is_file($self->cache_file) && filemtime($self->cache_file) >= strtotime('-'.ZENCACHE_MAX_AGE)) {
+    if (is_file($self->cache_file) && (!$self->cache_max_age || filemtime($self->cache_file) >= $self->cache_max_age)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
 
         $headers_list = $self->headersList();

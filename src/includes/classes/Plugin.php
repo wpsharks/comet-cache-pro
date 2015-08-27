@@ -185,6 +185,8 @@ class Plugin extends AbsBaseAp
         load_plugin_textdomain(SLUG_TD); // Text domain.
 
         $this->pro_only_option_keys = array(
+            'cache_max_age_disable_if_load_average_is_gte',
+
             'change_notifications_enable',
 
             'cache_clear_admin_bar_enable',
@@ -260,8 +262,9 @@ class Plugin extends AbsBaseAp
 
             /* Related to cache directory. */
 
-            'base_dir'      => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
-            'cache_max_age' => '7 days', // `strtotime()` compatible.
+            'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
+            'cache_max_age'                                => '7 days', // `strtotime()` compatible.
+            'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
 
             /* Related to cache clearing. */
 

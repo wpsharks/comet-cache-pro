@@ -410,22 +410,49 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-clock-o"></i> '.__('Directory / Expiration Time', SLUG_TD)."\n";
+        echo '      <i class="si si-folder-open"></i> '.__('Cache Directory', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-        echo '      <h3>'.__('Base Cache Directory (Must be Writable; i.e., <a href="http://codex.wordpress.org/Changing_File_Permissions" target="_blank">Permissions</a> <code>755</code> or Higher)', SLUG_TD).'</h3>'."\n";
+        echo '      <h3>'.__('Base Cache Directory (Must be Writable; i.e., <a href="http://zencache.com/r/wp-file-permissions/" target="_blank">Permissions</a> <code>755</code> or Higher)', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.sprintf(__('This is where %1$s will store the cached version of your site. If you\'re not sure how to deal with directory permissions, don\'t worry too much about this. If there is a problem, %1$s will let you know about it. By default, this directory is created by %1$s and the permissions are setup automatically. In most cases there is nothing more you need to do.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">'.esc_html(WP_CONTENT_DIR).'/</td><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][base_dir]" value="'.esc_attr($this->plugin->options['base_dir']).'" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;">/</td></tr></table>'."\n";
-        echo '      <hr />'."\n";
+        echo '   </div>'."\n";
+
+        echo '</div>'."\n";
+
+        /* ----------------------------------------------------------------------------------------- */
+
+        echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
+
+        echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+        echo '      <i class="si si-clock-o"></i> '.__('Cache Expiration Time', SLUG_TD)."\n";
+        echo '   </a>'."\n";
+
+        echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
         echo '      <i class="si si-clock-o si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
         echo '      <h3>'.__('Automatic Expiration Time (Max Age)', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.__('If you don\'t update your site much, you could set this to <code>6 months</code> and optimize everything even further. The longer the Cache Expiration Time is, the greater your performance gain. Alternatively, the shorter the Expiration Time, the fresher everything will remain on your site. A default value of <code>7 days</code> (recommended); is a good conservative middle-ground.', SLUG_TD).'</p>'."\n";
         echo '      <p>'.sprintf(__('Keep in mind that your Expiration Time is only one part of the big picture. %1$s will also clear the cache automatically as changes are made to the site (i.e., you edit a post, someone comments on a post, you change your theme, you add a new navigation menu item, etc., etc.). Thus, your Expiration Time is really just a fallback; e.g., the maximum amount of time that a cache file could ever possibly live.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '      <p>'.sprintf(__('All of that being said, you could set this to just <code>60 seconds</code> and you would still see huge differences in speed and performance. If you\'re just starting out with %1$s (perhaps a bit nervous about old cache files being served to your visitors); you could set this to something like <code>30 minutes</code>, and experiment with it while you build confidence in %1$s. It\'s not necessary to do so, but many site owners have reported this makes them feel like they\'re more-in-control when the cache has a short expiration time. All-in-all, it\'s a matter of preference <i class="si si-smile-o"></i>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p>'.sprintf(__('All of that being said, you could set this to just <code>60 seconds</code> and you would still see huge differences in speed and performance. If you\'re just starting out with %1$s (perhaps a bit nervous about old cache files being served to your visitors); you could set this to something like <code>30 minutes</code> and experiment with it while you build confidence in %1$s. It\'s not necessary to do so, but many site owners have reported this makes them feel like they\'re more-in-control when the cache has a short expiration time. All-in-all, it\'s a matter of preference <i class="si si-smile-o"></i>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age]" value="'.esc_attr($this->plugin->options['cache_max_age']).'" /></p>'."\n";
         echo '      <p class="info">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with PHP\'s <a href="http://php.net/manual/en/function.strtotime.php" target="_blank" style="text-decoration:none;"><code>strtotime()</code></a> function. Examples: <code>30 seconds</code>, <code>2 hours</code>, <code>7 days</code>, <code>6 months</code>, <code>1 year</code>.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s will never serve a cache file that is older than what you specify here (even if one exists in your cache directory; stale cache files are never used). In addition, a WP Cron job will automatically cleanup your cache directory (once daily); purging expired cache files periodically. This prevents a HUGE cache from building up over time, creating a potential storage issue.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            $_sys_getloadavg_unavailable = ($this->plugin->isProPreview() ? FALSE : !$this->plugin->sysLoadAverages());
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3 style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.__('Disable Cache Expiration If Server Load Average is High?', SLUG_TD).'</h3>'."\n";
+            echo '      <p style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.sprintf(__('If you have high traffic at certain times of the day, %1$s can be told to check the current load average via <a href="http://zencache.com/r/system-load-average-via-php/" target="_blank"><code>sys_getloadavg()</code></a>. If your server\'s load average has been high in the last 15 minutes or so, cache expiration is disabled automatically to help reduce stress on the server; i.e., to avoid generating a new version of the cache while the server is very busy.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.sprintf(__('To enable this functionality you should first determine what a high load average is for your server. If you log into your machine via SSH you can run the <code>top</code> command to get a feel for what a high load average looks like. Once you know the number, you can enter it in the field below; e.g., <code>1.05</code> might be a high load average for a server with one CPU. See also: <a href="http://zencache.com/r/understanding-load-average/" target="_blank">Understanding Load Average</a>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p><input '.($_sys_getloadavg_unavailable ? 'disabled' : '').' type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age_disable_if_load_average_is_gte]" value="'.esc_attr($this->plugin->options['cache_max_age_disable_if_load_average_is_gte']).'" /></p>'."\n";
+            if ($_sys_getloadavg_unavailable && stripos(PHP_OS, 'win') === 0) { // See: <http://jas.xyz/1HZsZ9v>
+                echo '  <p class="warning">'.__('<strong>Note:</strong> It appears that your server is running Windows. The <code>sys_getloadavg()</code> function has not been implemented in PHP for Windows servers yet.', SLUG_TD).'</p>'."\n";
+            } else if ($_sys_getloadavg_unavailable && stripos(PHP_OS, 'win') !== 0) {
+                echo '  <p class="warning">'.__('<strong>Note:</strong> <code>sys_getloadavg()</code> has been disabled by your web hosting company or is not available on your server.', SLUG_TD).'</p>'."\n";
+            }
+            echo '   </div>'."\n";
+        }
         echo '   </div>'."\n";
 
         echo '</div>'."\n";

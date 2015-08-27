@@ -83,6 +83,15 @@ $self->cache_file_404 = '';
 $self->salt_location = '';
 
 /*
+ * Calculated max age; i.e., before expiration.
+ *
+ * @since 15xxxx Load average checks in pro version.
+ *
+ * @type integer Calculated max age; i.e., before expiration.
+ */
+$self->cache_max_age = 0;
+
+/*
  * Start output buffering (if applicable); or serve a cache file (if possible).
  *
  * @since 150422 Rewrite.
@@ -177,9 +186,16 @@ $self->maybeStartOutputBuffering = function () use ($self) {
 
     $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$self->host_token.$_SERVER['REQUEST_URI']);
 
+    $self->cache_max_age = strtotime('-'.ZENCACHE_MAX_AGE);
+    /*[pro strip-from="lite"]*/ // Pro version allows for load average checks.
+    if (ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE && ($load_averages = $self->sysLoadAverages())) {
+        if (max($load_averages) >= ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE) {
+            $self->cache_max_age = 0; // No expiration time.
+        }
+    } /*[/pro]*/
     if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
-    } elseif (is_file($self->cache_file) && filemtime($self->cache_file) >= strtotime('-'.ZENCACHE_MAX_AGE)) {
+    } elseif (is_file($self->cache_file) && (!$self->cache_max_age || filemtime($self->cache_file) >= $self->cache_max_age)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
 
         $headers_list = $self->headersList();
