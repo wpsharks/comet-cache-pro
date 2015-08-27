@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "491db5aaae98250478e1af7ab2907b39",
+    "hash": "5fc81aad0e41fffce2a722c159131aff",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -62,16 +62,16 @@
         },
         {
             "name": "websharks/html-compressor",
-            "version": "150819",
+            "version": "150820",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "ac0cbd4f53384792cbe3aa7003b07552da5fd7e2"
+                "reference": "07264b6c32c98d5d72dccae69bf1668c0fbaa4aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/ac0cbd4f53384792cbe3aa7003b07552da5fd7e2",
-                "reference": "ac0cbd4f53384792cbe3aa7003b07552da5fd7e2",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/07264b6c32c98d5d72dccae69bf1668c0fbaa4aa",
+                "reference": "07264b6c32c98d5d72dccae69bf1668c0fbaa4aa",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-08-19 01:05:21"
+            "time": "2015-08-21 03:26:24"
         },
         {
             "name": "websharks/js-minifier",
@@ -175,7 +175,7 @@
         },
         {
             "name": "websharks/sharkicons",
-            "version": "150814",
+            "version": "150820",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
