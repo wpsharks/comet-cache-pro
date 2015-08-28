@@ -39,7 +39,16 @@ class MenuPageProUpdater extends MenuPage
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
+	
+		echo '<div class="plugin-menu-page-version">'.
+			 '  <small><span>'.sprintf(__('%1$s&trade; v', SLUG_TD), esc_html(NAME)).'</span></small>'.
+			 ''.esc_html(VERSION).
+			 '   <a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank"> '.__('(changelog)', SLUG_TD).'</a>.'.
+			 '	<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php'))).'" target="_blank"> '.__('Latest Pro v', SLUG_TD).'</a>'.
+			 ''	 .$this->plugin->options['latest_pro_version'].
+			'</div>'."\n";
 
+			
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/pro-updater.png').'" alt="'.esc_attr(__('Pro Plugin Updater', SLUG_TD)).'" />'."\n";
 
         echo '</div>'."\n";

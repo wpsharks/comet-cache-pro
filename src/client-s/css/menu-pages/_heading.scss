@@ -1,10 +1,18 @@
+.plugin-menu-page-version {
+    float: right;
+    clear: right;
+    min-width: 350px;
+    margin: 0.5em 0 0 0;
+	text-align: center;
+	}
+
 .plugin-menu-page-heading {
   .plugin-menu-page-restore-defaults,
   .plugin-menu-page-panel-togglers {
     float:                    right;
     margin:                   0 1em 0 0;
   }
-
+  
   .plugin-menu-page-panel-togglers {
     button {
       background:             $heading-panel-togglers-bg-color !important;
