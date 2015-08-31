@@ -109,9 +109,6 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (empty($_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_REQUEST_URI);
     }
-    if (isset($_GET['zcAC']) && !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN)) {
-        return $self->maybeSetDebugInfo(NC_DEBUG_QCAC_GET_VAR);
-    }
     if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
         return $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT);
     }
@@ -123,6 +120,9 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     }
     if (isset($_SERVER['DONOTCACHEPAGE'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+    }
+    if (isset($_GET[SHORT_NAME.'AC']) && !filter_var($_GET[SHORT_NAME.'AC'], FILTER_VALIDATE_BOOLEAN)) {
+        return $self->maybeSetDebugInfo(NC_DEBUG_AC_GET_VAR);
     }
     if ($self->isUncacheableRequestMethod()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_UNCACHEABLE_REQUEST);
@@ -147,7 +147,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
-    if (!ZENCACHE_GET_REQUESTS && $self->isGetRequestWQuery() && (!isset($_GET['zcAC']) || !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN))) {
+    if (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_GET_REQUEST_QUERIES);
     }
     if (ZENCACHE_EXCLUDE_URIS && preg_match(ZENCACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
@@ -234,7 +234,6 @@ $self->maybeStartOutputBuffering = function () use ($self) {
  *
  * @return string|bool The output buffer, or `FALSE` to indicate no change.
  *
- *
  * @attaches-to {@link \ob_start()}
  */
 $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
@@ -250,9 +249,6 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     }
     if (!isset($GLOBALS[GLOBAL_NS.'_shutdown_flag'])) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_EARLY_BUFFER_TERMINATION);
-    }
-    if (isset($_GET['zcAC']) && !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN)) {
-        return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_QCAC_GET_VAR);
     }
     if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT);
