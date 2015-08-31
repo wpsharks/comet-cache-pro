@@ -7,12 +7,14 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 15xxxx Adding OPCache support.
  *
+ * @param boolean $maybe Defaults to a true value.
+ *
  * @return integer Total keys wiped.
  */
-$self->wipeOpcache = function () use ($self) {
+$self->wipeOpcache = function ($maybe = true) use ($self) {
     $counter = 0; // Initialize counter.
 
-    if (!$self->options['cache_clear_opcache_enable']) {
+    if ($maybe && !$self->options['cache_clear_opcache_enable']) {
         return $counter; // Not enabled at this time.
     }
     if (!$self->functionIsPossible('opcache_reset')) {
@@ -38,11 +40,13 @@ $self->wipeOpcache = function () use ($self) {
  *
  * @since 15xxxx Adding OPCache support.
  *
+ * @param boolean $maybe Defaults to a true value.
+ *
  * @return integer Total keys cleared.
  */
-$self->clearOpcache = function () use ($self) {
+$self->clearOpcache = function ($maybe = true) use ($self) {
     if (!is_multisite() || is_main_site() || current_user_can($self->network_cap)) {
-        return $self->wipeOpcache();
+        return $self->wipeOpcache($maybe);
     }
     return 0; // Not applicable.
 };
