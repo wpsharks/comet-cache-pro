@@ -7,11 +7,12 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 15xxxx While adding OPCache support.
  *
+ * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
  *
- * @param integer Total files wiped in s2Clean.
+ * @return integer Total files wiped in s2Clean.
  */
-$self->wipeS2CleanCache = function ($maybe = true) use ($self) {
+$self->wipeS2CleanCache = function ($manually = false, $maybe = true) use ($self) {
     $counter = 0; // Initialize counter.
 
     if ($maybe && !$self->options['cache_clear_s2clean_enable']) {
@@ -30,13 +31,14 @@ $self->wipeS2CleanCache = function ($maybe = true) use ($self) {
  *
  * @since 15xxxx While adding OPCache support.
  *
+ * @param bool $manually True if clearing is done manually.
  * @param boolean $maybe Defaults to a true value.
  *
- * @param integer Total files cleared in s2Clean.
+ * @return integer Total files cleared in s2Clean.
  */
-$self->clearS2CleanCache = function ($maybe = true) use ($self) {
+$self->clearS2CleanCache = function ($manually = false, $maybe = true) use ($self) {
     if (!is_multisite() || is_main_site() || current_user_can($self->network_cap)) {
-        return $self->wipeS2CleanCache($maybe);
+        return $self->wipeS2CleanCache($manually, $maybe);
     }
     return 0; // Not applicable.
 };

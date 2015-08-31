@@ -81,9 +81,9 @@ class Actions extends AbsBase
         $counter = $this->plugin->wipeCache(true);
 
         /*[pro strip-from="lite"]*/
-        $this->plugin->wipeS2CleanCache();
-        $this->plugin->wipeEvalCode();
-        $this->plugin->wipeOpcache();
+        $this->plugin->wipeS2CleanCache(true);
+        $this->plugin->wipeEvalCode(true);
+        $this->plugin->wipeOpcache(true);
         /*[/pro]*/
 
         $redirect_to = self_admin_url('/admin.php');
@@ -111,9 +111,9 @@ class Actions extends AbsBase
         $counter = $this->plugin->clearCache(true);
 
         /*[pro strip-from="lite"]*/
-        $this->plugin->clearS2CleanCache();
-        $this->plugin->clearEvalCode();
-        $this->plugin->clearOpcache();
+        $this->plugin->clearS2CleanCache(true);
+        $this->plugin->clearEvalCode(true);
+        $this->plugin->clearOpcache(true);
         /*[/pro]*/
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
@@ -240,9 +240,9 @@ class Actions extends AbsBase
             return; // Unauthenticated POST data.
         }
         $counter         = $this->plugin->wipeCache(true);
-        $s2clean_counter = $this->plugin->wipeS2CleanCache();
-        $eval_output     = $this->plugin->wipeEvalCode();
-        $opcache_counter = $this->plugin->wipeOpcache();
+        $s2clean_counter = $this->plugin->wipeS2CleanCache(true);
+        $eval_output     = $this->plugin->wipeEvalCode(true);
+        $opcache_counter = $this->plugin->wipeOpcache(true);
 
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
@@ -277,9 +277,9 @@ class Actions extends AbsBase
             return; // Unauthenticated POST data.
         }
         $counter         = $this->plugin->clearCache(true);
-        $s2clean_counter = $this->plugin->clearS2CleanCache();
-        $eval_output     = $this->plugin->clearEvalCode();
-        $opcache_counter = $this->plugin->clearOpcache();
+        $s2clean_counter = $this->plugin->clearS2CleanCache(true);
+        $eval_output     = $this->plugin->clearEvalCode(true);
+        $opcache_counter = $this->plugin->clearOpcache(true);
 
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);

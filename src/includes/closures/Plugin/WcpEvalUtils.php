@@ -7,11 +7,12 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 15xxxx Enhancing eval support.
  *
+ * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
  *
  * @return string Result from custom code.
  */
-$self->wipeEvalCode = function ($maybe = true) use ($self) {
+$self->wipeEvalCode = function ($manually = false, $maybe = true) use ($self) {
     $result = ''; // Initialize result.
 
     if ($maybe && !$self->options['cache_clear_eval_code']) {
@@ -34,11 +35,12 @@ $self->wipeEvalCode = function ($maybe = true) use ($self) {
  *
  * @since 15xxxx Enhancing eval support.
  *
+ * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
  *
  * @return string Result from custom code.
  */
-$self->clearEvalCode = function ($maybe = true) use ($self) {
-    return $self->wipeEvalCode($maybe);
+$self->clearEvalCode = function ($manually = false, $maybe = true) use ($self) {
+    return $self->wipeEvalCode($manually, $maybe);
 };
 /*[/pro]*/
