@@ -221,10 +221,10 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $this->plugin->wipeCdnCache(true);
+        $counter = $this->plugin->wipeCdnCache(true, false);
 
         $response = sprintf(__('<p>CDN cache successfully wiped.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($this->plugin->options['cdn_invalidation_counter']));
+        $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
@@ -246,10 +246,10 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $this->plugin->clearCdnCache(true);
+        $counter = $this->plugin->clearCdnCache(true, false);
 
         $response = sprintf(__('<p>CDN cache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($this->plugin->options['cdn_invalidation_counter']));
+        $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
