@@ -248,6 +248,13 @@ class MenuPageOptions extends MenuPage
             echo '      <p>'.sprintf(__('If you have any custom routines you\'d like to process when the cache is cleared manually, please enter PHP code here. If your PHP code outputs a message, it will be displayed along with any other notes from %1$s itself. This feature is intended for developers, and it may come in handy if you need to clear any system caches not already covered by %1$s configuration options.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_eval_code]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_eval_code']).'</textarea></p>'."\n";
             echo '      <p class="info" style="margin-top:0;">'.__('<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo \'&lt;p&gt;Also cleared APC cache.&lt;/p&gt;\'; ?&gt;</code>', SLUG_TD).'</p>'."\n";
+            echo '  <hr />'."\n";
+            echo '  <h3>'.__('Clear the CDN Cache Too?', SLUG_TD).'</h3>'."\n";
+            echo '  <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to automatically bump the CDN invalidation counter too? i.e., automatically increment the <code>?%2$s=[counter]</code> in all static CDN URLs?', SLUG_TD), esc_html(NAME), esc_html($this->plugin->options['cdn_invalidation_var'])).'</p>'."\n";
+            echo '  <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_cdn_enable]" class="-no-if-enabled">'."\n";
+            echo '      <option value="0"'.selected($this->plugin->options['cache_clear_cdn_enable'], '0', false).'>'.__('No, I don\'t use Static CDN Filters; or, I don\'t want the CDN cache cleared.', SLUG_TD).'</option>'."\n";
+            echo '      <option value="1"'.selected($this->plugin->options['cache_clear_cdn_enable'], '1', false).'>'.__('Yes, if Static CDN Filters are enabled, also clear the CDN cache.', SLUG_TD).'</option>'."\n";
+            echo '  </select></p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";
@@ -849,6 +856,7 @@ class MenuPageOptions extends MenuPage
             echo '              <h3>'.__('Query String Invalidation Variable Name', SLUG_TD).'</h3>'."\n";
             echo '              <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_invalidation_var]" value="'.esc_attr($this->plugin->options['cdn_invalidation_var']).'" /></p>'."\n";
             echo '              <p>'.sprintf(__('Each filtered URL (which then leads to your CDN) will include this query string variable as an easy way to invalidate the CDN cache at any time. Invalidating the CDN cache is simply a matter of changing the global invalidation counter (i.e., the value assigned to this query string variable). %1$s manages invalidations automatically; i.e., %1$s will automatically bump an internal counter each time you upgrade a WordPress component (e.g., a plugin, theme, or WP itself). Or, if you ask %1$s to invalidate the CDN cache (e.g., a manual clearing of the CDN cache); the internal counter is bumped then too. In short, %1$s handles cache invalidations for you reliably. This option simply allows you to customize the query string variable name which makes cache invalidations possible. <strong>Please note, the default value is adequate for most sites. You can change this if you like, but it\'s not necessary.</strong>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '              <p class="info" style="display:block;">'.sprintf(__('<strong>Tip:</strong> You can also tell %1$s to automatically bump the CDN Invalidation Counter whenever you clear the cache manually. See: <strong>%1$s → Manual Cache Clearing → Clear the CDN Cache Too?</strong>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '              <p class="info" style="display:block;">'.sprintf(__('<strong>Note:</strong> If you empty this field, it will effectively disable the %1$s invalidation system for Static CDN Filters; i.e., the query string variable will NOT be included if you do not supply a variable name.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '         </div>'."\n";
             echo '      </div>'."\n";
