@@ -40,16 +40,18 @@ class MenuPageProUpdater extends MenuPage
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-        echo '<div class="plugin-menu-page-version">'."\n";
-        echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
+        if (IS_PRO) {
+            echo '<div class="plugin-menu-page-version">'."\n";
+            echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
 
-        if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
-            echo '(<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php'))).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
-        } else {
-            echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
+            if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
+                echo '(<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php'))).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+            } else {
+                echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
+            }
+
+            echo '</div>'."\n";
         }
-
-        echo '</div>'."\n";
 
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/pro-updater.png').'" alt="'.esc_attr(__('Pro Plugin Updater', SLUG_TD)).'" />'."\n";
 
