@@ -157,7 +157,7 @@
       $this.removeAttr('disabled');
     });
   };
-/*[/pro]*/
+  /*[/pro]*/
 
   /*![pro strip-from='lite']*/
   plugin.stats = function (event) {
