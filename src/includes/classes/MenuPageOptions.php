@@ -248,13 +248,14 @@ class MenuPageOptions extends MenuPage
             echo '      <p>'.sprintf(__('If you have any custom routines you\'d like to process when the cache is cleared manually, please enter PHP code here. If your PHP code outputs a message, it will be displayed along with any other notes from %1$s itself. This feature is intended for developers, and it may come in handy if you need to clear any system caches not already covered by %1$s configuration options.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="margin-bottom:0;"><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_eval_code]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['cache_clear_eval_code']).'</textarea></p>'."\n";
             echo '      <p class="info" style="margin-top:0;">'.__('<strong>Example:</strong> <code>&lt;?php apc_clear_cache(); echo \'&lt;p&gt;Also cleared APC cache.&lt;/p&gt;\'; ?&gt;</code>', SLUG_TD).'</p>'."\n";
-            echo '  <hr />'."\n";
-            echo '  <h3>'.__('Clear the CDN Cache Too?', SLUG_TD).'</h3>'."\n";
-            echo '  <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to automatically bump the CDN invalidation counter too? i.e., automatically increment the <code>?%2$s=[counter]</code> in all static CDN URLs?', SLUG_TD), esc_html(NAME), esc_html($this->plugin->options['cdn_invalidation_var'])).'</p>'."\n";
-            echo '  <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_cdn_enable]" class="-no-if-enabled">'."\n";
-            echo '      <option value="0"'.selected($this->plugin->options['cache_clear_cdn_enable'], '0', false).'>'.__('No, I don\'t use Static CDN Filters; or, I don\'t want the CDN cache cleared.', SLUG_TD).'</option>'."\n";
-            echo '      <option value="1"'.selected($this->plugin->options['cache_clear_cdn_enable'], '1', false).'>'.__('Yes, if Static CDN Filters are enabled, also clear the CDN cache.', SLUG_TD).'</option>'."\n";
-            echo '  </select></p>'."\n";
+
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Clear the CDN Cache Too?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to automatically bump the CDN invalidation counter too? i.e., automatically increment the <code>?%2$s=[counter]</code> in all static CDN URLs?', SLUG_TD), esc_html(NAME), esc_html($this->plugin->options['cdn_invalidation_var'])).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_cdn_enable]" class="-no-if-enabled">'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['cache_clear_cdn_enable'], '0', false).'>'.__('No, I don\'t use Static CDN Filters; or, I don\'t want the CDN cache cleared.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.selected($this->plugin->options['cache_clear_cdn_enable'], '1', false).'>'.__('Yes, if Static CDN Filters are enabled, also clear the CDN cache.', SLUG_TD).'</option>'."\n";
+            echo '      </select></p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";
