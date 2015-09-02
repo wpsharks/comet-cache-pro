@@ -55,13 +55,13 @@ $self->checkLatestProVersion = function () use ($self) {
  */
 $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
     if (!current_user_can($self->update_cap)) {
-        return $transient; // Nothing to do here.
+        return $transient; // Nothing to do.
     }
     if (is_multisite() && !current_user_can($self->network_cap)) {
-        return; // Nothing to do.
+        return $transient; // Nothing to do.
     }
     if (!is_admin() || $GLOBALS['pagenow'] !== 'update.php') {
-        return $transient; // Nothing to do here.
+        return $transient; // Nothing to do.
     }
     $_r = $self->trimDeep(stripslashes_deep($_REQUEST));
 
@@ -105,21 +105,21 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
  */
 $self->fsFtpConnectionTypes = function ($types) use ($self) {
     if (!current_user_can($self->update_cap)) {
-        return $transient; // Nothing to do here.
+        return $types; // Nothing to do.
     }
     if (is_multisite() && !current_user_can($self->network_cap)) {
-        return; // Nothing to do.
+        return $types; // Nothing to do.
     }
     if (!is_admin() || $GLOBALS['pagenow'] !== 'update.php') {
-        return $types; // Nothing to do here.
+        return $types; // Nothing to do.
     }
     $_r = $self->trimDeep(stripslashes_deep($_REQUEST));
 
     if (empty($_r['action']) || $_r['action'] !== 'upgrade-plugin') {
-        return $types; // Nothing to do here.
+        return $types; // Nothing to do.
     }
     if (empty($_r[GLOBAL_NS.'_update_pro_version']) || empty($_r[GLOBAL_NS.'_update_pro_zip'])) {
-        return $types; // Nothing to do here.
+        return $types; // Nothing to do.
     }
     $update_pro_version = (string) $_r[GLOBAL_NS.'_update_pro_version'];
     $update_pro_zip     = (string) $_r[GLOBAL_NS.'_update_pro_zip']; // Encrypted!

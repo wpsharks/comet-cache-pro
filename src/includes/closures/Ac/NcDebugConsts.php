@@ -14,15 +14,6 @@ if (defined(__NAMESPACE__.'\\NC_DEBUG_PHP_SAPI_CLI')) {
 const NC_DEBUG_PHP_SAPI_CLI = 'nc_debug_php_sapi_cli';
 
 /**
- * No-cache because the current request includes the `?zcAC=0` parameter.
- *
- * @since 140422 First documented version.
- *
- * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
- */
-const NC_DEBUG_QCAC_GET_VAR = 'nc_debug_zcac_get_var';
-
-/**
  * No-cache because of a missing http host.
  *
  * @since 140422 First documented version.
@@ -75,6 +66,15 @@ const NC_DEBUG_DONOTCACHEPAGE_CONSTANT = 'nc_debug_donotcachepage_constant';
  * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
  */
 const NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR = 'nc_debug_donotcachepage_server_var';
+
+/**
+ * No-cache because the current request includes the `?[SHORT_NAME]AC=0` parameter.
+ *
+ * @since 140422 First documented version.
+ *
+ * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
+ */
+const NC_DEBUG_AC_GET_VAR = 'nc_debug_ac_get_var';
 
 /**
  * No-cache because the current request method is `POST|PUT|DELETE`.

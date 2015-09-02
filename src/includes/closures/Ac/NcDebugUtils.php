@@ -75,10 +75,6 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 $reason = __('because `PHP_SAPI` reports that you are currently running from the command line.', SLUG_TD);
                 break; // Break switch handler.
 
-            case NC_DEBUG_QCAC_GET_VAR:
-                $reason = __('because `$_GET[\'zcAC\']` is set to a boolean-ish FALSE value.', SLUG_TD);
-                break; // Break switch handler.
-
             case NC_DEBUG_NO_SERVER_HTTP_HOST:
                 $reason = __('because `$_SERVER[\'HTTP_HOST\']` is missing from your server configuration.', SLUG_TD);
                 break; // Break switch handler.
@@ -101,6 +97,10 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
 
             case NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR:
                 $reason = __('because the environment variable `$_SERVER[\'DONOTCACHEPAGE\']` has been set at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
+                break; // Break switch handler.
+
+            case NC_DEBUG_AC_GET_VAR:
+                $reason = sprintf(__('because `$_GET[\'%1$sAC\']` is set to a boolean-ish FALSE value.', SLUG_TD), SHORT_NAME);
                 break; // Break switch handler.
 
             case NC_DEBUG_UNCACHEABLE_REQUEST:
