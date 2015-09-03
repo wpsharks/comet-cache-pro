@@ -272,13 +272,14 @@
             $.each(data, function (index, payload) {
               values.push(Number(payload.value));
             });
-            var min = Math.min.apply(null, values),
+            var start = 0, // Always zero.
+              min = Math.min.apply(null, values),
               max = Math.max.apply(null, values),
-              stepWidth = Math.ceil((max - min) / steps);
+              stepWidth = Math.ceil((max - start) / steps);
 
             return {
               scaleSteps: steps,
-              scaleStartValue: 0,
+              scaleStartValue: start,
               scaleStepWidth: stepWidth,
               scaleIntegersOnly: true,
               scaleOverride: true
