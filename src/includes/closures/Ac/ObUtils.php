@@ -121,7 +121,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (isset($_SERVER['DONOTCACHEPAGE'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
     }
-    if (isset($_GET[SHORT_NAME.'AC']) && !filter_var($_GET[SHORT_NAME.'AC'], FILTER_VALIDATE_BOOLEAN)) {
+    if (isset($_GET[strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
         return $self->maybeSetDebugInfo(NC_DEBUG_AC_GET_VAR);
     }
     if ($self->isUncacheableRequestMethod()) {

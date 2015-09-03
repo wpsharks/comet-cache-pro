@@ -100,7 +100,7 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 break; // Break switch handler.
 
             case NC_DEBUG_AC_GET_VAR:
-                $reason = sprintf(__('because `$_GET[\'%1$sAC\']` is set to a boolean-ish FALSE value.', SLUG_TD), SHORT_NAME);
+                $reason = sprintf(__('because `$_GET[\'%1$sAC\']` is set to a boolean-ish FALSE value.', SLUG_TD), strtolower(SHORT_NAME));
                 break; // Break switch handler.
 
             case NC_DEBUG_UNCACHEABLE_REQUEST:

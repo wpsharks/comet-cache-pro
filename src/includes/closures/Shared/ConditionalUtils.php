@@ -62,9 +62,9 @@ $self->requestContainsUncacheableQueryVars = function () use ($self) {
     }
     if (!empty($_GET) || !empty($_SERVER['QUERY_STRING'])) {
         $_get_count         = !empty($_GET) ? count($_GET) : 0;
-        $is_abc_only        = $_get_count === 1 && isset($_GET[SHORT_NAME.'ABC']);
+        $is_abc_only        = $_get_count === 1 && isset($_GET[strtolower(SHORT_NAME).'ABC']);
         $is_nginx_q_only    = $_get_count === 1 && isset($_GET['q']) && $self->isNginx();
-        $is_ac_get_var_true = isset($_GET[SHORT_NAME.'AC']) && filter_var($_GET[SHORT_NAME.'AC'], FILTER_VALIDATE_BOOLEAN);
+        $is_ac_get_var_true = isset($_GET[strtolower(SHORT_NAME).'AC']) && filter_var($_GET[strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN);
 
         if (!$is_abc_only && !$is_nginx_q_only && !$is_ac_get_var_true) {
             return ($is = true);
