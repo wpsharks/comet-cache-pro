@@ -457,8 +457,4 @@ ZenCache is an evolution of Quick Cache. It comes with a completely refactored c
 - **Bug Fix (Pro)**: Fixed a bug with the HTML Compressor where `style`, `link` and/or `script` tags could end up out of order in certain scenarios. See [#45](https://github.com/websharks/html-compressor/issues/45).
 - **Bug Fix (Pro)**: Fixed a bug in the HTML Compressor related to JavaScript compression routines. See [#38](https://github.com/websharks/html-compressor/issues/38).
 
-<<<<<<< HEAD:readme.txt
 For older Changelog entries, please see the `CHANGELOG.md` file.
-=======
-For older Changelog entries, please see the `CHANGELOG` file.
->>>>>>> 000000-dev:zencache-pro/readme.txt
