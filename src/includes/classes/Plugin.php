@@ -192,6 +192,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_admin_bar_enable',
             'cache_clear_admin_bar_roles_caps',
 
+            'cache_clear_cdn_enable',
             'cache_clear_opcache_enable',
             'cache_clear_s2clean_enable',
             'cache_clear_eval_code',
@@ -273,6 +274,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_admin_bar_enable'     => '1', // `0|1`.
             'cache_clear_admin_bar_roles_caps' => '', // Comma-delimited list of roles/caps.
 
+            'cache_clear_cdn_enable' => '1', // `0|1`.
             'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.

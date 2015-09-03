@@ -10,8 +10,10 @@ $self->maybeStopBrowserCaching = function () use ($self) {
     if (ZENCACHE_ALLOW_BROWSER_CACHE) {
         return; // Allow in this case.
     }
-    if (!empty($_GET['zcABC']) && filter_var($_GET['zcABC'], FILTER_VALIDATE_BOOLEAN)) {
-        return; // The query var says it's OK here.
+    if (!empty($_GET[strtolower(SHORT_NAME).'ABC'])) {
+        if (filter_var($_GET[strtolower(SHORT_NAME).'ABC'], FILTER_VALIDATE_BOOLEAN)) {
+            return; // The query var says it's OK here.
+        }
     }
     header_remove('Last-Modified');
     header('Expires: Wed, 11 Jan 1984 05:00:00 GMT');

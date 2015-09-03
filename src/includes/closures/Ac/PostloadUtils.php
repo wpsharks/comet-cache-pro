@@ -127,7 +127,7 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
     }
     if ($self->isPostPutDeleteRequest() || $self->isUncacheableRequestMethod()) {
         $self->postload['invalidate_when_logged_in'] = true;
-    } elseif (!ZENCACHE_GET_REQUESTS && $self->isGetRequestWQuery() && (!isset($_GET['zcAC']) || !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN))) {
+    } elseif (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         $self->postload['invalidate_when_logged_in'] = true;
     }
 };
