@@ -27,6 +27,11 @@ class Actions extends AbsBase
         'ajaxClearCache',
         /*[/pro]*/
 
+        /*[pro strip-from="lite"]*/
+        'ajaxWipeCdnCache',
+        'ajaxClearCdnCache',
+        /*[/pro]*/
+
         'saveOptions',
         'restoreDefaultOptions',
 
@@ -84,6 +89,7 @@ class Actions extends AbsBase
         $this->plugin->wipeS2CleanCache();
         $this->plugin->wipeEvalCode();
         $this->plugin->wipeOpcache();
+        $this->plugin->wipeCdnCache(true);
         /*[/pro]*/
 
         $redirect_to = self_admin_url('/admin.php');
@@ -114,6 +120,7 @@ class Actions extends AbsBase
         $this->plugin->clearS2CleanCache();
         $this->plugin->clearEvalCode();
         $this->plugin->clearOpcache();
+        $this->plugin->clearCdnCache(true);
         /*[/pro]*/
 
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
@@ -143,6 +150,7 @@ class Actions extends AbsBase
         $s2clean_counter = $this->plugin->wipeS2CleanCache();
         $eval_output     = $this->plugin->wipeEvalCode();
         $opcache_counter = $this->plugin->wipeOpcache();
+        $cdn_counter = $this->plugin->wipeCdnCache(true);
 
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
@@ -155,6 +163,9 @@ class Actions extends AbsBase
         }
         if ($eval_output) {
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
+        }
+        if ($cdn_counter > 0) {
+            $response .= sprintf(__('<p><strong>Also wiped CDN cache. Invalidation counter is now <code>%1$s</code>.</strong></p>', SLUG_TD), $cdn_counter);
         }
         exit($response); // JavaScript will take it from here.
     }
@@ -180,6 +191,7 @@ class Actions extends AbsBase
         $s2clean_counter = $this->plugin->clearS2CleanCache();
         $eval_output     = $this->plugin->clearEvalCode();
         $opcache_counter = $this->plugin->clearOpcache();
+        $cdn_counter = $this->plugin->clearCdnCache(true);
 
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         if (is_multisite() && is_main_site()) {
@@ -196,6 +208,59 @@ class Actions extends AbsBase
         if ($eval_output) {
             $response .= $eval_output; // Custom output (perhaps even multiple messages).
         }
+        if ($cdn_counter > 0) {
+            $response .= sprintf(__('<p><strong>Also cleared CDN cache. Invalidation counter is now <code>%1$s</code>.</strong></p>', SLUG_TD), $cdn_counter);
+        }
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Adding CDN cache wipe handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxWipeCdnCache($args)
+    {
+        if (!is_multisite() || !current_user_can($this->plugin->network_cap)) {
+            return; // Nothing to do.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = abs($this->plugin->wipeCdnCache(true, false));
+
+        $response = sprintf(__('<p>CDN cache successfully wiped.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Adding CDN cache clear handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxClearCdnCache($args)
+    {
+        if (!$this->plugin->currentUserCanClearCache()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = abs($this->plugin->clearCdnCache(true, false));
+
+        $response = sprintf(__('<p>CDN cache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($counter));
+
         exit($response); // JavaScript will take it from here.
     }
     /*[/pro]*/
