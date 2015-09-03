@@ -23,7 +23,10 @@
     $('[data-toggle-target]', plugin.$menuPage).on('click', plugin.doDataToggleTarget);
 
     $('select[name$="_enable\\]"]', plugin.$menuPage).not('.-no-if-enabled').on('change', plugin.enableDisable).trigger('change');
+    /*![pro strip-from='lite']*/
     $('textarea[name$="\[cdn_hosts\]"]', plugin.$menuPage).on('input propertychange', plugin.handleCdnHostsChange);
+    $('.plugin-menu-page-clear-cdn-cache', plugin.$menuPage).on('click', plugin.clearCdnCacheViaAjax);
+    /*[/pro]*/
 
     /*![pro strip-from='lite']*/
     if ($('.plugin-menu-page-stats', plugin.$menuPage).length) {
@@ -135,6 +138,26 @@
       $cdnHosts.val('');
     }
   };
+
+  /*![pro strip-from='lite']*/
+  plugin.clearCdnCacheViaAjax = function (event) {
+    plugin.preventDefault(event);
+
+    var $this = $(this),
+      postVars = {
+        _wpnonce: plugin.vars._wpnonce
+      }; // HTTP post vars.
+    postVars[plugin.namespace] = {
+      ajaxClearCdnCache: '1'
+    };
+    $this.attr('disabled', 'disabled'); // Processing state.
+
+    $.post(plugin.vars.ajaxURL, postVars, function (response) {
+      alert($(response.replace(/\<\/p\>\<p\>/gi, '</p> <p>')).text());
+      $this.removeAttr('disabled');
+    });
+  };
+  /*[/pro]*/
 
   /*![pro strip-from='lite']*/
   plugin.stats = function (event) {
