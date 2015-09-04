@@ -545,3 +545,19 @@ $self->deleteBaseDir = function () use ($self) {
 
     return $counter;
 };
+
+/*
+ * Adds .htaccess templates to the root .htaccess file.
+ *
+ * @since 15xxxx
+ */
+$self->addWpHtaccess = function () use ($self) {
+};
+
+/*
+ * Removes .htaccess templates from the root .htaccess file.
+ *
+ * @since 15xxxx
+ */
+$self->removeWpHtaccess = function () use ($self) {
+};
