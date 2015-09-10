@@ -200,6 +200,103 @@ $self->removeWpCacheFromWpConfig = function () use ($self) {
 };
 
 /*
+ * Add template blocks to `/.htaccess` file.
+ *
+ * @since 15xxxx Adding `.htaccess` tweaks.
+ *
+ * @return boolean True if added successfully.
+ */
+$self->addWpHtaccess = function () use ($self) {
+    if (!$self->options['enable']) {
+        return false; // Nothing to do.
+    }
+    if (!$self->removeWpHtaccess()) {
+        return false; // Unable to remove.
+    }
+    if (!($htaccess_file = $self->findHtaccessFile())) {
+        if (!is_writable(ABSPATH) || file_put_contents($htaccess_file = ABSPATH.'.htaccess', '') === false) {
+            return false; // Unable to find and/or create `.htaccess`.
+        } // If it doesn't exist, we create the `.htaccess` file here.
+    }
+    if (!is_readable($htaccess_file)) {
+        return false; // Not possible.
+    }
+    if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
+        return false; // Failure; could not read file.
+    }
+    $template_blocks = '# BEGIN '.GLOBAL_NS."\n"; // Initialize.
+
+    if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess')) {
+        foreach (scandir($templates_dir) as $_template_file) {
+            switch ($_template_file) {
+                /*[pro strip-from="lite"]*/
+                case 'cdn-filters.txt':
+                    if ($self->options['cdn_enable']) {
+                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                    } // Only if CDN filters are enabled at this time.
+                    break;
+                /*[/pro]*/
+            }
+        }
+        unset($_template_file); // Housekeeping.
+    }
+    $template_blocks        = trim($template_blocks)."\n".'# END '.GLOBAL_NS;
+    $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
+
+    if (stripos($htaccess_file_contents, GLOBAL_NS) === false) {
+        return false; // Failure; unexpected file contents.
+    }
+    if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
+        return false; // We may NOT edit any files.
+    }
+    if (!is_writable($htaccess_file)) {
+        return false; // Not possible.
+    }
+    if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+        return false; // Failure; could not write changes.
+    }
+    return true; // Added successfully.
+};
+
+/*
+ * Remove template blocks from `/.htaccess` file.
+ *
+ * @since 15xxxx Adding `.htaccess` tweaks.
+ *
+ * @return boolean True if removed successfully.
+ */
+$self->removeWpHtaccess = function () use ($self) {
+    if (!($htaccess_file = $self->findHtaccessFile())) {
+        return true; // File does not exist.
+    }
+    if (!is_readable($htaccess_file)) {
+        return false; // Not possible.
+    }
+    if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
+        return false; // Failure; could not read file.
+    }
+    if (stripos($htaccess_file_contents, GLOBAL_NS) === false) {
+        return true; // Template blocks are already gone.
+    }
+    $regex                  = '/#\s*BEGIN\s+'.preg_quote(GLOBAL_NS, '/').'\b.*?#\s*END\s+'.preg_quote(GLOBAL_NS, '/').'\s*/is';
+    $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
+
+    if (stripos($htaccess_file_contents, GLOBAL_NS) !== false) {
+        return false; // Failure; unexpected file contents.
+    }
+    if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
+        return false; // We may NOT edit any files.
+    }
+    if (!is_writable($htaccess_file)) {
+        return false; // Not possible.
+    }
+    if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+        return false; // Failure; could not write changes.
+    }
+    return true; // Removed successfully.
+};
+
+/*
  * Checks to make sure the `advanced-cache.php` file still exists;
  *    and if it doesn't, the `advanced-cache.php` is regenerated automatically.
  *
@@ -544,20 +641,4 @@ $self->deleteBaseDir = function () use ($self) {
     $counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true);
 
     return $counter;
-};
-
-/*
- * Adds .htaccess templates to the root .htaccess file.
- *
- * @since 15xxxx
- */
-$self->addWpHtaccess = function () use ($self) {
-};
-
-/*
- * Removes .htaccess templates from the root .htaccess file.
- *
- * @since 15xxxx
- */
-$self->removeWpHtaccess = function () use ($self) {
 };
