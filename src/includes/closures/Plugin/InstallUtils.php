@@ -15,6 +15,7 @@ $self->activate = function () use ($self) {
         return; // Nothing to do.
     }
     $self->addWpCacheToWpConfig();
+    $self->addWpHtaccess();
     $self->addAdvancedCache();
     $self->updateBlogPaths();
     $self->autoClearCache();
@@ -38,6 +39,7 @@ $self->checkVersion = function () use ($self) {
 
     if ($self->options['enable']) {
         $self->addWpCacheToWpConfig();
+        $self->addWpHtaccess();
         $self->addAdvancedCache();
         $self->updateBlogPaths();
     }
@@ -57,6 +59,7 @@ $self->deactivate = function () use ($self) {
     $self->setup(); // Ensure setup is complete.
 
     $self->removeWpCacheFromWpConfig();
+    $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->clearCache();
 };
@@ -79,6 +82,7 @@ $self->uninstall = function () use ($self) {
         return; // Extra layer of security.
     }
     $self->removeWpCacheFromWpConfig();
+    $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->wipeCache();
 
