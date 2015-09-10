@@ -405,6 +405,9 @@ class Actions extends AbsBase
             if (!($add_wp_cache_to_wp_config = $this->plugin->addWpCacheToWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
+            if (!($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
+                $query_args[GLOBAL_NS.'_wp_htaccess_add_failure'] = '1';
+            }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
@@ -412,6 +415,9 @@ class Actions extends AbsBase
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
+            }
+            if (!($remove_wp_htaccess = $this->plugin->removeWpHtaccess())) {
+                $query_args[GLOBAL_NS.'_wp_htaccess_remove_failure'] = '1';
             }
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
@@ -451,6 +457,9 @@ class Actions extends AbsBase
             if (!($add_wp_cache_to_wp_config = $this->plugin->addWpCacheToWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
+            if (!($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
+                $query_args[GLOBAL_NS.'_wp_htaccess_add_failure'] = '1';
+            }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
@@ -458,6 +467,9 @@ class Actions extends AbsBase
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
+            }
+            if (!($remove_wp_htaccess = $this->plugin->removeWpHtaccess())) {
+                $query_args[GLOBAL_NS.'_wp_htaccess_remove_failure'] = '1';
             }
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
