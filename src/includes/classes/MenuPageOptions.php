@@ -105,12 +105,12 @@ class MenuPageOptions extends MenuPage
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_add_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
-            echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically.', SLUG_TD)."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_remove_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
-            echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically.', SLUG_TD)."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_config_wp_cache_add_failure'])) {
