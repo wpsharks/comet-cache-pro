@@ -544,11 +544,18 @@ class CdnFilters extends AbsBase
      */
     public static function defaultWhitelistedExtensions()
     {
-        $wp_media_library_extensions = array_keys(wp_get_mime_types());
-        $wp_media_library_extensions = explode('|', strtolower(implode('|', $wp_media_library_extensions)));
-        $font_file_extensions        = array('eot', 'ttf', 'otf', 'woff');
+        $extensions = array_keys(wp_get_mime_types());
+        $extensions = array_map('strtolower', $extensions);
+        $extensions = array_merge($extensions, array('eot', 'ttf', 'otf', 'woff'));
 
-        return array_unique(array_merge($wp_media_library_extensions, $font_file_extensions));
+        if (($permalink_structure = get_option('permalink_structure'))) {
+            if (strcasecmp(substr($permalink_structure, -5), '.html') === 0) {
+                $extensions = array_diff($extensions, array('html'));
+            } elseif (strcasecmp(substr($permalink_structure, -4), '.htm') === 0) {
+                $extensions = array_diff($extensions, array('htm'));
+            }
+        }
+        return array_unique($extensions);
     }
 }
 /*[/pro]*/
