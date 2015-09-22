@@ -202,6 +202,7 @@ $self->getNotices = function ($blog_id = 0) use ($self) {
     foreach ($notices as $_key => &$_notice) {
         if (!is_string($_key) || !is_array($_notice) || empty($_notice['notice'])) {
             unset($notices[$_key]); // Old notice.
+            continue; // Bypass; i.e., do not normalize.
         }
         $_notice = $self->normalizeNotice($_notice);
     } // ↑ Typecast/normalized each of the array elements.
