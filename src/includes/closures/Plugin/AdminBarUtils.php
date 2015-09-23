@@ -165,9 +165,11 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                             '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
                             '</div>'.
 
-                            '<div class="-more-info">'.
-                            '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
-                            '</div>'.
+                            (current_user_can($self->cap) ?
+                                '<div class="-more-info">'.
+                                '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
+                                '</div>'
+                            : '').
 
                             '<div class="-spacer"></div>',
 
