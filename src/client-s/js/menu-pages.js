@@ -446,7 +446,6 @@
             height: $chartA.find('.-canvas').height() + 'px'
           });
         } else {
-          //$chartA.hide(); // Hide if not showing.
           $chartA.html('<img style="width:100%;" src="' + plugin.escHtml(plugin.vars.emptyStatsCountsImageUrl) + '" />');
         }
         if ($chartB.length && chartBData[0].value > 0) {
@@ -456,7 +455,6 @@
             height: $chartB.find('.-canvas').height() + 'px'
           });
         } else {
-          //$chartB.hide(); // Hide if not showing.
           $chartB.html('<img style="width:100%;" src="' + plugin.escHtml(plugin.vars.emptyStatsFilesImageUrl) + '" />');
         }
         $totals.show(); // Give this a display value now.
