@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the ZenCache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: ZenCache Pro 150919\n"
+"Project-Id-Version: ZenCache Pro 150924\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/zencache-pro\n"
-"POT-Creation-Date: 2015-09-19 00:14:08+00:00\n"
+"POT-Creation-Date: 2015-09-24 02:30:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -283,7 +283,7 @@ msgid "Pro Updater"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:51
-#: src/includes/closures/Plugin/MenuPageUtils.php:125
+#: src/includes/closures/Plugin/MenuPageUtils.php:127
 msgid "Preview Pro Features"
 msgstr ""
 
@@ -322,8 +322,8 @@ msgid "changelog"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:72
-#: src/includes/closures/Plugin/MenuPageUtils.php:71
-#: src/includes/closures/Plugin/MenuPageUtils.php:99
+#: src/includes/closures/Plugin/MenuPageUtils.php:73
+#: src/includes/closures/Plugin/MenuPageUtils.php:101
 msgid "Plugin Options"
 msgstr ""
 
@@ -1528,8 +1528,8 @@ msgid "Options"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:56
-#: src/includes/closures/Plugin/MenuPageUtils.php:80
-#: src/includes/closures/Plugin/MenuPageUtils.php:107
+#: src/includes/closures/Plugin/MenuPageUtils.php:82
+#: src/includes/closures/Plugin/MenuPageUtils.php:109
 msgid "Pro Plugin Updater"
 msgstr ""
 
@@ -1881,47 +1881,47 @@ msgstr ""
 msgid "Cache statistics."
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:169
+#: src/includes/closures/Plugin/AdminBarUtils.php:170
 msgid "More Info"
-msgstr ""
-
-#: src/includes/closures/Plugin/AdminBarUtils.php:203
-#: src/includes/closures/Plugin/MenuPageUtils.php:44
-msgid "%"
-msgstr ""
-
-#: src/includes/closures/Plugin/AdminBarUtils.php:204
-#: src/includes/closures/Plugin/MenuPageUtils.php:45
-msgid "file"
 msgstr ""
 
 #: src/includes/closures/Plugin/AdminBarUtils.php:205
 #: src/includes/closures/Plugin/MenuPageUtils.php:46
-msgid "files"
+msgid "%"
 msgstr ""
 
 #: src/includes/closures/Plugin/AdminBarUtils.php:206
 #: src/includes/closures/Plugin/MenuPageUtils.php:47
-msgid "Page Cache"
+msgid "file"
 msgstr ""
 
 #: src/includes/closures/Plugin/AdminBarUtils.php:207
 #: src/includes/closures/Plugin/MenuPageUtils.php:48
-msgid "HTML Compressor"
+msgid "files"
 msgstr ""
 
 #: src/includes/closures/Plugin/AdminBarUtils.php:208
 #: src/includes/closures/Plugin/MenuPageUtils.php:49
-msgid "Current Total"
+msgid "Page Cache"
 msgstr ""
 
 #: src/includes/closures/Plugin/AdminBarUtils.php:209
 #: src/includes/closures/Plugin/MenuPageUtils.php:50
-msgid "Current Site"
+msgid "HTML Compressor"
 msgstr ""
 
 #: src/includes/closures/Plugin/AdminBarUtils.php:210
 #: src/includes/closures/Plugin/MenuPageUtils.php:51
+msgid "Current Total"
+msgstr ""
+
+#: src/includes/closures/Plugin/AdminBarUtils.php:211
+#: src/includes/closures/Plugin/MenuPageUtils.php:52
+msgid "Current Site"
+msgstr ""
+
+#: src/includes/closures/Plugin/AdminBarUtils.php:212
+#: src/includes/closures/Plugin/MenuPageUtils.php:53
 msgid "%s Day High"
 msgstr ""
 
@@ -1942,21 +1942,21 @@ msgstr ""
 msgid "<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors."
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:75
-#: src/includes/closures/Plugin/MenuPageUtils.php:103
+#: src/includes/closures/Plugin/MenuPageUtils.php:77
+#: src/includes/closures/Plugin/MenuPageUtils.php:105
 msgid "Stats / Charts"
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:80
-#: src/includes/closures/Plugin/MenuPageUtils.php:107
+#: src/includes/closures/Plugin/MenuPageUtils.php:82
+#: src/includes/closures/Plugin/MenuPageUtils.php:109
 msgid "Plugin Updater"
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:123
+#: src/includes/closures/Plugin/MenuPageUtils.php:125
 msgid "Settings"
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:126
+#: src/includes/closures/Plugin/MenuPageUtils.php:128
 msgid "Upgrade"
 msgstr ""
 
