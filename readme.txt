@@ -1,8 +1,8 @@
 === ZenCache ===
 
-Stable tag: 150821
+Stable tag: 150919
 Requires at least: 4.1
-Tested up to: 4.3
+Tested up to: 4.3-beta
 Text Domain: zencache
 
 License: GPLv2 or later
