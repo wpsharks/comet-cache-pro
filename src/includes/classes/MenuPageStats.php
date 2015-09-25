@@ -90,11 +90,13 @@ class MenuPageStats extends MenuPage
         echo '              <div class="-chart-a">'."\n";
         echo '                  <div class="-heading">'.__('Cache File Counts', SLUG_TD).'</div>'."\n";
         echo '                  <canvas class="-canvas"></canvas>'."\n";
+        echo '                  <div class="-empty"></div>'."\n";
         echo '              </div>'."\n";
 
         echo '              <div class="-chart-b">'."\n";
         echo '                  <div class="-heading">'.__('Cache File Sizes', SLUG_TD).'</div>'."\n";
         echo '                  <canvas class="-canvas"></canvas>'."\n";
+        echo '                  <div class="-empty"></div>'."\n";
         echo '              </div>'."\n";
 
         echo '              <div class="-chart-divider"></div>'."\n";
