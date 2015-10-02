@@ -703,7 +703,6 @@ class MenuPageOptions extends MenuPage
             echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
             echo '      <i class="si si-question-circle si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable WebSharks™ HTML Compression?', SLUG_TD).'</h3>'."\n";
-            echo '      <p class="notice" style="display:block;">'.__('This is an experimental feature, however it offers a potentially HUGE speed boost. You can <a href="https://github.com/websharks/html-compressor" target="_blank">learn more here</a>. Please use with caution.', SLUG_TD).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htmlc_enable]" data-target=".-htmlc-options">'."\n";
             echo '            <option value="0"'.selected($this->plugin->options['htmlc_enable'], '0', false).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.selected($this->plugin->options['htmlc_enable'], '1', false).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', SLUG_TD).'</option>'."\n";

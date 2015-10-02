@@ -238,7 +238,7 @@ class VsUpgrades extends AbsBase
     /**
      * Before we changed errors and blog-specific storage on a MS network.
      *
-     * @since 15xxxx Improving multisite compat.
+     * @since 151002 Improving multisite compat.
      */
     protected function fromLte150807()
     {

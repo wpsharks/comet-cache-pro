@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Runs HTML Compressor (if applicable).
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $cache Input cache file we want to compress.
  *

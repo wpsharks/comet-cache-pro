@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Wipe (i.e., eval) custom code.
  *
- * @since 15xxxx Enhancing eval support.
+ * @since 151002 Enhancing eval support.
  *
  * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
@@ -33,7 +33,7 @@ $self->wipeEvalCode = function ($manually = false, $maybe = true) use ($self) {
 /*
  * Clear (i.e., eval) custom code.
  *
- * @since 15xxxx Enhancing eval support.
+ * @since 151002 Enhancing eval support.
  *
  * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.

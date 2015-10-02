@@ -153,7 +153,7 @@ $self->dirRegexIteration = function ($dir, $regex = '') use ($self) {
 /*
  * Abbreviated byte notation for file sizes.
  *
- * @since 15xxxx Adding a few statistics.
+ * @since 151002 Adding a few statistics.
  *
  * @param float   $bytes File size in bytes. A (float) value.
  * @param integer $precision Number of decimals to use.
@@ -180,7 +180,7 @@ $self->bytesAbbr = function ($bytes, $precision = 2) use ($self) {
 /*
  * Converts an abbreviated byte notation into bytes.
  *
- * @since 15xxxx Adding a few statistics.
+ * @since 151002 Adding a few statistics.
  *
  * @param string $string A string value in byte notation.
  *
@@ -221,7 +221,7 @@ $self->abbrBytes = function ($string) use ($self) {
 /*
  * Directory stats.
  *
- * @since 15xxxx Adding a few statistics.
+ * @since 151002 Adding a few statistics.
  *
  * @param string $dir An absolute server directory path.
  * @param string $regex A regex pattern; compares to each full file path.

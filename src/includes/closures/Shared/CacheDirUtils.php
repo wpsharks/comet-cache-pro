@@ -30,7 +30,7 @@ $self->cacheDir = function ($rel_path = '') use ($self) {
  * Wipe files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 15xxxx While working on directory stats.
+ * @since 151002 While working on directory stats.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
  *
@@ -44,7 +44,7 @@ $self->wipeFilesFromCacheDir = function ($regex) use ($self) {
  * Clear files from the cache directory (for the current host);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromHostCacheDir()}.
  *
@@ -58,7 +58,7 @@ $self->clearFilesFromHostCacheDir = function ($regex) use ($self) {
  * Wurge (purge) files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 15xxxx While working on directory stats.
+ * @since 151002 While working on directory stats.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
  *
@@ -72,7 +72,7 @@ $self->wurgeFilesFromCacheDir = function ($regex) use ($self) {
  * Purge files from the cache directory (for the current host);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $regex A regex pattern; see {@link deleteFilesFromHostCacheDir()}.
  *
@@ -86,7 +86,7 @@ $self->purgeFilesFromHostCacheDir = function ($regex) use ($self) {
  * Delete files from the cache directory (for all hosts/blogs);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string  $regex A `/[regex pattern]/`; relative to the cache directory.
  *    e.g. `/^http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
@@ -228,7 +228,7 @@ $self->deleteFilesFromCacheDir = function ($regex, $check_max_age = false) use (
  * Delete files from the cache directory (for the current host);
  *    i.e., those that match a specific regex pattern.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string  $regex A `/[regex pattern]/`; relative to the host cache directory.
  *    e.g. `/^my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
@@ -426,7 +426,7 @@ $self->deleteFilesFromHostCacheDir = function (
  * Delete all files/dirs from a directory (for all schemes/hosts);
  *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string  $dir The directory from which to delete files/dirs.
  *
