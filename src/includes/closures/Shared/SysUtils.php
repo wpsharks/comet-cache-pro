@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * System load averages.
  *
- * @since 15xxxx Adding cache directory statistics.
+ * @since 151002 Adding cache directory statistics.
  *
  * @return array System load averages.
  */
@@ -28,7 +28,7 @@ $self->sysLoadAverages = function () use ($self) {
 /*
  * System memory info.
  *
- * @since 15xxxx Adding cache directory statistics.
+ * @since 151002 Adding cache directory statistics.
  *
  * @return \stdClass|boolean System memory info.
  */
@@ -71,7 +71,7 @@ $self->sysMemoryStatus = function () use ($self) {
 /*
  * System opcache status/details.
  *
- * @since 15xxxx Adding cache directory statistics.
+ * @since 151002 Adding cache directory statistics.
  *
  * @return \stdClass|boolean System opcache status/details.
  */

@@ -5,14 +5,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Stats Page.
  *
- * @since 15xxxx Directory stats.
+ * @since 151002 Directory stats.
  */
 class MenuPageStats extends MenuPage
 {
     /**
      * Constructor.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      */
     public function __construct()
     {

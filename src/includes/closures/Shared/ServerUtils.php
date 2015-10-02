@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Is running on Apache?
  *
- * @since 15xxxx This is Apache?
+ * @since 151002 This is Apache?
  *
  * @return bool True if running Apache.
  */
@@ -26,7 +26,7 @@ $self->isApache = function () use ($self) {
 /*
  * Is running on Nginx?
  *
- * @since 15xxxx This is Nginx?
+ * @since 151002 This is Nginx?
  *
  * @return bool True if running Nginx.
  */
@@ -45,7 +45,7 @@ $self->isNginx = function () use ($self) {
 /*
  * Is running on Windows IIS?
  *
- * @since 15xxxx This is Windows IIS?
+ * @since 151002 This is Windows IIS?
  *
  * @return bool True if running Windows IIS.
  */

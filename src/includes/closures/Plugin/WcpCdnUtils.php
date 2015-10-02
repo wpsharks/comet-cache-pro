@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Wipes out entire CDN cache.
  *
- * @since 15xxxx Implementing CDN cache wiping.
+ * @since 151002 Implementing CDN cache wiping.
  *
  * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
@@ -30,7 +30,7 @@ $self->wipeCdnCache = function ($manually = false, $maybe = true) use ($self) {
 /*
  * Clears the CDN cache.
  *
- * @since 15xxxx Implementing CDN cache clearing.
+ * @since 151002 Implementing CDN cache clearing.
  *
  * @param bool $manually True if clearing is done manually.
  * @param boolean $maybe Defaults to a true value.

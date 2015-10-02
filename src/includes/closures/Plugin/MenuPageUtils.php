@@ -171,7 +171,7 @@ $self->menuPageOptions = function () use ($self) {
 /*
  * Loads admin menu page for stats.
  *
- * @since 15xxxx Directory stats.
+ * @since 151002 Directory stats.
  */
 $self->menuPageStats = function () use ($self) {
     new MenuPage('stats');
@@ -213,7 +213,7 @@ $self->wp_admin_icon_colors = array(
 /*
  * On a specific menu page?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param string $which Which page to check; may contain wildcards.
  *

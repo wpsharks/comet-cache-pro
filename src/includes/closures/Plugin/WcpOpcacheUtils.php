@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Wipe (i.e., reset) OPCache.
  *
- * @since 15xxxx Adding OPCache support.
+ * @since 151002 Adding OPCache support.
  *
  * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
@@ -39,7 +39,7 @@ $self->wipeOpcache = function ($manually = false, $maybe = true) use ($self) {
 /*
  * Clear (i.e., reset) OPCache.
  *
- * @since 15xxxx Adding OPCache support.
+ * @since 151002 Adding OPCache support.
  *
  * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
