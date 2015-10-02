@@ -141,6 +141,18 @@ if (!defined('ZENCACHE_MAX_AGE')) {
      */
     define('ZENCACHE_MAX_AGE', '%%ZENCACHE_MAX_AGE%%');
 }
+/*[pro strip-from="lite"]*/
+if (!defined('ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE')) {
+    /**
+     * Cache expiration disabled if load average is >= to this.
+     *
+     * @since 151002 Adding support for load average check.
+     *
+     * @var string Cache expiration disabled if load average is >= to this.
+     */
+    define('ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE', '%%ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE%%');
+}
+/*[/pro]*/
 if (!defined('ZENCACHE_EXCLUDE_URIS')) {
     /**
      * URI exclusions.

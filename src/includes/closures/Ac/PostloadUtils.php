@@ -122,21 +122,12 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
     if (!$self->isLikeUserLoggedIn()) {
         return; // Nothing to do.
     }
-    if (!empty($_REQUEST[GLOBAL_NS]['wipeCache'])) {
-        return; // Site owner is clearing cache now.
-    }
-    if (!empty($_REQUEST[GLOBAL_NS]['clearCache'])) {
-        return; // Site owner is clearing cache now.
-    }
-    if (!empty($_REQUEST[GLOBAL_NS]['ajaxWipeCache'])) {
-        return; // Site owner is clearing cache now.
-    }
-    if (!empty($_REQUEST[GLOBAL_NS]['ajaxClearCache'])) {
-        return; // Site owner is clearing cache now.
+    if (!empty($_REQUEST[GLOBAL_NS])) {
+        return; // Plugin action.
     }
     if ($self->isPostPutDeleteRequest() || $self->isUncacheableRequestMethod()) {
         $self->postload['invalidate_when_logged_in'] = true;
-    } elseif (!ZENCACHE_GET_REQUESTS && $self->isGetRequestWQuery() && (!isset($_GET['zcAC']) || !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN))) {
+    } elseif (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         $self->postload['invalidate_when_logged_in'] = true;
     }
 };
@@ -159,7 +150,7 @@ $self->maybeInvalidateWhenLoggedInPostload = function () use ($self) {
         return; // Nothing to do in this case.
     }
     $regex = $self->buildCachePathRegex('', '.*?\.u\/'.preg_quote($self->user_token, '/').'[.\/]');
-    $self->clearFilesFromCacheDir($regex); // Clear matching files.
+    $self->wipeFilesFromCacheDir($regex); // Wipe matching files.
 };
 /*[/pro]*/
 
@@ -185,7 +176,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
     $self->cache_path = $self->buildCachePath($self->protocol.$self->host_token.$_SERVER['REQUEST_URI'], $self->user_token, $self->version_salt);
     $self->cache_file = ZENCACHE_DIR.'/'.$self->cache_path; // Now considering a user token.
 
-    if (is_file($self->cache_file) && filemtime($self->cache_file) >= strtotime('-'.ZENCACHE_MAX_AGE)) {
+    if (is_file($self->cache_file) && (!$self->cache_max_age || filemtime($self->cache_file) >= $self->cache_max_age)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
 
         $headers_list = $self->headersList();

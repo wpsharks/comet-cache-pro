@@ -36,7 +36,7 @@ $self->autoClearUserCache = function ($user_id) use ($self) {
         return $counter; // Nothing to do.
     }
     $regex = $self->buildCachePathRegex('', '.*?\.u\/'.preg_quote($user_id, '/').'[.\/]');
-    $counter += $self->clearFilesFromCacheDir($regex); // Clear matching files.
+    $counter += $self->wipeFilesFromCacheDir($regex); // Clear matching files.
 
     if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {
         $self->enqueueNotice('<img src="'.esc_attr($self->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.

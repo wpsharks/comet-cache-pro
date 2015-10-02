@@ -24,27 +24,6 @@ $self->isPlugin = function () use ($self) {
 };
 
 /*
- * Does the current request include a query string?
- *
- * @since 150422 Rewrite.
- *
- * @return boolean `TRUE` if request includes a query string.
- *
- * @note The return value of this function is cached to reduce overhead on repeat calls.
- */
-$self->isGetRequestWQuery = function () use ($self) {
-    if (!is_null($is = &$self->staticKey('isGetRequestWQuery'))) {
-        return $is; // Already cached this.
-    }
-    if (!empty($_GET) || (!empty($_SERVER['QUERY_STRING']) && is_string($_SERVER['QUERY_STRING']) && isset($_SERVER['QUERY_STRING'][0]))) {
-        if (!(isset($_GET['zcABC']) && count($_GET) === 1)) {
-            return ($is = true);
-        }
-    }
-    return ($is = false);
-};
-
-/*
  * Is the current request method `POST`, `PUT` or `DELETE`?
  *
  * @since 150422 Rewrite.
@@ -60,8 +39,34 @@ $self->isPostPutDeleteRequest = function () use ($self) {
     if (!empty($_POST)) {
         return ($is = true);
     }
-    if (!empty($_SERVER['REQUEST_METHOD'])) {
-        if (in_array(strtoupper((string) $_SERVER['REQUEST_METHOD']), array('POST', 'PUT', 'DELETE'), true)) {
+    if (!empty($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD'])) {
+        if (in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('POST', 'PUT', 'DELETE'), true)) {
+            return ($is = true);
+        }
+    }
+    return ($is = false);
+};
+
+/*
+ * Does the current request include an uncacheable query string?
+ *
+ * @since 151002 Improving Nginx support.
+ *
+ * @return boolean True if request includes an uncacheable query string.
+ *
+ * @note The return value of this function is cached to reduce overhead on repeat calls.
+ */
+$self->requestContainsUncacheableQueryVars = function () use ($self) {
+    if (!is_null($is = &$self->staticKey('requestContainsUncacheableQueryVars'))) {
+        return $is; // Already cached this.
+    }
+    if (!empty($_GET) || !empty($_SERVER['QUERY_STRING'])) {
+        $_get_count         = !empty($_GET) ? count($_GET) : 0;
+        $is_abc_only        = $_get_count === 1 && isset($_GET[strtolower(SHORT_NAME).'ABC']);
+        $is_nginx_q_only    = $_get_count === 1 && isset($_GET['q']) && $self->isNginx();
+        $is_ac_get_var_true = isset($_GET[strtolower(SHORT_NAME).'AC']) && filter_var($_GET[strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN);
+
+        if (!$is_abc_only && !$is_nginx_q_only && !$is_ac_get_var_true) {
             return ($is = true);
         }
     }
@@ -84,8 +89,8 @@ $self->isUncacheableRequestMethod = function () use ($self) {
     if (!empty($_POST)) {
         return ($is = true);
     }
-    if (!empty($_SERVER['REQUEST_METHOD'])) {
-        if (!in_array(strtoupper((string) $_SERVER['REQUEST_METHOD']), array('GET'), true)) {
+    if (!empty($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD'])) {
+        if (!in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('GET'), true)) {
             return ($is = true);
         }
     }
@@ -142,13 +147,11 @@ $self->isLocalhost = function () use ($self) {
     if (!is_null($is = &$self->staticKey('isLocalhost'))) {
         return $is; // Already cached this.
     }
-    if (defined('LOCALHOST') && LOCALHOST) {
-        return ($is = true);
+    if (defined('LOCALHOST')) {
+        return ($is = (boolean) LOCALHOST);
     }
-    if (!defined('LOCALHOST') && ($host = $self->hostToken())) {
-        if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', $host)) {
-            return ($is = true);
-        }
+    if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', $self->hostToken())) {
+        return ($is = true);
     }
     return ($is = false);
 };
@@ -167,8 +170,8 @@ $self->isAutoCacheEngine = function () use ($self) {
     if (!is_null($is = &$self->staticKey('isAutoCacheEngine'))) {
         return $is; // Already cached this.
     }
-    if (!empty($_SERVER['HTTP_USER_AGENT'])) {
-        if (stripos((string) $_SERVER['HTTP_USER_AGENT'], GLOBAL_NS) !== false) {
+    if (!empty($_SERVER['HTTP_USER_AGENT']) && is_string($_SERVER['HTTP_USER_AGENT'])) {
+        if (stripos($_SERVER['HTTP_USER_AGENT'], GLOBAL_NS) !== false) {
             return ($is = true);
         }
     }
@@ -192,8 +195,8 @@ $self->isFeed = function () use ($self) {
     if (isset($_REQUEST['feed'])) {
         return ($is = true);
     }
-    if (!empty($_SERVER['REQUEST_URI'])) {
-        if (preg_match('/\/feed(?:[\/?]|$)/', (string) $_SERVER['REQUEST_URI'])) {
+    if (!empty($_SERVER['REQUEST_URI']) && is_string($_SERVER['REQUEST_URI'])) {
+        if (preg_match('/\/feed(?:[\/?]|$)/', $_SERVER['REQUEST_URI'])) {
             return ($is = true);
         }
     }
@@ -207,12 +210,13 @@ $self->isFeed = function () use ($self) {
  *
  * @param string $doc Input string/document to check.
  *
- * @return boolean `TRUE` if `$doc` is an HTML/XML doc type.
+ * @return boolean True if `$doc` is an HTML/XML doc type.
  */
 $self->isHtmlXmlDoc = function ($doc) use ($self) {
-    $doc = (string) $doc;
+    $doc      = trim((string) $doc);
+    $doc_hash = sha1($doc);
 
-    if (!is_null($is = &$self->staticKey('isHtmlXmlDoc', sha1($doc)))) {
+    if (!is_null($is = &$self->staticKey('isHtmlXmlDoc', $doc_hash))) {
         return $is; // Already cached this.
     }
     if (stripos($doc, '</html>') !== false) {
@@ -243,8 +247,7 @@ $self->hasACacheableContentType = function () use ($self) {
         if (stripos($_header, 'Content-Type:') === 0) {
             $content_type = $_header; // Last one.
         }
-    }
-    unset($_key, $_header); // Housekeeping.
+    } unset($_key, $_header); // Housekeeping.
 
     if (isset($content_type[0]) && stripos($content_type, 'html') === false
         && stripos($content_type, 'xml') === false && stripos($content_type, GLOBAL_NS) === false) {
@@ -272,15 +275,14 @@ $self->hasACacheableStatus = function () use ($self) {
         return ($is = false); // A non-2xx & non-404 status code.
     }
     foreach ($self->headersList() as $_key => $_header) {
-        if (preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+\.[0-9]+\s+(?P<http_status>[0-9]+))/i', $_header, $_m)) {
+        if (preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+(?:\.[0-9]+)?\s+(?P<http_status>[0-9]+))/i', $_header, $_m)) {
             if (!empty($_m['retry']) || (!empty($_m['status']) && $_m['status'][0] !== '2' && $_m['status'] !== '404')
                || (!empty($_m['http_status']) && $_m['http_status'][0] !== '2' && $_m['http_status'] !== '404')
             ) {
                 return ($is = false); // Not a cacheable status.
             }
         }
-    }
-    unset($_key, $_header); // Housekeeping.
+    } unset($_key, $_header); // Housekeeping.
 
     return ($is = true);
 };

@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Wipes out all HTML Compressor cache files.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param bool $manually TRUE if the wiping is done manually by the site owner.
  *
@@ -36,7 +36,7 @@ $self->wipeHtmlCCache = function ($manually = false) use ($self) {
 /*
  * Clear all HTML Compressor cache files for the current blog.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param bool $manually TRUE if the clearing is done manually by the site owner.
  *

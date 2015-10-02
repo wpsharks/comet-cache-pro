@@ -136,15 +136,181 @@ $self->addTmpSuffix = function ($dir_file) use ($self) {
  * @return \RegexIterator Navigable with {@link \foreach()}; where each item
  *    is a {@link \RecursiveDirectoryIterator}.
  */
-$self->dirRegexIteration = function ($dir, $regex) use ($self) {
+$self->dirRegexIteration = function ($dir, $regex = '') use ($self) {
     $dir   = (string) $dir;
     $regex = (string) $regex;
 
     $dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
     $iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
-    $regex_iterator    = new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
 
-    return $regex_iterator;
+    if ($regex && $regex !== '/.*/' && $regex !== '/.+/') { // Apply regex filter?
+        // @TODO Optimize calls to this method in order to avoid the regex iterator when not necessary.
+        return new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
+    }
+    return $iterator_iterator; // Iterate everything.
+};
+
+/*
+ * Abbreviated byte notation for file sizes.
+ *
+ * @since 151002 Adding a few statistics.
+ *
+ * @param float   $bytes File size in bytes. A (float) value.
+ * @param integer $precision Number of decimals to use.
+ *
+ * @return string Byte notation.
+ */
+$self->bytesAbbr = function ($bytes, $precision = 2) use ($self) {
+    $bytes     = max(0.0, (float) $bytes);
+    $precision = max(0, (integer) $precision);
+    $units     = array('bytes', 'kbs', 'MB', 'GB', 'TB');
+
+    $power      = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $abbr_bytes = round($bytes / pow(1024, $power), $precision);
+    $abbr       = $units[min($power, count($units) - 1)];
+
+    if ($abbr_bytes === (float) 1 && $abbr === 'bytes') {
+        $abbr = 'byte'; // Quick fix.
+    } elseif ($abbr_bytes === (float) 1 && $abbr === 'kbs') {
+        $abbr = 'kb'; // Quick fix.
+    }
+    return $abbr_bytes.' '.$abbr;
+};
+
+/*
+ * Converts an abbreviated byte notation into bytes.
+ *
+ * @since 151002 Adding a few statistics.
+ *
+ * @param string $string A string value in byte notation.
+ *
+ * @return float A float indicating the number of bytes.
+ */
+$self->abbrBytes = function ($string) use ($self) {
+    $string = (string) $string;
+    $regex  = '/^(?P<value>[0-9\.]+)\s*(?P<modifier>bytes|byte|kbs|kb|k|mb|m|gb|g|tb|t)$/i';
+
+    if (!preg_match($regex, $string, $_m)) {
+        return (float) 0;
+    }
+    $value    = (float) $_m['value'];
+    $modifier = strtolower($_m['modifier']);
+    unset($_m); // Housekeeping.
+
+    switch ($modifier) {
+        case 't':
+        case 'tb':
+            $value *= 1024;
+            // Fall through.
+        case 'g':
+        case 'gb':
+            $value *= 1024;
+            // Fall through.
+        case 'm':
+        case 'mb':
+            $value *= 1024;
+            // Fall through.
+        case 'k':
+        case 'kb':
+        case 'kbs':
+            $value *= 1024;
+    }
+    return (float) $value;
+};
+
+/*
+ * Directory stats.
+ *
+ * @since 151002 Adding a few statistics.
+ *
+ * @param string $dir An absolute server directory path.
+ * @param string $regex A regex pattern; compares to each full file path.
+ * @param boolean $include_paths Include array of all scanned file paths?
+ * @param boolean $check_disk Also check disk statistics?
+ * @param boolean $no_cache Do not read/write cache?
+ *
+ * @return array Directory stats.
+ */
+$self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $check_disk = true, $no_cache = false) use ($self) {
+    $dir        = (string) $dir; // Force string.
+    $cache_keys = array($dir, $regex, $include_paths, $check_disk);
+    if (!$no_cache && !is_null($stats = &$self->staticKey('getDirRegexStats', $cache_keys))) {
+        return $stats; // Already cached this.
+    }
+    $stats = array(
+        'total_size'        => 0,
+        'total_resources'   => 0,
+        'total_links_files' => 0,
+
+        'total_links'   => 0,
+        'link_subpaths' => array(),
+
+        'total_files'   => 0,
+        'file_subpaths' => array(),
+
+        'total_dirs'   => 0,
+        'dir_subpaths' => array(),
+
+        'disk_total_space' => 0,
+        'disk_free_space'  => 0,
+    );
+    if (!$dir || !is_dir($dir)) {
+        return $stats; // Not possible.
+    }
+    $short_name_lc = strtolower(SHORT_NAME); // Once only.
+
+    foreach ($self->dirRegexIteration($dir, $regex) as $_resource) {
+        $_resource_sub_path = $_resource->getSubpathname();
+        $_resource_basename = basename($_resource_sub_path);
+
+        if ($_resource_basename === '.DS_Store') {
+            continue; // Ignore `.htaccess`.
+        }
+        if ($_resource_basename === '.htaccess') {
+            continue; // Ignore `.htaccess`.
+        }
+        if (stripos($_resource_sub_path, $short_name_lc.'-') === 0) {
+            continue; // Ignore [SHORT_NAME] files in base.
+        }
+        switch ($_resource->getType()) { // `link`, `file`, `dir`.
+            case 'link':
+                if ($include_paths) {
+                    $stats['link_subpaths'][] = $_sub_path;
+                }
+                ++$stats['total_resources'];
+                ++$stats['total_links_files'];
+                ++$stats['total_links'];
+
+                break; // Break switch.
+
+            case 'file':
+                if ($include_paths) {
+                    $stats['file_subpaths'][] = $_sub_path;
+                }
+                $stats['total_size'] += $_resource->getSize();
+                ++$stats['total_resources'];
+                ++$stats['total_links_files'];
+                ++$stats['total_files'];
+
+                break; // Break switch.
+
+            case 'dir':
+                if ($include_paths) {
+                    $stats['dir_subpaths'][] = $_sub_path;
+                }
+                ++$stats['total_resources'];
+                ++$stats['total_dirs'];
+
+                break; // Break switch.
+        }
+    }
+    unset($_resource, $_resource_sub_path, $_resource_basename); // Housekeeping.
+
+    if ($check_disk) { // Check disk also?
+        $stats['disk_total_space'] = disk_total_space($dir);
+        $stats['disk_free_space']  = disk_free_space($dir);
+    }
+    return $stats;
 };
 
 /*

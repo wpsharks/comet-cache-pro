@@ -1,54 +1,65 @@
 {
-    "name": "websharks/zencache-pro",
-    "homepage": "https://github.com/websharks/zencache-pro",
-    "description": "A popular caching plugin for WordPress.",
-    "keywords": [
-        "websharks",
-        "zencache",
-        "wordpress",
-        "caching",
-        "cache"
-    ],
-    "type": "library",
-    "license": "GPL-3.0+",
-    "authors": [{
-        "name": "websharks",
-        "homepage": "http://websharks-inc.com/",
-        "role": "company"
-    }, {
-        "name": "jaswsinc",
-        "homepage": "http://jaswsinc.com/",
-        "role": "developer"
-    }, {
-        "name": "raamdev",
-        "homepage": "http://raam.org/",
-        "role": "developer"
-    }],
-    "support": {
-        "source": "https://github.com/websharks/zencache-pro",
-        "issues": "https://github.com/websharks/zencache/issues"
-    },
+  "name": "websharks/zencache-pro",
+  "homepage": "https://github.com/websharks/zencache-pro",
+  "description": "A popular caching plugin for WordPress.",
+  "keywords": [
+    "websharks",
+    "zencache",
+    "wordpress",
+    "caching",
+    "cache"
+  ],
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [{
+    "name": "websharks",
+    "homepage": "http://websharks-inc.com/",
+    "role": "company"
+  }, {
+    "name": "jaswsinc",
+    "homepage": "http://jaswsinc.com/",
+    "role": "developer"
+  }, {
+    "name": "raamdev",
+    "homepage": "http://raam.org/",
+    "role": "developer"
+  }],
+  "support": {
+    "source": "https://github.com/websharks/zencache-pro",
+    "issues": "https://github.com/websharks/zencache/issues"
+  },
+  "require": {
+    "php": ">=5.3",
+    "websharks/wp-php-rv": "150511",
+    "websharks/html-compressor": "150923",
+    "websharks/sharkicons": "150820"
+  },
+  "require-dev": {
+    "package/bourbon": "4.2.3",
+    "websharks/wp-i18n-tools": "dev-master"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
 
-    "require": {
-        "php": ">=5.3",
-        "websharks/wp-php-rv": "150511",
-        "websharks/html-compressor": "150819",
-        "websharks/sharkicons": "150814"
-    },
-    "require-dev": {
-        "websharks/wp-i18n-tools": "dev-master"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-
-    "autoload": {
-        "psr-4": {
-            "WebSharks\\ZenCache\\Pro\\": "src/includes/classes/"
-        }
-    },
-
-    "config": {
-        "vendor-dir": "src/vendor",
-        "preferred-install": "dist"
+  "autoload": {
+    "psr-4": {
+      "WebSharks\\ZenCache\\Pro\\": "src/includes/classes/"
     }
+  },
+  "config": {
+    "vendor-dir": "src/vendor",
+    "preferred-install": "dist"
+  },
+
+  "repositories": [{
+    "type": "package",
+    "package": {
+      "name": "package/bourbon",
+      "version": "4.2.3",
+      "dist": {
+        "url": "https://github.com/thoughtbot/bourbon/releases/download/v4.2.3/bourbon-v4.2.3.zip",
+        "type": "zip"
+      }
+    }
+  }]
 }

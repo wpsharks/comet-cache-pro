@@ -218,7 +218,7 @@ class FeedUtils extends AbsBase
     /**
      * Convert variations into regex fragments for a call to `deleteFilesFromHostCacheDir()`.
      *
-     * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+     * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
      *
      * @param array $variations An array of variations (URLs) built by other class members.
      *
@@ -264,9 +264,9 @@ class FeedUtils extends AbsBase
                 $regex_frags[] = $_relative_cache_path_regex; // No leading slash.
             }
         }
-        unset($_key, $_url, // Housekeeping; for all temporary vars used above.
-                $_is_url_domain_mapped, $_url_parts, $_host_base_dir_tokens, $_host_url, $_host_cache_path,
-                $_feed_type, $_wildcard_regex, $_cache_path, $_relative_cache_path, $_relative_cache_path_regex);
+        unset($_key, $_url); // Housekeeping; for all temporary vars used above.
+        unset($_is_url_domain_mapped, $_url_parts, $_host_base_dir_tokens, $_host_url, $_host_cache_path);
+        unset($_feed_type, $_wildcard_regex, $_cache_path, $_relative_cache_path, $_relative_cache_path_regex);
 
         return $regex_frags;
     }

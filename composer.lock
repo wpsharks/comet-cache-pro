@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d3cf0e36b33c0288fca3dd5b68a31990",
+    "hash": "8f36f6291a89922815433f29bbf96ee3",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -62,16 +62,16 @@
         },
         {
             "name": "websharks/html-compressor",
-            "version": "150819",
+            "version": "150923",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "ac0cbd4f53384792cbe3aa7003b07552da5fd7e2"
+                "reference": "4169e43ff96cbca4cfacc4e054e5e87054c458d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/ac0cbd4f53384792cbe3aa7003b07552da5fd7e2",
-                "reference": "ac0cbd4f53384792cbe3aa7003b07552da5fd7e2",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/4169e43ff96cbca4cfacc4e054e5e87054c458d1",
+                "reference": "4169e43ff96cbca4cfacc4e054e5e87054c458d1",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2015-08-19 01:05:21"
+            "time": "2015-09-23 23:22:11"
         },
         {
             "name": "websharks/js-minifier",
@@ -175,16 +175,16 @@
         },
         {
             "name": "websharks/sharkicons",
-            "version": "150814",
+            "version": "150820",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
-                "reference": "3cb769178b9455b9df8ddd005b1f49cf4a6c0254"
+                "reference": "b9ed1f30c66617768c82596cb54b7507c235b047"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/3cb769178b9455b9df8ddd005b1f49cf4a6c0254",
-                "reference": "3cb769178b9455b9df8ddd005b1f49cf4a6c0254",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/b9ed1f30c66617768c82596cb54b7507c235b047",
+                "reference": "b9ed1f30c66617768c82596cb54b7507c235b047",
                 "shasum": ""
             },
             "require-dev": {
@@ -222,7 +222,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-08-14 14:11:58"
+            "time": "2015-08-15 02:47:56"
         },
         {
             "name": "websharks/wp-php-rv",
@@ -274,6 +274,17 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "package/bourbon",
+            "version": "4.2.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/thoughtbot/bourbon/releases/download/v4.2.3/bourbon-v4.2.3.zip",
+                "reference": null,
+                "shasum": null
+            },
+            "type": "library"
+        },
         {
             "name": "websharks/wp-i18n-tools",
             "version": "dev-master",

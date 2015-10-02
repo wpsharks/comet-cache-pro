@@ -53,11 +53,11 @@ $self->cacheLock = function () use ($self) {
 /*
  * Release an exclusive lock on the cache directory.
  *
- * @since 150422 Rewrite.
+ * @since 150422 Rewrite. Updated 151002 to remove the `array` typecast.
  *
- * @param array $lock Type & resource that we are unlocking.
+ * @param array|mixed $lock Type & resource.
  */
-$self->cacheUnlock = function (array $lock) use ($self) {
+$self->cacheUnlock = function ($lock) use ($self) {
     if (!is_array($lock)) {
         return; // Not possible.
         // Or, they disabled cache locking.

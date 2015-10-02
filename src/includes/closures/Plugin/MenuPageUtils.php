@@ -14,7 +14,7 @@ $self->enqueueAdminStyles = function () use ($self) {
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS, $self->url('/src/client-s/css/menu-pages.css'), $deps, VERSION, 'all');
+    wp_enqueue_style(GLOBAL_NS, $self->url('/src/client-s/css/menu-pages.min.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -28,9 +28,31 @@ $self->enqueueAdminScripts = function () use ($self) {
     if (empty($_GET['page']) || strpos($_GET['page'], GLOBAL_NS) !== 0) {
         return; // NOT a plugin page in the administrative area.
     }
-    $deps = array('jquery'); // Plugin dependencies.
+    $deps = array('jquery', 'chartjs'); // Plugin dependencies.
 
-    wp_enqueue_script(GLOBAL_NS, $self->url('/src/client-s/js/menu-pages.js'), $deps, VERSION, true);
+    wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
+    wp_enqueue_script(GLOBAL_NS, $self->url('/src/client-s/js/menu-pages.min.js'), $deps, VERSION, true);
+    wp_localize_script(GLOBAL_NS, GLOBAL_NS.'_menu_page_vars', array(
+        '_wpnonce'                 => wp_create_nonce(),
+        'isMultisite'              => is_multisite(), // Network?
+        'currentUserHasCap'        => current_user_can($self->cap),
+        'currentUserHasNetworkCap' => current_user_can($self->network_cap),
+        'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
+        'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
+        'emptyStatsCountsImageUrl' => $self->url('/src/client-s/images/stats-fc-empty.png'),
+        'emptyStatsFilesImageUrl' => $self->url('/src/client-s/images/stats-fs-empty.png'),
+        'i18n'                     => array(
+            'name'           => NAME,
+            'perSymbol'      => __('%', SLUG_TD),
+            'file'           => __('file', SLUG_TD),
+            'files'          => __('files', SLUG_TD),
+            'pageCache'      => __('Page Cache', SLUG_TD),
+            'htmlCompressor' => __('HTML Compressor', SLUG_TD),
+            'currentTotal'   => __('Current Total', SLUG_TD),
+            'currentSite'    => __('Current Site', SLUG_TD),
+            'xDayHigh'       => __('%s Day High', SLUG_TD),
+        ),
+    ));
 };
 
 /*
@@ -49,6 +71,11 @@ $self->addNetworkMenuPages = function () use ($self) {
 
     add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
+
+    /*[pro strip-from="lite"]*/
+    if ($self->options['stats_enable']) {
+        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->network_cap, GLOBAL_NS.'-stats', array($self, 'menuPageStats'));
+    } /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
     if (current_user_can($self->network_cap)) {
@@ -72,6 +99,11 @@ $self->addMenuPages = function () use ($self) {
 
     add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
+
+    /*[pro strip-from="lite"]*/
+    if ($self->options['stats_enable']) {
+        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->cap, GLOBAL_NS.'-stats', array($self, 'menuPageStats'));
+    } /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
     add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
@@ -137,6 +169,17 @@ $self->menuPageOptions = function () use ($self) {
 
 /*[pro strip-from="lite"]*/
 /*
+ * Loads admin menu page for stats.
+ *
+ * @since 151002 Directory stats.
+ */
+$self->menuPageStats = function () use ($self) {
+    new MenuPage('stats');
+};
+/*[/pro]*/
+
+/*[pro strip-from="lite"]*/
+/*
  * Loads admin menu page for pro updater.
  *
  * @since 150422 Rewrite.
@@ -166,3 +209,36 @@ $self->wp_admin_icon_colors = array(
     'ocean'     => array('base' => '#F2FCFF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
     'coffee'    => array('base' => '#F3F2F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
 );
+
+/*
+ * On a specific menu page?
+ *
+ * @since 151002 Improving multisite compat.
+ *
+ * @param string $which Which page to check; may contain wildcards.
+ *
+ * @return boolean True if is the menu page.
+ */
+$self->isMenuPage = function ($which) use ($self) {
+    if (!($which = trim((string) $which))) {
+        return false; // Empty.
+    }
+    if (!is_admin()) {
+        return false;
+    }
+    $page = $pagenow = ''; // Initialize.
+
+    if (!empty($_REQUEST['page'])) {
+        $page = (string) $_REQUEST['page'];
+    }
+    if (!empty($GLOBALS['pagenow'])) {
+        $pagenow = (string) $GLOBALS['pagenow'];
+    }
+    if ($page && fnmatch($which, $page, FNM_CASEFOLD)) {
+        return true; // Wildcard match.
+    }
+    if ($pagenow && fnmatch($which, $pagenow, FNM_CASEFOLD)) {
+        return true; // Wildcard match.
+    }
+    return false; // Nope.
+};

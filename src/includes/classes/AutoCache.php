@@ -166,7 +166,7 @@ class AutoCache extends AbsBase
     {
         $cache_dir           = $this->plugin->cacheDir();
         $cache_lock          = $this->plugin->cacheLock();
-        $auto_cache_log_file = $cache_dir.'/zc-auto-cache.log';
+        $auto_cache_log_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
             throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
@@ -203,7 +203,7 @@ class AutoCache extends AbsBase
     {
         $cache_dir           = $this->plugin->cacheDir();
         $cache_lock          = $this->plugin->cacheLock();
-        $auto_cache_log_file = $cache_dir.'/zc-auto-cache.log';
+        $auto_cache_log_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
             throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
@@ -265,13 +265,15 @@ class AutoCache extends AbsBase
             while ($xml_reader->read()) {
                 if ($xml_reader->nodeType === $xml_reader::ELEMENT) {
                     switch ($xml_reader->name) {
-                        case 'sitemapindex': // e.g. <http://www.smashingmagazine.com/sitemap_index.xml>
+                        case 'sitemapindex':
+                        // e.g. <http://www.smashingmagazine.com/sitemap_index.xml>
                             if (($_sitemapindex_urls = $this->xmlGetSitemapIndexUrlsDeep($xml_reader))) {
                                 $urls = array_merge($urls, $_sitemapindex_urls);
                             }
                             break; // Break switch handler.
 
-                        case 'urlset': // e.g. <http://www.smashingmagazine.com/category-sitemap.xml>
+                        case 'urlset':
+                        // e.g. <http://www.smashingmagazine.com/category-sitemap.xml>
                             if (($_urlset_urls = $this->xmlGetUrlsetUrls($xml_reader))) {
                                 $urls = array_merge($urls, $_urlset_urls);
                             }
@@ -307,15 +309,15 @@ class AutoCache extends AbsBase
                             $is_sitemap_node = true;
                             break; // Break switch handler.
 
-                        case 'loc': // A URL location.
+                        case 'loc':
                             if (!empty($is_sitemap_node) && $xml_reader->read() && ($_loc = trim($xml_reader->value))) {
                                 $urls = array_merge($urls, $this->getSitemapUrlsDeep($_loc, true));
                             }
-                            break; // Break switch handler.
+                            break;
 
-                        default: // Anything else.
+                        default:
                             $is_sitemap_node = false;
-                            break; // Break switch handler.
+                            break;
                     }
                 }
             }
@@ -342,17 +344,17 @@ class AutoCache extends AbsBase
                     switch ($xml_reader->name) {
                         case 'url':
                             $is_url_node = true;
-                            break; // Break switch handler.
+                            break;
 
-                        case 'loc': // A URL location.
+                        case 'loc':
                             if (!empty($is_url_node) && $xml_reader->read() && ($_loc = trim($xml_reader->value))) {
-                                $urls[] = $_loc;
-                            } // Add this URL to the list :-)
-                            break; // Break switch handler.
+                                $urls[] = $_loc; // Add this URL to the list :-)
+                            }
+                            break;
 
-                        default: // Anything else.
+                        default:
                             $is_url_node = false;
-                            break; // Break switch handler.
+                            break;
                     }
                 }
             }

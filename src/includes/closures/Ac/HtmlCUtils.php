@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Runs HTML Compressor (if applicable).
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $cache Input cache file we want to compress.
  *
@@ -60,9 +60,15 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
         'compress_js_code'               => ZENCACHE_HTMLC_COMPRESS_JS_CODE,
         'compress_html_code'             => ZENCACHE_HTMLC_COMPRESS_HTML_CODE,
     );
-    $html_compressor  = new \WebSharks\HtmlCompressor\Core($html_compressor_options);
-    $compressed_cache = $html_compressor->compress($cache);
-
+    try {
+        $html_compressor  = new \WebSharks\HtmlCompressor\Core($html_compressor_options);
+        $compressed_cache = $html_compressor->compress($cache);
+    } catch (\Exception $exception) {
+        $compressed_cache = $cache; // Fail softly.
+        if (ZENCACHE_DEBUGGING_ENABLE >= 2) { // Leave a note in the source code?
+            $compressed_cache .= "\n".'<!-- '.htmlspecialchars($product_title.' '.sprintf(__('Failure: %1$s', SLUG_TD), $exception->getMessage())).' -->';
+        }
+    }
     return $compressed_cache;
 };
 /*[/pro]*/

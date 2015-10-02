@@ -28,19 +28,11 @@ $self->activate = function () use ($self) {
  * @attaches-to `admin_init` hook.
  */
 $self->checkVersion = function () use ($self) {
-    $prev_version    = $self->options['version'];
-    $current_version = $self->options['version'];
-
-    if (version_compare($current_version, VERSION, '>=')) {
-        return; // Nothing to do; i.e., up-to-date.
+    $prev_version = $self->options['version'];
+    if (version_compare($prev_version, VERSION, '>=')) {
+        return; // Nothing to do; up-to-date.
     }
-    $current_version = $self->options['version'] = VERSION;
-
-    update_option(GLOBAL_NS.'_options', $self->options);
-    if (is_multisite()) {
-        update_site_option(GLOBAL_NS.'_options', $self->options);
-    }
-    delete_option(GLOBAL_NS.'_apc_warning_bypass');
+    $self->updateOptions(array('version' => VERSION));
 
     new VsUpgrades($prev_version);
 
@@ -51,7 +43,7 @@ $self->checkVersion = function () use ($self) {
     }
     $self->wipeCache(); // Fresh start now.
 
-    $self->enqueueNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), '', true);
+    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), array('push_to_top' => true));
 };
 
 /*
@@ -88,24 +80,36 @@ $self->uninstall = function () use ($self) {
     }
     $self->removeWpCacheFromWpConfig();
     $self->removeAdvancedCache();
-    $self->wipeCache(); // Full wipe now.
+    $self->wipeCache();
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
     }
     $self->deleteAdvancedCache();
-    $self->removeBaseDir();
+    $self->deleteBaseDir();
 
-    delete_option(GLOBAL_NS.'_options');
-    if (is_multisite()) {
-        delete_site_option(GLOBAL_NS.'_options');
+    if (is_multisite()) { // Main site CRON jobs.
+        switch_to_blog(get_current_site()->blog_id);
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+        restore_current_blog(); // Restore current blog.
+    } else { // Standard WP installation.
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
     }
-    delete_option(GLOBAL_NS.'_notices');
-    delete_option(GLOBAL_NS.'_errors');
-    delete_option(GLOBAL_NS.'_apc_warning_bypass');
+    $wpdb = $self->wpdb(); // WordPress DB.
+    $like = '%'.$wpdb->esc_like(GLOBAL_NS).'%';
 
-    wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-    wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+    if (is_multisite()) { // Site options for a network installation.
+        $wpdb->query('DELETE FROM `'.esc_sql($wpdb->sitemeta).'` WHERE `meta_key` LIKE \''.esc_sql($like).'\'');
+
+        switch_to_blog(get_current_site()->blog_id); // In case it started as a standard WP installation.
+        $wpdb->query('DELETE FROM `'.esc_sql($wpdb->options).'` WHERE `option_name` LIKE \''.esc_sql($like).'\'');
+        restore_current_blog(); // Restore current blog.
+        //
+    } else { // Standard WP installation.
+        $wpdb->query('DELETE FROM `'.esc_sql($wpdb->options).'` WHERE `option_name` LIKE \''.esc_sql($like).'\'');
+    }
 };
 
 /*
@@ -196,7 +200,7 @@ $self->removeWpCacheFromWpConfig = function () use ($self) {
 };
 
 /*
- * Checks to make sure the `zc-advanced-cache` file still exists;
+ * Checks to make sure the `advanced-cache.php` file still exists;
  *    and if it doesn't, the `advanced-cache.php` is regenerated automatically.
  *
  * @since 150422 Rewrite.
@@ -219,8 +223,9 @@ $self->checkAdvancedCache = function () use ($self) {
     if (!empty($_REQUEST[GLOBAL_NS])) {
         return; // Skip on plugin actions.
     }
-    $cache_dir           = $self->cacheDir();
-    $advanced_cache_file = WP_CONTENT_DIR.'/advanced-cache.php';
+    $cache_dir                 = $self->cacheDir();
+    $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
+    $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
 
     // Fixes zero-byte advanced-cache.php bug related to migrating from Quick Cache
     //      See: <https://github.com/websharks/zencache/issues/432>
@@ -228,7 +233,7 @@ $self->checkAdvancedCache = function () use ($self) {
     // Also fixes a missing `define('WP_CACHE', TRUE)` bug related to migrating from Quick Cache
     //      See <https://github.com/websharks/zencache/issues/450>
 
-    if (!is_file($cache_dir.'/zc-advanced-cache') || !is_file($advanced_cache_file) || filesize($advanced_cache_file) === 0) {
+    if (!is_file($advanced_cache_check_file) || !is_file($advanced_cache_file) || filesize($advanced_cache_file) === 0) {
         $self->addAdvancedCache();
         $self->addWpCacheToWpConfig();
     }
@@ -241,15 +246,16 @@ $self->checkAdvancedCache = function () use ($self) {
  *
  * @return bool|null `TRUE` on success. `FALSE` or `NULL` on failure.
  *                   A special `NULL` return value indicates success with a single failure
- *                   that is specifically related to the `zc-advanced-cache` file.
+ *                   that is specifically related to the `[SHORT_NAME]-advanced-cache` file.
  */
 $self->addAdvancedCache = function () use ($self) {
     if (!$self->removeAdvancedCache()) {
         return false; // Still exists.
     }
-    $cache_dir               = $self->cacheDir();
-    $advanced_cache_file     = WP_CONTENT_DIR.'/advanced-cache.php';
-    $advanced_cache_template = dirname(dirname(dirname(__FILE__))).'/templates/advanced-cache.txt';
+    $cache_dir                 = $self->cacheDir();
+    $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
+    $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
+    $advanced_cache_template   = dirname(dirname(dirname(__FILE__))).'/templates/advanced-cache.txt';
 
     if (is_file($advanced_cache_file) && !is_writable($advanced_cache_file)) {
         return false; // Not possible to create.
@@ -275,8 +281,7 @@ $self->addAdvancedCache = function () use ($self) {
     foreach ($possible_advanced_cache_constant_key_values as $_option => $_value) {
         $_value = (string) $_value; // Force string.
 
-        switch ($_option) {// Some values need tranformations.
-
+        switch ($_option) {
             case 'exclude_uris': // Converts to regex (caSe insensitive).
             case 'exclude_refs': // Converts to regex (caSe insensitive).
             case 'exclude_agents': // Converts to regex (caSe insensitive).
@@ -310,7 +315,7 @@ $self->addAdvancedCache = function () use ($self) {
                    && is_object($_response = json_decode(wp_remote_retrieve_body($_response))) && !empty($_response->errors) && strcasecmp($_response->errors, 'true') === 0
                 ) {
                     $_value = ''; // PHP syntax errors; empty this.
-                    $self->enqueueError(sprintf(__('<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', SLUG_TD), esc_html(NAME)));
+                    $self->enqueueMainError(sprintf(__('<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors.', SLUG_TD), esc_html(NAME)));
                 }
                 if (!$_value) {
                     $_value = "''"; // Use an empty string (default).
@@ -359,9 +364,9 @@ $self->addAdvancedCache = function () use ($self) {
     if (is_writable($cache_dir) && !is_file($cache_dir.'/.htaccess')) {
         file_put_contents($cache_dir.'/.htaccess', $self->htaccess_deny);
     }
-    if (!is_dir($cache_dir) || !is_writable($cache_dir) || !is_file($cache_dir.'/.htaccess') || !file_put_contents($cache_dir.'/zc-advanced-cache', time())) {
+    if (!is_dir($cache_dir) || !is_writable($cache_dir) || !is_file($cache_dir.'/.htaccess') || !file_put_contents($advanced_cache_check_file, time())) {
         $self->cacheUnlock($cache_lock); // Release.
-        return; // Special return value (NULL) in this case.
+        return; // Special return value (NULL).
     }
     $self->cacheUnlock($cache_lock); // Release.
 
@@ -416,8 +421,8 @@ $self->removeAdvancedCache = function () use ($self) {
  */
 $self->deleteAdvancedCache = function () use ($self) {
     $cache_dir                 = $self->cacheDir();
-    $advanced_cache_check_file = $cache_dir.'/zc-advanced-cache';
     $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
+    $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
 
     if (is_file($advanced_cache_file)) {
         if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
@@ -433,8 +438,8 @@ $self->deleteAdvancedCache = function () use ($self) {
 };
 
 /*
- * Checks to make sure the `zc-blog-paths` file still exists;
- *    and if it doesn't, the `zc-blog-paths` file is regenerated automatically.
+ * Checks to make sure the `[SHORT_NAME]-blog-paths` file still exists;
+ *    and if it doesn't, the `[SHORT_NAME]-blog-paths` file is regenerated automatically.
  *
  * @since 150422 Rewrite.
  *
@@ -442,10 +447,10 @@ $self->deleteAdvancedCache = function () use ($self) {
  *
  * @note This runs so that remote deployments which completely wipe out an
  *    existing set of website files (like the AWS Elastic Beanstalk does) will NOT cause ZenCache
- *    to stop functioning due to the lack of a `zc-blog-paths` file, which is generated by ZenCache.
+ *    to stop functioning due to the lack of a `[SHORT_NAME]-blog-paths` file, which is generated by ZenCache.
  *
  *    For instance, if you have a Git repo with all of your site files; when you push those files
- *    to your website to deploy them, you most likely do NOT have the `zc-blog-paths` file.
+ *    to your website to deploy them, you most likely do NOT have the `[SHORT_NAME]-blog-paths` file.
  *    ZenCache creates this file on its own. Thus, if it's missing (and QC is active)
  *    we simply regenerate the file automatically to keep ZenCache running.
  */
@@ -459,15 +464,16 @@ $self->checkBlogPaths = function () use ($self) {
     if (!empty($_REQUEST[GLOBAL_NS])) {
         return; // Skip on plugin actions.
     }
-    $cache_dir = $self->cacheDir();
+    $cache_dir       = $self->cacheDir();
+    $blog_paths_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-blog-paths';
 
-    if (!is_file($cache_dir.'/zc-blog-paths')) {
+    if (!is_file($blog_paths_file)) {
         $self->updateBlogPaths();
     }
 };
 
 /*
- * Creates and/or updates the `zc-blog-paths` file.
+ * Creates and/or updates the `[SHORT_NAME]-blog-paths` file.
  *
  * @since 150422 Rewrite.
  *
@@ -488,7 +494,9 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
     if (!is_multisite()) {
         return $value; // N/A.
     }
-    $cache_dir  = $self->cacheDir();
+    $cache_dir       = $self->cacheDir();
+    $blog_paths_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-blog-paths';
+
     $cache_lock = $self->cacheLock();
 
     if (!is_dir($cache_dir)) {
@@ -514,7 +522,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
         }
         unset($_key, $_path); // Housekeeping.
 
-        file_put_contents($cache_dir.'/zc-blog-paths', serialize($paths));
+        file_put_contents($blog_paths_file, serialize($paths));
     }
     $self->cacheUnlock($cache_lock); // Release.
 
@@ -522,16 +530,18 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 };
 
 /*
- * Removes the entire base directory.
+ * Deletes base directory.
  *
- * @since 150422 Rewrite.
+ * @since 151002 Improving multisite compat.
  *
  * @return int Total files removed by this routine (if any).
  */
-$self->removeBaseDir = function () use ($self) {
+$self->deleteBaseDir = function () use ($self) {
     $counter = 0; // Initialize.
 
     @set_time_limit(1800); // @TODO Display a warning.
 
-    return ($counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true));
+    $counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true);
+
+    return $counter;
 };

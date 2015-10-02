@@ -3,6 +3,72 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+ * Showing admin bar.
+ *
+ * @since 151002 Improving admin bar.
+ *
+ * @param boolean $feature Check something specific?
+ *
+ * @return boolean True if showing.
+ */
+$self->adminBarShowing = function ($feature = '') use ($self) {
+    $feature = trim(strtolower((string) $feature));
+    if (!is_null($showing = &$self->cacheKey('adminBarShowing', $feature))) {
+        return $showing; // Already cached this.
+    }
+    $is_multisite = is_multisite(); // Call this once only.
+
+    if (($showing = $self->options['enable'] && is_admin_bar_showing())) {
+        switch ($feature) {
+            case 'cache_wipe':
+                $showing = $self->options['cache_clear_admin_bar_enable'] && $is_multisite;
+                break;
+
+            case 'cache_clear':
+                $showing = $self->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $self->isMenuPage(GLOBAL_NS.'*'));
+                // `$self->isMenuPage(GLOBAL_NS.'*')` shows "Cache Clear" button in Network Admin when configuring options; i.e., avoids confusion.
+                break;
+
+            case 'stats':
+                $showing = $self->options['stats_enable'] && $self->options['stats_admin_bar_enable'];
+                break;
+
+            default: // Default case handler.
+                $showing = ($self->options['cache_clear_admin_bar_enable'] && $is_multisite)
+                            || ($self->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $self->isMenuPage(GLOBAL_NS.'*')))
+                            || ($self->options['stats_enable'] && $self->options['stats_admin_bar_enable']);
+                break;
+        }
+    }
+    if ($showing) {
+        $current_user_can_wipe_cache  = $is_multisite && current_user_can($self->network_cap);
+        $current_user_can_clear_cache = $self->currentUserCanClearCache();
+        $current_user_can_see_stats   = $self->currentUserCanSeeStats();
+
+        switch ($feature) {
+            case 'cache_wipe':
+                $showing = $current_user_can_wipe_cache;
+                break;
+
+            case 'cache_clear':
+                $showing = $current_user_can_clear_cache;
+                break;
+
+            case 'stats':
+                $showing = $current_user_can_see_stats;
+                break;
+
+            default: // Default case handler.
+                $showing = $current_user_can_wipe_cache
+                    || $current_user_can_clear_cache
+                    || $current_user_can_see_stats;
+                break;
+        }
+    }
+    return $showing;
+};
+
+/*
  * Filter WordPress admin bar.
  *
  * @since 150422 Rewrite.
@@ -11,70 +77,143 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @param $wp_admin_bar \WP_Admin_Bar
  */
-$self->adminBarMenu = function (&$wp_admin_bar) use ($self) {
-    if (!$self->options['enable']) {
+$self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
-        return; // Nothing to do.
-    }
-    if (is_multisite() && current_user_can($self->network_cap)) {
-        $wp_admin_bar->add_node(
+    if ($self->adminBarShowing('cache_wipe')) {
+        $wp_admin_bar->add_menu(
             array(
                 'parent' => 'top-secondary',
                 'id'     => GLOBAL_NS.'-wipe',
-                'title'  => __('Wipe', SLUG_TD),
-                'href'   => '#',
-                'meta'   => array(
-                        'title'    => __('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD),
-                        'class'    => GLOBAL_NS,
+
+                'title' => __('Wipe', SLUG_TD),
+                'href'  => '#',
+
+                'meta' => array(
+                        'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
+                        'class'    => '-wipe',
                         'tabindex' => -1,
                 ),
             )
         );
     }
-    $wp_admin_bar->add_node(
-        array(
-            'parent' => 'top-secondary',
-            'id'     => GLOBAL_NS.'-clear',
-            'title'  => __('Clear Cache', SLUG_TD), 'href' => '#',
-            'meta'   => array(
-                    'title' => is_multisite() && current_user_can($self->network_cap)
-                        ? __('Clear Cache (Start Fresh); affects the current site only.', SLUG_TD)
-                        : __('Clear Cache (Start Fresh)', SLUG_TD),
-                    'class'    => GLOBAL_NS,
-                    'tabindex' => -1,
-            ),
-        )
-    );
+    if ($self->adminBarShowing('cache_clear')) {
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-clear',
+
+                'title' => __('Clear Cache', SLUG_TD),
+                'href'  => '#',
+                'meta'  => array(
+                        'title' => is_multisite() && current_user_can($self->network_cap)
+                            ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
+                            : __('Clear Cache (Start Fresh)', SLUG_TD),
+                        'class'    => '-clear',
+                        'tabindex' => -1,
+                ),
+            )
+        );
+    }
+    if ($self->adminBarShowing('stats')) {
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-stats',
+
+                'title' => __('Cache Stats', SLUG_TD),
+                'href'  => '#',
+
+                'meta' => array(
+                        'title'    => __('Cache statistics.', SLUG_TD),
+                        'class'    => '-stats',
+                        'tabindex' => -1,
+                ),
+            )
+        );
+        $wp_admin_bar->add_group(
+            array(
+                'parent' => GLOBAL_NS.'-stats',
+                'id'     => GLOBAL_NS.'-stats-wrapper',
+
+                'meta' => array(
+                    'class' => '-wrapper',
+                ),
+            )
+        );
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => GLOBAL_NS.'-stats-wrapper',
+                'id'     => GLOBAL_NS.'-stats-container',
+
+                'title' => '<div class="-refreshing"></div>'.
+
+                            '<canvas class="-chart-a"></canvas>'.
+                            // '<canvas class="-chart-b"></canvas>'.
+
+                            '<div class="-totals">'.
+                            '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
+                            '  <div class="-files"><span class="-value">&nbsp;</span></div>'.
+                            '  <div class="-size"><span class="-value">&nbsp;</span></div>'.
+                            '  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$self->options['base_dir'].'/*').'</div>'.
+                            '</div>'.
+
+                            '<div class="-disk">'.
+                            '  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'.
+                            '  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
+                            '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
+                            '</div>'.
+
+                            (current_user_can($self->cap) ?
+                                '<div class="-more-info">'.
+                                '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
+                                '</div>'
+                            : '').
+
+                            '<div class="-spacer"></div>',
+
+                'meta' => array(
+                        'class'    => '-container',
+                        'tabindex' => -1,
+                ),
+            )
+        );
+    }
 };
 
 /*
- * Injects `<meta>` tag w/ JSON-encoded data for WordPress admin bar.
+ * Injects `<meta>` tag w/ JSON-encoded data.
  *
  * @since 150422 Rewrite.
  *
  * @attaches-to `admin_head` hook.
  */
 $self->adminBarMetaTags = function () use ($self) {
-    if (!$self->options['enable']) {
-        return; // Nothing to do.
-    }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
     $vars = array(
-        '_wpnonce' => wp_create_nonce(), // For security.
-        'ajaxURL'  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
+        '_wpnonce'                 => wp_create_nonce(),
+        'isMultisite'              => is_multisite(), // Network?
+        'currentUserHasCap'        => current_user_can($self->cap),
+        'currentUserHasNetworkCap' => current_user_can($self->network_cap),
+        'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
+        'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
+        'i18n'                     => array(
+            'name'           => NAME,
+            'perSymbol'      => __('%', SLUG_TD),
+            'file'           => __('file', SLUG_TD),
+            'files'          => __('files', SLUG_TD),
+            'pageCache'      => __('Page Cache', SLUG_TD),
+            'htmlCompressor' => __('HTML Compressor', SLUG_TD),
+            'currentTotal'   => __('Current Total', SLUG_TD),
+            'currentSite'    => __('Current Site', SLUG_TD),
+            'xDayHigh'       => __('%s Day High', SLUG_TD),
+        ),
     );
-    echo '<meta property="'.esc_attr(GLOBAL_NS).':vars" content="data-json"'.
-         ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-vars" />'."\n";
+    echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
+         ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
 };
 
 /*
@@ -86,18 +225,12 @@ $self->adminBarMetaTags = function () use ($self) {
  * @attaches-to `admin_enqueue_scripts` hook.
  */
 $self->adminBarStyles = function () use ($self) {
-    if (!$self->options['enable']) {
-        return; // Nothing to do.
-    }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
     $deps = array(); // Plugin dependencies.
 
-    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.css'), $deps, VERSION, 'all');
+    wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
 };
 
 /*
@@ -109,17 +242,15 @@ $self->adminBarStyles = function () use ($self) {
  * @attaches-to `admin_enqueue_scripts` hook.
  */
 $self->adminBarScripts = function () use ($self) {
-    if (!$self->options['enable']) {
+    if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    if (!$self->options['admin_bar_enable']) {
-        return; // Nothing to do.
-    }
-    if (!current_user_can($self->cap) || !is_admin_bar_showing()) {
-        return; // Nothing to do.
-    }
-    $deps = array('jquery'); // Plugin dependencies.
+    $deps = array('jquery', 'admin-bar'); // Plugin dependencies.
 
-    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.js'), $deps, VERSION, true);
+    if ($self->adminBarShowing('stats')) {
+        $deps[] = 'chartjs'; // Add ChartJS dependency.
+        wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
+    }
+    wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
 };
 /*[/pro]*/

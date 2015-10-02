@@ -120,31 +120,31 @@ class CdnFilters extends AbsBase
     {
         parent::__construct();
 
-        /* Primary switch; CDN filters enabled? */
+        // Primary switch; CDN filters enabled?
 
         $this->cdn_enable = (boolean) $this->plugin->options['cdn_enable'];
 
-        /* Another switch; HTML Compressor enabled? */
+        // Another switch; HTML Compressor enabled?
 
         $this->htmlc_enable = (boolean) $this->plugin->options['htmlc_enable'];
 
-        /* Host-related properties. */
+        // Host-related properties.
 
         $this->local_host = strtolower($this->plugin->hostToken());
         $this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
         $this->cdn_hosts  = strtolower($this->plugin->options['cdn_hosts']);
         $this->parseCdnHosts(); // Convert CDN hosts to an array.
 
-        /* Configure invalidation-related properties. */
+        // Configure invalidation-related properties.
 
         $this->cdn_invalidation_var     = (string) $this->plugin->options['cdn_invalidation_var'];
         $this->cdn_invalidation_counter = (integer) $this->plugin->options['cdn_invalidation_counter'];
 
-        /* CDN supports SSL connections? */
+        // CDN supports SSL connections?
 
         $this->cdn_over_ssl = (boolean) $this->plugin->options['cdn_over_ssl'];
 
-        /* Whitelisted extensions; MUST have these at all times. */
+        // Whitelisted extensions; MUST have these at all times.
 
         if (!($cdn_whitelisted_extensions = trim($this->plugin->options['cdn_whitelisted_extensions']))) {
             $cdn_whitelisted_extensions = implode('|', static::defaultWhitelistedExtensions());
@@ -153,7 +153,7 @@ class CdnFilters extends AbsBase
         $this->cdn_whitelisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_whitelisted_extensions, null, PREG_SPLIT_NO_EMPTY);
         $this->cdn_whitelisted_extensions = array_unique($this->cdn_whitelisted_extensions);
 
-        /* Blacklisted extensions; if applicable. */
+        // Blacklisted extensions; if applicable.
 
         $cdn_blacklisted_extensions = $this->plugin->options['cdn_blacklisted_extensions'];
 
@@ -163,7 +163,7 @@ class CdnFilters extends AbsBase
 
         $this->cdn_blacklisted_extensions = array_unique($this->cdn_blacklisted_extensions);
 
-        /* Whitelisted URI patterns; if applicable. */
+        // Whitelisted URI patterns; if applicable.
 
         $cdn_whitelisted_uri_patterns = trim(strtolower($this->plugin->options['cdn_whitelisted_uri_patterns']));
         $cdn_whitelisted_uri_patterns = preg_split('/['."\r\n".']+/', $cdn_whitelisted_uri_patterns, null, PREG_SPLIT_NO_EMPTY);
@@ -171,11 +171,10 @@ class CdnFilters extends AbsBase
 
         if ($cdn_whitelisted_uri_patterns) {
             $this->cdn_whitelisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/')); #
-
+                return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/'));
             }, $cdn_whitelisted_uri_patterns)).')/i'; // CaSe inSensitive.
         }
-        /* Blacklisted URI patterns; if applicable. */
+        // Blacklisted URI patterns; if applicable.
 
         $cdn_blacklisted_uri_patterns   = trim(strtolower($this->plugin->options['cdn_blacklisted_uri_patterns']));
         $cdn_blacklisted_uri_patterns   = preg_split('/['."\r\n".']+/', $cdn_blacklisted_uri_patterns, null, PREG_SPLIT_NO_EMPTY);
@@ -191,11 +190,10 @@ class CdnFilters extends AbsBase
 
         if ($cdn_blacklisted_uri_patterns) {
             $this->cdn_blacklisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/')); #
-
+                return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/'));
             }, $cdn_blacklisted_uri_patterns)).')/i'; // CaSe inSensitive.
         }
-        /* Maybe attach filters. */
+        // Maybe attach filters.
 
         $this->maybeSetupFilters();
     }
@@ -255,7 +253,13 @@ class CdnFilters extends AbsBase
             if (empty($GLOBALS['WebSharks\\HtmlCompressor_early_hooks']) || !is_array($GLOBALS['WebSharks\\HtmlCompressor_early_hooks'])) {
                 $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'] = array(); // Initialize.
             }
-            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][__CLASS__] = array(
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = array(
+                'hook'          => 'css_url()', // Filters CSS `url()`s.
+                'function'      => array($this, 'htmlCUrlFilter'),
+                'priority'      => PHP_INT_MAX - 10,
+                'accepted_args' => 1,
+            );
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = array(
                 'hook'          => 'part_url', // Filters JS/CSS parts.
                 'function'      => array($this, 'htmlCUrlFilter'),
                 'priority'      => PHP_INT_MAX - 10,
@@ -287,11 +291,11 @@ class CdnFilters extends AbsBase
      * @since 150626 Improving CDN host parsing.
      *
      * @param string $url Input URL|URI|query; passed by filter.
-     * @param string $for One of `head`, `body`, `foot`.
+     * @param string $for One of `head`, `body`, `foot`. Defaults to `body`.
      *
      * @return string The URL after having been filtered.
      */
-    public function htmlCUrlFilter($url, $for)
+    public function htmlCUrlFilter($url, $for = 'body')
     {
         return $this->filterUrl($url, null, false, $for);
     }
@@ -540,11 +544,18 @@ class CdnFilters extends AbsBase
      */
     public static function defaultWhitelistedExtensions()
     {
-        $wp_media_library_extensions = array_keys(wp_get_mime_types());
-        $wp_media_library_extensions = explode('|', strtolower(implode('|', $wp_media_library_extensions)));
-        $font_file_extensions        = array('eot', 'ttf', 'otf', 'woff');
+        $extensions = array_keys(wp_get_mime_types());
+        $extensions = array_map('strtolower', $extensions);
+        $extensions = array_merge($extensions, array('eot', 'ttf', 'otf', 'woff'));
 
-        return array_unique(array_merge($wp_media_library_extensions, $font_file_extensions));
+        if (($permalink_structure = get_option('permalink_structure'))) {
+            if (strcasecmp(substr($permalink_structure, -5), '.html') === 0) {
+                $extensions = array_diff($extensions, array('html'));
+            } elseif (strcasecmp(substr($permalink_structure, -4), '.htm') === 0) {
+                $extensions = array_diff($extensions, array('htm'));
+            }
+        }
+        return array_unique($extensions);
     }
 }
 /*[/pro]*/

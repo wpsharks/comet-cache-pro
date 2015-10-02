@@ -83,6 +83,15 @@ $self->cache_file_404 = '';
 $self->salt_location = '';
 
 /*
+ * Calculated max age; i.e., before expiration.
+ *
+ * @since 151002 Load average checks in pro version.
+ *
+ * @type integer Calculated max age; i.e., before expiration.
+ */
+$self->cache_max_age = 0;
+
+/*
  * Start output buffering (if applicable); or serve a cache file (if possible).
  *
  * @since 150422 Rewrite.
@@ -100,9 +109,6 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (empty($_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_REQUEST_URI);
     }
-    if (isset($_GET['zcAC']) && !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN)) {
-        return $self->maybeSetDebugInfo(NC_DEBUG_QCAC_GET_VAR);
-    }
     if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
         return $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT);
     }
@@ -114,6 +120,9 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     }
     if (isset($_SERVER['DONOTCACHEPAGE'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+    }
+    if (isset($_GET[strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
+        return $self->maybeSetDebugInfo(NC_DEBUG_AC_GET_VAR);
     }
     if ($self->isUncacheableRequestMethod()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_UNCACHEABLE_REQUEST);
@@ -138,7 +147,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
-    if (!ZENCACHE_GET_REQUESTS && $self->isGetRequestWQuery() && (!isset($_GET['zcAC']) || !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN))) {
+    if (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_GET_REQUEST_QUERIES);
     }
     if (ZENCACHE_EXCLUDE_URIS && preg_match(ZENCACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
@@ -177,9 +186,16 @@ $self->maybeStartOutputBuffering = function () use ($self) {
 
     $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$self->host_token.$_SERVER['REQUEST_URI']);
 
+    $self->cache_max_age = strtotime('-'.ZENCACHE_MAX_AGE);
+    /*[pro strip-from="lite"]*/ // Pro version allows for load average checks.
+    if (ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE && ($load_averages = $self->sysLoadAverages())) {
+        if (max($load_averages) >= ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE) {
+            $self->cache_max_age = 0; // No expiration time.
+        }
+    } /*[/pro]*/
     if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
-    } elseif (is_file($self->cache_file) && filemtime($self->cache_file) >= strtotime('-'.ZENCACHE_MAX_AGE)) {
+    } elseif (is_file($self->cache_file) && (!$self->cache_max_age || filemtime($self->cache_file) >= $self->cache_max_age)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
 
         $headers_list = $self->headersList();
@@ -218,7 +234,6 @@ $self->maybeStartOutputBuffering = function () use ($self) {
  *
  * @return string|bool The output buffer, or `FALSE` to indicate no change.
  *
- *
  * @attaches-to {@link \ob_start()}
  */
 $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
@@ -234,9 +249,6 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     }
     if (!isset($GLOBALS[GLOBAL_NS.'_shutdown_flag'])) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_EARLY_BUFFER_TERMINATION);
-    }
-    if (isset($_GET['zcAC']) && !filter_var($_GET['zcAC'], FILTER_VALIDATE_BOOLEAN)) {
-        return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_QCAC_GET_VAR);
     }
     if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT);
@@ -333,6 +345,5 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
         return $cache; // Return the newly built cache; with possible debug information also.
     }
     @unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
-
     throw new \Exception(sprintf(__('%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), NAME, $_SERVER['REQUEST_URI'], ZENCACHE_DIR));
 };

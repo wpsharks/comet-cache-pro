@@ -33,10 +33,10 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
     }
     $done = true; // Flag as having been done.
 
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+    if (!$self->options['enable']) {
         return $counter; // Nothing to do.
     }
-    if (!$self->options['enable']) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return $counter; // Nothing to do.
     }
     if (!$self->options['cache_clear_term_category_enable'] && !$self->options['cache_clear_term_post_tag_enable'] && !$self->options['cache_clear_term_other_enable']) {

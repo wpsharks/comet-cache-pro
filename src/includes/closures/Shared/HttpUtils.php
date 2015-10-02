@@ -2,34 +2,33 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
- * Current HTTP protocol; i.e. `HTTP/1.0` or `HTTP/1.1`.
+ * Current HTTP protocol.
  *
  * @since 150422 Rewrite.
  *
- * @return string Current HTTP protocol; i.e. `HTTP/1.0` or `HTTP/1.1`.
+ * @return string Current HTTP protocol.
  */
 $self->httpProtocol = function () use ($self) {
     if (!is_null($protocol = &$self->staticKey('httpProtocol'))) {
         return $protocol; // Already cached this.
     }
-    $protocol = !empty($_SERVER['SERVER_PROTOCOL'])
-        ? strtoupper((string) $_SERVER['SERVER_PROTOCOL']) : 'HTTP/1.0';
-
-    if ($protocol !== 'HTTP/1.1' && $protocol !== 'HTTP/1.0') {
+    if (!empty($_SERVER['SERVER_PROTOCOL']) && is_string($_SERVER['SERVER_PROTOCOL'])) {
+        $protocol = strtoupper($_SERVER['SERVER_PROTOCOL']);
+    }
+    if (!$protocol || stripos($protocol, 'HTTP/') !== 0) {
         $protocol = 'HTTP/1.0'; // Default value.
     }
     return $protocol;
 };
 
 /*
- * An array of all headers sent via PHP; and the current HTTP status header too.
+ * PHP {@link headers_list()} + HTTP status.
  *
  * @since 150422 Rewrite.
  *
- * @return array PHP {@link headers_list()} supplemented with
- *    HTTP status code when possible.
+ * @return array PHP {@link headers_list()} + HTTP status.
  *
- * @warning Do NOT call upon this method until the end of a script execution.
+ * @warning Do NOT call until end of script execution.
  */
 $self->headersList = function () use ($self) {
     if (!is_null($headers = &$self->staticKey('headersList'))) {
@@ -44,16 +43,13 @@ $self->headersList = function () use ($self) {
 };
 
 /*
- * An array of all cacheable/safe headers sent via PHP; and the current HTTP status header too.
+ * PHP {@link headers_list()} + HTTP status.
  *
  * @since 150422 Rewrite.
  *
- * @return array PHP {@link headers_list()} supplemented with
- *    HTTP status code when possible.
+ * @return array PHP {@link headers_list()} + HTTP status.
  *
- * @warning Do NOT call upon this method until the end of a script execution.
- *
- * @see http://www.websharks-inc.com/r/wikipedia-http-header-response-fields/
+ * @warning Do NOT call until end of script execution.
  */
 $self->cacheableHeadersList = function () use ($self) {
     if (!is_null($headers = &$self->staticKey('cacheableHeadersList'))) {
@@ -124,23 +120,23 @@ $self->cacheableHeadersList = function () use ($self) {
 };
 
 /*
- * HTTP status code if at all possible.
+ * HTTP status code.
  *
  * @since 150422 Rewrite.
  *
- * @return integer HTTP status code if at all possible; else `0`.
+ * @return integer HTTP status code.
  *
- * @warning Do NOT call upon this method until the end of a script execution.
+ * @warning Do NOT call until end of script execution.
  *
- * @note Calling this method will automatically update HTTP status-related flags.
+ * @note Automatically updates HTTP status-related flags.
  */
 $self->httpStatus = function () use ($self) {
     if (!is_null($status = &$self->staticKey('httpStatus'))) {
         return $status; // Already cached this.
     }
-    $status                    = 0; // Initialize.
-    $has_property_is_404       = property_exists($self, 'is_404');
-    $has_property_http_status  = property_exists($self, 'http_status');
+    $status                   = 0; // Initialize.
+    $has_property_is_404      = property_exists($self, 'is_404');
+    $has_property_http_status = property_exists($self, 'http_status');
 
     if ($has_property_is_404 && $self->{'is_404'}) {
         $status = 404; // WordPress said so.

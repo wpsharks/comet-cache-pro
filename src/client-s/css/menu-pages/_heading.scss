@@ -1,0 +1,35 @@
+.plugin-menu-page-heading {
+  .plugin-menu-page-restore-defaults,
+  .plugin-menu-page-panel-togglers {
+    float:                    right;
+    margin:                   0 1em 0 0;
+  }
+
+  .plugin-menu-page-panel-togglers {
+    button {
+      background:             $heading-panel-togglers-bg-color !important;
+    }
+  }
+
+  .plugin-menu-page-upsells {
+    float:                    right;
+    clear:                    right;
+    text-align:               center;
+    max-width:                350px;
+    margin:                   1em 0 0;
+
+    a {
+      text-decoration:        none;
+      line-height:            1.5em;
+      margin:                 0 0.5em;
+      display:                inline-block;
+    }
+  }
+  .plugin-menu-page-version {
+    float: right;
+    clear: right;
+    min-width: 350px;
+    margin: 0.5em 0 0 0;
+    text-align: right;
+  }
+}
