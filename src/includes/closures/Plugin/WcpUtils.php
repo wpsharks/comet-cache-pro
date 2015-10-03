@@ -41,9 +41,9 @@ $self->wipeCache = function ($manually = false) use ($self) {
 
     /*[pro strip-from="lite"]*/
     if (!$manually) {
-        $this->plugin->wipeS2CleanCache();
-        $this->plugin->wipeEvalCode();
-        $this->plugin->wipeOpcache();
+        $self->wipeS2CleanCache();
+        $self->wipeEvalCode();
+        $self->wipeOpcache();
     }
     /*[/pro]*/
 
@@ -86,9 +86,9 @@ $self->clearCache = function ($manually = false) use ($self) {
 
     /*[pro strip-from="lite"]*/
     if (!$manually) {
-        $this->plugin->clearS2CleanCache();
-        $this->plugin->clearEvalCode();
-        $this->plugin->clearOpcache();
+        $self->clearS2CleanCache();
+        $self->clearEvalCode();
+        $self->clearOpcache();
     }
     /*[/pro]*/
 
