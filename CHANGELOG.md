@@ -1,3 +1,7 @@
+= v151004 =
+
+- **Bug Fix**: Fixed a bug introduced in the previous release that was resulting in a "Fatal error: Using $this when not in object context" for sites running PHP 5.3. (PHP 5.4+ sites were unaffected.) Props @jaswsinc. See [Issue #581](https://github.com/websharks/zencache/issues/581).
+
 = v151002 =
 
 - **New Feature!** Cache Statistics is a completely new ZenCache Pro feature that will help site owners better understand their WordPress site cache. An easy-to-access Cache Stats menu button in the Admin Bar is accompanied by a whole new page that shows Current Cache Totals (including total number of cache files and total size of cache on the disk), Current Disk Health (including total disk capacity and total available), Current System Health (including memory usage and load average), and two beautiful Polar Area pie charts that show you both current and historical data on Cache File Counts and Cache File Sizes with a 30-Day High, Current Total, Page Cache total, and HTML Compressor total for each chart. Props to @jaswsinc. See [Issue #83](https://github.com/websharks/zencache/issues/83).
