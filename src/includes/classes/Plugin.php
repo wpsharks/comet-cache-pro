@@ -84,7 +84,7 @@ class Plugin extends AbsBaseAp
     /**
      * WordPress capability.
      *
-     * @since 15xxxx Cache clearing cap.
+     * @since 151002 Cache clearing cap.
      *
      * @type string WordPress capability.
      */
@@ -95,7 +95,7 @@ class Plugin extends AbsBaseAp
     /**
      * WordPress capability.
      *
-     * @since 15xxxx Cache clearing cap.
+     * @since 151002 Cache clearing cap.
      *
      * @type string WordPress capability.
      */

@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Current user can clear the cache?
  *
- * @since 15xxxx Enhancing user permissions.
+ * @since 151002 Enhancing user permissions.
  *
  * @return boolean Current user can clear the cache?
  */
@@ -36,7 +36,7 @@ $self->currentUserCanClearCache = function () use ($self) {
 /*
  * Current user can see stats?
  *
- * @since 15xxxx Enhancing user permissions.
+ * @since 151002 Enhancing user permissions.
  *
  * @return boolean Current user can see stats?
  */

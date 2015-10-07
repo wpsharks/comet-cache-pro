@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Showing admin bar.
  *
- * @since 15xxxx Improving admin bar.
+ * @since 151002 Improving admin bar.
  *
  * @param boolean $feature Check something specific?
  *

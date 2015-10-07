@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Get plugin options.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @return array Plugin options.
  */
@@ -36,7 +36,7 @@ $self->getOptions = function () use ($self) {
 /*
  * Update plugin options.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param array $options One or more new options.
  *
@@ -57,7 +57,7 @@ $self->updateOptions = function (array $options) use ($self) {
 /*
  * Restore default plugin options.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @return array Plugin options after update.
  */

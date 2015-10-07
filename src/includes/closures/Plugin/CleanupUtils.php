@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Runs cleanup routine via CRON job.
  *
- * @since 15xxxx While working on directory stats.
+ * @since 151002 While working on directory stats.
  *
  * @attaches-to `'_cron_'.__GLOBAL_NS__.'_cleanup'`
  */

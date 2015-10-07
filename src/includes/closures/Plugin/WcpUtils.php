@@ -41,9 +41,9 @@ $self->wipeCache = function ($manually = false) use ($self) {
 
     /*[pro strip-from="lite"]*/
     if (!$manually) {
-        $this->plugin->wipeS2CleanCache();
-        $this->plugin->wipeEvalCode();
-        $this->plugin->wipeOpcache();
+        $self->wipeS2CleanCache();
+        $self->wipeEvalCode();
+        $self->wipeOpcache();
     }
     /*[/pro]*/
 
@@ -86,9 +86,9 @@ $self->clearCache = function ($manually = false) use ($self) {
 
     /*[pro strip-from="lite"]*/
     if (!$manually) {
-        $this->plugin->clearS2CleanCache();
-        $this->plugin->clearEvalCode();
-        $this->plugin->clearOpcache();
+        $self->clearS2CleanCache();
+        $self->clearEvalCode();
+        $self->clearOpcache();
     }
     /*[/pro]*/
 
@@ -138,7 +138,7 @@ $self->purge_cache = $self->purgeCache; // Back compat.
 /*
  * Wurges (purges) all expired cache files; like wipe, but expired files only.
  *
- * @since 15xxxx Look at entire cache directory.
+ * @since 151002 Look at entire cache directory.
  *
  * @param bool $manually TRUE if wurging is done manually.
  *
@@ -253,7 +253,7 @@ $self->autoClearCache = function () use ($self) {
  *
  * @attaches-to Nothing at this time.
  *
- * @since 15xxxx While working on directory stats.
+ * @since 151002 While working on directory stats.
  *
  * @return int Total files purged by this routine.
  *
@@ -287,7 +287,7 @@ $self->autoPurgeCache = function () use ($self) {
  *
  * @attaches-to Nothing at this time.
  *
- * @since 15xxxx While working on directory stats.
+ * @since 151002 While working on directory stats.
  *
  * @return int Total files wurged by this routine.
  *
@@ -362,7 +362,7 @@ $self->disableAutoClearCacheRoutines = function () use ($self) {
  * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_purge_cache_routines` to return TRUE,
  *    in which case this method returns TRUE, otherwise it returns FALSE.
  *
- * @since 15xxxx While working on directory stats.
+ * @since 151002 While working on directory stats.
  *
  * @return bool `TRUE` if disabled; and this also creates a dashboard notice in some cases.
  */

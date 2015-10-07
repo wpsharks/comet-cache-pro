@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Converts a URL into a `cache/path` based on input `$flags`.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $url               The input URL to convert.
  * @param string $with_user_token   Optional user token (if applicable).
@@ -141,7 +141,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $regex_frag A regex fragment. This CAN be left empty when necessary.
  *  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -164,7 +164,7 @@ $self->buildCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_P
 /*
  * Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $url The input URL to convert. This CAN be left empty when necessary.
  *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -209,7 +209,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
 /*
  * Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
  *
- * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+ * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
  * @param string $uris A line-delimited list of URIs. These may contain `*` wildcards also.
  *

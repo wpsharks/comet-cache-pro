@@ -5,14 +5,14 @@ namespace WebSharks\ZenCache\Pro;
 /**
  * Cache directory stats.
  *
- * @since 15xxxx Directory stats.
+ * @since 151002 Directory stats.
  */
 class DirStats extends AbsBase
 {
     /**
      * Cache key.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @type string Cache key.
      */
@@ -21,7 +21,7 @@ class DirStats extends AbsBase
     /**
      * History cache key.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @type string History cache key.
      */
@@ -30,7 +30,7 @@ class DirStats extends AbsBase
     /**
      * Allowed history cache keys.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @type string Allowed history cache keys.
      */
@@ -39,7 +39,7 @@ class DirStats extends AbsBase
     /**
      * Allowed history cache keys (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @type string Allowed history cache keys (current host).
      */
@@ -48,7 +48,7 @@ class DirStats extends AbsBase
     /**
      * Class constructor.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      */
     public function __construct()
     {
@@ -64,7 +64,7 @@ class DirStats extends AbsBase
     /**
      * Directory stats cache.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @return array Directory stats cache.
      */
@@ -79,7 +79,7 @@ class DirStats extends AbsBase
     /**
      * Directory stats cache (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @return array Directory stats cache (current host).
      */
@@ -96,7 +96,7 @@ class DirStats extends AbsBase
     /**
      * Directory stats history cache.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @return array Directory stats history cache.
      */
@@ -111,7 +111,7 @@ class DirStats extends AbsBase
     /**
      * Directory stats history cache (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @return array Directory stats history cache (current host).
      */
@@ -128,7 +128,7 @@ class DirStats extends AbsBase
     /**
      * Update directory stats cache.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param string    $key   Cache key.
      * @param \stdClass $stats Stats to update.
@@ -144,7 +144,7 @@ class DirStats extends AbsBase
     /**
      * Update directory stats cache (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param string    $key   Cache key.
      * @param \stdClass $stats Stats to update.
@@ -161,7 +161,7 @@ class DirStats extends AbsBase
     /**
      * Update directory stats history cache.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param string    $key   Cache key.
      * @param \stdClass $stats Stats to update.
@@ -221,7 +221,7 @@ class DirStats extends AbsBase
     /**
      * Update directory stats history cache (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param string    $key   Cache key (optional).
      * @param \stdClass $stats Stats to update (optional).
@@ -282,7 +282,7 @@ class DirStats extends AbsBase
     /**
      * Wipes directory stats cache.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param bool $include_child_blogs Include?
      */
@@ -316,7 +316,7 @@ class DirStats extends AbsBase
     /**
      * Clear directory stats cache (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param bool $consider_network_cap Consider?
      */
@@ -333,7 +333,7 @@ class DirStats extends AbsBase
     /**
      * Wipe directory stats history cache.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param bool $include_child_blogs Include?
      */
@@ -367,7 +367,7 @@ class DirStats extends AbsBase
     /**
      * Clear directory stats history cache (current host).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param bool $consider_network_cap Consider?
      */
@@ -384,7 +384,7 @@ class DirStats extends AbsBase
     /**
      * Cache key for a specific blog ID.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param int $blog_id The blog ID.
      *
@@ -407,7 +407,7 @@ class DirStats extends AbsBase
     /**
      * History cache key for a specific blog ID.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param int $blog_id The blog ID.
      *
@@ -430,7 +430,7 @@ class DirStats extends AbsBase
     /**
      * Cache directory stats.
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param bool $no_cache      Do not read a cache entry?
      * @param bool $include_paths Include array of all scanned file paths?
@@ -464,7 +464,7 @@ class DirStats extends AbsBase
     /**
      * HTML compressor cache directory stats.
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param bool $no_cache      Do not read a cache entry?
      * @param bool $include_paths Include array of all scanned file paths?
@@ -519,7 +519,7 @@ class DirStats extends AbsBase
     /**
      * Cache directory stats for the current host.
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param bool $no_cache                                        Do not read a cache entry?
      * @param bool $include_paths                                   Include array of all scanned file paths?
@@ -625,7 +625,7 @@ class DirStats extends AbsBase
     /**
      * HTML compressor cache directory stats for the current host.
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param bool $no_cache      Do not read a cache entry?
      * @param bool $include_paths Include array of all scanned file paths?
@@ -696,7 +696,7 @@ class DirStats extends AbsBase
     /**
      * Largest cache size in last X days.
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param int $last_x_days Last X days (optional).
      *
@@ -737,7 +737,7 @@ class DirStats extends AbsBase
     /**
      * Largest cache size in last X days (current host).
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param int $last_x_days Last X days (optional).
      *
@@ -778,7 +778,7 @@ class DirStats extends AbsBase
     /**
      * Largest cache count in last X days.
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param int $last_x_days Last X days (optional).
      *
@@ -819,7 +819,7 @@ class DirStats extends AbsBase
     /**
      * Largest cache count in last X days (current host).
      *
-     * @since 15xxxx Adding cache directory statistics.
+     * @since 151002 Adding cache directory statistics.
      *
      * @param int $last_x_days Last X days (optional).
      *

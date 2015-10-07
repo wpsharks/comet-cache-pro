@@ -50,7 +50,7 @@ $self->isPostPutDeleteRequest = function () use ($self) {
 /*
  * Does the current request include an uncacheable query string?
  *
- * @since 15xxxx Improving Nginx support.
+ * @since 151002 Improving Nginx support.
  *
  * @return boolean True if request includes an uncacheable query string.
  *

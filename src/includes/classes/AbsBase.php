@@ -65,7 +65,7 @@ abstract class AbsBase
     /**
      * Instance (singleton).
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @return AbsBase Instance.
      */

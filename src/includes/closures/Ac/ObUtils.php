@@ -85,7 +85,7 @@ $self->salt_location = '';
 /*
  * Calculated max age; i.e., before expiration.
  *
- * @since 15xxxx Load average checks in pro version.
+ * @since 151002 Load average checks in pro version.
  *
  * @type integer Calculated max age; i.e., before expiration.
  */
