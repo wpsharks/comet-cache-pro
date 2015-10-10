@@ -46,9 +46,11 @@ $self->updateOptions = function (array $options) use ($self) {
     if (!IS_PRO) { // Do not save lite option keys.
         $options = array_diff_key($options, $self->pro_only_option_keys);
     }
+    if (!empty($options['base_dir']) && $options['base_dir'] !== $self->options['base_dir']) {
+        $self->tryErasingAllFilesDirsIn($self->wpContentBaseDirTo(''));
+    }
     $self->options = array_merge($self->default_options, $self->options, $options);
     $self->options = array_intersect_key($self->options, $self->default_options);
-
     update_site_option(GLOBAL_NS.'_options', $self->options);
 
     return $self->getOptions();

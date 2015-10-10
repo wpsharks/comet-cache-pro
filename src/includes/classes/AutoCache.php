@@ -243,23 +243,18 @@ class AutoCache extends AbsBase
         if (!($sitemap = trim((string) $sitemap))) {
             goto finale; // Nothing we can do.
         }
-        if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
-            if ($___recursive) {
-                goto finale; // Fail silently on recursive calls.
-            }
-            throw new \Exception(sprintf(__('Invalid XML sitemap. Unreachable URL: `%1$s`. %2$s', SLUG_TD), $sitemap, $head->get_error_message()));
-        }
-        if (empty($head['response']['code']) || (integer) $head['response']['code'] >= 400) {
-            if ($___recursive) {
-                goto finale; // Fail silently on recursive calls.
-            }
-            throw new \Exception(sprintf(__('Invalid XML sitemap status code at: `%1$s`. Expecting a `200` status. Instead got: `%2$s`.', SLUG_TD), $sitemap, !empty($head['response']['code']) ? $head['response']['code'] : ''));
-        }
-        if (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
-            if ($___recursive) {
-                goto finale; // Fail silently on recursive calls.
-            }
-            throw new \Exception(sprintf(__('Invalid XML sitemap content type at: `%1$s`. Expecting XML. Instead got: `%2$s`.', SLUG_TD), $sitemap, !empty($head['headers']['content-type']) ? $head['headers']['content-type'] : ''));
+        if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))
+              || empty($head['response']['code']) || (integer) $head['response']['code'] >= 400
+              || empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
+
+                  // Enqueue a dashboard notice if this is a primary Sitemap location.
+                  if (!$___recursive) { // Fail silently on recursive calls.
+                      $this->plugin->enqueueMainNotice(
+                          sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong> ', SLUG_TD), esc_html(NAME)),
+                          array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
+                      );
+                  }
+                  goto finale; // Nothing more we can do in this case.
         }
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {

@@ -403,7 +403,7 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
         /* -------------------------------------------------------------- */
 
-        if (!$this->enable_hooks) {
+        if (!$this->enable_hooks || strcasecmp(PHP_SAPI, 'cli') === 0) {
             return; // Stop here; setup without hooks.
         }
         /* -------------------------------------------------------------- */
