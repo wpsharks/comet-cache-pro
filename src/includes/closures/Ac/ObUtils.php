@@ -150,6 +150,9 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_GET_REQUEST_QUERIES);
     }
+    if (!empty($_REQUEST['preview'])) {
+        return $self->maybeSetDebugInfo(NC_DEBUG_PREVIEW);
+    }
     if (ZENCACHE_EXCLUDE_URIS && preg_match(ZENCACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_URIS);
     }

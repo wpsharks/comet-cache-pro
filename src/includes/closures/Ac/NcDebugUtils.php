@@ -140,6 +140,10 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 $reason = __('because `$_GET` contains query string data. The current configuration says NOT to cache GET requests with a query string.', SLUG_TD);
                 break; // Break switch handler.
 
+            case NC_DEBUG_PREVIEW:
+                $reason = __('because `$_REQUEST` indicates this is simply a preview of something to come.', SLUG_TD);
+                break; // Break switch handler.    
+
             case NC_DEBUG_EXCLUDED_URIS:
                 $reason = __('because `$_SERVER[\'REQUEST_URI\']` matches a configured URI Exclusion Pattern on this installation.', SLUG_TD);
                 break; // Break switch handler.
