@@ -43,7 +43,7 @@ $self->autoClearOnUpgraderProcessComplete = function (\WP_Upgrader $upgrader_ins
                     }
                 }
                 unset($_plugin); // Housekeeping.
-            } elseif ($single_plugin_update && $skin->plugin_active === true) {
+            } elseif ($single_plugin_update && is_plugin_active($data['plugin'])) {
                 $upgrading_active_plugin = true;
             }
             if ($upgrading_active_plugin) {
