@@ -117,7 +117,7 @@ class MenuPageOptions extends MenuPage
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_nginx_notice'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
-            echo '   <i class="si si-thumbs-down"></i> '.__('Your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://zencache.com/r/kb-article-recommended-nginx-server-configuration/">update your server configuration manually</a>.', SLUG_TD)."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.__('It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://zencache.com/r/kb-article-recommended-nginx-server-configuration/">update your server configuration manually</a>. If you\'ve already updated your NGINX configuration, you can safely <a href="http://zencache.com/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/">ignore this message</a>.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_config_wp_cache_add_failure'])) {
@@ -822,6 +822,11 @@ class MenuPageOptions extends MenuPage
             echo '      <h3>'.__('Enable Static CDN Filters (e.g., MaxCDN/CloudFront)?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn\'t require any DNS changes either. :-) Please <a href="http://zencache.com/r/static-cdn-filters-general-instructions/" target="_blank">click here</a> for a general set of instructions.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.__('<strong>What\'s a CDN?</strong> It\'s a Content Delivery Network (i.e., a network of optimized servers) designed to cache static resources served from your site (e.g., JS/CSS/images and other static files) onto it\'s own servers, which are located strategically in various geographic areas around the world. Integrating a CDN for static files can dramatically improve the speed and performance of your site, lower the burden on your own server, and reduce latency associated with visitors attempting to access your site from geographic areas of the world that might be very far away from the primary location of your own web servers.', SLUG_TD).'</p>'."\n";
+            if($is_nginx && apply_filters(GLOBAL_NS.'_wp_htaccess_nginx_notice', TRUE)) {
+                echo '<div class="plugin-menu-page-notice error">'."\n";
+                echo '   <i class="si si-thumbs-down"></i> '.__('It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://zencache.com/r/kb-article-recommended-nginx-server-configuration/">update your server configuration manually</a>. Note that updating your NGINX server configuration <em>before</em> enabling Static CDN Filters is recommended to prevent any <a href="http://zencache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/">CORS errors</a> with your CDN. If you\'ve already updated your NGINX configuration, you can safely <a href="http://zencache.com/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/">ignore this message</a>.', SLUG_TD)."\n";
+                echo '</div>'."\n";
+            }
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_enable]" data-target=".-static-cdn-filter-options">'."\n";
             echo '            <option value="0"'.selected($this->plugin->options['cdn_enable'], '0', false).'>'.__('No, I do NOT want CDN filters applied at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.selected($this->plugin->options['cdn_enable'], '1', false).'>'.__('Yes, I want CDN filters applied w/ my configuration below.', SLUG_TD).'</option>'."\n";
@@ -830,11 +835,7 @@ class MenuPageOptions extends MenuPage
             echo '      <hr />'."\n";
 
             echo '      <div class="plugin-menu-page-panel-if-enabled -static-cdn-filter-options">'."\n";
-            if($is_nginx) {
-                echo '<div class="plugin-menu-page-notice error">'."\n";
-                echo '   <i class="si si-thumbs-down"></i> '.__('Your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://zencache.com/r/kb-article-recommended-nginx-server-configuration/">update your server configuration manually</a>.', SLUG_TD)."\n";
-                echo '</div>'."\n";
-            }
+
             echo '         <h3>'.__('CDN Host Name (Required)', SLUG_TD).'</h3>'."\n";
 
             echo '         <p class="info" style="display:block;">'.// This note includes three graphics. One for MaxCDN; another for CloudFront, and another for KeyCDN.
