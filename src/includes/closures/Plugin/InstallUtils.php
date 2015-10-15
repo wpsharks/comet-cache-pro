@@ -22,7 +22,7 @@ $self->activate = function () use ($self) {
 };
 
 /*
- * Check current plugin version that installed in WP.
+ * Check current plugin version that is installed in WP.
  *
  * @since 150422 Rewrite.
  *
@@ -230,7 +230,7 @@ $self->addWpHtaccess = function () use ($self) {
     }
     $template_blocks = '# BEGIN '.GLOBAL_NS."\n"; // Initialize.
 
-    if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess')) {
+    if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
         foreach (scandir($templates_dir) as $_template_file) {
             switch ($_template_file) {
                 /*[pro strip-from="lite"]*/
