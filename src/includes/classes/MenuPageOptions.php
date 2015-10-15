@@ -17,6 +17,8 @@ class MenuPageOptions extends MenuPage
     {
         parent::__construct(); // Parent constructor.
 
+        global $is_nginx; // WP global for web server checks below.
+
         echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data"'.
              ' action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce())), self_admin_url('/admin.php'))).'">'."\n";
 
@@ -111,6 +113,11 @@ class MenuPageOptions extends MenuPage
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_remove_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
             echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
+            echo '</div>'."\n";
+        }
+        if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_nginx_notice'])) {
+            echo '<div class="plugin-menu-page-notice error">'."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.__('Your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://zencache.com/r/kb-article-recommended-nginx-server-configuration/">update your server configuration manually</a>.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_config_wp_cache_add_failure'])) {
@@ -823,6 +830,11 @@ class MenuPageOptions extends MenuPage
             echo '      <hr />'."\n";
 
             echo '      <div class="plugin-menu-page-panel-if-enabled -static-cdn-filter-options">'."\n";
+            if($is_nginx) {
+                echo '<div class="plugin-menu-page-notice error">'."\n";
+                echo '   <i class="si si-thumbs-down"></i> '.__('Your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://zencache.com/r/kb-article-recommended-nginx-server-configuration/">update your server configuration manually</a>.', SLUG_TD)."\n";
+                echo '</div>'."\n";
+            }
             echo '         <h3>'.__('CDN Host Name (Required)', SLUG_TD).'</h3>'."\n";
 
             echo '         <p class="info" style="display:block;">'.// This note includes three graphics. One for MaxCDN; another for CloudFront, and another for KeyCDN.
