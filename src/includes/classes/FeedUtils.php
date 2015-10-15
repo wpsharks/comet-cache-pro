@@ -218,7 +218,7 @@ class FeedUtils extends AbsBase
     /**
      * Convert variations into regex fragments for a call to `deleteFilesFromHostCacheDir()`.
      *
-     * @since 150422 Rewrite. Updated 15xxxx w/ multisite compat. improvements.
+     * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
      *
      * @param array $variations An array of variations (URLs) built by other class members.
      *

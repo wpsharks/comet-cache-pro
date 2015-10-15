@@ -8,7 +8,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Enqueue an administrative notice.
  *
- * @since 150422 Rewrite. Improved 15xxxx.
+ * @since 150422 Rewrite. Improved 151002.
  *
  * @param string $notice         HTML markup containing the notice itself.
  * @param string $args Any additional arguments supported by the notice API in this plugin.
@@ -42,7 +42,7 @@ $self->enqueueNotice = function ($notice, array $args = array(), $blog_id = 0) u
 /*
  * Dismiss an administrative notice.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param string $key_to_dismiss A unique key which identifies a particular notice.
  *  Or, a persistent key which identifies one or more persistent notices.
@@ -77,7 +77,7 @@ $self->dismissNotice = function ($key_to_dismiss, $blog_id = 0) use ($self) {
 /*
  * Enqueue an administrative error notice.
  *
- * @since 150422 Rewrite. Improved 15xxxx.
+ * @since 150422 Rewrite. Improved 151002.
  */
 $self->enqueueError = function ($notice, array $args = array(), $blog_id = 0) use ($self) {
     return $self->enqueueNotice($notice, array_merge($args, array('class' => 'error')), $blog_id);
@@ -86,7 +86,7 @@ $self->enqueueError = function ($notice, array $args = array(), $blog_id = 0) us
 /*
  * Enqueue an administrative notice (main site).
  *
- * @since 15xxxx. Improving multisite compat.
+ * @since 151002. Improving multisite compat.
  */
 $self->enqueueMainNotice = function ($notice, array $args = array()) use ($self) {
     return $self->enqueueNotice($notice, $args, -1);
@@ -95,7 +95,7 @@ $self->enqueueMainNotice = function ($notice, array $args = array()) use ($self)
 /*
  * Enqueue an administrative error notice (main site).
  *
- * @since 15xxxx. Improving multisite compat.
+ * @since 151002. Improving multisite compat.
  */
 $self->enqueueMainError = function ($notice, array $args = array()) use ($self) {
     return $self->enqueueNotice($notice, array_merge($args, array('class' => 'error')), -1);
@@ -104,7 +104,7 @@ $self->enqueueMainError = function ($notice, array $args = array()) use ($self) 
 /*
  * Dismiss an administrative notice (main site).
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  */
 $self->dismissMainNotice = function ($key_to_dismiss) use ($self) {
     return $self->dismissNotice($key_to_dismiss, -1);
@@ -117,7 +117,7 @@ $self->dismissMainNotice = function ($key_to_dismiss) use ($self) {
 /*
  * Render admin notices.
  *
- * @since 150422 Rewrite. Improved 15xxxx.
+ * @since 150422 Rewrite. Improved 151002.
  *
  * @attaches-to `all_admin_notices` hook.
  */
@@ -174,7 +174,7 @@ $self->allAdminNotices = function () use ($self) {
 /*
  * Get admin notices.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param integer $blog_id Optional. Defaults to the current blog ID.
  *  Use any value `< 0` to indicate the main site.
@@ -202,6 +202,7 @@ $self->getNotices = function ($blog_id = 0) use ($self) {
     foreach ($notices as $_key => &$_notice) {
         if (!is_string($_key) || !is_array($_notice) || empty($_notice['notice'])) {
             unset($notices[$_key]); // Old notice.
+            continue; // Bypass; i.e., do not normalize.
         }
         $_notice = $self->normalizeNotice($_notice);
     } // ↑ Typecast/normalized each of the array elements.
@@ -213,7 +214,7 @@ $self->getNotices = function ($blog_id = 0) use ($self) {
 /*
  * Update admin notices.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param array $notices New array of notices.
  *
@@ -245,7 +246,7 @@ $self->updateNotices = function (array $notices, $blog_id = 0) use ($self) {
 /*
 * Normalize notice elements.
 *
-* @since 15xxxx Improving multisite compat.
+* @since 151002 Improving multisite compat.
 *
 * @param array $notice Notice array elements.
 * @param array $args Any additional array elements.

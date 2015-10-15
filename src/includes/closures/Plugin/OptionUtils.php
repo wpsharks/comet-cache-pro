@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Get plugin options.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @return array Plugin options.
  */
@@ -36,7 +36,7 @@ $self->getOptions = function () use ($self) {
 /*
  * Update plugin options.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param array $options One or more new options.
  *
@@ -46,9 +46,11 @@ $self->updateOptions = function (array $options) use ($self) {
     if (!IS_PRO) { // Do not save lite option keys.
         $options = array_diff_key($options, $self->pro_only_option_keys);
     }
+    if (!empty($options['base_dir']) && $options['base_dir'] !== $self->options['base_dir']) {
+        $self->tryErasingAllFilesDirsIn($self->wpContentBaseDirTo(''));
+    }
     $self->options = array_merge($self->default_options, $self->options, $options);
     $self->options = array_intersect_key($self->options, $self->default_options);
-
     update_site_option(GLOBAL_NS.'_options', $self->options);
 
     return $self->getOptions();
@@ -57,7 +59,7 @@ $self->updateOptions = function (array $options) use ($self) {
 /*
  * Restore default plugin options.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @return array Plugin options after update.
  */

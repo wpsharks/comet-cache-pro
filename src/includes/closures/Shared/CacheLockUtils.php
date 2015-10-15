@@ -53,7 +53,7 @@ $self->cacheLock = function () use ($self) {
 /*
  * Release an exclusive lock on the cache directory.
  *
- * @since 150422 Rewrite. Updated 15xxxx to remove the `array` typecast.
+ * @since 150422 Rewrite. Updated 151002 to remove the `array` typecast.
  *
  * @param array|mixed $lock Type & resource.
  */

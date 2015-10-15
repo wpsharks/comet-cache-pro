@@ -84,7 +84,7 @@ class Plugin extends AbsBaseAp
     /**
      * WordPress capability.
      *
-     * @since 15xxxx Cache clearing cap.
+     * @since 151002 Cache clearing cap.
      *
      * @type string WordPress capability.
      */
@@ -95,7 +95,7 @@ class Plugin extends AbsBaseAp
     /**
      * WordPress capability.
      *
-     * @since 15xxxx Cache clearing cap.
+     * @since 151002 Cache clearing cap.
      *
      * @type string WordPress capability.
      */
@@ -403,7 +403,7 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
         /* -------------------------------------------------------------- */
 
-        if (!$this->enable_hooks) {
+        if (!$this->enable_hooks || strcasecmp(PHP_SAPI, 'cli') === 0) {
             return; // Stop here; setup without hooks.
         }
         /* -------------------------------------------------------------- */
@@ -487,6 +487,12 @@ class Plugin extends AbsBaseAp
         add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
         add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
         add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
+        if ($this->options['when_logged_in'] === '1' && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
+          show_admin_bar(FALSE); // Prevent admin bar from being cached.
+        }
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/

@@ -146,7 +146,7 @@ if (!defined('ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE')) {
     /**
      * Cache expiration disabled if load average is >= to this.
      *
-     * @since 15xxxx Adding support for load average check.
+     * @since 151002 Adding support for load average check.
      *
      * @var string Cache expiration disabled if load average is >= to this.
      */

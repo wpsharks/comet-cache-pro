@@ -39,6 +39,8 @@ $self->enqueueAdminScripts = function () use ($self) {
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
+        'emptyStatsCountsImageUrl' => $self->url('/src/client-s/images/stats-fc-empty.png'),
+        'emptyStatsFilesImageUrl' => $self->url('/src/client-s/images/stats-fs-empty.png'),
         'i18n'                     => array(
             'name'           => NAME,
             'perSymbol'      => __('%', SLUG_TD),
@@ -169,7 +171,7 @@ $self->menuPageOptions = function () use ($self) {
 /*
  * Loads admin menu page for stats.
  *
- * @since 15xxxx Directory stats.
+ * @since 151002 Directory stats.
  */
 $self->menuPageStats = function () use ($self) {
     new MenuPage('stats');
@@ -211,7 +213,7 @@ $self->wp_admin_icon_colors = array(
 /*
  * On a specific menu page?
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @param string $which Which page to check; may contain wildcards.
  *

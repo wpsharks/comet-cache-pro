@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Wipe (i.e., reset) s2Clean cache.
  *
- * @since 15xxxx While adding OPCache support.
+ * @since 151002 While adding OPCache support.
  *
  * @param bool $manually True if wiping is done manually.
  * @param boolean $maybe Defaults to a true value.
@@ -29,7 +29,7 @@ $self->wipeS2CleanCache = function ($manually = false, $maybe = true) use ($self
 /*
  * Clear (i.e., reset) s2Clean cache.
  *
- * @since 15xxxx While adding OPCache support.
+ * @since 151002 While adding OPCache support.
  *
  * @param bool $manually True if clearing is done manually.
  * @param boolean $maybe Defaults to a true value.

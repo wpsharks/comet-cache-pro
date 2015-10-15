@@ -633,7 +633,7 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
 /*
  * Deletes base directory.
  *
- * @since 15xxxx Improving multisite compat.
+ * @since 151002 Improving multisite compat.
  *
  * @return int Total files removed by this routine (if any).
  */

@@ -440,22 +440,26 @@
             .css(chartBDimensions); // Restore.
         }
         if ($chartA.length && chartAData[0].value > 0) {
+          $chartA.find('.-heading, .-canvas').show(), $chartA.find('.-empty').hide();
           chartA = new Chart($chartA.find('.-canvas')[0].getContext('2d')).PolarArea(chartAData, chartAOptions);
           $stats.data('chartA', chartA).data('chartADimensions', {
             width: $chartA.find('.-canvas').width() + 'px',
             height: $chartA.find('.-canvas').height() + 'px'
           });
         } else {
-          $chartA.hide(); // Hide if not showing.
+          $chartA.find('.-heading, .-canvas').hide(), $chartA.find('.-empty').show();
+          $chartA.find('.-empty').html('<img style="width:100%;" src="' + plugin.escHtml(plugin.vars.emptyStatsCountsImageUrl) + '" />');
         }
         if ($chartB.length && chartBData[0].value > 0) {
+          $chartB.find('.-heading, .-canvas').show(), $chartB.find('.-empty').hide();
           chartB = new Chart($chartB.find('.-canvas')[0].getContext('2d')).PolarArea(chartBData, chartBOptions);
           $stats.data('chartB', chartB).data('chartBDimensions', {
             width: $chartB.find('.-canvas').width() + 'px',
             height: $chartB.find('.-canvas').height() + 'px'
           });
         } else {
-          $chartB.hide(); // Hide if not showing.
+          $chartB.find('.-heading, .-canvas').hide(), $chartB.find('.-empty').show();
+          $chartB.find('.-empty').html('<img style="width:100%;" src="' + plugin.escHtml(plugin.vars.emptyStatsFilesImageUrl) + '" />');
         }
         $totals.show(); // Give this a display value now.
         $totalFiles.find('.-value').html(plugin.escHtml(plugin.numberFormat(totalLinksFiles) + ' ' + (totalLinksFiles === 1 ? plugin.vars.i18n.file : plugin.vars.i18n.files)));

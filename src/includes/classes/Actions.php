@@ -220,7 +220,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Adding CDN cache wipe handler.
+     * @since 151002 Adding CDN cache wipe handler.
      *
      * @param mixed Input action argument(s).
      */
@@ -245,7 +245,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Adding CDN cache clear handler.
+     * @since 151002 Adding CDN cache clear handler.
      *
      * @param mixed Input action argument(s).
      */
@@ -270,7 +270,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param mixed Input action argument(s).
      */
@@ -323,7 +323,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Directory stats.
+     * @since 151002 Directory stats.
      *
      * @param mixed Input action argument(s).
      */
