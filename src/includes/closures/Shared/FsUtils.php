@@ -119,10 +119,10 @@ $self->findWpConfigFile = function () use ($self) {
  */
 $self->findHtaccessFile = function () use ($self) {
     $file = ''; // Initialize.
-    if (is_file($abspath_htaccess = ABSPATH.'.htaccess')) {
-        $file = $abspath_htaccess;
-    } elseif (is_file($dirname_abspath_htaccess = dirname(ABSPATH).'/.htaccess')) {
-        $file = $dirname_abspath_htaccess;
+    $home_path = get_home_path();
+
+    if (is_file($htaccess_file = $home_path.'.htaccess')) {
+        $file = $htaccess_file;
     }
     return $file;
 };
