@@ -270,6 +270,11 @@ $self->addWpHtaccess = function () use ($self) {
  * @return boolean True if removed successfully.
  */
 $self->removeWpHtaccess = function () use ($self) {
+    global $is_apache;
+
+    if (!$is_apache) {
+        return false; // Not running the Apache web server.
+    }
     if (!($htaccess_file = $self->findHtaccessFile())) {
         return true; // File does not exist.
     }
