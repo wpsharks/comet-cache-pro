@@ -113,7 +113,20 @@ $self->removeWpHtaccess = function () use ($self) {
  */
 $self->findHtaccessFile = function () use ($self) {
     $file = ''; // Initialize.
-    $home_path = get_home_path();
+
+    // Pulled from get_home_path() in wp-admin/includes/file.php
+    $home    = set_url_scheme( get_option( 'home' ), 'http' );
+    $siteurl = set_url_scheme( get_option( 'siteurl' ), 'http' );
+    if ( ! empty( $home ) && 0 !== strcasecmp( $home, $siteurl ) ) {
+        $wp_path_rel_to_home = str_ireplace( $home, '', $siteurl ); /* $siteurl - $home */
+        $pos = strripos( str_replace( '\\', '/', $_SERVER['SCRIPT_FILENAME'] ), trailingslashit( $wp_path_rel_to_home ) );
+        $home_path = substr( $_SERVER['SCRIPT_FILENAME'], 0, $pos );
+        $home_path = trailingslashit( $home_path );
+    } else {
+        $home_path = ABSPATH;
+    }
+    $home_path = str_replace( '\\', '/', $home_path );
+    // End get_home_path() in wp-admin/includes/file.php
 
     if (is_file($htaccess_file = $home_path.'.htaccess')) {
         $file = $htaccess_file;
