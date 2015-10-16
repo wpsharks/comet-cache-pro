@@ -110,24 +110,6 @@ $self->findWpConfigFile = function () use ($self) {
 };
 
 /*
- * Finds absolute server path to `/.htaccess` file.
- *
- * @since 15xxxx Adding `.htaccess` tweaks.
- *
- * @return string Absolute server path to `/.htaccess` file;
- *    else an empty string if unable to locate the file.
- */
-$self->findHtaccessFile = function () use ($self) {
-    $file = ''; // Initialize.
-    $home_path = get_home_path();
-
-    if (is_file($htaccess_file = $home_path.'.htaccess')) {
-        $file = $htaccess_file;
-    }
-    return $file;
-};
-
-/*
  * Adds a tmp name suffix to a directory/file path.
  *
  * @since 150422 Rewrite.
