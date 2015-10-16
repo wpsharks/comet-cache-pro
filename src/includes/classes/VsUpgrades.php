@@ -45,6 +45,7 @@ class VsUpgrades extends AbsBase
         $this->fromLt141009();
         $this->fromQuickCache();
         $this->fromLte150807();
+        $this->fromLte151004();
     }
 
     /**
@@ -269,11 +270,22 @@ class VsUpgrades extends AbsBase
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                 }
             }
-            // @TODO See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
-            //if ($this->plugin->options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
-            //    $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
-            //    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
-            //}
+        }
+    }
+
+    /**
+     * Before we changed the CDN Blacklisted Extensions and implemented htaccess tweaks to fix CORS errors.
+     *
+     * @since 15xxxx Adding `.htaccess` tweaks.
+     */
+    protected function fromLte151004()
+    {
+        if (version_compare($this->prev_version, '151004', '<=')) {
+            // See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
+            if ($this->plugin->options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
+                $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
+                $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+            }
         }
     }
 }
