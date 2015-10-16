@@ -107,12 +107,12 @@ class MenuPageOptions extends MenuPage
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_add_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
-            echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.sprintf(__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try saving the %1$s options again.', SLUG_TD), esc_html(NAME))."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_remove_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
-            echo '   <i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.sprintf(__('Failed to update your <code>/.htaccess</code> file automatically. Most likely a permissions error. Please make sure it has permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try saving the %1$s options again.', SLUG_TD), esc_html(NAME))."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_wp_htaccess_nginx_notice'])) {
