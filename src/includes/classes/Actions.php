@@ -410,7 +410,7 @@ class Actions extends AbsBase
             if ($is_apache && !($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_add_failure'] = '1';
             }
-            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true)) {
+            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true) && (!isset($_SERVER['WP_NGINX_CONFIG']) || $_SERVER['WP_NGINX_CONFIG'] !== 'done')) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_nginx_notice'] = '1';
             }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
@@ -467,7 +467,7 @@ class Actions extends AbsBase
             if ($is_apache && !($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_add_failure'] = '1';
             }
-            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true)) {
+            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true) && (!isset($_SERVER['WP_NGINX_CONFIG']) || $_SERVER['WP_NGINX_CONFIG'] !== 'done')) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_nginx_notice'] = '1';
             }
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
