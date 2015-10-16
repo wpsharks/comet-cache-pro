@@ -9,6 +9,11 @@ namespace WebSharks\ZenCache\Pro;
  * @return boolean True if added successfully.
  */
 $self->addWpHtaccess = function () use ($self) {
+    global $is_apache;
+
+    if (!$is_apache) {
+        return false; // Not running the Apache web server.
+    }
     if (!$self->options['enable']) {
         return false; // Nothing to do.
     }
