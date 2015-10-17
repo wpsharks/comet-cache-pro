@@ -84,7 +84,11 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 break; // Break switch handler.
 
             case NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT:
-                $reason = __('because the PHP constant `ZENCACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
+                if ($self->functionIsPossible('did_action') && did_action('ws_plugin__s2member_during_no_cache_constants')) {
+                    $reason = __('because the s2Member plugin set the PHP constant `ZENCACHE_ALLOWED` to a boolean-ish `FALSE` value at runtime. The s2Member plugin is serving content that must remain dynamic on this particular page, and therefore this page was intentionally not cached for a very good reason.', SLUG_TD);
+                } else {
+                    $reason = __('because the PHP constant `ZENCACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
+                }
                 break; // Break switch handler.
 
             case NC_DEBUG_ZENCACHE_ALLOWED_SERVER_VAR:
@@ -142,7 +146,7 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
 
             case NC_DEBUG_PREVIEW:
                 $reason = __('because `$_REQUEST` indicates this is simply a preview of something to come.', SLUG_TD);
-                break; // Break switch handler.    
+                break; // Break switch handler.
 
             case NC_DEBUG_EXCLUDED_URIS:
                 $reason = __('because `$_SERVER[\'REQUEST_URI\']` matches a configured URI Exclusion Pattern on this installation.', SLUG_TD);
