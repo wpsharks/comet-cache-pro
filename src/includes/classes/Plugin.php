@@ -196,6 +196,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_opcache_enable',
             'cache_clear_s2clean_enable',
             'cache_clear_eval_code',
+            'cache_clear_urls',
 
             'when_logged_in',
             'version_salt',
@@ -278,6 +279,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.
+            'cache_clear_urls' => '', // Line-delimited list of URLs.
 
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
