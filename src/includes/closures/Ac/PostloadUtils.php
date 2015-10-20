@@ -149,7 +149,7 @@ $self->maybeInvalidateWhenLoggedInPostload = function () use ($self) {
     if (!($self->user_token = $self->userToken())) {
         return; // Nothing to do in this case.
     }
-    $regex = $self->buildCachePathRegex('', '.*?\.u\/'.preg_quote($self->user_token, '/').'[.\/]');
+    $regex = $self->assembleCachePathRegex('', '.*?\.u\/'.preg_quote($self->user_token, '/').'[.\/]');
     $self->wipeFilesFromCacheDir($regex); // Wipe matching files.
 };
 /*[/pro]*/
