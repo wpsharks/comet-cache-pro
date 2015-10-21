@@ -5,6 +5,7 @@
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
 
+  RewriteCond %{REQUEST_METHOD} ^GET$ [NC]
   RewriteCond %{REQUEST_URI} !(?:^|/)wp\-admin(?:/|$) [NC]
 
   # @TODO
