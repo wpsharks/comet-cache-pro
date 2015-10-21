@@ -143,7 +143,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
+ * @since 15xxxx Updated to support an arbitrary URL instead of a regex frag.
  *
  * @param string $url The input URL to convert. This CAN be left empty when necessary.
  *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -157,32 +157,17 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
  */
 $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
-    $url                           = trim((string) $url);
-    $regex_suffix_frag             = (string) $regex_suffix_frag;
-    $abs_relative_cache_path_regex = ''; // Initialize regex.
-    $is_url_domain_mapped          = false; // Initialize.
+    $url               = trim((string) $url);
+    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $cache_path_regex  = ''; // Initialize regex.
 
     if ($url) {
-        if (is_multisite() && $self->canConsiderDomainMapping()) {
-            // Shortest possible URI; i.e., consider domain mapping.
-            $url                  = $self->domainMappingUrlFilter($url);
-            $is_url_domain_mapped = $url && $self->domainMappingBlogId($url);
-        }
-        if ($url && ($url_parts = $self->parseUrl($url)) && !empty($url_parts['host'])) {
-            $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
-
-            $host_base_dir_tokens = $self->hostBaseDirTokens(false, $is_url_domain_mapped, !empty($url_parts['path']) ? $url_parts['path'] : '/');
-            $host_url             = rtrim('http://'.$url_parts['host'].$host_base_dir_tokens, '/');
-            $host_cache_path      = $self->buildCachePath($host_url, '', '', $flags);
-
-            $cache_path          = $self->buildCachePath($url, '', '', $flags);
-            $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $cache_path);
-
-            $abs_relative_cache_path       = isset($relative_cache_path[0]) ? '/'.$relative_cache_path : '';
-            $abs_relative_cache_path_regex = isset($abs_relative_cache_path[0]) ? preg_quote($abs_relative_cache_path, '/') : '';
-        }
+        $flags = CACHE_PATH_NO_SCHEME // Scheme added below.
+            | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $cache_path       = $self->buildCachePath($url, '', '', $flags); // Without the scheme.
+        $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.preg_quote($cache_path, '/') : '';
     }
-    return '/^'.$abs_relative_cache_path_regex.$regex_suffix_frag.'/i';
+    return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
 };
 
 /*
@@ -214,7 +199,8 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
             $is_url_domain_mapped = $url && $self->domainMappingBlogId($url);
         }
         if ($url && ($url_parts = $self->parseUrl($url)) && !empty($url_parts['host'])) {
-            $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+            $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
+                | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
             $host_base_dir_tokens = $self->hostBaseDirTokens(false, $is_url_domain_mapped, !empty($url_parts['path']) ? $url_parts['path'] : '/');
             $host_url             = rtrim('http://'.$url_parts['host'].$host_base_dir_tokens, '/');
@@ -228,6 +214,39 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
         }
     }
     return '/^'.$abs_relative_cache_path_regex.$regex_suffix_frag.'/i';
+};
+
+/*
+ * Regex pattern for a call to `deleteFilesFromCacheDir()`.
+ *
+ * @since 15xxxx Improving watered-down regex syntax.
+ *
+ * @param string $url The input URL to convert. This CAN be left empty when necessary.
+ *  This may also contain watered-down regex; i.e., `*^$` characters are OK here.
+ *  However, `^$` are discarded, as they are unnecessary in this context.
+ *
+ *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+ *   If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
+ *
+ * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
+ *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
+ *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
+ *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+ *
+ * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
+ */
+$self->buildCachePathRegexFromWcUrl = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    $url               = trim((string) $url, '^$');
+    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $cache_path_regex  = ''; // Initialize regex.
+
+    if ($url) { // After `^$` trimming above.
+        $flags = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME
+            | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $cache_path       = $self->buildCachePath($url, '', '', $flags); // Without the scheme.
+        $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.$self->wdRegexToActualRegexFrag($cache_path) : '';
+    }
+    return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
 };
 
 /*
