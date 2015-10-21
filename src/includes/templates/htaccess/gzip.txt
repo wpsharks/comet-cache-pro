@@ -1,3 +1,4 @@
+# Enable GZIP compression.
 <IfModule deflate_module>
     <IfModule filter_module>
         AddOutputFilterByType DEFLATE text/plain text/html

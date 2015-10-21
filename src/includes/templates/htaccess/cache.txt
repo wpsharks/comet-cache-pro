@@ -1,3 +1,4 @@
+# Serve the cache w/o touching PHP.
 <IfModule rewrite_module>
   RewriteEngine on
   RewriteBase /
