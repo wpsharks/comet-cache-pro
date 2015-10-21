@@ -13,6 +13,10 @@
   RewriteCond %{HTTPS}s ^on(s)$ [NC, OR]
   RewriteCond %{HTTPS} !^on$ [NC]
 
+  # @TODO Test Apache Mod Rewrite to see what we can do about string replacements via environment vars.
+  # We need some way of doing simple string replacement here. Otherwise this is going to require a larger set of changes.
+  RewriteRule .* - [E=cache_path:%{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html]
+
   # @TODO The real cache path needs to be set whenever this is compiled.
   RewriteCond %{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html -f
 
