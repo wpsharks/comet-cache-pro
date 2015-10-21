@@ -279,7 +279,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
 
     foreach ($uri_patterns as $_key => &$_uri_pattern) {
         if (($_uri_pattern = trim($_uri_pattern, '^$'))) {
-            $_cache_path          = $_self->buildCachePath($host_url.'/'.trim($_uri_pattern, '^/$'), '', '', $flags);
+            $_cache_path          = $_self->buildCachePath($host_url.'/'.trim($_uri_pattern, '/'), '', '', $flags);
             $_relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
             $_uri_pattern         = $self->wdRegexToActualRegexFrag($_relative_cache_path);
         }
