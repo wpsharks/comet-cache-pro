@@ -516,7 +516,10 @@ class Actions extends AbsBase
         while (@ob_end_clean()) {
             // Cleans output buffers.
         };
-        $export    = json_encode($this->plugin->options);
+        $options_to_export = $this->plugin->options;
+        unset($options_to_export['auto_cache_state']);
+
+        $export    = json_encode($options_to_export);
         $file_name = GLOBAL_NS.'-options.json';
 
         nocache_headers();

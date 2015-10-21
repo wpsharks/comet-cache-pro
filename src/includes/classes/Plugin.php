@@ -222,6 +222,7 @@ class Plugin extends AbsBaseAp
             'auto_cache_permalinks',
             'auto_cache_archives',
             'auto_cache_user_agent',
+            'auto_cache_state',
 
             'cdn_enable',
             'cdn_host',
@@ -342,6 +343,7 @@ class Plugin extends AbsBaseAp
             'auto_cache_other_urls'  => '', // A line-delimited list of any other URLs.
             'auto_cache_permalinks'  => '1', // `0|1`; auto-cache known Post/Page permalinks?
             'auto_cache_archives'    => '1', // `0|1`; auto-cache known archive views?
+            'auto_cache_state'       => '', // Serialized array; for internal use only.
             'auto_cache_user_agent'  => 'WordPress',
 
             /* Related to CDN functionality. */
