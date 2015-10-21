@@ -34,7 +34,7 @@
 
   # Serve cache if feasible/possible.
   RewriteCond %{REQUEST_METHOD}%{QUERY_STRING} ="GET" [NC]
-  RewriteCond %{HTTP_COOKIE} !(?:wordpress_logged_in_|wp\-postpass_|comment_author_|wp/*touch_switch_toggle)
+  RewriteCond %{HTTP_COOKIE} !(?:wordpress_logged_in_|wp\-postpass_|comment_author_|wptouch_switch_toggle)
   RewriteCond %%cache_dir%%/%{ENV:WP_CACHE_PATH} -f
     RewriteRule ^ %%cache_dir%%/%{ENV:WP_CACHE_PATH} [E=WP_CACHE_HIT:yes,L]
 </IfModule>
