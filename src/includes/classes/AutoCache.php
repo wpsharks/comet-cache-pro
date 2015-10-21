@@ -351,5 +351,29 @@ class AutoCache extends AbsBase
             return $urls; // All sitemap URLs from this `<urlset>` node.
         }
     }
+
+    /**
+     * For internal use only.
+     *
+     * @since 15xxxx Sonic boom.
+     *
+     * @return array All known permalink URLs.
+     */
+    protected function getKnownPermalinkUrls()
+    {
+        // @TODO
+    }
+
+    /**
+     * For internal use only.
+     *
+     * @since 15xxxx Sonic boom.
+     *
+     * @return array All known archive URLs.
+     */
+    protected function getKnownArchiveUrls()
+    {
+        // @TODO
+    }
 }
 /*[/pro]*/
