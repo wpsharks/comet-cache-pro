@@ -344,7 +344,7 @@ class Plugin extends AbsBaseAp
             'auto_cache_permalinks'  => '1', // `0|1`; auto-cache known Post/Page permalinks?
             'auto_cache_archives'    => '1', // `0|1`; auto-cache known archive views?
             'auto_cache_state'       => '', // Serialized array; for internal use only.
-            'auto_cache_user_agent'  => 'WordPress',
+            'auto_cache_user_agent'  => 'WordPress', // User-Agent header.
 
             /* Related to CDN functionality. */
 
