@@ -2,23 +2,39 @@
   RewriteEngine on
   RewriteBase /
 
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
+  # Stop on direct hits.
+  RewriteRule ^index\.php$ - [L]
+  RewriteCond %{ENV:WP_CACHE_HIT} ="yes" [NC,OR]
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_URI} !^/$
+    RewriteRule ^ - [L]
 
-  RewriteCond %{QUERY_STRING} ^$ [NC]
-  RewriteCond %{REQUEST_METHOD} ^GET$ [NC]
-  RewriteCond %{REQUEST_URI} !(?:^|/)wp\-admin(?:/|$) [NC]
-  RewriteCond %{HTTP_COOKIE} !(?:wp\-postpass_|wordpress_|comment_author_) [NC]
+  # Initialize `WP_CACHE_PATH`.
+  RewriteCond %{ENV:WP_CACHE_PATH} =""
+    RewriteCond %{HTTPS} !^on$ [NC,OR]
+    RewriteCond %{HTTPS}s ^on(s)$ [NC]
+      RewriteRule ^ - [E=WP_CACHE_PATH:http%1/%{HTTP_HOST}%{REQUEST_URI}]
 
-  RewriteCond %{HTTPS}s ^on(s)$ [NC, OR]
-  RewriteCond %{HTTPS} !^on$ [NC]
+  # Recursively dashify the cache path; note the [N] flag.
+  RewriteCond %{ENV:WP_CACHE_PATH} (.*?)[^a-z0-9/\-](.*)
+    RewriteRule ^ - [E=WP_CACHE_PATH:%1-%2,N]
 
-  # @TODO Test Apache Mod Rewrite to see what we can do about string replacements via environment vars.
-  # We need some way of doing simple string replacement here. Otherwise this is going to require a larger set of changes.
-  RewriteRule .* - [E=cache_path:%{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html]
+  # Strip trailing slashes from cache path.
+  RewriteCond %{ENV:WP_CACHE_PATH} (.*?)/+$
+    RewriteRule ^ - [E=WP_CACHE_PATH:%1]
 
-  # @TODO The real cache path needs to be set whenever this is compiled; i.e., `%%base_path_to_cache_sub_dir%%`
-  RewriteCond %{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html -f
+  # Append `/index` whenever the path is empty.
+  RewriteCond %{ENV:WP_CACHE_PATH} ^(https?/[^/]+)$
+    RewriteRule ^ - [E=WP_CACHE_PATH:%1/index]
 
-  RewriteRule .* /wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html [L]
+  # Append `.html` extension to the cache path.
+  RewriteCond %{ENV:WP_CACHE_PATH} (.*)
+    RewriteRule ^ - [E=WP_CACHE_PATH:%1.html]
+
+  # Serve cache if feasible/possible.
+  RewriteCond %{REQUEST_METHOD}%{QUERY_STRING} ="GET" [NC]
+  RewriteCond %{HTTP_COOKIE} !(?:wordpress_logged_in_|wp\-postpass_|comment_author_|wp/*touch_switch_toggle)
+  RewriteCond %%cache_dir%%/%{ENV:WP_CACHE_PATH} -f
+    RewriteRule ^ %%cache_dir%%/%{ENV:WP_CACHE_PATH} [E=WP_CACHE_HIT:yes,L]
 </IfModule>
