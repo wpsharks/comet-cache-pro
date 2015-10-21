@@ -1,0 +1,9 @@
+<IfModule rewrite_module>
+	RewriteEngine on
+	RewriteBase /
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+
+  # @TODO
+</IfModule>
