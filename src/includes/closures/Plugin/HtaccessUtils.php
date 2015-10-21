@@ -36,6 +36,30 @@ $self->addWpHtaccess = function () use ($self) {
     if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
         foreach (scandir($templates_dir) as $_template_file) {
             switch ($_template_file) {
+                case 'etags.txt':
+                    if ($self->options['htaccess_etags_enable']) {
+                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                    }
+                    break;
+
+                case 'expires.txt':
+                    if ($self->options['htaccess_expires_enable']) {
+                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                    }
+                    break;
+
+                case 'gzip.txt':
+                    if ($self->options['htaccess_gzip_enable']) {
+                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                    }
+                    break;
+
+                case 'cache.txt':
+                    if ($self->options['htaccess_cache_enable']) {
+                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                    }
+                    break;
+
                 /*[pro strip-from="lite"]*/
                 case 'cdn-filters.txt':
                     if ($self->options['cdn_enable']) {
@@ -117,7 +141,7 @@ $self->removeWpHtaccess = function () use ($self) {
  *    else an empty string if unable to locate the file.
  */
 $self->findHtaccessFile = function () use ($self) {
-    $file = ''; // Initialize.
+    $file      = ''; // Initialize.
     $home_path = $self->wpHomePath();
 
     if (is_file($htaccess_file = $home_path.'.htaccess')) {
