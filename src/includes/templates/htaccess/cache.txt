@@ -10,5 +10,11 @@
   RewriteCond %{REQUEST_URI} !(?:^|/)wp\-admin(?:/|$) [NC]
   RewriteCond %{HTTP_COOKIE} !(?:wp\-postpass_|wordpress_|comment_author_) [NC]
 
-  # @TODO
+  RewriteCond %{HTTPS}s ^on(s)$ [NC, OR]
+  RewriteCond %{HTTPS} !^on$ [NC]
+
+  # @TODO The real cache path needs to be set whenever this is compiled.
+  RewriteCond %{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html -f
+
+  RewriteRule .* /wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html [L]
 </IfModule>
