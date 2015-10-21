@@ -242,13 +242,13 @@ class AutoCache extends AbsBase
               || empty($head['response']['code']) || (integer) $head['response']['code'] >= 400
               || empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
 
-                  // Enqueue a dashboard notice if this is a primary Sitemap location.
-                  if (!$___recursive) { // Fail silently on recursive calls.
-                      $this->plugin->enqueueMainNotice(
-                          sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong> ', SLUG_TD), esc_html(NAME)),
-                          array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
-                      );
-                  }
+            // Enqueue a dashboard notice if this is a primary Sitemap location.
+            if (!$___recursive) { // Fail silently on recursive calls.
+                $this->plugin->enqueueMainNotice(
+                    sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong> ', SLUG_TD), esc_html(NAME)),
+                    array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
+                );
+            }
             goto finale; // Nothing more we can do in this case.
         }
         if ($xml_reader->open($sitemap)) {
@@ -372,6 +372,30 @@ class AutoCache extends AbsBase
      * @return array All known archive URLs.
      */
     protected function getKnownArchiveUrls()
+    {
+        // @TODO
+    }
+
+    /**
+     * For internal use only.
+     *
+     * @since 15xxxx Sonic boom.
+     *
+     * @return array Current state.
+     */
+    protected function getState()
+    {
+        // @TODO
+    }
+
+    /**
+     * For internal use only.
+     *
+     * @since 15xxxx Sonic boom.
+     *
+     * @param array $state Current state.
+     */
+    protected function setState()
     {
         // @TODO
     }
