@@ -56,7 +56,9 @@ $self->addWpHtaccess = function () use ($self) {
 
                 case 'cache.txt':
                     if ($self->options['htaccess_cache_enable']) {
-                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                        $_template_block = trim(file_get_contents($templates_dir.'/'.$_template_file));
+                        $_template_block = str_ireplace('%%base_path_to_cache_sub_dir%%', $self->basePathTo($self->cache_sub_dir), $_template_block);
+                        $template_blocks .= $_template_block."\n";
                     }
                     break;
 
@@ -69,7 +71,7 @@ $self->addWpHtaccess = function () use ($self) {
                 /*[/pro]*/
             }
         }
-        unset($_template_file); // Housekeeping.
+        unset($_template_file, $_template_block); // Housekeeping.
     }
     $template_blocks        = trim($template_blocks)."\n".'# END '.NAME;
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
