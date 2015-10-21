@@ -17,7 +17,7 @@
   # We need some way of doing simple string replacement here. Otherwise this is going to require a larger set of changes.
   RewriteRule .* - [E=cache_path:%{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html]
 
-  # @TODO The real cache path needs to be set whenever this is compiled.
+  # @TODO The real cache path needs to be set whenever this is compiled; i.e., `%%base_path_to_cache_sub_dir%%`
   RewriteCond %{DOCUMENT_ROOT}/wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html -f
 
   RewriteRule .* /wp-content/cache/zencache/cache/http%1/%{HTTP_HOST}/%{REQUEST_URI}.html [L]
