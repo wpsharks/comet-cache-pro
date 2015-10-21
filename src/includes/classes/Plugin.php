@@ -318,6 +318,13 @@ class Plugin extends AbsBaseAp
 
             'version_salt' => '', // Any string value.
 
+            /* Related to `.htaccess` tweaks. */
+
+            'htaccess_etags_enable'   => '0', // `0|1`.
+            'htaccess_expires_enable' => '0', // `0|1`.
+            'htaccess_gzip_enable'    => '0', // `0|1`.
+            'htaccess_cache_enable'   => '0', // `0|1`.
+
             /* Related to HTML compressor. */
 
             'htmlc_enable'                => '0', // Enable HTML compression?
