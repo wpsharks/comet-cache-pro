@@ -34,11 +34,6 @@ class AutoCache extends AbsBase
         if (!$this->plugin->options['auto_cache_enable']) {
             return; // Nothing to do.
         }
-        if (!$this->plugin->options['auto_cache_sitemap_url']) {
-            if (!$this->plugin->options['auto_cache_other_urls']) {
-                return; // Nothing to do.
-            }
-        }
         $cache_dir = $this->plugin->cacheDir();
         if (!is_dir($cache_dir) || !is_writable($cache_dir)) {
             return; // Not possible in this case.
@@ -254,7 +249,7 @@ class AutoCache extends AbsBase
                           array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
                       );
                   }
-                  goto finale; // Nothing more we can do in this case.
+            goto finale; // Nothing more we can do in this case.
         }
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {
