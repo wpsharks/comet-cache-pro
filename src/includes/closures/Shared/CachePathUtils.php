@@ -127,7 +127,9 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
     }
     $cache_path = trim(preg_replace(array('/\/+/', '/\.+/'), array('/', '.'), $cache_path), '/');
 
-    if ($flags & CACHE_PATH_ALLOW_WILDCARDS) {
+    if ($flags & CACHE_PATH_ALLOW_WD_REGEX) {
+        $cache_path = preg_replace('/[^a-z0-9\/.*\^$]/i', '-', $cache_path);
+    } elseif ($flags & CACHE_PATH_ALLOW_WILDCARDS) {
         $cache_path = preg_replace('/[^a-z0-9\/.*]/i', '-', $cache_path);
     } else {
         $cache_path = preg_replace('/[^a-z0-9\/.]/i', '-', $cache_path);
@@ -141,11 +143,11 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
+ * @since 15xxxx Updated to support an arbitrary URL instead of a regex frag.
  *
- * @param string $regex_frag A regex fragment. This CAN be left empty when necessary.
- *  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
- *  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
+ * @param string $url The input URL to convert. This CAN be left empty when necessary.
+ *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+ *   If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
  *
  * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
  *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
@@ -154,11 +156,18 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  *
  * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
  */
-$self->buildCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
-    $regex_frag        = (string) $regex_frag;
+$self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    $url               = trim((string) $url);
     $regex_suffix_frag = (string) $regex_suffix_frag;
+    $cache_path_regex  = ''; // Initialize regex.
 
-    return '/^'.$regex_frag.$regex_suffix_frag.'/i';
+    if ($url) {
+        $flags = CACHE_PATH_NO_SCHEME // Scheme added below.
+            | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $cache_path       = $self->buildCachePath($url, '', '', $flags); // Without the scheme.
+        $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.preg_quote($cache_path, '/') : '';
+    }
+    return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
 };
 
 /*
@@ -190,7 +199,8 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
             $is_url_domain_mapped = $url && $self->domainMappingBlogId($url);
         }
         if ($url && ($url_parts = $self->parseUrl($url)) && !empty($url_parts['host'])) {
-            $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+            $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
+                | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
 
             $host_base_dir_tokens = $self->hostBaseDirTokens(false, $is_url_domain_mapped, !empty($url_parts['path']) ? $url_parts['path'] : '/');
             $host_url             = rtrim('http://'.$url_parts['host'].$host_base_dir_tokens, '/');
@@ -207,11 +217,45 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
 };
 
 /*
+ * Regex pattern for a call to `deleteFilesFromCacheDir()`.
+ *
+ * @since 15xxxx Improving watered-down regex syntax.
+ *
+ * @param string $url The input URL to convert. This CAN be left empty when necessary.
+ *  This may also contain watered-down regex; i.e., `*^$` characters are OK here.
+ *  However, `^$` are discarded, as they are unnecessary in this context.
+ *
+ *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+ *   If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
+ *
+ * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
+ *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
+ *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
+ *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+ *
+ * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
+ */
+$self->buildCachePathRegexFromWcUrl = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    $url               = trim((string) $url, '^$');
+    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $cache_path_regex  = ''; // Initialize regex.
+
+    if ($url) { // After `^$` trimming above.
+        $flags = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME
+            | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $cache_path       = $self->buildCachePath($url, '', '', $flags); // Without the scheme.
+        $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.$self->wdRegexToActualRegexFrag($cache_path) : '';
+    }
+    return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
+};
+
+/*
  * Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
  *
  * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
  *
- * @param string $uris A line-delimited list of URIs. These may contain `*` wildcards also.
+ * @param string $uris A line-delimited list of URIs. These may contain `*^$` also.
+ *  However, `^$` are discarded, as they are unnecessary in this context.
  *
  * @param string $regex_suffix_frag Regex fragment to come after each relative cache/path.
  *   Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
@@ -234,10 +278,10 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     $uri_patterns    = array_unique(preg_split('/['."\r\n".']+/', $uris, null, PREG_SPLIT_NO_EMPTY));
 
     foreach ($uri_patterns as $_key => &$_uri_pattern) {
-        if (($_uri_pattern = trim($_uri_pattern))) {
+        if (($_uri_pattern = trim($_uri_pattern, '^$'))) {
             $_cache_path          = $_self->buildCachePath($host_url.'/'.trim($_uri_pattern, '/'), '', '', $flags);
             $_relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
-            $_uri_pattern         = preg_replace('/\\\\\*/', '.*?', preg_quote($_relative_cache_path, '/'));
+            $_uri_pattern         = $self->wdRegexToActualRegexFrag($_relative_cache_path);
         }
         if (!$_uri_pattern) {
             unset($uri_patterns[$_key]); // Remove it.
@@ -246,4 +290,27 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
     unset($_key, $_uri_pattern, $_cache_path, $_relative_cache_path); // Housekeeping.
 
     return $uri_patterns ? '(?:'.implode('|', array_unique($uri_patterns)).')'.$regex_suffix_frag : '';
+};
+
+/*
+ * Regex pattern for a call to `deleteFilesFromCacheDir()`.
+ *
+ * @since 15xxxx Moving this low-level routine into a method of a different name.
+ *
+ * @param string $regex_frag A regex fragment. This CAN be left empty when necessary.
+ *  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+ *  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
+ *
+ * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
+ *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
+ *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
+ *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+ *
+ * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
+ */
+$self->assembleCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    $regex_frag        = (string) $regex_frag;
+    $regex_suffix_frag = (string) $regex_suffix_frag;
+
+    return '/^'.$regex_frag.$regex_suffix_frag.'/i';
 };

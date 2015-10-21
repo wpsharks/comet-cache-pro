@@ -295,20 +295,7 @@ $self->addAdvancedCache = function () use ($self) {
             case 'htmlc_js_exclusions': // Converts to regex (caSe insensitive).
             /*[/pro]*/
 
-                if (($_values = preg_split('/['."\r\n".']+/', $_value, null, PREG_SPLIT_NO_EMPTY))) {
-                    $_value = '/(?:'.implode(
-                        '|',
-                        array_map(
-                            function ($string) {
-                                $string = preg_quote($string, '/');
-                                return preg_replace('/\\\\\*/', '.*?', $string);
-
-                            },
-                            $_values
-                        )
-                    ).')/i';
-                }
-                $_value = "'".$self->escSq($_value)."'";
+                $_value = "'".$self->escSq($self->lineDelimitedPatternsToRegex($_value))."'";
 
                 break; // Break switch handler.
 

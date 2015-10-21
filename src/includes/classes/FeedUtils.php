@@ -268,6 +268,6 @@ class FeedUtils extends AbsBase
         unset($_is_url_domain_mapped, $_url_parts, $_host_base_dir_tokens, $_host_url, $_host_cache_path);
         unset($_feed_type, $_wildcard_regex, $_cache_path, $_relative_cache_path, $_relative_cache_path_regex);
 
-        return $regex_frags;
+        return $regex_frags ? array_unique($regex_frags) : $regex_frags;
     }
 }
