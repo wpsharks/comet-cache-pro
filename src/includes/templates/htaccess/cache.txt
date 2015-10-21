@@ -5,6 +5,7 @@
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
 
+  RewriteCond %{QUERY_STRING} ^$ [NC]
   RewriteCond %{REQUEST_METHOD} ^GET$ [NC]
   RewriteCond %{REQUEST_URI} !(?:^|/)wp\-admin(?:/|$) [NC]
   RewriteCond %{HTTP_COOKIE} !(?:wp\-postpass_|wordpress_|comment_author_) [NC]
