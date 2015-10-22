@@ -1,15 +1,19 @@
 # Serve the cache w/o touching PHP.
 <IfModule rewrite_module>
+  AddDefaultCharset UTF-8
+
   RewriteEngine on
   RewriteBase /
 
   # Stop on direct hits.
   RewriteRule ^index\.php$ - [L]
+
+  # Stop on direct hits.
   RewriteCond %{ENV:WP_CACHE_HIT} ="yes" [NC,OR]
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
-  RewriteCond %{REQUEST_URI} !^/$
-    RewriteRule ^ - [L]
+    RewriteCond %{REQUEST_URI} !^/$
+      RewriteRule ^ - [L]
 
   # Initialize `WP_CACHE_PATH`.
   RewriteCond %{ENV:WP_CACHE_PATH} =""
@@ -36,6 +40,8 @@
   # Serve cache if feasible/possible.
   RewriteCond %{REQUEST_METHOD}%{QUERY_STRING} ="GET" [NC]
   RewriteCond %{HTTP_COOKIE} !(?:wordpress_logged_in_|wp\-postpass_|comment_author_|wptouch_switch_toggle)
+  RewriteCond %{HTTP_USER_AGENT} !%%exclude_agents%% [NC]
+  RewriteCond %{HTTP_REFERER} !%%exclude_refs%% [NC]
   RewriteCond %%cache_dir%%/%{ENV:WP_CACHE_PATH} -f
     RewriteRule ^ %%cache_dir%%/%{ENV:WP_CACHE_PATH} [E=WP_CACHE_HIT:yes,L]
 </IfModule>

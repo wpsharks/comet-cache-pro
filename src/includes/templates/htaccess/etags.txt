@@ -1,2 +1,3 @@
 # Enable eTags
+# See: <http://jas.xyz/1XmzHRr>
 FileETag MTime Size
