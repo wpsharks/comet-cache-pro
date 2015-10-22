@@ -33,46 +33,49 @@ $self->addWpHtaccess = function () use ($self) {
     }
     $template_blocks = '# BEGIN '.NAME."\n"; // Initialize.
 
-    if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
-        foreach (scandir($templates_dir) as $_template_file) {
-            switch ($_template_file) {
-                case 'etags.txt':
-                    if ($self->options['htaccess_etags_enable']) {
-                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                    }
-                    break;
+    foreach (array('etags.txt', 'expires.txt', 'cdn-filters.txt', 'gzip.txt', 'cache.txt') as $_template) {
+        if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
+            continue; // Template file missing; bypass.
+        } // ↑ Some files might be missing in the lite version.
+        $_template_file_contents = trim(file_get_contents($_template_file));
 
-                case 'expires.txt':
-                    if ($self->options['htaccess_expires_enable']) {
-                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                    }
-                    break;
+        switch ($_template) {
+            case 'etags.txt':
+                if ($self->options['htaccess_etags_enable']) {
+                    $template_blocks .= $_template_file_contents."\n";
+                }
+                break;
 
-                case 'gzip.txt':
-                    if ($self->options['htaccess_gzip_enable']) {
-                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                    }
-                    break;
+            case 'expires.txt':
+                if ($self->options['htaccess_expires_enable']) {
+                    $template_blocks .= $_template_file_contents."\n";
+                }
+                break;
 
-                case 'cache.txt':
-                    if ($self->options['htaccess_cache_enable']) {
-                        $_template_block = trim(file_get_contents($templates_dir.'/'.$_template_file));
-                        $_template_block = str_ireplace('%%cache_dir%%', $self->cacheDir(), $_template_block);
-                        $template_blocks .= $_template_block."\n";
-                    }
-                    break;
+            /*[pro strip-from="lite"]*/
+            case 'cdn-filters.txt':
+                if ($self->options['cdn_enable']) {
+                    $template_blocks .= $_template_file_contents."\n";
+                } // Only if CDN filters are enabled at this time.
+                break;
+            /*[/pro]*/
 
-                /*[pro strip-from="lite"]*/
-                case 'cdn-filters.txt':
-                    if ($self->options['cdn_enable']) {
-                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                    } // Only if CDN filters are enabled at this time.
-                    break;
-                /*[/pro]*/
-            }
+            case 'gzip.txt':
+                if ($self->options['htaccess_gzip_enable']) {
+                    $template_blocks .= $_template_file_contents."\n";
+                }
+                break;
+
+            case 'cache.txt':
+                if ($self->options['htaccess_cache_enable']) {
+                    $_template_block = $_template_file_contents; // Working copy.
+                    $_template_block = str_ireplace('%%cache_dir%%', $self->cacheDir(), $_template_block);
+                    $template_blocks .= $_template_block."\n";
+                }
+                break;
         }
-        unset($_template_file, $_template_block); // Housekeeping.
-    }
+    } unset($_template, $_template_file, $_template_file_contents, $_template_block); // Housekeeping.
+
     $template_blocks        = trim($template_blocks)."\n".'# END '.NAME;
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
 
