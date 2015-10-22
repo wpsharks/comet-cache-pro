@@ -37,7 +37,9 @@ $self->addWpHtaccess = function () use ($self) {
         if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
             continue; // Template file missing; bypass.
         } // ↑ Some files might be missing in the lite version.
-        $_template_file_contents = trim(file_get_contents($_template_file));
+        elseif (!($_template_file_contents = trim(file_get_contents($_template_file)))) {
+            continue; // Template file empty; bypass.
+        } // ↑ Some files might be empty in the lite version.
 
         switch ($_template) {
             case 'etags.txt':
