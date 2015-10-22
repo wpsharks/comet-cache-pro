@@ -33,7 +33,7 @@ $self->addWpHtaccess = function () use ($self) {
     }
     $template_blocks = '# BEGIN '.NAME."\n"; // Initialize.
 
-    foreach (array('etags.txt', 'expires.txt', 'cdn-filters.txt', 'gzip.txt', 'cache.txt') as $_template) {
+    foreach (array('etags.htaccess', 'expires.htaccess', 'cdn-filters.htaccess', 'gzip.htaccess', 'cache.htaccess') as $_template) {
         if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
             continue; // Template file missing; bypass.
         } // ↑ Some files might be missing in the lite version.
@@ -42,33 +42,33 @@ $self->addWpHtaccess = function () use ($self) {
         } // ↑ Some files might be empty in the lite version.
 
         switch ($_template) {
-            case 'etags.txt':
+            case 'etags.htaccess':
                 if ($self->options['htaccess_etags_enable']) {
                     $template_blocks .= $_template_file_contents."\n\n";
                 }
                 break;
 
-            case 'expires.txt':
+            case 'expires.htaccess':
                 if ($self->options['htaccess_expires_enable']) {
                     $template_blocks .= $_template_file_contents."\n\n";
                 }
                 break;
 
             /*[pro strip-from="lite"]*/
-            case 'cdn-filters.txt':
+            case 'cdn-filters.htaccess':
                 if ($self->options['cdn_enable']) {
                     $template_blocks .= $_template_file_contents."\n\n";
                 } // Only if CDN filters are enabled at this time.
                 break;
             /*[/pro]*/
 
-            case 'gzip.txt':
+            case 'gzip.htaccess':
                 if ($self->options['htaccess_gzip_enable']) {
                     $template_blocks .= $_template_file_contents."\n\n";
                 }
                 break;
 
-            case 'cache.txt':
+            case 'cache.htaccess':
                 if ($self->options['htaccess_cache_enable']) {
                     $_template_block = $_template_file_contents;
 
