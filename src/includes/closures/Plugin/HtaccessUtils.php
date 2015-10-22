@@ -70,13 +70,30 @@ $self->addWpHtaccess = function () use ($self) {
 
             case 'cache.txt':
                 if ($self->options['htaccess_cache_enable']) {
-                    $_template_block = $_template_file_contents; // Working copy.
+                    $_template_block = $_template_file_contents;
+
+                    if ($self->options['exclude_refs']) {
+                        $_exclude_refs   = $self->lineDelimitedPatternsToRegex($self->options['exclude_refs']);
+                        $_exclude_refs   = substr($_exclude_refs, 1, -2); // Remove leading `/` and trailing `/i`.
+                        $_template_block = str_ireplace('%%exclude_refs%%', $_exclude_refs, $_template_block);
+                    } else { // Remove the line which contains this replacement code.
+                        $_template_block = preg_replace('/^.*?%%exclude_refs%%.*$/im', '', $_template_block);
+                    }
+                    if ($self->options['exclude_agents']) {
+                        $_exclude_agents = $self->lineDelimitedPatternsToRegex($self->options['exclude_agents']);
+                        $_exclude_agents = substr($_exclude_agents, 1, -2); // Remove leading `/` and trailing `/i`.
+                        $_template_block = str_ireplace('%%exclude_agents%%', $_exclude_agents, $_template_block);
+                    } else { // Remove the line which contains this replacement code.
+                        $_template_block = preg_replace('/^.*?%%exclude_agents%%.*$/im', '', $_template_block);
+                    }
                     $_template_block = str_ireplace('%%cache_dir%%', $self->cacheDir(), $_template_block);
-                    $template_blocks .= $_template_block."\n";
+
+                    $template_blocks .= $_template_block."\n"; // Will replacement codes filled now.
+                    unset($_template_block, $_exclude_refs, $_exclude_agents); // Housekeeping.
                 }
                 break;
         }
-    } unset($_template, $_template_file, $_template_file_contents, $_template_block); // Housekeeping.
+    } unset($_template, $_template_file, $_template_file_contents); // Housekeeping.
 
     $template_blocks        = trim($template_blocks)."\n".'# END '.NAME;
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
