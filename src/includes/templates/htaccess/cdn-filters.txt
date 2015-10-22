@@ -1,3 +1,4 @@
+/*[pro strip-from="lite"]*/
 # CORS considerations whenever a CDN is in use.
 # See: <http://jas.xyz/1XmBCp6>
 <IfModule setenvif_module>
@@ -16,3 +17,4 @@
     Header set Access-Control-Allow-Origin "*"
   </FilesMatch>
 </IfModule>
+/*[/pro]*/
