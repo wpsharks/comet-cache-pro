@@ -1,6 +1,5 @@
 # CORS considerations whenever a CDN is in use.
 # See: <http://jas.xyz/1XmBCp6>
-
 <IfModule setenvif_module>
   <IfModule headers_module>
     <FilesMatch "\.(cur|gif|ico|jpe?g|png|svgz?|webp)$">
@@ -10,6 +9,8 @@
   </IfModule>
 </IfModule>
 
+# CORS considerations whenever a CDN is in use.
+# See: <http://jas.xyz/1XmBCp6>
 <IfModule headers_module>
   <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js)$">
     Header set Access-Control-Allow-Origin "*"

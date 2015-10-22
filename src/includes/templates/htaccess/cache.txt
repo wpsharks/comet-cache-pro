@@ -1,7 +1,9 @@
 # Serve the cache w/o touching PHP.
 <IfModule rewrite_module>
+  # For text/HTML files.
   AddDefaultCharset UTF-8
 
+  # Rewrites on.
   RewriteEngine on
   RewriteBase /
 
