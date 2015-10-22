@@ -44,27 +44,27 @@ $self->addWpHtaccess = function () use ($self) {
         switch ($_template) {
             case 'etags.txt':
                 if ($self->options['htaccess_etags_enable']) {
-                    $template_blocks .= $_template_file_contents."\n";
+                    $template_blocks .= $_template_file_contents."\n\n";
                 }
                 break;
 
             case 'expires.txt':
                 if ($self->options['htaccess_expires_enable']) {
-                    $template_blocks .= $_template_file_contents."\n";
+                    $template_blocks .= $_template_file_contents."\n\n";
                 }
                 break;
 
             /*[pro strip-from="lite"]*/
             case 'cdn-filters.txt':
                 if ($self->options['cdn_enable']) {
-                    $template_blocks .= $_template_file_contents."\n";
+                    $template_blocks .= $_template_file_contents."\n\n";
                 } // Only if CDN filters are enabled at this time.
                 break;
             /*[/pro]*/
 
             case 'gzip.txt':
                 if ($self->options['htaccess_gzip_enable']) {
-                    $template_blocks .= $_template_file_contents."\n";
+                    $template_blocks .= $_template_file_contents."\n\n";
                 }
                 break;
 
@@ -88,7 +88,7 @@ $self->addWpHtaccess = function () use ($self) {
                     }
                     $_template_block = str_ireplace('%%cache_dir%%', $self->cacheDir(), $_template_block);
 
-                    $template_blocks .= $_template_block."\n"; // Will replacement codes filled now.
+                    $template_blocks .= $_template_block."\n\n"; // Will replacement codes filled now.
                     unset($_template_block, $_exclude_refs, $_exclude_agents); // Housekeeping.
                 }
                 break;
