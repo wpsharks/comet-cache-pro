@@ -37,7 +37,11 @@ $self->addWpHtaccess = function () use ($self) {
         if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
             continue; // Template file missing; bypass.
         } // ↑ Some files might be missing in the lite version.
-        elseif (!($_template_file_contents = trim(file_get_contents($_template_file)))) {
+
+        $_template_file_contents = trim(file_get_contents($_template_file));
+        $_template_file_contents = trim(preg_replace('/\/\*.*?\*\//s', '', $_template_file_contents));
+
+        if (!($_template_file_contents = trim(file_get_contents($_template_file)))) {
             continue; // Template file empty; bypass.
         } // ↑ Some files might be empty in the lite version.
 
