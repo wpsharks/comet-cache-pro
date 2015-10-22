@@ -77,14 +77,14 @@ $self->addWpHtaccess = function () use ($self) {
                         $_exclude_refs   = substr($_exclude_refs, 1, -2); // Remove leading `/` and trailing `/i`.
                         $_template_block = str_ireplace('%%exclude_refs%%', $_exclude_refs, $_template_block);
                     } else { // Remove the line which contains this replacement code.
-                        $_template_block = preg_replace('/^.*?%%exclude_refs%%.*$/im', '', $_template_block);
+                        $_template_block = preg_replace('/^.*?%%exclude_refs%%.*?'."\n".'/im', '', $_template_block);
                     }
                     if ($self->options['exclude_agents']) {
                         $_exclude_agents = $self->lineDelimitedPatternsToRegex($self->options['exclude_agents']);
                         $_exclude_agents = substr($_exclude_agents, 1, -2); // Remove leading `/` and trailing `/i`.
                         $_template_block = str_ireplace('%%exclude_agents%%', $_exclude_agents, $_template_block);
                     } else { // Remove the line which contains this replacement code.
-                        $_template_block = preg_replace('/^.*?%%exclude_agents%%.*$/im', '', $_template_block);
+                        $_template_block = preg_replace('/^.*?%%exclude_agents%%.*?'."\n".'/im', '', $_template_block);
                     }
                     $_template_block = str_ireplace('%%cache_dir%%', $self->cacheDir(), $_template_block);
 
