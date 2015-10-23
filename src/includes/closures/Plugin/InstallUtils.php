@@ -176,7 +176,7 @@ $self->removeWpCacheFromWpConfig = function () use ($self) {
     if (!is_readable($wp_config_file)) {
         return ''; // Not possible.
     }
-    if (!($wp_config_file_contents = php_strip_whitespace($wp_config_file))) {
+    if (!($wp_config_file_contents = file_get_contents($wp_config_file))) {
         return ''; // Failure; could not read file.
     }
     if (!preg_match('/([\'"])WP_CACHE\\1/i', $wp_config_file_contents)) {
