@@ -137,7 +137,10 @@ $self->addWpCacheToWpConfig = function () use ($self) {
     if (!($wp_config_file_contents = file_get_contents($wp_config_file))) {
         return ''; // Failure; could not read file.
     }
-    if (preg_match('/define\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[1-9][0-9\.]*|TRUE|([\'"])(?:[^0\'"]|[^\'"]{2,})\\2)\s*\)\s*;/i', $wp_config_file_contents)) {
+    if (!($wp_config_file_contents_no_whitespace = php_strip_whitespace($wp_config_file))) {
+        return ''; // Failure; file empty
+    }
+    if (preg_match('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[1-9][0-9\.]*|TRUE|([\'"])(?:[^0\'"]|[^\'"]{2,})\\2)\s*\)\s*;/i', $wp_config_file_contents_no_whitespace)) {
         return $wp_config_file_contents; // It's already in there; no need to modify this file.
     }
     if (!($wp_config_file_contents = $self->removeWpCacheFromWpConfig())) {
@@ -179,13 +182,16 @@ $self->removeWpCacheFromWpConfig = function () use ($self) {
     if (!($wp_config_file_contents = file_get_contents($wp_config_file))) {
         return ''; // Failure; could not read file.
     }
-    if (!preg_match('/([\'"])WP_CACHE\\1/i', $wp_config_file_contents)) {
+    if (!($wp_config_file_contents_no_whitespace = php_strip_whitespace($wp_config_file))) {
+        return ''; // Failure; file empty
+    }
+    if (!preg_match('/([\'"])WP_CACHE\\1/i', $wp_config_file_contents_no_whitespace)) {
         return $wp_config_file_contents; // Already gone.
     }
-    if (preg_match('/define\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:0|FALSE|NULL|([\'"])0?\\2)\s*\)\s*;/i', $wp_config_file_contents) && !is_writable($wp_config_file)) {
+    if (preg_match('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:0|FALSE|NULL|([\'"])0?\\2)\s*\)\s*;/i', $wp_config_file_contents_no_whitespace) && !is_writable($wp_config_file)) {
         return $wp_config_file_contents; // It's already disabled, and since we can't write to this file let's let this slide.
     }
-    if (!($wp_config_file_contents = preg_replace('/define\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[0-9\.]+|TRUE|FALSE|NULL|([\'"])[^\'"]*\\2)\s*\)\s*;/i', '', $wp_config_file_contents))) {
+    if (!($wp_config_file_contents = preg_replace('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[0-9\.]+|TRUE|FALSE|NULL|([\'"])[^\'"]*\\2)\s*\)\s*;/i', '', $wp_config_file_contents))) {
         return ''; // Failure; something went terribly wrong here.
     }
     if (preg_match('/([\'"])WP_CACHE\\1/i', $wp_config_file_contents)) {
