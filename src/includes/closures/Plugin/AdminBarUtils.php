@@ -143,7 +143,7 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                                 (!is_admin() ? '<li class="-current-page-only"><a href="#">'.__('Current Page Only', SLUG_TD).'</a></li>' : '').
                                 '<li class="-specific-page-only"><a href="#">'.__('Specific Page Only', SLUG_TD).'</a></li>'.
                                 ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache() ? '<li class="-opcache-only"><a href="#">'.__('OPCache Only', SLUG_TD).'</a></li>' : '').
-                                ($self->options['cdn_enable'] ? '<li class="-cdn-only"><a href="#">'.__('CDN Only', SLUG_TD).'</a></li>' : '').
+                                ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache() ? '<li class="-cdn-only"><a href="#">'.__('CDN Only', SLUG_TD).'</a></li>' : '').
                                 '</ul>'.
 
                                 '<div class="-spacer"></div>',
