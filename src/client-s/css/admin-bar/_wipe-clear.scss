@@ -1,0 +1,138 @@
+/*[pro strip-from='lite']*/
+
+$clear-options-split-border-color: rgb(88, 88, 88);
+
+#wp-admin-bar-zencache-wipe,
+#wp-admin-bar-zencache-clear {
+  > a {
+    &::after {
+      border:                 0;
+      padding:                0;
+      content:                ' ';
+      width:                  16px;
+      height:                 16px;
+      line-height:            16px;
+      vertical-align:         middle;
+      margin:                -3px 0 0 5px;
+      display:                inline-block;
+    }
+  }
+
+  &.-wipe {
+    > a {
+      &::after {
+        content:              url('../images/wipe.png');
+      }
+    }
+  }
+
+  &.-clear {
+    > a {
+      &::after {
+        content:              url('../images/clear.png');
+      }
+    }
+  }
+
+  &.-processing {
+    > a {
+      &::after {
+        @include zencache-admin-bar-animation-spin;
+
+        content:              url('../images/spinner.png');
+      }
+    }
+  }
+}
+
+#wp-admin-bar-zencache-clear-options {
+  border-left:                1px solid $clear-options-split-border-color;
+
+  > a {
+    @include sharkicon(chevron-down, after);
+  }
+
+  .-wrapper,
+  .-container,
+  .-container > div {
+    margin:                   0 !important;
+    padding:                  0 !important;
+    display:                  block !important;
+    white-space:              normal !important;
+    width:                    100% !important;
+    min-width:                100% !important;
+    height:                   auto !important;
+    line-height:              normal !important;
+    box-sizing:               border-box !important;
+  }
+
+  .-wrapper {
+    padding:                  1em !important;
+
+    .-container {
+      * {
+        margin:               0;
+        padding:              0;
+        width:                auto;
+        height:               auto;
+        position:             static;
+        line-height:          normal;
+        box-sizing:           border-box;
+      }
+
+      .-label {
+        margin:               0 0 1em;
+
+        &::after {
+          float:              right;
+          content:            url('../images/clear.png');
+        }
+
+        .-text {
+          opacity:            0.75;
+          font-weight:        bolder;
+        }
+      }
+
+      .-options {
+        > li > a {
+          &::before {
+            padding-right:    1.25em;
+            text-align:       center;
+            width:            1.28571429em;
+          }
+        }
+
+        .-front-page-only {
+          > a {
+            @include sharkicon(home);
+          }
+        }
+
+        .-current-page-only {
+          > a {
+            @include sharkicon(file-text-o);
+          }
+        }
+
+        .-opcache-only {
+          > a {
+            @include sharkicon(feat-layers);
+          }
+        }
+
+        .-cdn-only {
+          > a {
+            @include sharkicon(cloud);
+          }
+        }
+      }
+
+      .-spacer {
+        min-width:            175px;
+      }
+    }
+  }
+}
+
+/*[/pro]*/

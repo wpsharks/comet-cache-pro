@@ -34,6 +34,28 @@ $self->currentUserCanClearCache = function () use ($self) {
 };
 
 /*
+ * Current user can clear the opcache?
+ *
+ * @since 15xxxx Enhancing user permissions.
+ *
+ * @return boolean Current user can clear the opcache?
+ */
+$self->currentUserCanClearOpCache = function () use ($self) {
+    if (!is_null($can = &$self->cacheKey('currentUserCanClearOpCache'))) {
+        return $can; // Already cached this.
+    }
+    $is_multisite = is_multisite();
+
+    if (!$is_multisite && current_user_can($self->cap)) {
+        return ($can = true); // Plugin admin.
+    }
+    if ($is_multisite && current_user_can($self->network_cap)) {
+        return ($can = true); // Plugin admin.
+    }
+    return ($can = false);
+};
+
+/*
  * Current user can see stats?
  *
  * @since 151002 Enhancing user permissions.

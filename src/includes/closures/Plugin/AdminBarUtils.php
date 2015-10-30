@@ -102,6 +102,54 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
         $wp_admin_bar->add_menu(
             array(
                 'parent' => 'top-secondary',
+                'id'     => GLOBAL_NS.'-clear-options',
+
+                'title' => '',
+                'href'  => '#',
+                'meta'  => array(
+                        'title'    => __('Clear Options', SLUG_TD),
+                        'class'    => '-clear-options',
+                        'tabindex' => -1,
+                ),
+            )
+        );
+        $wp_admin_bar->add_group(
+            array(
+                'parent' => GLOBAL_NS.'-clear-options',
+                'id'     => GLOBAL_NS.'-clear-options-wrapper',
+
+                'meta' => array(
+                    'class' => '-wrapper',
+                ),
+            )
+        );
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => GLOBAL_NS.'-clear-options-wrapper',
+                'id'     => GLOBAL_NS.'-clear-options-container',
+
+                'title' => '<div class="-label">'.
+                            '   <span class="-text">'.__('Clear Cache:', SLUG_TD).'</span>'.
+                            '</div>'.
+
+                            '<ul class="-options">'.
+                            '  <li class="-front-page-only"><a href="#">'.__('Front Page Only', SLUG_TD).'</a></li>'.
+                            (!is_admin() ? '<li class="-current-page-only"><a href="#">'.__('Current Page Only', SLUG_TD).'</a></li>' : '').
+                            ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache() ? '<li class="-opcache-only"><a href="#">'.__('OPCache Only', SLUG_TD).'</a></li>' : '').
+                            ($self->options['cdn_enable'] ? '<li class="-cdn-only"><a href="#">'.__('CDN Only', SLUG_TD).'</a></li>' : '').
+                            '</ul>'.
+
+                            '<div class="-spacer"></div>',
+
+                'meta' => array(
+                        'class'    => '-container',
+                        'tabindex' => -1,
+                ),
+            )
+        );
+        $wp_admin_bar->add_menu(
+            array(
+                'parent' => 'top-secondary',
                 'id'     => GLOBAL_NS.'-clear',
 
                 'title' => __('Clear Cache', SLUG_TD),
