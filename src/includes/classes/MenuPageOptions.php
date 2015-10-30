@@ -233,12 +233,12 @@ class MenuPageOptions extends MenuPage
             echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g., you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.sprintf(__('Depending on the structure of your site, there could be many reasons to clear the cache. However, the most common reasons are related to Post/Page edits or deletions, Category/Tag edits or deletions, and Theme changes. %1$s handles most scenarios all by itself. However, many site owners like to clear the cache manually; for a variety of reasons (just to force a refresh).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_enable]" data-target=".-cache-clear-admin-bar-options, .-cache-clear-admin-bar-roles-caps" style="width:auto;">'."\n";
-            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '1', false).'>'.__('Yes, enable &quot;Clear Cache&quot; button in admin bar.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '1', false).'>'.__('Yes, enable &quot;Clear Cache&quot; button in admin bar', SLUG_TD).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually.', SLUG_TD).'</option>'."\n";
             echo '         </select>'."\n";
             echo '         <span class="plugin-menu-page-panel-if-enabled -cache-clear-admin-bar-options"><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_options_enable]" class="-no-if-enabled" style="width:auto;">'."\n";
-            echo '             <option value="1"'.selected($this->plugin->options['cache_clear_admin_bar_options_enable'], '1', false).'>'.__('w/ dropdown options', SLUG_TD).'</option>'."\n";
-            echo '             <option value="0"'.selected($this->plugin->options['cache_clear_admin_bar_options_enable'], '0', false).'>'.__('w/o dropdown options', SLUG_TD).'</option>'."\n";
+            echo '             <option value="1"'.selected($this->plugin->options['cache_clear_admin_bar_options_enable'], '1', false).'>'.__('w/ dropdown options.', SLUG_TD).'</option>'."\n";
+            echo '             <option value="0"'.selected($this->plugin->options['cache_clear_admin_bar_options_enable'], '0', false).'>'.__('w/o dropdown options.', SLUG_TD).'</option>'."\n";
             echo '         </select></span></p>'."\n";
 
             if (is_multisite()) {
