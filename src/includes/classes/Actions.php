@@ -28,6 +28,15 @@ class Actions extends AbsBase
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
+        'ajaxClearCacheUrl',
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
+        'ajaxWipeOpCache',
+        'ajaxClearOpCache',
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         'ajaxWipeCdnCache',
         'ajaxClearCdnCache',
         /*[/pro]*/
@@ -77,7 +86,7 @@ class Actions extends AbsBase
      */
     protected function wipeCache($args)
     {
-        if (!is_multisite() || !current_user_can($this->plugin->network_cap)) {
+        if (!is_multisite() || !$this->plugin->currentUserCanWipeCache()) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -140,7 +149,7 @@ class Actions extends AbsBase
      */
     protected function ajaxWipeCache($args)
     {
-        if (!is_multisite() || !current_user_can($this->plugin->network_cap)) {
+        if (!is_multisite() || !$this->plugin->currentUserCanWipeCache()) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -220,13 +229,100 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
+     * @since 15xxxx Adding URL clear handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxClearCacheUrl($args)
+    {
+        if (!($url = trim((string) $args))) {
+            return; // Nothing.
+        }
+        if ($url === 'home') {
+            $url = home_url('/');
+        }
+        $is_home = $url === home_url('/');
+
+        if (!$this->plugin->currentUserCanClearCache()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = $this->plugin->deleteFilesFromCacheDir($this->plugin->buildCachePathRegexFromWcUrl($url));
+
+        if ($is_home) { // Make this easier to recognize.
+            $response = __('<p>Home Page cache cleared successfully.</p>', SLUG_TD);
+        } else {
+            $response = __('<p>Cache cleared successfully.</p>', SLUG_TD);
+        }
+        $response .= sprintf(__('<p>URL: <code>%1$s</code></p>', SLUG_TD), esc_html($this->plugin->midClip($url)));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Adding opcache wipe handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxWipeOpCache($args)
+    {
+        if (!is_multisite() || !$this->plugin->currentUserCanWipeOpCache()) {
+            return; // Nothing to do.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = $this->plugin->wipeOpcache(true, false);
+
+        $response = sprintf(__('<p>Opcache successfully wiped.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Wiped out <code>%1$s</code> OPCache keys.</p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 151002 Adding opcache clear handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxClearOpCache($args)
+    {
+        if (!$this->plugin->currentUserCanClearOpCache()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = $this->plugin->clearOpcache(true, false);
+
+        $response = sprintf(__('<p>Opcache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> OPCache keys.</p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
      * @since 151002 Adding CDN cache wipe handler.
      *
      * @param mixed Input action argument(s).
      */
     protected function ajaxWipeCdnCache($args)
     {
-        if (!is_multisite() || !current_user_can($this->plugin->network_cap)) {
+        if (!is_multisite() || !$this->plugin->currentUserCanWipeCdnCache()) {
             return; // Nothing to do.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -251,7 +347,7 @@ class Actions extends AbsBase
      */
     protected function ajaxClearCdnCache($args)
     {
-        if (!$this->plugin->currentUserCanClearCache()) {
+        if (!$this->plugin->currentUserCanClearCdnCache()) {
             return; // Not allowed to clear.
         }
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {

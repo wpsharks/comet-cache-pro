@@ -84,12 +84,24 @@ $clear-options-split-border-color: rgb(88, 88, 88);
         margin:               0 0 1em;
 
         &::after {
+          border:             0;
+          padding:            0;
+          width:              16px;
+          height:             16px;
           float:              right;
+          vertical-align:     middle;
+          display:            inline-block;
           content:            url('../images/clear.png');
         }
 
         .-text {
           opacity:            0.75;
+        }
+
+        &.-processing::after {
+          @include zencache-admin-bar-animation-spin;
+
+          content:            url('../images/spinner.png');
         }
       }
 
@@ -102,7 +114,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
           }
         }
 
-        .-front-page-only {
+        .-home-page-only {
           > a {
             @include sharkicon(home);
           }
@@ -111,6 +123,12 @@ $clear-options-split-border-color: rgb(88, 88, 88);
         .-current-page-only {
           > a {
             @include sharkicon(file-text-o);
+          }
+        }
+
+        .-specific-page-only {
+          > a {
+            @include sharkicon(chain);
           }
         }
 

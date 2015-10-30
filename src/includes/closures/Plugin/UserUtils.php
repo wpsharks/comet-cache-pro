@@ -32,6 +32,7 @@ $self->currentUserCanClearCache = function () use ($self) {
     /*[/pro]*/
     return ($can = false);
 };
+$self->currentUserCanWipeCache = $self->currentUserCanClearCache;
 
 /*
  * Current user can clear the opcache?
@@ -54,6 +55,30 @@ $self->currentUserCanClearOpCache = function () use ($self) {
     }
     return ($can = false);
 };
+$self->currentUserCanWipeOpCache = $self->currentUserCanClearOpCache;
+
+/*
+ * Current user can clear the CDN cache?
+ *
+ * @since 15xxxx Enhancing user permissions.
+ *
+ * @return boolean Current user can clear the CDN cache?
+ */
+$self->currentUserCanClearCdnCache = function () use ($self) {
+    if (!is_null($can = &$self->cacheKey('currentUserCanClearCdnCache'))) {
+        return $can; // Already cached this.
+    }
+    $is_multisite = is_multisite();
+
+    if (!$is_multisite && current_user_can($self->cap)) {
+        return ($can = true); // Plugin admin.
+    }
+    if ($is_multisite && current_user_can($self->network_cap)) {
+        return ($can = true); // Plugin admin.
+    }
+    return ($can = false);
+};
+$self->currentUserCanWipeCdnCache = $self->currentUserCanClearCdnCache;
 
 /*
  * Current user can see stats?
