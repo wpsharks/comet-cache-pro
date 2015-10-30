@@ -18,9 +18,9 @@
     $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
 
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-home-page-only > a').on('click', plugin.clearCacheHomePageOnly);
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-current-page-only > a').on('click', plugin.clearCacheCurrentPageOnly);
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-specific-page-only > a').on('click', plugin.clearCacheSpecificPageOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-home-url-only > a').on('click', plugin.clearCacheHomeUrlOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-current-url-only > a').on('click', plugin.clearCacheCurrentUrlOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-specific-url-only > a').on('click', plugin.clearCacheSpecificUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-opcache-only > a').on('click', plugin.clearCacheOpCacheOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
 
@@ -153,19 +153,19 @@
     });
   };
 
-  plugin.clearCacheHomePageOnly = function (event) {
+  plugin.clearCacheHomeUrlOnly = function (event) {
     plugin.clearCache(event, {
       urlOnly: 'home'
     });
   };
 
-  plugin.clearCacheCurrentPageOnly = function (event) {
+  plugin.clearCacheCurrentUrlOnly = function (event) {
     plugin.clearCache(event, {
       urlOnly: document.URL
     });
   };
 
-  plugin.clearCacheSpecificPageOnly = function (event) {
+  plugin.clearCacheSpecificUrlOnly = function (event) {
     var url = $.trim(prompt(plugin.vars.i18n.enterSpecificUrl, 'http://'));
 
     if (url && url !== 'http://') {

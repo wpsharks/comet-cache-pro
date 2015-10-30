@@ -238,10 +238,16 @@ class Actions extends AbsBase
         if (!($url = trim((string) $args))) {
             return; // Nothing.
         }
+        $home_url = home_url('/');
+
         if ($url === 'home') {
-            $url = home_url('/');
+            $url = $home_url;
         }
-        $is_home = $url === home_url('/');
+        $is_multisite    = is_multisite();
+        $is_home         = rtrim($url, '/') === rtrim($home_url, '/');
+        $url_host        = strtolower(parse_url($url, PHP_URL_HOST));
+        $home_host       = strtolower(parse_url($home_url, PHP_URL_HOST));
+        $is_offsite_host = !$is_multisite && $url_host !== $home_host;
 
         if (!$this->plugin->currentUserCanClearCache()) {
             return; // Not allowed to clear.
@@ -258,6 +264,9 @@ class Actions extends AbsBase
         }
         $response .= sprintf(__('<p>URL: <code>%1$s</code></p>', SLUG_TD), esc_html($this->plugin->midClip($url)));
 
+        if ($is_offsite_host) { // Standard install w/ offsite host in URL?
+            $response .= sprintf(__('<p><strong>Notice:</strong> The domain you entered did not match your WordPress Home URL.</p>', SLUG_TD), esc_html($url_host));
+        }
         exit($response); // JavaScript will take it from here.
     }
     /*[/pro]*/

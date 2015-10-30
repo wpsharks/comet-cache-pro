@@ -47,6 +47,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
 
 #wp-admin-bar-zencache-clear-options {
   border-left:                1px solid $clear-options-split-border-color;
+  border-right:               1px solid $clear-options-split-border-color;
 
   > a {
     @include sharkicon(chevron-down, after);
@@ -114,19 +115,19 @@ $clear-options-split-border-color: rgb(88, 88, 88);
           }
         }
 
-        .-home-page-only {
+        .-home-url-only {
           > a {
             @include sharkicon(home);
           }
         }
 
-        .-current-page-only {
+        .-current-url-only {
           > a {
             @include sharkicon(file-text-o);
           }
         }
 
-        .-specific-page-only {
+        .-specific-url-only {
           > a {
             @include sharkicon(chain);
           }
@@ -146,7 +147,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
       }
 
       .-spacer {
-        min-width:            175px;
+        min-width:            125px;
       }
     }
   }

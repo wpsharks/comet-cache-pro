@@ -139,11 +139,11 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                                 '</div>'.
 
                                 '<ul class="-options">'.
-                                '  <li class="-home-page-only"><a href="#">'.__('Home Page Only', SLUG_TD).'</a></li>'.
-                                (!is_admin() ? '<li class="-current-page-only"><a href="#">'.__('Current Page Only', SLUG_TD).'</a></li>' : '').
-                                '<li class="-specific-page-only"><a href="#">'.__('Specific Page Only', SLUG_TD).'</a></li>'.
-                                ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache() ? '<li class="-opcache-only"><a href="#">'.__('OPCache Only', SLUG_TD).'</a></li>' : '').
-                                ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache() ? '<li class="-cdn-only"><a href="#">'.__('CDN Only', SLUG_TD).'</a></li>' : '').
+                                '  <li class="-home-url-only"><a href="#">'.__('Home Page', SLUG_TD).'</a></li>'.
+                                (!is_admin() ? '<li class="-current-url-only"><a href="#">'.__('Current URL', SLUG_TD).'</a></li>' : '').
+                                '<li class="-specific-url-only"><a href="#">'.__('Specific URL', SLUG_TD).'</a></li>'.
+                                ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache() ? '<li class="-opcache-only"><a href="#">'.__('OPCache', SLUG_TD).'</a></li>' : '').
+                                ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache() ? '<li class="-cdn-only"><a href="#">'.__('CDN Cache', SLUG_TD).'</a></li>' : '').
                                 '</ul>'.
 
                                 '<div class="-spacer"></div>',
@@ -266,7 +266,7 @@ $self->adminBarMetaTags = function () use ($self) {
             'currentTotal'     => __('Current Total', SLUG_TD),
             'currentSite'      => __('Current Site', SLUG_TD),
             'xDayHigh'         => __('%s Day High', SLUG_TD),
-            'enterSpecificUrl' => __('Enter a specific URL', SLUG_TD),
+            'enterSpecificUrl' => __('Enter a specific URL to clear the cache for that page:', SLUG_TD),
         ),
     );
     echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
