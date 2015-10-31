@@ -104,7 +104,24 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
         );
     }
     if ($self->adminBarShowing('cache_clear')) {
-        if ($self->adminBarShowing('cache_clear_options')) {
+        if (($cache_clear_options_showing = $self->adminBarShowing('cache_clear_options'))) {
+            $cache_clear_options = '<li class="-home-url-only"><a href="#">'.__('Home Page', SLUG_TD).'</a></li>';
+
+            if (!is_admin()) {
+                $cache_clear_options .= '<li class="-current-url-only"><a href="#">'.__('Current URL', SLUG_TD).'</a></li>';
+            }
+            $cache_clear_options .= '<li class="-specific-url-only"><a href="#">'.__('Specific URL', SLUG_TD).'</a></li>';
+
+            if ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache()) {
+                $cache_clear_options .= '<li class="-opcache-only"><a href="#">'.__('OPCache', SLUG_TD).'</a></li>';
+            }
+            if ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache()) {
+                $cache_clear_options .= '<li class="-cdn-only"><a href="#">'.__('CDN Cache', SLUG_TD).'</a></li>';
+            }
+        } else {
+            $cache_clear_options = ''; // Empty in this default case.
+        }
+        if ($cache_clear_options && $self->options['cache_clear_admin_bar_options_enable'] === '2') {
             $wp_admin_bar->add_menu(
                 array(
                     'parent' => 'top-secondary',
@@ -139,11 +156,7 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                                 '</div>'.
 
                                 '<ul class="-options">'.
-                                '  <li class="-home-url-only"><a href="#">'.__('Home Page', SLUG_TD).'</a></li>'.
-                                (!is_admin() ? '<li class="-current-url-only"><a href="#">'.__('Current URL', SLUG_TD).'</a></li>' : '').
-                                '<li class="-specific-url-only"><a href="#">'.__('Specific URL', SLUG_TD).'</a></li>'.
-                                ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache() ? '<li class="-opcache-only"><a href="#">'.__('OPCache', SLUG_TD).'</a></li>' : '').
-                                ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache() ? '<li class="-cdn-only"><a href="#">'.__('CDN Cache', SLUG_TD).'</a></li>' : '').
+                                '   '.$cache_clear_options.
                                 '</ul>'.
 
                                 '<div class="-spacer"></div>',
@@ -171,6 +184,39 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                 ),
             )
         );
+        if ($cache_clear_options && $self->options['cache_clear_admin_bar_options_enable'] === '1') {
+            $wp_admin_bar->add_group(
+                array(
+                    'parent' => GLOBAL_NS.'-clear',
+                    'id'     => GLOBAL_NS.'-clear-options-wrapper',
+
+                    'meta' => array(
+                        'class' => '-wrapper',
+                    ),
+                )
+            );
+            $wp_admin_bar->add_menu(
+                array(
+                    'parent' => GLOBAL_NS.'-clear-options-wrapper',
+                    'id'     => GLOBAL_NS.'-clear-options-container',
+
+                    'title' => '<div class="-label">'.
+                                '   <span class="-text">'.__('Clear Cache:', SLUG_TD).'</span>'.
+                                '</div>'.
+
+                                '<ul class="-options">'.
+                                '   '.$cache_clear_options.
+                                '</ul>'.
+
+                                '<div class="-spacer"></div>',
+
+                    'meta' => array(
+                            'class'    => '-container',
+                            'tabindex' => -1,
+                    ),
+                )
+            );
+        }
     }
     if ($self->adminBarShowing('stats')) {
         $wp_admin_bar->add_menu(

@@ -18,11 +18,11 @@
     $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
 
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-home-url-only > a').on('click', plugin.clearCacheHomeUrlOnly);
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-current-url-only > a').on('click', plugin.clearCacheCurrentUrlOnly);
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-specific-url-only > a').on('click', plugin.clearCacheSpecificUrlOnly);
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-opcache-only > a').on('click', plugin.clearCacheOpCacheOnly);
-    $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-home-url-only > a').on('click', plugin.clearCacheHomeUrlOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-current-url-only > a').on('click', plugin.clearCacheCurrentUrlOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-specific-url-only > a').on('click', plugin.clearCacheSpecificUrlOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-opcache-only > a').on('click', plugin.clearCacheOpCacheOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
 
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
 
@@ -69,8 +69,8 @@
       ajaxWipeCache: '1'
     };
     var $wipe = $('#wp-admin-bar-' + plugin.namespace + '-wipe > a');
-    var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-label');
-    var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-options');
+    var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-label');
+    var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-options');
 
     plugin.removeAJAXResponse();
     $wipe.parent().addClass('-processing');
@@ -125,8 +125,8 @@
       };
     }
     var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
-    var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-label');
-    var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options .-options');
+    var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-label');
+    var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper  .-options');
 
     plugin.removeAJAXResponse();
 

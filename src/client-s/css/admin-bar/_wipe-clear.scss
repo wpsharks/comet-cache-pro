@@ -52,8 +52,10 @@ $clear-options-split-border-color: rgb(88, 88, 88);
   > a {
     @include sharkicon(chevron-down, after);
   }
+}
 
-  .-wrapper,
+#wp-admin-bar-zencache-clear-options-wrapper {
+  &.-wrapper,
   .-container,
   .-container > div {
     margin:                   0 !important;
@@ -67,7 +69,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
     box-sizing:               border-box !important;
   }
 
-  .-wrapper {
+  &.-wrapper {
     padding:                  1em !important;
 
     .-container {
@@ -109,7 +111,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
       .-options {
         > li > a {
           &::before {
-            padding-right:    1.25em;
+            padding-right:   .5em;
             text-align:       center;
             width:            1.28571429em;
           }
