@@ -130,7 +130,7 @@
 
     plugin.removeAJAXResponse();
 
-    if (isClearOption) {
+    if (isClearOption && $clearOptionsLabel.length) {
       $clearOptionsLabel.addClass('-processing');
     } else {
       $clear.parent().addClass('-processing');
@@ -140,7 +140,7 @@
     $.post(plugin.vars.ajaxURL, postVars, function (data) {
       plugin.removeAJAXResponse();
 
-      if (isClearOption) {
+      if (isClearOption && $clearOptionsLabel.length) {
         $clearOptionsLabel.removeClass('-processing');
       } else {
         $clear.parent().removeClass('-processing');

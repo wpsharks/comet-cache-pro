@@ -45,15 +45,6 @@ $clear-options-split-border-color: rgb(88, 88, 88);
   }
 }
 
-#wp-admin-bar-zencache-clear-options {
-  border-left:                1px solid $clear-options-split-border-color;
-  border-right:               1px solid $clear-options-split-border-color;
-
-  > a {
-    @include sharkicon(chevron-down, after);
-  }
-}
-
 #wp-admin-bar-zencache-clear-options-wrapper {
   &.-wrapper,
   .-container,
@@ -148,6 +139,23 @@ $clear-options-split-border-color: rgb(88, 88, 88);
         }
       }
 
+      .-spacer {
+        min-width:            100px;
+      }
+    }
+  }
+}
+
+#wp-admin-bar-zencache-clear-options {
+  border-left:                1px solid $clear-options-split-border-color;
+  border-right:               1px solid $clear-options-split-border-color;
+
+  > a {
+    @include sharkicon(chevron-down, after);
+  }
+
+  .-wrapper {
+    .-container {
       .-spacer {
         min-width:            125px;
       }

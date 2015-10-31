@@ -200,11 +200,7 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                     'parent' => GLOBAL_NS.'-clear-options-wrapper',
                     'id'     => GLOBAL_NS.'-clear-options-container',
 
-                    'title' => '<div class="-label">'.
-                                '   <span class="-text">'.__('Clear Cache:', SLUG_TD).'</span>'.
-                                '</div>'.
-
-                                '<ul class="-options">'.
+                    'title' => '<ul class="-options">'.
                                 '   '.$cache_clear_options.
                                 '</ul>'.
 
