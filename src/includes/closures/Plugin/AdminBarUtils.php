@@ -297,7 +297,7 @@ $self->adminBarMetaTags = function () use ($self) {
     }
     $vars = array(
         '_wpnonce'                 => wp_create_nonce(),
-        'isMultisite'              => is_multisite(), // Network?
+        'isMultisite'              => is_multisite(),
         'currentUserHasCap'        => current_user_can($self->cap),
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],

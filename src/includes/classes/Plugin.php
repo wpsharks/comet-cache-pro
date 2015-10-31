@@ -274,7 +274,7 @@ class Plugin extends AbsBaseAp
             'change_notifications_enable' => '1', // `0|1`.
 
             'cache_clear_admin_bar_enable'         => '1', // `0|1`.
-            'cache_clear_admin_bar_options_enable' => '1', // `0|1`.
+            'cache_clear_admin_bar_options_enable' => '1', // `0|1|2`.
             'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
             'cache_clear_cdn_enable'     => '0', // `0|1`.
