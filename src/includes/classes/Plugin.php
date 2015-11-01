@@ -190,6 +190,7 @@ class Plugin extends AbsBaseAp
             'change_notifications_enable',
 
             'cache_clear_admin_bar_enable',
+            'cache_clear_admin_bar_options_enable',
             'cache_clear_admin_bar_roles_caps',
 
             'cache_clear_cdn_enable',
@@ -272,14 +273,15 @@ class Plugin extends AbsBaseAp
 
             'change_notifications_enable' => '1', // `0|1`.
 
-            'cache_clear_admin_bar_enable'     => '1', // `0|1`.
-            'cache_clear_admin_bar_roles_caps' => '', // Comma-delimited list of roles/caps.
+            'cache_clear_admin_bar_enable'         => '1', // `0|1`.
+            'cache_clear_admin_bar_options_enable' => '1', // `0|1|2`.
+            'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
-            'cache_clear_cdn_enable' => '0', // `0|1`.
+            'cache_clear_cdn_enable'     => '0', // `0|1`.
             'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.
-            'cache_clear_urls' => '', // Line-delimited list of URLs.
+            'cache_clear_urls'           => '', // Line-delimited list of URLs.
 
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
@@ -493,7 +495,7 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         if ($this->options['when_logged_in'] === '1' && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
-          show_admin_bar(FALSE); // Prevent admin bar from being cached.
+            show_admin_bar(false); // Prevent admin bar from being cached.
         }
         /*[/pro]*/
 
