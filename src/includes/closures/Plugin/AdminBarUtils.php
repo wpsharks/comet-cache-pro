@@ -105,18 +105,18 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
     }
     if ($self->adminBarShowing('cache_clear')) {
         if (($cache_clear_options_showing = $self->adminBarShowing('cache_clear_options'))) {
-            $cache_clear_options = '<li class="-home-url-only"><a href="#">'.__('Home Page', SLUG_TD).'</a></li>';
+            $cache_clear_options = '<li class="-home-url-only"><a href="#" title="'.__('Clear the Home Page cache', SLUG_TD).'">'.__('Home Page', SLUG_TD).'</a></li>';
 
             if (!is_admin()) {
-                $cache_clear_options .= '<li class="-current-url-only"><a href="#">'.__('Current URL', SLUG_TD).'</a></li>';
+                $cache_clear_options .= '<li class="-current-url-only"><a href="#" title="'.__('Clear the cache for the current URL', SLUG_TD).'">'.__('Current URL', SLUG_TD).'</a></li>';
             }
-            $cache_clear_options .= '<li class="-specific-url-only"><a href="#">'.__('Specific URL', SLUG_TD).'</a></li>';
+            $cache_clear_options .= '<li class="-specific-url-only"><a href="#" title="'.__('Clear the cache for a specific URL', SLUG_TD).'">'.__('Specific URL', SLUG_TD).'</a></li>';
 
             if ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache()) {
-                $cache_clear_options .= '<li class="-opcache-only"><a href="#">'.__('OPCache', SLUG_TD).'</a></li>';
+                $cache_clear_options .= '<li class="-opcache-only"><a href="#" title="'.__('Clear PHP\'s OPCache', SLUG_TD).'">'.__('OPCache', SLUG_TD).'</a></li>';
             }
             if ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache()) {
-                $cache_clear_options .= '<li class="-cdn-only"><a href="#">'.__('CDN Cache', SLUG_TD).'</a></li>';
+                $cache_clear_options .= '<li class="-cdn-only"><a href="#" title="'.__('Clear the CDN cache', SLUG_TD).'">'.__('CDN Cache', SLUG_TD).'</a></li>';
             }
         } else {
             $cache_clear_options = ''; // Empty in this default case.
@@ -178,7 +178,7 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                 'meta'  => array(
                         'title' => is_multisite() && current_user_can($self->network_cap)
                             ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
-                            : __('Clear Cache (Start Fresh)', SLUG_TD),
+                            : '',
                         'class'    => '-clear',
                         'tabindex' => -1,
                 ),
@@ -224,7 +224,6 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                 'href'  => '#',
 
                 'meta' => array(
-                        'title'    => __('Cache statistics.', SLUG_TD),
                         'class'    => '-stats',
                         'tabindex' => -1,
                 ),
