@@ -265,6 +265,10 @@ class Plugin extends AbsBaseAp
             'debugging_enable' => '1',
             // `0|1|2` // 2 indicates greater debugging detail.
 
+            /* Related to the current mode. */
+
+            'mode' => 'php', // `simple|php|apache|ningx`
+
             /* Related to cache directory. */
 
             'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
