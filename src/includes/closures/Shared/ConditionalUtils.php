@@ -115,8 +115,8 @@ $self->isLikeUserLoggedIn = function () use ($self) {
     }
     $logged_in_cookies[] = 'comment_author_'; // Comment (and/or reply) authors.
     $logged_in_cookies[] = 'wp-postpass_'; // Password access to protected posts.
-    $logged_in_cookies[] = defined('AUTH_COOKIE') ? (string) AUTH_COOKIE : 'wordpress_';
-    $logged_in_cookies[] = defined('SECURE_AUTH_COOKIE') ? (string) SECURE_AUTH_COOKIE : 'wordpress_sec_';
+    //$logged_in_cookies[] = defined('AUTH_COOKIE') ? (string) AUTH_COOKIE : 'wordpress_';
+    //$logged_in_cookies[] = defined('SECURE_AUTH_COOKIE') ? (string) SECURE_AUTH_COOKIE : 'wordpress_sec_';
     $logged_in_cookies[] = defined('LOGGED_IN_COOKIE') ? (string) LOGGED_IN_COOKIE : 'wordpress_logged_in_';
     $test_cookie         = defined('TEST_COOKIE') ? (string) TEST_COOKIE : 'wordpress_test_cookie';
 

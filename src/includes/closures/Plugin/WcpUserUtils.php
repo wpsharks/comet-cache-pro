@@ -35,7 +35,7 @@ $self->autoClearUserCache = function ($user_id) use ($self) {
     if ($self->options['when_logged_in'] !== 'postload') {
         return $counter; // Nothing to do.
     }
-    $regex = $self->buildCachePathRegex('', '.*?\.u\/'.preg_quote($user_id, '/').'[.\/]');
+    $regex = $self->assembleCachePathRegex('', '.*?\.u\/'.preg_quote($user_id, '/').'[.\/]');
     $counter += $self->wipeFilesFromCacheDir($regex); // Clear matching files.
 
     if ($counter && is_admin() && (!IS_PRO || $self->options['change_notifications_enable'])) {

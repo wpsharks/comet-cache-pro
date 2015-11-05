@@ -33,8 +33,8 @@ $self->autoClearUrlsCache = function () use ($self) {
     }
     foreach (preg_split('/['."\r\n".']+/', $self->options['cache_clear_urls'], null, PREG_SPLIT_NO_EMPTY) as $_url) {
         if (stripos($_url, 'http') === 0) {
-            $_regex = $self->buildHostCachePathRegex($_url);
-            $counter += $self->clearFilesFromHostCacheDir($_regex);
+            $_regex = $self->buildCachePathRegexFromWcUrl($_url);
+            $counter += $self->deleteFilesFromCacheDir($_regex);
         }
     } unset($_url, $_regex); // Housekeeping.
 
