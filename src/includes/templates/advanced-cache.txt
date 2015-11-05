@@ -66,6 +66,16 @@ if (!defined('ZENCACHE_DEBUGGING_ENABLE')) {
      */
     define('ZENCACHE_DEBUGGING_ENABLE', '%%ZENCACHE_DEBUGGING_ENABLE%%');
 }
+if (!defined('ZENCACHE_MODE')) {
+    /**
+     * What ZenCache mode are we in?
+     *
+     * @since 15xxxx Adding support for multiple modes.
+     *
+     * @var string One of `simple|php|apache|nginx`.
+     */
+    define('ZENCACHE_MODE', '%%ZENCACHE_MODE%%');
+}
 if (!defined('ZENCACHE_ALLOW_BROWSER_CACHE')) {
     /**
      * Allow browsers to cache each document?

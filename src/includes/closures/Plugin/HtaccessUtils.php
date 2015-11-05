@@ -12,7 +12,7 @@ $self->addWpHtaccess = function () use ($self) {
     global $is_apache;
 
     if (!$is_apache) {
-        return false; // Not running the Apache web server.
+        return false; // Not Apache.
     }
     if (!$self->options['enable']) {
         return false; // Nothing to do.
