@@ -41,6 +41,11 @@ class Actions extends AbsBase
         'ajaxClearCdnCache',
         /*[/pro]*/
 
+        /*[pro strip-from="lite"]*/
+        'ajaxWipeExpiredTransients',
+        'ajaxClearExpiredTransients',
+        /*[/pro]*/
+
         'saveOptions',
         'restoreDefaultOptions',
 
@@ -366,6 +371,56 @@ class Actions extends AbsBase
 
         $response = sprintf(__('<p>CDN cache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
         $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Adding transient cache wipe handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxWipeExpiredTransients($args)
+    {
+        if (!$this->plugin->currentUserCanWipeExpiredTransients()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = $this->plugin->wipeExpiredTransients(true, false);
+
+        $response = sprintf(__('<p>Expired transients wiped successfully.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Wiped <code>%1$s</code> expired rows from the database.</p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Adding transient cache clear handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxClearExpiredTransients($args)
+    {
+        if (!$this->plugin->currentUserCanClearExpiredTransients()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = $this->plugin->clearExpiredTransients(true, false);
+
+        $response = sprintf(__('<p>Expired transients cleared successfully.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> expired rows from the database.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
