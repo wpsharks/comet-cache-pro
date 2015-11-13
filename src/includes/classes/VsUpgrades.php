@@ -45,7 +45,7 @@ class VsUpgrades extends AbsBase
         $this->fromLt141009();
         $this->fromQuickCache();
         $this->fromLte150807();
-        $this->fromLte151004();
+        $this->fromLte151107();
     }
 
     /**
@@ -279,9 +279,9 @@ class VsUpgrades extends AbsBase
      *
      * @since 15xxxx Adding `.htaccess` tweaks.
      */
-    protected function fromLte151004()
+    protected function fromLte151107()
     {
-        if (version_compare($this->prev_version, '151004', '<=')) {
+        if (version_compare($this->prev_version, '151107', '<=')) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (!empty($existing_options['cache_clear_xml_sitemap_patterns'])) {
                     $this->plugin->options['cache_clear_xml_sitemap_patterns'] = str_replace('*', '**', $existing_options['cache_clear_xml_sitemap_patterns']);
