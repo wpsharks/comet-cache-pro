@@ -143,7 +143,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 15xxxx Updated to support an arbitrary URL instead of a regex frag.
+ * @since 151114 Updated to support an arbitrary URL instead of a regex frag.
  *
  * @param string $url The input URL to convert. This CAN be left empty when necessary.
  *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -219,7 +219,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 15xxxx Improving watered-down regex syntax.
+ * @since 151114 Improving watered-down regex syntax.
  *
  * @param string $url The input URL to convert. This CAN be left empty when necessary.
  *  This may also contain watered-down regex; i.e., `*^$` characters are OK here.
@@ -295,7 +295,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 15xxxx Moving this low-level routine into a method of a different name.
+ * @since 151114 Moving this low-level routine into a method of a different name.
  *
  * @param string $regex_frag A regex fragment. This CAN be left empty when necessary.
  *  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.

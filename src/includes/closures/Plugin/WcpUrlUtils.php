@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
 * Automatically clears cache files for a list of custom URLs.
 *
-* @since 15xxxx Adding support for a custom list of URLs.
+* @since 151114 Adding support for a custom list of URLs.
 *
 * @throws \Exception If a clear failure occurs.
 *

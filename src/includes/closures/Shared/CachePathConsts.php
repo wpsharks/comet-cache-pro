@@ -124,7 +124,7 @@ const CACHE_PATH_ALLOW_WILDCARDS = 2048;
 /**
  * Allow watered-down regex in the cache path.
  *
- * @since 15xxxx Improving regex syntax.
+ * @since 151114 Improving regex syntax.
  *
  * @type int Part of a bitmask.
  */

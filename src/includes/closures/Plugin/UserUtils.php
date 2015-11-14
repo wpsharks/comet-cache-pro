@@ -37,7 +37,7 @@ $self->currentUserCanWipeCache = $self->currentUserCanClearCache;
 /*
  * Current user can clear the opcache?
  *
- * @since 15xxxx Enhancing user permissions.
+ * @since 151114 Enhancing user permissions.
  *
  * @return boolean Current user can clear the opcache?
  */
@@ -60,7 +60,7 @@ $self->currentUserCanWipeOpCache = $self->currentUserCanClearOpCache;
 /*
  * Current user can clear the CDN cache?
  *
- * @since 15xxxx Enhancing user permissions.
+ * @since 151114 Enhancing user permissions.
  *
  * @return boolean Current user can clear the CDN cache?
  */

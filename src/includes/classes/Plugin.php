@@ -286,7 +286,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
             'cache_clear_xml_sitemaps_enable'  => '1', // `0|1`.
-            'cache_clear_xml_sitemap_patterns' => '/sitemap*.xml',
+            'cache_clear_xml_sitemap_patterns' => '/sitemap**.xml',
             // Empty string or line-delimited patterns.
 
             'cache_clear_home_page_enable'  => '1', // `0|1`.

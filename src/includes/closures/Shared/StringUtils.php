@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Clips string(s) to X chars deeply.
  *
- * @since 15xxxx Adding string utils.
+ * @since 151114 Adding string utils.
  *
  * @param mixed $value          Any input value.
  * @param int   $max_length     Defaults to a value of `80`.
@@ -43,7 +43,7 @@ $self->clip = function ($value, $max_length = 80, $force_ellipsis = false) use (
 /*
  * Mid-clips string(s) to X chars deeply.
  *
- * @since 15xxxx Adding string utils.
+ * @since 151114 Adding string utils.
  *
  * @param mixed $value      Any input value.
  * @param int   $max_length Defaults to a value of `80`.

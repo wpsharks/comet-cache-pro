@@ -169,7 +169,7 @@ const NC_DEBUG_GET_REQUEST_QUERIES = 'nc_debug_get_request_queries';
 /**
  * No-cache because it's a preview.
  *
- * @since 15xxxx Adding support for preview detection.
+ * @since 151114 Adding support for preview detection.
  *
  * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
  */
