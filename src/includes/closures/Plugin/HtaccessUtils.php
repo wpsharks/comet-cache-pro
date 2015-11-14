@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Add template blocks to `/.htaccess` file.
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if added successfully.
  */
@@ -68,7 +68,7 @@ $self->addWpHtaccess = function () use ($self) {
 /*
  * Remove template blocks from `/.htaccess` file.
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if removed successfully.
  */
@@ -111,7 +111,7 @@ $self->removeWpHtaccess = function () use ($self) {
 /*
  * Finds absolute server path to `/.htaccess` file.
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return string Absolute server path to `/.htaccess` file;
  *    else an empty string if unable to locate the file.

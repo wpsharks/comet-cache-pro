@@ -277,7 +277,7 @@ class VsUpgrades extends AbsBase
      * Before we changed the CDN Blacklisted Extensions and implemented htaccess tweaks to fix CORS errors.
      *  Also, before we changed the watered-down regex syntax for exclusion patterns.
      *
-     * @since 15xxxx Adding `.htaccess` tweaks.
+     * @since 151114 Adding `.htaccess` tweaks.
      */
     protected function fromLte151107()
     {

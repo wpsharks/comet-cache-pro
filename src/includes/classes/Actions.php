@@ -229,7 +229,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Adding URL clear handler.
+     * @since 151114 Adding URL clear handler.
      *
      * @param mixed Input action argument(s).
      */
@@ -275,7 +275,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Adding opcache wipe handler.
+     * @since 151114 Adding opcache wipe handler.
      *
      * @param mixed Input action argument(s).
      */
