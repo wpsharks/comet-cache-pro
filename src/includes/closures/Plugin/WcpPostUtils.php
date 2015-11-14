@@ -97,6 +97,9 @@ $self->autoClearPostCache = function ($post_id, $force = false) use ($self) {
     $counter += $self->autoClearPostsPageCache();
     $counter += $self->autoClearPostTermsCache($post_id, $force);
     $counter += $self->autoClearCustomPostTypeArchiveCache($post_id);
+    /*[pro strip-from="lite"]*/
+    $counter += $self->autoClearUrlsCache();
+    /*[/pro]*/
 
     if ($post_type !== 'page' && ($parent_post_id = wp_get_post_parent_id($post_id))) {
         // Recursion: i.e., nested post types like bbPress forums/topic/replies.

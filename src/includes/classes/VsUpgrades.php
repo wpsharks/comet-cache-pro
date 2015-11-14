@@ -45,6 +45,7 @@ class VsUpgrades extends AbsBase
         $this->fromLt141009();
         $this->fromQuickCache();
         $this->fromLte150807();
+        $this->fromLte151107();
     }
 
     /**
@@ -269,11 +270,46 @@ class VsUpgrades extends AbsBase
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                 }
             }
-            // @TODO See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
-            //if ($this->plugin->options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
-            //    $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
-            //    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
-            //}
+        }
+    }
+
+    /**
+     * Before we changed the CDN Blacklisted Extensions and implemented htaccess tweaks to fix CORS errors.
+     *  Also, before we changed the watered-down regex syntax for exclusion patterns.
+     *
+     * @since 151114 Adding `.htaccess` tweaks.
+     */
+    protected function fromLte151107()
+    {
+        if (version_compare($this->prev_version, '151107', '<=')) {
+            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
+                if (!empty($existing_options['cache_clear_xml_sitemap_patterns']) && strpos($existing_options['cache_clear_xml_sitemap_patterns'], '**') === false) {
+                    $this->plugin->options['cache_clear_xml_sitemap_patterns'] = str_replace('*', '**', $existing_options['cache_clear_xml_sitemap_patterns']);
+                }
+                if (!empty($existing_options['exclude_uris']) && strpos($existing_options['exclude_uris'], '**') === false) {
+                    $this->plugin->options['exclude_uris'] = str_replace('*', '**', $existing_options['exclude_uris']);
+                }
+                if (!empty($existing_options['exclude_refs']) && strpos($existing_options['exclude_refs'], '**') === false) {
+                    $this->plugin->options['exclude_refs'] = str_replace('*', '**', $existing_options['exclude_refs']);
+                }
+                if (!empty($existing_options['exclude_agents']) && strpos($existing_options['exclude_agents'], '**') === false) {
+                    $this->plugin->options['exclude_agents'] = str_replace('*', '**', $existing_options['exclude_agents']);
+                }
+                if (!empty($existing_options['htmlc_css_exclusions']) && strpos($existing_options['htmlc_css_exclusions'], '**') === false) {
+                    $this->plugin->options['htmlc_css_exclusions'] = str_replace('*', '**', $existing_options['htmlc_css_exclusions']);
+                }
+                if (!empty($existing_options['htmlc_js_exclusions']) && strpos($existing_options['htmlc_js_exclusions'], '**') === false) {
+                    $this->plugin->options['htmlc_js_exclusions'] = str_replace('*', '**', $existing_options['htmlc_js_exclusions']);
+                }
+                if ($existing_options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
+                    // See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
+                    $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
+                }
+                if ($this->plugin->options !== $existing_options) {
+                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->activate(); // Reactivate plugin w/ new options.
+                }
+            }
         }
     }
 }

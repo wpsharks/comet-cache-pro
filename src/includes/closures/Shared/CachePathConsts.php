@@ -122,6 +122,15 @@ const CACHE_PATH_NO_EXT = 1024;
 const CACHE_PATH_ALLOW_WILDCARDS = 2048;
 
 /**
+ * Allow watered-down regex in the cache path.
+ *
+ * @since 151114 Improving regex syntax.
+ *
+ * @type int Part of a bitmask.
+ */
+const CACHE_PATH_ALLOW_WD_REGEX = 4096;
+
+/**
  * Default cache path regex suffix frag.
  *
  * @since 150422 Rewrite.

@@ -32,7 +32,7 @@ $self->wipeCache = function ($manually = false) use ($self) {
     @set_time_limit(1800); // @TODO Display a warning.
 
     if (is_dir($cache_dir = $self->cacheDir())) {
-        $regex = $self->buildCachePathRegex('', '.+');
+        $regex = $self->assembleCachePathRegex('', '.+');
         $counter += $self->wipeFilesFromCacheDir($regex);
     }
     /*[pro strip-from="lite"]*/
@@ -155,7 +155,7 @@ $self->wurgeCache = function ($manually = false) use ($self) {
     @set_time_limit(1800); // @TODO Display a warning.
 
     if (is_dir($cache_dir = $self->cacheDir())) {
-        $regex = $self->buildCachePathRegex('', '.+');
+        $regex = $self->assembleCachePathRegex('', '.+');
         $counter += $self->wurgeFilesFromCacheDir($regex);
     }
     /*[pro strip-from="lite"]*/

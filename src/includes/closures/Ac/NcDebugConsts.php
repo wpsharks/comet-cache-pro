@@ -167,6 +167,15 @@ const NC_DEBUG_NO_USER_TOKEN = 'nc_debug_no_user_token';
 const NC_DEBUG_GET_REQUEST_QUERIES = 'nc_debug_get_request_queries';
 
 /**
+ * No-cache because it's a preview.
+ *
+ * @since 151114 Adding support for preview detection.
+ *
+ * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
+ */
+const NC_DEBUG_PREVIEW = 'nc_debug_preview';
+
+/**
  * No-cache because the current request excluded by its URI.
  *
  * @since 140422 First documented version.

@@ -190,12 +190,14 @@ class Plugin extends AbsBaseAp
             'change_notifications_enable',
 
             'cache_clear_admin_bar_enable',
+            'cache_clear_admin_bar_options_enable',
             'cache_clear_admin_bar_roles_caps',
 
             'cache_clear_cdn_enable',
             'cache_clear_opcache_enable',
             'cache_clear_s2clean_enable',
             'cache_clear_eval_code',
+            'cache_clear_urls',
 
             'when_logged_in',
             'version_salt',
@@ -271,18 +273,20 @@ class Plugin extends AbsBaseAp
 
             'change_notifications_enable' => '1', // `0|1`.
 
-            'cache_clear_admin_bar_enable'     => '1', // `0|1`.
-            'cache_clear_admin_bar_roles_caps' => '', // Comma-delimited list of roles/caps.
+            'cache_clear_admin_bar_enable'         => '1', // `0|1`.
+            'cache_clear_admin_bar_options_enable' => '1', // `0|1|2`.
+            'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
-            'cache_clear_cdn_enable' => '0', // `0|1`.
+            'cache_clear_cdn_enable'     => '0', // `0|1`.
             'cache_clear_opcache_enable' => '1', // `0|1`.
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.
+            'cache_clear_urls'           => '', // Line-delimited list of URLs.
 
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
             'cache_clear_xml_sitemaps_enable'  => '1', // `0|1`.
-            'cache_clear_xml_sitemap_patterns' => '/sitemap*.xml',
+            'cache_clear_xml_sitemap_patterns' => '/sitemap**.xml',
             // Empty string or line-delimited patterns.
 
             'cache_clear_home_page_enable'  => '1', // `0|1`.
@@ -354,7 +358,7 @@ class Plugin extends AbsBaseAp
             // This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
             // Defaults to all extensions supported by the WP media library; i.e. `wp_get_mime_types()`.
 
-            'cdn_blacklisted_extensions' => 'eot,ttf,otf,woff', // Blacklisted extensions.
+            'cdn_blacklisted_extensions' => '', // Blacklisted extensions.
             // This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
 
             'cdn_whitelisted_uri_patterns' => '', // A line-delimited list of inclusion patterns.
@@ -403,7 +407,7 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
         /* -------------------------------------------------------------- */
 
-        if (!$this->enable_hooks) {
+        if (!$this->enable_hooks || strcasecmp(PHP_SAPI, 'cli') === 0) {
             return; // Stop here; setup without hooks.
         }
         /* -------------------------------------------------------------- */
@@ -487,6 +491,12 @@ class Plugin extends AbsBaseAp
         add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
         add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
         add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
+        if ($this->options['when_logged_in'] === '1' && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
+            show_admin_bar(false); // Prevent admin bar from being cached.
+        }
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/

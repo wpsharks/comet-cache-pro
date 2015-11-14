@@ -97,9 +97,7 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
         // @TODO Possibly consider search-related feeds in the future.
         //    See: <http://codex.wordpress.org/WordPress_Feeds#Categories_and_Tags>
     }
-    $variation_regex_frags = $utils->convertVariationsToHostCachePathRegexFrags($variations);
-
-    if (!$variation_regex_frags || !($variation_regex_frags = array_unique($variation_regex_frags))) {
+    if (!($variation_regex_frags = $utils->convertVariationsToHostCachePathRegexFrags($variations))) {
         return $counter; // Nothing to do here.
     }
     $in_sets_of = $self->applyWpFilters(GLOBAL_NS.'_autoClearXmlFeedsCache_in_sets_of', 10, get_defined_vars());

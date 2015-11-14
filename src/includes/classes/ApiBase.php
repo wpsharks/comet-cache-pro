@@ -88,6 +88,21 @@ class ApiBase
         return $GLOBALS[GLOBAL_NS]->autoClearPostCache($post_id);
     }
 
+    /**
+     * This clears the cache for a specific URL.
+     *
+     * @since 151114 Adding support for custom URLs.
+     *
+     * @param string $url Input URL to clear.
+     *
+     * @return int Total files cleared (if any).
+     */
+    public static function clearUrl($url)
+    {
+        $regex = $GLOBALS[GLOBAL_NS]->buildCachePathRegexFromWcUrl($url);
+        return $GLOBALS[GLOBAL_NS]->deleteFilesFromCacheDir($regex);
+    }
+
     /*[pro strip-from="lite"]*/
     /**
      * This erases the cache for a specific user ID.
