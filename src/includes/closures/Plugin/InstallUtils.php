@@ -10,13 +10,11 @@ namespace WebSharks\ZenCache\Pro;
  */
 $self->activate = function () use ($self) {
     $self->setup(); // Ensure setup is complete.
-
     if (!$self->options['welcomed']) {
-        $settings_url = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), network_admin_url('/admin.php')));
-        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) Please <a href="%2$s">enable page caching</a> and configure options.', SLUG_TD), esc_html(NAME), esc_attr($settings_url), array('push_to_top' => true));
+        $settings_url = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), network_admin_url('/admin.php'));
+        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) Please <a href="%2$s">enable page caching</a> and configure options.', SLUG_TD), esc_html(NAME), esc_attr($settings_url), array('push_to_top' => true)));
         $self->updateOptions(array('welcomed' => '1'));
     }
-
     if (!$self->options['enable']) {
         return; // Nothing to do.
     }
