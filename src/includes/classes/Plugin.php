@@ -268,6 +268,7 @@ class Plugin extends AbsBaseAp
             'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age'                                => '7 days', // `strtotime()` compatible.
             'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
+            'cache_cleanup_schedule' => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
 
             /* Related to cache clearing. */
 
@@ -519,9 +520,9 @@ class Plugin extends AbsBaseAp
         if (!is_multisite() || is_main_site()) { // Main site only.
             add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
-            if ((integer) $this->options['crons_setup'] < 1439005906 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__) {
+            if ((integer) $this->options['crons_setup'] < 1447330252 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']) {
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-                wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
+                wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.__NAMESPACE__.'_cleanup');
 
                 /*[pro strip-from="lite"]*/ // Auto-cache engine.
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
