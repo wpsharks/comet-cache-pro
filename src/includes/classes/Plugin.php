@@ -242,6 +242,7 @@ class Plugin extends AbsBaseAp
             'dir_stats_auto_refresh_max_resources',
 
             'pro_update_check',
+            'pro_update_check_stable',
             'latest_pro_version',
             'last_pro_update_check',
             'pro_update_username',
@@ -380,6 +381,7 @@ class Plugin extends AbsBaseAp
             /* Related to automatic pro updates. */
 
             'pro_update_check'      => '1', // `0|1`; enable?
+            'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
             'latest_pro_version'    => VERSION, // Latest version.
             'last_pro_update_check' => '0', // Timestamp.
 

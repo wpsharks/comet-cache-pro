@@ -670,6 +670,7 @@ class Actions extends AbsBase
         $product_api_input_vars = array(
             'product_api' => array(
                 'action'   => 'latest_pro_update',
+                'stable'   => $this->plugin->options['pro_update_check_stable'],
                 'username' => $args['username'],
                 'password' => $args['password'],
             ),
