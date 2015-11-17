@@ -721,6 +721,11 @@ class MenuPageOptions extends MenuPage
             echo '         <h3>'.__('Auto-Cache User-Agent String', SLUG_TD).'</h3>'."\n";
             echo '         <table style="width:100%;"><tr><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_user_agent]" value="'.esc_attr($this->plugin->options['auto_cache_user_agent']).'" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;">; '.esc_html(SLUG_TD.' '.VERSION).'</td></tr></table>'."\n";
             echo '         <p class="info" style="display:block;">'.__('This is how the Auto-Cache Engine identifies itself when connecting to URLs. See <a href="http://en.wikipedia.org/wiki/User_agent" target="_blank">User Agent</a> in the Wikipedia.', SLUG_TD).'</p>'."\n";
+            echo '         <hr />'."\n";
+            echo '         <h3>'.__('Cache Cleanup Schedule', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('When running the Auto-Cache engine, it creates a lot of cache files that could slow down your server especially if you have an extremely large site with a lower expiration time. To prevent it from slowing down your site, you could set the Cache Cleanup Schedule at a <code>hourly</code>(set by default) interval via <a href="https://codex.wordpress.org/Category:WP-Cron_Functions" target="_blank" style="text-decoration:none;"><em>WP Cron</em></a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_cleanup_schedule]" value="'.esc_attr($this->plugin->options['cache_cleanup_schedule']).'" /></p>'."\n";
+            echo '         <p class="info" style="display:block;">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with WordPress <a href="https://codex.wordpress.org/Function_Reference/wp_schedule_event" target="_blank" style="text-decoration:none;"><code>wp_schedule_event()</code></a> function. Examples: <code>every15m</code>, <code>hourly</code>, <code>twicedaily</code>, <code>daily</code>.', SLUG_TD).'</p>'."\n";  
             echo '      </div>'."\n";
             echo '   </div>'."\n";
 
