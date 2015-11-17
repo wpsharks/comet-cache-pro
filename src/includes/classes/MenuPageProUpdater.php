@@ -116,6 +116,27 @@ class MenuPageProUpdater extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
+        echo '<div class="plugin-menu-page-panel">'."\n";
+
+        echo '   <a href="#" class="plugin-menu-page-panel-heading open">'."\n";
+        echo '      <i class="#"></i> '.__('Update Beta Release', SLUG_TD)."\n";
+        echo '   </a>'."\n";
+
+        echo '   <div class="plugin-menu-page-panel-body clearfix open">'."\n";
+        echo '      <i class="si si-rss si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+        echo '      <h3>'.sprintf(__('%1$s™ Update Beta Release', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('When a new Beta Release Candidate of %1$s becomes available, you have the option to enable this during an upgrade. If you want to be on the cutting edge at all times, and are willing to accept the risk, you can set <code>pro_update_check_stable</code> to a value of <code>0</code>. Would you like this functionality enabled or disabled?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <hr />'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[proUpdate][check]" autocomplete="off">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['pro_update_check'], '1', false).'>'.sprintf(__('Yes, update to the latest Beta Release.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['pro_update_check'], '0', false).'>'.sprintf(__('No, do not update to the latest Beta Release.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+        echo '         </select></p>'."\n";
+        echo '   </div>'."\n";
+
+        echo '</div>'."\n";
+
+        /* ----------------------------------------------------------------------------------------- */
+
         echo '<div class="plugin-menu-page-save">'."\n";
         echo '   <button type="submit">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
         echo '</div>'."\n";
