@@ -191,7 +191,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  */
 $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url               = trim((string) $url);
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
     $cache_path_regex  = ''; // Initialize regex.
 
     if ($url) {
@@ -270,7 +270,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
  */
 $self->buildCachePathRegexFromWcUrl = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url               = trim((string) $url, '^$');
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
     $cache_path_regex  = ''; // Initialize regex.
 
     if ($url) { // After `^$` trimming above.
@@ -299,7 +299,7 @@ $self->buildCachePathRegexFromWcUrl = function ($url, $regex_suffix_frag = CACHE
  */
 $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $uris              = trim((string) $uris);
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
 
     $_self = $self; // Reference for the closure below.
     $flags = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
@@ -343,7 +343,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
  */
 $self->assembleCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $regex_frag        = (string) $regex_frag;
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
 
     return '/^'.$regex_frag.$regex_suffix_frag.'/i';
 };
