@@ -253,6 +253,7 @@ class Plugin extends AbsBaseAp
 
             'version'     => VERSION,
             'crons_setup' => '0', // `0` or timestamp.
+            'welcomed'    => '0', // `0|1` welcomed yet?
 
             /* Primary switch; enable? */
 
