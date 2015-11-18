@@ -522,13 +522,13 @@ class Plugin extends AbsBaseAp
 
             if ((integer) $this->options['crons_setup'] < 1447330252 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']) {
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-                wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.__NAMESPACE__.'_cleanup');
+                wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.GLOBAL_NS.'_cleanup');
 
                 /*[pro strip-from="lite"]*/ // Auto-cache engine.
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
                 wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
                 /*[/pro]*/
-                $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__));
+                $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']));
             }
             add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'cleanupCache'));
 
