@@ -2,6 +2,39 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+* Cache-path suffix frag (regex).
+*
+* @since 15xxxx Enhancing translation support.
+*
+* @param string $regex_suffix_frag Existing regex suffix frag?
+*
+* @return string Cache-path suffix frag (regex).
+*/
+$self->cachePathRegexSuffixFrag = function ($regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    if ($regex_suffix_frag === CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) {
+        return $self->cachePathRegexDefaultSuffixFrag();
+    }
+    return (string) $regex_suffix_frag;
+};
+
+/*
+* Default cache-path suffix frag (regex).
+*
+* @since 15xxxx Enhancing translation support.
+*
+* @return string Default cache-path suffix frag (regex).
+*/
+$self->cachePathRegexDefaultSuffixFrag = function () use ($self) {
+    if ($self->isPlugin() && !empty($GLOBALS['wp_rewrite'])){
+        $pagination_base          = $GLOBALS['wp_rewrite']->pagination_base;
+        $comments_pagination_base = $GLOBALS['wp_rewrite']->comments_pagination_base;
+        return '(?:\/index)?(?:\.|\/(?:'.preg_quote($pagination_base, '/').'\/[0-9]+|'.preg_quote($comments_pagination_base, '/').'\-[0-9]+)[.\/])';
+    } else {
+        return '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])';
+    }
+};
+
+/*
  * Converts a URL into a `cache/path` based on input `$flags`.
  *
  * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
