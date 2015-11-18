@@ -292,11 +292,15 @@ $self->addAdvancedCache = function () use ($self) {
               /*[/pro]*/
         )
     );
+    if ($self->options['exclude_uris_client_side_too']) {
+        $possible_advanced_cache_constant_key_values['exclude_client_side_uris'] .= "\n".$self->options['exclude_uris'];
+    }
     foreach ($possible_advanced_cache_constant_key_values as $_option => $_value) {
         $_value = (string) $_value; // Force string.
 
         switch ($_option) {
             case 'exclude_uris': // Converts to regex (caSe insensitive).
+            case 'exclude_client_side_uris': // Converts to regex (caSe insensitive).
             case 'exclude_refs': // Converts to regex (caSe insensitive).
             case 'exclude_agents': // Converts to regex (caSe insensitive).
 
