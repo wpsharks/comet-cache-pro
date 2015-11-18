@@ -489,6 +489,11 @@ class MenuPageOptions extends MenuPage
         echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age]" value="'.esc_attr($this->plugin->options['cache_max_age']).'" /></p>'."\n";
         echo '      <p class="info">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with PHP\'s <a href="http://php.net/manual/en/function.strtotime.php" target="_blank" style="text-decoration:none;"><code>strtotime()</code></a> function. Examples: <code>30 seconds</code>, <code>2 hours</code>, <code>7 days</code>, <code>6 months</code>, <code>1 year</code>.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s will never serve a cache file that is older than what you specify here (even if one exists in your cache directory; stale cache files are never used). In addition, a WP Cron job will automatically cleanup your cache directory (once daily); purging expired cache files periodically. This prevents a HUGE cache from building up over time, creating a potential storage issue.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '         <hr />'."\n";
+        echo '         <h3>'.__('Cache Cleanup Schedule', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('If you have an extremely large site with a lower expiration time, %1$s can be told to set a Cache Cleanup Schedule to prevent the cache files from slowing down your server via <a href="https://codex.wordpress.org/Category:WP-Cron_Functions" target="_blank" style="text-decoration:none;"><em>WP Cron</em></a> at a <code>hourly</code> <em>(set by default)</em> interval.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_cleanup_schedule]" value="'.esc_attr($this->plugin->options['cache_cleanup_schedule']).'" /></p>'."\n";
+        echo '         <p class="info" style="display:block;">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with WordPress <a href="https://codex.wordpress.org/Function_Reference/wp_schedule_event" target="_blank" style="text-decoration:none;"><code>wp_schedule_event()</code></a> function. Examples: <code>every15m</code>, <code>hourly</code>, <code>twicedaily</code>, <code>daily</code>.', SLUG_TD).'</p>'."\n";
         if (IS_PRO || $this->plugin->isProPreview()) {
             $_sys_getloadavg_unavailable = ($this->plugin->isProPreview() ? false : !$this->plugin->sysLoadAverages());
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
@@ -721,11 +726,6 @@ class MenuPageOptions extends MenuPage
             echo '         <h3>'.__('Auto-Cache User-Agent String', SLUG_TD).'</h3>'."\n";
             echo '         <table style="width:100%;"><tr><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_user_agent]" value="'.esc_attr($this->plugin->options['auto_cache_user_agent']).'" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;">; '.esc_html(SLUG_TD.' '.VERSION).'</td></tr></table>'."\n";
             echo '         <p class="info" style="display:block;">'.__('This is how the Auto-Cache Engine identifies itself when connecting to URLs. See <a href="http://en.wikipedia.org/wiki/User_agent" target="_blank">User Agent</a> in the Wikipedia.', SLUG_TD).'</p>'."\n";
-            echo '         <hr />'."\n";
-            echo '         <h3>'.__('Cache Cleanup Schedule', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('When running the Auto-Cache engine, it creates a lot of cache files that could slow down your server especially if you have an extremely large site with a lower expiration time. To prevent it from slowing down your site, you could set the Cache Cleanup Schedule at a <code>hourly</code>(set by default) interval via <a href="https://codex.wordpress.org/Category:WP-Cron_Functions" target="_blank" style="text-decoration:none;"><em>WP Cron</em></a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_cleanup_schedule]" value="'.esc_attr($this->plugin->options['cache_cleanup_schedule']).'" /></p>'."\n";
-            echo '         <p class="info" style="display:block;">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with WordPress <a href="https://codex.wordpress.org/Function_Reference/wp_schedule_event" target="_blank" style="text-decoration:none;"><code>wp_schedule_event()</code></a> function. Examples: <code>every15m</code>, <code>hourly</code>, <code>twicedaily</code>, <code>daily</code>.', SLUG_TD).'</p>'."\n";  
             echo '      </div>'."\n";
             echo '   </div>'."\n";
 
