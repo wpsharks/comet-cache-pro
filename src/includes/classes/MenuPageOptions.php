@@ -489,11 +489,18 @@ class MenuPageOptions extends MenuPage
         echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age]" value="'.esc_attr($this->plugin->options['cache_max_age']).'" /></p>'."\n";
         echo '      <p class="info">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with PHP\'s <a href="http://php.net/manual/en/function.strtotime.php" target="_blank" style="text-decoration:none;"><code>strtotime()</code></a> function. Examples: <code>30 seconds</code>, <code>2 hours</code>, <code>7 days</code>, <code>6 months</code>, <code>1 year</code>.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s will never serve a cache file that is older than what you specify here (even if one exists in your cache directory; stale cache files are never used). In addition, a WP Cron job will automatically cleanup your cache directory (once per hour); purging expired cache files periodically. This prevents a HUGE cache from building up over time, creating a potential storage issue.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '         <hr />'."\n";
-        echo '         <h3>'.__('Cache Cleanup Schedule', SLUG_TD).'</h3>'."\n";
+
+        echo '      <hr />'."\n";
+
+        echo '      <h3>'.__('Cache Cleanup Schedule', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.sprintf(__('If you have an extremely large site and you lower the default Cache Expiration Time of <code>7 days</code>, expired cache files can build up more quickly. By default, %1$s cleans up expired cache files via <a href="http://zencache.com/r/wp_cron-functions/" target="_blank">WP Cron</a> at an <code>hourly</code> interval, but you can tell %1$s to use a custom Cache Cleanup Schedule below to run the cleanup process more or less frequently, depending on your specific needs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_cleanup_schedule]" value="'.esc_attr($this->plugin->options['cache_cleanup_schedule']).'" /></p>'."\n";
-        echo '         <p class="info" style="display:block;">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with the WordPress core function: <a href="http://zencache.com/r/wp_schedule_event-function/" target="_blank" style="text-decoration:none;"><code>wp_schedule_event()</code></a>. Examples: <code>every15m</code>, <code>hourly</code>, <code>twicedaily</code>, <code>daily</code>.', SLUG_TD).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_cleanup_schedule]">'."\n";
+        foreach (wp_get_schedules() as $_wp_cron_schedule_key => $_wp_cron_schedule) {
+            echo '       <option value="'.esc_attr($_wp_cron_schedule_key).'"'.selected($this->plugin->options['cache_cleanup_schedule'], $_wp_cron_schedule_key, false).'>'.esc_html($_wp_cron_schedule['display']).'</option>'."\n";
+        } // This builds the list of options using WP_Cron schedules configured for this WP installation.
+        unset($_wp_cron_schedule_key, $_wp_cron_schedule);
+        echo '      </select></p>'."\n";
+
         if (IS_PRO || $this->plugin->isProPreview()) {
             $_sys_getloadavg_unavailable = ($this->plugin->isProPreview() ? false : !$this->plugin->sysLoadAverages());
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
