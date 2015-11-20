@@ -131,7 +131,7 @@ class MenuPageProUpdater extends MenuPage
         echo '            <option value="1"'.selected($this->plugin->options['pro_update_check_stable'], '1', false).'>'.sprintf(__('No, do not check for Release Candidates; I only want public releases.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
         echo '            <option value="0"'.selected($this->plugin->options['pro_update_check_stable'], '0', false).'>'.sprintf(__('Yes, check for Release Candidates; I want to help with testing.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
         echo '         </select></p>'."\n";
-        echo '         <p class="info" style="display:block;">'.__('<strong>How do I know if I\'m running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., ZenCache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href="http://zencache.com/r/zencache-beta-testers-list/" target="_blank" style="text-decoration:none;">beta testers mailing list</a>.', SLUG_TD).'</p>'."\n";
+        echo '         <p class="info" style="display:block;">'.__('<strong>How do I know if I\'m running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., ZenCache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href="http://zencache.com/r/zencache-beta-testers-list/" target="_blank">beta testers mailing list</a>.', SLUG_TD).'</p>'."\n";
         echo '   </div>'."\n";
 
         echo '</div>'."\n";
