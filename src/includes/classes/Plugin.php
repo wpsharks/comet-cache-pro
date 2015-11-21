@@ -228,6 +228,7 @@ class Plugin extends AbsBaseAp
             'cdn_invalidation_var',
             'cdn_invalidation_counter',
             'cdn_over_ssl',
+            'cdn_when_logged_in',
             'cdn_whitelisted_extensions',
             'cdn_blacklisted_extensions',
             'cdn_whitelisted_uri_patterns',
@@ -355,6 +356,7 @@ class Plugin extends AbsBaseAp
             'cdn_invalidation_counter' => '1', // Current version counter.
 
             'cdn_over_ssl' => '0', // `0|1`; enable SSL compat?
+            'cdn_when_logged_in' => '0', // `0|1`; enable when logged in?
 
             'cdn_whitelisted_extensions' => '', // Whitelisted extensions.
             // This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
