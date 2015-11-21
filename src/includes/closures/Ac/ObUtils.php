@@ -147,6 +147,13 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
+    if(preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
+        if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN && $self->isLikeUserLoggedIn()) {
+            return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
+        } else {
+            return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_PAGE_CONTAINS_NONCE);
+        }
+    }
     if (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_GET_REQUEST_QUERIES);
     }
