@@ -644,6 +644,7 @@ class MenuPageOptions extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
+
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
@@ -654,6 +655,12 @@ class MenuPageOptions extends MenuPage
         echo '      <h3>'.__('Don\'t Cache These Special URI Exclusion Patterns?', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.__('Sometimes there are certain cases where a particular file, or a particular group of files, should never be cached. This is where you will enter those if you need to (one per line). Searches are performed against the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank" style="text-decoration:none;"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don\'t put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD).'</p>'."\n";
         echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_uris]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_uris']).'</textarea></p>'."\n";
+        echo '      <h3>'.__('Excluding URIs from Client-Side Caching', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.__('There may also be times when you would like to exclude certain file(s) from the client-side cache as well. You may want to exclude your forms that may retain information in the fields even when reloading the page due to client-side caching.', SLUG_TD).'</p>'."\n";
+        echo '      <h3>'.__('Don\'t Cache These URLs from Client-Side Caching too?', SLUG_TD).'</h3>'."\n";
+        echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_uris_client_side_too]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_uris']).'</textarea></p>'."\n";
+        echo '      <h3>'.__('Don\'t Cache These Special URI Exclusion Patterns from Client-Side Caching Only?', SLUG_TD).'</h3>'."\n";
+        echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_client_side_uris]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_uris']).'</textarea></p>'."\n";
         echo '      <p class="info">'.__('<strong>Tip:</strong> let\'s use this example URL: <code>http://www.example.com/post/example-post-123</code>. To exclude this URL, you would put this line into the field above: <code>/post/example-post-123</code>. Or, you could also just put in a small fragment, like: <code>example</code> or <code>example-*-123</code> and that would exclude any URI containing that word fragment.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g., one exclusion pattern per line.', SLUG_TD).'</p>'."\n";
         echo '   </div>'."\n";
