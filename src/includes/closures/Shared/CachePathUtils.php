@@ -221,7 +221,7 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
  */
 $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url                           = trim((string) $url);
-    $regex_suffix_frag             = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
     $abs_relative_cache_path_regex = ''; // Initialize regex.
     $is_url_domain_mapped          = false; // Initialize.
 
