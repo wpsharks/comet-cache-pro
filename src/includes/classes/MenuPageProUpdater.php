@@ -49,10 +49,8 @@ class MenuPageProUpdater extends MenuPage
             } else {
                 echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
-
             echo '</div>'."\n";
         }
-
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/pro-updater.png').'" alt="'.esc_attr(__('Pro Plugin Updater', SLUG_TD)).'" />'."\n";
 
         echo '</div>'."\n";
