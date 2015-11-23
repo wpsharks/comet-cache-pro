@@ -269,7 +269,7 @@ class Plugin extends AbsBaseAp
             'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age'                                => '7 days', // `strtotime()` compatible.
             'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
-            'cache_cleanup_schedule' => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
+            'cache_cleanup_schedule'                       => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
 
             /* Related to cache clearing. */
 
@@ -493,6 +493,12 @@ class Plugin extends AbsBaseAp
         add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
         add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
         add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
+        if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
+            add_filter('akismet_comment_nonce', '__return_false'); // See: <http://jas.xyz/1R23f5c>
+        }
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
