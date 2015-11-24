@@ -90,7 +90,7 @@ $self->removeWpHtaccess = function () use ($self) {
     if (stripos($htaccess_file_contents, NAME) === false) {
         return true; // Template blocks are already gone.
     }
-    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\b.*?#\s*END\s+'.preg_quote(NAME, '/').'\s*/is';
+    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+.*?WmVuQ2FjaGU=.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+.*?WmVuQ2FjaGU=.*\s*/is';
     $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
 
     if (stripos($htaccess_file_contents, NAME) !== false) {
