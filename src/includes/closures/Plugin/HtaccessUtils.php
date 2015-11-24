@@ -31,7 +31,7 @@ $self->addWpHtaccess = function () use ($self) {
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
-    $template_blocks = '# BEGIN '.NAME."\n"; // Initialize.
+    $template_blocks = '# BEGIN '.NAME.' (Key required for '.NAME.' plugin to recognize this codeblock: WmVuQ2FjaGU='."\n"; // Initialize.
 
     if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
         foreach (scandir($templates_dir) as $_template_file) {
@@ -47,7 +47,7 @@ $self->addWpHtaccess = function () use ($self) {
         }
         unset($_template_file); // Housekeeping.
     }
-    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME;
+    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' (Key required for '.NAME.' plugin to recognize this codeblock: WmVuQ2FjaGU=';
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
 
     if (stripos($htaccess_file_contents, NAME) === false) {
