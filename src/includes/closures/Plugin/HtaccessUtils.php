@@ -47,7 +47,7 @@ $self->addWpHtaccess = function () use ($self) {
         }
         unset($_template_file); // Housekeeping.
     }
-    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)';
+    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' WmVuQ2FjaGU';
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
 
     if (stripos($htaccess_file_contents, NAME) === false) {
