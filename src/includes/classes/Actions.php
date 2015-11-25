@@ -660,6 +660,9 @@ class Actions extends AbsBase
         if (!isset($args['check'])) {
             $args['check'] = $this->plugin->options['pro_update_check'];
         }
+        if (!isset($args['check_stable'])) {
+            $args['check_stable'] = $this->plugin->options['pro_update_check_stable'];
+        }
         if (empty($args['username'])) {
             $args['username'] = $this->plugin->options['pro_update_username'];
         }
@@ -670,6 +673,7 @@ class Actions extends AbsBase
         $product_api_input_vars = array(
             'product_api' => array(
                 'action'   => 'latest_pro_update',
+                'stable'   => $args['check_stable'],
                 'username' => $args['username'],
                 'password' => $args['password'],
             ),
@@ -690,11 +694,12 @@ class Actions extends AbsBase
             wp_redirect($redirect_to).exit();
         }
         $this->plugin->updateOptions(array(
-            'last_pro_update_check' => time(),
-            'pro_update_check'      => $args['check'],
-            'pro_update_username'   => $args['username'],
-            'pro_update_password'   => $args['password'],
-            'latest_pro_version'    => $product_api_response->pro_version,
+            'last_pro_update_check'   => time(),
+            'pro_update_check'        => $args['check'],
+            'pro_update_check_stable' => $args['check_stable'],
+            'pro_update_username'     => $args['username'],
+            'pro_update_password'     => $args['password'],
+            'latest_pro_version'      => $product_api_response->pro_version,
         ));
         $this->plugin->dismissMainNotice('new-pro-version-available');
 
