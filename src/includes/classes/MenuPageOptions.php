@@ -658,9 +658,13 @@ class MenuPageOptions extends MenuPage
         echo '      <h3>'.__('Excluding URIs from Client-Side Caching', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.__('There may also be times when you would like to exclude certain file(s) from the client-side cache as well. You may want to exclude your forms that may retain information in the fields even when reloading the page due to client-side caching.', SLUG_TD).'</p>'."\n";
         echo '      <h3>'.__('Don\'t Cache These URLs from Client-Side Caching too?', SLUG_TD).'</h3>'."\n";
-        echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_uris_client_side_too]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_uris']).'</textarea></p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_uris_client_side_too]">'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['exclude_uris_client_side_too'], '0', false).'>'.__('Yes, also exclude these URLs from Client-Side Caching.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['exclude_uris_client_side_too'], '1', false).'>'.__('No, please include these URLs from Client-Side Caching.', SLUG_TD).'</option>'."\n";
+        echo '         </select></p>'."\n";
         echo '      <h3>'.__('Don\'t Cache These Special URI Exclusion Patterns from Client-Side Caching Only?', SLUG_TD).'</h3>'."\n";
         echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_client_side_uris]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_uris']).'</textarea></p>'."\n";
+
         echo '      <p class="info">'.__('<strong>Tip:</strong> let\'s use this example URL: <code>http://www.example.com/post/example-post-123</code>. To exclude this URL, you would put this line into the field above: <code>/post/example-post-123</code>. Or, you could also just put in a small fragment, like: <code>example</code> or <code>example-*-123</code> and that would exclude any URI containing that word fragment.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g., one exclusion pattern per line.', SLUG_TD).'</p>'."\n";
         echo '   </div>'."\n";
