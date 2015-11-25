@@ -46,6 +46,7 @@ class VsUpgrades extends AbsBase
         $this->fromQuickCache();
         $this->fromLte150807();
         $this->fromLte151107();
+        $this->fromLte151114();
     }
 
     /**
@@ -309,6 +310,59 @@ class VsUpgrades extends AbsBase
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
+            }
+        }
+    }
+
+    /**
+     * Before we changed the htaccess comment blocks to contain a unique identifier.
+     *
+     * @since 15xxxx Improving `.htaccess` tweaks.
+     */
+    protected function fromLte151114()
+    {
+        if (version_compare($this->prev_version, '151114', '<=')) {
+            global $is_apache;
+
+            if (!$is_apache) {
+                return false; // Not running the Apache web server.
+            }
+            if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
+                return true; // File does not exist.
+            }
+            if (!is_readable($htaccess_file)) {
+                return false; // Not possible.
+            }
+            if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
+                return false; // Failure; could not read file.
+            }
+            if (stripos($htaccess_file_contents, 'ZenCache') === false) {
+                return true; // Template blocks are already gone.
+            }
+            $v151114_htaccess_template_blocks = '# BEGIN ZenCache
+<IfModule headers_module>
+  <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+# END ZenCache
+';
+            $v151114_htaccess_template_blocks_disabled = '# BEGIN ZenCache
+# END ZenCache
+';
+            $regex                  = '/'.preg_quote($v151114_htaccess_template_blocks, '/').'/';
+            $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
+            $regex                  = '/'.preg_quote($v151114_htaccess_template_blocks_disabled, '/').'/';
+            $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
+
+            if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
+                return false; // We may NOT edit any files.
+            }
+            if (!is_writable($htaccess_file)) {
+                return false; // Not possible.
+            }
+            if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+                return false; // Failure; could not write changes.
             }
         }
     }
