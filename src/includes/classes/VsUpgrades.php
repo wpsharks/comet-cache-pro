@@ -325,44 +325,32 @@ class VsUpgrades extends AbsBase
             global $is_apache;
 
             if (!$is_apache) {
-                return false; // Not running the Apache web server.
+                return; // Not running the Apache web server.
             }
             if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
-                return true; // File does not exist.
+                return; // File does not exist.
             }
             if (!is_readable($htaccess_file)) {
-                return false; // Not possible.
+                return; // Not possible.
             }
             if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
-                return false; // Failure; could not read file.
+                return; // Failure; could not read file.
             }
             if (stripos($htaccess_file_contents, 'ZenCache') === false) {
-                return true; // Template blocks are already gone.
+                return; // Template blocks are already gone.
             }
-            $v151114_htaccess_template_blocks = '# BEGIN ZenCache
-<IfModule headers_module>
-  <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js)$">
-    Header set Access-Control-Allow-Origin "*"
-  </FilesMatch>
-</IfModule>
-# END ZenCache
-';
-            $v151114_htaccess_template_blocks_disabled = '# BEGIN ZenCache
-# END ZenCache
-';
-            $regex                  = '/'.preg_quote($v151114_htaccess_template_blocks, '/').'/';
-            $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
-            $regex                  = '/'.preg_quote($v151114_htaccess_template_blocks_disabled, '/').'/';
-            $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
-
+            if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
+                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess_file_contents);
+                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess_file_contents);
+            }
             if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
-                return false; // We may NOT edit any files.
+                return; // We may NOT edit any files.
             }
             if (!is_writable($htaccess_file)) {
-                return false; // Not possible.
+                return; // Not possible.
             }
             if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
-                return false; // Failure; could not write changes.
+                return; // Failure; could not write changes.
             }
         }
     }
