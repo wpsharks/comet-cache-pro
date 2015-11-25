@@ -31,8 +31,7 @@ $self->addWpHtaccess = function () use ($self) {
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
-    $template_block_marker = trim(base64_encode(NAME), '=');
-    $template_blocks = '# BEGIN '.NAME.' '.$template_block_marker.' (the '.$template_block_marker.' marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
+    $template_blocks = '# BEGIN '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
 
     if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
         foreach (scandir($templates_dir) as $_template_file) {
@@ -48,7 +47,7 @@ $self->addWpHtaccess = function () use ($self) {
         }
         unset($_template_file); // Housekeeping.
     }
-    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' '.$template_block_marker.' (the '.$template_block_marker.' marker is required for '.NAME.'; do not remove)';
+    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)';
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
 
     if (stripos($htaccess_file_contents, NAME) === false) {
@@ -91,8 +90,7 @@ $self->removeWpHtaccess = function () use ($self) {
     if (stripos($htaccess_file_contents, NAME) === false) {
         return true; // Template blocks are already gone.
     }
-    $template_block_marker  = trim(base64_encode(NAME), '=');
-    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.preg_quote($template_block_marker, '/').'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.preg_quote($template_block_marker, '/').'\s*/is';
+    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+WmVuQ2FjaGU.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+WmVuQ2FjaGU\s*/is';
     $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
 
     if (stripos($htaccess_file_contents, NAME) !== false) {
