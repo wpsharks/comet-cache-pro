@@ -573,6 +573,13 @@ class MenuPageOptions extends MenuPage
             }
             echo '      <p class="info">'.__('<strong>Note:</strong> For most sites, the majority of their traffic (if not all of their traffic) comes from visitors who are not logged in, so disabling the cache for logged-in users is NOT ordinarily a performance issue. When a user IS logged-in, disabling the cache is considered ideal, because a logged-in user has a session open with your site; and the content they view should remain very dynamic in this scenario.', SLUG_TD).'</p>'."\n";
             echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> This setting includes some users who AREN\'T actually logged into the system, but who HAVE authored comments recently. %1$s includes comment authors as part of it\'s logged-in user check. This way comment authors will be able to see updates to the comment thread immediately; and, so that any dynamically-generated messages displayed by your theme will work as intended. In short, %1$s thinks of a comment author as a logged-in user, even though technically they are not. ~ Users who gain access to password-protected Posts/Pages are also included.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Static CDN Filters Enabled for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. When a user is logged-in, most sites will not want Static CDN Filters to be applied and static resource URLs to be rewritten. This section describes how Static CDN Filters for logged-in users is disabled by default, but that can be changed to allow Static CDN Filters to apply to logged-In users as well.', SLUG_TD).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_when_logged_in]">'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['cdn_when_logged_in'], '0', false).'>'.__('No, disable Static CDN Filters when a user is logged-in (default option).', SLUG_TD).'</option>'."\n";
+            echo '            <option value="postload"'.selected($this->plugin->options['cdn_when_logged_in'], 'postload', false).'>'.__('Yes, allow Static CDN Filters to be applied to logged-in users.', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";
