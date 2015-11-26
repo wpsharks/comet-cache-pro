@@ -392,10 +392,10 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $counter = $this->plugin->wipeExpiredTransients(true, false);
+        $counter = (int)($this->plugin->wipeExpiredTransients(true, false) / 2); // Divide in half for Dashboard message
 
         $response = sprintf(__('<p>Expired transients wiped successfully.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>Wiped <code>%1$s</code> expired rows from the database.</p>', SLUG_TD), esc_html($counter));
+        $response .= sprintf(__('<p>Wiped <code>%1$s</code> expired transients.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
@@ -417,10 +417,10 @@ class Actions extends AbsBase
         if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
             return; // Unauthenticated POST data.
         }
-        $counter = $this->plugin->clearExpiredTransients(true, false);
+        $counter = (int)($this->plugin->clearExpiredTransients(true, false) / 2); // Divide in half for Dashboard message
 
         $response = sprintf(__('<p>Expired transients cleared successfully.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>Cleared <code>%1$s</code> expired rows from the database.</p>', SLUG_TD), esc_html($counter));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> expired transients for this site.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
