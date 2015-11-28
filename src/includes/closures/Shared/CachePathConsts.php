@@ -124,7 +124,7 @@ const CACHE_PATH_ALLOW_WILDCARDS = 2048;
 /**
  * Allow watered-down regex in the cache path.
  *
- * @since 15xxxx Improving regex syntax.
+ * @since 151114 Improving regex syntax.
  *
  * @type int Part of a bitmask.
  */
@@ -137,4 +137,4 @@ const CACHE_PATH_ALLOW_WD_REGEX = 4096;
  *
  * @type string Default regex suffix frag used in cache path patterns.
  */
-const CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG = '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])';
+const CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG = null;

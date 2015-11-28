@@ -2,6 +2,39 @@
 namespace WebSharks\ZenCache\Pro;
 
 /*
+* Cache-path suffix frag (regex).
+*
+* @since 15xxxx Enhancing translation support.
+*
+* @param string $regex_suffix_frag Existing regex suffix frag?
+*
+* @return string Cache-path suffix frag (regex).
+*/
+$self->cachePathRegexSuffixFrag = function ($regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
+    if ($regex_suffix_frag === CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) {
+        return $self->cachePathRegexDefaultSuffixFrag();
+    }
+    return (string) $regex_suffix_frag;
+};
+
+/*
+* Default cache-path suffix frag (regex).
+*
+* @since 15xxxx Enhancing translation support.
+*
+* @return string Default cache-path suffix frag (regex).
+*/
+$self->cachePathRegexDefaultSuffixFrag = function () use ($self) {
+    if ($self->isPlugin() && !empty($GLOBALS['wp_rewrite'])){
+        $pagination_base          = $GLOBALS['wp_rewrite']->pagination_base;
+        $comments_pagination_base = $GLOBALS['wp_rewrite']->comments_pagination_base;
+        return '(?:\/index)?(?:\.|\/(?:'.preg_quote($pagination_base, '/').'\/[0-9]+|'.preg_quote($comments_pagination_base, '/').'\-[0-9]+)[.\/])';
+    } else {
+        return '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])';
+    }
+};
+
+/*
  * Converts a URL into a `cache/path` based on input `$flags`.
  *
  * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
@@ -143,7 +176,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 15xxxx Updated to support an arbitrary URL instead of a regex frag.
+ * @since 151114 Updated to support an arbitrary URL instead of a regex frag.
  *
  * @param string $url The input URL to convert. This CAN be left empty when necessary.
  *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -158,7 +191,7 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
  */
 $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url               = trim((string) $url);
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
     $cache_path_regex  = ''; // Initialize regex.
 
     if ($url) {
@@ -188,7 +221,7 @@ $self->buildCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REG
  */
 $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url                           = trim((string) $url);
-    $regex_suffix_frag             = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
     $abs_relative_cache_path_regex = ''; // Initialize regex.
     $is_url_domain_mapped          = false; // Initialize.
 
@@ -219,7 +252,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 15xxxx Improving watered-down regex syntax.
+ * @since 151114 Improving watered-down regex syntax.
  *
  * @param string $url The input URL to convert. This CAN be left empty when necessary.
  *  This may also contain watered-down regex; i.e., `*^$` characters are OK here.
@@ -237,7 +270,7 @@ $self->buildHostCachePathRegex = function ($url, $regex_suffix_frag = CACHE_PATH
  */
 $self->buildCachePathRegexFromWcUrl = function ($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $url               = trim((string) $url, '^$');
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
     $cache_path_regex  = ''; // Initialize regex.
 
     if ($url) { // After `^$` trimming above.
@@ -266,7 +299,7 @@ $self->buildCachePathRegexFromWcUrl = function ($url, $regex_suffix_frag = CACHE
  */
 $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $uris              = trim((string) $uris);
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
 
     $_self = $self; // Reference for the closure below.
     $flags = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
@@ -295,7 +328,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
 /*
  * Regex pattern for a call to `deleteFilesFromCacheDir()`.
  *
- * @since 15xxxx Moving this low-level routine into a method of a different name.
+ * @since 151114 Moving this low-level routine into a method of a different name.
  *
  * @param string $regex_frag A regex fragment. This CAN be left empty when necessary.
  *  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
@@ -310,7 +343,7 @@ $self->buildHostCachePathRegexFragsFromWcUris = function ($uris, $regex_suffix_f
  */
 $self->assembleCachePathRegex = function ($regex_frag, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) use ($self) {
     $regex_frag        = (string) $regex_frag;
-    $regex_suffix_frag = (string) $regex_suffix_frag;
+    $regex_suffix_frag = $self->cachePathRegexSuffixFrag($regex_suffix_frag);
 
     return '/^'.$regex_frag.$regex_suffix_frag.'/i';
 };

@@ -60,7 +60,7 @@ $self->basePathTo = function ($rel_dir_file) use ($self) {
  *
  * Copied verbatim from get_home_path() in wp-admin/includes/file.php
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return string Full filesystem path to the root of the WordPress installation
  */

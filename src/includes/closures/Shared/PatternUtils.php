@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Convert line-delimited patterns to a regex.
  *
- * @since 15xxxx Enhancing exclusion pattern support.
+ * @since 151114 Enhancing exclusion pattern support.
  *
  * @param string $patterns Line-delimited list of patterns.
  *
@@ -23,7 +23,7 @@ $self->lineDelimitedPatternsToRegex = function ($patterns) use ($self) {
 /*
  * Convert watered-down regex to actual regex.
  *
- * @since 15xxxx Enhancing exclusion pattern support.
+ * @since 151114 Enhancing exclusion pattern support.
  *
  * @param string $string Input watered-down regex to convert.
  *

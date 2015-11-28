@@ -45,7 +45,8 @@ class VsUpgrades extends AbsBase
         $this->fromLt141009();
         $this->fromQuickCache();
         $this->fromLte150807();
-        $this->fromLte151004();
+        $this->fromLte151107();
+        $this->fromLte151114();
     }
 
     /**
@@ -277,25 +278,28 @@ class VsUpgrades extends AbsBase
      * Before we changed the CDN Blacklisted Extensions and implemented htaccess tweaks to fix CORS errors.
      *  Also, before we changed the watered-down regex syntax for exclusion patterns.
      *
-     * @since 15xxxx Adding `.htaccess` tweaks.
+     * @since 151114 Adding `.htaccess` tweaks.
      */
-    protected function fromLte151004()
+    protected function fromLte151107()
     {
-        if (version_compare($this->prev_version, '151004', '<=')) {
+        if (version_compare($this->prev_version, '151107', '<=')) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
-                if (!empty($existing_options['exclude_uris'])) {
+                if (!empty($existing_options['cache_clear_xml_sitemap_patterns']) && strpos($existing_options['cache_clear_xml_sitemap_patterns'], '**') === false) {
+                    $this->plugin->options['cache_clear_xml_sitemap_patterns'] = str_replace('*', '**', $existing_options['cache_clear_xml_sitemap_patterns']);
+                }
+                if (!empty($existing_options['exclude_uris']) && strpos($existing_options['exclude_uris'], '**') === false) {
                     $this->plugin->options['exclude_uris'] = str_replace('*', '**', $existing_options['exclude_uris']);
                 }
-                if (!empty($existing_options['exclude_refs'])) {
+                if (!empty($existing_options['exclude_refs']) && strpos($existing_options['exclude_refs'], '**') === false) {
                     $this->plugin->options['exclude_refs'] = str_replace('*', '**', $existing_options['exclude_refs']);
                 }
-                if (!empty($existing_options['exclude_agents'])) {
+                if (!empty($existing_options['exclude_agents']) && strpos($existing_options['exclude_agents'], '**') === false) {
                     $this->plugin->options['exclude_agents'] = str_replace('*', '**', $existing_options['exclude_agents']);
                 }
-                if (!empty($existing_options['htmlc_css_exclusions'])) {
+                if (!empty($existing_options['htmlc_css_exclusions']) && strpos($existing_options['htmlc_css_exclusions'], '**') === false) {
                     $this->plugin->options['htmlc_css_exclusions'] = str_replace('*', '**', $existing_options['htmlc_css_exclusions']);
                 }
-                if (!empty($existing_options['htmlc_js_exclusions'])) {
+                if (!empty($existing_options['htmlc_js_exclusions']) && strpos($existing_options['htmlc_js_exclusions'], '**') === false) {
                     $this->plugin->options['htmlc_js_exclusions'] = str_replace('*', '**', $existing_options['htmlc_js_exclusions']);
                 }
                 if ($existing_options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
@@ -306,6 +310,47 @@ class VsUpgrades extends AbsBase
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
+            }
+        }
+    }
+
+    /**
+     * Before we changed the htaccess comment blocks to contain a unique identifier.
+     *
+     * @since 15xxxx Improving `.htaccess` tweaks.
+     */
+    protected function fromLte151114()
+    {
+        if (version_compare($this->prev_version, '151114', '<=')) {
+            global $is_apache;
+
+            if (!$is_apache) {
+                return; // Not running the Apache web server.
+            }
+            if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
+                return; // File does not exist.
+            }
+            if (!is_readable($htaccess_file)) {
+                return; // Not possible.
+            }
+            if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
+                return; // Failure; could not read file.
+            }
+            if (stripos($htaccess_file_contents, 'ZenCache') === false) {
+                return; // Template blocks are already gone.
+            }
+            if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
+                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess_file_contents);
+                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess_file_contents);
+            }
+            if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
+                return; // We may NOT edit any files.
+            }
+            if (!is_writable($htaccess_file)) {
+                return; // Not possible.
+            }
+            if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+                return; // Failure; could not write changes.
             }
         }
     }
