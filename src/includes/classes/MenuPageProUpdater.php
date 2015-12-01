@@ -116,6 +116,28 @@ class MenuPageProUpdater extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
+        echo '<div class="plugin-menu-page-panel">'."\n";
+
+        echo '   <a href="#" class="plugin-menu-page-panel-heading open">'."\n";
+        echo '      <i class="si si-flask"></i> '.__('Beta Testers', SLUG_TD)."\n";
+        echo '   </a>'."\n";
+
+        echo '   <div class="plugin-menu-page-panel-body clearfix open">'."\n";
+        echo '      <i class="si si-rss si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+        echo '      <h3>'.sprintf(__('%1$s™ Beta Testers', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn\'t mean you\'ll want to do the same. :-) Please report any issues with Release Candidates on <a href="https://github.com/websharks/zencache/issues/" target="_blank">GitHub</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <hr />'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[proUpdate][check_stable]" autocomplete="off">'."\n";
+        echo '            <option value="1"'.selected($this->plugin->options['pro_update_check_stable'], '1', false).'>'.sprintf(__('No, do not check for Release Candidates; I only want public releases.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+        echo '            <option value="0"'.selected($this->plugin->options['pro_update_check_stable'], '0', false).'>'.sprintf(__('Yes, check for Release Candidates; I want to help with testing.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+        echo '         </select></p>'."\n";
+        echo '         <p class="info" style="display:block;">'.__('<strong>How do I know if I\'m running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., ZenCache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href="http://zencache.com/r/zencache-beta-testers-list/" target="_blank">beta testers mailing list</a>.', SLUG_TD).'</p>'."\n";
+        echo '   </div>'."\n";
+
+        echo '</div>'."\n";
+
+        /* ----------------------------------------------------------------------------------------- */
+
         echo '<div class="plugin-menu-page-save">'."\n";
         echo '   <button type="submit">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
         echo '</div>'."\n";

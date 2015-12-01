@@ -111,25 +111,28 @@ $self->isLikeUserLoggedIn = function () use ($self) {
         return $is; // Already cached this.
     }
     if (defined('SID') && SID) {
-        return ($is = true);
+        return ($is = true); // Session ID.
     }
-    $logged_in_cookies[] = 'comment_author_'; // Comment (and/or reply) authors.
-    $logged_in_cookies[] = 'wp-postpass_'; // Password access to protected posts.
-    //$logged_in_cookies[] = defined('AUTH_COOKIE') ? (string) AUTH_COOKIE : 'wordpress_';
-    //$logged_in_cookies[] = defined('SECURE_AUTH_COOKIE') ? (string) SECURE_AUTH_COOKIE : 'wordpress_sec_';
-    $logged_in_cookies[] = defined('LOGGED_IN_COOKIE') ? (string) LOGGED_IN_COOKIE : 'wordpress_logged_in_';
-    $test_cookie         = defined('TEST_COOKIE') ? (string) TEST_COOKIE : 'wordpress_test_cookie';
+    if (empty($_COOKIE)) {
+        return ($is = false); // No cookies.
+    }
+    $regex_logged_in_cookies = '/^'; // Initialize.
 
-    $regex_logged_in_cookies = '/^(?:'.implode('|', array_map(function ($logged_in_cookie) {
-            return preg_quote($logged_in_cookie, '/');
-    }, $logged_in_cookies)).')/';
+    if (defined('LOGGED_IN_COOKIE') && LOGGED_IN_COOKIE) {
+        $regex_logged_in_cookies .= preg_quote(LOGGED_IN_COOKIE, '/');
+    } else { // Use the default hard-coded cookie prefix.
+        $regex_logged_in_cookies .= 'wordpress_logged_in_';
+    }
+    $regex_logged_in_cookies .= '|comment_author_';
+    $regex_logged_in_cookies .= '|wp[_\-]postpass_';
+
+    $regex_logged_in_cookies .= '/'; // Close regex.
 
     foreach ($_COOKIE as $_key => $_value) {
-        if ($_key !== $test_cookie && $_value && preg_match($regex_logged_in_cookies, $_key)) {
-            return ($is = true);
+        if ($_value && preg_match($regex_logged_in_cookies, $_key)) {
+            return ($is = true); // Like a logged-in user.
         }
-    }
-    unset($_key, $_value); // Housekeeping.
+    } unset($_key, $_value); // Housekeeping.
 
     return ($is = false);
 };

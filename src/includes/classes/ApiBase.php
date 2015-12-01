@@ -91,7 +91,7 @@ class ApiBase
     /**
      * This clears the cache for a specific URL.
      *
-     * @since 15xxxx Adding support for custom URLs.
+     * @since 151114 Adding support for custom URLs.
      *
      * @param string $url Input URL to clear.
      *

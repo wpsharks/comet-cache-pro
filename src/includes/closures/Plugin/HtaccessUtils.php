@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Add template blocks to `/.htaccess` file.
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if added successfully.
  */
@@ -31,7 +31,7 @@ $self->addWpHtaccess = function () use ($self) {
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
-    $template_blocks = '# BEGIN '.NAME."\n"; // Initialize.
+    $template_blocks = '# BEGIN '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
 
     foreach (array('etags.htaccess', 'expires.htaccess', 'cdn-filters.htaccess', 'gzip.htaccess', 'cache.htaccess') as $_template) {
         if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
@@ -93,9 +93,9 @@ $self->addWpHtaccess = function () use ($self) {
                 }
                 break;
         }
-    } unset($_template, $_template_file, $_template_file_contents); // Housekeeping.
-
-    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME;
+        unset($_template_file); // Housekeeping.
+    }
+    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' WmVuQ2FjaGU';
     $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
 
     if (stripos($htaccess_file_contents, NAME) === false) {
@@ -116,7 +116,7 @@ $self->addWpHtaccess = function () use ($self) {
 /*
  * Remove template blocks from `/.htaccess` file.
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if removed successfully.
  */
@@ -138,7 +138,7 @@ $self->removeWpHtaccess = function () use ($self) {
     if (stripos($htaccess_file_contents, NAME) === false) {
         return true; // Template blocks are already gone.
     }
-    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\b.*?#\s*END\s+'.preg_quote(NAME, '/').'\s*/is';
+    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+WmVuQ2FjaGU.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+WmVuQ2FjaGU\s*/is';
     $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
 
     if (stripos($htaccess_file_contents, NAME) !== false) {
@@ -159,7 +159,7 @@ $self->removeWpHtaccess = function () use ($self) {
 /*
  * Finds absolute server path to `/.htaccess` file.
  *
- * @since 15xxxx Adding `.htaccess` tweaks.
+ * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return string Absolute server path to `/.htaccess` file;
  *    else an empty string if unable to locate the file.

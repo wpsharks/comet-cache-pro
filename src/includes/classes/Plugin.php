@@ -190,6 +190,7 @@ class Plugin extends AbsBaseAp
             'change_notifications_enable',
 
             'cache_clear_admin_bar_enable',
+            'cache_clear_admin_bar_options_enable',
             'cache_clear_admin_bar_roles_caps',
 
             'cache_clear_cdn_enable',
@@ -244,6 +245,7 @@ class Plugin extends AbsBaseAp
             'dir_stats_auto_refresh_max_resources',
 
             'pro_update_check',
+            'pro_update_check_stable',
             'latest_pro_version',
             'last_pro_update_check',
             'pro_update_username',
@@ -255,6 +257,7 @@ class Plugin extends AbsBaseAp
 
             'version'     => VERSION,
             'crons_setup' => '0', // `0` or timestamp.
+            'welcomed'    => '0', // `0|1` welcomed yet?
 
             /* Primary switch; enable? */
 
@@ -274,13 +277,15 @@ class Plugin extends AbsBaseAp
             'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age'                                => '7 days', // `strtotime()` compatible.
             'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
+            'cache_cleanup_schedule' => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
 
             /* Related to cache clearing. */
 
             'change_notifications_enable' => '1', // `0|1`.
 
-            'cache_clear_admin_bar_enable'     => '1', // `0|1`.
-            'cache_clear_admin_bar_roles_caps' => '', // Comma-delimited list of roles/caps.
+            'cache_clear_admin_bar_enable'         => '1', // `0|1`.
+            'cache_clear_admin_bar_options_enable' => '1', // `0|1|2`.
+            'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
             'cache_clear_cdn_enable'     => '0', // `0|1`.
             'cache_clear_opcache_enable' => '1', // `0|1`.
@@ -291,7 +296,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
             'cache_clear_xml_sitemaps_enable'  => '1', // `0|1`.
-            'cache_clear_xml_sitemap_patterns' => '/sitemap*.xml',
+            'cache_clear_xml_sitemap_patterns' => '/sitemap**.xml',
             // Empty string or line-delimited patterns.
 
             'cache_clear_home_page_enable'  => '1', // `0|1`.
@@ -395,6 +400,7 @@ class Plugin extends AbsBaseAp
             /* Related to automatic pro updates. */
 
             'pro_update_check'      => '1', // `0|1`; enable?
+            'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
             'latest_pro_version'    => VERSION, // Latest version.
             'last_pro_update_check' => '0', // Timestamp.
 
@@ -534,15 +540,15 @@ class Plugin extends AbsBaseAp
         if (!is_multisite() || is_main_site()) { // Main site only.
             add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
-            if ((integer) $this->options['crons_setup'] < 1439005906 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__) {
+            if ((integer) $this->options['crons_setup'] < 1447330252 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']) {
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-                wp_schedule_event(time() + 60, 'daily', '_cron_'.GLOBAL_NS.'_cleanup');
+                wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.GLOBAL_NS.'_cleanup');
 
                 /*[pro strip-from="lite"]*/ // Auto-cache engine.
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
                 wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
                 /*[/pro]*/
-                $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__));
+                $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']));
             }
             add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'cleanupCache'));
 
