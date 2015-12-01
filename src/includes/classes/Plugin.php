@@ -381,7 +381,7 @@ class Plugin extends AbsBaseAp
 
             /* Related to automatic pro updates. */
 
-            'lite_update_check'      => '1', // `0|1`; enable?
+            'lite_update_check'      => '0', // `0|1`; enable?
             'latest_lite_version'    => VERSION, // Latest version.
             'last_lite_update_check' => '0', // Timestamp.
 
