@@ -577,8 +577,8 @@ class MenuPageOptions extends MenuPage
             echo '      <h3>'.__('Static CDN Filters Enabled for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. Most sites will NOT want Static CDN Filters applied when a user is logged-in. Content for logged-in users is often very dynamic and rewriting static resource URLs for logged-in users can cause problems. If you know that your logged-in user content is very static, you can enable Static CDN Filters for logged-in users to improve performance.', SLUG_TD).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_when_logged_in]">'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cdn_when_logged_in'], '0', false).'>'.__('No, disable Static CDN Filters when a user is logged-in (recommended).', SLUG_TD).'</option>'."\n";
-            echo '            <option value="postload"'.selected($this->plugin->options['cdn_when_logged_in'], 'postload', false).'>'.__('Yes, enable Static CDN Filters for logged-in users.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['cdn_when_logged_in'], '0', false).'>'.__('No, disable Static CDN Filters when a user is logged-in.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="postload"'.selected($this->plugin->options['cdn_when_logged_in'], 'postload', false).'>'.__('Yes, enable Static CDN Filters for logged-in users (recommended) .', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
             echo '   </div>'."\n";
 
