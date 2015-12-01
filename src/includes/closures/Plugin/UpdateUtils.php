@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
  * Checks for a new lite release.
  *
- * @since 150422 Rewrite.
+ * @since 15xxxx Show version number in plugin options.
  *
  * @attaches-to `admin_init` hook.
  */
