@@ -18,7 +18,7 @@ $self->autoClearPostCacheOnWooCommerceSetStock = function ($product) use ($self)
     }
     $done = true; // Flag as having been done.
 
-    if(empty($args['is_preview']) && class_exists('\\WooCommerce')) {
+    if(class_exists('\\WooCommerce')) {
         $counter += $self->autoClearPostCache($product->id);
     }
 };
