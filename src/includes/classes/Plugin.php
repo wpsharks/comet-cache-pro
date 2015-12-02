@@ -472,6 +472,7 @@ class Plugin extends AbsBaseAp
         add_action('clean_post_cache', array($this, 'autoClearPostCache'));
         add_action('post_updated', array($this, 'autoClearAuthorPageCache'), 10, 3);
         add_action('pre_post_update', array($this, 'autoClearPostCacheTransition'), 10, 2);
+        add_action('woocommerce_product_set_stock', array($this, 'autoClearPostCacheOnWooCommerceSetStock'), 10, 1);
 
         add_action('added_term_relationship', array($this, 'autoClearPostTermsCache'), 10, 1);
         add_action('delete_term_relationships', array($this, 'autoClearPostTermsCache'), 10, 1);
