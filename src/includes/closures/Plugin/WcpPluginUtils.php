@@ -15,5 +15,8 @@ namespace WebSharks\ZenCache\Pro;
 * @return int Total files wiped|cleared by this routine (if any).
 */
 $self->autoClearOnPluginActivationDeactivation = function ($plugin, $network_wide) use ($self) {
+  if (!$self->applyWpFilters(GLOBAL_NS.'_auto_clear_on_plugin_activation_deactivation', true)) {
+    return 0; // Nothing to do here.
+  }
     return $self->{($network_wide ? 'autoWipeCache' : 'autoClearCache')}();
 };
