@@ -25,8 +25,12 @@ $self->adminBarShowing = function ($feature = '') use ($self) {
                 break;
 
             case 'cache_clear':
+            case 'cache_clear_options':
                 $showing = $self->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $self->isMenuPage(GLOBAL_NS.'*'));
                 // `$self->isMenuPage(GLOBAL_NS.'*')` shows "Cache Clear" button in Network Admin when configuring options; i.e., avoids confusion.
+                if ($feature === 'cache_clear_options') {
+                    $showing = $showing && $self->options['cache_clear_admin_bar_options_enable'];
+                }
                 break;
 
             case 'stats':
@@ -51,6 +55,7 @@ $self->adminBarShowing = function ($feature = '') use ($self) {
                 break;
 
             case 'cache_clear':
+            case 'cache_clear_options':
                 $showing = $current_user_can_clear_cache;
                 break;
 
@@ -99,6 +104,73 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
         );
     }
     if ($self->adminBarShowing('cache_clear')) {
+        if (($cache_clear_options_showing = $self->adminBarShowing('cache_clear_options'))) {
+            $cache_clear_options = '<li class="-home-url-only"><a href="#" title="'.__('Clear the Home Page cache', SLUG_TD).'">'.__('Home Page', SLUG_TD).'</a></li>';
+
+            if (!is_admin()) {
+                $cache_clear_options .= '<li class="-current-url-only"><a href="#" title="'.__('Clear the cache for the current URL', SLUG_TD).'">'.__('Current URL', SLUG_TD).'</a></li>';
+            }
+            $cache_clear_options .= '<li class="-specific-url-only"><a href="#" title="'.__('Clear the cache for a specific URL', SLUG_TD).'">'.__('Specific URL', SLUG_TD).'</a></li>';
+
+            if ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache()) {
+                $cache_clear_options .= '<li class="-opcache-only"><a href="#" title="'.__('Clear PHP\'s OPCache', SLUG_TD).'">'.__('OPCache', SLUG_TD).'</a></li>';
+            }
+            if ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache()) {
+                $cache_clear_options .= '<li class="-cdn-only"><a href="#" title="'.__('Clear the CDN cache', SLUG_TD).'">'.__('CDN Cache', SLUG_TD).'</a></li>';
+            }
+            if ($self->currentUserCanClearExpiredTransients()) {
+                $cache_clear_options .= '<li class="-transients-only"><a href="#" title="'.__('Clear expired transients from the database', SLUG_TD).'">'.__('Expired Transients', SLUG_TD).'</a></li>';
+            }
+        } else {
+            $cache_clear_options = ''; // Empty in this default case.
+        }
+        if ($cache_clear_options && $self->options['cache_clear_admin_bar_options_enable'] === '2') {
+            $wp_admin_bar->add_menu(
+                array(
+                    'parent' => 'top-secondary',
+                    'id'     => GLOBAL_NS.'-clear-options',
+
+                    'title' => '',
+                    'href'  => '#',
+                    'meta'  => array(
+                            'title'    => __('Clear Options', SLUG_TD),
+                            'class'    => '-clear-options',
+                            'tabindex' => -1,
+                    ),
+                )
+            );
+            $wp_admin_bar->add_group(
+                array(
+                    'parent' => GLOBAL_NS.'-clear-options',
+                    'id'     => GLOBAL_NS.'-clear-options-wrapper',
+
+                    'meta' => array(
+                        'class' => '-wrapper',
+                    ),
+                )
+            );
+            $wp_admin_bar->add_menu(
+                array(
+                    'parent' => GLOBAL_NS.'-clear-options-wrapper',
+                    'id'     => GLOBAL_NS.'-clear-options-container',
+
+                    'title' => '<div class="-label">'.
+                                '   <span class="-text">'.__('Clear Cache', SLUG_TD).'</span>'.
+                                '</div>'.
+
+                                '<ul class="-options">'.
+                                '   '.$cache_clear_options.
+                                '</ul>'.
+
+                                '<div class="-spacer"></div>',
+
+                    'meta' => array(
+                            'class'    => '-container',
+                            'tabindex' => -1,
+                    ),
+                )
+            );
+        }
         $wp_admin_bar->add_menu(
             array(
                 'parent' => 'top-secondary',
@@ -109,12 +181,41 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                 'meta'  => array(
                         'title' => is_multisite() && current_user_can($self->network_cap)
                             ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
-                            : __('Clear Cache (Start Fresh)', SLUG_TD),
+                            : '',
                         'class'    => '-clear',
                         'tabindex' => -1,
                 ),
             )
         );
+        if ($cache_clear_options && $self->options['cache_clear_admin_bar_options_enable'] === '1') {
+            $wp_admin_bar->add_group(
+                array(
+                    'parent' => GLOBAL_NS.'-clear',
+                    'id'     => GLOBAL_NS.'-clear-options-wrapper',
+
+                    'meta' => array(
+                        'class' => '-wrapper',
+                    ),
+                )
+            );
+            $wp_admin_bar->add_menu(
+                array(
+                    'parent' => GLOBAL_NS.'-clear-options-wrapper',
+                    'id'     => GLOBAL_NS.'-clear-options-container',
+
+                    'title' => '<ul class="-options">'.
+                                '   '.$cache_clear_options.
+                                '</ul>'.
+
+                                '<div class="-spacer"></div>',
+
+                    'meta' => array(
+                            'class'    => '-container',
+                            'tabindex' => -1,
+                    ),
+                )
+            );
+        }
     }
     if ($self->adminBarShowing('stats')) {
         $wp_admin_bar->add_menu(
@@ -126,7 +227,6 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
                 'href'  => '#',
 
                 'meta' => array(
-                        'title'    => __('Cache statistics.', SLUG_TD),
                         'class'    => '-stats',
                         'tabindex' => -1,
                 ),
@@ -195,21 +295,22 @@ $self->adminBarMetaTags = function () use ($self) {
     }
     $vars = array(
         '_wpnonce'                 => wp_create_nonce(),
-        'isMultisite'              => is_multisite(), // Network?
+        'isMultisite'              => is_multisite(),
         'currentUserHasCap'        => current_user_can($self->cap),
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
         'i18n'                     => array(
-            'name'           => NAME,
-            'perSymbol'      => __('%', SLUG_TD),
-            'file'           => __('file', SLUG_TD),
-            'files'          => __('files', SLUG_TD),
-            'pageCache'      => __('Page Cache', SLUG_TD),
-            'htmlCompressor' => __('HTML Compressor', SLUG_TD),
-            'currentTotal'   => __('Current Total', SLUG_TD),
-            'currentSite'    => __('Current Site', SLUG_TD),
-            'xDayHigh'       => __('%s Day High', SLUG_TD),
+            'name'             => NAME,
+            'perSymbol'        => __('%', SLUG_TD),
+            'file'             => __('file', SLUG_TD),
+            'files'            => __('files', SLUG_TD),
+            'pageCache'        => __('Page Cache', SLUG_TD),
+            'htmlCompressor'   => __('HTML Compressor', SLUG_TD),
+            'currentTotal'     => __('Current Total', SLUG_TD),
+            'currentSite'      => __('Current Site', SLUG_TD),
+            'xDayHigh'         => __('%s Day High', SLUG_TD),
+            'enterSpecificUrl' => __('Enter a specific URL to clear the cache for that page:', SLUG_TD),
         ),
     );
     echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.

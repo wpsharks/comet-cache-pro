@@ -23,9 +23,14 @@
     $('[data-toggle-target]', plugin.$menuPage).on('click', plugin.doDataToggleTarget);
 
     $('select[name$="_enable\\]"]', plugin.$menuPage).not('.-no-if-enabled').on('change', plugin.enableDisable).trigger('change');
+
     /*![pro strip-from='lite']*/
     $('textarea[name$="\[cdn_hosts\]"]', plugin.$menuPage).on('input propertychange', plugin.handleCdnHostsChange);
     $('.plugin-menu-page-clear-cdn-cache', plugin.$menuPage).on('click', plugin.clearCdnCacheViaAjax);
+    /*[/pro]*/
+
+    /*![pro strip-from='lite']*/
+    $('.-cache-clear-admin-bar-options select', plugin.$menuPage).on('change', plugin.handleCacheClearAdminBarOpsChange).trigger('change');
     /*[/pro]*/
 
     /*![pro strip-from='lite']*/
@@ -119,6 +124,13 @@
         .removeClass('si-eye')
         .addClass('si-eye-slash');
     }
+  };
+
+  plugin.handleCacheClearAdminBarOpsChange = function (event) {
+    var $select = $(this),
+      val = $select.val(),
+      $ss = $('.-clear-cache-ops-ss', plugin.$menuPage);
+    $ss.attr('src', $ss.attr('src').replace(/ops[0-9]\-ss\.png$/, 'ops' + val + '-ss.png'));
   };
 
   plugin.handleCdnHostsChange = function (event) {
