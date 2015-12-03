@@ -280,11 +280,11 @@ class Plugin extends AbsBaseAp
             'cache_clear_admin_bar_options_enable' => '1', // `0|1|2`.
             'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
-            'cache_clear_cdn_enable'     => '0', // `0|1`.
-            'cache_clear_opcache_enable' => '1', // `0|1`.
-            'cache_clear_s2clean_enable' => '0', // `0|1`.
-            'cache_clear_eval_code'      => '', // PHP code.
-            'cache_clear_urls'           => '', // Line-delimited list of URLs.
+            'cache_clear_cdn_enable'        => '0', // `0|1`.
+            'cache_clear_opcache_enable'    => '1', // `0|1`.
+            'cache_clear_s2clean_enable'    => '0', // `0|1`.
+            'cache_clear_eval_code'         => '', // PHP code.
+            'cache_clear_urls'              => '', // Line-delimited list of URLs.
             'cache_clear_transients_enable' => '0', // `0|1`
 
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
@@ -387,10 +387,10 @@ class Plugin extends AbsBaseAp
             'latest_lite_version'    => VERSION, // Latest version.
             'last_lite_update_check' => '0', // Timestamp.
 
-            'pro_update_check'      => '1', // `0|1`; enable?
+            'pro_update_check'        => '1', // `0|1`; enable?
             'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
-            'latest_pro_version'    => VERSION, // Latest version.
-            'last_pro_update_check' => '0', // Timestamp.
+            'latest_pro_version'      => VERSION, // Latest version.
+            'last_pro_update_check'   => '0', // Timestamp.
 
             'pro_update_username' => '', // Username.
             'pro_update_password' => '', // Password or license key.
