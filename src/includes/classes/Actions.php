@@ -576,6 +576,9 @@ class Actions extends AbsBase
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
+            if (!$this->plugin->options['auto_cache_enable'] || !$this->plugin->options['auto_cache_sitemap_url']) {
+                $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
+            }
             $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
@@ -587,6 +590,7 @@ class Actions extends AbsBase
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
             }
+            $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
         }
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
