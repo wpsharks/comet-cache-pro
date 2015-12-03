@@ -118,6 +118,9 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
             if ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache()) {
                 $cache_clear_options .= '<li class="-cdn-only"><a href="#" title="'.__('Clear the CDN cache', SLUG_TD).'">'.__('CDN Cache', SLUG_TD).'</a></li>';
             }
+            if ($self->currentUserCanClearExpiredTransients()) {
+                $cache_clear_options .= '<li class="-transients-only"><a href="#" title="'.__('Clear expired transients from the database', SLUG_TD).'">'.__('Expired Transients', SLUG_TD).'</a></li>';
+            }
         } else {
             $cache_clear_options = ''; // Empty in this default case.
         }

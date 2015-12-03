@@ -270,7 +270,7 @@ class Plugin extends AbsBaseAp
             'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age'                                => '7 days', // `strtotime()` compatible.
             'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
-            'cache_cleanup_schedule' => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
+            'cache_cleanup_schedule'                       => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
 
             /* Related to cache clearing. */
 
@@ -285,6 +285,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_s2clean_enable' => '0', // `0|1`.
             'cache_clear_eval_code'      => '', // PHP code.
             'cache_clear_urls'           => '', // Line-delimited list of URLs.
+            'cache_clear_transients_enable' => '0', // `0|1`
 
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
@@ -382,6 +383,10 @@ class Plugin extends AbsBaseAp
 
             /* Related to automatic pro updates. */
 
+            'lite_update_check'      => '0', // `0|1`; enable?
+            'latest_lite_version'    => VERSION, // Latest version.
+            'last_lite_update_check' => '0', // Timestamp.
+
             'pro_update_check'      => '1', // `0|1`; enable?
             'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
             'latest_pro_version'    => VERSION, // Latest version.
@@ -421,13 +426,14 @@ class Plugin extends AbsBaseAp
         add_action('wp_loaded', array($this, 'actions'));
 
         add_action('admin_init', array($this, 'checkVersion'));
+        add_action('admin_init', array($this, 'maybeCheckLatestLiteVersion'));
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', array($this, 'statsLogPinger'));
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
-        add_action('admin_init', array($this, 'checkLatestProVersion'));
+        add_action('admin_init', array($this, 'maybeCheckLatestProVersion'));
         add_filter('fs_ftp_connection_types', array($this, 'fsFtpConnectionTypes'));
         add_filter('pre_site_transient_update_plugins', array($this, 'preSiteTransientUpdatePlugins'));
         /*[/pro]*/

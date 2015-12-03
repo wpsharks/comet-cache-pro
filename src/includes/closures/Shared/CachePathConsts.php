@@ -137,4 +137,4 @@ const CACHE_PATH_ALLOW_WD_REGEX = 4096;
  *
  * @type string Default regex suffix frag used in cache path patterns.
  */
-const CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG = '(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])';
+const CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG = null;

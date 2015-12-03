@@ -23,6 +23,7 @@
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-specific-url-only > a').on('click', plugin.clearCacheSpecificUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-opcache-only > a').on('click', plugin.clearCacheOpCacheOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
+    $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-transients-only > a').on('click', plugin.clearExpiredTransientsOnly);
 
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
 
@@ -95,7 +96,8 @@
     var o = $.extend({}, {
       urlOnly: '',
       opCacheOnly: false,
-      cdnOnly: false
+      cdnOnly: false,
+      transientsOnly: false
     }, options);
 
     var postVars = {
@@ -118,6 +120,11 @@
       isClearOption = true;
       postVars[plugin.namespace] = {
         ajaxClearCdnCache: '1'
+      };
+    } else if (o.transientsOnly) {
+      isClearOption = true;
+      postVars[plugin.namespace] = {
+        ajaxClearExpiredTransients: '1'
       };
     } else {
       postVars[plugin.namespace] = {
@@ -186,6 +193,12 @@
   plugin.clearCacheCdnOnly = function (event) {
     plugin.clearCache(event, {
       cdnOnly: true
+    });
+  };
+
+  plugin.clearExpiredTransientsOnly = function (event) {
+    plugin.clearCache(event, {
+      transientsOnly: true
     });
   };
 

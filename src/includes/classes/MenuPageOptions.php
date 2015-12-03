@@ -67,6 +67,16 @@ class MenuPageOptions extends MenuPage
                 echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
             echo '</div>'."\n";
+        } else { // For the lite version (default behavior).
+            echo '<div class="plugin-menu-page-version">'."\n";
+            echo '  '.sprintf(__('%1$s&trade; v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
+
+            if ($this->plugin->options['latest_lite_version'] && version_compare(VERSION, $this->plugin->options['latest_lite_version'], '<')) {
+                echo '(<a href="'.esc_attr(self_admin_url('/plugins.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+            } else {
+                echo '(<a href="'.esc_attr('http://zencache.com/changelog-lite/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
+            }
+            echo '</div>'."\n";
         }
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
@@ -396,10 +406,9 @@ class MenuPageOptions extends MenuPage
         }
         echo '      </div>'."\n";
 
-        echo '      <hr />'."\n";
-        echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
-
         if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
             echo '<h4 style="margin-bottom:0;">'.__('Auto-Clear a List of Custom URLs Too?', SLUG_TD).'</h4>'."\n";
             echo '<p style="margin-top:2px;">'.sprintf(__('When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '<p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_urls]" spellcheck="false" wrap="off" rows="5">'.format_to_edit($this->plugin->options['cache_clear_urls']).'</textarea></p>'."\n";
