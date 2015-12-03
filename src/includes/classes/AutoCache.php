@@ -254,7 +254,7 @@ class AutoCache extends AbsBase
                           array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
                       );
                   }
-                  goto finale; // Nothing more we can do in this case.
+            goto finale; // Nothing more we can do in this case.
         }
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {
