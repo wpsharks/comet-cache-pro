@@ -255,23 +255,10 @@ class AutoCache extends AbsBase
         if (!($sitemap = trim((string) $sitemap))) {
             goto finale; // Nothing we can do.
         }
-        if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
-            $failure = 'WP_Http says: '.$head->get_error_message().'.';
-        } elseif (empty($head['response']['code']) || (int) $head['response']['code'] >= 400) {
-            $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int) @$head['response']['code']));
-        } elseif (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
-            $failure = sprintf(__('Content-Type (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((string) @$head['headers']['content-type']));
+        if (!$this->checkXmlSitemap($sitemap, $___recursive)) {
+            goto finale; // Nothing we can do.
         }
-        if ($failure) { // Failure encountered above? If so, skip to finale after possible notice to site owner.
-            if (!$this->is_child_blog && !$___recursive) { // If this is a primary sitemap location.
-                $this->plugin->enqueueMainNotice(
-                    sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>', SLUG_TD), esc_html(NAME)).'</p><hr />'.
-                    sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
-                    array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
-                );
-            }
-            goto finale; // Nothing more we can do in this case.
-        }
+
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {
                 if ($xml_reader->nodeType === $xml_reader::ELEMENT) {
@@ -370,6 +357,70 @@ class AutoCache extends AbsBase
                 }
             }
             return $urls; // All sitemap URLs from this `<urlset>` node.
+        }
+    }
+
+    /**
+     * For internal use only.
+     *
+     * @since 15xxxx Improving XML Sitemap error checking.
+     *
+     * @param string $sitemap      A URL to an XML sitemap file.
+     *                             This supports nested XML sitemap index files too; i.e. `<sitemapindex>`.
+     *                             Note that GZIP files are NOT supported at this time.
+     * @param bool   $___recursive For internal use only.
+     *
+     * @return bool `TRUE` if there was no failure fetching XML Sitemap, else `FALSE`. This also creates a dashboard notice in some cases.
+     */
+    protected function checkXmlSitemap($sitemap, $___recursive = false)
+    {
+        $failure    = ''; // Initialize.
+
+        if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
+            $failure = 'WP_Http says: '.$head->get_error_message().'.';
+        } elseif (empty($head['response']['code']) || (int) $head['response']['code'] >= 400) {
+            $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int) @$head['response']['code']));
+        } elseif (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
+            $failure = sprintf(__('Content-Type (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((string) @$head['headers']['content-type']));
+        }
+        if ($failure) { // Failure encountered above?
+            if (!$this->is_child_blog && !$___recursive) { // If this is a primary sitemap location.
+                $this->plugin->enqueueMainNotice(
+                  sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>', SLUG_TD), esc_html(NAME)).'</p><hr />'.
+                  sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
+                  array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
+                );
+            }
+            return FALSE; // Nothing more we can do in this case.
+        }
+
+        if (!$this->is_child_blog && !$___recursive) { // Any previous problems have been fixed; dismiss any existing failure notice
+            $this->plugin->dismissMainNotice('xml_sitemap_missing');
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * Clears the Primary XML Sitemap error if the problem has been fixed.
+     *
+     * @since 15xxxx Improving XML Sitemap error checking.
+     *
+     */
+    public function maybeClearPrimaryXmlSitemapError()
+    {
+        $is_multisite                = is_multisite(); // Multisite network?
+        $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
+        $_blog_url           = rtrim(network_home_url('', 'http'), '/');
+        $this->is_child_blog = false;
+
+        if ($is_multisite && $can_consider_domain_mapping) {
+            $_blog_url = $this->plugin->domainMappingUrlFilter($_blog_url);
+        }
+        if ($_blog_url && ($_blog_sitemap_path = ltrim($this->plugin->options['auto_cache_sitemap_url'], '/'))) {
+            if($this->checkXmlSitemap($_blog_url.'/'.$_blog_sitemap_path, false)) {
+                $this->plugin->dismissMainNotice('xml_sitemap_missing');
+            }
         }
     }
 }
