@@ -219,6 +219,7 @@ class Plugin extends AbsBaseAp
             'auto_cache_max_time',
             'auto_cache_delay',
             'auto_cache_sitemap_url',
+            'auto_cache_ms_children_too',
             'auto_cache_other_urls',
             'auto_cache_user_agent',
 
@@ -339,12 +340,13 @@ class Plugin extends AbsBaseAp
 
             /* Related to auto-cache engine. */
 
-            'auto_cache_enable'      => '0', // `0|1`.
-            'auto_cache_max_time'    => '900', // In seconds.
-            'auto_cache_delay'       => '500', // In milliseconds.
-            'auto_cache_sitemap_url' => 'sitemap.xml', // Relative to `site_url()`.
-            'auto_cache_other_urls'  => '', // A line-delimited list of any other URLs.
-            'auto_cache_user_agent'  => 'WordPress',
+            'auto_cache_enable'          => '0', // `0|1`.
+            'auto_cache_max_time'        => '900', // In seconds.
+            'auto_cache_delay'           => '500', // In milliseconds.
+            'auto_cache_sitemap_url'     => 'sitemap.xml', // Relative to `site_url()`.
+            'auto_cache_ms_children_too' => '0', // `0|1`. Try child blogs too?
+            'auto_cache_other_urls'      => '', // A line-delimited list of any other URLs.
+            'auto_cache_user_agent'      => 'WordPress',
 
             /* Related to CDN functionality. */
 
