@@ -255,23 +255,10 @@ class AutoCache extends AbsBase
         if (!($sitemap = trim((string) $sitemap))) {
             goto finale; // Nothing we can do.
         }
-        if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
-            $failure = 'WP_Http says: '.$head->get_error_message().'.';
-        } elseif (empty($head['response']['code']) || (int) $head['response']['code'] >= 400) {
-            $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int) @$head['response']['code']));
-        } elseif (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
-            $failure = sprintf(__('Content-Type (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((string) @$head['headers']['content-type']));
+        if (!$this->plugin->autoCacheCheckXmlSitemap($sitemap, $___recursive, $this->is_child_blog)) {
+            goto finale; // Nothing we can do.
         }
-        if ($failure) { // Failure encountered above? If so, skip to finale after possible notice to site owner.
-            if (!$this->is_child_blog && !$___recursive) { // If this is a primary sitemap location.
-                $this->plugin->enqueueMainNotice(
-                    sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>', SLUG_TD), esc_html(NAME)).'</p><hr />'.
-                    sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
-                    array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
-                );
-            }
-            goto finale; // Nothing more we can do in this case.
-        }
+
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {
                 if ($xml_reader->nodeType === $xml_reader::ELEMENT) {

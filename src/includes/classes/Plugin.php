@@ -431,6 +431,7 @@ class Plugin extends AbsBaseAp
         add_action('admin_init', array($this, 'maybeCheckLatestLiteVersion'));
 
         /*[pro strip-from="lite"]*/
+        add_action('admin_init', array($this, 'autoCacheMaybeClearPrimaryXmlSitemapError'));
         add_action('admin_init', array($this, 'statsLogPinger'));
         /*[/pro]*/
 
