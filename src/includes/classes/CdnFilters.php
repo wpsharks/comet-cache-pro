@@ -556,7 +556,7 @@ class CdnFilters extends AbsBase
     public static function defaultWhitelistedExtensions()
     {
         $extensions = array_keys(wp_get_mime_types());
-        $extensions = array_map('strtolower', $extensions);
+        $extensions = explode('|', strtolower(implode('|', $extensions)));
         $extensions = array_merge($extensions, array('eot', 'ttf', 'otf', 'woff'));
 
         if (($permalink_structure = get_option('permalink_structure'))) {

@@ -67,6 +67,16 @@ class MenuPageOptions extends MenuPage
                 echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
             echo '</div>'."\n";
+        } else { // For the lite version (default behavior).
+            echo '<div class="plugin-menu-page-version">'."\n";
+            echo '  '.sprintf(__('%1$s&trade; v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
+
+            if ($this->plugin->options['latest_lite_version'] && version_compare(VERSION, $this->plugin->options['latest_lite_version'], '<')) {
+                echo '(<a href="'.esc_attr(self_admin_url('/plugins.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+            } else {
+                echo '(<a href="'.esc_attr('http://zencache.com/changelog-lite/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
+            }
+            echo '</div>'."\n";
         }
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
@@ -396,10 +406,9 @@ class MenuPageOptions extends MenuPage
         }
         echo '      </div>'."\n";
 
-        echo '      <hr />'."\n";
-        echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
-
         if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
             echo '<h4 style="margin-bottom:0;">'.__('Auto-Clear a List of Custom URLs Too?', SLUG_TD).'</h4>'."\n";
             echo '<p style="margin-top:2px;">'.sprintf(__('When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '<p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_urls]" spellcheck="false" wrap="off" rows="5">'.format_to_edit($this->plugin->options['cache_clear_urls']).'</textarea></p>'."\n";
@@ -573,6 +582,14 @@ class MenuPageOptions extends MenuPage
             }
             echo '      <p class="info">'.__('<strong>Note:</strong> For most sites, the majority of their traffic (if not all of their traffic) comes from visitors who are not logged in, so disabling the cache for logged-in users is NOT ordinarily a performance issue. When a user IS logged-in, disabling the cache is considered ideal, because a logged-in user has a session open with your site; and the content they view should remain very dynamic in this scenario.', SLUG_TD).'</p>'."\n";
             echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> This setting includes some users who AREN\'T actually logged into the system, but who HAVE authored comments recently. %1$s includes comment authors as part of it\'s logged-in user check. This way comment authors will be able to see updates to the comment thread immediately; and, so that any dynamically-generated messages displayed by your theme will work as intended. In short, %1$s thinks of a comment author as a logged-in user, even though technically they are not. ~ Users who gain access to password-protected Posts/Pages are also included.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Static CDN Filters Enabled for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('While this defaults to a value of <code>No</code>, it should almost always be set to <code>Yes</code>. This value defaults to <code>No</code> only because Logged-In User caching (see above) defaults to <code>No</code> and setting this value to <code>Yes</code> by default can cause confusion for some users. Once you understand that Static CDN Filters can be applied safely for all visitors (logged-in or not logged-in), please choose <code>Yes</code> in the dropdown below. If you are not using Static CDN Filters, the value below is ignored.', SLUG_TD).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_when_logged_in]">'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['cdn_when_logged_in'], '0', false).'>'.__('No, disable Static CDN Filters when a user is logged-in.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="postload"'.selected($this->plugin->options['cdn_when_logged_in'], 'postload', false).'>'.__('Yes, enable Static CDN Filters for logged-in users (recommended) .', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '      <p class="info">'.__('<strong>Note:</strong> Static CDN Filters serve <em>static</em> resources. Static resources, are, simply put, static. Thus, it is not a problem to cache these resources for any visitor (logged-in or not logged-in). To avoid confusion, this defaults to a value of <code>No</code>, and we ask that you set it to <code>Yes</code> on your own so that you\'ll know to expect this behavior; i.e., that static resources will always be served from the CDN (logged-in or not logged-in) even though Logged-In User caching may be disabled above.', SLUG_TD).'</p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";

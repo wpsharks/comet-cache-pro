@@ -46,6 +46,7 @@ class VsUpgrades extends AbsBase
         $this->fromQuickCache();
         $this->fromLte150807();
         $this->fromLte151107();
+        $this->fromLte151114();
     }
 
     /**
@@ -309,6 +310,47 @@ class VsUpgrades extends AbsBase
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
+            }
+        }
+    }
+
+    /**
+     * Before we changed the htaccess comment blocks to contain a unique identifier.
+     *
+     * @since 15xxxx Improving `.htaccess` tweaks.
+     */
+    protected function fromLte151114()
+    {
+        if (version_compare($this->prev_version, '151114', '<=')) {
+            global $is_apache;
+
+            if (!$is_apache) {
+                return; // Not running the Apache web server.
+            }
+            if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
+                return; // File does not exist.
+            }
+            if (!is_readable($htaccess_file)) {
+                return; // Not possible.
+            }
+            if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
+                return; // Failure; could not read file.
+            }
+            if (stripos($htaccess_file_contents, 'ZenCache') === false) {
+                return; // Template blocks are already gone.
+            }
+            if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
+                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess_file_contents);
+                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess_file_contents);
+            }
+            if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
+                return; // We may NOT edit any files.
+            }
+            if (!is_writable($htaccess_file)) {
+                return; // Not possible.
+            }
+            if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+                return; // Failure; could not write changes.
             }
         }
     }
