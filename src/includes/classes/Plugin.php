@@ -513,6 +513,12 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
+        if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
+            add_filter('akismet_comment_nonce', '__return_false'); // See: <http://jas.xyz/1R23f5c>
+        }
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         if ($this->options['when_logged_in'] === '1' && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
             show_admin_bar(false); // Prevent admin bar from being cached.
         }
