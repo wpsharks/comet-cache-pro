@@ -216,6 +216,18 @@ class CdnFilters extends AbsBase
         if (is_admin()) {
             return; // Not applicable.
         }
+        if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
+            return; // Disable in this case.
+        }
+        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !$_SERVER['ZENCACHE_ALLOWED']) {
+            return; // Disable in this case.
+        }
+        if (defined('DONOTCACHEPAGE')) {
+            return; // Disable in this case.
+        }
+        if (isset($_SERVER['DONOTCACHEPAGE'])) {
+            return; // Disable in this case.
+        }
         if (!$this->cdn_enable) {
             return; // Disabled currently.
         }
