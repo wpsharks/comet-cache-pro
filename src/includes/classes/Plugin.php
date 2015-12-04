@@ -315,6 +315,7 @@ class Plugin extends AbsBaseAp
             /* Related to exclusions. */
 
             'exclude_uris'   => '', // Empty string or line-delimited patterns.
+            'exclude_client_side_uris' => '', // Line-delimited list of URIs.
             'exclude_refs'   => '', // Empty string or line-delimited patterns.
             'exclude_agents' => 'w3c_validator', // Empty string or line-delimited patterns.
 

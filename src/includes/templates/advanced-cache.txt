@@ -163,6 +163,16 @@ if (!defined('ZENCACHE_EXCLUDE_URIS')) {
      */
     define('ZENCACHE_EXCLUDE_URIS', '%%ZENCACHE_EXCLUDE_URIS%%');
 }
+if (!defined('ZENCACHE_EXCLUDE_CLIENT_SIDE_URIS')) {
+    /**
+     * Client-side URI exclusions.
+     *
+     * @since 15xxxx Adding support for client-side URI exclusions.
+     *
+     * @var string A regular expression; else an empty string.
+     */
+    define('ZENCACHE_EXCLUDE_CLIENT_SIDE_URIS', '%%ZENCACHE_EXCLUDE_CLIENT_SIDE_URIS%%');
+}
 if (!defined('ZENCACHE_EXCLUDE_REFS')) {
     /**
      * HTTP referrer exclusions.
