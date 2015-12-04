@@ -153,3 +153,14 @@ $self->httpStatus = function () use ($self) {
     }
     return $status;
 };
+/*
+* Sends no-cache headers.
+*
+* @since 15xxxx Enhancing no-cache headers.
+*/
+$self->sendNoCacheHeaders = function() use($self) {
+    header_remove('Last-Modified');
+    header('Expires: Wed, 11 Jan 1984 05:00:00 GMT');
+    header('Cache-Control: no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+};
