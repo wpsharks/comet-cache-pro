@@ -52,6 +52,13 @@ class CdnFilters extends AbsBase
     protected $cdn_over_ssl;
 
     /**
+     * @since 15xxxx Adding logged-in check.
+     *
+     * @type bool CDN when logged in?
+     */
+    protected $cdn_when_logged_in;
+
+    /**
      * @since 150422 Rewrite.
      *
      * @type string Invalidation variable name.
@@ -143,6 +150,7 @@ class CdnFilters extends AbsBase
         // CDN supports SSL connections?
 
         $this->cdn_over_ssl = (boolean) $this->plugin->options['cdn_over_ssl'];
+        $this->cdn_when_logged_in = (boolean) $this->plugin->options['cdn_when_logged_in'];
 
         // Whitelisted extensions; MUST have these at all times.
 
@@ -218,6 +226,9 @@ class CdnFilters extends AbsBase
             return; // Not possible.
         }
         if (!$this->cdn_over_ssl && is_ssl()) {
+            return; // Disable in this case.
+        }
+        if (!$this->cdn_when_logged_in && $this->plugin->isLikeUserLoggedIn()) {
             return; // Disable in this case.
         }
         $_this = $this; // Needed for closures below.
