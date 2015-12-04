@@ -81,6 +81,29 @@ $self->currentUserCanClearCdnCache = function () use ($self) {
 $self->currentUserCanWipeCdnCache = $self->currentUserCanClearCdnCache;
 
 /*
+* Current user can clear expired transients?
+*
+* @since 15xxxx Enhancing user permissions.
+*
+* @return boolean Current user can clear expired transients?
+*/
+$self->currentUserCanClearExpiredTransients = function () use ($self) {
+    if (!is_null($can = &$self->cacheKey('currentUserCanClearExpiredTransients'))) {
+        return $can; // Already cached this.
+    }
+    $is_multisite = is_multisite();
+
+    if (!$is_multisite && current_user_can($self->cap)) {
+        return ($can = true); // Plugin admin.
+    }
+    if ($is_multisite && current_user_can($self->network_cap)) {
+        return ($can = true); // Plugin admin.
+    }
+    return ($can = false);
+};
+$self->currentUserCanWipeExpiredTransients = $self->currentUserCanClearExpiredTransients;
+
+/*
  * Current user can see stats?
  *
  * @since 151002 Enhancing user permissions.
