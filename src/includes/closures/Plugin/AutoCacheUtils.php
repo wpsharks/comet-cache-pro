@@ -51,15 +51,13 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function ($force = false) use
     }
     $is_multisite                = is_multisite(); // Multisite network?
     $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
-    $_blog_url                   = rtrim(network_home_url('', 'http'), '/');
+    $blog_url                   = rtrim(network_home_url('', 'http'), '/');
 
     if ($is_multisite && $can_consider_domain_mapping) {
-        $_blog_url = $self->domainMappingUrlFilter($_blog_url);
+        $blog_url = $self->domainMappingUrlFilter($blog_url);
     }
-    if ($_blog_url && ($_blog_sitemap_path = ltrim($self->options['auto_cache_sitemap_url'], '/'))) {
-        if ($self->autoCacheCheckXmlSitemap($_blog_url.'/'.$_blog_sitemap_path, false, false)) {
-            $self->dismissMainNotice('xml_sitemap_missing');
-        }
+    if ($blog_url && ($blog_sitemap_path = ltrim($self->options['auto_cache_sitemap_url'], '/'))) {
+        $self->autoCacheCheckXmlSitemap($blog_url.'/'.$blog_sitemap_path, false, false);
     }
 };
 
@@ -94,7 +92,7 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $___recursive = false, $is
             $self->enqueueMainNotice(
               sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>', SLUG_TD), esc_html(NAME)).'</p><hr />'.
               sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
-              array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
+              array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing', 'dismissable' => false)
             );
         }
         return false; // Nothing more we can do in this case.
