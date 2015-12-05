@@ -506,7 +506,7 @@ class Plugin extends AbsBaseAp
         /*[pro strip-from="lite"]*/
         add_action('profile_update', array($this, 'autoClearUserCacheA1'));
         add_filter('add_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
-        add_filter('update_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_action('updated_user_meta', array($this, 'autoClearUserCacheA2'), 10, 2);
         add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
         add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
         add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
