@@ -9,7 +9,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @attaches-to `profile_update` hook.
  * @attaches-to `add_user_metadata` filter.
- * @attaches-to `update_user_metadata` filter.
+ * @attaches-to `updated_user_meta` hook.
  * @attaches-to `delete_user_metadata` filter.
  * @attaches-to `set_auth_cookie` hook.
  * @attaches-to `clear_auth_cookie` hook.
@@ -60,12 +60,26 @@ $self->autoClearUserCacheA1 = function ($user_id) use ($self) {
 };
 
 /*
+* Automatically clears cache files associated with a particular user.
+*
+* @since 15xxxx Using `updated_user_meta` instead of `update_user_metadata`
+*
+* @attaches-to `updated_user_meta` hook.
+*
+* @param int    $meta_id    ID of updated metadata entry.
+* @param int    $object_id  Object ID.
+*/
+$self->autoClearUserCacheA2 = function ($meta_id, $object_id) use ($self) {
+    $self->autoClearUserCache($object_id);
+};
+
+/*
  * Automatically clears cache files associated with a particular user.
  *
  * @since 150422 Rewrite.
  *
  * @attaches-to `add_user_metadata` filter.
- * @attaches-to `update_user_metadata` filter.
+ * @attaches-to `updated_user_meta` hook.
  * @attaches-to `delete_user_metadata` filter.
  *
  * @param mixed $value   Filter value (passes through).
