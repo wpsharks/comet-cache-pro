@@ -136,6 +136,14 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 $reason = __('because the current user visiting this page (usually YOU), appears to be logged-in. The current configuration says NOT to cache pages for logged-in visitors. This message may also appear if you have an active PHP session on this site, or if you\'ve left (or replied to) a comment recently. If this message continues, please clear your cookies and try again.', SLUG_TD);
                 break; // Break switch handler.
 
+            case NC_DEBUG_IS_LOGGED_IN_USER_NONCE:
+                $reason = __('because the current page contains `_wpnonce` or `akismet_comment_nonce`. While your current configuration states that pages SHOULD be cache for logged-in visitors, `*nonce*` values in the markup (because these expire automatically) are not cache-compatible.', SLUG_TD);
+                break; // Break switch handler.
+
+            case NC_DEBUG_PAGE_CONTAINS_NONCE:
+                $reason = __('because the current page contains `_wpnonce` or `akismet_comment_nonce`. Note that `*nonce*` values in the markup (because these expire automatically) are not cache-compatible.', SLUG_TD);
+                break; // Break switch handler.
+
             case NC_DEBUG_NO_USER_TOKEN:
                 $reason = sprintf(__('because the current user appeared to be logged into the site (in one way or another); but %1$s was unable to formulate a User Token for them. Please report this as a possible bug.', SLUG_TD), NAME);
                 break; // Break switch handler.

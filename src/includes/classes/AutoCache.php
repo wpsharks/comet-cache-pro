@@ -10,6 +10,15 @@ namespace WebSharks\ZenCache\Pro;
 class AutoCache extends AbsBase
 {
     /**
+     * Working a child blog?
+     *
+     * @since 150422 Rewrite.
+     *
+     * @type bool|null
+     */
+    protected $is_child_blog;
+
+    /**
      * Class constructor.
      *
      * @since 150422 Rewrite.
@@ -60,7 +69,7 @@ class AutoCache extends AbsBase
         $is_multisite                = is_multisite(); // Multisite network?
         $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
 
-        if ($is_multisite) { // Multisite network?
+        if ($is_multisite && $this->plugin->options['auto_cache_ms_children_too']) {
             $wpdb = $this->plugin->wpdb(); // WordPress DB object instance.
             if (($_child_blogs = $wpdb->get_results('SELECT `blog_id` AS `ID` FROM `'.esc_sql($wpdb->blogs).'` WHERE `deleted` <= \'0\''))) {
                 $blogs = array_merge($blogs, $_child_blogs);
@@ -73,9 +82,11 @@ class AutoCache extends AbsBase
             $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = array();
 
             if (!isset($_blog->ID)) { // `home_url()` fallback.
-                $_blog_url = rtrim(network_home_url('', 'http'), '/');
+                $_blog_url           = rtrim(network_home_url('', 'http'), '/');
+                $this->is_child_blog = false; // Simple flag.
             } else { // This calls upon `switch_to_blog()` to acquire.
-                $_blog_url = rtrim(get_home_url($_blog->ID, '', 'http'), '/');
+                $_blog_url           = rtrim(get_home_url($_blog->ID, '', 'http'), '/');
+                $this->is_child_blog = true; // Simple flag; yes it is!
             }
             if ($is_multisite && $can_consider_domain_mapping) {
                 $_blog_url = $this->plugin->domainMappingUrlFilter($_blog_url);
@@ -234,22 +245,13 @@ class AutoCache extends AbsBase
     {
         $urls       = array();
         $xml_reader = new \XMLReader();
+        $failure    = ''; // Initialize.
 
         if (!($sitemap = trim((string) $sitemap))) {
             goto finale; // Nothing we can do.
         }
-        if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))
-              || empty($head['response']['code']) || (integer) $head['response']['code'] >= 400
-              || empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
-
-            // Enqueue a dashboard notice if this is a primary Sitemap location.
-            if (!$___recursive) { // Fail silently on recursive calls.
-                $this->plugin->enqueueMainNotice(
-                    sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong> ', SLUG_TD), esc_html(NAME)),
-                    array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing')
-                );
-            }
-            goto finale; // Nothing more we can do in this case.
+        if (!$this->plugin->autoCacheCheckXmlSitemap($sitemap, $___recursive, $this->is_child_blog)) {
+            goto finale; // Nothing we can do.
         }
         if ($xml_reader->open($sitemap)) {
             while ($xml_reader->read()) {

@@ -219,6 +219,7 @@ class Plugin extends AbsBaseAp
             'auto_cache_max_time',
             'auto_cache_delay',
             'auto_cache_sitemap_url',
+            'auto_cache_ms_children_too',
             'auto_cache_other_urls',
             'auto_cache_permalinks',
             'auto_cache_archives',
@@ -231,6 +232,7 @@ class Plugin extends AbsBaseAp
             'cdn_invalidation_var',
             'cdn_invalidation_counter',
             'cdn_over_ssl',
+            'cdn_when_logged_in',
             'cdn_whitelisted_extensions',
             'cdn_blacklisted_extensions',
             'cdn_whitelisted_uri_patterns',
@@ -277,7 +279,7 @@ class Plugin extends AbsBaseAp
             'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age'                                => '7 days', // `strtotime()` compatible.
             'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
-            'cache_cleanup_schedule' => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
+            'cache_cleanup_schedule'                       => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`
 
             /* Related to cache clearing. */
 
@@ -287,11 +289,12 @@ class Plugin extends AbsBaseAp
             'cache_clear_admin_bar_options_enable' => '1', // `0|1|2`.
             'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
-            'cache_clear_cdn_enable'     => '0', // `0|1`.
-            'cache_clear_opcache_enable' => '1', // `0|1`.
-            'cache_clear_s2clean_enable' => '0', // `0|1`.
-            'cache_clear_eval_code'      => '', // PHP code.
-            'cache_clear_urls'           => '', // Line-delimited list of URLs.
+            'cache_clear_cdn_enable'        => '0', // `0|1`.
+            'cache_clear_opcache_enable'    => '1', // `0|1`.
+            'cache_clear_s2clean_enable'    => '0', // `0|1`.
+            'cache_clear_eval_code'         => '', // PHP code.
+            'cache_clear_urls'              => '', // Line-delimited list of URLs.
+            'cache_clear_transients_enable' => '0', // `0|1`
 
             'cache_clear_xml_feeds_enable' => '1', // `0|1`.
 
@@ -319,9 +322,10 @@ class Plugin extends AbsBaseAp
 
             /* Related to exclusions. */
 
-            'exclude_uris'   => '', // Empty string or line-delimited patterns.
-            'exclude_refs'   => '', // Empty string or line-delimited patterns.
-            'exclude_agents' => 'w3c_validator', // Empty string or line-delimited patterns.
+            'exclude_uris'             => '', // Empty string or line-delimited patterns.
+            'exclude_client_side_uris' => '', // Line-delimited list of URIs.
+            'exclude_refs'             => '', // Empty string or line-delimited patterns.
+            'exclude_agents'           => 'w3c_validator', // Empty string or line-delimited patterns.
 
             /* Related to version salt. */
 
@@ -352,15 +356,16 @@ class Plugin extends AbsBaseAp
 
             /* Related to auto-cache engine. */
 
-            'auto_cache_enable'      => '0', // `0|1`.
-            'auto_cache_max_time'    => '900', // In seconds.
-            'auto_cache_delay'       => '500', // In milliseconds.
-            'auto_cache_sitemap_url' => 'sitemap.xml', // Relative to `site_url()`.
-            'auto_cache_other_urls'  => '', // A line-delimited list of any other URLs.
-            'auto_cache_permalinks'  => '1', // `0|1`; auto-cache known Post/Page permalinks?
-            'auto_cache_archives'    => '1', // `0|1`; auto-cache known archive views?
-            'auto_cache_state'       => '', // Serialized array; for internal use only.
-            'auto_cache_user_agent'  => 'WordPress', // User-Agent header.
+            'auto_cache_enable'          => '0', // `0|1`.
+            'auto_cache_max_time'        => '900', // In seconds.
+            'auto_cache_delay'           => '500', // In milliseconds.
+            'auto_cache_sitemap_url'     => 'sitemap.xml', // Relative to `site_url()`.
+            'auto_cache_ms_children_too' => '0', // `0|1`. Try child blogs too?
+            'auto_cache_other_urls'      => '', // A line-delimited list of any other URLs.
+            'auto_cache_permalinks'      => '1', // `0|1`; auto-cache known Post/Page permalinks?
+            'auto_cache_archives'        => '1', // `0|1`; auto-cache known archive views?
+            'auto_cache_state'           => '', // Serialized array; for internal use only.
+            'auto_cache_user_agent'      => 'WordPress', // User-Agent header.
 
             /* Related to CDN functionality. */
 
@@ -372,7 +377,8 @@ class Plugin extends AbsBaseAp
             'cdn_invalidation_var'     => 'iv', // A query string variable name.
             'cdn_invalidation_counter' => '1', // Current version counter.
 
-            'cdn_over_ssl' => '0', // `0|1`; enable SSL compat?
+            'cdn_over_ssl'       => '0', // `0|1`; enable SSL compat?
+            'cdn_when_logged_in' => '0', // `0|1`; enable when logged in?
 
             'cdn_whitelisted_extensions' => '', // Whitelisted extensions.
             // This is a comma-delimited list. Delimiters may include of these: `[|;,\s]`.
@@ -399,10 +405,14 @@ class Plugin extends AbsBaseAp
 
             /* Related to automatic pro updates. */
 
-            'pro_update_check'      => '1', // `0|1`; enable?
+            'lite_update_check'      => '0', // `0|1`; enable?
+            'latest_lite_version'    => VERSION, // Latest version.
+            'last_lite_update_check' => '0', // Timestamp.
+
+            'pro_update_check'        => '1', // `0|1`; enable?
             'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
-            'latest_pro_version'    => VERSION, // Latest version.
-            'last_pro_update_check' => '0', // Timestamp.
+            'latest_pro_version'      => VERSION, // Latest version.
+            'last_pro_update_check'   => '0', // Timestamp.
 
             'pro_update_username' => '', // Username.
             'pro_update_password' => '', // Password or license key.
@@ -438,13 +448,15 @@ class Plugin extends AbsBaseAp
         add_action('wp_loaded', array($this, 'actions'));
 
         add_action('admin_init', array($this, 'checkVersion'));
+        add_action('admin_init', array($this, 'maybeCheckLatestLiteVersion'));
 
         /*[pro strip-from="lite"]*/
+        add_action('admin_init', array($this, 'autoCacheMaybeClearPrimaryXmlSitemapError'));
         add_action('admin_init', array($this, 'statsLogPinger'));
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
-        add_action('admin_init', array($this, 'checkLatestProVersion'));
+        add_action('admin_init', array($this, 'maybeCheckLatestProVersion'));
         add_filter('fs_ftp_connection_types', array($this, 'fsFtpConnectionTypes'));
         add_filter('pre_site_transient_update_plugins', array($this, 'preSiteTransientUpdatePlugins'));
         /*[/pro]*/
@@ -474,6 +486,8 @@ class Plugin extends AbsBaseAp
 
         add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
 
+        add_action('activated_plugin', array($this, 'autoClearOnPluginActivationDeactivation'));
+        add_action('deactivated_plugin', array($this, 'autoClearOnPluginActivationDeactivation'));
         add_action('admin_init', array($this, 'autoClearCacheOnSettingChanges'));
         add_action('safecss_save_pre', array($this, 'autoClearCacheOnJetpackCustomCss'), 10, 1);
         add_action('upgrader_process_complete', array($this, 'autoClearOnUpgraderProcessComplete'), 10, 2);
@@ -488,6 +502,7 @@ class Plugin extends AbsBaseAp
         add_action('clean_post_cache', array($this, 'autoClearPostCache'));
         add_action('post_updated', array($this, 'autoClearAuthorPageCache'), 10, 3);
         add_action('pre_post_update', array($this, 'autoClearPostCacheTransition'), 10, 2);
+        add_action('woocommerce_product_set_stock', array($this, 'autoClearPostCacheOnWooCommerceSetStock'), 10, 1);
 
         add_action('added_term_relationship', array($this, 'autoClearPostTermsCache'), 10, 1);
         add_action('delete_term_relationships', array($this, 'autoClearPostTermsCache'), 10, 1);
@@ -508,10 +523,16 @@ class Plugin extends AbsBaseAp
         /*[pro strip-from="lite"]*/
         add_action('profile_update', array($this, 'autoClearUserCacheA1'));
         add_filter('add_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
-        add_filter('update_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
+        add_action('updated_user_meta', array($this, 'autoClearUserCacheA2'), 10, 2);
         add_filter('delete_user_metadata', array($this, 'autoClearUserCacheFA2'), 10, 2);
         add_action('set_auth_cookie', array($this, 'autoClearUserCacheA4'), 10, 4);
         add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
+        if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
+            add_filter('akismet_comment_nonce', '__return_false'); // See: <http://jas.xyz/1R23f5c>
+        }
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/

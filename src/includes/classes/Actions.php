@@ -41,6 +41,11 @@ class Actions extends AbsBase
         'ajaxClearCdnCache',
         /*[/pro]*/
 
+        /*[pro strip-from="lite"]*/
+        'ajaxWipeExpiredTransients',
+        'ajaxClearExpiredTransients',
+        /*[/pro]*/
+
         'saveOptions',
         'restoreDefaultOptions',
 
@@ -375,6 +380,56 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
+     * @since 15xxxx Adding transient cache wipe handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxWipeExpiredTransients($args)
+    {
+        if (!$this->plugin->currentUserCanWipeExpiredTransients()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = (int)($this->plugin->wipeExpiredTransients(true, false) / 2); // Divide in half for Dashboard message
+
+        $response = sprintf(__('<p>Expired transients wiped successfully.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Wiped <code>%1$s</code> expired transients.</p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 15xxxx Adding transient cache clear handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxClearExpiredTransients($args)
+    {
+        if (!$this->plugin->currentUserCanClearExpiredTransients()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = (int)($this->plugin->clearExpiredTransients(true, false) / 2); // Divide in half for Dashboard message
+
+        $response = sprintf(__('<p>Expired transients cleared successfully.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> expired transients for this site.</p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
      * @since 151002 Directory stats.
      *
      * @param mixed Input action argument(s).
@@ -521,6 +576,9 @@ class Actions extends AbsBase
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
+            if (!$this->plugin->options['auto_cache_enable'] || !$this->plugin->options['auto_cache_sitemap_url']) {
+                $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
+            }
             $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
@@ -532,6 +590,7 @@ class Actions extends AbsBase
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
             }
+            $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
         }
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
