@@ -469,8 +469,8 @@ class Plugin extends AbsBaseAp
 
         add_filter('enable_live_network_counts', array($this, 'updateBlogPaths'));
 
-        add_action('activated_plugin', array($this, 'autoClearOnPluginActivationDeactivation'));
-        add_action('deactivated_plugin', array($this, 'autoClearOnPluginActivationDeactivation'));
+        add_action('activated_plugin', array($this, 'autoClearOnPluginActivationDeactivation'), 10, 2);
+        add_action('deactivated_plugin', array($this, 'autoClearOnPluginActivationDeactivation'), 10, 2);
         add_action('admin_init', array($this, 'autoClearCacheOnSettingChanges'));
         add_action('safecss_save_pre', array($this, 'autoClearCacheOnJetpackCustomCss'), 10, 1);
         add_action('upgrader_process_complete', array($this, 'autoClearOnUpgraderProcessComplete'), 10, 2);
