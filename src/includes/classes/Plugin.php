@@ -544,6 +544,10 @@ class Plugin extends AbsBaseAp
         if (!is_multisite() || is_main_site()) { // Main site only.
             add_filter('cron_schedules', array($this, 'extendCronSchedules'));
 
+            if ($_schedules = wp_get_schedules() && !isset($_schedules[$this->options['cache_cleanup_schedule']])) { // Schedule no longer exists; reset to default
+                $this->updateOptions(array('cache_cleanup_schedule' => $this->default_options['cache_cleanup_schedule'], 'crons_setup' => '0'));
+                unset($_schedules);
+            }
             if ((integer) $this->options['crons_setup'] < 1449411081 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']) {
                 wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
                 wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.GLOBAL_NS.'_cleanup');
