@@ -70,18 +70,7 @@ $self->deactivate = function () use ($self) {
     $self->removeAdvancedCache();
     $self->clearCache();
 
-    // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
-    if (is_multisite()) { // Main site CRON jobs.
-        switch_to_blog(get_current_site()->blog_id);
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-        restore_current_blog(); // Restore current blog.
-    } else { // Standard WP installation.
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-    }
-    // This MUST happen upon uninstall; see http://bit.ly/1lGdr78
-    $self->updateOptions(array('crons_setup' => '0')); // Reset so that crons are rescheduled upon next activation
+    $self->resetCronsSetup(); // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
 };
 
 /*
@@ -106,18 +95,7 @@ $self->uninstall = function () use ($self) {
     $self->removeAdvancedCache();
     $self->wipeCache();
 
-    // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
-    if (is_multisite()) { // Main site CRON jobs.
-        switch_to_blog(get_current_site()->blog_id);
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-        restore_current_blog(); // Restore current blog.
-    } else { // Standard WP installation.
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-    }
-    // This MUST happen upon uninstall; see http://bit.ly/1lGdr78
-    $self->updateOptions(array('crons_setup' => '0')); // Reset so that crons are rescheduled upon next activation
+    $self->resetCronsSetup(); // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
@@ -562,6 +540,23 @@ $self->updateBlogPaths = function ($enable_live_network_counts = null) use ($sel
  * @return int Total files removed by this routine (if any).
  */
 $self->deleteBaseDir = function () use ($self) {
+    $counter = 0; // Initialize.
+
+    @set_time_limit(1800); // @TODO Display a warning.
+
+    $counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true);
+
+    return $counter;
+};
+
+/*
+ * Deletes base directory.
+ *
+ * @since 151002 Improving multisite compat.
+ *
+ * @return int Total files removed by this routine (if any).
+ */
+$self->resetCrons = function () use ($self) {
     $counter = 0; // Initialize.
 
     @set_time_limit(1800); // @TODO Display a warning.
