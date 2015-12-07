@@ -69,7 +69,7 @@ $self->deactivate = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->clearCache();
-    $self->resetCronsSetup();
+    $self->resetCronSetup();
 };
 
 /*
@@ -93,7 +93,7 @@ $self->uninstall = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->wipeCache();
-    $self->resetCronsSetup();
+    $self->resetCronSetup();
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
