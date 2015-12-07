@@ -548,20 +548,3 @@ $self->deleteBaseDir = function () use ($self) {
 
     return $counter;
 };
-
-/*
- * Deletes base directory.
- *
- * @since 151002 Improving multisite compat.
- *
- * @return int Total files removed by this routine (if any).
- */
-$self->resetCrons = function () use ($self) {
-    $counter = 0; // Initialize.
-
-    @set_time_limit(1800); // @TODO Display a warning.
-
-    $counter += $self->deleteAllFilesDirsIn($self->wpContentBaseDirTo(''), true);
-
-    return $counter;
-};

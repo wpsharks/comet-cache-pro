@@ -22,11 +22,9 @@ $self->extendCronSchedules = function ($schedules) use ($self) {
 
 
 /*
- * Resets Cron Setup and clears WP-Cron schedules.
+ * Resets `crons_setup` and clears WP-Cron schedules.
  *
  * @since 15xxxx Fixing bug with Auto-Cache Engine cron disappearing in some scenarios
- *
- * @return array Revised array of WP-Cron schedules.
  *
  * @note This MUST happen upon uninstall and deactivation due to buggy WP_Cron behavior; see http://bit.ly/1lGdr78
  */
