@@ -33,7 +33,9 @@ $self->checkCronSetup = function () use ($self) {
         || $self->options['crons_setup_with_cache_cleanup_schedule'] !== $self->options['cache_cleanup_schedule']
         || $self->options['crons_setup_on_wp_with_schedules'] !== sha1(serialize(wp_get_schedules()))
         || !wp_next_scheduled('_cron_'.GLOBAL_NS.'_cleanup')
+        /*[pro strip-from="lite"]*/ // Auto-cache engine.
         || !wp_next_scheduled('_cron_'.GLOBAL_NS.'_auto_cache')
+        /*[/pro]*/
     ) {
 
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
@@ -65,11 +67,15 @@ $self->checkCronSetup = function () use ($self) {
 $self->resetCronSetup = function ( ) use ($self) {
     if (is_multisite()) { // Main site CRON jobs.
         switch_to_blog(get_current_site()->blog_id);
+        /*[pro strip-from="lite"]*/ // Auto-cache engine.
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        /*[/pro]*/
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
         restore_current_blog(); // Restore current blog.
     } else { // Standard WP installation.
+        /*[pro strip-from="lite"]*/ // Auto-cache engine.
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        /*[/pro]*/
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
     }
     $self->updateOptions(
