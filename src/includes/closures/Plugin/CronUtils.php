@@ -20,13 +20,12 @@ $self->extendCronSchedules = function ($schedules) use ($self) {
     return $schedules;
 };
 
-
 /*
  * Resets `crons_setup` and clears WP-Cron schedules.
  *
  * @since 15xxxx Fixing bug with Auto-Cache Engine cron disappearing in some scenarios
  *
- * @note This MUST happen upon uninstall and deactivation due to buggy WP_Cron behavior; see http://bit.ly/1lGdr78
+ * @note This MUST happen upon uninstall and deactivation due to buggy WP_Cron behavior. Events with a custom schedule will disappear when plugin is not active (see http://bit.ly/1lGdr78).
  */
 $self->resetCronsSetup = function ( ) use ($self) {
     if (is_multisite()) { // Main site CRON jobs.
