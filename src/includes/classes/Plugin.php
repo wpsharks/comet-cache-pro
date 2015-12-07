@@ -255,8 +255,11 @@ class Plugin extends AbsBaseAp
             /* Core/systematic plugin options. */
 
             'version'     => VERSION,
-            'crons_setup' => '0', // `0` or timestamp.
             'welcomed'    => '0', // `0|1` welcomed yet?
+            'crons_setup' => '0', // A timestamp when last set up.
+            'crons_setup_on_namespace'                => '', // The namespace on which they were set up.
+            'crons_setup_with_cache_cleanup_schedule' => '', // The cleanup schedule selected by site owner during last setup.
+            'crons_setup_on_wp_with_schedules'        => '', // A sha1 hash of `wp_get_schedules()`
 
             /* Primary switch; enable? */
 
@@ -428,6 +431,7 @@ class Plugin extends AbsBaseAp
 
         add_action('init', array($this, 'checkAdvancedCache'));
         add_action('init', array($this, 'checkBlogPaths'));
+        add_action('init', array($this, 'checkCronSetup'), PHP_INT_MAX);
         add_action('wp_loaded', array($this, 'actions'));
 
         add_action('admin_init', array($this, 'checkVersion'));
@@ -543,17 +547,6 @@ class Plugin extends AbsBaseAp
 
         if (!is_multisite() || is_main_site()) { // Main site only.
             add_filter('cron_schedules', array($this, 'extendCronSchedules'));
-
-            if ((integer) $this->options['crons_setup'] < 1447330252 || substr($this->options['crons_setup'], 10) !== '-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']) {
-                wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-                wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.GLOBAL_NS.'_cleanup');
-
-                /*[pro strip-from="lite"]*/ // Auto-cache engine.
-                wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-                wp_schedule_event(time() + 60, 'every15m', '_cron_'.GLOBAL_NS.'_auto_cache');
-                /*[/pro]*/
-                $this->updateOptions(array('crons_setup' => time().'-'.__NAMESPACE__.'-'.$this->options['cache_cleanup_schedule']));
-            }
             add_action('_cron_'.GLOBAL_NS.'_cleanup', array($this, 'cleanupCache'));
 
             /*[pro strip-from="lite"]*/ // Auto-cache engine.

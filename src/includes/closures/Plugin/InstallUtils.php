@@ -69,6 +69,7 @@ $self->deactivate = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->clearCache();
+    $self->resetCronSetup();
 };
 
 /*
@@ -92,6 +93,7 @@ $self->uninstall = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->wipeCache();
+    $self->resetCronSetup();
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
@@ -99,15 +101,6 @@ $self->uninstall = function () use ($self) {
     $self->deleteAdvancedCache();
     $self->deleteBaseDir();
 
-    if (is_multisite()) { // Main site CRON jobs.
-        switch_to_blog(get_current_site()->blog_id);
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-        restore_current_blog(); // Restore current blog.
-    } else { // Standard WP installation.
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-    }
     $wpdb = $self->wpdb(); // WordPress DB.
     $like = '%'.$wpdb->esc_like(GLOBAL_NS).'%';
 
