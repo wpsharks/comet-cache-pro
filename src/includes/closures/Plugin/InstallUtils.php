@@ -69,7 +69,6 @@ $self->deactivate = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->clearCache();
-
     $self->resetCronsSetup(); // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
 };
 
@@ -94,7 +93,6 @@ $self->uninstall = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->wipeCache();
-
     $self->resetCronsSetup(); // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
 
     if (!$self->options['uninstall_on_deletion']) {
