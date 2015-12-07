@@ -69,6 +69,19 @@ $self->deactivate = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->clearCache();
+
+    // Events with a custom schedule will disappear (see http://bit.ly/1lGdr78); lets clean up to avoid any confusion.
+    if (is_multisite()) { // Main site CRON jobs.
+        switch_to_blog(get_current_site()->blog_id);
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+        restore_current_blog(); // Restore current blog.
+    } else { // Standard WP installation.
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
+        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
+    }
+    // This MUST happen upon uninstall; see http://bit.ly/1lGdr78
+    $self->updateOptions(array('crons_setup' => '0')); // Reset so that crons are rescheduled upon next activation
 };
 
 /*
