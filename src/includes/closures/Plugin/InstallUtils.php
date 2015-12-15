@@ -371,6 +371,8 @@ $self->addAdvancedCache = function () use ($self) {
     }
     $self->cacheUnlock($cache_lock); // Release.
 
+    $self->clearAcDropinFromOpcacheByForce();
+
     return true;
 };
 
@@ -408,6 +410,8 @@ $self->removeAdvancedCache = function () use ($self) {
     if (file_put_contents($advanced_cache_file, '') !== 0) {
         return false; // Failure.
     }
+    $self->clearAcDropinFromOpcacheByForce();
+
     return true;
 };
 
@@ -435,6 +439,8 @@ $self->deleteAdvancedCache = function () use ($self) {
             return false; // Not possible; or outright failure.
         }
     }
+    $self->clearAcDropinFromOpcacheByForce();
+
     return true; // Deletion success.
 };
 
