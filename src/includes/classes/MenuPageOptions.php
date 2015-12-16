@@ -271,11 +271,11 @@ class MenuPageOptions extends MenuPage
             }
             if ($this->plugin->functionIsPossible('opcache_reset')) {
                 echo '  <hr />'."\n";
-                echo '  <h3>'.__('Clear the <a href="http://zencache.com/r/php-opcache/" target="_blank">PHP OPCache</a> Too?', SLUG_TD).'</h3>'."\n";
-                echo '  <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to clear the PHP OPCache too? This is not necessary, but if you want a truly clean start, this will clear all PHP files in the server\'s opcode cache also. Note: If you don\'t already know what the PHP OPcache is, it is suggested that you leave this disabled. It really is not necessary. This is just an added feature for advanced users.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+                echo '  <h3>'.__('Clear the <a href="http://zencache.com/r/php-opcache/" target="_blank">PHP OPcache</a> Too?', SLUG_TD).'</h3>'."\n";
+                echo '  <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to clear the PHP OPcache too? This is not necessary, but if you want a truly clean start, this will clear all PHP files in the server\'s opcode cache also. Note: If you don\'t already know what the PHP OPcache is, it is suggested that you leave this disabled. It really is not necessary. This is just an added feature for advanced users.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
                 echo '  <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_opcache_enable]" class="-no-if-enabled">'."\n";
-                echo '      <option value="0"'.selected($this->plugin->options['cache_clear_opcache_enable'], '0', false).'>'.__('No, I don\'t use the PHP OPCache extension; or, I don\'t want the opcode cache cleared.', SLUG_TD).'</option>'."\n";
-                echo '      <option value="1"'.selected($this->plugin->options['cache_clear_opcache_enable'], '1', false).'>'.__('Yes, if the PHP OPCache extension is enabled, also clear the entire PHP opcode cache.', SLUG_TD).'</option>'."\n";
+                echo '      <option value="0"'.selected($this->plugin->options['cache_clear_opcache_enable'], '0', false).'>'.__('No, I don\'t use the PHP OPcache extension; or, I don\'t want the opcode cache cleared.', SLUG_TD).'</option>'."\n";
+                echo '      <option value="1"'.selected($this->plugin->options['cache_clear_opcache_enable'], '1', false).'>'.__('Yes, if the PHP OPcache extension is enabled, also clear the entire PHP opcode cache.', SLUG_TD).'</option>'."\n";
                 echo '  </select></p>'."\n";
             }
             if ($this->plugin->functionIsPossible('s2clean')) {

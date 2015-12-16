@@ -170,7 +170,7 @@ class Actions extends AbsBase
         $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
 
         if ($opcache_counter) {
-            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
+            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
         if ($s2clean_counter) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
@@ -215,7 +215,7 @@ class Actions extends AbsBase
             $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
         }
         if ($opcache_counter) {
-            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
+            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
         if ($s2clean_counter) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
@@ -295,7 +295,7 @@ class Actions extends AbsBase
         $counter = $this->plugin->wipeOpcache(true, false);
 
         $response = sprintf(__('<p>Opcache successfully wiped.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>Wiped out <code>%1$s</code> OPCache keys.</p>', SLUG_TD), esc_html($counter));
+        $response .= sprintf(__('<p>Wiped out <code>%1$s</code> OPcache keys.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
@@ -320,7 +320,7 @@ class Actions extends AbsBase
         $counter = $this->plugin->clearOpcache(true, false);
 
         $response = sprintf(__('<p>Opcache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>Cleared <code>%1$s</code> OPCache keys.</p>', SLUG_TD), esc_html($counter));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> OPcache keys.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }

@@ -113,7 +113,7 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
             $cache_clear_options .= '<li class="-specific-url-only"><a href="#" title="'.__('Clear the cache for a specific URL', SLUG_TD).'">'.__('Specific URL', SLUG_TD).'</a></li>';
 
             if ($self->functionIsPossible('opcache_reset') && $self->currentUserCanClearOpCache()) {
-                $cache_clear_options .= '<li class="-opcache-only"><a href="#" title="'.__('Clear PHP\'s OPCache', SLUG_TD).'">'.__('OPCache', SLUG_TD).'</a></li>';
+                $cache_clear_options .= '<li class="-opcache-only"><a href="#" title="'.__('Clear PHP\'s OPcache', SLUG_TD).'">'.__('OPcache', SLUG_TD).'</a></li>';
             }
             if ($self->options['cdn_enable'] && $self->currentUserCanClearCdnCache()) {
                 $cache_clear_options .= '<li class="-cdn-only"><a href="#" title="'.__('Clear the CDN cache', SLUG_TD).'">'.__('CDN Cache', SLUG_TD).'</a></li>';
