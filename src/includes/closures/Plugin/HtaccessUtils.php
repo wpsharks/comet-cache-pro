@@ -28,9 +28,19 @@ $self->addWpHtaccess = function () use ($self) {
     if (!is_readable($htaccess_file)) {
         return false; // Not possible.
     }
+
+    $_htaccess_file = fopen($htaccess_file,'r+');
+    if ($_htaccess_file === false) {
+        return false; // Failure; could not read file.
+    }
+    if (flock($_htaccess_file, LOCK_SH) === false) {
+        return false; // Failure; could acquire shared lock for reading.
+    }
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
+    fclose($_htaccess_file);
+
     $template_blocks = '# BEGIN '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
 
     if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
@@ -59,7 +69,7 @@ $self->addWpHtaccess = function () use ($self) {
     if (!is_writable($htaccess_file)) {
         return false; // Not possible.
     }
-    if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+    if (file_put_contents($htaccess_file, $htaccess_file_contents, LOCK_EX) === false) {
         return false; // Failure; could not write changes.
     }
     return true; // Added successfully.
@@ -84,9 +94,19 @@ $self->removeWpHtaccess = function () use ($self) {
     if (!is_readable($htaccess_file)) {
         return false; // Not possible.
     }
+
+    $_htaccess_file = fopen($htaccess_file,'r+');
+    if ($_htaccess_file === false) {
+        return false; // Failure; could not read file.
+    }
+    if (flock($_htaccess_file, LOCK_SH) === false) {
+        return false; // Failure; could acquire shared lock for reading.
+    }
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
+    fclose($_htaccess_file);
+
     if ($htaccess_file_contents !== wp_check_invalid_utf8($htaccess_file_contents)) {
         return false; // Failure; invalid UTF8 encounted, file may be corrupt.
     }
@@ -105,7 +125,7 @@ $self->removeWpHtaccess = function () use ($self) {
     if (!is_writable($htaccess_file)) {
         return false; // Not possible.
     }
-    if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
+    if (file_put_contents($htaccess_file, $htaccess_file_contents, LOCK_EX) === false) {
         return false; // Failure; could not write changes.
     }
     return true; // Removed successfully.
