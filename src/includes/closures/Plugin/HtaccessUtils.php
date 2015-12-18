@@ -29,7 +29,7 @@ $self->addWpHtaccess = function () use ($self) {
         return false; // Not possible.
     }
 
-    $_htaccess_file = fopen($htaccess_file,'r+');
+    $_htaccess_file = fopen($htaccess_file,'r');
     if ($_htaccess_file === false) {
         return false; // Failure; could not read file.
     }
@@ -95,7 +95,7 @@ $self->removeWpHtaccess = function () use ($self) {
         return false; // Not possible.
     }
 
-    $_htaccess_file = fopen($htaccess_file,'r+');
+    $_htaccess_file = fopen($htaccess_file,'r');
     if ($_htaccess_file === false) {
         return false; // Failure; could not read file.
     }
