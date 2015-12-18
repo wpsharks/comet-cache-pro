@@ -29,17 +29,16 @@ $self->addWpHtaccess = function () use ($self) {
         return false; // Not possible.
     }
 
-    $_htaccess_file = fopen($htaccess_file,'r');
-    if ($_htaccess_file === false) {
+    if (($_fp = fopen($htaccess_file,'r')) === false) {
         return false; // Failure; could not open file for reading.
     }
-    if (flock($_htaccess_file, LOCK_SH) === false) {
+    if (flock($_fp, LOCK_SH) === false) {
         return false; // Failure; could acquire shared lock for reading.
     }
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
-    fclose($_htaccess_file);
+    fclose($_fp);
 
     $template_blocks = '# BEGIN '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
 
@@ -95,17 +94,16 @@ $self->removeWpHtaccess = function () use ($self) {
         return false; // Not possible.
     }
 
-    $_htaccess_file = fopen($htaccess_file,'r');
-    if ($_htaccess_file === false) {
+    if (($_fp = fopen($htaccess_file,'r')) === false) {
         return false; // Failure; could not open file for reading.
     }
-    if (flock($_htaccess_file, LOCK_SH) === false) {
+    if (flock($_fp, LOCK_SH) === false) {
         return false; // Failure; could acquire shared lock for reading.
     }
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
-    fclose($_htaccess_file);
+    fclose($_fp);
 
     if ($htaccess_file_contents !== wp_check_invalid_utf8($htaccess_file_contents)) {
         return false; // Failure; invalid UTF8 encounted, file may be corrupt.
