@@ -257,9 +257,10 @@ class Plugin extends AbsBaseAp
         $this->default_options = array(
             /* Core/systematic plugin options. */
 
-            'version'     => VERSION,
-            'welcomed'    => '0', // `0|1` welcomed yet?
-            'crons_setup' => '0', // A timestamp when last set up.
+            'version'  => VERSION,
+            'welcomed' => '0', // `0|1` welcomed yet?
+
+            'crons_setup'                             => '0', // A timestamp when last set up.
             'crons_setup_on_namespace'                => '', // The namespace on which they were set up.
             'crons_setup_with_cache_cleanup_schedule' => '', // The cleanup schedule selected by site owner during last setup.
             'crons_setup_on_wp_with_schedules'        => '', // A sha1 hash of `wp_get_schedules()`
@@ -293,7 +294,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_admin_bar_roles_caps'     => '', // Comma-delimited list of roles/caps.
 
             'cache_clear_cdn_enable'        => '0', // `0|1`.
-            'cache_clear_opcache_enable'    => '1', // `0|1`.
+            'cache_clear_opcache_enable'    => '0', // `0|1`.
             'cache_clear_s2clean_enable'    => '0', // `0|1`.
             'cache_clear_eval_code'         => '', // PHP code.
             'cache_clear_urls'              => '', // Line-delimited list of URLs.
