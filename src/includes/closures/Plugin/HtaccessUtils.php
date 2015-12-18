@@ -87,6 +87,9 @@ $self->removeWpHtaccess = function () use ($self) {
     if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
         return false; // Failure; could not read file.
     }
+    if ($htaccess_file_contents !== wp_check_invalid_utf8($htaccess_file_contents)) {
+        return false; // Failure; invalid UTF8 encounted, file may be corrupt.
+    }
     if (stripos($htaccess_file_contents, NAME) === false) {
         return true; // Template blocks are already gone.
     }
