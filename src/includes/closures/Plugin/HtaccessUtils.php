@@ -31,7 +31,7 @@ $self->addWpHtaccess = function () use ($self) {
 
     $_htaccess_file = fopen($htaccess_file,'r');
     if ($_htaccess_file === false) {
-        return false; // Failure; could not read file.
+        return false; // Failure; could not open file for reading.
     }
     if (flock($_htaccess_file, LOCK_SH) === false) {
         return false; // Failure; could acquire shared lock for reading.
@@ -97,7 +97,7 @@ $self->removeWpHtaccess = function () use ($self) {
 
     $_htaccess_file = fopen($htaccess_file,'r');
     if ($_htaccess_file === false) {
-        return false; // Failure; could not read file.
+        return false; // Failure; could not open file for reading.
     }
     if (flock($_htaccess_file, LOCK_SH) === false) {
         return false; // Failure; could acquire shared lock for reading.
