@@ -62,7 +62,7 @@ $self->addWpHtaccess = function () use ($self) {
     $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
 
     // Note: rewind() necessary here because we fread() above.
-    if (!($_have_marker !== false && rewind($_fp) && ftruncate($_fp, 0) && fwrite($_fp, $htaccess_file_contents))) {
+    if ($_have_marker === false || !rewind($_fp) || !ftruncate($_fp, 0) || !fwrite($_fp, $htaccess_file_contents)) {
         flock($_fp, LOCK_UN);
         fclose($_fp);
         return false; // Failure; unexpected file contents or could not write changes.
@@ -117,7 +117,7 @@ $self->removeWpHtaccess = function () use ($self) {
     $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
 
     // Note: rewind() necessary here because we fread() above.
-    if (!($_have_marker === false && rewind($_fp) && ftruncate($_fp, 0) && fwrite($_fp, $htaccess_file_contents))) {
+    if ($_have_marker !== false || !rewind($_fp) || !ftruncate($_fp, 0) || !fwrite($_fp, $htaccess_file_contents)) {
         flock($_fp, LOCK_UN);
         fclose($_fp);
         return false; // Failure; could not write changes.
