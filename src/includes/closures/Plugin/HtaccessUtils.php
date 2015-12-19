@@ -30,7 +30,7 @@ $self->addWpHtaccess = function () use ($self) {
         return false; // Not possible.
     }
 
-    if (!(($_fp = fopen($htaccess_file,'rb+')) && flock($_fp, LOCK_EX))) {
+    if (!($_fp = fopen($htaccess_file,'rb+')) || !flock($_fp, LOCK_EX)) {
         fclose($_fp); // Just in case we opened it before failing to obtain a lock.
         return false; // Failure; could not open file and obtain an exclusive lock.
     }
@@ -95,7 +95,7 @@ $self->removeWpHtaccess = function () use ($self) {
         return false; // Not possible.
     }
 
-    if (!(($_fp = fopen($htaccess_file,'rb+')) && flock($_fp, LOCK_EX))) {
+    if (!($_fp = fopen($htaccess_file,'rb+')) || !flock($_fp, LOCK_EX)) {
         fclose($_fp); // Just in case we opened it before failing to obtain a lock.
         return false; // Failure; could not open file and obtain an exclusive lock.
     }
