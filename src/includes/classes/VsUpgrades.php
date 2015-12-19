@@ -330,7 +330,7 @@ class VsUpgrades extends AbsBase
             if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
                 return; // File does not exist.
             }
-            if ($htaccess = $this->plugin>readHtaccessFile($htaccess_file, 'ZenCache')) {
+            if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file, 'ZenCache')) {
 
                 if ($htaccess['marker_exists'] === false) {
                     flock($htaccess['fp'], LOCK_UN);
