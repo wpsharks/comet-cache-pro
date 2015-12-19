@@ -35,7 +35,7 @@ $self->addWpHtaccess = function () use ($self) {
         return false; // Failure; could not open file and obtain an exclusive lock.
     }
 
-    if ($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) {
+    if (($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) && ($htaccess_file_contents === wp_check_invalid_utf8($htaccess_file_contents)) ) {
         $template_blocks = '# BEGIN '.NAME.' '.$htaccess_marker.' (the '.$htaccess_marker.' marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
         if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
             foreach (scandir($templates_dir) as $_template_file) {
@@ -53,7 +53,7 @@ $self->addWpHtaccess = function () use ($self) {
         }
         $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' '.$htaccess_marker;
         $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
-    } else { // Failure; could not read file
+    } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
         flock($_fp, LOCK_UN);
         fclose($_fp);
         return false;
@@ -108,7 +108,7 @@ $self->removeWpHtaccess = function () use ($self) {
         }
         $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'\s*/is';
         $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
-    } else { // Failure; could not read file or invalid UTF8 encounted, file may be corrupt.
+    } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
         flock($_fp, LOCK_UN);
         fclose($_fp);
         return false;
