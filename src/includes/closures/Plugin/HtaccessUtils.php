@@ -10,6 +10,7 @@ namespace WebSharks\ZenCache\Pro;
  */
 $self->addWpHtaccess = function () use ($self) {
     global $is_apache;
+    $htaccess_marker = 'WmVuQ2FjaGU'; // Unique comment marker used to identify rules added by this plugin
 
     if (!$is_apache) {
         return false; // Not running the Apache web server.
@@ -25,52 +26,51 @@ $self->addWpHtaccess = function () use ($self) {
             return false; // Unable to find and/or create `.htaccess`.
         } // If it doesn't exist, we create the `.htaccess` file here.
     }
-    if (!is_readable($htaccess_file)) {
+    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
         return false; // Not possible.
     }
 
-    if (($_fp = fopen($htaccess_file,'r')) === false) {
-        return false; // Failure; could not open file for reading.
+    if (!(($_fp = fopen($htaccess_file,'rb+')) && flock($_fp, LOCK_EX))) {
+        fclose($_fp); // Just in case we opened it before failing to obtain a lock.
+        return false; // Failure; could not open file and obtain an exclusive lock.
     }
-    if (flock($_fp, LOCK_SH) === false) {
-        return false; // Failure; could acquire shared lock for reading.
-    }
-    if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
-        return false; // Failure; could not read file.
-    }
-    fclose($_fp);
 
-    $template_blocks = '# BEGIN '.NAME.' WmVuQ2FjaGU (the WmVuQ2FjaGU marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
-
-    if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
-        foreach (scandir($templates_dir) as $_template_file) {
-            switch ($_template_file) {
-                /*[pro strip-from="lite"]*/
-                case 'cdn-filters.txt':
-                    if ($self->options['cdn_enable']) {
-                        $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                    } // Only if CDN filters are enabled at this time.
-                    break;
-                /*[/pro]*/
+    if ($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) {
+        $template_blocks = '# BEGIN '.NAME.' '.$htaccess_marker.' (the '.$htaccess_marker.' marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
+        if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
+            foreach (scandir($templates_dir) as $_template_file) {
+                switch ($_template_file) {
+                    /*[pro strip-from="lite"]*/
+                    case 'cdn-filters.txt':
+                        if ($self->options['cdn_enable']) {
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                        } // Only if CDN filters are enabled at this time.
+                        break;
+                    /*[/pro]*/
+                }
             }
+            unset($_template_file); // Housekeeping.
         }
-        unset($_template_file); // Housekeeping.
+        $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' '.$htaccess_marker;
+        $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
+    } else { // Failure; could not read file
+        flock($_fp, LOCK_UN);
+        fclose($_fp);
+        return false;
     }
-    $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' WmVuQ2FjaGU';
-    $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
 
-    if (stripos($htaccess_file_contents, NAME) === false) {
-        return false; // Failure; unexpected file contents.
+    $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
+
+    // Note: rewind() necessary here because we fread() above.
+    if (!($_have_marker !== false && rewind($_fp) && ftruncate($_fp, 0) && fwrite($_fp, $htaccess_file_contents))) {
+        flock($_fp, LOCK_UN);
+        fclose($_fp);
+        return false; // Failure; unexpected file contents or could not write changes.
     }
-    if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
-        return false; // We may NOT edit any files.
-    }
-    if (!is_writable($htaccess_file)) {
-        return false; // Not possible.
-    }
-    if (file_put_contents($htaccess_file, $htaccess_file_contents, LOCK_EX) === false) {
-        return false; // Failure; could not write changes.
-    }
+
+    fflush($_fp);
+    flock($_fp, LOCK_UN);
+    fclose($_fp);
     return true; // Added successfully.
 };
 
@@ -83,6 +83,7 @@ $self->addWpHtaccess = function () use ($self) {
  */
 $self->removeWpHtaccess = function () use ($self) {
     global $is_apache;
+    $htaccess_marker = 'WmVuQ2FjaGU'; // Unique comment marker used to identify rules added by this plugin
 
     if (!$is_apache) {
         return false; // Not running the Apache web server.
@@ -90,42 +91,40 @@ $self->removeWpHtaccess = function () use ($self) {
     if (!($htaccess_file = $self->findHtaccessFile())) {
         return true; // File does not exist.
     }
-    if (!is_readable($htaccess_file)) {
+    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
         return false; // Not possible.
     }
 
-    if (($_fp = fopen($htaccess_file,'r')) === false) {
-        return false; // Failure; could not open file for reading.
+    if (!(($_fp = fopen($htaccess_file,'rb+')) && flock($_fp, LOCK_EX))) {
+        return false; // Failure; could not open file and obtain an exclusive lock.
     }
-    if (flock($_fp, LOCK_SH) === false) {
-        return false; // Failure; could acquire shared lock for reading.
-    }
-    if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
-        return false; // Failure; could not read file.
-    }
-    fclose($_fp);
 
-    if ($htaccess_file_contents !== wp_check_invalid_utf8($htaccess_file_contents)) {
-        return false; // Failure; invalid UTF8 encounted, file may be corrupt.
+    if (($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) && ($htaccess_file_contents === wp_check_invalid_utf8($htaccess_file_contents))) {
+        if (stripos($htaccess_file_contents, NAME) === false) {
+            flock($_fp, LOCK_UN);
+            fclose($_fp);
+            return true; // Template blocks are already gone.
+        }
+        $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'\s*/is';
+        $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
+    } else { // Failure; could not read file or invalid UTF8 encounted, file may be corrupt.
+        flock($_fp, LOCK_UN);
+        fclose($_fp);
+        return false;
     }
-    if (stripos($htaccess_file_contents, NAME) === false) {
-        return true; // Template blocks are already gone.
-    }
-    $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+WmVuQ2FjaGU.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+WmVuQ2FjaGU\s*/is';
-    $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
 
-    if (stripos($htaccess_file_contents, NAME) !== false) {
-        return false; // Failure; unexpected file contents.
-    }
-    if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
-        return false; // We may NOT edit any files.
-    }
-    if (!is_writable($htaccess_file)) {
-        return false; // Not possible.
-    }
-    if (file_put_contents($htaccess_file, $htaccess_file_contents, LOCK_EX) === false) {
+    $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
+
+    // Note: rewind() necessary here because we fread() above.
+    if (!($_have_marker === false && rewind($_fp) && ftruncate($_fp, 0) && fwrite($_fp, $htaccess_file_contents))) {
+        flock($_fp, LOCK_UN);
+        fclose($_fp);
         return false; // Failure; could not write changes.
     }
+
+    fflush($_fp);
+    flock($_fp, LOCK_UN);
+    fclose($_fp);
     return true; // Removed successfully.
 };
 
