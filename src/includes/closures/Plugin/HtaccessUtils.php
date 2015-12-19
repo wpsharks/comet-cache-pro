@@ -76,6 +76,8 @@ $self->removeWpHtaccess = function () use ($self) {
 
     if ($htaccess = $self->readHtaccessFile($htaccess_file, $htaccess_marker)) {
         if ($htaccess['marker_exists'] === false) {
+            flock($htaccess['fp'], LOCK_UN);
+            fclose($htaccess['fp']);
             return true; // Template blocks are already gone.
         }
         $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'\s*/is';
