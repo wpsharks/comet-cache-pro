@@ -123,6 +123,10 @@ $self->findHtaccessFile = function () use ($self) {
  *               `fp` a file pointer resource, `file_contents` a string, and
  *               `marker_exists` a boolean indicating if the $htaccess_marker was found in
  *               htaccess contents. Returns `false` on failure.
+ *
+ * @note A call to this method must be followed by a call to $self->writeHtaccessFile()
+ *       passing it the resource this method returns so that the resource is unlocked and closed.
+ *       Otherwise, you must unlock and close the resource yourself when finished.
  */
 $self->readHtaccessFile = function ($htaccess_file, $htaccess_marker) use ($self) {
 
