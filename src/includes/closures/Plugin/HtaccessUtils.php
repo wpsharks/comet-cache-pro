@@ -26,16 +26,8 @@ $self->addWpHtaccess = function () use ($self) {
             return false; // Unable to find and/or create `.htaccess`.
         } // If it doesn't exist, we create the `.htaccess` file here.
     }
-    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
-        return false; // Not possible.
-    }
 
-    if (!($_fp = fopen($htaccess_file,'rb+')) || !flock($_fp, LOCK_EX)) {
-        fclose($_fp); // Just in case we opened it before failing to obtain a lock.
-        return false; // Failure; could not open file and obtain an exclusive lock.
-    }
-
-    if (($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) && ($htaccess_file_contents === wp_check_invalid_utf8($htaccess_file_contents)) ) {
+    if ($htaccess = $self->getHtaccessFile($htaccess_file, $htaccess_marker)) {
         $template_blocks = '# BEGIN '.NAME.' '.$htaccess_marker.' (the '.$htaccess_marker.' marker is required for '.NAME.'; do not remove)'."\n"; // Initialize.
         if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
             foreach (scandir($templates_dir) as $_template_file) {
@@ -52,25 +44,15 @@ $self->addWpHtaccess = function () use ($self) {
             unset($_template_file); // Housekeeping.
         }
         $template_blocks        = trim($template_blocks)."\n".'# END '.NAME.' '.$htaccess_marker;
-        $htaccess_file_contents = $template_blocks."\n\n".$htaccess_file_contents;
-    } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
-        flock($_fp, LOCK_UN);
-        fclose($_fp);
-        return false;
+        $htaccess_file_contents = $template_blocks."\n\n".$htaccess['htaccess_file_contents'];
+    } else {
+        return false; // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
     }
 
-    $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
-
-    // Note: rewind() necessary here because we fread() above.
-    if ($_have_marker === false || !rewind($_fp) || !ftruncate($_fp, 0) || !fwrite($_fp, $htaccess_file_contents)) {
-        flock($_fp, LOCK_UN);
-        fclose($_fp);
-        return false; // Failure; unexpected file contents or could not write changes.
+    if (!$self->writeHtaccessFile($htaccess['fp'], $htaccess_file_contents, $htaccess_marker, true)) {
+        return false; // Failure; could not write changes.
     }
 
-    fflush($_fp);
-    flock($_fp, LOCK_UN);
-    fclose($_fp);
     return true; // Added successfully.
 };
 
@@ -91,41 +73,21 @@ $self->removeWpHtaccess = function () use ($self) {
     if (!($htaccess_file = $self->findHtaccessFile())) {
         return true; // File does not exist.
     }
-    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
-        return false; // Not possible.
-    }
 
-    if (!($_fp = fopen($htaccess_file,'rb+')) || !flock($_fp, LOCK_EX)) {
-        fclose($_fp); // Just in case we opened it before failing to obtain a lock.
-        return false; // Failure; could not open file and obtain an exclusive lock.
-    }
-
-    if (($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) && ($htaccess_file_contents === wp_check_invalid_utf8($htaccess_file_contents))) {
-        if (stripos($htaccess_file_contents, $htaccess_marker) === false) {
-            flock($_fp, LOCK_UN);
-            fclose($_fp);
+    if ($htaccess = $self->getHtaccessFile($htaccess_file, $htaccess_marker)) {
+        if ($htaccess['marker_exists'] === false) {
             return true; // Template blocks are already gone.
         }
         $regex                  = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$htaccess_marker.'\s*/is';
-        $htaccess_file_contents = preg_replace($regex, '', $htaccess_file_contents);
-    } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
-        flock($_fp, LOCK_UN);
-        fclose($_fp);
-        return false;
+        $htaccess_file_contents = preg_replace($regex, '', $htaccess['htaccess_file_contents']);
+    } else {
+        return false; // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
     }
 
-    $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
-
-    // Note: rewind() necessary here because we fread() above.
-    if ($_have_marker !== false || !rewind($_fp) || !ftruncate($_fp, 0) || !fwrite($_fp, $htaccess_file_contents)) {
-        flock($_fp, LOCK_UN);
-        fclose($_fp);
+    if (!$self->writeHtaccessFile($htaccess['fp'], $htaccess_file_contents, $htaccess_marker, false)) {
         return false; // Failure; could not write changes.
     }
 
-    fflush($_fp);
-    flock($_fp, LOCK_UN);
-    fclose($_fp);
     return true; // Removed successfully.
 };
 
@@ -145,4 +107,68 @@ $self->findHtaccessFile = function () use ($self) {
         $file = $htaccess_file;
     }
     return $file;
+};
+
+/*
+ * Gets contents of `/.htaccess` file with exclusive lock to read+write.
+ *
+ * @since 15xxxx Improving `.htaccess` utils.
+ *
+ * @param string $htaccess_file     Absolute path to the htaccess file
+ * @param string $htaccess_marker   Unique comment marker used to identify rules added by this plugin
+ *
+ * @return array|bool Returns an array with data necessary to call $self->writeHtaccessFile():
+ *               `fp` a file pointer resource, `htaccess_file_contents` a string, and
+ *               `marker_exists` a boolean false when the $htaccess_marker is not found in
+ *               htaccess contents, or `false` on failure.
+ */
+$self->getHtaccessFile = function ($htaccess_file, $htaccess_marker) use ($self) {
+
+    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
+        return false; // Not possible.
+    }
+
+    if (!($_fp = fopen($htaccess_file,'rb+')) || !flock($_fp, LOCK_EX)) {
+        fclose($_fp); // Just in case we opened it before failing to obtain a lock.
+        return false; // Failure; could not open file and obtain an exclusive lock.
+    }
+
+    if (($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) && ($htaccess_file_contents === wp_check_invalid_utf8($htaccess_file_contents))) {
+        $marker_exists = stripos($htaccess_file_contents, $htaccess_marker);
+        return array('fp'=>$_fp, 'htaccess_file_contents'=>$htaccess_file_contents, 'marker_exists'=>$marker_exists);
+    } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
+        flock($_fp, LOCK_UN);
+        fclose($_fp);
+        return false;
+    }
+
+
+};
+
+/*
+ * Writes to `/.htaccess` file using provided file pointer.
+ *
+ * @since 15xxxx Improving `.htaccess` utils.
+ *
+ * @param resource $fp File pointer reource created by $self->getHtaccessFile()
+ * @param string $htaccess_file_contents Contents to write to htaccess file
+ * @param string $htaccess_marker   Unique comment marker used to identify rules added by this plugin
+ * @param bool $require_marker Whether or not to require the marker be present in contents before writing
+ *
+ * @return bool True on success, false on failure.
+ */
+$self->writeHtaccessFile = function ($fp, $htaccess_file_contents, $htaccess_marker, $require_marker) use ($self) {
+    $_have_marker = stripos($htaccess_file_contents, $htaccess_marker);
+
+    // Note: rewind() necessary here because we fread() above.
+    if (($require_marker && $_have_marker === false) || !rewind($fp) || !ftruncate($fp, 0) || !fwrite($fp, $htaccess_file_contents)) {
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        return false; // Failure; could not write changes.
+    }
+
+    fflush($fp);
+    flock($fp, LOCK_UN);
+    fclose($fp);
+    return true;
 };
