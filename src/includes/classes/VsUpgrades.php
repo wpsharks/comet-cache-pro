@@ -330,40 +330,22 @@ class VsUpgrades extends AbsBase
             if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
                 return; // File does not exist.
             }
-            if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
-                return false; // Not possible.
-            }
+            if ($htaccess = $this->plugin>readHtaccessFile($htaccess_file, 'ZenCache')) {
 
-            if (!($_fp = fopen($htaccess_file,'rb+')) || !flock($_fp, LOCK_EX)) {
-                fclose($_fp); // Just in case we opened it before failing to obtain a lock.
-                return false; // Failure; could not open file and obtain an exclusive lock.
-            }
-
-            if (($htaccess_file_contents = fread($_fp, filesize($htaccess_file))) && ($htaccess_file_contents === wp_check_invalid_utf8($htaccess_file_contents))) {
-
-                if (stripos($htaccess_file_contents, 'ZenCache') === false) {
+                if ($htaccess['marker_exists'] === false) {
+                    flock($htaccess['fp'], LOCK_UN);
+                    fclose($htaccess['fp']);
                     return; // Template blocks are already gone.
                 }
                 if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
-                    $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess_file_contents);
-                    $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess_file_contents);
+                    $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess['file_contents']);
+                    $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
+
+                    if (!$this->plugin->writeHtaccessFile($htaccess['fp'], $htaccess_file_contents, 'ZenCache', false)) {
+                        return; // Failure; could not write changes.
+                    }
                 }
-            } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
-                flock($_fp, LOCK_UN);
-                fclose($_fp);
-                return false;
             }
-
-            // Note: rewind() necessary here because we fread() above.
-            if (!rewind($_fp) || !ftruncate($_fp, 0) || !fwrite($_fp, $htaccess_file_contents)) {
-                flock($_fp, LOCK_UN);
-                fclose($_fp);
-                return false; // Failure; unexpected file contents or could not write changes.
-            }
-
-            fflush($_fp);
-            flock($_fp, LOCK_UN);
-            fclose($_fp);
         }
     }
 }
