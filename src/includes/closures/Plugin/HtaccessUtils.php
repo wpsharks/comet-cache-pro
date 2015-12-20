@@ -128,7 +128,7 @@ $self->findHtaccessFile = function () use ($self) {
  *
  * @return bool False on failure, true otherwise.
  */
-$self->closeHtaccessFile = function ($htaccess) use ($self) {
+$self->closeHtaccessFile = function (array $htaccess) use ($self) {
     if (!is_resource($htaccess['fp'])) {
         return false; // Failure; requires a valid file resource.
     }
@@ -157,6 +157,9 @@ $self->closeHtaccessFile = function ($htaccess) use ($self) {
  */
 $self->readHtaccessFile = function ($htaccess_file = '', $htaccess_marker = '') use ($self) {
 
+    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
+        return false; // Not possible.
+    }
     if (empty($htaccess_marker)) {
         $htaccess_marker = $self->htaccess_marker;
     }
@@ -166,14 +169,12 @@ $self->readHtaccessFile = function ($htaccess_file = '', $htaccess_marker = '') 
             return false; // Unable to find and/or create `.htaccess`.
         } // If it doesn't exist, we create the `.htaccess` file here.
     }
-    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
-        return false; // Not possible.
-    }
     if (!($fp = fopen($htaccess_file, 'rb+')) || !flock($fp, LOCK_EX)) {
         fclose($fp); // Just in case we opened it before failing to obtain a lock.
         return false; // Failure; could not open file and obtain an exclusive lock.
     }
     if (($file_contents = fread($fp, filesize($htaccess_file))) && ($file_contents === wp_check_invalid_utf8($file_contents))) {
+        rewind($fp); // Rewind pointer to beginning of file.
         $marker_exists = stripos($file_contents, $htaccess_marker);
         return compact('fp', 'file_contents', 'marker_exists');
     } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
@@ -194,14 +195,15 @@ $self->readHtaccessFile = function ($htaccess_file = '', $htaccess_marker = '') 
  *
  * @return bool True on success, false on failure.
  */
-$self->writeHtaccessFile = function ($htaccess, $require_marker = true, $htaccess_marker = '') use ($self) {
+$self->writeHtaccessFile = function (array $htaccess, $require_marker = true, $htaccess_marker = '') use ($self) {
 
+    if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
+        return false; // Not possible.
+    }
     if (!is_resource($htaccess['fp'])) {
         return false;
     }
-    if (empty($htaccess_marker)) {
-        $htaccess_marker = $self->htaccess_marker;
-    }
+    $htaccess_marker = $htaccess_marker ?: $self->htaccess_marker;
 
     $_have_marker = stripos($htaccess['file_contents'], $htaccess_marker);
 
