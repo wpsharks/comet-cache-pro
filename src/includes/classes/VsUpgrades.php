@@ -333,15 +333,15 @@ class VsUpgrades extends AbsBase
             if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file, 'ZenCache')) {
 
                 if ($htaccess['marker_exists'] === false) {
-                    flock($htaccess['fp'], LOCK_UN);
-                    fclose($htaccess['fp']);
+                    $this->plugin->closeHtaccessFile($htaccess); // No need to write to htaccess file in this case.
                     return; // Template blocks are already gone.
                 }
                 if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
-                    $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess['file_contents']);
-                    $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = trim($htaccess['file_contents']);
 
-                    if (!$this->plugin->writeHtaccessFile($htaccess['fp'], $htaccess_file_contents, 'ZenCache', false)) {
+                    if (!$this->plugin->writeHtaccessFile($htaccess, false, 'ZenCache')) {
                         return; // Failure; could not write changes.
                     }
                 }
