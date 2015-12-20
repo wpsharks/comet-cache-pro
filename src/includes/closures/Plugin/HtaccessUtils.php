@@ -180,14 +180,13 @@ $self->findHtaccessMarker = function ($htaccess_marker = '') use ($self) {
  */
 $self->readHtaccessFile = function ($htaccess_file = '') use ($self) {
 
-    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
-        return false; // Not possible.
-    }
-
     if (empty($htaccess_file) && !($htaccess_file = $self->findHtaccessFile())) {
         if (!is_writable($self->wpHomePath()) || file_put_contents($htaccess_file = $self->wpHomePath().'.htaccess', '') === false) {
             return false; // Unable to find and/or create `.htaccess`.
         } // If it doesn't exist, we create the `.htaccess` file here.
+    }
+    if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
+        return false; // Not possible.
     }
     if (!($fp = fopen($htaccess_file, 'rb+')) || !flock($fp, LOCK_EX)) {
         fclose($fp); // Just in case we opened it before failing to obtain a lock.
