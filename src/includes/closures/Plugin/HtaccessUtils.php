@@ -81,14 +81,11 @@ $self->removeWpHtaccess = function () use ($self) {
     if (!($htaccess_file = $self->findHtaccessFile())) {
         return true; // File does not exist.
     }
-
+    if (!$self->findHtaccessMarker()) {
+        return true; // Template blocks are already gone.
+    }
     if (!($htaccess = $self->readHtaccessFile())) {
         return false; // Failure; could not read file, create file, or invalid UTF8 encountered, file may be corrupt.
-    }
-
-    if ($htaccess['marker_exists'] === false) {
-        $self->closeHtaccessFile($htaccess); // No need to write to htaccess file in this case.
-        return true; // Template blocks are already gone.
     }
 
     $regex                     = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$self->htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$self->htaccess_marker.'\s*/is';
@@ -139,29 +136,52 @@ $self->closeHtaccessFile = function (array $htaccess) use ($self) {
 };
 
 /*
+ * Utility method used to check if htaccess file contains $htaccess_marker
+ *
+ * @since 151114 Adding `.htaccess` tweaks.
+ *
+ * @param string    $htaccess_marker    Unique comment marker used to identify rules added by this plugin.
+ *
+ * @return bool False on failure or when marker does not exist in htaccess, true otherwise.
+ */
+$self->findHtaccessMarker = function ($htaccess_marker = '') use ($self) {
+    if (!($htaccess_file = $self->findHtaccessFile())) {
+        return false; // File does not exist.
+    }
+    if (!is_readable($htaccess_file)) {
+        return false; // Not possible.
+    }
+    if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
+        return false; // Failure; could not read file.
+    }
+    if (empty($htaccess_marker)) {
+        $htaccess_marker = $self->htaccess_marker;
+    }
+    if (stripos($htaccess_file_contents, $htaccess_marker) === false) {
+        return false; // Htaccess marker is missing
+    }
+
+    return true; // Htaccess has the marker
+};
+
+/*
  * Gets contents of `/.htaccess` file with exclusive lock to read+write. If file doesn't exist, we attempt to create it.
  *
  * @since 15xxxx Improving `.htaccess` utils.
  *
  * @param string $htaccess_file     Absolute path to the htaccess file. Optional.
  *                                  If not provided, we attempt to find it or create it if it doesn't exist.
- * @param string $htaccess_marker   Unique comment marker used to identify rules added by this plugin. Optional.
  *
  * @return array|bool Returns an array with data necessary to call $self->writeHtaccessFile():
- *               `fp` a file pointer resource, `file_contents` a string, and
- *               `marker_exists` a boolean indicating if the $self->htaccess_marker was found in
- *                contents. Returns `false` on failure.
+ *               `fp` a file pointer resource, `file_contents` a string. Returns `false` on failure.
  *
  * @note If a call to this method is not followed by a call to $self->writeHtaccessFile(),
  *       you must make sure that you unlock and close the `fp` resource yourself.
  */
-$self->readHtaccessFile = function ($htaccess_file = '', $htaccess_marker = '') use ($self) {
+$self->readHtaccessFile = function ($htaccess_file = '') use ($self) {
 
     if (!is_readable($htaccess_file) || !is_writable($htaccess_file) || (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
         return false; // Not possible.
-    }
-    if (empty($htaccess_marker)) {
-        $htaccess_marker = $self->htaccess_marker;
     }
 
     if (empty($htaccess_file) && !($htaccess_file = $self->findHtaccessFile())) {
@@ -175,8 +195,7 @@ $self->readHtaccessFile = function ($htaccess_file = '', $htaccess_marker = '') 
     }
     if (($file_contents = fread($fp, filesize($htaccess_file))) && ($file_contents === wp_check_invalid_utf8($file_contents))) {
         rewind($fp); // Rewind pointer to beginning of file.
-        $marker_exists = stripos($file_contents, $htaccess_marker);
-        return compact('fp', 'file_contents', 'marker_exists');
+        return compact('fp', 'file_contents');
     } else { // Failure; could not read file or invalid UTF8 encountered, file may be corrupt.
         flock($fp, LOCK_UN);
         fclose($fp);

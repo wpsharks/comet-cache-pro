@@ -330,12 +330,10 @@ class VsUpgrades extends AbsBase
             if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
                 return; // File does not exist.
             }
-            if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file, 'ZenCache')) {
-
-                if ($htaccess['marker_exists'] === false) {
-                    $this->plugin->closeHtaccessFile($htaccess); // No need to write to htaccess file in this case.
-                    return; // Template blocks are already gone.
-                }
+            if (!$this->plugin->findHtaccessMarker('ZenCache')) {
+                return; // Template blocks are already gone.
+            }
+            if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file)) {
                 if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
                     $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess['file_contents']);
                     $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
