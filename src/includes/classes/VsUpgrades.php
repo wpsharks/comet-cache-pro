@@ -341,7 +341,7 @@ class VsUpgrades extends AbsBase
                     $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
                     $htaccess['file_contents'] = trim($htaccess['file_contents']);
 
-                    if (!$this->plugin->writeHtaccessFile($htaccess, false, 'ZenCache')) {
+                    if (!$this->plugin->writeHtaccessFile($htaccess, false)) {
                         return; // Failure; could not write changes.
                     }
                 }
