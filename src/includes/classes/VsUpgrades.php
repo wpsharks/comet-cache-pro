@@ -330,27 +330,19 @@ class VsUpgrades extends AbsBase
             if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
                 return; // File does not exist.
             }
-            if (!is_readable($htaccess_file)) {
-                return; // Not possible.
-            }
-            if (($htaccess_file_contents = file_get_contents($htaccess_file)) === false) {
-                return; // Failure; could not read file.
-            }
-            if (stripos($htaccess_file_contents, 'ZenCache') === false) {
+            if (!$this->plugin->findHtaccessMarker('ZenCache')) {
                 return; // Template blocks are already gone.
             }
-            if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
-                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess_file_contents);
-                $htaccess_file_contents = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess_file_contents);
-            }
-            if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
-                return; // We may NOT edit any files.
-            }
-            if (!is_writable($htaccess_file)) {
-                return; // Not possible.
-            }
-            if (file_put_contents($htaccess_file, $htaccess_file_contents) === false) {
-                return; // Failure; could not write changes.
+            if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file)) {
+                if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
+                    $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = trim($htaccess['file_contents']);
+
+                    if (!$this->plugin->writeHtaccessFile($htaccess, false)) {
+                        return; // Failure; could not write changes.
+                    }
+                }
             }
         }
     }
