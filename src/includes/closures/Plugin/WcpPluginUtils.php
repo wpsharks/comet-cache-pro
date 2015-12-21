@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
 * Automatically wipes/clears on plugin activation/deactivation.
 *
-* @since 15xxxx Adding auto-wipe|clear on plugin activations/deactivations.
+* @since 151220 Adding auto-wipe|clear on plugin activations/deactivations.
 *
 * @attaches-to `activated_plugin` hook.
 * @attaches-to `deactivated_plugin` hook.

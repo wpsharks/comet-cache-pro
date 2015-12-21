@@ -83,7 +83,7 @@ $self->currentUserCanWipeCdnCache = $self->currentUserCanClearCdnCache;
 /*
 * Current user can clear expired transients?
 *
-* @since 15xxxx Enhancing user permissions.
+* @since 151220 Enhancing user permissions.
 *
 * @return boolean Current user can clear expired transients?
 */

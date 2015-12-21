@@ -380,7 +380,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Adding transient cache wipe handler.
+     * @since 151220 Adding transient cache wipe handler.
      *
      * @param mixed Input action argument(s).
      */
@@ -405,7 +405,7 @@ class Actions extends AbsBase
     /**
      * Action handler.
      *
-     * @since 15xxxx Adding transient cache clear handler.
+     * @since 151220 Adding transient cache clear handler.
      *
      * @param mixed Input action argument(s).
      */

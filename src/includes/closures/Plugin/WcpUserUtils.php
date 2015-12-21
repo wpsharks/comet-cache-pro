@@ -62,7 +62,7 @@ $self->autoClearUserCacheA1 = function ($user_id) use ($self) {
 /*
 * Automatically clears cache files associated with a particular user.
 *
-* @since 15xxxx Using `updated_user_meta` instead of `update_user_metadata`
+* @since 151220 Using `updated_user_meta` instead of `update_user_metadata`
 *
 * @attaches-to `updated_user_meta` hook.
 *

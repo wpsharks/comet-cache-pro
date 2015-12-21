@@ -156,7 +156,7 @@ $self->httpStatus = function () use ($self) {
 /*
 * Sends no-cache headers.
 *
-* @since 15xxxx Enhancing no-cache headers.
+* @since 151220 Enhancing no-cache headers.
 */
 $self->sendNoCacheHeaders = function() use($self) {
     header_remove('Last-Modified');

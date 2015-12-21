@@ -317,7 +317,7 @@ class VsUpgrades extends AbsBase
     /**
      * Before we changed the htaccess comment blocks to contain a unique identifier.
      *
-     * @since 15xxxx Improving `.htaccess` tweaks.
+     * @since 151220 Improving `.htaccess` tweaks.
      */
     protected function fromLte151114()
     {

@@ -25,7 +25,7 @@ $self->extendCronSchedules = function ($schedules) use ($self) {
  *
  * @attaches-to `init` hook.
  *
- * @since 15xxxx Improving WP Cron setup and validation of schedules
+ * @since 151220 Improving WP Cron setup and validation of schedules
  */
 $self->checkCronSetup = function () use ($self) {
     if ($self->options['crons_setup'] < 1439005906
@@ -60,7 +60,7 @@ $self->checkCronSetup = function () use ($self) {
 /*
  * Resets `crons_setup` and clears WP-Cron schedules.
  *
- * @since 15xxxx Fixing bug with Auto-Cache Engine cron disappearing in some scenarios
+ * @since 151220 Fixing bug with Auto-Cache Engine cron disappearing in some scenarios
  *
  * @note This MUST happen upon uninstall and deactivation due to buggy WP_Cron behavior. Events with a custom schedule will disappear when plugin is not active (see http://bit.ly/1lGdr78).
  */

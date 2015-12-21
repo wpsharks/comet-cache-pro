@@ -5,7 +5,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
 * Automatically wipes expired transients.
 *
-* @since 15xxxx Adding support for expired transients.
+* @since 151220 Adding support for expired transients.
 *
 * @param bool $manually True if wiping is done manually.
 * @param boolean $maybe Defaults to a true value.
@@ -63,7 +63,7 @@ $self->wipeExpiredTransients = function ($manually = false, $maybe = true) use (
 /*
 * Automatically clears expired transients.
 *
-* @since 15xxxx Adding support for expired transients.
+* @since 151220 Adding support for expired transients.
 *
 * @param bool $manually True if clearing is done manually.
 * @param boolean $maybe Defaults to a true value.
