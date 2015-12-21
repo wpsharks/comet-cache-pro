@@ -46,6 +46,7 @@ class VsUpgrades extends AbsBase
         $this->fromQuickCache();
         $this->fromLte150807();
         $this->fromLte151107();
+        $this->fromLte151114();
     }
 
     /**
@@ -308,6 +309,39 @@ class VsUpgrades extends AbsBase
                 if ($this->plugin->options !== $existing_options) {
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
+                }
+            }
+        }
+    }
+
+    /**
+     * Before we changed the htaccess comment blocks to contain a unique identifier.
+     *
+     * @since 151220 Improving `.htaccess` tweaks.
+     */
+    protected function fromLte151114()
+    {
+        if (version_compare($this->prev_version, '151114', '<=')) {
+            global $is_apache;
+
+            if (!$is_apache) {
+                return; // Not running the Apache web server.
+            }
+            if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
+                return; // File does not exist.
+            }
+            if (!$this->plugin->findHtaccessMarker('ZenCache')) {
+                return; // Template blocks are already gone.
+            }
+            if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file)) {
+                if (is_dir($templates_dir = dirname(dirname(__FILE__)).'/templates/htaccess/back-compat')) {
+                    $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = str_replace(file_get_contents($templates_dir.'/v151114-2.txt'), '', $htaccess['file_contents']);
+                    $htaccess['file_contents'] = trim($htaccess['file_contents']);
+
+                    if (!$this->plugin->writeHtaccessFile($htaccess, false)) {
+                        return; // Failure; could not write changes.
+                    }
                 }
             }
         }

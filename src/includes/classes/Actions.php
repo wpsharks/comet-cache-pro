@@ -41,6 +41,11 @@ class Actions extends AbsBase
         'ajaxClearCdnCache',
         /*[/pro]*/
 
+        /*[pro strip-from="lite"]*/
+        'ajaxWipeExpiredTransients',
+        'ajaxClearExpiredTransients',
+        /*[/pro]*/
+
         'saveOptions',
         'restoreDefaultOptions',
 
@@ -165,7 +170,7 @@ class Actions extends AbsBase
         $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
 
         if ($opcache_counter) {
-            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
+            $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
         if ($s2clean_counter) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
@@ -210,7 +215,7 @@ class Actions extends AbsBase
             $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
         }
         if ($opcache_counter) {
-            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPCache keys.</strong></p>', SLUG_TD), $opcache_counter);
+            $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
         if ($s2clean_counter) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> s2Clean cache files.</strong></p>', SLUG_TD), $s2clean_counter);
@@ -290,7 +295,7 @@ class Actions extends AbsBase
         $counter = $this->plugin->wipeOpcache(true, false);
 
         $response = sprintf(__('<p>Opcache successfully wiped.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>Wiped out <code>%1$s</code> OPCache keys.</p>', SLUG_TD), esc_html($counter));
+        $response .= sprintf(__('<p>Wiped out <code>%1$s</code> OPcache keys.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
@@ -315,7 +320,7 @@ class Actions extends AbsBase
         $counter = $this->plugin->clearOpcache(true, false);
 
         $response = sprintf(__('<p>Opcache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
-        $response .= sprintf(__('<p>Cleared <code>%1$s</code> OPCache keys.</p>', SLUG_TD), esc_html($counter));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> OPcache keys.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
@@ -366,6 +371,56 @@ class Actions extends AbsBase
 
         $response = sprintf(__('<p>CDN cache successfully cleared.</p>', SLUG_TD), esc_html(NAME));
         $response .= sprintf(__('<p>The CDN cache invalidation counter is now: <code>%1$s</code></p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 151220 Adding transient cache wipe handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxWipeExpiredTransients($args)
+    {
+        if (!$this->plugin->currentUserCanWipeExpiredTransients()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = (int)($this->plugin->wipeExpiredTransients(true, false) / 2); // Divide in half for Dashboard message
+
+        $response = sprintf(__('<p>Expired transients wiped successfully.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Wiped <code>%1$s</code> expired transients.</p>', SLUG_TD), esc_html($counter));
+
+        exit($response); // JavaScript will take it from here.
+    }
+    /*[/pro]*/
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * Action handler.
+     *
+     * @since 151220 Adding transient cache clear handler.
+     *
+     * @param mixed Input action argument(s).
+     */
+    protected function ajaxClearExpiredTransients($args)
+    {
+        if (!$this->plugin->currentUserCanClearExpiredTransients()) {
+            return; // Not allowed to clear.
+        }
+        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
+            return; // Unauthenticated POST data.
+        }
+        $counter = (int)($this->plugin->clearExpiredTransients(true, false) / 2); // Divide in half for Dashboard message
+
+        $response = sprintf(__('<p>Expired transients cleared successfully.</p>', SLUG_TD), esc_html(NAME));
+        $response .= sprintf(__('<p>Cleared <code>%1$s</code> expired transients for this site.</p>', SLUG_TD), esc_html($counter));
 
         exit($response); // JavaScript will take it from here.
     }
@@ -521,6 +576,9 @@ class Actions extends AbsBase
             if (!($add_advanced_cache = $this->plugin->addAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
+            if (!$this->plugin->options['auto_cache_enable'] || !$this->plugin->options['auto_cache_sitemap_url']) {
+                $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
+            }
             $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
@@ -532,6 +590,7 @@ class Actions extends AbsBase
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
             }
+            $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
         }
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
@@ -660,6 +719,9 @@ class Actions extends AbsBase
         if (!isset($args['check'])) {
             $args['check'] = $this->plugin->options['pro_update_check'];
         }
+        if (!isset($args['check_stable'])) {
+            $args['check_stable'] = $this->plugin->options['pro_update_check_stable'];
+        }
         if (empty($args['username'])) {
             $args['username'] = $this->plugin->options['pro_update_username'];
         }
@@ -670,6 +732,7 @@ class Actions extends AbsBase
         $product_api_input_vars = array(
             'product_api' => array(
                 'action'   => 'latest_pro_update',
+                'stable'   => $args['check_stable'],
                 'username' => $args['username'],
                 'password' => $args['password'],
             ),
@@ -690,11 +753,12 @@ class Actions extends AbsBase
             wp_redirect($redirect_to).exit();
         }
         $this->plugin->updateOptions(array(
-            'last_pro_update_check' => time(),
-            'pro_update_check'      => $args['check'],
-            'pro_update_username'   => $args['username'],
-            'pro_update_password'   => $args['password'],
-            'latest_pro_version'    => $product_api_response->pro_version,
+            'last_pro_update_check'   => time(),
+            'pro_update_check'        => $args['check'],
+            'pro_update_check_stable' => $args['check_stable'],
+            'pro_update_username'     => $args['username'],
+            'pro_update_password'     => $args['password'],
+            'latest_pro_version'      => $product_api_response->pro_version,
         ));
         $this->plugin->dismissMainNotice('new-pro-version-available');
 

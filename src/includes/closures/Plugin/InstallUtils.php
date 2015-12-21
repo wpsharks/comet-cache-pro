@@ -11,9 +11,16 @@ namespace WebSharks\ZenCache\Pro;
 $self->activate = function () use ($self) {
     $self->setup(); // Ensure setup is complete.
 
+    if (!$self->options['welcomed'] && !$self->options['enable']) {
+        $settings_url = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), network_admin_url('/admin.php'));
+        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url), array('push_to_top' => true)));
+        $self->updateOptions(array('welcomed' => '1'));
+    }
+
     if (!$self->options['enable']) {
         return; // Nothing to do.
     }
+
     $self->addWpCacheToWpConfig();
     $self->addWpHtaccess();
     $self->addAdvancedCache();
@@ -62,6 +69,7 @@ $self->deactivate = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->clearCache();
+    $self->resetCronSetup();
 };
 
 /*
@@ -85,6 +93,7 @@ $self->uninstall = function () use ($self) {
     $self->removeWpHtaccess();
     $self->removeAdvancedCache();
     $self->wipeCache();
+    $self->resetCronSetup();
 
     if (!$self->options['uninstall_on_deletion']) {
         return; // Nothing to do here.
@@ -92,15 +101,6 @@ $self->uninstall = function () use ($self) {
     $self->deleteAdvancedCache();
     $self->deleteBaseDir();
 
-    if (is_multisite()) { // Main site CRON jobs.
-        switch_to_blog(get_current_site()->blog_id);
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-        restore_current_blog(); // Restore current blog.
-    } else { // Standard WP installation.
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
-        wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
-    }
     $wpdb = $self->wpdb(); // WordPress DB.
     $like = '%'.$wpdb->esc_like(GLOBAL_NS).'%';
 
@@ -288,11 +288,15 @@ $self->addAdvancedCache = function () use ($self) {
               /*[/pro]*/
         )
     );
+    if ($self->applyWpFilters(GLOBAL_NS.'_exclude_uris_client_side_too', true)) {
+        $possible_advanced_cache_constant_key_values['exclude_client_side_uris'] .= "\n".$self->options['exclude_uris'];
+    }
     foreach ($possible_advanced_cache_constant_key_values as $_option => $_value) {
         $_value = (string) $_value; // Force string.
 
         switch ($_option) {
             case 'exclude_uris': // Converts to regex (caSe insensitive).
+            case 'exclude_client_side_uris': // Converts to regex (caSe insensitive).
             case 'exclude_refs': // Converts to regex (caSe insensitive).
             case 'exclude_agents': // Converts to regex (caSe insensitive).
 
@@ -367,6 +371,8 @@ $self->addAdvancedCache = function () use ($self) {
     }
     $self->cacheUnlock($cache_lock); // Release.
 
+    $self->clearAcDropinFromOpcacheByForce();
+
     return true;
 };
 
@@ -404,6 +410,8 @@ $self->removeAdvancedCache = function () use ($self) {
     if (file_put_contents($advanced_cache_file, '') !== 0) {
         return false; // Failure.
     }
+    $self->clearAcDropinFromOpcacheByForce();
+
     return true;
 };
 
@@ -431,6 +439,8 @@ $self->deleteAdvancedCache = function () use ($self) {
             return false; // Not possible; or outright failure.
         }
     }
+    $self->clearAcDropinFromOpcacheByForce();
+
     return true; // Deletion success.
 };
 

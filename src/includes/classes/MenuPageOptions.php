@@ -67,6 +67,16 @@ class MenuPageOptions extends MenuPage
                 echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
             echo '</div>'."\n";
+        } else { // For the lite version (default behavior).
+            echo '<div class="plugin-menu-page-version">'."\n";
+            echo '  '.sprintf(__('%1$s&trade; v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
+
+            if ($this->plugin->options['latest_lite_version'] && version_compare(VERSION, $this->plugin->options['latest_lite_version'], '<')) {
+                echo '(<a href="'.esc_attr(self_admin_url('/plugins.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+            } else {
+                echo '(<a href="'.esc_attr('http://zencache.com/changelog-lite/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
+            }
+            echo '</div>'."\n";
         }
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
@@ -261,11 +271,11 @@ class MenuPageOptions extends MenuPage
             }
             if ($this->plugin->functionIsPossible('opcache_reset')) {
                 echo '  <hr />'."\n";
-                echo '  <h3>'.__('Clear the <a href="http://zencache.com/r/php-opcache/" target="_blank">PHP OPCache</a> Too?', SLUG_TD).'</h3>'."\n";
-                echo '  <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to clear the PHP OPCache too? This is highly recommended, so that all PHP files in the server\'s opcode cache are purged from memory also.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+                echo '  <h3>'.__('Clear the <a href="http://zencache.com/r/php-opcache/" target="_blank">PHP OPcache</a> Too?', SLUG_TD).'</h3>'."\n";
+                echo '  <p>'.sprintf(__('If you clear the cache manually, do you want %1$s to clear the PHP OPcache too? This is not necessary, but if you want a truly clean start, this will clear all PHP files in the server\'s opcode cache also. Note: If you don\'t already know what the PHP OPcache is, it is suggested that you leave this disabled. It really is not necessary. This is just an added feature for advanced users.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
                 echo '  <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_opcache_enable]" class="-no-if-enabled">'."\n";
-                echo '      <option value="1"'.selected($this->plugin->options['cache_clear_opcache_enable'], '1', false).'>'.__('Yes, if the PHP OPCache extension is enabled, also clear the PHP opcode cache.', SLUG_TD).'</option>'."\n";
-                echo '      <option value="0"'.selected($this->plugin->options['cache_clear_opcache_enable'], '0', false).'>'.__('No, I don\'t use the PHP OPCache extension; or, I don\'t want the opcode cache cleared.', SLUG_TD).'</option>'."\n";
+                echo '      <option value="0"'.selected($this->plugin->options['cache_clear_opcache_enable'], '0', false).'>'.__('No, I don\'t use the PHP OPcache extension; or, I don\'t want the opcode cache cleared.', SLUG_TD).'</option>'."\n";
+                echo '      <option value="1"'.selected($this->plugin->options['cache_clear_opcache_enable'], '1', false).'>'.__('Yes, if the PHP OPcache extension is enabled, also clear the entire PHP opcode cache.', SLUG_TD).'</option>'."\n";
                 echo '  </select></p>'."\n";
             }
             if ($this->plugin->functionIsPossible('s2clean')) {
@@ -396,10 +406,9 @@ class MenuPageOptions extends MenuPage
         }
         echo '      </div>'."\n";
 
-        echo '      <hr />'."\n";
-        echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
-
         if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
             echo '<h4 style="margin-bottom:0;">'.__('Auto-Clear a List of Custom URLs Too?', SLUG_TD).'</h4>'."\n";
             echo '<p style="margin-top:2px;">'.sprintf(__('When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '<p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_urls]" spellcheck="false" wrap="off" rows="5">'.format_to_edit($this->plugin->options['cache_clear_urls']).'</textarea></p>'."\n";
@@ -488,7 +497,19 @@ class MenuPageOptions extends MenuPage
         echo '      <p>'.sprintf(__('All of that being said, you could set this to just <code>60 seconds</code> and you would still see huge differences in speed and performance. If you\'re just starting out with %1$s (perhaps a bit nervous about old cache files being served to your visitors); you could set this to something like <code>30 minutes</code> and experiment with it while you build confidence in %1$s. It\'s not necessary to do so, but many site owners have reported this makes them feel like they\'re more-in-control when the cache has a short expiration time. All-in-all, it\'s a matter of preference <i class="si si-smile-o"></i>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age]" value="'.esc_attr($this->plugin->options['cache_max_age']).'" /></p>'."\n";
         echo '      <p class="info">'.__('<strong>Tip:</strong> the value that you specify here MUST be compatible with PHP\'s <a href="http://php.net/manual/en/function.strtotime.php" target="_blank" style="text-decoration:none;"><code>strtotime()</code></a> function. Examples: <code>30 seconds</code>, <code>2 hours</code>, <code>7 days</code>, <code>6 months</code>, <code>1 year</code>.', SLUG_TD).'</p>'."\n";
-        echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s will never serve a cache file that is older than what you specify here (even if one exists in your cache directory; stale cache files are never used). In addition, a WP Cron job will automatically cleanup your cache directory (once daily); purging expired cache files periodically. This prevents a HUGE cache from building up over time, creating a potential storage issue.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s will never serve a cache file that is older than what you specify here (even if one exists in your cache directory; stale cache files are never used). In addition, a WP Cron job will automatically cleanup your cache directory (once per hour); purging expired cache files periodically. This prevents a HUGE cache from building up over time, creating a potential storage issue.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+
+        echo '      <hr />'."\n";
+
+        echo '      <h3>'.__('Cache Cleanup Schedule', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('If you have an extremely large site and you lower the default Cache Expiration Time of <code>7 days</code>, expired cache files can build up more quickly. By default, %1$s cleans up expired cache files via <a href="http://zencache.com/r/wp_cron-functions/" target="_blank">WP Cron</a> at an <code>hourly</code> interval, but you can tell %1$s to use a custom Cache Cleanup Schedule below to run the cleanup process more or less frequently, depending on your specific needs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_cleanup_schedule]">'."\n";
+        foreach (wp_get_schedules() as $_wp_cron_schedule_key => $_wp_cron_schedule) {
+            echo '       <option value="'.esc_attr($_wp_cron_schedule_key).'"'.selected($this->plugin->options['cache_cleanup_schedule'], $_wp_cron_schedule_key, false).'>'.esc_html($_wp_cron_schedule['display']).'</option>'."\n";
+        } // This builds the list of options using WP_Cron schedules configured for this WP installation.
+        unset($_wp_cron_schedule_key, $_wp_cron_schedule);
+        echo '      </select></p>'."\n";
+
         if (IS_PRO || $this->plugin->isProPreview()) {
             $_sys_getloadavg_unavailable = ($this->plugin->isProPreview() ? false : !$this->plugin->sysLoadAverages());
             echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
@@ -529,6 +550,11 @@ class MenuPageOptions extends MenuPage
         echo '      <p class="info">'.__('<strong>Tip:</strong> Setting this to <code>No</code> is highly recommended when running a membership plugin like <a href="http://wordpress.org/plugins/s2member/" target="_blank">s2Member</a> (as one example). In fact, many plugins like s2Member will send <a href="http://codex.wordpress.org/Function_Reference/nocache_headers" target="_blank">nocache_headers()</a> on their own, so your configuration here will likely be overwritten when you run such plugins (which is better anyway). In short, if you run a membership plugin, you should NOT allow a client-side browser cache.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.__('<strong>Tip:</strong> Setting this to <code>No</code> will NOT impact static content; e.g., CSS, JS, images, or other media. This setting pertains only to dynamic PHP scripts which produce content generated by WordPress.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.sprintf(__('<strong>Advanced Tip:</strong> if you have this set to <code>No</code>, but you DO want to allow a few special URLs to be cached by the browser; you can add this parameter to your URL <code>?%2$sABC=1</code>. This tells %1$s that it\'s OK for the browser to cache that particular URL. In other words, the <code>%2$sABC=1</code> parameter tells %1$s NOT to send no-cache headers to the browser.', SLUG_TD), esc_html(NAME), esc_html(strtolower(SHORT_NAME))).'</p>'."\n";
+        echo '      <h3>'.__('Exclusion Patterns for Client-Side Caching', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.__('When you enable Client-Side Caching above, you may want to prevent certain pages on your site from be cached by a client-side browser. This is where you will enter those if you need to (one per line). Searches are performed against the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank" style="text-decoration:none;"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don\'t put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD).'</p>'."\n";
+        echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_client_side_uris]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_client_side_uris']).'</textarea></p>'."\n";
+        echo '      <p class="info">'.__('<strong>Tip:</strong> let\'s use this example URL: <code>http://www.example.com/post/example-post-123</code>. To exclude this URL, you would put this line into the field above: <code>/post/example-post-123</code>. Or, you could also just put in a small fragment, like: <code>example</code> or <code>example-*-123</code> and that would exclude any URI containing that word fragment.', SLUG_TD).'</p>'."\n";
+        echo '      <p class="info">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g., one exclusion pattern per line.', SLUG_TD).'</p>'."\n";
         echo '   </div>'."\n";
 
         echo '</div>'."\n";
@@ -561,6 +587,14 @@ class MenuPageOptions extends MenuPage
             }
             echo '      <p class="info">'.__('<strong>Note:</strong> For most sites, the majority of their traffic (if not all of their traffic) comes from visitors who are not logged in, so disabling the cache for logged-in users is NOT ordinarily a performance issue. When a user IS logged-in, disabling the cache is considered ideal, because a logged-in user has a session open with your site; and the content they view should remain very dynamic in this scenario.', SLUG_TD).'</p>'."\n";
             echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> This setting includes some users who AREN\'T actually logged into the system, but who HAVE authored comments recently. %1$s includes comment authors as part of it\'s logged-in user check. This way comment authors will be able to see updates to the comment thread immediately; and, so that any dynamically-generated messages displayed by your theme will work as intended. In short, %1$s thinks of a comment author as a logged-in user, even though technically they are not. ~ Users who gain access to password-protected Posts/Pages are also included.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Static CDN Filters Enabled for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('While this defaults to a value of <code>No</code>, it should almost always be set to <code>Yes</code>. This value defaults to <code>No</code> only because Logged-In User caching (see above) defaults to <code>No</code> and setting this value to <code>Yes</code> by default can cause confusion for some users. Once you understand that Static CDN Filters can be applied safely for all visitors (logged-in or not logged-in), please choose <code>Yes</code> in the dropdown below. If you are not using Static CDN Filters, the value below is ignored.', SLUG_TD).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_when_logged_in]">'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['cdn_when_logged_in'], '0', false).'>'.__('No, disable Static CDN Filters when a user is logged-in.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="postload"'.selected($this->plugin->options['cdn_when_logged_in'], 'postload', false).'>'.__('Yes, enable Static CDN Filters for logged-in users (recommended) .', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '      <p class="info">'.__('<strong>Note:</strong> Static CDN Filters serve <em>static</em> resources. Static resources, are, simply put, static. Thus, it is not a problem to cache these resources for any visitor (logged-in or not logged-in). To avoid confusion, this defaults to a value of <code>No</code>, and we ask that you set it to <code>Yes</code> on your own so that you\'ll know to expect this behavior; i.e., that static resources will always be served from the CDN (logged-in or not logged-in) even though Logged-In User caching may be disabled above.', SLUG_TD).'</p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";
@@ -642,6 +676,7 @@ class MenuPageOptions extends MenuPage
         echo '      <h3>'.__('Don\'t Cache These Special URI Exclusion Patterns?', SLUG_TD).'</h3>'."\n";
         echo '      <p>'.__('Sometimes there are certain cases where a particular file, or a particular group of files, should never be cached. This is where you will enter those if you need to (one per line). Searches are performed against the <a href="https://gist.github.com/jaswsinc/338b6eb03a36c048c26f" target="_blank" style="text-decoration:none;"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don\'t put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD).'</p>'."\n";
         echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_uris]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_uris']).'</textarea></p>'."\n";
+
         echo '      <p class="info">'.__('<strong>Tip:</strong> let\'s use this example URL: <code>http://www.example.com/post/example-post-123</code>. To exclude this URL, you would put this line into the field above: <code>/post/example-post-123</code>. Or, you could also just put in a small fragment, like: <code>example</code> or <code>example-*-123</code> and that would exclude any URI containing that word fragment.', SLUG_TD).'</p>'."\n";
         echo '      <p class="info">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g., one exclusion pattern per line.', SLUG_TD).'</p>'."\n";
         echo '   </div>'."\n";
@@ -703,21 +738,33 @@ class MenuPageOptions extends MenuPage
             echo '            <option value="0"'.selected($this->plugin->options['auto_cache_enable'], '0', false).'>'.__('No, leave the Auto-Cache Engine disabled please.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.selected($this->plugin->options['auto_cache_enable'], '1', false).'>'.__('Yes, I want the Auto-Cache Engine to keep pages cached automatically.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
+
             echo '      <hr />'."\n";
+
             echo '      <div class="plugin-menu-page-panel-if-enabled -auto-cache-options">'."\n";
             echo '         <h3>'.__('XML Sitemap URL (or an XML Sitemap Index)', SLUG_TD).'</h3>'."\n";
             echo '         <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">'.esc_html(home_url('/')).'</td><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_sitemap_url]" value="'.esc_attr($this->plugin->options['auto_cache_sitemap_url']).'" /></td></tr></table>'."\n";
             if (is_multisite()) {
-                echo '      <p class="info" style="display:block; margin-top:-15px;">'.sprintf(__('In a Multisite Network, each child blog will be auto-cached too. %1$s will dynamically change the leading <code>%2$s</code> as necessary; for each child blog in the network. %1$s supports both sub-directory &amp; sub-domain networks; including domain mapping plugins. For more information about how the Auto-Cache Engine caches child blogs, see <a href="http://zencache.com/r/kb-article-how-does-the-auto-cache-engine-cache-child-blogs-in-a-multisite-network/" target="_blank">this article</a>.', SLUG_TD), esc_html(NAME), esc_html(home_url('/'))).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_ms_children_too]">'."\n";
+                echo '            <option value="0"'.selected($this->plugin->options['auto_cache_ms_children_too'], '0', false).'>'.__('All URLs in this network are in the sitemap for the main site.', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.selected($this->plugin->options['auto_cache_ms_children_too'], '1', false).'>'.__('Using the path I\'ve given, look for blog-specific sitemaps in each child blog also.', SLUG_TD).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p class="info" style="display:block; margin-top:0;">'.sprintf(__('<strong>↑</strong> If enabled here, each child blog can be auto-cached too. %1$s will dynamically change the leading <code>%2$s</code> as necessary; for each child blog in the network. %1$s supports both sub-directory &amp; sub-domain networks, including domain mapping plugins. For more information about how the Auto-Cache Engine caches child blogs, see <a href="http://zencache.com/r/kb-article-how-does-the-auto-cache-engine-cache-child-blogs-in-a-multisite-network/" target="_blank">this article</a>.', SLUG_TD), esc_html(NAME), esc_html(home_url('/'))).'</p>'."\n";
             }
+            echo '         <hr />'."\n";
+
             echo '         <h3>'.__('And/Or; a List of URLs to Auto-Cache (One Per Line)', SLUG_TD).'</h3>'."\n";
             echo '         <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_other_urls]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['auto_cache_other_urls']).'</textarea></p>'."\n";
-            echo '         <p class="info" style="display:block; margin-top:-15px;">'.__('<strong>Note:</strong> Wildcards are NOT supported here. If you are going to supply a list of URLs above, each line must contain one full URL for the Auto-Cache Engine to auto-cache. If you have many URLs, we recommend using an <a href="https://en.wikipedia.org/wiki/Sitemaps" target="_blank">XML Sitemap</a>.', SLUG_TD).'</p>'."\n";
+            echo '         <p class="info" style="display:block; margin-top:-5px;">'.__('<strong>Note:</strong> Wildcards are NOT supported here. If you are going to supply a list of URLs above, each line must contain one full URL for the Auto-Cache Engine to auto-cache. If you have many URLs, we recommend using an <a href="https://en.wikipedia.org/wiki/Sitemaps" target="_blank">XML Sitemap</a>.', SLUG_TD).'</p>'."\n";
+
             echo '         <hr />'."\n";
+
             echo '         <h3>'.__('Auto-Cache Delay Timer (in Milliseconds)', SLUG_TD).'</h3>'."\n";
             echo '         <p>'.__('As the Auto-Cache Engine runs through each URL, you can tell it to wait X number of milliseconds between each connection that it makes. It is strongly suggested that you DO have some small delay here. Otherwise, you run the risk of hammering your own web server with multiple repeated connections whenever the Auto-Cache Engine is running. This is especially true on very large sites; where there is the potential for hundreds of repeated connections as the Auto-Cache Engine goes through a long list of URLs. Adding a delay between each connection will prevent the Auto-Cache Engine from placing a heavy load on the processor that powers your web server. A value of <code>500</code> milliseconds is suggested here (half a second). If you experience problems, you can bump this up a little at a time, in increments of <code>500</code> milliseconds; until you find a happy place for your server. <em>Please note that <code>1000</code> milliseconds = <code>1</code> full second.</em>', SLUG_TD).'</p>'."\n";
             echo '         <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_delay]" value="'.esc_attr($this->plugin->options['auto_cache_delay']).'" /></p>'."\n";
+
             echo '         <hr />'."\n";
+
             echo '         <h3>'.__('Auto-Cache User-Agent String', SLUG_TD).'</h3>'."\n";
             echo '         <table style="width:100%;"><tr><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_user_agent]" value="'.esc_attr($this->plugin->options['auto_cache_user_agent']).'" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;">; '.esc_html(SLUG_TD.' '.VERSION).'</td></tr></table>'."\n";
             echo '         <p class="info" style="display:block;">'.__('This is how the Auto-Cache Engine identifies itself when connecting to URLs. See <a href="http://en.wikipedia.org/wiki/User_agent" target="_blank">User Agent</a> in the Wikipedia.', SLUG_TD).'</p>'."\n";

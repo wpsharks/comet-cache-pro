@@ -42,10 +42,8 @@ class MenuPageStats extends MenuPage
             } else {
                 echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
-
             echo '</div>'."\n";
         }
-
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/stats.png').'" alt="'.esc_attr(__('Statistics', SLUG_TD)).'" />'."\n";
 
         echo '</div>'."\n";
@@ -103,20 +101,20 @@ class MenuPageStats extends MenuPage
 
         echo '              <div class="-opcache">'."\n";
         echo '                  <div class="-memory">'."\n";
-        echo '                      <div class="-heading">'.__('OPCache Memory', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-heading">'.__('OPcache Memory', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-free"><span class="-value">&nbsp;</span> '.__('free', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-used"><span class="-value">&nbsp;</span> '.__('used', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-wasted"><span class="-value">&nbsp;</span> '.__('wasted', SLUG_TD).'</div>'."\n";
         echo '                  </div>'."\n";
 
         echo '                  <div class="-totals">'."\n";
-        echo '                      <div class="-heading">'.__('OPCache Totals', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-heading">'.__('OPcache Totals', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-scripts"><span class="-value">&nbsp;</span> '.__('cached scripts', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-keys"><span class="-value">&nbsp;</span> '.__('total cached keys', SLUG_TD).'</div>'."\n";
         echo '                  </div>'."\n";
 
         echo '                  <div class="-hits-misses">'."\n";
-        echo '                      <div class="-heading">'.__('OPCache Hits/Misses', SLUG_TD).'</div>'."\n";
+        echo '                      <div class="-heading">'.__('OPcache Hits/Misses', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-hits"><span class="-value">&nbsp;</span> '.__('hits', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-misses"><span class="-value">&nbsp;</span> '.__('misses', SLUG_TD).'</div>'."\n";
         echo '                      <div class="-hit-rate"><span class="-value">&nbsp;</span> '.__('hit rate', SLUG_TD).'</div>'."\n";

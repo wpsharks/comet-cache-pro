@@ -146,7 +146,7 @@ $self->allAdminNotices = function () use ($self) {
         # If persistent, allow a site owner to dismiss.
 
         $_dismiss = ''; // Reset this to its default state.
-        if ($_notice['persistent_key']) { // See above. The `dismissNotice()` action requires `$self->cap` always.
+        if ($_notice['persistent_key'] && $_notice['dismissable']) { // See above. The `dismissNotice()` action requires `$self->cap` always.
             $_dismiss = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissNotice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
             $_dismiss = '<a style="display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
         }
@@ -258,6 +258,7 @@ $self->normalizeNotice = function (array $notice, array $args = array()) use ($s
        'notice'         => '',
        'only_on_uris'   => '',
        'persistent_key' => '',
+       'dismissable'    => true,
        'is_transient'   => true,
        'push_to_top'    => false,
        'class'          => 'updated',
@@ -277,6 +278,7 @@ $self->normalizeNotice = function (array $notice, array $args = array()) use ($s
 
             case 'is_transient':
             case 'push_to_top':
+            case 'dismissable':
                 $_value = (boolean) $_value;
                 break; // Stop here.
 
