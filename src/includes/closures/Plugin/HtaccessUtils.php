@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
 * Unique comment marker.
 *
-* @since 15xxxx Enhancing `.htaccess` tweaks.
+* @since 151220 Enhancing `.htaccess` tweaks.
 *
 * @return string Used in `.htaccess` parsing.
 */
@@ -167,7 +167,7 @@ $self->findHtaccessMarker = function ($htaccess_marker = '') use ($self) {
 /*
  * Gets contents of `/.htaccess` file with exclusive lock to read+write. If file doesn't exist, we attempt to create it.
  *
- * @since 15xxxx Improving `.htaccess` utils.
+ * @since 151220 Improving `.htaccess` utils.
  *
  * @param string $htaccess_file     Absolute path to the htaccess file. Optional.
  *                                  If not provided, we attempt to find it or create it if it doesn't exist.
@@ -205,7 +205,7 @@ $self->readHtaccessFile = function ($htaccess_file = '') use ($self) {
 /*
  * Writes to `/.htaccess` file using provided file pointer.
  *
- * @since 15xxxx Improving `.htaccess` utils.
+ * @since 151220 Improving `.htaccess` utils.
  *
  * @param array     $htaccess           Array containing `fp` file resource pointing to htaccess file and `file_contents` to write to file.
  * @param bool      $require_marker     Whether or not to require the marker be present in contents before writing.

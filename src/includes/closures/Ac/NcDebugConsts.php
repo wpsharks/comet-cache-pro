@@ -151,7 +151,7 @@ const NC_DEBUG_IS_LOGGED_IN_USER = 'nc_debug_is_logged_in_user';
 /**
  * No-cache because the current user is logged into the site and the current page contains an `nonce`.
  *
- * @since 15xxxx Enhancing logged-in user caching support.
+ * @since 151220 Enhancing logged-in user caching support.
  *
  * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
  */
@@ -160,7 +160,7 @@ const NC_DEBUG_IS_LOGGED_IN_USER_NONCE = 'nc_debug_is_logged_in_user_nonce';
 /**
  * No-cache because the current page contains an `nonce`.
  *
- * @since 15xxxx Enhancing `nonce` detection.
+ * @since 151220 Enhancing `nonce` detection.
  *
  * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
  */

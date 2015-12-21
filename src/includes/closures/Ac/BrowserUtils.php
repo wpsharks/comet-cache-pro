@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
 * Sends no-cache headers (if applicable).
 *
-* @since 150422 Rewrite. Enhanced/altered 15xxxx.
+* @since 150422 Rewrite. Enhanced/altered 151220.
 */
 $self->maybeStopBrowserCaching = function () use ($self) {
     switch ((bool) ZENCACHE_ALLOW_BROWSER_CACHE) {

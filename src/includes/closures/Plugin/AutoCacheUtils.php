@@ -27,7 +27,7 @@ $self->autoCache = function () use ($self) {
 /**
  * Check if Auto-Cache Engine XML Sitemap is valid and remove old notice if necessary.
  *
- * @since 15xxxx Improving XML Sitemap error checking.
+ * @since 151220 Improving XML Sitemap error checking.
  *
  * @param bool $force Defaults to a FALSE value.
  *
@@ -64,7 +64,7 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function ($force = false) use
 /**
  * Check if Auto-Cache Engine XML Sitemap is valid and display a notice if necessary.
  *
- * @since 15xxxx Improving XML Sitemap error checking.
+ * @since 151220 Improving XML Sitemap error checking.
  *
  * @param string    $sitemap           A URL to an XML sitemap file.
  *                                     This supports nested XML sitemap index files too; i.e. `<sitemapindex>`.

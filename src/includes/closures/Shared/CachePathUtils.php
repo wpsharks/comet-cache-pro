@@ -4,7 +4,7 @@ namespace WebSharks\ZenCache\Pro;
 /*
 * Cache-path suffix frag (regex).
 *
-* @since 15xxxx Enhancing translation support.
+* @since 151220 Enhancing translation support.
 *
 * @param string $regex_suffix_frag Existing regex suffix frag?
 *
@@ -20,7 +20,7 @@ $self->cachePathRegexSuffixFrag = function ($regex_suffix_frag = CACHE_PATH_REGE
 /*
 * Default cache-path suffix frag (regex).
 *
-* @since 15xxxx Enhancing translation support.
+* @since 151220 Enhancing translation support.
 *
 * @return string Default cache-path suffix frag (regex).
 */

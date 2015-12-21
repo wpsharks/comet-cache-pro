@@ -52,7 +52,7 @@ class CdnFilters extends AbsBase
     protected $cdn_over_ssl;
 
     /**
-     * @since 15xxxx Adding logged-in check.
+     * @since 151220 Adding logged-in check.
      *
      * @type bool CDN when logged in?
      */
