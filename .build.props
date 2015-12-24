@@ -3,11 +3,13 @@ project_org                  = websharks
 project_slug                 = zencache-pro
 project_ns                   = WebSharks\\ZenCache\\Pro
 project_sns                  = ZenCachePro
+project_exclusions           = README.md
 
 project_lite_title           = ZenCache
 project_lite_slug            = zencache
 project_lite_ns              = WebSharks\\ZenCache
 project_lite_sns             = ZenCache
+project_lite_exclusions      = README.md, **/AutoCache.php, **/AutoCacheUtils.php, **/CdnFilters.php, **/CdnUtils.php, **/WcpCdnUtils.php, **/cdn-filters.txt, **/HtmlCUtils.php, **/WcpHtmlCUtils.php, **/StatsUtils.php, **/WcpEvalUtils.php, **/WcpOpcacheUtils.php, **/WcpS2cleanUtils.php, **/WcpTransientUtils.php, **/WcpUrlUtils.php, **/WcpUserUtils.php, **/MenuPageProUpdater.php, **/MenuPageStats.php, **/DirStats.php, **/admin-bar*.js, **/AdminBarUtils.php, **/options-pro.png, **/pro-updater.png, **/stats*.png, **/zencache-pro.pot
 
 project_version              = %y%m%d
 project_php_required_version = 5.3.2
