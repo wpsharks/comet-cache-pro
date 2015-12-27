@@ -519,7 +519,9 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
-            add_filter('akismet_comment_nonce', '__return_false'); // See: <http://jas.xyz/1R23f5c>
+            add_filter('akismet_comment_nonce', function() {
+                return 'disabled-by-'.SLUG_TD; // MUST return a string literal that is not 'true' or '' (an empty string). See <http://bit.ly/1YItpdE>
+            }); // See also why the Akismet nonce should be disabled: <http://jas.xyz/1R23f5c>
         }
         /*[/pro]*/
 
