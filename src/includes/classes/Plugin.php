@@ -316,6 +316,7 @@ class Plugin extends AbsBaseAp
             'get_requests'        => '0', // `0|1`.
             'feeds_enable'        => '0', // `0|1`.
             'cache_404_requests'  => '0', // `0|1`.
+            'cache_nonce_values'  => '0', // `0|1`.
 
             /* Related to exclusions. */
 
