@@ -24,7 +24,7 @@ $self->addWpHtaccess = function () use ($self) {
         return false; // Not running the Apache web server.
     }
     if (!$self->options['enable']) {
-        return false; // Nothing to do.
+        return true; // Nothing to do.
     }
     if (!$self->removeWpHtaccess()) {
         return false; // Unable to remove.
