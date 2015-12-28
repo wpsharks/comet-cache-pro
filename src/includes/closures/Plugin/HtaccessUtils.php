@@ -11,6 +11,15 @@ namespace WebSharks\ZenCache\Pro;
 $self->htaccess_marker = 'WmVuQ2FjaGU';
 
 /*
+* Plugin options that have associated htaccess rules.
+*
+* @since 15xxxx Improving `.htaccess` tweaks.
+*
+* @return array Plugin options that have associated htaccess rules
+*/
+$self->options_with_htaccess_rules = array('cdn_enable');
+
+/*
  * Add template blocks to `/.htaccess` file.
  *
  * @since 151114 Adding `.htaccess` tweaks.
@@ -25,6 +34,12 @@ $self->addWpHtaccess = function () use ($self) {
     }
     if (!$self->options['enable']) {
         return true; // Nothing to do.
+    }
+    if (!$self->needHtaccessRules()) {
+        if($self->findHtaccessMarker()) { // Do we need to clean up previously added rules?
+            $self->removeWpHtaccess(); // Fail silently since we don't need rules in place.
+        }
+        return true; // Nothing to do; no options enabled that require htaccess rules.
     }
     if (!$self->removeWpHtaccess()) {
         return false; // Unable to remove.
@@ -114,6 +129,25 @@ $self->findHtaccessFile = function () use ($self) {
         $file = $htaccess_file;
     }
     return $file;
+};
+
+/*
+ * Determines if there are any plugin options enabled that require htaccess rules to be added.
+ *
+ * @since 15xxxx Improving `.htaccess` tweaks.
+ *
+ * @return bool True when an option is enabled that requires htaccess rules, false otherwise.
+ */
+$self->needHtaccessRules = function () use ($self) {
+    if(!is_array($self->options_with_htaccess_rules)) {
+        return false; // Nothing to do.
+    }
+    foreach ($self->options_with_htaccess_rules as $option) {
+        if ($self->options[$option]) {
+            return true; // Yes, there are options enabled that require htaccess rules.
+        }
+    }
+    return false; // No, there are no options enabled that require htaccess rules.
 };
 
 /*
