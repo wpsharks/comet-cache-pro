@@ -21,6 +21,9 @@ $self->autoCache = function () use ($self) {
             return; // Nothing to do.
         }
     }
+    if (!$self->autoCacheCheckPhpIni()) {
+        return; // Server does not meet minimum requirements.
+    }
     new AutoCache();
 };
 
