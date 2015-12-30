@@ -16,6 +16,8 @@ $self->htaccess_marker = 'WmVuQ2FjaGU';
 * @since 15xxxx Improving `.htaccess` tweaks.
 *
 * @return array Plugin options that have associated htaccess rules
+*
+* @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
 */
 $self->options_with_htaccess_rules = array('cdn_enable');
 
@@ -25,6 +27,8 @@ $self->options_with_htaccess_rules = array('cdn_enable');
  * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if added successfully.
+ *
+ * @TODO Improve error reporting detail to better catch unexpected failures; see http://git.io/vEFLT
  */
 $self->addWpHtaccess = function () use ($self) {
     global $is_apache;
@@ -86,6 +90,8 @@ $self->addWpHtaccess = function () use ($self) {
  * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if removed successfully.
+ *
+ * @TODO Improve error reporting detail to better catch unexpected failures; see http://git.io/vEFLT
  */
 $self->removeWpHtaccess = function () use ($self) {
     global $is_apache;
@@ -148,25 +154,6 @@ $self->needHtaccessRules = function () use ($self) {
         }
     }
     return false; // No, there are no options enabled that require htaccess rules.
-};
-
-/*
- * Utility method used to unlock and close htaccess file resource.
- *
- * @since 151114 Adding `.htaccess` tweaks.
- *
- * @param array $htaccess                   Array containing at least an `fp` file resource pointing to htaccess file.
- *
- * @return bool False on failure, true otherwise.
- */
-$self->closeHtaccessFile = function (array $htaccess) use ($self) {
-    if (!is_resource($htaccess['fp'])) {
-        return false; // Failure; requires a valid file resource.
-    }
-    flock($htaccess['fp'], LOCK_UN);
-    fclose($htaccess['fp']);
-
-    return true;
 };
 
 /*
@@ -266,6 +253,25 @@ $self->writeHtaccessFile = function (array $htaccess, $require_marker = true, $h
         return false; // Failure; could not write changes.
     }
     fflush($htaccess['fp']);
+    flock($htaccess['fp'], LOCK_UN);
+    fclose($htaccess['fp']);
+
+    return true;
+};
+
+/*
+ * Utility method used to unlock and close htaccess file resource.
+ *
+ * @since 151114 Adding `.htaccess` tweaks.
+ *
+ * @param array $htaccess                   Array containing at least an `fp` file resource pointing to htaccess file.
+ *
+ * @return bool False on failure, true otherwise.
+ */
+$self->closeHtaccessFile = function (array $htaccess) use ($self) {
+    if (!is_resource($htaccess['fp'])) {
+        return false; // Failure; requires a valid file resource.
+    }
     flock($htaccess['fp'], LOCK_UN);
     fclose($htaccess['fp']);
 
