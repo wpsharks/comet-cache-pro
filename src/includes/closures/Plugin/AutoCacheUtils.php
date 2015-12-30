@@ -98,7 +98,7 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function () use ($self) {
     }
     $is_multisite                = is_multisite(); // Multisite network?
     $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
-    $blog_url                   = rtrim(network_home_url('', 'http'), '/');
+    $blog_url                   = rtrim(network_home_url(''), '/');
 
     if ($is_multisite && $can_consider_domain_mapping) {
         $blog_url = $self->domainMappingUrlFilter($blog_url);
