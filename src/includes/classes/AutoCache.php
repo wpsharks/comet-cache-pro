@@ -156,7 +156,6 @@ class AutoCache extends AbsBase
                 $url,
                 array(
                     'blocking'   => false,
-                    'timeout'    => $this->plugin->applyWpFilters(GLOBAL_NS.'_auto_cache_wp_http_timeout', '5'),
                     'user-agent' => $this->plugin->options['auto_cache_user_agent'].
                         '; '.SLUG_TD.' '.VERSION,
                 )

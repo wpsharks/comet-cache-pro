@@ -126,7 +126,7 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function () use ($self) {
 $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false, $is_child_blog = null) use ($self) {
     $failure = ''; // Initialize.
 
-    if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5, 'timeout' => $this->plugin->applyWpFilters(GLOBAL_NS.'_auto_cache_wp_http_timeout', '5'))))) {
+    if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
         $failure = 'WP_Http says: '.$head->get_error_message().'.';
     } elseif (empty($head['response']['code']) || (int)$head['response']['code'] >= 400) {
         $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int)@$head['response']['code']));
