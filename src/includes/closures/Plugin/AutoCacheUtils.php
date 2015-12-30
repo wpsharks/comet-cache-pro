@@ -91,6 +91,12 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function ($force = false) use
         $self->dismissMainNotice('xml_sitemap_missing');
         return; // Nothing else to do.
     }
+
+    if (!is_null($done = &$self->cacheKey('autoCacheMaybeClearPrimaryXmlSitemapError'))) {
+        return; // Already did this.
+    }
+    $done = true; // Flag as having been done.
+
     if (!$self->options['enable']) {
         return; // Nothing to do.
     }
