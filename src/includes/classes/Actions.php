@@ -577,10 +577,10 @@ class Actions extends AbsBase
                 $query_args[GLOBAL_NS.'_advanced_cache_add_failure'] = $add_advanced_cache === null ? 'advanced-cache' : '1';
             }
             if (!$this->plugin->options['auto_cache_enable']) {
-                $this->plugin->autoCacheMaybeClearPhpIniError(true);
+                $this->plugin->dismissMainNotice('allow_url_fopen_disabled'); // Dismiss and check again on `admin_init` via `autoCacheMaybeClearPhpIniError()`
             }
             if (!$this->plugin->options['auto_cache_enable'] || !$this->plugin->options['auto_cache_sitemap_url']) {
-                $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
+                $this->plugin->dismissMainNotice('xml_sitemap_missing'); // Dismiss and check again on `admin_init` via `autoCacheMaybeClearPrimaryXmlSitemapError()`
             }
             $this->plugin->updateBlogPaths(); // Multisite networks only.
         } else {
@@ -593,8 +593,8 @@ class Actions extends AbsBase
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
                 $query_args[GLOBAL_NS.'_advanced_cache_remove_failure'] = '1';
             }
-            $this->plugin->autoCacheMaybeClearPrimaryXmlSitemapError(true);
-            $this->plugin->autoCacheMaybeClearPhpIniError(true);
+            $this->plugin->dismissMainNotice('xml_sitemap_missing'); // Dismiss notice when disabling plugin
+            $this->plugin->dismissMainNotice('allow_url_fopen_disabled'); // Dismiss notice when disabling plugin
         }
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 

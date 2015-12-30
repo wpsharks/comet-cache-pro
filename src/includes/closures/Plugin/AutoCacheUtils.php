@@ -32,17 +32,14 @@ $self->autoCache = function () use ($self) {
  *
  * @since 15xxxx Improving Auto-Cache Engine minimum PHP requirements reporting.
  *
- * @param bool $force Defaults to a FALSE value.
- *
  * @attaches-to `admin_init`
- *
- * @note This routine is also called from `saveOptions()`.
  */
-$self->autoCacheMaybeClearPhpIniError = function ($force = false) use ($self) {
-    if ($force) {
-        $self->dismissMainNotice('allow_url_fopen_disabled');
-        return; // Nothing else to do.
+$self->autoCacheMaybeClearPhpIniError = function () use ($self) {
+    if (!is_null($done = &$self->cacheKey('autoCacheMaybeClearPhpIniError'))) {
+        return; // Already did this.
     }
+    $done = true; // Flag as having been done.
+
     if (!$self->options['enable']) {
         return; // Nothing to do.
     }
@@ -60,6 +57,8 @@ $self->autoCacheMaybeClearPhpIniError = function ($force = false) use ($self) {
  * @return bool `TRUE` if all required PHP configuration is present, else `FALSE`. This also creates a dashboard notice in some cases.
  *
  * @note  Unlike `autoCacheCheckXmlSitemap()`, this routine is NOT used by the Auto-Cache Engine class when the Auto-Cache Engine is running.
+ *        However, this routine is called prior to running the Auto-Cache Engine, so caching here should be avoided (this gets called during
+ *        `admin_init` and prior to running the Auto-Cache Engine).
  */
 $self->autoCacheCheckPhpIni = function () use ($self) {
     if (!filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) { // Is allow_url_fopen=1?
@@ -80,18 +79,9 @@ $self->autoCacheCheckPhpIni = function () use ($self) {
  *
  * @since 151220 Improving XML Sitemap error checking.
  *
- * @param bool $force Defaults to a FALSE value.
- *
  * @attaches-to `admin_init`
- *
- * @note This routine is also called from `saveOptions()`.
  */
-$self->autoCacheMaybeClearPrimaryXmlSitemapError = function ($force = false) use ($self) {
-    if ($force) {
-        $self->dismissMainNotice('xml_sitemap_missing');
-        return; // Nothing else to do.
-    }
-
+$self->autoCacheMaybeClearPrimaryXmlSitemapError = function () use ($self) {
     if (!is_null($done = &$self->cacheKey('autoCacheMaybeClearPrimaryXmlSitemapError'))) {
         return; // Already did this.
     }
