@@ -96,6 +96,10 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function () use ($self) {
     if (!$self->options['auto_cache_sitemap_url']) {
         return; // Nothing to do.
     }
+    if(($last_checked = get_transient(GLOBAL_NS.'-'.md5($self->options['auto_cache_sitemap_url']))) && (time() <= ((int)$last_checked + HOUR_IN_SECONDS))) {
+        $self->dismissMainNotice('xml_sitemap_missing'); // Previous error was fixed; we only create transient when Sitemap passes validation
+        return; // Nothing to do; already checked within the last hour.
+    }
     $is_multisite                = is_multisite(); // Multisite network?
     $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
     $blog_url                   = rtrim(network_home_url(''), '/');
@@ -144,12 +148,14 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false
               sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
               array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing', 'dismissable' => false)
             );
+            delete_transient(GLOBAL_NS.'-'.md5($self->options['auto_cache_sitemap_url'])); // Ensures that we check the XML Sitemap URL again immediately until the issue is fixed
         }
         return false; // Nothing more we can do in this case.
     }
 
     if (!$is_child_blog && !$is_nested_sitemap) { // Any previous problems have been fixed; dismiss any existing failure notice
         $self->dismissMainNotice('xml_sitemap_missing');
+        set_transient(GLOBAL_NS.'-'.md5($self->options['auto_cache_sitemap_url']), time(), WEEK_IN_SECONDS); // Reduce repeated validation attempts.
     }
 
     return true;

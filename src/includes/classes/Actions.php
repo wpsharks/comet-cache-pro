@@ -556,6 +556,9 @@ class Actions extends AbsBase
         $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
         $this->plugin->updateOptions($args); // Save/update options.
 
+        // Ensures `autoCacheMaybeClearPrimaryXmlSitemapError()` always validates the XML Sitemap when saving options (when applicable)
+        delete_transient(GLOBAL_NS.'-'.md5($this->plugin->options['auto_cache_sitemap_url']));
+
         $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
         $query_args  = array('page' => GLOBAL_NS, GLOBAL_NS.'_updated' => '1');
 
