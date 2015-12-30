@@ -128,6 +128,9 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false
 
     if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
         $failure = 'WP_Http says: '.$head->get_error_message().'.';
+        if(strpos($head->get_error_message(), 'timed out') !== false || strpos($head->get_error_message(), 'timeout') !== false) { // $head->get_error_code() only returns generic `http_request_failed`
+            $failure .= '<br /><em>'.__('Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href="http://zencache.com/r/kb-article-why-am-i-seeing-a-timeout-error/" target="_blank">this article</a>.', SLUG_TD).'</em>';
+        }
     } elseif (empty($head['response']['code']) || (int)$head['response']['code'] >= 400) {
         $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int)@$head['response']['code']));
     } elseif (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
