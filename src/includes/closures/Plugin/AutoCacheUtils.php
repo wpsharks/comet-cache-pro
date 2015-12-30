@@ -21,7 +21,58 @@ $self->autoCache = function () use ($self) {
             return; // Nothing to do.
         }
     }
+    if (!$self->autoCacheCheckPhpIni()) {
+        return; // Server does not meet minimum requirements.
+    }
     new AutoCache();
+};
+
+/**
+ * Check if PHP configuration meets minimum requirements for Auto-Cache Engine and remove old notice if necessary.
+ *
+ * @since 15xxxx Improving Auto-Cache Engine minimum PHP requirements reporting.
+ *
+ * @param bool $force Defaults to a FALSE value.
+ *
+ * @attaches-to `admin_init`
+ *
+ * @note This routine is also called from `saveOptions()`.
+ */
+$self->autoCacheMaybeClearPhpIniError = function ($force = false) use ($self) {
+    if ($force) {
+        $self->dismissMainNotice('allow_url_fopen_disabled');
+        return; // Nothing else to do.
+    }
+    if (!$self->options['enable']) {
+        return; // Nothing to do.
+    }
+    if (!$self->options['auto_cache_enable']) {
+        return; // Nothing to do.
+    }
+    $self->autoCacheCheckPhpIni();
+};
+
+/**
+ * Check if PHP configuration meets minimum requirements for Auto-Cache Engine and display a notice if necessary.
+ *
+ * @since 15xxxx Improving Auto-Cache Engine minimum PHP requirements reporting.
+ *
+ * @return bool `TRUE` if all required PHP configuration is present, else `FALSE`. This also creates a dashboard notice in some cases.
+ *
+ * @note  Unlike `autoCacheCheckXmlSitemap()`, this routine is NOT used by the Auto-Cache Engine class when the Auto-Cache Engine is running.
+ */
+$self->autoCacheCheckPhpIni = function () use ($self) {
+    if (!filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) { // Is allow_url_fopen=1?
+        $self->dismissMainNotice('allow_url_fopen_disabled'); // Clear any previous allow_url_fopen notice.
+        $self->enqueueMainNotice(
+          sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine requires <a href="http://zencache.com/r/allow_url_fopen/" target="_blank">PHP URL-aware fopen wrappers</a> (<code>allow_url_fopen=1</code>), however this option has been disabled by your <code>php.ini</code> runtime configuration. Please contact your web hosting company to resolve this issue or disable the Auto-Cache Engine in the <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">settings</a>.', SLUG_TD), esc_html(NAME)),
+          array('class' => 'error', 'persistent_key' => 'allow_url_fopen_disabled', 'dismissable' => false)
+        );
+        return false; // Nothing more we can do in this case.
+    }
+    $self->dismissMainNotice('allow_url_fopen_disabled'); // Any previous problems have been fixed; dismiss any existing failure notice
+
+    return true;
 };
 
 /**
