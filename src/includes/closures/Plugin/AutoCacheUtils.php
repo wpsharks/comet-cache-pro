@@ -32,17 +32,14 @@ $self->autoCache = function () use ($self) {
  *
  * @since 15xxxx Improving Auto-Cache Engine minimum PHP requirements reporting.
  *
- * @param bool $force Defaults to a FALSE value.
- *
  * @attaches-to `admin_init`
- *
- * @note This routine is also called from `saveOptions()`.
  */
-$self->autoCacheMaybeClearPhpIniError = function ($force = false) use ($self) {
-    if ($force) {
-        $self->dismissMainNotice('allow_url_fopen_disabled');
-        return; // Nothing else to do.
+$self->autoCacheMaybeClearPhpIniError = function () use ($self) {
+    if (!is_null($done = &$self->cacheKey('autoCacheMaybeClearPhpIniError'))) {
+        return; // Already did this.
     }
+    $done = true; // Flag as having been done.
+
     if (!$self->options['enable']) {
         return; // Nothing to do.
     }
@@ -60,6 +57,8 @@ $self->autoCacheMaybeClearPhpIniError = function ($force = false) use ($self) {
  * @return bool `TRUE` if all required PHP configuration is present, else `FALSE`. This also creates a dashboard notice in some cases.
  *
  * @note  Unlike `autoCacheCheckXmlSitemap()`, this routine is NOT used by the Auto-Cache Engine class when the Auto-Cache Engine is running.
+ *        However, this routine is called prior to running the Auto-Cache Engine, so caching here should be avoided (this gets called during
+ *        `admin_init` and prior to running the Auto-Cache Engine).
  */
 $self->autoCacheCheckPhpIni = function () use ($self) {
     if (!filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) { // Is allow_url_fopen=1?
@@ -80,17 +79,14 @@ $self->autoCacheCheckPhpIni = function () use ($self) {
  *
  * @since 151220 Improving XML Sitemap error checking.
  *
- * @param bool $force Defaults to a FALSE value.
- *
  * @attaches-to `admin_init`
- *
- * @note This routine is also called from `saveOptions()`.
  */
-$self->autoCacheMaybeClearPrimaryXmlSitemapError = function ($force = false) use ($self) {
-    if ($force) {
-        $self->dismissMainNotice('xml_sitemap_missing');
-        return; // Nothing else to do.
+$self->autoCacheMaybeClearPrimaryXmlSitemapError = function () use ($self) {
+    if (!is_null($done = &$self->cacheKey('autoCacheMaybeClearPrimaryXmlSitemapError'))) {
+        return; // Already did this.
     }
+    $done = true; // Flag as having been done.
+
     if (!$self->options['enable']) {
         return; // Nothing to do.
     }
@@ -100,9 +96,13 @@ $self->autoCacheMaybeClearPrimaryXmlSitemapError = function ($force = false) use
     if (!$self->options['auto_cache_sitemap_url']) {
         return; // Nothing to do.
     }
+    if(($last_checked = get_transient(GLOBAL_NS.'-'.md5($self->options['auto_cache_sitemap_url']))) && (time() <= ((int)$last_checked + HOUR_IN_SECONDS))) {
+        $self->dismissMainNotice('xml_sitemap_missing'); // Previous error was fixed; we only create transient when Sitemap passes validation
+        return; // Nothing to do; already checked within the last hour.
+    }
     $is_multisite                = is_multisite(); // Multisite network?
     $can_consider_domain_mapping = $is_multisite && $self->canConsiderDomainMapping();
-    $blog_url                   = rtrim(network_home_url('', 'http'), '/');
+    $blog_url                   = rtrim(network_home_url(''), '/');
 
     if ($is_multisite && $can_consider_domain_mapping) {
         $blog_url = $self->domainMappingUrlFilter($blog_url);
@@ -132,6 +132,9 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false
 
     if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
         $failure = 'WP_Http says: '.$head->get_error_message().'.';
+        if(stripos($head->get_error_message(), 'timed out') !== false || stripos($head->get_error_message(), 'timeout') !== false) { // $head->get_error_code() only returns generic `http_request_failed`
+            $failure .= '<br /><em>'.__('Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href="http://zencache.com/r/kb-article-why-am-i-seeing-a-timeout-error/" target="_blank">this article</a>.', SLUG_TD).'</em>';
+        }
     } elseif (empty($head['response']['code']) || (int)$head['response']['code'] >= 400) {
         $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int)@$head['response']['code']));
     } elseif (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
@@ -145,12 +148,14 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false
               sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
               array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing', 'dismissable' => false)
             );
+            delete_transient(GLOBAL_NS.'-'.md5($self->options['auto_cache_sitemap_url'])); // Ensures that we check the XML Sitemap URL again immediately until the issue is fixed
         }
         return false; // Nothing more we can do in this case.
     }
 
     if (!$is_child_blog && !$is_nested_sitemap) { // Any previous problems have been fixed; dismiss any existing failure notice
         $self->dismissMainNotice('xml_sitemap_missing');
+        set_transient(GLOBAL_NS.'-'.md5($self->options['auto_cache_sitemap_url']), time(), WEEK_IN_SECONDS); // Reduce repeated validation attempts.
     }
 
     return true;
