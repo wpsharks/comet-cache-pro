@@ -11,11 +11,24 @@ namespace WebSharks\ZenCache\Pro;
 $self->htaccess_marker = 'WmVuQ2FjaGU';
 
 /*
+* Plugin options that have associated htaccess rules.
+*
+* @since 15xxxx Improving `.htaccess` tweaks.
+*
+* @return array Plugin options that have associated htaccess rules
+*
+* @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
+*/
+$self->options_with_htaccess_rules = array('cdn_enable');
+
+/*
  * Add template blocks to `/.htaccess` file.
  *
  * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if added successfully.
+ *
+ * @TODO Improve error reporting detail to better catch unexpected failures; see http://git.io/vEFLT
  */
 $self->addWpHtaccess = function () use ($self) {
     global $is_apache;
@@ -24,7 +37,13 @@ $self->addWpHtaccess = function () use ($self) {
         return false; // Not running the Apache web server.
     }
     if (!$self->options['enable']) {
-        return false; // Nothing to do.
+        return true; // Nothing to do.
+    }
+    if (!$self->needHtaccessRules()) {
+        if($self->findHtaccessMarker()) { // Do we need to clean up previously added rules?
+            $self->removeWpHtaccess(); // Fail silently since we don't need rules in place.
+        }
+        return true; // Nothing to do; no options enabled that require htaccess rules.
     }
     if (!$self->removeWpHtaccess()) {
         return false; // Unable to remove.
@@ -71,6 +90,8 @@ $self->addWpHtaccess = function () use ($self) {
  * @since 151114 Adding `.htaccess` tweaks.
  *
  * @return boolean True if removed successfully.
+ *
+ * @TODO Improve error reporting detail to better catch unexpected failures; see http://git.io/vEFLT
  */
 $self->removeWpHtaccess = function () use ($self) {
     global $is_apache;
@@ -117,22 +138,22 @@ $self->findHtaccessFile = function () use ($self) {
 };
 
 /*
- * Utility method used to unlock and close htaccess file resource.
+ * Determines if there are any plugin options enabled that require htaccess rules to be added.
  *
- * @since 151114 Adding `.htaccess` tweaks.
+ * @since 15xxxx Improving `.htaccess` tweaks.
  *
- * @param array $htaccess                   Array containing at least an `fp` file resource pointing to htaccess file.
- *
- * @return bool False on failure, true otherwise.
+ * @return bool True when an option is enabled that requires htaccess rules, false otherwise.
  */
-$self->closeHtaccessFile = function (array $htaccess) use ($self) {
-    if (!is_resource($htaccess['fp'])) {
-        return false; // Failure; requires a valid file resource.
+$self->needHtaccessRules = function () use ($self) {
+    if(!is_array($self->options_with_htaccess_rules)) {
+        return false; // Nothing to do.
     }
-    flock($htaccess['fp'], LOCK_UN);
-    fclose($htaccess['fp']);
-
-    return true;
+    foreach ($self->options_with_htaccess_rules as $option) {
+        if ($self->options[$option]) {
+            return true; // Yes, there are options enabled that require htaccess rules.
+        }
+    }
+    return false; // No, there are no options enabled that require htaccess rules.
 };
 
 /*
@@ -232,6 +253,25 @@ $self->writeHtaccessFile = function (array $htaccess, $require_marker = true, $h
         return false; // Failure; could not write changes.
     }
     fflush($htaccess['fp']);
+    flock($htaccess['fp'], LOCK_UN);
+    fclose($htaccess['fp']);
+
+    return true;
+};
+
+/*
+ * Utility method used to unlock and close htaccess file resource.
+ *
+ * @since 151114 Adding `.htaccess` tweaks.
+ *
+ * @param array $htaccess                   Array containing at least an `fp` file resource pointing to htaccess file.
+ *
+ * @return bool False on failure, true otherwise.
+ */
+$self->closeHtaccessFile = function (array $htaccess) use ($self) {
+    if (!is_resource($htaccess['fp'])) {
+        return false; // Failure; requires a valid file resource.
+    }
     flock($htaccess['fp'], LOCK_UN);
     fclose($htaccess['fp']);
 

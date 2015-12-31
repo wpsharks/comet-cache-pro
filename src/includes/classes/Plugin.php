@@ -440,6 +440,7 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', array($this, 'autoCacheMaybeClearPrimaryXmlSitemapError'));
+        add_action('admin_init', array($this, 'autoCacheMaybeClearPhpIniError'));
         add_action('admin_init', array($this, 'statsLogPinger'));
         /*[/pro]*/
 

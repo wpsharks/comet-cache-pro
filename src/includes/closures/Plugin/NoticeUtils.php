@@ -290,5 +290,7 @@ $self->normalizeNotice = function (array $notice, array $args = array()) use ($s
     } // ↑ Typecast each of the array elements.
     unset($_key, $_value); // A little housekeeping.
 
+    ksort($notice); // For more accurate comparison in other routines.
+
     return $notice; // Normalized.
 };
