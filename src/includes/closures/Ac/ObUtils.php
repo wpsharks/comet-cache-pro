@@ -273,7 +273,9 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     }
     if (!ZENCACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
         if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN && $self->isLikeUserLoggedIn()) {
-            return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
+            if (!ZENCACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN) {
+                return (boolean)$self->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
+            }
         } else { // Use the default debug notice for nonce conflicts.
             return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_PAGE_CONTAINS_NONCE);
         } // An nonce makes the page dynamic; i.e., NOT cache compatible.
