@@ -311,11 +311,13 @@ class Plugin extends AbsBaseAp
 
             /* Misc. cache behaviors. */
 
-            'allow_browser_cache' => '0', // `0|1`.
-            'when_logged_in'      => '0', // `0|1|postload`.
-            'get_requests'        => '0', // `0|1`.
-            'feeds_enable'        => '0', // `0|1`.
-            'cache_404_requests'  => '0', // `0|1`.
+            'allow_browser_cache'               => '0', // `0|1`.
+            'when_logged_in'                    => '0', // `0|1|postload`.
+            'get_requests'                      => '0', // `0|1`.
+            'feeds_enable'                      => '0', // `0|1`.
+            'cache_404_requests'                => '0', // `0|1`.
+            'cache_nonce_values'                => '0', // `0|1`.
+            'cache_nonce_values_when_logged_in' => '0', // `0|1`.
 
             /* Related to exclusions. */
 
@@ -440,6 +442,7 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', array($this, 'autoCacheMaybeClearPrimaryXmlSitemapError'));
+        add_action('admin_init', array($this, 'autoCacheMaybeClearPhpIniError'));
         add_action('admin_init', array($this, 'statsLogPinger'));
         /*[/pro]*/
 
@@ -517,11 +520,11 @@ class Plugin extends AbsBaseAp
         add_action('clear_auth_cookie', array($this, 'autoClearUserCacheCur'));
         /*[/pro]*/
 
-        /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
-            add_filter('akismet_comment_nonce', '__return_false'); // See: <http://jas.xyz/1R23f5c>
+            add_filter('akismet_comment_nonce', function() {
+                return 'disabled-by-'.SLUG_TD; // MUST return a string literal that is not 'true' or '' (an empty string). See <http://bit.ly/1YItpdE>
+            }); // See also why the Akismet nonce should be disabled: <http://jas.xyz/1R23f5c>
         }
-        /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
         if ($this->options['when_logged_in'] === '1' && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
