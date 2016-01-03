@@ -103,7 +103,7 @@ if (!defined('ZENCACHE_CACHE_NONCE_VALUES')) {
     /**
      * Cache HTML containing nonce values?
      *
-     * @since 15xxxx First documented version.
+     * @since 160103 First documented version.
      *
      * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
      */
@@ -113,7 +113,7 @@ if (!defined('ZENCACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN')) {
     /**
      * Cache HTML containing nonce values for Logged-In Users?
      *
-     * @since 15xxxx First documented version.
+     * @since 160103 First documented version.
      *
      * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
      */
