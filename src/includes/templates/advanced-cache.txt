@@ -99,6 +99,26 @@ if (!defined('ZENCACHE_CACHE_404_REQUESTS')) {
      */
     define('ZENCACHE_CACHE_404_REQUESTS', '%%ZENCACHE_CACHE_404_REQUESTS%%');
 }
+if (!defined('ZENCACHE_CACHE_NONCE_VALUES')) {
+    /**
+     * Cache HTML containing nonce values?
+     *
+     * @since 15xxxx First documented version.
+     *
+     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+     */
+    define('ZENCACHE_CACHE_NONCE_VALUES', '%%ZENCACHE_CACHE_NONCE_VALUES%%');
+}
+if (!defined('ZENCACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN')) {
+    /**
+     * Cache HTML containing nonce values for Logged-In Users?
+     *
+     * @since 15xxxx First documented version.
+     *
+     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+     */
+    define('ZENCACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN', '%%ZENCACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN%%');
+}
 if (!defined('ZENCACHE_FEEDS_ENABLE')) {
     /**
      * Cache XML/RSS/Atom feeds?
