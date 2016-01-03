@@ -137,11 +137,11 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 break; // Break switch handler.
 
             case NC_DEBUG_IS_LOGGED_IN_USER_NONCE:
-                $reason = __('because the current page contains `_wpnonce` or `akismet_comment_nonce`. While your current configuration states that pages SHOULD be cache for logged-in visitors, `*nonce*` values in the markup (because these expire automatically) are not cache-compatible. See http://wsharks.com/1O1Kudy', SLUG_TD);
+                $reason = __('because the current page contains `_wpnonce` or `akismet_comment_nonce`. While your current configuration states that pages SHOULD be cache for logged-in visitors, `*nonce*` values in the markup are not cache-compatible. See http://wsharks.com/1O1Kudy for further details.', SLUG_TD);
                 break; // Break switch handler.
 
             case NC_DEBUG_PAGE_CONTAINS_NONCE:
-                $reason = __('because the current page contains `_wpnonce` or `akismet_comment_nonce`. Note that `*nonce*` values in the markup (because these expire automatically) are not cache-compatible. See http://wsharks.com/1O1Kudy', SLUG_TD);
+                $reason = __('because the current page contains `_wpnonce` or `akismet_comment_nonce`. Note that `*nonce*` values in the markup are not cache-compatible. See http://wsharks.com/1O1Kudy for further details.', SLUG_TD);
                 break; // Break switch handler.
 
             case NC_DEBUG_NO_USER_TOKEN:
