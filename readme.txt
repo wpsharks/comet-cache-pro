@@ -330,7 +330,7 @@ Requires PHP v5.3.2+. The latest version of ZenCache is a complete rewrite (OOP 
 
 == Changelog ==
 
-= v160113 =
+= v160103 =
 
 - **Bug Fix**: Fixed an issue that was unexpectedly producing "Failed to update your /.htaccess file" error messages. The `.htaccess` routines are now more intelligent and take into consideration which plugin options are enabled and which options require updating the `.htaccess` file. This also improves performance by avoiding unnecessary read/writes to the `.htaccess` file. Props @patdumond. See [Issue #641](https://github.com/websharks/zencache/issues/641).
 - **Bug Fix**: When `allow_url_fopen` is disabled via the PHP configuration, the Auto-Cache Engine is unable to read the XML Sitemap and was silently failing with only PHP Warning in the PHP error log. The Auto-Cache Engine currently requires [PHP URL-aware fopen wrappers](http://zencache.com/r/allow_url_fopen/). A new Dashboard notice displays an error message when `allow_url_fopen` is disabled and prevents the Auto-Cache Engine from attempting to run. See [Issue #644](https://github.com/websharks/zencache/issues/644).
