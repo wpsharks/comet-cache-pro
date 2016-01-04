@@ -1,6 +1,6 @@
 === ZenCache ===
 
-Stable tag: 151220
+Stable tag: 160103
 Requires at least: 4.1
 Tested up to: 4.5-alpha
 Text Domain: zencache
@@ -329,6 +329,15 @@ Released under the terms of the [GNU General Public License](http://www.gnu.org/
 Requires PHP v5.3.2+. The latest version of ZenCache is a complete rewrite (OOP design). Faster! and even more dependable. NOTE: the free version of Quick Cache (this new LITE version); while it remains fully functional and is more-than-adequate for most sites; is now limited in some ways. The following advanced features from the previous release are no longer available in the lite version: a custom MD5 Version Salt, custom Exclusion Patterns, a Clear Cache button in admin bar. These, and other features; are now available only in the pro version of the plugin. For further details, please see: <http://zencache.com/>.
 
 == Changelog ==
+
+= v160103 =
+
+- **Bug Fix**: Fixed an issue that was unexpectedly producing "Failed to update your /.htaccess file" error messages. The `.htaccess` routines are now more intelligent and take into consideration which plugin options are enabled and which options require updating the `.htaccess` file. This also improves performance by avoiding unnecessary read/writes to the `.htaccess` file. Props @patdumond. See [Issue #641](https://github.com/websharks/zencache/issues/641).
+- **Bug Fix**: When `allow_url_fopen` is disabled via the PHP configuration, the Auto-Cache Engine is unable to read the XML Sitemap and was silently failing with only PHP Warning in the PHP error log. The Auto-Cache Engine currently requires [PHP URL-aware fopen wrappers](http://zencache.com/r/allow_url_fopen/). A new Dashboard notice displays an error message when `allow_url_fopen` is disabled and prevents the Auto-Cache Engine from attempting to run. See [Issue #644](https://github.com/websharks/zencache/issues/644).
+- **Bug Fix**: Fixed an Auto-Cache Engine bug that was producing false-positive Dashboard errors related to timeouts: "Problematic XML Sitemap URL - WP_Http says: Operation timed out after 5001 milliseconds with 0 bytes received." Due to the way ZenCache was checking the XML Sitemap URL more than necessary, timeouts were more likely to occur. We now only check the URL repeatedly when a failure has been encountered. If the URL is confirmed as working, we don't check the URL again until the Auto-Cache Engine runs (every 15 minutes by default) or until the Plugin Options are saved. If you are still seeing timeout errors after this update, please see [this article](http://zencache.com/kb-article/why-am-i-seeing-auto-cache-engine-timeout-errors/). See [Issue #643](https://github.com/websharks/zencache/issues/643).
+- **Bug Fix**: Fixed an Auto-Cache Engine bug where ZenCache would would check both the non-SSL (`http://`) and the SSL (`https://`) version of the XML Sitemap URL when the Site Address was configured to use SSL. See [Issue #643](https://github.com/websharks/zencache/issues/643).
+- **Enhancement**: It's now possible to override the ZenCache Nonce exclusion globally (dangerous) or only for Logged-In Users (safer). Please see [this article](http://zencache.com/r/kb-article-what-are-wordpress-nonces-and-why-are-they-not-cache-compatible/) for full details. [Issue #637](https://github.com/websharks/zencache/issues/637).
+- **Akismet Compatibility**: Fixed a bug with Akismet compatibility where ZenCache was not properly disabling the Akismet Comment Nonce, which resulted in pages being unnecessarily excluded from the cache due to the presence of the `akismet_comment_nonce` in the markup. Props @Kalfer. See [Issue #642](https://github.com/websharks/zencache/issues/642).
 
 = v151220 =
 
