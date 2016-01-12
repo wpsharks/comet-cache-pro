@@ -1,5 +1,4 @@
 <?php
-/*[pro strip-from="lite"]*/
 namespace WebSharks\ZenCache\Pro;
 
 /*
@@ -68,4 +67,3 @@ $self->clearOpcache = function ($manually = false, $maybe = true) use ($self) {
 $self->clearAcDropinFromOpcacheByForce = function () use ($self) {
     return $self->wipeOpcache(false, false, array(WP_CONTENT_DIR.'/advanced-cache.php'));
 };
-/*[/pro]*/

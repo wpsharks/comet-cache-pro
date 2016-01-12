@@ -153,7 +153,7 @@ class MenuPageOptions extends MenuPage
         }
         if (!IS_PRO && $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-notice info">'."\n";
-            echo '<a href="'.add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="si si-eye-slash"></i></a>'."\n";
+            echo '<a href="'.add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; float:right; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="si si-eye-slash"></i></a>'."\n";
             echo '   <i class="si si-eye"></i> '.sprintf(__('<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href="http://zencache.com/prices/" target="_blank">upgrading <i class="si si-heart-o"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>', SLUG_TD), esc_html(NAME))."\n";
             echo '</div>'."\n";
         }
@@ -237,7 +237,7 @@ class MenuPageOptions extends MenuPage
             echo '      <i class="si si-broom"></i> '.__('Manual Cache Clearing', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <h3>'.__('Clearing the Cache Manually', SLUG_TD).'</h3>'."\n";
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear-cache-ops1-ss.png')).'" class="-clear-cache-ops-ss screenshot" />'."\n";
             echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g., you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -308,7 +308,7 @@ class MenuPageOptions extends MenuPage
 
         echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
-        echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+        echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
         echo '      <i class="si si-server"></i> '.__('Automatic Cache Clearing', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
@@ -318,7 +318,7 @@ class MenuPageOptions extends MenuPage
         echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
         echo '      <p>'.sprintf(__('This is built into the %1$s plugin; i.e., this functionality is "always on". If you edit a Post/Page (or delete one), %1$s will automatically clear the cache file(s) associated with that content. This way a new updated version of the cache will be created automatically the next time this content is accessed. Simple updates like this occur each time you make changes in the Dashboard, and %1$s will notify you of these as they occur. %1$s monitors changes to Posts (of any kind, including Pages), Categories, Tags, Links, Themes (even Users), and more.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
+            echo '  <div class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][change_notifications_enable]" class="-no-if-enabled" style="width:auto;">'."\n";
             echo '          <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when changes are detected &amp; one or more cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['change_notifications_enable'], '0', false).'>'.sprintf(__('No, I don\'t want to know (don\'t really care) what %1$s is doing behind-the-scene.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
@@ -408,7 +408,7 @@ class MenuPageOptions extends MenuPage
 
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '      <hr />'."\n";
-            echo '      <h3>'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
+            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
             echo '<h4 style="margin-bottom:0;">'.__('Auto-Clear a List of Custom URLs Too?', SLUG_TD).'</h4>'."\n";
             echo '<p style="margin-top:2px;">'.sprintf(__('When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://zencache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '<p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_urls]" spellcheck="false" wrap="off" rows="5">'.format_to_edit($this->plugin->options['cache_clear_urls']).'</textarea></p>'."\n";
@@ -420,13 +420,13 @@ class MenuPageOptions extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '<div class="plugin-menu-page-panel">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-pie-chart"></i> '.__('Cache-Related Statistics', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-pie-chart si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable Cache-Related Stats &amp; Charts?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('%1$s can collect and display cache-related statistics (including charts). Stats are displayed in the WordPress Admin Bar, and also in your Dashboard under: <strong>%1$s → Stats/Charts</strong>. Cache-related stats provide you with a quick look at what\'s happening behind-the-scenes. Your site grows faster and faster as the cache grows larger in size.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -485,7 +485,7 @@ class MenuPageOptions extends MenuPage
 
         echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
-        echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+        echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
         echo '      <i class="si si-clock-o"></i> '.__('Cache Expiration Time', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
@@ -512,9 +512,9 @@ class MenuPageOptions extends MenuPage
 
         if (IS_PRO || $this->plugin->isProPreview()) {
             $_sys_getloadavg_unavailable = ($this->plugin->isProPreview() ? false : !$this->plugin->sysLoadAverages());
-            echo '  <div class="'.(!IS_PRO ? 'pro-preview' : '').'">'."\n";
+            echo '  <div>'."\n";
             echo '      <hr />'."\n";
-            echo '      <h3 style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.__('Disable Cache Expiration If Server Load Average is High?', SLUG_TD).'</h3>'."\n";
+            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'" style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.__('Disable Cache Expiration If Server Load Average is High?', SLUG_TD).'</h3>'."\n";
             echo '      <p style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.sprintf(__('If you have high traffic at certain times of the day, %1$s can be told to check the current load average via <a href="http://zencache.com/r/system-load-average-via-php/" target="_blank"><code>sys_getloadavg()</code></a>. If your server\'s load average has been high in the last 15 minutes or so, cache expiration is disabled automatically to help reduce stress on the server; i.e., to avoid generating a new version of the cache while the server is very busy.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.sprintf(__('To enable this functionality you should first determine what a high load average is for your server. If you log into your machine via SSH you can run the <code>top</code> command to get a feel for what a high load average looks like. Once you know the number, you can enter it in the field below; e.g., <code>1.05</code> might be a high load average for a server with one CPU. See also: <a href="http://zencache.com/r/understanding-load-average/" target="_blank">Understanding Load Average</a>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><input '.($_sys_getloadavg_unavailable ? 'disabled' : '').' type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age_disable_if_load_average_is_gte]" value="'.esc_attr($this->plugin->options['cache_max_age_disable_if_load_average_is_gte']).'" /></p>'."\n";
@@ -564,11 +564,11 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-octi-organization"></i> '.__('Logged-In Users', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-group si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Caching Enabled for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.__('This should almost ALWAYS be set to <code>No</code>. Most sites will NOT want to cache content generated while a user is logged-in. Doing so could result in a cache of dynamic content generated specifically for a particular user, where the content being cached may contain details that pertain only to the user that was logged-in when the cache was generated. Imagine visiting a website that says you\'re logged-in as Billy Bob (but you\'re not Billy Bob; NOT good). In short, do NOT turn this on unless you know what you\'re doing.', SLUG_TD).'</p>'."\n";
@@ -724,19 +724,19 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-sitemap"></i> '.__('Auto-Cache Engine', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-question-circle si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable the Auto-Cache Engine?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('After using %1$s for awhile (or any other page caching plugin, for that matter); it becomes obvious that at some point (based on your configured Expiration Time) %1$s has to refresh itself. It does this by ditching its cached version of a page, reloading the database-driven content, and then recreating the cache with the latest data. This is a never ending regeneration cycle that is based entirely on your configured Expiration Time.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.__('Understanding this, you can see that 99% of your visitors are going to receive a lightning fast response from your server. However, there will always be around 1% of your visitors that land on a page for the very first time (before it\'s been cached), or land on a page that needs to have its cache regenerated, because the existing cache has become outdated. We refer to this as a <em>First-Come Slow-Load Issue</em>. Not a huge problem, but if you\'re optimizing your site for every ounce of speed possible, the Auto-Cache Engine can help with this. The Auto-Cache Engine has been designed to combat this issue by taking on the responsibility of being that first visitor to a page that has not yet been cached, or has an expired cache. The Auto-Cache Engine is powered, in part, by <a href="http://codex.wordpress.org/Category:WP-Cron_Functions" target="_blank">WP-Cron</a> (already built into WordPress). The Auto-Cache Engine runs at 15-minute intervals via WP-Cron. It also uses the <a href="http://core.trac.wordpress.org/browser/trunk/wp-includes/http.php" target="_blank">WP_Http</a> class, which is also built into WordPress already.', SLUG_TD).'</p>'."\n";
             echo '      <p>'.__('The Auto-Cache Engine obtains its list of URLs to auto-cache, from two different sources. It can read an <a href="http://wordpress.org/extend/plugins/google-sitemap-generator/" target="_blank">XML Sitemap</a> and/or a list of specific URLs that you supply. If you supply both sources, it will use both sources collectively. The Auto-Cache Engine takes ALL of your other configuration options into consideration too, including your Expiration Time, as well as any cache exclusion rules.', SLUG_TD).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_enable]" data-target=".-auto-cache-options">'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['auto_cache_enable'], '0', false).'>'.__('No, leave the Auto-Cache Engine disabled please.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['auto_cache_enable'], '1', false).'>'.__('Yes, I want the Auto-Cache Engine to keep pages cached automatically.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['auto_cache_enable'], '0', false)).'>'.__('No, leave the Auto-Cache Engine disabled please.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['auto_cache_enable'], '1', false)).'>'.__('Yes, I want the Auto-Cache Engine to keep pages cached automatically.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
 
             echo '      <hr />'."\n";
@@ -778,16 +778,16 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-html5"></i> '.__('HTML Compression', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-question-circle si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable WebSharks™ HTML Compression?', SLUG_TD).'</h3>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htmlc_enable]" data-target=".-htmlc-options">'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['htmlc_enable'], '0', false).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['htmlc_enable'], '1', false).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htmlc_enable'], '0', false)).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['htmlc_enable'], '1', false)).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
             echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/websharks/zencache/issues" target="_blank">report issues here</a>.', SLUG_TD).'</p>'."\n";
             echo '      <hr />'."\n";
@@ -871,11 +871,11 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-cloud"></i> '.__('Static CDN Filters', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '   <button type="button" class="plugin-menu-page-clear-cdn-cache" style="float:right; margin:0 0 1em 1em;" title="'.esc_attr(__('Clear CDN Cache (Bump CDN Invalidation Counter)', SLUG_TD)).'">'.__('Clear CDN Cache', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
             echo '      <h3>'.__('Enable Static CDN Filters (e.g., MaxCDN/CloudFront)?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn\'t require any DNS changes either. :-) Please <a href="http://zencache.com/r/static-cdn-filters-general-instructions/" target="_blank">click here</a> for a general set of instructions.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -886,8 +886,8 @@ class MenuPageOptions extends MenuPage
                 echo '</div>'."\n";
             }
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cdn_enable]" data-target=".-static-cdn-filter-options">'."\n";
-            echo '            <option value="0"'.selected($this->plugin->options['cdn_enable'], '0', false).'>'.__('No, I do NOT want CDN filters applied at runtime.', SLUG_TD).'</option>'."\n";
-            echo '            <option value="1"'.selected($this->plugin->options['cdn_enable'], '1', false).'>'.__('Yes, I want CDN filters applied w/ my configuration below.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['cdn_enable'], '0', false)).'>'.__('No, I do NOT want CDN filters applied at runtime.', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['cdn_enable'], '1', false)).'>'.__('Yes, I want CDN filters applied w/ my configuration below.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
 
             echo '      <hr />'."\n";
@@ -927,7 +927,7 @@ class MenuPageOptions extends MenuPage
                                 '</a>'.
                            '</h3>'."\n";
 
-            echo '         <div class="'.esc_attr(GLOBAL_NS.'-static-cdn-filters--more-options').'" style="display:none; margin-top:1em;">'."\n";
+            echo '         <div class="'.esc_attr(GLOBAL_NS.'-static-cdn-filters--more-options').'" style="'.(!IS_PRO ? '' : 'display:none; ').'margin-top:1em;">'."\n";
             echo '              <p class="info" style="display:block;">'.__('Everything else below is 100% completely optional; i.e., not required to enjoy the benefits of Static CDN Filters.', SLUG_TD).'</p>'."\n";
 
             echo '              <hr />'."\n";
@@ -971,11 +971,11 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-octi-versions"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/salt.png')).'" class="screenshot" />'."\n";
             echo '      <h3>'.__('<i class="si si-flask"></i> <span style="display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;"><span style="font-weight:bold; font-size:80%;">GEEK ALERT</span></span> This is for VERY advanced users only...', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('<em>Note: Understanding the %1$s <a href="http://zencache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
@@ -1018,11 +1018,11 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-arrow-circle-o-up"></i> '.__('Import/Export Options', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-arrow-circle-o-up si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.sprintf(__('Import Options from Another %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
             echo '      <p>'.sprintf(__('Upload your <code>%1$s-options.json</code> file and click "Save All Changes" below. The options provided by your import file will override any that exist currently.', SLUG_TD), GLOBAL_NS).'</p>'."\n";
