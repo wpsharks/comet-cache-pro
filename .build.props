@@ -1,15 +1,15 @@
 project_title                                           = ZenCache Pro
-project_owner                                             = websharks
+project_owner                                           = websharks
 project_slug                                            = zencache-pro
-project_namespace                                              = WebSharks\\ZenCache\\Pro
-project_sub_namespace                                             = ZenCachePro
+project_namespace                                       = WebSharks\\ZenCache\\Pro
+project_sub_namespace                                   = ZenCachePro
 project_other_phar_fileset_exclusions                   = README.md
 project_other_zip_tgz_fileset_exclusions                = README.md
 
 project_lite_title                                      = ZenCache
 project_lite_slug                                       = zencache
-project_lite_namespace                                         = WebSharks\\ZenCache
-project_lite_sub_namespace                                        = ZenCache
+project_lite_namespace                                  = WebSharks\\ZenCache
+project_lite_sub_namespace                              = ZenCache
 project_lite_other_phar_fileset_exclusions              = README.md, **/AutoCache.php, **/AutoCacheUtils.php, **/CdnFilters.php, **/CdnUtils.php, **/WcpCdnUtils.php, **/cdn-filters.txt, **/HtmlCUtils.php, **/WcpHtmlCUtils.php, **/StatsUtils.php, **/WcpEvalUtils.php, **/WcpS2cleanUtils.php, **/WcpTransientUtils.php, **/WcpUrlUtils.php, **/WcpUserUtils.php, **/MenuPageProUpdater.php, **/MenuPageStats.php, **/DirStats.php, **/admin-bar*.js, **/AdminBarUtils.php, **/options-pro.png, **/pro-updater.png, **/stats*.png, **/zencache-pro.pot
 project_lite_other_zip_tgz_fileset_exclusions           = README.md, **/AutoCache.php, **/AutoCacheUtils.php, **/CdnFilters.php, **/CdnUtils.php, **/WcpCdnUtils.php, **/cdn-filters.txt, **/HtmlCUtils.php, **/WcpHtmlCUtils.php, **/StatsUtils.php, **/WcpEvalUtils.php, **/WcpS2cleanUtils.php, **/WcpTransientUtils.php, **/WcpUrlUtils.php, **/WcpUserUtils.php, **/MenuPageProUpdater.php, **/MenuPageStats.php, **/DirStats.php, **/admin-bar*.js, **/AdminBarUtils.php, **/options-pro.png, **/pro-updater.png, **/stats*.png, **/zencache-pro.pot
 project_lite_text_domain_regex_replacement_pattern      = \$this\-\>text_domain|SLUG_TD
@@ -17,6 +17,6 @@ project_lite_alter_namespace_in_other_files_pattern     = src/includes/templates
 
 project_version                                         = %y%m%d
 project_php_required_version                            = 5.3.2
-project_php_tested_up_to_version                               = ${php.version}
+project_php_tested_up_to_version                        = ${php.version}
 project_wp_required_version                             = 4.1
-project_wp_tested_up_to_version                                = 4.5-alpha
+project_wp_tested_up_to_version                         = 4.5-alpha
