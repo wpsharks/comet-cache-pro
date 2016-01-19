@@ -31,8 +31,8 @@ if (require(dirname(__FILE__).'/src/vendor/websharks/wp-php-rv/src/includes/chec
                     '\';'
               )
             );
+            unset(${__FILE__}); // Housekeeping.
         }
-        unset(${__FILE__}); // Housekeeping.
 
         if ($_apc_enabled && is_admin()) {
             ${__FILE__}['apc_deprecated_notice'] = '<h3 style="margin:.5em 0 .25em 0;">'.__('<strong>NOTICE: ZenCache + PHP APC Extension</strong></h3>', 'zencache');
