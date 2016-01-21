@@ -205,6 +205,7 @@ class Plugin extends AbsBaseAp
             'htmlc_enable',
             'htmlc_css_exclusions',
             'htmlc_js_exclusions',
+            'htmlc_uri_exclusions',
             'htmlc_cache_expiration_time',
             'htmlc_compress_combine_head_body_css',
             'htmlc_compress_combine_head_js',
@@ -335,6 +336,7 @@ class Plugin extends AbsBaseAp
             'htmlc_enable'                => '0', // Enable HTML compression?
             'htmlc_css_exclusions'        => '', // Empty string or line-delimited patterns.
             'htmlc_js_exclusions'         => '.php?', // Empty string or line-delimited patterns.
+            'htmlc_uri_exclusions'        => '', // Empty string or line-delimited patterns.
             'htmlc_cache_expiration_time' => '14 days', // `strtotime()` compatible.
 
             'htmlc_compress_combine_head_body_css' => '1', // `0|1`.

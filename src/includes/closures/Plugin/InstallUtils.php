@@ -303,6 +303,7 @@ $self->addAdvancedCache = function () use ($self) {
             /*[pro strip-from="lite"]*/
             case 'htmlc_css_exclusions': // Converts to regex (caSe insensitive).
             case 'htmlc_js_exclusions': // Converts to regex (caSe insensitive).
+            case 'htmlc_uri_exclusions': // Converts to regex (caSe insensitive).
             /*[/pro]*/
 
                 $_value = "'".$self->escSq($self->lineDelimitedPatternsToRegex($_value))."'";
