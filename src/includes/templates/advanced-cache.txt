@@ -274,6 +274,17 @@ if (!defined('ZENCACHE_HTMLC_JS_EXCLUSIONS')) {
 }
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
+if (!defined('ZENCACHE_HTMLC_URI_EXCLUSIONS')) {
+/**
+ * URI exclusions for the HTML compressor.
+ *
+ * @since 16xxxx First documented version.
+ *
+ * @var string A regular expression; else an empty string.
+ */
+define('ZENCACHE_HTMLC_URI_EXCLUSIONS', '%%ZENCACHE_HTMLC_URI_EXCLUSIONS%%');
+}
+/*[pro strip-from="lite"]*/
 if (!defined('ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME')) {
     /**
      * Cache expiration time for the HTML compressor.
