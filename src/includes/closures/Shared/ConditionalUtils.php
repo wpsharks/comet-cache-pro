@@ -332,10 +332,10 @@ $self->functionIsPossible = function ($function) use ($self) {
         $disabled_functions = array(); // Initialize disabled/blacklisted functions.
 
         if (($disable_functions = trim(ini_get('disable_functions')))) {
-            $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($disable_functions), null, PREG_SPLIT_NO_EMPTY));
+            $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($disable_functions), -1, PREG_SPLIT_NO_EMPTY));
         }
         if (($blacklist_functions = trim(ini_get('suhosin.executor.func.blacklist')))) {
-            $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($blacklist_functions), null, PREG_SPLIT_NO_EMPTY));
+            $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($blacklist_functions), -1, PREG_SPLIT_NO_EMPTY));
         }
     }
     if (!function_exists($function) || !is_callable($function)) {
