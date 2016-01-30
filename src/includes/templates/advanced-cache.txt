@@ -33,8 +33,8 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 } elseif ((@include_once(dirname(INTELLICACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
     return; // Unable to find postload function(s). Fail softly.
 }
-AdvCacheBackCompat::zencacheConstants();
-AdvCacheBackCompat::zcRequestVars();
+AdvCacheBackCompat::quickCacheConstants();
+AdvCacheBackCompat::qcRequestVars();
 
 if (!defined('INTELLICACHE_PRO')) {
     /**
