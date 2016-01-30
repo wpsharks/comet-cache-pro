@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Clips string(s) to X chars deeply.

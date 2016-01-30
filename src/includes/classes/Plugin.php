@@ -1,8 +1,8 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /**
- * ZenCache Plugin.
+ * IntelliCache Plugin.
  *
  * @since 150422 Rewrite.
  */
@@ -274,7 +274,7 @@ class Plugin extends AbsBaseAp
 
             /* Related to cache directory. */
 
-            'base_dir'                                     => 'cache/zencache', // Relative to `WP_CONTENT_DIR`.
+            'base_dir'                                     => 'cache/intellicache', // Relative to `WP_CONTENT_DIR`.
             'cache_max_age'                                => '7 days', // `strtotime()` compatible.
             'cache_max_age_disable_if_load_average_is_gte' => '', // Load average; server-specific.
             'cache_cleanup_schedule'                       => 'hourly', // `every15m`, `hourly`, `twicedaily`, `daily`

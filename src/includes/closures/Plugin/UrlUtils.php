@@ -1,8 +1,8 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
- * URL to a ZenCache plugin file.
+ * URL to a IntelliCache plugin file.
  *
  * @since 150422 Rewrite.
  *

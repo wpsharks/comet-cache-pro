@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Cache directory path.
@@ -16,7 +16,7 @@ $self->cacheDir = function ($rel_path = '') use ($self) {
     $rel_path = (string) $rel_path;
 
     if ($self->isAdvancedCache()) {
-        $cache_dir = defined('ZENCACHE_DIR') ? ZENCACHE_DIR : '';
+        $cache_dir = defined('INTELLICACHE_DIR') ? INTELLICACHE_DIR : '';
     } elseif (!empty($self->cache_sub_dir)) {
         $cache_dir = $self->wpContentBaseDirTo($self->cache_sub_dir);
     }

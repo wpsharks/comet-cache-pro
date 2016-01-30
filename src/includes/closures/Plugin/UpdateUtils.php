@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Checks for a new lite release.

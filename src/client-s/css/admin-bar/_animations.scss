@@ -2,19 +2,19 @@
 
 // Animation :: spin.
 
-@mixin zencache-admin-bar-animation-spin {
+@mixin intellicache-admin-bar-animation-spin {
   @include animation-duration(0.75s);
   @include animation-fill-mode(both);
   @include animation-timing-function(linear);
   @include animation-iteration-count(infinite);
-  @include animation-name(zencache-admin-bar-animation-spin);
+  @include animation-name(intellicache-admin-bar-animation-spin);
 }
 
-.zencache-admin-bar-animation-spin {
-  @include zencache-admin-bar-animation-spin;
+.intellicache-admin-bar-animation-spin {
+  @include intellicache-admin-bar-animation-spin;
 }
 
-@include keyframes(zencache-admin-bar-animation-spin) {
+@include keyframes(intellicache-admin-bar-animation-spin) {
   0% {
     @include transform(rotate(0deg));
   }
@@ -26,17 +26,17 @@
 
 // Animation :: zoom-in-down.
 
-@mixin zencache-admin-bar-animation-zoom-in-down {
+@mixin intellicache-admin-bar-animation-zoom-in-down {
   @include animation-duration(0.75s);
   @include animation-fill-mode(both);
-  @include animation-name(zencache-admin-bar-animation-zoom-in-down);
+  @include animation-name(intellicache-admin-bar-animation-zoom-in-down);
 }
 
-.zencache-admin-bar-animation-zoom-in-down {
-  @include zencache-admin-bar-animation-zoom-in-down;
+.intellicache-admin-bar-animation-zoom-in-down {
+  @include intellicache-admin-bar-animation-zoom-in-down;
 }
 
-@include keyframes(zencache-admin-bar-animation-zoom-in-down) {
+@include keyframes(intellicache-admin-bar-animation-zoom-in-down) {
   from {
     @include transform(scale3d(0.1, 0.1, 0.1) translate3d(0, -1000px, 0));
     @include animation-timing-function(cubic-bezier(0.55, 0.055, 0.675, 0.19));
@@ -54,17 +54,17 @@
 
 // Animation :: zoom-out-up.
 
-@mixin zencache-admin-bar-animation-zoom-out-up {
+@mixin intellicache-admin-bar-animation-zoom-out-up {
   @include animation-duration(0.15s);
   @include animation-fill-mode(both);
-  @include animation-name(zencache-admin-bar-animation-zoom-out-up);
+  @include animation-name(intellicache-admin-bar-animation-zoom-out-up);
 }
 
-.zencache-admin-bar-animation-zoom-out-up {
-  @include zencache-admin-bar-animation-zoom-out-up;
+.intellicache-admin-bar-animation-zoom-out-up {
+  @include intellicache-admin-bar-animation-zoom-out-up;
 }
 
-@include keyframes(zencache-admin-bar-animation-zoom-out-up) {
+@include keyframes(intellicache-admin-bar-animation-zoom-out-up) {
   40% {
     @include transform(scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0));
     @include animation-timing-function(cubic-bezier(0.55, 0.055, 0.675, 0.19));

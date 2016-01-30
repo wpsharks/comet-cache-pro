@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /**
  * Version-Specific Upgrades.
@@ -107,7 +107,7 @@ class VsUpgrades extends AbsBase
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
-                $this->plugin->enqueueMainNotice(sprintf(__('<strong>%1$s Feature Notice:</strong> This version of %1$s introduces a new <a href="http://zencache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> and several other <a href="http://www.websharks-inc.com/post/quick-cache-v140605-now-available/" target="_blank">new features</a>.', SLUG_TD), esc_html(NAME)));
+                $this->plugin->enqueueMainNotice(sprintf(__('<strong>%1$s Feature Notice:</strong> This version of %1$s introduces a new <a href="http://intellicache.me/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> and several other <a href="http://www.websharks-inc.com/post/quick-cache-v140605-now-available/" target="_blank">new features</a>.', SLUG_TD), esc_html(NAME)));
             }
         }
     }
@@ -182,7 +182,7 @@ class VsUpgrades extends AbsBase
     }
 
     /**
-     * Before we changed the name to ZenCache.
+     * Before we changed the name to IntelliCache.
      *
      * If so, we need to uninstall and deactivate Quick Cache.
      *
@@ -231,7 +231,7 @@ class VsUpgrades extends AbsBase
 
             $this->plugin->enqueueMainNotice(
                 '<p>'.sprintf(__('<strong>Woohoo! %1$s activated.</strong> :-)', SLUG_TD), esc_html(NAME)).'</p>'.
-                '<p>'.sprintf(__('NOTE: Your Quick Cache options were preserved by %1$s (for more details, visit the <a href="%2$s" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME), esc_attr(IS_PRO ? 'http://zencache.com/r/quick-cache-pro-migration-faq/' : 'http://zencache.com/kb-article/how-to-migrate-from-quick-cache-lite-to-zencache-lite/')).'</p>'.
+                '<p>'.sprintf(__('NOTE: Your Quick Cache options were preserved by %1$s (for more details, visit the <a href="%2$s" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME), esc_attr(IS_PRO ? 'http://intellicache.me/r/quick-cache-pro-migration-faq/' : 'http://intellicache.me/kb-article/how-to-migrate-from-quick-cache-lite-to-zencache-lite/')).'</p>'.
                 '<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s ⥱ Plugin Options</a>.'.'', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')))).'</p>'
             );
         }
@@ -303,7 +303,7 @@ class VsUpgrades extends AbsBase
                     $this->plugin->options['htmlc_js_exclusions'] = str_replace('*', '**', $existing_options['htmlc_js_exclusions']);
                 }
                 if ($existing_options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
-                    // See: <https://github.com/websharks/zencache/issues/427#issuecomment-121777790>
+                    // See: <https://github.com/websharks/intellicache/issues/427#issuecomment-121777790>
                     $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
                 }
                 if ($this->plugin->options !== $existing_options) {
@@ -330,7 +330,7 @@ class VsUpgrades extends AbsBase
             if (!($htaccess_file = $this->plugin->findHtaccessFile())) {
                 return; // File does not exist.
             }
-            if (!$this->plugin->findHtaccessMarker('ZenCache')) {
+            if (!$this->plugin->findHtaccessMarker('IntelliCache')) {
                 return; // Template blocks are already gone.
             }
             if ($htaccess = $this->plugin->readHtaccessFile($htaccess_file)) {

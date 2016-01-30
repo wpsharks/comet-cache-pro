@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Wipe (i.e., reset) s2Clean cache.

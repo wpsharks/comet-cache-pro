@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Bumps CDN invalidation counter.

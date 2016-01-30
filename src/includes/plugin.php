@@ -4,7 +4,7 @@
  *
  * @since 150422 Rewrite.
  */
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));

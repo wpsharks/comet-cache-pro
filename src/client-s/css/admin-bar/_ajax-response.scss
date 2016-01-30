@@ -7,7 +7,7 @@ $ajax-response-box-shadow-color: #23282d;
 $ajax-response-code-color: #000;
 $ajax-response-code-bg-color: #eee;
 
-.zencache-ajax-response {
+.intellicache-ajax-response {
   @include user-select(none);
   @include sharkicon(times-circle, after);
 

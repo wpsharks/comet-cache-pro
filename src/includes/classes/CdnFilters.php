@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /**
  * CDN Filters.
@@ -216,10 +216,10 @@ class CdnFilters extends AbsBase
         if (is_admin()) {
             return; // Not applicable.
         }
-        if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
+        if (defined('INTELLICACHE_ALLOWED') && !INTELLICACHE_ALLOWED) {
             return; // Disable in this case.
         }
-        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !$_SERVER['ZENCACHE_ALLOWED']) {
+        if (isset($_SERVER['INTELLICACHE_ALLOWED']) && !$_SERVER['INTELLICACHE_ALLOWED']) {
             return; // Disable in this case.
         }
         if (defined('DONOTCACHEPAGE')) {

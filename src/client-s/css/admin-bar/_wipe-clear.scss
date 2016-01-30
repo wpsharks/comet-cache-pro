@@ -2,8 +2,8 @@
 
 $clear-options-split-border-color: rgb(88, 88, 88);
 
-#wp-admin-bar-zencache-wipe,
-#wp-admin-bar-zencache-clear {
+#wp-admin-bar-intellicache-wipe,
+#wp-admin-bar-intellicache-clear {
   > a {
     &::after {
       border:                 0;
@@ -37,7 +37,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
   &.-processing {
     > a {
       &::after {
-        @include zencache-admin-bar-animation-spin;
+        @include intellicache-admin-bar-animation-spin;
 
         content:              url('../images/spinner.png');
       }
@@ -45,7 +45,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
   }
 }
 
-#wp-admin-bar-zencache-clear-options-wrapper {
+#wp-admin-bar-intellicache-clear-options-wrapper {
   &.-wrapper,
   .-container,
   .-container > div {
@@ -93,7 +93,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
         }
 
         &.-processing::after {
-          @include zencache-admin-bar-animation-spin;
+          @include intellicache-admin-bar-animation-spin;
 
           content:            url('../images/spinner.png');
         }
@@ -152,7 +152,7 @@ $clear-options-split-border-color: rgb(88, 88, 88);
   }
 }
 
-#wp-admin-bar-zencache-clear-options {
+#wp-admin-bar-intellicache-clear-options {
   border-left:                1px solid $clear-options-split-border-color;
   border-right:               1px solid $clear-options-split-border-color;
 

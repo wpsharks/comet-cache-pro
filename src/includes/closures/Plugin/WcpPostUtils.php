@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Automatically clears cache files for a particular post.
@@ -138,7 +138,7 @@ $self->autoClearPostCacheTransition = function ($post_id, $data) use ($self) {
      * this post status transition. To get around this, we temporarily store the permalink
      * in $self->pre_post_update_post_permalink for `autoClearPostCache()` to use.
      *
-     * See also: <https://github.com/websharks/zencache/issues/441>
+     * See also: <https://github.com/websharks/intellicache/issues/441>
      */
     if (in_array($new_status, array('pending', 'draft'), true)) {
         $self->pre_post_update_post_permalink[$post_id] = get_permalink($post_id);

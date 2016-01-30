@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
 * Sends no-cache headers (if applicable).
@@ -7,7 +7,7 @@ namespace WebSharks\ZenCache\Pro;
 * @since 150422 Rewrite. Enhanced/altered 151220.
 */
 $self->maybeStopBrowserCaching = function () use ($self) {
-    switch ((bool) ZENCACHE_ALLOW_BROWSER_CACHE) {
+    switch ((bool) INTELLICACHE_ALLOW_BROWSER_CACHE) {
 
         case true: // If global config allows, check exclusions.
 
@@ -16,7 +16,7 @@ $self->maybeStopBrowserCaching = function () use ($self) {
                     return $self->sendNoCacheHeaders(); // Disallow.
                 } // Else, allow client-side caching; because `ABC` is a true-ish value.
                 // ↑ Note that exclusion patterns are ignored in this case, in favor of `ABC`.
-            } elseif (ZENCACHE_EXCLUDE_CLIENT_SIDE_URIS && preg_match(ZENCACHE_EXCLUDE_CLIENT_SIDE_URIS, $_SERVER['REQUEST_URI'])) {
+            } elseif (INTELLICACHE_EXCLUDE_CLIENT_SIDE_URIS && preg_match(INTELLICACHE_EXCLUDE_CLIENT_SIDE_URIS, $_SERVER['REQUEST_URI'])) {
                 return $self->sendNoCacheHeaders(); // Disallow.
             }
             return; // Allow browser caching; default behavior in this mode.

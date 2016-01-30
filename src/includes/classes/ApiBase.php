@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /**
  * API Base Class.
@@ -13,7 +13,7 @@ class ApiBase
      *
      * @since 150422 Rewrite.
      *
-     * @return \zencache\plugin instance.
+     * @return \intellicache\plugin instance.
      */
     public static function plugin()
     {
@@ -136,7 +136,7 @@ class ApiBase
      *
      * @since 150422 Rewrite.
      *
-     * @note On a standard WP installation this is the same as zencache::clear();
+     * @note On a standard WP installation this is the same as intellicache::clear();
      *    but on a multisite installation it impacts the entire network
      *    (i.e. wipes the cache for all blogs in the network).
      *

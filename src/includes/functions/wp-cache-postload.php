@@ -1,5 +1,5 @@
 <?php
-use WebSharks\ZenCache\Pro as Plugin;
+use WebSharks\IntelliCache\Pro as Plugin;
 
 /**
  * Postload event handler; overrides core WP function.

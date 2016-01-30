@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * An array of debug info.
@@ -19,7 +19,7 @@ $self->debug_info = array('reason_code' => '', 'reason' => '');
  * @param string $reason      Optionally override the built-in description with a custom message.
  */
 $self->maybeSetDebugInfo = function ($reason_code, $reason = '') use ($self) {
-    if (!ZENCACHE_DEBUGGING_ENABLE) {
+    if (!INTELLICACHE_DEBUGGING_ENABLE) {
         return; // Nothing to do.
     }
     $reason = (string) $reason;
@@ -37,7 +37,7 @@ $self->maybeSetDebugInfo = function ($reason_code, $reason = '') use ($self) {
  * @attaches-to `shutdown` hook in WordPress w/ a late priority.
  */
 $self->maybeEchoNcDebugInfo = function () use ($self) {
-    if (!ZENCACHE_DEBUGGING_ENABLE) {
+    if (!INTELLICACHE_DEBUGGING_ENABLE) {
         return; // Nothing to do.
     }
     if (is_admin()) {
@@ -62,7 +62,7 @@ $self->maybeEchoNcDebugInfo = function () use ($self) {
  * @return string The debug info; i.e. full description (if applicable).
  */
 $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($self) {
-    if (!ZENCACHE_DEBUGGING_ENABLE) {
+    if (!INTELLICACHE_DEBUGGING_ENABLE) {
         return ''; // Not applicable.
     }
     $reason = (string) $reason;
@@ -83,16 +83,16 @@ $self->maybeGetNcDebugInfo = function ($reason_code = '', $reason = '') use ($se
                 $reason = __('because `$_SERVER[\'REQUEST_URI\']` is missing from your server configuration.', SLUG_TD);
                 break; // Break switch handler.
 
-            case NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT:
+            case NC_DEBUG_INTELLICACHE_ALLOWED_CONSTANT:
                 if ($self->functionIsPossible('did_action') && did_action('ws_plugin__s2member_during_no_cache_constants')) {
-                    $reason = __('because the s2Member plugin set the PHP constant `ZENCACHE_ALLOWED` to a boolean-ish `FALSE` value at runtime. The s2Member plugin is serving content that must remain dynamic on this particular page, and therefore this page was intentionally not cached for a very good reason.', SLUG_TD);
+                    $reason = __('because the s2Member plugin set the PHP constant `INTELLICACHE_ALLOWED` to a boolean-ish `FALSE` value at runtime. The s2Member plugin is serving content that must remain dynamic on this particular page, and therefore this page was intentionally not cached for a very good reason.', SLUG_TD);
                 } else {
-                    $reason = __('because the PHP constant `ZENCACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
+                    $reason = __('because the PHP constant `INTELLICACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
                 }
                 break; // Break switch handler.
 
-            case NC_DEBUG_ZENCACHE_ALLOWED_SERVER_VAR:
-                $reason = __('because the environment variable `$_SERVER[\'ZENCACHE_ALLOWED\']` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
+            case NC_DEBUG_INTELLICACHE_ALLOWED_SERVER_VAR:
+                $reason = __('because the environment variable `$_SERVER[\'INTELLICACHE_ALLOWED\']` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it\'s usually for a very good reason.', SLUG_TD);
                 break; // Break switch handler.
 
             case NC_DEBUG_DONOTCACHEPAGE_CONSTANT:

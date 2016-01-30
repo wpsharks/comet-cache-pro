@@ -1,9 +1,9 @@
-# Copyright (C) 2016 ZenCache Pro
-# This file is distributed under the same license as the ZenCache Pro package.
+# Copyright (C) 2016 IntelliCache Pro
+# This file is distributed under the same license as the IntelliCache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: ZenCache Pro 160103\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/zencache-pro\n"
+"Project-Id-Version: IntelliCache Pro 160103\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/intellicache-pro\n"
 "POT-Creation-Date: 2016-01-03 20:06:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -105,27 +105,27 @@ msgid "Invalid hook."
 msgstr ""
 
 #: plugin.php:17
-msgid "<strong>NOTICE: ZenCache Minimum PHP Version</strong></h3>"
+msgid "<strong>NOTICE: IntelliCache Minimum PHP Version</strong></h3>"
 msgstr ""
 
 #: plugin.php:18
-msgid "<strong>As of December 1st, 2015 ZenCache will require PHP 5.4 or higher.</strong> Your server is currently running PHP v%1$s. You will need to upgrade to PHP 5.4 or higher to run the next version of ZenCache."
+msgid "<strong>As of December 1st, 2015 IntelliCache will require PHP 5.4 or higher.</strong> Your server is currently running PHP v%1$s. You will need to upgrade to PHP 5.4 or higher to run the next version of IntelliCache."
 msgstr ""
 
 #: plugin.php:19
-msgid "Learn more about this upcoming change here: <a href=\"http://zencache.com/r/new-minimum-php-version-php-5-4/\" target=\"_blank\">New Minimum PHP Version: PHP 5.4</a>"
+msgid "Learn more about this upcoming change here: <a href=\"http://intellicache.me/r/new-minimum-php-version-php-5-4/\" target=\"_blank\">New Minimum PHP Version: PHP 5.4</a>"
 msgstr ""
 
 #: plugin.php:21
-msgid "Your server is also running the <strong>outdated PHP APC extension</strong>. Please see: <a href=\"http://zencache.com/r/php-apc-extension-no-longer-supported/\" target=\"_blank\">PHP APC Extension No Longer Supported</a>"
+msgid "Your server is also running the <strong>outdated PHP APC extension</strong>. Please see: <a href=\"http://intellicache.me/r/php-apc-extension-no-longer-supported/\" target=\"_blank\">PHP APC Extension No Longer Supported</a>"
 msgstr ""
 
 #: plugin.php:43
-msgid "<strong>NOTICE: ZenCache + PHP APC Extension</strong></h3>"
+msgid "<strong>NOTICE: IntelliCache + PHP APC Extension</strong></h3>"
 msgstr ""
 
 #: plugin.php:44
-msgid "<strong>As of December 1st, 2015 ZenCache will no longer run with the outdated PHP APC extension.</strong> It appears that you're currently running PHP v%1$s with APC enabled. You will need to follow one of the actions below to run the next version of ZenCache."
+msgid "<strong>As of December 1st, 2015 IntelliCache will no longer run with the outdated PHP APC extension.</strong> It appears that you're currently running PHP v%1$s with APC enabled. You will need to follow one of the actions below to run the next version of IntelliCache."
 msgstr ""
 
 #: plugin.php:45
@@ -133,15 +133,15 @@ msgid "<h4 style=\"margin:0 0 .5em 0; font-size:1.25em;\"><span class=\"dashicon
 msgstr ""
 
 #: plugin.php:47
-msgid "Please add <code>ini_set('apc.cache_by_default', false);</code> to the top of your <code>/wp-config.php</code> file. That will get rid of this message and allow ZenCache to run without issue."
+msgid "Please add <code>ini_set('apc.cache_by_default', false);</code> to the top of your <code>/wp-config.php</code> file. That will get rid of this message and allow IntelliCache to run without issue."
 msgstr ""
 
 #: plugin.php:48
-msgid "Or, contact your web hosting provider and ask about upgrading to PHP v5.5+; which includes the new <a href=\"http://zencache.com/r/php-opcache-extension/\" target=\"_blank\">OPcache extension for PHP</a>. The new OPcache extension replaces APC in modern versions of PHP."
+msgid "Or, contact your web hosting provider and ask about upgrading to PHP v5.5+; which includes the new <a href=\"http://intellicache.me/r/php-opcache-extension/\" target=\"_blank\">OPcache extension for PHP</a>. The new OPcache extension replaces APC in modern versions of PHP."
 msgstr ""
 
 #: plugin.php:50
-msgid "To learn more about this upcoming change, please see the announcement: <a href=\"http://zencache.com/r/php-apc-extension-no-longer-supported/\" target=\"_blank\">PHP APC Extension No Longer Supported</a>"
+msgid "To learn more about this upcoming change, please see the announcement: <a href=\"http://intellicache.me/r/php-apc-extension-no-longer-supported/\" target=\"_blank\">PHP APC Extension No Longer Supported</a>"
 msgstr ""
 
 #: src/includes/classes/AbsBase.php:116
@@ -411,7 +411,7 @@ msgid "Failed to update your <code>/.htaccess</code> file automatically. Most li
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:127
-msgid "It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href=\"http://zencache.com/r/kb-article-recommended-nginx-server-configuration/\" target=\"_new\">update your server configuration manually</a>. If you've already updated your NGINX configuration, you can safely <a href=\"http://zencache.com/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/\" target=\"_new\">ignore this message</a>."
+msgid "It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href=\"http://intellicache.me/r/kb-article-recommended-nginx-server-configuration/\" target=\"_new\">update your server configuration manually</a>. If you've already updated your NGINX configuration, you can safely <a href=\"http://intellicache.me/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/\" target=\"_new\">ignore this message</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:132
@@ -439,7 +439,7 @@ msgid "close"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:157
-msgid "<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href=\"http://zencache.com/prices/\" target=\"_blank\">upgrading <i class=\"si si-heart-o\"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>"
+msgid "<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href=\"http://intellicache.me/prices/\" target=\"_blank\">upgrading <i class=\"si si-heart-o\"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:162
@@ -571,7 +571,7 @@ msgid "Also allow Child Sites in a Network to clear the cache from their Admin B
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:258
-msgid "In a Multisite Network, each child site can clear its own cache. If you want child sites to see the \"Clear Cache\" button in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://zencache.com/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed. For example, if I want Administrators to be capable of clearing the cache from their Admin Bar, I could enter <code>administrator</code> here. If I also want to allow Editors, I can use a comma-delimited list: <code>administrator,editor</code>. Or, I could use a single Capability of: <code>edit_others_posts</code>; which covers both Administrators &amp; Editors at the same time."
+msgid "In a Multisite Network, each child site can clear its own cache. If you want child sites to see the \"Clear Cache\" button in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://intellicache.me/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed. For example, if I want Administrators to be capable of clearing the cache from their Admin Bar, I could enter <code>administrator</code> here. If I also want to allow Editors, I can use a comma-delimited list: <code>administrator,editor</code>. Or, I could use a single Capability of: <code>edit_others_posts</code>; which covers both Administrators &amp; Editors at the same time."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:260
@@ -584,7 +584,7 @@ msgid "Also allow others to clear the cache from their Admin Bar?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:266
-msgid "If you want others to see the \"Clear Cache\" button in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://zencache.com/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed. For example, if I want Editors to be capable of clearing the cache from their Admin Bar, I could enter <code>editor</code> here. If I also want to allow Authors, I can use a comma-delimited list: <code>editor,author</code>. Or, I could use a single Capability of: <code>publish_posts</code>; which covers both Editors &amp; Authors at the same time."
+msgid "If you want others to see the \"Clear Cache\" button in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://intellicache.me/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed. For example, if I want Editors to be capable of clearing the cache from their Admin Bar, I could enter <code>editor</code> here. If I also want to allow Authors, I can use a comma-delimited list: <code>editor,author</code>. Or, I could use a single Capability of: <code>publish_posts</code>; which covers both Editors &amp; Authors at the same time."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:268
@@ -593,7 +593,7 @@ msgid "<strong>Note:</strong> As a security measure, in addition to the Role(s) 
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:274
-msgid "Clear the <a href=\"http://zencache.com/r/php-opcache/\" target=\"_blank\">PHP OPcache</a> Too?"
+msgid "Clear the <a href=\"http://intellicache.me/r/php-opcache/\" target=\"_blank\">PHP OPcache</a> Too?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:275
@@ -833,7 +833,7 @@ msgid "No, my site doesn't use any XML Sitemaps and/or I prefer NOT to clear the
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:402
-msgid "<strong style=\"font-size:110%;\">XML Sitemap Patterns...</strong> A default value of <code>/sitemap**.xml</code> covers all XML Sitemaps for most installations. However, you may customize this further if you deem necessary. <strong>Please list one pattern per line.</strong> These XML Sitemap Pattern searches are performed against the <a href=\"https://gist.github.com/jaswsinc/338b6eb03a36c048c26f\" target=\"_blank\">REQUEST_URI</a>. A wildcard <code>**</code> character can also be used when necessary; e.g., <code>/sitemap**.xml</code> (where <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes). Other special characters include: <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href=\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "<strong style=\"font-size:110%;\">XML Sitemap Patterns...</strong> A default value of <code>/sitemap**.xml</code> covers all XML Sitemaps for most installations. However, you may customize this further if you deem necessary. <strong>Please list one pattern per line.</strong> These XML Sitemap Pattern searches are performed against the <a href=\"https://gist.github.com/jaswsinc/338b6eb03a36c048c26f\" target=\"_blank\">REQUEST_URI</a>. A wildcard <code>**</code> character can also be used when necessary; e.g., <code>/sitemap**.xml</code> (where <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes). Other special characters include: <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href=\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:405
@@ -849,7 +849,7 @@ msgid "Auto-Clear a List of Custom URLs Too?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:413
-msgid "When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:426
@@ -893,7 +893,7 @@ msgid "Allow Child Sites in a Network to See Stats in Admin Bar?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:449
-msgid "In a Multisite Network, each child site has stats of its own. If you want child sites to see cache-related stats in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://zencache.com/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed to see stats. For example, if I want the Administrator to see stats in their Admin Bar, I could enter <code>administrator</code> here. If I also want to show stats to Editors, I can use a comma-delimited list: <code>administrator,editor</code>. Or, I could use a single Capability of: <code>edit_others_posts</code>; which covers both Administrators &amp; Editors at the same time."
+msgid "In a Multisite Network, each child site has stats of its own. If you want child sites to see cache-related stats in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://intellicache.me/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed to see stats. For example, if I want the Administrator to see stats in their Admin Bar, I could enter <code>administrator</code> here. If I also want to show stats to Editors, I can use a comma-delimited list: <code>administrator,editor</code>. Or, I could use a single Capability of: <code>edit_others_posts</code>; which covers both Administrators &amp; Editors at the same time."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:456
@@ -901,7 +901,7 @@ msgid "Allow Others to See Stats in Admin Bar?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:457
-msgid "If you want others to see cache-related stats in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://zencache.com/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed to see stats. For example, if I want Editors to see stats in their Admin Bar, I could enter <code>editor</code> here. If I also want to show stats to Authors, I can use a comma-delimited list: <code>editor,author</code>. Or, I could use a single Capability of: <code>publish_posts</code>; which covers both Editors &amp; Authors at the same time."
+msgid "If you want others to see cache-related stats in their WordPress Admin Bar, you can specify a comma-delimited list of <a href=\"http://intellicache.me/r/wp-roles-caps/\" target=\"_blank\">Roles and/or Capabilities</a> that are allowed to see stats. For example, if I want Editors to see stats in their Admin Bar, I could enter <code>editor</code> here. If I also want to show stats to Authors, I can use a comma-delimited list: <code>editor,author</code>. Or, I could use a single Capability of: <code>publish_posts</code>; which covers both Editors &amp; Authors at the same time."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:473
@@ -909,7 +909,7 @@ msgid "Cache Directory"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:477
-msgid "Base Cache Directory (Must be Writable; i.e., <a href=\"http://zencache.com/r/wp-file-permissions/\" target=\"_blank\">Permissions</a> <code>755</code> or Higher)"
+msgid "Base Cache Directory (Must be Writable; i.e., <a href=\"http://intellicache.me/r/wp-file-permissions/\" target=\"_blank\">Permissions</a> <code>755</code> or Higher)"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:478
@@ -949,7 +949,7 @@ msgid "Cache Cleanup Schedule"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:505
-msgid "If you have an extremely large site and you lower the default Cache Expiration Time of <code>7 days</code>, expired cache files can build up more quickly. By default, %1$s cleans up expired cache files via <a href=\"http://zencache.com/r/wp_cron-functions/\" target=\"_blank\">WP Cron</a> at an <code>hourly</code> interval, but you can tell %1$s to use a custom Cache Cleanup Schedule below to run the cleanup process more or less frequently, depending on your specific needs."
+msgid "If you have an extremely large site and you lower the default Cache Expiration Time of <code>7 days</code>, expired cache files can build up more quickly. By default, %1$s cleans up expired cache files via <a href=\"http://intellicache.me/r/wp_cron-functions/\" target=\"_blank\">WP Cron</a> at an <code>hourly</code> interval, but you can tell %1$s to use a custom Cache Cleanup Schedule below to run the cleanup process more or less frequently, depending on your specific needs."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:517
@@ -957,11 +957,11 @@ msgid "Disable Cache Expiration If Server Load Average is High?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:518
-msgid "If you have high traffic at certain times of the day, %1$s can be told to check the current load average via <a href=\"http://zencache.com/r/system-load-average-via-php/\" target=\"_blank\"><code>sys_getloadavg()</code></a>. If your server's load average has been high in the last 15 minutes or so, cache expiration is disabled automatically to help reduce stress on the server; i.e., to avoid generating a new version of the cache while the server is very busy."
+msgid "If you have high traffic at certain times of the day, %1$s can be told to check the current load average via <a href=\"http://intellicache.me/r/system-load-average-via-php/\" target=\"_blank\"><code>sys_getloadavg()</code></a>. If your server's load average has been high in the last 15 minutes or so, cache expiration is disabled automatically to help reduce stress on the server; i.e., to avoid generating a new version of the cache while the server is very busy."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:519
-msgid "To enable this functionality you should first determine what a high load average is for your server. If you log into your machine via SSH you can run the <code>top</code> command to get a feel for what a high load average looks like. Once you know the number, you can enter it in the field below; e.g., <code>1.05</code> might be a high load average for a server with one CPU. See also: <a href=\"http://zencache.com/r/understanding-load-average/\" target=\"_blank\">Understanding Load Average</a>"
+msgid "To enable this functionality you should first determine what a high load average is for your server. If you log into your machine via SSH you can run the <code>top</code> command to get a feel for what a high load average looks like. Once you know the number, you can enter it in the field below; e.g., <code>1.05</code> might be a high load average for a server with one CPU. See also: <a href=\"http://intellicache.me/r/understanding-load-average/\" target=\"_blank\">Understanding Load Average</a>"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:522
@@ -1017,7 +1017,7 @@ msgid "Exclusion Patterns for Client-Side Caching"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:554
-msgid "When you enable Client-Side Caching above, you may want to prevent certain pages on your site from be cached by a client-side browser. This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"https://gist.github.com/jaswsinc/338b6eb03a36c048c26f\" target=\"_blank\" style=\"text-decoration:none;\"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don't put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "When you enable Client-Side Caching above, you may want to prevent certain pages on your site from be cached by a client-side browser. This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"https://gist.github.com/jaswsinc/338b6eb03a36c048c26f\" target=\"_blank\" style=\"text-decoration:none;\"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don't put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:556
@@ -1148,7 +1148,7 @@ msgid "<strong>How does %1$s cache 404 requests?</strong> %1$s will create a spe
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:641
-msgid "<strong>Advanced Tip:</strong> The default 404 cache filename (<code>----404----.html</code>) is designed to minimize the chance of a collision with a cache file for a real page with the same name. However, if you want to override this default and define your own 404 cache filename, you can do so by adding <code>define('ZENCACHE_404_CACHE_FILENAME', 'your-404-cache-filename');</code> to your <code>wp-config.php</code> file (note that the <code>.html</code> extension should be excluded when defining a new filename)."
+msgid "<strong>Advanced Tip:</strong> The default 404 cache filename (<code>----404----.html</code>) is designed to minimize the chance of a collision with a cache file for a real page with the same name. However, if you want to override this default and define your own 404 cache filename, you can do so by adding <code>define('INTELLICACHE_404_CACHE_FILENAME', 'your-404-cache-filename');</code> to your <code>wp-config.php</code> file (note that the <code>.html</code> extension should be excluded when defining a new filename)."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:651
@@ -1184,7 +1184,7 @@ msgid "Don't Cache These Special URI Exclusion Patterns?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:677
-msgid "Sometimes there are certain cases where a particular file, or a particular group of files, should never be cached. This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"https://gist.github.com/jaswsinc/338b6eb03a36c048c26f\" target=\"_blank\" style=\"text-decoration:none;\"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don't put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "Sometimes there are certain cases where a particular file, or a particular group of files, should never be cached. This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"https://gist.github.com/jaswsinc/338b6eb03a36c048c26f\" target=\"_blank\" style=\"text-decoration:none;\"><code>REQUEST_URI</code></a>; i.e., <code>/path/?query</code> (caSe insensitive). So, don't put in full URLs here, just word fragments found in the file path (or query string) is all you need, excluding the http:// and domain name. A wildcard <code>*</code> character can also be used when necessary; e.g., <code>/category/abc-followed-by-*</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:691
@@ -1196,7 +1196,7 @@ msgid "Don't Cache These Special HTTP Referrer Exclusion Patterns?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:696
-msgid "Sometimes there are special cases where a particular referring URL (or referring domain) that sends you traffic; or even a particular group of referring URLs or domains that send you traffic; should result in a page being loaded on your site that is NOT from the cache (and that resulting page should never be cached). This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"http://www.php.net//manual/en/reserved.variables.server.php\" target=\"_blank\" style=\"text-decoration:none;\"><code>HTTP_REFERER</code></a> (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>*.domain.com</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "Sometimes there are special cases where a particular referring URL (or referring domain) that sends you traffic; or even a particular group of referring URLs or domains that send you traffic; should result in a page being loaded on your site that is NOT from the cache (and that resulting page should never be cached). This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"http://www.php.net//manual/en/reserved.variables.server.php\" target=\"_blank\" style=\"text-decoration:none;\"><code>HTTP_REFERER</code></a> (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>*.domain.com</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:698
@@ -1212,7 +1212,7 @@ msgid "Don't Cache These Special User-Agent Exclusion Patterns?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:714
-msgid "Sometimes there are special cases when a particular user-agent (e.g., a specific browser or a specific type of device); should be shown a page on your site that is NOT from the cache (and that resulting page should never be cached). This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"http://www.php.net//manual/en/reserved.variables.server.php\" target=\"_blank\" style=\"text-decoration:none;\"><code>HTTP_USER_AGENT</code></a> (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>Android *; Chrome/* Mobile</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "Sometimes there are special cases when a particular user-agent (e.g., a specific browser or a specific type of device); should be shown a page on your site that is NOT from the cache (and that resulting page should never be cached). This is where you will enter those if you need to (one per line). Searches are performed against the <a href=\"http://www.php.net//manual/en/reserved.variables.server.php\" target=\"_blank\" style=\"text-decoration:none;\"><code>HTTP_USER_AGENT</code></a> (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>Android *; Chrome/* Mobile</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:716
@@ -1260,7 +1260,7 @@ msgid "Using the path I've given, look for blog-specific sitemaps in each child 
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:752
-msgid "<strong>↑</strong> If enabled here, each child blog can be auto-cached too. %1$s will dynamically change the leading <code>%2$s</code> as necessary; for each child blog in the network. %1$s supports both sub-directory &amp; sub-domain networks, including domain mapping plugins. For more information about how the Auto-Cache Engine caches child blogs, see <a href=\"http://zencache.com/r/kb-article-how-does-the-auto-cache-engine-cache-child-blogs-in-a-multisite-network/\" target=\"_blank\">this article</a>."
+msgid "<strong>↑</strong> If enabled here, each child blog can be auto-cached too. %1$s will dynamically change the leading <code>%2$s</code> as necessary; for each child blog in the network. %1$s supports both sub-directory &amp; sub-domain networks, including domain mapping plugins. For more information about how the Auto-Cache Engine caches child blogs, see <a href=\"http://intellicache.me/r/kb-article-how-does-the-auto-cache-engine-cache-child-blogs-in-a-multisite-network/\" target=\"_blank\">this article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:756
@@ -1304,7 +1304,7 @@ msgid "Yes, I want to compress HTML/CSS/JS for blazing fast speeds."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:792
-msgid "<strong>Note:</strong> This is experimental. Please <a href=\"https://github.com/websharks/zencache/issues\" target=\"_blank\">report issues here</a>."
+msgid "<strong>Note:</strong> This is experimental. Please <a href=\"https://github.com/websharks/intellicache/issues\" target=\"_blank\">report issues here</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:795
@@ -1384,7 +1384,7 @@ msgid "CSS Exclusion Patterns?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:831
-msgid "Sometimes there are special cases when a particular CSS file should NOT be consolidated or compressed in any way. This is where you will enter those if you need to (one per line). Searches are performed against the <code>&lt;link href=&quot;&quot;&gt;</code> value, and also against the contents of any inline <code>&lt;style&gt;</code> tags (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>xy*-framework</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "Sometimes there are special cases when a particular CSS file should NOT be consolidated or compressed in any way. This is where you will enter those if you need to (one per line). Searches are performed against the <code>&lt;link href=&quot;&quot;&gt;</code> value, and also against the contents of any inline <code>&lt;style&gt;</code> tags (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>xy*-framework</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:834
@@ -1392,7 +1392,7 @@ msgid "JavaScript Exclusion Patterns?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:835
-msgid "Sometimes there are special cases when a particular JS file should NOT be consolidated or compressed in any way. This is where you will enter those if you need to (one per line). Searches are performed against the <code>&lt;script src=&quot;&quot;&gt;</code> value, and also against the contents of any inline <code>&lt;script&gt;</code> tags (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>xy*-framework</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://zencache.com/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
+msgid "Sometimes there are special cases when a particular JS file should NOT be consolidated or compressed in any way. This is where you will enter those if you need to (one per line). Searches are performed against the <code>&lt;script src=&quot;&quot;&gt;</code> value, and also against the contents of any inline <code>&lt;script&gt;</code> tags (caSe insensitive). A wildcard <code>*</code> character can also be used when necessary; e.g., <code>xy*-framework</code> (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href =\"http://intellicache.me/r/watered-down-regex-syntax/\" target=\"_blank\">this KB article</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:839
@@ -1444,7 +1444,7 @@ msgid "Enable Static CDN Filters (e.g., MaxCDN/CloudFront)?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:881
-msgid "This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn't require any DNS changes either. :-) Please <a href=\"http://zencache.com/r/static-cdn-filters-general-instructions/\" target=\"_blank\">click here</a> for a general set of instructions."
+msgid "This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn't require any DNS changes either. :-) Please <a href=\"http://intellicache.me/r/static-cdn-filters-general-instructions/\" target=\"_blank\">click here</a> for a general set of instructions."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:882
@@ -1452,7 +1452,7 @@ msgid "<strong>What's a CDN?</strong> It's a Content Delivery Network (i.e., a n
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:885
-msgid "It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href=\"http://zencache.com/r/kb-article-recommended-nginx-server-configuration/\" target=\"_new\">update your server configuration manually</a>. Note that updating your NGINX server configuration <em>before</em> enabling Static CDN Filters is recommended to prevent any <a href=\"http://zencache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/\" target=\"_new\">CORS errors</a> with your CDN. If you've already updated your NGINX configuration, you can safely <a href=\"http://zencache.com/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/\" target=\"_new\">ignore this message</a>."
+msgid "It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href=\"http://intellicache.me/r/kb-article-recommended-nginx-server-configuration/\" target=\"_new\">update your server configuration manually</a>. Note that updating your NGINX server configuration <em>before</em> enabling Static CDN Filters is recommended to prevent any <a href=\"http://intellicache.me/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/\" target=\"_new\">CORS errors</a> with your CDN. If you've already updated your NGINX configuration, you can safely <a href=\"http://intellicache.me/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/\" target=\"_new\">ignore this message</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:889
@@ -1468,7 +1468,7 @@ msgid "CDN Host Name (Required)"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:903
-msgid "This field is really all that's necessary to get Static CDN Filters working! However, it does requires a little bit of work on your part. You need to setup and configure a CDN before you can fill in this field. Once you configure a CDN, you'll receive a host name (provided by your CDN), which you'll enter here; e.g., <code>js9dgjsl4llqpp.cloudfront.net</code>. We recommend <a href=\"http://zencache.com/r/maxcdn/\" target=\"_blank\">MaxCDN</a>, <a href=\"http://zencache.com/r/amazon-cloudfront/\" target=\"_blank\">Amazon CloudFront</a>, <a href=\"http://zencache.com/r/keycdn/\" target=\"_blank\">KeyCDN</a>, and/or <a href=\"http://zencache.com/r/cdn77/\" target=\"_blank\">CDN77</a> but this should work with many of the most popular CDNs. Please read <a href=\"http://zencache.com/r/static-cdn-filters-general-instructions/\" target=\"_blank\">this article</a> for a general set of instructions. We also have a <a href=\"http://zencache.com/r/static-cdn-filters-maxcdn/\" target=\"_blank\">MaxCDN tutorial</a>, <a href=\"http://zencache.com/r/static-cdn-filters-cloudfront/\" target=\"_blank\">CloudFront tutorial</a>, <a href=\"http://zencache.com/r/static-cdn-filters-keycdn/\" target=\"_blank\">KeyCDN tutorial</a>, and a <a href=\"http://zencache.com/r/static-cdn-filters-cdn77/\" target=\"_blank\">CDN77 tutorial</a> to walk you through the process."
+msgid "This field is really all that's necessary to get Static CDN Filters working! However, it does requires a little bit of work on your part. You need to setup and configure a CDN before you can fill in this field. Once you configure a CDN, you'll receive a host name (provided by your CDN), which you'll enter here; e.g., <code>js9dgjsl4llqpp.cloudfront.net</code>. We recommend <a href=\"http://intellicache.me/r/maxcdn/\" target=\"_blank\">MaxCDN</a>, <a href=\"http://intellicache.me/r/amazon-cloudfront/\" target=\"_blank\">Amazon CloudFront</a>, <a href=\"http://intellicache.me/r/keycdn/\" target=\"_blank\">KeyCDN</a>, and/or <a href=\"http://intellicache.me/r/cdn77/\" target=\"_blank\">CDN77</a> but this should work with many of the most popular CDNs. Please read <a href=\"http://intellicache.me/r/static-cdn-filters-general-instructions/\" target=\"_blank\">this article</a> for a general set of instructions. We also have a <a href=\"http://intellicache.me/r/static-cdn-filters-maxcdn/\" target=\"_blank\">MaxCDN tutorial</a>, <a href=\"http://intellicache.me/r/static-cdn-filters-cloudfront/\" target=\"_blank\">CloudFront tutorial</a>, <a href=\"http://intellicache.me/r/static-cdn-filters-keycdn/\" target=\"_blank\">KeyCDN tutorial</a>, and a <a href=\"http://intellicache.me/r/static-cdn-filters-cdn77/\" target=\"_blank\">CDN77 tutorial</a> to walk you through the process."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:908
@@ -1476,11 +1476,11 @@ msgid "Multiple CDN Host Names for Domain Sharding and Multisite Networks (Optio
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:909
-msgid "%1$s also supports multiple CDN Host Names for any given domain. Using multiple CDN Host Names (instead of just one, as seen above) is referred to as <strong><a href=\"http://zencache.com/r/domain-sharding/\" target=\"_blank\">Domain Sharding</a></strong> (<a href=\"http://zencache.com/r/domain-sharding/\" target=\"_blank\">click here to learn more</a>). If you configure multiple CDN Host Names (i.e., if you implement Domain Sharding), %1$s will use the first one that you list for static resources loaded in the HTML <code>&lt;head&gt;</code> section, the last one for static resources loaded in the footer, and it will choose one at random for all other static resource locations. Configuring multiple CDN Host Names can improve speed! This is a way for advanced site owners to work around concurrency limits in popular browsers; i.e., making it possible for browsers to download many more resources simultaneously, resulting in a faster overall completion time. In short, this tells the browser that your website will not be overloaded by concurrent requests, because static resources are in fact being served by a content-delivery network (i.e., multiple CDN host names). If you use this functionality for Domain Sharding, we suggest that you setup one CDN Distribution (aka: Pull Zone), and then create multiple CNAME records pointing to that distribution. You can enter each of your CNAMES in the field below, as instructed."
+msgid "%1$s also supports multiple CDN Host Names for any given domain. Using multiple CDN Host Names (instead of just one, as seen above) is referred to as <strong><a href=\"http://intellicache.me/r/domain-sharding/\" target=\"_blank\">Domain Sharding</a></strong> (<a href=\"http://intellicache.me/r/domain-sharding/\" target=\"_blank\">click here to learn more</a>). If you configure multiple CDN Host Names (i.e., if you implement Domain Sharding), %1$s will use the first one that you list for static resources loaded in the HTML <code>&lt;head&gt;</code> section, the last one for static resources loaded in the footer, and it will choose one at random for all other static resource locations. Configuring multiple CDN Host Names can improve speed! This is a way for advanced site owners to work around concurrency limits in popular browsers; i.e., making it possible for browsers to download many more resources simultaneously, resulting in a faster overall completion time. In short, this tells the browser that your website will not be overloaded by concurrent requests, because static resources are in fact being served by a content-delivery network (i.e., multiple CDN host names). If you use this functionality for Domain Sharding, we suggest that you setup one CDN Distribution (aka: Pull Zone), and then create multiple CNAME records pointing to that distribution. You can enter each of your CNAMES in the field below, as instructed."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:910
-msgid "<strong>On WordPress Multisite Network installations</strong>, this field also allows you to configure different CDN Host Names for each domain (or sub-domain) that you run from a single installation of WordPress. For more information about configuring Static CDN Filters on a WordPress Multisite Network, see this tutorial: <a href=\"http://zencache.com/r/static-cdn-filters-for-wordpress-multisite-networks/\" target=\"_blank\">Static CDN Filters for WordPress Multisite Networks</a>."
+msgid "<strong>On WordPress Multisite Network installations</strong>, this field also allows you to configure different CDN Host Names for each domain (or sub-domain) that you run from a single installation of WordPress. For more information about configuring Static CDN Filters on a WordPress Multisite Network, see this tutorial: <a href=\"http://intellicache.me/r/static-cdn-filters-for-wordpress-multisite-networks/\" target=\"_blank\">Static CDN Filters for WordPress Multisite Networks</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:912
@@ -1572,7 +1572,7 @@ msgid "<i class=\"si si-flask\"></i> <span style=\"display:inline-block; padding
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:981
-msgid "<em>Note: Understanding the %1$s <a href=\"http://zencache.com/r/kb-branched-cache-structure/\" target=\"_blank\">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>"
+msgid "<em>Note: Understanding the %1$s <a href=\"http://intellicache.me/r/kb-branched-cache-structure/\" target=\"_blank\">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:982
@@ -1588,7 +1588,7 @@ msgid "Experts could even use PHP ternary expressions that evaluate into somethi
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:985
-msgid "For more documentation, please see <a href=\"http://zencache.com/r/kb-dynamic-version-salts/\" target=\"_blank\">Dynamic Version Salts</a>."
+msgid "For more documentation, please see <a href=\"http://intellicache.me/r/kb-dynamic-version-salts/\" target=\"_blank\">Dynamic Version Salts</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:987
@@ -1616,7 +1616,7 @@ msgid "Developing a Theme or Plugin for WordPress?"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:1007
-msgid "<strong>Tip:</strong> %1$s can be disabled temporarily. If you're a theme/plugin developer, you can set a flag within your PHP code to disable the cache engine at runtime. Perhaps on a specific page, or in a specific scenario. In your PHP script, set: <code>$_SERVER['ZENCACHE_ALLOWED'] = FALSE;</code> or <code>define('ZENCACHE_ALLOWED', FALSE)</code>. %1$s is also compatible with: <code>define('DONOTCACHEPAGE', TRUE)</code>. It does't matter where or when you define one of these, because %1$s is the last thing to run before script execution ends."
+msgid "<strong>Tip:</strong> %1$s can be disabled temporarily. If you're a theme/plugin developer, you can set a flag within your PHP code to disable the cache engine at runtime. Perhaps on a specific page, or in a specific scenario. In your PHP script, set: <code>$_SERVER['INTELLICACHE_ALLOWED'] = FALSE;</code> or <code>define('INTELLICACHE_ALLOWED', FALSE)</code>. %1$s is also compatible with: <code>define('DONOTCACHEPAGE', TRUE)</code>. It does't matter where or when you define one of these, because %1$s is the last thing to run before script execution ends."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:1009
@@ -1624,7 +1624,7 @@ msgid "Writing \"Advanced Cache\" Plugins Specifically for %1$s"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:1010
-msgid "Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href=\"http://zencache.com/r/ac-plugin-example/\" target=\"_blank\">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org."
+msgid "Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href=\"http://intellicache.me/r/ac-plugin-example/\" target=\"_blank\">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org."
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:1011
@@ -1683,7 +1683,7 @@ msgid "%1$s™ Authentication"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:84
-msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://zencache.com/prices/\" target=\"_blank\">zencache.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href=\"http://zencache.com/\" target=\"_blank\">zencache.com</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://zencache.com/\" target=\"_blank\">zencache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"si si-smile-o\"></i>"
+msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://intellicache.me/prices/\" target=\"_blank\">intellicache.me</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href=\"http://intellicache.me/\" target=\"_blank\">intellicache.me</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://intellicache.me/\" target=\"_blank\">intellicache.me</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"si si-smile-o\"></i>"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:86
@@ -1719,7 +1719,7 @@ msgid "%1$s™ Beta Testers"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:126
-msgid "If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn't mean you'll want to do the same. :-) Please report any issues with Release Candidates on <a href=\"https://github.com/websharks/zencache/issues/\" target=\"_blank\">GitHub</a>."
+msgid "If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn't mean you'll want to do the same. :-) Please report any issues with Release Candidates on <a href=\"https://github.com/websharks/intellicache/issues/\" target=\"_blank\">GitHub</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:129
@@ -1731,7 +1731,7 @@ msgid "Yes, check for Release Candidates; I want to help with testing."
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:132
-msgid "<strong>How do I know if I'm running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., ZenCache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href=\"http://zencache.com/r/zencache-beta-testers-list/\" target=\"_blank\">beta testers mailing list</a>."
+msgid "<strong>How do I know if I'm running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., IntelliCache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href=\"http://intellicache.me/r/intellicache-beta-testers-list/\" target=\"_blank\">beta testers mailing list</a>."
 msgstr ""
 
 #: src/includes/classes/MenuPageStats.php:28
@@ -1835,7 +1835,7 @@ msgid "<strong>%1$s Feature Notice:</strong> This version of %1$s adds new optio
 msgstr ""
 
 #: src/includes/classes/VsUpgrades.php:110
-msgid "<strong>%1$s Feature Notice:</strong> This version of %1$s introduces a new <a href=\"http://zencache.com/r/kb-branched-cache-structure/\" target=\"_blank\">Branched Cache Structure</a> and several other <a href=\"http://www.websharks-inc.com/post/quick-cache-v140605-now-available/\" target=\"_blank\">new features</a>."
+msgid "<strong>%1$s Feature Notice:</strong> This version of %1$s introduces a new <a href=\"http://intellicache.me/r/kb-branched-cache-structure/\" target=\"_blank\">Branched Cache Structure</a> and several other <a href=\"http://www.websharks-inc.com/post/quick-cache-v140605-now-available/\" target=\"_blank\">new features</a>."
 msgstr ""
 
 #: src/includes/classes/VsUpgrades.php:132
@@ -1871,15 +1871,15 @@ msgid "because `$_SERVER['REQUEST_URI']` is missing from your server configurati
 msgstr ""
 
 #: src/includes/closures/Ac/NcDebugUtils.php:88
-msgid "because the s2Member plugin set the PHP constant `ZENCACHE_ALLOWED` to a boolean-ish `FALSE` value at runtime. The s2Member plugin is serving content that must remain dynamic on this particular page, and therefore this page was intentionally not cached for a very good reason."
+msgid "because the s2Member plugin set the PHP constant `INTELLICACHE_ALLOWED` to a boolean-ish `FALSE` value at runtime. The s2Member plugin is serving content that must remain dynamic on this particular page, and therefore this page was intentionally not cached for a very good reason."
 msgstr ""
 
 #: src/includes/closures/Ac/NcDebugUtils.php:90
-msgid "because the PHP constant `ZENCACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
+msgid "because the PHP constant `INTELLICACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
 msgstr ""
 
 #: src/includes/closures/Ac/NcDebugUtils.php:95
-msgid "because the environment variable `$_SERVER['ZENCACHE_ALLOWED']` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
+msgid "because the environment variable `$_SERVER['INTELLICACHE_ALLOWED']` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
 msgstr ""
 
 #: src/includes/closures/Ac/NcDebugUtils.php:99
@@ -2155,7 +2155,7 @@ msgid "Enter a specific URL to clear the cache for that page:"
 msgstr ""
 
 #: src/includes/closures/Plugin/AutoCacheUtils.php:136
-msgid "Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href=\"http://zencache.com/r/kb-article-why-am-i-seeing-a-timeout-error/\" target=\"_blank\">this article</a>."
+msgid "Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href=\"http://intellicache.me/r/kb-article-why-am-i-seeing-a-timeout-error/\" target=\"_blank\">this article</a>."
 msgstr ""
 
 #: src/includes/closures/Plugin/AutoCacheUtils.php:139
@@ -2167,7 +2167,7 @@ msgid "Content-Type (<code>%1$s</code>) indicates an error."
 msgstr ""
 
 #: src/includes/closures/Plugin/AutoCacheUtils.php:147
-msgid "<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href=\"http://zencache.com/r/google-xml-sitemaps-plugin/\" target=\"_blank\">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>"
+msgid "<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href=\"http://intellicache.me/r/google-xml-sitemaps-plugin/\" target=\"_blank\">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>"
 msgstr ""
 
 #: src/includes/closures/Plugin/AutoCacheUtils.php:148
@@ -2286,15 +2286,15 @@ msgid "<strong>%1$s:</strong> detected important site changes. Found %2$s in the
 msgstr ""
 
 #: src/includes/closures/Plugin/WcpUtils.php:334
-msgid "<strong>%1$s:</strong> detected significant changes that would normally trigger cache wiping routines. However, cache wiping routines have been disabled by a site administrator. [<a href=\"http://zencache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
+msgid "<strong>%1$s:</strong> detected significant changes that would normally trigger cache wiping routines. However, cache wiping routines have been disabled by a site administrator. [<a href=\"http://intellicache.me/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
 #: src/includes/closures/Plugin/WcpUtils.php:354
-msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger cache clearing routines. However, cache clearing routines have been disabled by a site administrator. [<a href=\"http://zencache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
+msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger cache clearing routines. However, cache clearing routines have been disabled by a site administrator. [<a href=\"http://intellicache.me/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
 #: src/includes/closures/Plugin/WcpUtils.php:374
-msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger cache purging routines. However, cache purging routines have been disabled by a site administrator. [<a href=\"http://zencache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
+msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger cache purging routines. However, cache purging routines have been disabled by a site administrator. [<a href=\"http://intellicache.me/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
 #: src/includes/closures/Shared/CacheDirUtils.php:121
@@ -2323,15 +2323,15 @@ msgid "%s%%"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "ZenCache Pro"
+msgid "IntelliCache Pro"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "http://zencache.com/"
+msgid "http://intellicache.me/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "ZenCache is an advanced WordPress caching plugin inspired by simplicity."
+msgid "IntelliCache is an advanced WordPress caching plugin inspired by simplicity."
 msgstr ""
 
 #. Author of the plugin/theme

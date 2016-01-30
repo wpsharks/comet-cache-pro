@@ -1,10 +1,10 @@
 {
-  "name": "websharks/zencache-pro",
-  "homepage": "https://github.com/websharks/zencache-pro",
+  "name": "websharks/intellicache-pro",
+  "homepage": "https://github.com/websharks/intellicache-pro",
   "description": "A popular caching plugin for WordPress.",
   "keywords": [
     "websharks",
-    "zencache",
+    "intellicache",
     "wordpress",
     "caching",
     "cache"
@@ -25,8 +25,8 @@
     "role": "developer"
   }],
   "support": {
-    "source": "https://github.com/websharks/zencache-pro",
-    "issues": "https://github.com/websharks/zencache/issues"
+    "source": "https://github.com/websharks/intellicache-pro",
+    "issues": "https://github.com/websharks/intellicache/issues"
   },
   "require": {
     "php": ">=5.3",
@@ -43,7 +43,7 @@
 
   "autoload": {
     "psr-4": {
-      "WebSharks\\ZenCache\\Pro\\": "src/includes/classes/"
+      "WebSharks\\IntelliCache\\Pro\\": "src/includes/classes/"
     }
   },
   "config": {

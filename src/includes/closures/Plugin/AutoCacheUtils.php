@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 /*
  * Runs the auto-cache engine via CRON job.
@@ -64,7 +64,7 @@ $self->autoCacheCheckPhpIni = function () use ($self) {
     if (!filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) { // Is allow_url_fopen=1?
         $self->dismissMainNotice('allow_url_fopen_disabled'); // Clear any previous allow_url_fopen notice.
         $self->enqueueMainNotice(
-          sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine requires <a href="http://zencache.com/r/allow_url_fopen/" target="_blank">PHP URL-aware fopen wrappers</a> (<code>allow_url_fopen=1</code>), however this option has been disabled by your <code>php.ini</code> runtime configuration. Please contact your web hosting company to resolve this issue or disable the Auto-Cache Engine in the <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">settings</a>.', SLUG_TD), esc_html(NAME)),
+          sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine requires <a href="http://intellicache.me/r/allow_url_fopen/" target="_blank">PHP URL-aware fopen wrappers</a> (<code>allow_url_fopen=1</code>), however this option has been disabled by your <code>php.ini</code> runtime configuration. Please contact your web hosting company to resolve this issue or disable the Auto-Cache Engine in the <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">settings</a>.', SLUG_TD), esc_html(NAME)),
           array('class' => 'error', 'persistent_key' => 'allow_url_fopen_disabled', 'dismissable' => false)
         );
         return false; // Nothing more we can do in this case.
@@ -133,7 +133,7 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false
     if (is_wp_error($head = wp_remote_head($sitemap, array('redirection' => 5)))) {
         $failure = 'WP_Http says: '.$head->get_error_message().'.';
         if(stripos($head->get_error_message(), 'timed out') !== false || stripos($head->get_error_message(), 'timeout') !== false) { // $head->get_error_code() only returns generic `http_request_failed`
-            $failure .= '<br /><em>'.__('Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href="http://zencache.com/r/kb-article-why-am-i-seeing-a-timeout-error/" target="_blank">this article</a>.', SLUG_TD).'</em>';
+            $failure .= '<br /><em>'.__('Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href="http://intellicache.me/r/kb-article-why-am-i-seeing-a-timeout-error/" target="_blank">this article</a>.', SLUG_TD).'</em>';
         }
     } elseif (empty($head['response']['code']) || (int)$head['response']['code'] >= 400) {
         $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int)@$head['response']['code']));
@@ -144,7 +144,7 @@ $self->autoCacheCheckXmlSitemap = function ($sitemap, $is_nested_sitemap = false
         if (!$is_child_blog && !$is_nested_sitemap && $self->options['auto_cache_sitemap_url']) { // If this is a primary sitemap location.
             $self->dismissMainNotice('xml_sitemap_missing'); // Clear any previous XML Sitemap notice, which may reference an old URL; see http://wsharks.com/1SAofhP
             $self->enqueueMainNotice(
-              sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://zencache.com/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>', SLUG_TD), esc_html(NAME)).'</p><hr />'.
+              sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href="http://intellicache.me/r/google-xml-sitemaps-plugin/" target="_blank">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>', SLUG_TD), esc_html(NAME)).'</p><hr />'.
               sprintf(__('<p><strong>Problematic Sitemap URL:</strong> <a href="%1$s" target="_blank">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s', SLUG_TD), esc_html($sitemap), $failure),
               array('class' => 'error', 'persistent_key' => 'xml_sitemap_missing', 'dismissable' => false)
             );

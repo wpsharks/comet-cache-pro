@@ -23,7 +23,7 @@ $stats-more-info-active-bg-color: #0073aa;
 $stats-more-info-active-border-color: #005082;
 $stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
 
-#wp-admin-bar-zencache-stats {
+#wp-admin-bar-intellicache-stats {
   > a {
     @include sharkicon(pie-chart, after);
 
@@ -71,7 +71,7 @@ $stats-more-info-active-box-shadow-color: rgba(0, 0, 0, 0.1);
         text-align:           center;
 
         &::before {
-          @include zencache-admin-bar-animation-spin;
+          @include intellicache-admin-bar-animation-spin;
 
           margin-top:         calc((250px - 50px) / 2);
         }

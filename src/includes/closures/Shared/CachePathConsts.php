@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\IntelliCache\Pro;
 
 if (defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     return; // Already defined these.
