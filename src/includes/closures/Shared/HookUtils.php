@@ -205,7 +205,7 @@ $self->applyFilters = function ($hook, $value) use ($self) {
 };
 
 /*
- * Does an action w/ back compat. for Quick Cache.
+ * Does an action w/ back compat. for ZenCache.
  *
  * @since 150422 Rewrite.
  *
@@ -225,7 +225,7 @@ $self->doWpAction = function ($hook) use ($self) {
 };
 
 /*
- * Applies filters w/ back compat. for Quick Cache.
+ * Applies filters w/ back compat. for ZenCache.
  *
  * @since 150422 Rewrite.
  *

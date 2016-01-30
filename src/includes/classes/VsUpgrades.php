@@ -156,7 +156,7 @@ class VsUpgrades extends AbsBase
     /**
      * Before we changed the name to IntelliCache.
      *
-     * If so, we need to uninstall and deactivate Quick Cache.
+     * If so, we need to uninstall and deactivate ZenCache.
      *
      * @since 160130 Rebranding.
      */
@@ -178,18 +178,6 @@ class VsUpgrades extends AbsBase
             }
             deactivate_plugins(array('zencache/zencache.php', 'zencache-pro/zencache-pro.php'), true);
 
-            if (isset($zencache_options['update_sync_version_check'])) {
-                $this->plugin->options['pro_update_check'] = $zencache_options['update_sync_version_check'];
-            }
-            if (isset($zencache_options['last_update_sync_version_check'])) {
-                $this->plugin->options['last_pro_update_check'] = $zencache_options['last_update_sync_version_check'];
-            }
-            if (isset($zencache_options['update_sync_username'])) {
-                $this->plugin->options['pro_update_username'] = $zencache_options['update_sync_username'];
-            }
-            if (isset($zencache_options['update_sync_password'])) {
-                $this->plugin->options['pro_update_password'] = $zencache_options['update_sync_password'];
-            }
             if (!empty($zencache_options['base_dir'])) {
                 $this->plugin->deleteAllFilesDirsIn(WP_CONTENT_DIR.'/'.trim($zencache_options['base_dir'], '/'), true);
             }

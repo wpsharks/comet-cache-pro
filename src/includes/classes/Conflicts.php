@@ -33,6 +33,7 @@ class Conflicts
         }
         $conflicting_plugin_slugs = array(
             'quick-cache', 'quick-cache-pro',
+            'zencache', 'zencache-pro',
             str_replace('_', '-', GLOBAL_NS).(IS_PRO ? '' : '-pro'),
             'wp-super-cache', 'w3-total-cache', 'hyper-cache', 'wp-rocket',
         );
@@ -45,7 +46,7 @@ class Conflicts
                 continue; // Nothing to check in this case.
             }
             if (in_array($_active_plugin_slug, $conflicting_plugin_slugs, true)) {
-                if (in_array($_active_plugin_slug, array('quick-cache', 'quick-cache-pro'), true)) {
+                if (in_array($_active_plugin_slug, array('quick-cache', 'quick-cache-pro', 'zencache', 'zencache-pro'), true)) {
                     add_action('admin_init', function () use ($_active_plugin_basename) {
                         if (function_exists('deactivate_plugins')) { // Can deactivate?
                             deactivate_plugins($_active_plugin_basename, true);

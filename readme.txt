@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Contributors: WebSharks, JasWSInc, raamdev
 Donate link: http://websharks-inc.com/r/wp-theme-plugin-donation/
-Tags: cache, quick cache, intellicache, zen cache, quickcache, speed, performance, fast, loading, generation, execution, benchmark, benchmarking, debug, debugging, caching, cash, caching, cacheing, super cache, advanced cache, advanced-cache, wp-cache, wp cache, rocket, static, client-side cache, rss cache, feed cache, gzip compression, query string, get request, page cache, options panel included, w3c validated code, highly extensible
+Tags: cache, speed, performance, fast, caching, advanced cache, wp cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
 
 IntelliCache is an advanced WordPress caching plugin inspired by simplicity. Speed up your site (BIG time!) with a reliable and fast WordPress cache.
 
@@ -102,9 +102,9 @@ IntelliCache is now completely uninstalled and you can start fresh :-)
 
 == Frequently Asked Questions ==
 
-= I already have Quick Cache installed; how do I install IntelliCache? =
+= I already have ZenCache installed; how do I install IntelliCache? =
 
-IntelliCache is the successor to Quick Cache and will automatically detect any existing Quick Cache options and migrate those options over to IntelliCache. For further details, please see the [migration FAQ](http://intellicache.me/kb-article/how-to-migrate-from-quick-cache-lite-to-intellicache-lite/).
+IntelliCache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate those options over to IntelliCache. For further details, please see the [migration FAQ](http://intellicache.me/r/zencache-migration-faq/).
 
 = How do I know that IntelliCache is working the way it should be? =
 
