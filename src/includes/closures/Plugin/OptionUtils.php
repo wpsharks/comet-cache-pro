@@ -14,7 +14,7 @@ $self->getOptions = function () use ($self) {
             $options = array(); // Force array.
         }
         if (!$options && is_array($zencache_options = get_site_option('zencache_options'))) {
-            $options                = $zencache_options; // Old Quick Cache options.
+            $options                = $zencache_options; // Old ZenCache options.
             $options['crons_setup'] = $this->default_options['crons_setup'];
         }
     }
