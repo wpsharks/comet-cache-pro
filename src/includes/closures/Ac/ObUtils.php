@@ -243,7 +243,7 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     if (!($phase & PHP_OUTPUT_HANDLER_END)) {
         throw new \Exception(sprintf(__('Unexpected OB phase: `%1$s`.', SLUG_TD), $phase));
     }
-    AdvCacheBackCompat::quickCacheConstants();
+    AdvCacheBackCompat::zencacheConstants();
 
     $cache = trim((string) $buffer);
 
