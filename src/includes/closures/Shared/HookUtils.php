@@ -54,8 +54,8 @@ $self->hookId = function ($function) use ($self) {
  */
 $self->addHook = function ($hook, $function, $priority = 10, $accepted_args = 1) use ($self) {
     $hook = (string) $hook;
-    if (stripos($hook, 'quick_cache') === 0) {
-        $hook  = GLOBAL_NS.substr($hook, strlen('quick_cache'));
+    if (stripos($hook, 'zencache') === 0) {
+        $hook  = GLOBAL_NS.substr($hook, strlen('zencache'));
     }
     $priority      = (integer) $priority;
     $accepted_args = max(0, (integer) $accepted_args);
@@ -105,8 +105,8 @@ $self->add_filter = $self->addFilter; // Back compat.
  */
 $self->removeHook = function ($hook, $function, $priority = 10) use ($self) {
     $hook = (string) $hook;
-    if (stripos($hook, 'quick_cache') === 0) {
-        $hook  = GLOBAL_NS.substr($hook, strlen('quick_cache'));
+    if (stripos($hook, 'zencache') === 0) {
+        $hook  = GLOBAL_NS.substr($hook, strlen('zencache'));
     }
     $priority = (integer) $priority;
     $hook_id  = $self->hookId($function);
@@ -217,10 +217,10 @@ $self->doWpAction = function ($hook) use ($self) {
     call_user_func_array('do_action', $args);
 
     if (stripos($hook, GLOBAL_NS) === 0) {
-        $quick_cache_filter  = 'quick_cache'.substr($hook, strlen(GLOBAL_NS));
-        $quick_cache_args    = $args; // Use a copy of the args.
-        $quick_cache_args[0] = $quick_cache_filter;
-        call_user_func_array('do_action', $quick_cache_args);
+        $zencache_filter  = 'zencache'.substr($hook, strlen(GLOBAL_NS));
+        $zencache_args    = $args; // Use a copy of the args.
+        $zencache_args[0] = $zencache_filter;
+        call_user_func_array('do_action', $zencache_args);
     }
 };
 
@@ -239,11 +239,11 @@ $self->applyWpFilters = function ($hook) use ($self) {
     $value = call_user_func_array('apply_filters', $args);
 
     if (stripos($hook, GLOBAL_NS) === 0) {
-        $quick_cache_hook    = 'quick_cache'.substr($hook, strlen(GLOBAL_NS));
-        $quick_cache_args    = $args; // Use a copy of the args.
-        $quick_cache_args[0] = $quick_cache_hook;
-        $quick_cache_args[1] = $value; // Filtered value.
-        $value               = call_user_func_array('apply_filters', $quick_cache_args);
+        $zencache_hook    = 'zencache'.substr($hook, strlen(GLOBAL_NS));
+        $zencache_args    = $args; // Use a copy of the args.
+        $zencache_args[0] = $zencache_hook;
+        $zencache_args[1] = $value; // Filtered value.
+        $value               = call_user_func_array('apply_filters', $zencache_args);
     }
     return $value; // Filtered value.
 };

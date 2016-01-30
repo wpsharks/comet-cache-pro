@@ -33,8 +33,8 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 } elseif ((@include_once(dirname(INTELLICACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
     return; // Unable to find postload function(s). Fail softly.
 }
-AdvCacheBackCompat::quickCacheConstants();
-AdvCacheBackCompat::qcRequestVars();
+AdvCacheBackCompat::zenCacheConstants();
+AdvCacheBackCompat::zcRequestVars();
 
 if (!defined('INTELLICACHE_PRO')) {
     /**
@@ -418,6 +418,6 @@ if (!defined('INTELLICACHE_HTMLC_COMPRESS_HTML_CODE')) {
 /*[/pro]*/
 $GLOBALS[GLOBAL_NS.'_advanced_cache']  = new AdvancedCache();
 $GLOBALS[GLOBAL_NS.'__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
-if (!isset($GLOBALS['quick_cache__advanced_cache'])) {
-    $GLOBALS['quick_cache__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
+if (!isset($GLOBALS['zencache__advanced_cache'])) {
+    $GLOBALS['zencache__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 }
