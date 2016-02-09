@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /*
 * Automatically clears cache files for a list of custom URLs.

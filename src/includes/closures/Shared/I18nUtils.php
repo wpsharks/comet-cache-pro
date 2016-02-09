@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /*
  * `X file` or `X files`, translated w/ singlular/plural context.

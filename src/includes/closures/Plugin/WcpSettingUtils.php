@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /*
  * Automatically clears all cache files for current blog under various conditions;

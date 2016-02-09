@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /**
  * Auto-Cache Engine.

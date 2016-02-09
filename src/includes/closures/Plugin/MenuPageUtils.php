@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /*
  * Adds CSS for administrative menu pages.
@@ -111,7 +111,7 @@ $self->addMenuPages = function () use ($self) {
 };
 
 /*
- * Adds link(s) to ZenCache row on the WP plugins page.
+ * Adds link(s) to Comet Cache row on the WP plugins page.
  *
  * @since 150422 Rewrite.
  *
@@ -125,7 +125,7 @@ $self->addSettingsLink = function ($links) use ($self) {
     $links[] = '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">'.__('Settings', SLUG_TD).'</a>';
     if (!IS_PRO) {
         $links[] = '<br/><a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1')), self_admin_url('/admin.php'))).'">'.__('Preview Pro Features', SLUG_TD).'</a>';
-        $links[] = '<a href="'.esc_attr('http://zencache.com/prices/').'" target="_blank">'.__('Upgrade', SLUG_TD).'</a>';
+        $links[] = '<a href="'.esc_attr('http://cometcache.com/prices/').'" target="_blank">'.__('Upgrade', SLUG_TD).'</a>';
     }
     return $links;
 };

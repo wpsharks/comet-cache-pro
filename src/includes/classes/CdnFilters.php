@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /**
  * CDN Filters.
@@ -216,10 +216,10 @@ class CdnFilters extends AbsBase
         if (is_admin()) {
             return; // Not applicable.
         }
-        if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
+        if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
             return; // Disable in this case.
         }
-        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !$_SERVER['ZENCACHE_ALLOWED']) {
+        if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
             return; // Disable in this case.
         }
         if (defined('DONOTCACHEPAGE')) {

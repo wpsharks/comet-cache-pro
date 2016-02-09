@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\Comet_Cache\Pro;
 
 /**
  * Conflicts.
@@ -32,7 +32,7 @@ class Conflicts
             return $GLOBALS[GLOBAL_NS.'_conflicting_plugin'];
         }
         $conflicting_plugin_slugs = array(
-            'quick-cache', 'quick-cache-pro',
+            'zencache', 'zencache-pro', 'quick-cache', 'quick-cache-pro',
             str_replace('_', '-', GLOBAL_NS).(IS_PRO ? '' : '-pro'),
             'wp-super-cache', 'w3-total-cache', 'hyper-cache', 'wp-rocket',
         );
@@ -45,7 +45,7 @@ class Conflicts
                 continue; // Nothing to check in this case.
             }
             if (in_array($_active_plugin_slug, $conflicting_plugin_slugs, true)) {
-                if (in_array($_active_plugin_slug, array('quick-cache', 'quick-cache-pro'), true)) {
+                if (in_array($_active_plugin_slug, array('zencache', 'zencache-pro', 'quick-cache', 'quick-cache-pro'), true)) {
                     add_action('admin_init', function () use ($_active_plugin_basename) {
                         if (function_exists('deactivate_plugins')) { // Can deactivate?
                             deactivate_plugins($_active_plugin_basename, true);
