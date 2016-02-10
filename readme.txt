@@ -324,11 +324,17 @@ Released under the terms of the [GNU General Public License](http://www.gnu.org/
 
 == Upgrade Notice ==
 
-= v16xxxx =
+= v160211 =
 
 Requires PHP v5.4+. The latest version of Comet Cache is a complete rewrite (OOP design). Faster! and even more dependable. For further details, please see http://cometcache.com/new-minimum-php-version-php-5-4/
 
 == Changelog ==
+
+= v160211 =
+
+**Announcing Comet Cache, formerly ZenCache!**
+
+We are very excited to announce the release of [Comet Cache](http://cometcache.com), an advanced WordPress caching plugin inspired by simplicity. Comet Cache is the successor to ZenCache (and Quick Cache before that), a very popular WordPress caching plugin that has been downloaded over 1 million times and has won acclaim for its speed, simplicity, and ease of configuration. [Read the full announcement here](https://cometcache.com/r/announcing-comet-cache-formerly-zencache/).
 
 = v160103 =
 
