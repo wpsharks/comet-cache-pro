@@ -4,7 +4,7 @@
   'use strict'; // Standards.
 
   var plugin = {
-      namespace: 'comet-cache'
+      namespace: 'comet_cache'
     },
     $window = $(window),
     $document = $(document);
