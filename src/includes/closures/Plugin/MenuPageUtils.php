@@ -69,7 +69,7 @@ $self->addNetworkMenuPages = function () use ($self) {
     $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
-    add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
+    add_menu_page(NAME . (IS_PRO ? ' Pro' : ''), NAME . (IS_PRO ? ' Pro' : ''), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
 
     /*[pro strip-from="lite"]*/
@@ -97,7 +97,7 @@ $self->addMenuPages = function () use ($self) {
     $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
-    add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
+    add_menu_page(NAME . (IS_PRO ? ' Pro' : ''), NAME . (IS_PRO ? ' Pro' : ''), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
     add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
 
     /*[pro strip-from="lite"]*/
