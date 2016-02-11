@@ -69,7 +69,7 @@ TIP: you can preview Pro features in the free version by clicking the "Preview P
 
 **Quick Tip:** WordPress® can only deal with one cache plugin being activated at a time. Please uninstall any existing cache plugins that you've tried in the past. In other words, if you've installed W3 Total Cache, WP Super Cache, DB Cache Reloaded, or any other caching plugin, uninstall them all before installing Comet Cache. One way to check, is to make sure this file: `wp-content/advanced-cache.php` and/or `wp-content/object-cache.php` are NOT present; and if they are, delete these files BEFORE installing Comet Cache. Those files will only be present if you have a caching plugin already installed. If you don't see them, you're ready to install Comet Cache :-).
 
-**A note for existing ZenCache users:** Comet Cache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate that options over to Comet Cache. For further details, please see the [migration FAQ](http://cometcache.com/kb-article/how-to-migrate-from-zencache-lite-to-comet-cache-lite/).
+**A note for existing ZenCache users:** Comet Cache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate that options over to Comet Cache. For further details, please see the [migration FAQ](https://cometcache.com/r/zencache-migration-faq/).
 
 = Comet Cache is Very Easy to Install =
 
@@ -104,7 +104,7 @@ Comet Cache is now completely uninstalled and you can start fresh :-)
 
 = I already have ZenCache installed; how do I install Comet Cache? =
 
-Comet Cache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate those options over to Comet Cache. For further details, please see the [migration FAQ](http://cometcache.com/kb-article/how-to-migrate-from-zencache-lite-to-comet-cache-lite/).
+Comet Cache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate those options over to Comet Cache. For further details, please see the [migration FAQ](https://cometcache.com/r/zencache-migration-faq/).
 
 = How do I know that Comet Cache is working the way it should be? =
 
