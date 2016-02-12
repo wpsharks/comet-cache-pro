@@ -1,6 +1,6 @@
 === Comet Cache ===
 
-Stable tag: 160211
+Stable tag: 160211.2
 Requires at least: 4.1
 Tested up to: 4.5-alpha
 Text Domain: comet-cache
@@ -335,6 +335,10 @@ Released under the terms of the [GNU General Public License](http://www.gnu.org/
 Requires PHP v5.4+. The latest version of Comet Cache is a complete rewrite (OOP design). Faster! and even more dependable. For further details, please see http://cometcache.com/new-minimum-php-version-php-5-4/
 
 == Changelog ==
+
+= v160211.2 =
+
+- **Minor Fix**: Remove unnecessary `src/client-s/css/.sass-cache` directory.
 
 = v160211 =
 
