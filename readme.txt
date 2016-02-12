@@ -12,7 +12,7 @@ Contributors: WebSharks, JasWSInc, raamdev
 Donate link: http://websharks-inc.com/r/wp-theme-plugin-donation/
 Tags: cache, speed, performance, fast, caching, advanced cache, wp cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
 
-Comet Cache is an advanced WordPress caching plugin inspired by simplicity. Speed up your site (BIG time!) with a reliable and fast WordPress cache.
+Comet Cache is an advanced WordPress caching plugin inspired by simplicity. Speed up your site (BIG time!) with an intelligent and easy-to-use cache.
 
 == Description ==
 
@@ -54,16 +54,22 @@ TIP: you can preview Pro features in the free version by clicking the "Preview P
 
 == Screenshots ==
 
-1. Comet Cache Screenshot #1
-2. Comet Cache Screenshot #2
-3. Comet Cache Screenshot #3
-4. Comet Cache Screenshot #4
-5. Comet Cache Screenshot #5
-6. Comet Cache Screenshot #6
-7. Comet Cache Screenshot #7
-8. Comet Cache Screenshot #8
-9. Comet Cache Screenshot #9
-10. Comet Cache Screenshot #10
+1. Step 1: Enable Comet Cache
+2. Step 2: Save All Changes; that's it!
+3. One-click Clear Cache button
+4. Plugin Deletion Safeguards
+5. Intelligent and automatic cache clearing
+6. Cache Directory
+7. Cache Expiration Time
+8. Client-Side Cache
+9. GET Requests
+10. 404 Requests
+11. RSS, RDF, and Atom Feeds
+12. URI Exclusion Patterns
+13. HTTP Referrer Exclusion Patterns
+14. User-Agent Exclusion Patterns
+15. GZIP Compression
+16. Theme/Plugin Developers
 
 == Installation ==
 
