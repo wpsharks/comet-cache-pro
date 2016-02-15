@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\Comet_Cache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 if (defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     return; // Already defined these.

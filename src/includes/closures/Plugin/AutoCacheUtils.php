@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\Comet_Cache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Runs the auto-cache engine via CRON job.

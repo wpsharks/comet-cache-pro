@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\Comet_Cache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * String replace ONE time.

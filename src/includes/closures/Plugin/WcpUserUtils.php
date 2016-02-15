@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\Comet_Cache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Clears cache files associated with a particular user.

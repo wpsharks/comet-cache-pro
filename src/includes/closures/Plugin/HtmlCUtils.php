@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\Comet_Cache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Adds marker for the HTML Compressor.

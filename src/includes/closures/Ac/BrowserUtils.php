@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\Comet_Cache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
 * Sends no-cache headers (if applicable).

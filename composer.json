@@ -43,7 +43,7 @@
 
   "autoload": {
     "psr-4": {
-      "WebSharks\\Comet_Cache\\Pro\\": "src/includes/classes/"
+      "WebSharks\\CometCache\\Pro\\": "src/includes/classes/"
     }
   },
   "config": {
