@@ -28,7 +28,7 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
     if (!($post_id = (integer) $post_id)) {
         return $counter; // Nothing to do.
     }
-    if (!is_null($done = &$self->cacheKey('autoClearPostTermsCache', array($post_id, $force)))) {
+    if (!is_null($done = &$self->cacheKey('autoClearPostTermsCache', [$post_id, $force]))) {
         return $counter; // Already did this.
     }
     $done = true; // Flag as having been done.
@@ -53,10 +53,10 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
     ) {
         $post_status = 'publish'; // A new post being published now.
     }
-    if (in_array($post_status, array('inherit', 'auto-draft'), true)) {
+    if (in_array($post_status, ['inherit', 'auto-draft'], true)) {
         return $counter; // Nothing to do. Note: `inherit` = revision.
     }
-    if (in_array($post_status, array('draft', 'pending', 'future'), true) && !$force) {
+    if (in_array($post_status, ['draft', 'pending', 'future'], true) && !$force) {
         return $counter; // Nothing to do; i.e., NOT forcing in this case.
     }
     /*
@@ -71,8 +71,8 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
      * Build an array of terms associated with this post for each taxonomy.
      * Also save taxonomy label information for Dashboard messaging later.
      */
-    $terms           = array();
-    $taxonomy_labels = array();
+    $terms           = [];
+    $taxonomy_labels = [];
 
     foreach ($taxonomies as $_taxonomy) {
         if (// Check if this is a taxonomy/term that we should clear.
@@ -100,7 +100,7 @@ $self->autoClearPostTermsCache = function ($post_id, $force = false) use ($self)
      * Build an array of terms with term names,
      * permalinks, and associated taxonomy labels.
      */
-    $terms_to_clear = array();
+    $terms_to_clear = []);
     $_i             = 0;
 
     foreach ($terms as $_term) {

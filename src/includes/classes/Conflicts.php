@@ -31,13 +31,13 @@ class Conflicts
         if (!empty($GLOBALS[GLOBAL_NS.'_conflicting_plugin'])) {
             return $GLOBALS[GLOBAL_NS.'_conflicting_plugin'];
         }
-        $conflicting_plugin_slugs = array(
+        $conflicting_plugin_slugs = [
             'quick-cache', 'quick-cache-pro',
             str_replace('_', '-', GLOBAL_NS).(IS_PRO ? '' : '-pro'),
             'wp-super-cache', 'w3-total-cache', 'hyper-cache', 'wp-rocket',
-        );
-        $active_plugins          = (array) get_option('active_plugins', array());
-        $active_sitewide_plugins = is_multisite() ? array_keys((array) get_site_option('active_sitewide_plugins', array())) : array();
+        ];
+        $active_plugins          = (array) get_option('active_plugins', []);
+        $active_sitewide_plugins = is_multisite() ? array_keys((array) get_site_option('active_sitewide_plugins', [])) : [];
         $active_plugins          = array_unique(array_merge($active_plugins, $active_sitewide_plugins));
 
         foreach ($active_plugins as $_active_plugin_basename) {
@@ -45,7 +45,7 @@ class Conflicts
                 continue; // Nothing to check in this case.
             }
             if (in_array($_active_plugin_slug, $conflicting_plugin_slugs, true)) {
-                if (in_array($_active_plugin_slug, array('quick-cache', 'quick-cache-pro'), true)) {
+                if (in_array($_active_plugin_slug, ['quick-cache', 'quick-cache-pro'], true)) {
                     add_action('admin_init', function () use ($_active_plugin_basename) {
                         if (function_exists('deactivate_plugins')) { // Can deactivate?
                             deactivate_plugins($_active_plugin_basename, true);

@@ -34,7 +34,7 @@ class DirStats extends AbsBase
      *
      * @type string Allowed history cache keys.
      */
-    protected $allowed_history_cache_keys = array();
+    protected $allowed_history_cache_keys = [];
 
     /**
      * Allowed history cache keys (current host).
@@ -43,7 +43,7 @@ class DirStats extends AbsBase
      *
      * @type string Allowed history cache keys (current host).
      */
-    protected $allowed_host_history_cache_keys = array();
+    protected $allowed_host_history_cache_keys = [];
 
     /**
      * Class constructor.
@@ -57,8 +57,8 @@ class DirStats extends AbsBase
         $this->cache_key         = GLOBAL_NS.'_dir_stats';
         $this->history_cache_key = GLOBAL_NS.'_h_dir_stats';
 
-        $this->allowed_history_cache_keys      = array(md5('forCache0'), md5('forHtmlCCache0'));
-        $this->allowed_host_history_cache_keys = array(md5('forHostCache0'), md5('forHtmlCHostCache0'));
+        $this->allowed_history_cache_keys      = [md5('forCache0'), md5('forHtmlCCache0')];
+        $this->allowed_host_history_cache_keys = [md5('forHostCache0'), md5('forHtmlCHostCache0')];
     }
 
     /**
@@ -71,7 +71,7 @@ class DirStats extends AbsBase
     protected function getCache()
     {
         if (!is_array($cache = get_site_option($this->cache_key))) {
-            update_site_option($this->cache_key, ($cache = array()));
+            update_site_option($this->cache_key, ($cache = []));
         }
         return $cache;
     }
@@ -88,7 +88,7 @@ class DirStats extends AbsBase
         $host_cache_key = $this->cacheKeyForBlog();
 
         if (!is_array($host_cache = get_site_option($host_cache_key))) {
-            update_site_option($host_cache_key, ($host_cache = array()));
+            update_site_option($host_cache_key, ($host_cache = []));
         }
         return $host_cache;
     }
@@ -103,7 +103,7 @@ class DirStats extends AbsBase
     protected function getHistoryCache()
     {
         if (!is_array($cache = get_site_option($this->history_cache_key))) {
-            update_site_option($this->history_cache_key, ($cache = array()));
+            update_site_option($this->history_cache_key, ($cache = []));
         }
         return $cache;
     }
@@ -120,7 +120,7 @@ class DirStats extends AbsBase
         $host_history_cache_key = $this->historyCacheKeyForBlog();
 
         if (!is_array($host_history_cache = get_site_option($host_history_cache_key))) {
-            update_site_option($host_history_cache_key, ($host_history_cache = array()));
+            update_site_option($host_history_cache_key, ($host_history_cache = []));
         }
         return $host_history_cache;
     }
@@ -136,7 +136,7 @@ class DirStats extends AbsBase
     protected function updateCache($key, \stdClass $stats)
     {
         $cache = $this->getCache();
-        $cache = array_merge($cache, array((string) $key => $stats));
+        $cache = array_merge($cache, [(string) $key => $stats]);
         update_site_option($this->cache_key, $cache);
         $this->updateHistoryCache($key, $stats);
     }
@@ -153,7 +153,7 @@ class DirStats extends AbsBase
     {
         $host_cache     = $this->getHostCache();
         $host_cache_key = $this->cacheKeyForBlog();
-        $host_cache     = array_merge($host_cache, array((string) $key => $stats));
+        $host_cache     = array_merge($host_cache, [(string) $key => $stats]);
         update_site_option($host_cache_key, $host_cache);
         $this->updateHostHistoryCache($key, $stats);
     }
@@ -303,13 +303,13 @@ class DirStats extends AbsBase
             }
         } // ↓ Even if clearing child blogs.
         // This makes sure the option cache is updated also.
-        update_site_option($this->cache_key, array()); // Always.
+        update_site_option($this->cache_key, []); // Always.
 
         // Clear network and current blog.
         // If different; or in case `$include_child_blogs=false`.
         $host_cache_key = $this->cacheKeyForBlog(); // If not the same.
         if ($this->cache_key !== $host_cache_key) { // Clear host?
-            update_site_option($host_cache_key, array());
+            update_site_option($host_cache_key, []);
         }
     }
 
@@ -326,7 +326,7 @@ class DirStats extends AbsBase
             $this->wipeCache(false); // Wipe network and current blog.
         } else {
             $host_cache_key = $this->cacheKeyForBlog();
-            update_site_option($host_cache_key, array());
+            update_site_option($host_cache_key, []);
         }
     }
 
@@ -354,13 +354,13 @@ class DirStats extends AbsBase
             }
         } // ↓ Even if clearing child blogs.
         // This makes sure the option cache is updated also.
-        update_site_option($this->history_cache_key, array()); // Always.
+        update_site_option($this->history_cache_key, []); // Always.
 
         // Clear network and current blog.
         // If different; or in case `$include_child_blogs=false`.
         $host_history_cache_key = $this->historyCacheKeyForBlog(); // If not the same.
         if ($this->history_cache_key !== $host_history_cache_key) { // Clear host?
-            update_site_option($host_history_cache_key, array());
+            update_site_option($host_history_cache_key, []);
         }
     }
 
@@ -377,7 +377,7 @@ class DirStats extends AbsBase
             $this->wipeHistoryCache(false); // Wipe network and current blog.
         } else {
             $host_history_cache_key = $this->historyCacheKeyForBlog();
-            update_site_option($host_history_cache_key, array());
+            update_site_option($host_history_cache_key, []);
         }
     }
 
@@ -454,7 +454,7 @@ class DirStats extends AbsBase
         } // Otherwise, we need to pull a fresh set of stats.
 
         $stats = (object) $this->plugin->getDirRegexStats($this->plugin->cacheDir(), '', $include_paths, true, true);
-        $stats = (object) array('stats' => $stats, 'time' => time());
+        $stats = (object) ['stats' => $stats, 'time' => time()];
 
         $this->updateCache($cache_key, $stats);
 
@@ -489,7 +489,7 @@ class DirStats extends AbsBase
 
         $stats = new \stdClass(); // Initialize stats object instance.
 
-        $htmlc_cache_dirs   = array(); // Initialize directories.
+        $htmlc_cache_dirs   = []; // Initialize directories.
         $htmlc_cache_dirs[] = $this->plugin->wpContentBaseDirTo($this->plugin->htmlc_cache_sub_dir_public);
         $htmlc_cache_dirs[] = $this->plugin->wpContentBaseDirTo($this->plugin->htmlc_cache_sub_dir_private);
 
@@ -509,7 +509,7 @@ class DirStats extends AbsBase
         }
         unset($_htmlc_cache_dir, $_check_disk_stats); // Housekeeping.
 
-        $stats = (object) array('stats' => $stats, 'time' => time());
+        $stats = (object) ['stats' => $stats, 'time' => time()];
 
         $this->updateCache($cache_key, $stats);
 
@@ -560,7 +560,7 @@ class DirStats extends AbsBase
         }
         $stats = new \stdClass(); // Initialize stats object instance.
 
-        foreach (array('http', 'https') as $_host_scheme) {
+        foreach (['http', 'https'] as $_host_scheme) {
             $_host_url              = $_host_scheme.'://'.$host_token.$host_base_dir_tokens;
             $_host_cache_path_flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
             $_host_cache_path       = $this->plugin->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
@@ -581,18 +581,18 @@ class DirStats extends AbsBase
         unset($_host_scheme, $_host_url, $_host_cache_path_flags, $_host_cache_path, $_host_cache_dir, $_check_disk_stats);
 
         if (!$___considering_domain_mapping && is_multisite() && $this->plugin->canConsiderDomainMapping()) {
-            $domain_mapping_variations = array(); // Initialize array of domain variations.
+            $domain_mapping_variations = []; // Initialize array of domain variations.
 
             if (($_host_token_for_blog = $this->plugin->hostTokenForBlog())) {
                 $_host_base_dir_tokens_for_blog = $this->plugin->hostBaseDirTokensForBlog();
-                $domain_mapping_variations[]    = array('host_token' => $_host_token_for_blog, 'host_base_dir_tokens' => $_host_base_dir_tokens_for_blog);
+                $domain_mapping_variations[]    = ['host_token' => $_host_token_for_blog, 'host_base_dir_tokens' => $_host_base_dir_tokens_for_blog];
             } // The original blog host; i.e., without domain mapping.
             unset($_host_token_for_blog, $_host_base_dir_tokens_for_blog); // Housekeeping.
 
             foreach ($this->plugin->domainMappingBlogDomains() as $_domain_mapping_blog_domain) {
                 if (($_domain_host_token_for_blog = $this->plugin->hostTokenForBlog(false, true, $_domain_mapping_blog_domain))) {
                     $_domain_host_base_dir_tokens_for_blog = $this->plugin->hostBaseDirTokensForBlog(false, true); // This is only a formality.
-                    $domain_mapping_variations[]           = array('host_token' => $_domain_host_token_for_blog, 'host_base_dir_tokens' => $_domain_host_base_dir_tokens_for_blog);
+                    $domain_mapping_variations[]           = ['host_token' => $_domain_host_token_for_blog, 'host_base_dir_tokens' => $_domain_host_base_dir_tokens_for_blog];
                 }
             } // This includes all of the domain mappings configured for the current blog ID.
             unset($_domain_mapping_blog_domain, $_domain_host_token_for_blog, $_domain_host_base_dir_tokens_for_blog); // Housekeeping.
@@ -614,7 +614,7 @@ class DirStats extends AbsBase
             }
             unset($_domain_mapping_variation); // Housekeeping.
         }
-        $stats = (object) array('stats' => $stats, 'time' => time());
+        $stats = (object) ['stats' => $stats, 'time' => time()];
 
         if (!$___considering_domain_mapping) {
             $this->updateHostCache($cache_key, $stats);
@@ -649,7 +649,7 @@ class DirStats extends AbsBase
         $host_token           = $this->plugin->hostToken(true); // Dashify.
         $host_base_dir_tokens = $this->plugin->hostBaseDirTokens(true); // Dashify.
 
-        $htmlc_cache_dirs   = array(); // Initialize array of all HTML Compressor directories to clear.
+        $htmlc_cache_dirs   = []; // Initialize array of all HTML Compressor directories to clear.
         $htmlc_cache_dirs[] = $this->plugin->wpContentBaseDirTo($this->plugin->htmlc_cache_sub_dir_public.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
         $htmlc_cache_dirs[] = $this->plugin->wpContentBaseDirTo($this->plugin->htmlc_cache_sub_dir_private.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
 
@@ -686,7 +686,7 @@ class DirStats extends AbsBase
         }
         unset($_htmlc_cache_dir, $_check_disk_stats); // Just a little housekeeping.
 
-        $stats = (object) array('stats' => $stats, 'time' => time());
+        $stats = (object) ['stats' => $stats, 'time' => time()];
 
         $this->updateHostCache($cache_key, $stats);
 
@@ -708,7 +708,7 @@ class DirStats extends AbsBase
             $last_x_days = max(1, $this->plugin->options['dir_stats_history_days']);
         }
         $largest_size  = 0; // Initialize.
-        $largest_sizes = array(); // Initialize.
+        $largest_sizes = []; // Initialize.
 
         $history_cache   = $this->getHistoryCache();
         $history_max_age = strtotime('-'.$last_x_days.' days');
@@ -731,7 +731,7 @@ class DirStats extends AbsBase
         }
         unset($_key, $_time, $_stats); // Housekeeping.
 
-        return (object) array('days' => $last_x_days, 'size' => $largest_size);
+        return (object) ['days' => $last_x_days, 'size' => $largest_size];
     }
 
     /**
@@ -749,7 +749,7 @@ class DirStats extends AbsBase
             $last_x_days = max(1, $this->plugin->options['dir_stats_history_days']);
         }
         $largest_size  = 0; // Initialize.
-        $largest_sizes = array(); // Initialize.
+        $largest_sizes = []; // Initialize.
 
         $host_history_cache   = $this->getHostHistoryCache();
         $host_history_max_age = strtotime('-'.$last_x_days.' days');
@@ -772,7 +772,7 @@ class DirStats extends AbsBase
         }
         unset($_key, $_time, $_stats); // Housekeeping.
 
-        return (object) array('days' => $last_x_days, 'size' => $largest_size);
+        return (object) ['days' => $last_x_days, 'size' => $largest_size];
     }
 
     /**
@@ -790,7 +790,7 @@ class DirStats extends AbsBase
             $last_x_days = max(1, $this->plugin->options['dir_stats_history_days']);
         }
         $largest_count  = 0; // Initialize.
-        $largest_counts = array(); // Initialize.
+        $largest_counts = []; // Initialize.
 
         $history_cache   = $this->getHistoryCache();
         $history_max_age = strtotime('-'.$last_x_days.' days');
@@ -813,7 +813,7 @@ class DirStats extends AbsBase
         }
         unset($_key, $_time, $_stats); // Housekeeping.
 
-        return (object) array('days' => $last_x_days, 'count' => $largest_count);
+        return (object) ['days' => $last_x_days, 'count' => $largest_count];
     }
 
     /**
@@ -831,7 +831,7 @@ class DirStats extends AbsBase
             $last_x_days = max(1, $this->plugin->options['dir_stats_history_days']);
         }
         $largest_count  = 0; // Initialize.
-        $largest_counts = array(); // Initialize.
+        $largest_counts = []; // Initialize.
 
         $host_history_cache   = $this->getHostHistoryCache();
         $host_history_max_age = strtotime('-'.$last_x_days.' days');
@@ -854,7 +854,7 @@ class DirStats extends AbsBase
         }
         unset($_key, $_time, $_stats); // Housekeeping.
 
-        return (object) array('days' => $last_x_days, 'count' => $largest_count);
+        return (object) ['days' => $last_x_days, 'count' => $largest_count];
     }
 }
 /*[/pro]*/

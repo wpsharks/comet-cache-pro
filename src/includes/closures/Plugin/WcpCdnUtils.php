@@ -22,7 +22,7 @@ $self->wipeCdnCache = function ($manually = false, $maybe = true) use ($self) {
     if ($maybe && !$self->options['cache_clear_cdn_enable']) {
         return -(integer) $self->options['cdn_invalidation_counter'];
     }
-    $self->updateOptions(array('cdn_invalidation_counter' => ++$self->options['cdn_invalidation_counter']));
+    $self->updateOptions(['cdn_invalidation_counter' => ++$self->options['cdn_invalidation_counter']]);
 
     return (integer) $self->options['cdn_invalidation_counter'];
 };

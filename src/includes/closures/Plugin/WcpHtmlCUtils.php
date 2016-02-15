@@ -21,7 +21,7 @@ $self->wipeHtmlCCache = function ($manually = false) use ($self) {
     }
     @set_time_limit(1800); // @TODO Display a warning.
 
-    $htmlc_cache_dirs   = array(); // Initialize directories.
+    $htmlc_cache_dirs   = []; // Initialize directories.
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public);
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private);
 
@@ -60,7 +60,7 @@ $self->clearHtmlCCache = function ($manually = false) use ($self) {
     $host_token           = $self->hostToken(true); // Dashify.
     $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify.
 
-    $htmlc_cache_dirs   = array(); // Initialize array of all HTML Compressor directories to clear.
+    $htmlc_cache_dirs   = []; // Initialize array of all HTML Compressor directories to clear.
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_public.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
     $htmlc_cache_dirs[] = $self->wpContentBaseDirTo($self->htmlc_cache_sub_dir_private.rtrim($host_base_dir_tokens, '/').'/'.$host_token);
 

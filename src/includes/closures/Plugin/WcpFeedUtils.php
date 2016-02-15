@@ -24,7 +24,7 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
     }
     $post_id = (integer) $post_id; // Force integer.
 
-    if (!is_null($done = &$self->cacheKey('autoClearXmlFeedsCache', array($type, $post_id)))) {
+    if (!is_null($done = &$self->cacheKey('autoClearXmlFeedsCache', [$type, $post_id]))) {
         return $counter; // Already did this.
     }
     $done = true; // Flag as having been done.
@@ -42,7 +42,7 @@ $self->autoClearXmlFeedsCache = function ($type, $post_id = 0) use ($self) {
         return $counter; // Nothing to do.
     }
     $utils      = new FeedUtils(); // Feed utilities.
-    $variations = $variation_regex_frags = array(); // Initialize.
+    $variations = $variation_regex_frags = []; // Initialize.
 
     switch ($type) { // Handle clearing based on the `$type`.
 

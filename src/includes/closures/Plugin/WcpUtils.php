@@ -10,7 +10,7 @@ namespace WebSharks\ZenCache\Pro;
  * @type array An associative array with the Post ID as the named key containing
  *            the post permalink before the post has been transitioned.
  */
-$self->pre_post_update_post_permalink = array();
+$self->pre_post_update_post_permalink = [];
 
 /*
  * Wipes out all cache files.

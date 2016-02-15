@@ -22,13 +22,13 @@ namespace WebSharks\ZenCache\Pro;
 $self->autoClearAuthorPageCache = function ($post_id, \WP_Post $post_after, \WP_Post $post_before) use ($self) {
     $counter          = 0; // Initialize.
     $enqueued_notices = 0; // Initialize.
-    $authors          = array(); // Initialize.
-    $authors_to_clear = array(); // Initialize.
+    $authors          = []; // Initialize.
+    $authors_to_clear = []; // Initialize.
 
     if (!($post_id = (integer) $post_id)) {
         return $counter; // Nothing to do.
     }
-    if (!is_null($done = &$self->cacheKey('autoClearAuthorPageCache', array($post_id, $post_after->ID, $post_before->ID)))) {
+    if (!is_null($done = &$self->cacheKey('autoClearAuthorPageCache', [$post_id, $post_after->ID, $post_before->ID]))) {
         return $counter; // Already did this.
     }
     $done = true; // Flag as having been done.

@@ -13,10 +13,10 @@ namespace WebSharks\ZenCache\Pro;
  * @return array Revised array of WP-Cron schedules.
  */
 $self->extendCronSchedules = function ($schedules) use ($self) {
-    $schedules['every15m'] = array(
+    $schedules['every15m'] = [
         'interval' => 900,
         'display'  => __('Every 15 Minutes', SLUG_TD),
-    );
+    ];
     return $schedules;
 };
 
@@ -47,12 +47,12 @@ $self->checkCronSetup = function () use ($self) {
         /*[/pro]*/
 
         $self->updateOptions(
-          array(
+          [
             'crons_setup'                             => time(),
             'crons_setup_on_namespace'                => __NAMESPACE__,
             'crons_setup_with_cache_cleanup_schedule' => $self->options['cache_cleanup_schedule'],
             'crons_setup_on_wp_with_schedules'        => sha1(serialize(wp_get_schedules()))
-          )
+          ]
         );
     }
 };
@@ -79,11 +79,11 @@ $self->resetCronSetup = function ( ) use ($self) {
         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
     }
     $self->updateOptions(
-      array( // Reset so that crons are rescheduled upon next activation
+      [ // Reset so that crons are rescheduled upon next activation
              'crons_setup'                             => $self->default_options['crons_setup'],
              'crons_setup_on_namespace'                => $self->default_options['crons_setup_on_namespace'],
              'crons_setup_with_cache_cleanup_schedule' => $self->default_options['crons_setup_with_cache_cleanup_schedule'],
              'crons_setup_on_wp_with_schedules'        => $self->default_options['crons_setup_on_wp_with_schedules']
-      )
+      ]
     );
 };

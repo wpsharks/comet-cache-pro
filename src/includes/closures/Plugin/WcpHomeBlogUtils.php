@@ -74,7 +74,7 @@ $self->autoClearPostsPageCache = function () use ($self) {
     $show_on_front  = get_option('show_on_front');
     $page_for_posts = get_option('page_for_posts');
 
-    if (!in_array($show_on_front, array('posts', 'page'), true)) {
+    if (!in_array($show_on_front, ['posts', 'page'], true)) {
         return $counter; // Nothing we can do in this case.
     }
     if ($show_on_front === 'page' && !$page_for_posts) {

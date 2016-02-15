@@ -85,7 +85,7 @@ $self->is_maintenance = false;
  *
  * @type array Data and/or flags that work with various postload handlers.
  */
-$self->postload = array(
+$self->postload = [
     /*[pro strip-from="lite"]*/
     'invalidate_when_logged_in' => false,
     'when_logged_in'            => false,
@@ -93,7 +93,7 @@ $self->postload = array(
     'filter_status_header' => true,
     'wp_main_query'        => true,
     'set_debug_info'       => ZENCACHE_DEBUGGING_ENABLE,
-);
+];
 
 /*[pro strip-from="lite"]*/
 /*
@@ -194,7 +194,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
         }
         exit($cache); // Exit with cache contents.
     } else {
-        ob_start(array($self, 'outputBufferCallbackHandler'));
+        ob_start([$self, 'outputBufferCallbackHandler']);
     }
     return; // Only for IDEs not to complain here.
 };
@@ -242,7 +242,7 @@ $self->maybeSetDebugInfoPostload = function () use ($self) {
     if (strcasecmp(PHP_SAPI, 'cli') === 0) {
         return; // Let's not run the risk here.
     }
-    add_action('shutdown', array($self, 'maybeEchoNcDebugInfo'), PHP_INT_MAX - 10);
+    add_action('shutdown', [$self, 'maybeEchoNcDebugInfo'], PHP_INT_MAX - 10);
 };
 
 /*

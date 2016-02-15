@@ -12,9 +12,9 @@ $self->activate = function () use ($self) {
     $self->setup(); // Ensure setup is complete.
 
     if (!$self->options['welcomed'] && !$self->options['enable']) {
-        $settings_url = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), network_admin_url('/admin.php'));
-        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url), array('push_to_top' => true)));
-        $self->updateOptions(array('welcomed' => '1'));
+        $settings_url = add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), network_admin_url('/admin.php'));
+        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url), ['push_to_top' => true]));
+        $self->updateOptions(['welcomed' => '1']);
     }
 
     if (!$self->options['enable']) {
@@ -40,7 +40,7 @@ $self->checkVersion = function () use ($self) {
     if (version_compare($prev_version, VERSION, '>=')) {
         return; // Nothing to do; up-to-date.
     }
-    $self->updateOptions(array('version' => VERSION));
+    $self->updateOptions(['version' => VERSION]);
 
     new VsUpgrades($prev_version);
 
@@ -52,7 +52,7 @@ $self->checkVersion = function () use ($self) {
     }
     $self->wipeCache(); // Fresh start now.
 
-    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), array('push_to_top' => true));
+    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), ['push_to_top' => true]);
 };
 
 /*
@@ -281,12 +281,12 @@ $self->addAdvancedCache = function () use ($self) {
     }
     $possible_advanced_cache_constant_key_values = array_merge(
         $self->options, // The following additional keys are dynamic.
-        array('cache_dir' => $self->basePathTo($self->cache_sub_dir),
+        ['cache_dir' => $self->basePathTo($self->cache_sub_dir),
               /*[pro strip-from="lite"]*/
               'htmlc_cache_dir_public'  => $self->basePathTo($self->htmlc_cache_sub_dir_public),
               'htmlc_cache_dir_private' => $self->basePathTo($self->htmlc_cache_sub_dir_private),
               /*[/pro]*/
-        )
+        ]
     );
     if ($self->applyWpFilters(GLOBAL_NS.'_exclude_uris_client_side_too', true)) {
         $possible_advanced_cache_constant_key_values['exclude_client_side_uris'] .= "\n".$self->options['exclude_uris'];
@@ -313,7 +313,7 @@ $self->addAdvancedCache = function () use ($self) {
             /*[pro strip-from="lite"]*/
             case 'version_salt': // This is PHP code; and we MUST validate syntax.
 
-                if ($_value && !is_wp_error($_response = wp_remote_post('http://phpcodechecker.com/api/', array('body' => array('code' => $_value))))
+                if ($_value && !is_wp_error($_response = wp_remote_post('http://phpcodechecker.com/api/', ['body' => ['code' => $_value]]))
                    && is_object($_response = json_decode(wp_remote_retrieve_body($_response))) && !empty($_response->errors) && strcasecmp($_response->errors, 'true') === 0
                 ) {
                     $_value = ''; // PHP syntax errors; empty this.
@@ -333,10 +333,10 @@ $self->addAdvancedCache = function () use ($self) {
         }
         $advanced_cache_contents = // Fill replacement codes.
             str_ireplace(
-                array(
+                [
                     "'%%".GLOBAL_NS.'_'.$_option."%%'",
                     "'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/i', '', $_option)."%%'",
-                ),
+                ],
                 $_value,
                 $advanced_cache_contents
             );

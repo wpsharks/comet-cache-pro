@@ -74,7 +74,7 @@ $self->autoClearCommentPostCacheTransition = function ($new_status, $old_status,
     if (empty($comment->comment_post_ID)) {
         return $counter; // Nothing we can do.
     }
-    if (!is_null($done = &$self->cacheKey('autoClearCommentPostCacheTransition', array($new_status, $old_status, $comment->comment_post_ID)))) {
+    if (!is_null($done = &$self->cacheKey('autoClearCommentPostCacheTransition', [$new_status, $old_status, $comment->comment_post_ID]))) {
         return $counter; // Already did this.
     }
     $done = true; // Flag as having been done.

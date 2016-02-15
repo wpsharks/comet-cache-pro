@@ -29,7 +29,7 @@ $self->nDirSeps = function ($dir_file, $allow_trailing_slash = false) use ($self
             $dir_file = preg_replace_callback('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/', create_function('$m', 'return strtoupper($m[0]);'), $dir_file);
         }
     }
-    $dir_file = preg_replace('/\/+/', '/', str_replace(array(DIRECTORY_SEPARATOR, '\\', '/'), '/', $dir_file));
+    $dir_file = preg_replace('/\/+/', '/', str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '/', $dir_file));
     $dir_file = ($allow_trailing_slash) ? $dir_file : rtrim($dir_file, '/'); // Strip trailing slashes.
 
     if (!empty($stream_wrapper[0])) {
@@ -49,7 +49,7 @@ $self->getTmpDir = function () use ($self) {
     if (!is_null($dir = &$self->staticKey('getTmpDir'))) {
         return $dir; // Already cached this.
     }
-    $possible_dirs = array(); // Initialize.
+    $possible_dirs = []); // Initialize.
 
     if (defined('WP_TEMP_DIR')) {
         $possible_dirs[] = (string) WP_TEMP_DIR;
@@ -163,7 +163,7 @@ $self->dirRegexIteration = function ($dir, $regex = '') use ($self) {
 $self->bytesAbbr = function ($bytes, $precision = 2) use ($self) {
     $bytes     = max(0.0, (float) $bytes);
     $precision = max(0, (integer) $precision);
-    $units     = array('bytes', 'kbs', 'MB', 'GB', 'TB');
+    $units     = ['bytes', 'kbs', 'MB', 'GB', 'TB'];
 
     $power      = floor(($bytes ? log($bytes) : 0) / log(1024));
     $abbr_bytes = round($bytes / pow(1024, $power), $precision);
@@ -233,27 +233,27 @@ $self->abbrBytes = function ($string) use ($self) {
  */
 $self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $check_disk = true, $no_cache = false) use ($self) {
     $dir        = (string) $dir; // Force string.
-    $cache_keys = array($dir, $regex, $include_paths, $check_disk);
+    $cache_keys = [$dir, $regex, $include_paths, $check_disk];
     if (!$no_cache && !is_null($stats = &$self->staticKey('getDirRegexStats', $cache_keys))) {
         return $stats; // Already cached this.
     }
-    $stats = array(
+    $stats = [
         'total_size'        => 0,
         'total_resources'   => 0,
         'total_links_files' => 0,
 
         'total_links'   => 0,
-        'link_subpaths' => array(),
+        'link_subpaths' => [],
 
         'total_files'   => 0,
-        'file_subpaths' => array(),
+        'file_subpaths' => [],
 
         'total_dirs'   => 0,
-        'dir_subpaths' => array(),
+        'dir_subpaths' => [],
 
         'disk_total_space' => 0,
         'disk_free_space'  => 0,
-    );
+    ];
     if (!$dir || !is_dir($dir)) {
         return $stats; // Not possible.
     }

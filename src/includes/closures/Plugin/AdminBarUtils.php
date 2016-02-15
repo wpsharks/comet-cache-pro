@@ -88,19 +88,19 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
     }
     if ($self->adminBarShowing('cache_wipe')) {
         $wp_admin_bar->add_menu(
-            array(
+            [
                 'parent' => 'top-secondary',
                 'id'     => GLOBAL_NS.'-wipe',
 
                 'title' => __('Wipe', SLUG_TD),
                 'href'  => '#',
 
-                'meta' => array(
+                'meta' => [
                         'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
                         'class'    => '-wipe',
                         'tabindex' => -1,
-                ),
-            )
+                ],
+            ]
         );
     }
     if ($self->adminBarShowing('cache_clear')) {
@@ -126,31 +126,31 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
         }
         if ($cache_clear_options && $self->options['cache_clear_admin_bar_options_enable'] === '2') {
             $wp_admin_bar->add_menu(
-                array(
+                [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-clear-options',
 
                     'title' => '',
                     'href'  => '#',
-                    'meta'  => array(
+                    'meta'  => [
                             'title'    => __('Clear Options', SLUG_TD),
                             'class'    => '-clear-options',
                             'tabindex' => -1,
-                    ),
-                )
+                    ],
+                ]
             );
             $wp_admin_bar->add_group(
-                array(
+                [
                     'parent' => GLOBAL_NS.'-clear-options',
                     'id'     => GLOBAL_NS.'-clear-options-wrapper',
 
-                    'meta' => array(
+                    'meta' => [
                         'class' => '-wrapper',
-                    ),
-                )
+                    ],
+                ]
             );
             $wp_admin_bar->add_menu(
-                array(
+                [
                     'parent' => GLOBAL_NS.'-clear-options-wrapper',
                     'id'     => GLOBAL_NS.'-clear-options-container',
 
@@ -164,42 +164,42 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
 
                                 '<div class="-spacer"></div>',
 
-                    'meta' => array(
+                    'meta' => [
                             'class'    => '-container',
                             'tabindex' => -1,
-                    ),
-                )
+                    ],
+                ]
             );
         }
         $wp_admin_bar->add_menu(
-            array(
+            [
                 'parent' => 'top-secondary',
                 'id'     => GLOBAL_NS.'-clear',
 
                 'title' => __('Clear Cache', SLUG_TD),
                 'href'  => '#',
-                'meta'  => array(
+                'meta'  => [
                         'title' => is_multisite() && current_user_can($self->network_cap)
                             ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
                             : '',
                         'class'    => '-clear',
                         'tabindex' => -1,
-                ),
-            )
+                ],
+            ]
         );
         if ($cache_clear_options && $self->options['cache_clear_admin_bar_options_enable'] === '1') {
             $wp_admin_bar->add_group(
-                array(
+                [
                     'parent' => GLOBAL_NS.'-clear',
                     'id'     => GLOBAL_NS.'-clear-options-wrapper',
 
-                    'meta' => array(
+                    'meta' => [
                         'class' => '-wrapper',
-                    ),
-                )
+                    ],
+                ]
             );
             $wp_admin_bar->add_menu(
-                array(
+                [
                     'parent' => GLOBAL_NS.'-clear-options-wrapper',
                     'id'     => GLOBAL_NS.'-clear-options-container',
 
@@ -209,41 +209,41 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
 
                                 '<div class="-spacer"></div>',
 
-                    'meta' => array(
+                    'meta' => [
                             'class'    => '-container',
                             'tabindex' => -1,
-                    ),
-                )
+                    ],
+                ]
             );
         }
     }
     if ($self->adminBarShowing('stats')) {
         $wp_admin_bar->add_menu(
-            array(
+            [
                 'parent' => 'top-secondary',
                 'id'     => GLOBAL_NS.'-stats',
 
                 'title' => __('Cache Stats', SLUG_TD),
                 'href'  => '#',
 
-                'meta' => array(
+                'meta' => [
                         'class'    => '-stats',
                         'tabindex' => -1,
-                ),
-            )
+                ],
+            ]
         );
         $wp_admin_bar->add_group(
-            array(
+            [
                 'parent' => GLOBAL_NS.'-stats',
                 'id'     => GLOBAL_NS.'-stats-wrapper',
 
-                'meta' => array(
+                'meta' => [
                     'class' => '-wrapper',
-                ),
-            )
+                ],
+            ]
         );
         $wp_admin_bar->add_menu(
-            array(
+            [
                 'parent' => GLOBAL_NS.'-stats-wrapper',
                 'id'     => GLOBAL_NS.'-stats-container',
 
@@ -267,17 +267,17 @@ $self->adminBarMenu = function (\WP_Admin_Bar &$wp_admin_bar) use ($self) {
 
                             (current_user_can($self->cap) ?
                                 '<div class="-more-info">'.
-                                '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-stats')), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
+                                '  <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
                                 '</div>'
                             : '').
 
                             '<div class="-spacer"></div>',
 
-                'meta' => array(
+                'meta' => [
                         'class'    => '-container',
                         'tabindex' => -1,
-                ),
-            )
+                ],
+            ]
         );
     }
 };
@@ -293,14 +293,14 @@ $self->adminBarMetaTags = function () use ($self) {
     if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    $vars = array(
+    $vars = [
         '_wpnonce'                 => wp_create_nonce(),
         'isMultisite'              => is_multisite(),
         'currentUserHasCap'        => current_user_can($self->cap),
         'currentUserHasNetworkCap' => current_user_can($self->network_cap),
         'htmlCompressorEnabled'    => (boolean) $self->options['htmlc_enable'],
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
-        'i18n'                     => array(
+        'i18n'                     => [
             'name'             => NAME,
             'perSymbol'        => __('%', SLUG_TD),
             'file'             => __('file', SLUG_TD),
@@ -311,8 +311,8 @@ $self->adminBarMetaTags = function () use ($self) {
             'currentSite'      => __('Current Site', SLUG_TD),
             'xDayHigh'         => __('%s Day High', SLUG_TD),
             'enterSpecificUrl' => __('Enter a specific URL to clear the cache for that page:', SLUG_TD),
-        ),
-    );
+        ],
+    ];
     echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
          ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
 };
@@ -329,7 +329,7 @@ $self->adminBarStyles = function () use ($self) {
     if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    $deps = array(); // Plugin dependencies.
+    $deps = []; // Plugin dependencies.
 
     wp_enqueue_style(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
 };
@@ -346,11 +346,11 @@ $self->adminBarScripts = function () use ($self) {
     if (!$self->adminBarShowing()) {
         return; // Nothing to do.
     }
-    $deps = array('jquery', 'admin-bar'); // Plugin dependencies.
+    $deps = ['jquery', 'admin-bar']; // Plugin dependencies.
 
     if ($self->adminBarShowing('stats')) {
         $deps[] = 'chartjs'; // Add ChartJS dependency.
-        wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
+        wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), [], null, true);
     }
     wp_enqueue_script(GLOBAL_NS.'-admin-bar', $self->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
 };

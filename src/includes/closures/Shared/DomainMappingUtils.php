@@ -235,7 +235,7 @@ $self->domainMappingBlogDomain = function ($blog_id = 0, $fallback = false) use 
  */
 $self->domainMappingBlogDomains = function ($blog_id = 0) use ($self) {
     if (!is_multisite() || !$self->canConsiderDomainMapping()) {
-        return array(); // Not possible/applicable.
+        return []; // Not possible/applicable.
     }
     if (($blog_id = (integer) $blog_id) < 0) {
         $blog_id = (integer) get_current_site()->blog_id;
@@ -244,7 +244,7 @@ $self->domainMappingBlogDomains = function ($blog_id = 0) use ($self) {
         $blog_id = (integer) get_current_blog_id();
     }
     if (!$blog_id || $blog_id < 0) {
-        return array(); // Not possible.
+        return []; // Not possible.
     }
     if (!is_null($domains = &$self->staticKey('domainMappingBlogDomains', $blog_id))) {
         return $domains; // Already cached this.

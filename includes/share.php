@@ -96,7 +96,7 @@ namespace zencache // Root namespace.
 			 *
 			 * @var array An instance-based cache for class members.
 			 */
-			public $cache = array();
+			public $cache = [];
 
 			/**
 			 * A global static cache for class members.
@@ -105,7 +105,7 @@ namespace zencache // Root namespace.
 			 *
 			 * @var array Global static cache for class members.
 			 */
-			public static $static = array();
+			public static $static = [];
 
 			/**
 			 * Array of hooks added by plugins.
@@ -114,7 +114,7 @@ namespace zencache // Root namespace.
 			 *
 			 * @var array An array of any hooks added by plugins.
 			 */
-			public $hooks = array();
+			public $hooks = [];
 
 			/**
 			 * Flag indicating the current user login cookie is expired or invalid.
@@ -351,13 +351,13 @@ namespace zencache // Root namespace.
 
 					if(!($flags & $this::CACHE_PATH_NO_USER))
 						if($with_user_token !== '') // Allow a `0` value if desirable.
-							$cache_path = rtrim($cache_path, '/').'.u/'.str_replace(array('/', '\\'), '-', $with_user_token).'/';
+							$cache_path = rtrim($cache_path, '/').'.u/'.str_replace(['/', '\\'], '-', $with_user_token).'/';
 
 					if(!($flags & $this::CACHE_PATH_NO_VSALT))
 						if($with_version_salt !== '') // Allow a `0` value if desirable.
-							$cache_path = rtrim($cache_path, '/').'.v/'.str_replace(array('/', '\\'), '-', $with_version_salt).'/';
+							$cache_path = rtrim($cache_path, '/').'.v/'.str_replace(['/', '\\'], '-', $with_version_salt).'/';
 				}
-				$cache_path = trim(preg_replace(array('/\/+/', '/\.+/'), array('/', '.'), $cache_path), '/');
+				$cache_path = trim(preg_replace(['/\/+/', '/\.+/'], ['/', '.'], $cache_path), '/');
 
 				if($flags & $this::CACHE_PATH_ALLOW_WILDCARDS) // Allow `*`?
 					$cache_path = preg_replace('/[^a-z0-9\/.*]/i', '-', $cache_path);
@@ -748,7 +748,7 @@ namespace zencache // Root namespace.
 					return (static::$static[__FUNCTION__] = TRUE);
 
 				if(!empty($_SERVER['REQUEST_METHOD']))
-					if(in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('POST', 'PUT', 'DELETE'), TRUE))
+					if(in_array(strtoupper($_SERVER['REQUEST_METHOD']), ['POST', 'PUT', 'DELETE'], TRUE))
 						return (static::$static[__FUNCTION__] = TRUE);
 
 				return (static::$static[__FUNCTION__] = FALSE);
@@ -773,7 +773,7 @@ namespace zencache // Root namespace.
 					return (static::$static[__FUNCTION__] = TRUE);
 
 				if(!empty($_SERVER['REQUEST_METHOD']))
-					if(!in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('GET'), TRUE))
+					if(!in_array(strtoupper($_SERVER['REQUEST_METHOD']), ['GET'], TRUE))
 						return (static::$static[__FUNCTION__] = TRUE);
 
 				return (static::$static[__FUNCTION__] = FALSE);
@@ -1011,7 +1011,7 @@ namespace zencache // Root namespace.
 					if(($_valid_public_ip = $this->valid_public_ip($_SERVER['REMOTE_ADDR'])))
 						return ($ip = $_valid_public_ip);
 
-				$sources = array(
+				$sources = [
 					'HTTP_CF_CONNECTING_IP',
 					'HTTP_CLIENT_IP',
 					'HTTP_X_FORWARDED_FOR',
@@ -1021,7 +1021,7 @@ namespace zencache // Root namespace.
 					'HTTP_FORWARDED',
 					'HTTP_VIA',
 					'REMOTE_ADDR',
-				);
+				];
 				$sources = $this->apply_filters(__METHOD__.'_sources', $sources);
 
 				foreach($sources as $_source) // Try each of these; in order.
@@ -1108,7 +1108,7 @@ namespace zencache // Root namespace.
 
 				else // We need to collect the disabled functions and cache them now.
 				{
-					static::$static[__FUNCTION__]['___disabled_functions'] = array(); // `$disabled_functions` =& reference.
+					static::$static[__FUNCTION__]['___disabled_functions'] = []; // `$disabled_functions` =& reference.
 					$disabled_functions                                    =& static::$static[__FUNCTION__]['___disabled_functions'];
 
 					if(function_exists('ini_get')) // Only if {@link ini_get()} is possible itself.
@@ -1196,7 +1196,7 @@ namespace zencache // Root namespace.
 
 				$headers_list = headers_list(); // Lacks HTTP status header.
 
-				$cacheable_headers = array(
+				$cacheable_headers = [
 					'Access-Control-Allow-Origin',
 					'Accept-Ranges',
 					'Age',
@@ -1241,7 +1241,7 @@ namespace zencache // Root namespace.
 					'X-Content-Type-Options',
 					'X-Powered-By',
 					'X-UA-Compatible',
-				);
+				];
 				$cacheable_headers = array_map('strtolower', $cacheable_headers);
 
 				foreach($headers_list as $_key => $_header)
@@ -1424,7 +1424,7 @@ namespace zencache // Root namespace.
 					if(preg_match('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/', $dir_file)) // It has a Windows® drive letter?
 						$dir_file = preg_replace_callback('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/', create_function('$m', 'return strtoupper($m[0]);'), $dir_file);
 				}
-				$dir_file = preg_replace('/\/+/', '/', str_replace(array(DIRECTORY_SEPARATOR, '\\', '/'), '/', $dir_file));
+				$dir_file = preg_replace('/\/+/', '/', str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '/', $dir_file));
 				$dir_file = ($allow_trailing_slash) ? $dir_file : rtrim($dir_file, '/'); // Strip trailing slashes.
 
 				if(!empty($stream_wrapper[0])) // Stream wrapper (force lowercase).
@@ -1805,7 +1805,7 @@ namespace zencache // Root namespace.
 
 				clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
 
-				foreach(array('http', 'https') as $_host_scheme) // Consider `http|https` schemes.
+				foreach(['http', 'https'] as $_host_scheme) // Consider `http|https` schemes.
 
 					/* This multi-scheme iteration could (alternatively) be accomplished via regex `\/https?\/`.
 						HOWEVER, since this operation is supposed to impact only a single host in a network, and because
@@ -2040,14 +2040,14 @@ namespace zencache // Root namespace.
 
 				$locking_method = $this->apply_wp_filters(__METHOD__.'_lock_type', 'flock');
 
-				if(!in_array($locking_method, array('flock', 'sem')))
+				if(!in_array($locking_method, ['flock', 'sem']))
 					$locking_method = 'flock';
 
 				if($locking_method === 'sem')
 					if($this->function_is_possible('sem_get'))
 						if(($ipc_key = ftok($wp_config_file, 'w')))
 							if(($resource = sem_get($ipc_key, 1)) && sem_acquire($resource))
-								return array('type' => 'sem', 'resource' => $resource);
+								return ['type' => 'sem', 'resource' => $resource];
 
 				// Use `flock()` as a decent fallback when `sem_get()` is not not forced or is not possible.
 
@@ -2059,7 +2059,7 @@ namespace zencache // Root namespace.
 				if(!($resource = fopen($mutex, 'w')) || !flock($resource, LOCK_EX))
 					throw new \exception(__('Unable to obtain an exclusive lock.', $this->text_domain));
 
-				return array('type' => 'flock', 'resource' => $resource);
+				return ['type' => 'flock', 'resource' => $resource];
 			}
 
 			/**
@@ -2166,7 +2166,7 @@ namespace zencache // Root namespace.
 					return $function;
 
 				if(is_object($function)) // Closure.
-					$function = array($function, '');
+					$function = [$function, ''];
 				else $function = (array)$function;
 
 				if(is_object($function[0]))
@@ -2193,7 +2193,7 @@ namespace zencache // Root namespace.
 			public function add_hook($hook, $function, $priority = 10, $accepted_args = 1)
 			{
 				$this->hooks[$hook][$priority][$this->hook_id($function)]
-					= array('function' => $function, 'accepted_args' => (integer)$accepted_args);
+					= ['function' => $function, 'accepted_args' => (integer)$accepted_args];
 				return TRUE; // Always returns true.
 			}
 
@@ -2208,7 +2208,7 @@ namespace zencache // Root namespace.
 			 */
 			public function add_action() // Simple `add_hook()` alias.
 			{
-				return call_user_func_array(array($this, 'add_hook'), func_get_args());
+				return call_user_func_array([$this, 'add_hook'], func_get_args());
 			}
 
 			/**
@@ -2222,7 +2222,7 @@ namespace zencache // Root namespace.
 			 */
 			public function add_filter() // Simple `add_hook()` alias.
 			{
-				return call_user_func_array(array($this, 'add_hook'), func_get_args());
+				return call_user_func_array([$this, 'add_hook'], func_get_args());
 			}
 
 			/**
@@ -2257,7 +2257,7 @@ namespace zencache // Root namespace.
 			 */
 			public function remove_action() // Simple `remove_hook()` alias.
 			{
-				return call_user_func_array(array($this, 'remove_hook'), func_get_args());
+				return call_user_func_array([$this, 'remove_hook'], func_get_args());
 			}
 
 			/**
@@ -2271,7 +2271,7 @@ namespace zencache // Root namespace.
 			 */
 			public function remove_filter() // Simple `remove_hook()` alias.
 			{
-				return call_user_func_array(array($this, 'remove_hook'), func_get_args());
+				return call_user_func_array([$this, 'remove_hook'], func_get_args());
 			}
 
 			/**

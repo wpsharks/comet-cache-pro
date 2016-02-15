@@ -159,7 +159,7 @@ class VsUpgrades extends AbsBase
     {
         if (version_compare($this->prev_version, '141009', '<')) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options')) || is_array($existing_options = get_site_option('quick_cache_options'))) {
-                foreach (array('cache_purge_xml_feeds_enable',
+                foreach (['cache_purge_xml_feeds_enable',
                               'cache_purge_xml_sitemaps_enable',
                               'cache_purge_xml_sitemap_patterns',
                               'cache_purge_home_page_enable',
@@ -169,7 +169,7 @@ class VsUpgrades extends AbsBase
                               'cache_purge_term_category_enable',
                               'cache_purge_term_post_tag_enable',
                               'cache_purge_term_other_enable',
-                        ) as $_old_purge_option) {
+                        ] as $_old_purge_option) {
                     if (isset($existing_options[$_old_purge_option][0])) {
                         $this->plugin->options[str_replace('purge', 'clear', $_old_purge_option)] = $existing_options[$_old_purge_option][0];
                     }
@@ -204,7 +204,7 @@ class VsUpgrades extends AbsBase
                 wp_clear_scheduled_hook('_cron_quick_cache_auto_cache');
                 wp_clear_scheduled_hook('_cron_quick_cache_cleanup');
             }
-            deactivate_plugins(array('quick-cache/quick-cache.php', 'quick-cache-pro/quick-cache-pro.php'), true);
+            deactivate_plugins(['quick-cache/quick-cache.php', 'quick-cache-pro/quick-cache-pro.php'], true);
 
             if (isset($quick_cache_options['update_sync_version_check'])) {
                 $this->plugin->options['pro_update_check'] = $quick_cache_options['update_sync_version_check'];
@@ -232,7 +232,7 @@ class VsUpgrades extends AbsBase
             $this->plugin->enqueueMainNotice(
                 '<p>'.sprintf(__('<strong>Woohoo! %1$s activated.</strong> :-)', SLUG_TD), esc_html(NAME)).'</p>'.
                 '<p>'.sprintf(__('NOTE: Your Quick Cache options were preserved by %1$s (for more details, visit the <a href="%2$s" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME), esc_attr(IS_PRO ? 'http://zencache.com/r/quick-cache-pro-migration-faq/' : 'http://zencache.com/kb-article/how-to-migrate-from-quick-cache-lite-to-zencache-lite/')).'</p>'.
-                '<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s ⥱ Plugin Options</a>.'.'', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')))).'</p>'
+                '<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s ⥱ Plugin Options</a>.'.'', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))).'</p>'
             );
         }
     }

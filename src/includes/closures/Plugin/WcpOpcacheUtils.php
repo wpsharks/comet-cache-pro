@@ -12,7 +12,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @return integer Total keys wiped.
  */
-$self->wipeOpcache = function ($manually = false, $maybe = true, $files = array()) use ($self) {
+$self->wipeOpcache = function ($manually = false, $maybe = true, $files = []) use ($self) {
     $counter = 0; // Initialize counter.
 
     if ($maybe && !$self->options['cache_clear_opcache_enable']) {
@@ -65,5 +65,5 @@ $self->clearOpcache = function ($manually = false, $maybe = true) use ($self) {
  * @return integer Total keys cleared.
  */
 $self->clearAcDropinFromOpcacheByForce = function () use ($self) {
-    return $self->wipeOpcache(false, false, array(WP_CONTENT_DIR.'/advanced-cache.php'));
+    return $self->wipeOpcache(false, false, [WP_CONTENT_DIR.'/advanced-cache.php']);
 };

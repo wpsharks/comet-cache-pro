@@ -20,7 +20,7 @@ class MenuPageOptions extends MenuPage
         global $is_nginx; // WP global for web server checks below.
 
         echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data"'.
-             ' action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce())), self_admin_url('/admin.php'))).'">'."\n";
+             ' action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce()]), self_admin_url('/admin.php'))).'">'."\n";
 
         /* ----------------------------------------------------------------------------------------- */
 
@@ -28,16 +28,16 @@ class MenuPageOptions extends MenuPage
 
         if (is_multisite()) {
             echo '<button type="button" class="plugin-menu-page-wipe-cache" style="float:right; margin-left:15px;" title="'.esc_attr(__('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD)).'"'.
-                 '  data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('wipeCache' => '1'))), self_admin_url('/admin.php'))).'">'.
+                 '  data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['wipeCache' => '1']]), self_admin_url('/admin.php'))).'">'.
                  '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px;" /></button>'."\n";
         }
         echo '   <button type="button" class="plugin-menu-page-clear-cache" style="float:right;" title="'.esc_attr(__('Clear Cache (Start Fresh)', SLUG_TD).((is_multisite()) ? __('; affects the current site only.', SLUG_TD) : '')).'"'.
-             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('clearCache' => '1'))), self_admin_url('/admin.php'))).'">'.
+             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['clearCache' => '1']]), self_admin_url('/admin.php'))).'">'.
              '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
 
         echo '   <button type="button" class="plugin-menu-page-restore-defaults"'.// Restores default options.
              '      data-confirmation="'.esc_attr(__('Restore default plugin options? You will lose all of your current settings! Are you absolutely sure about this?', SLUG_TD)).'"'.
-             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('restoreDefaultOptions' => '1'))), self_admin_url('/admin.php'))).'">'.
+             '      data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['restoreDefaultOptions' => '1']]), self_admin_url('/admin.php'))).'">'.
              '      '.__('Restore', SLUG_TD).' <i class="si si-ambulance"></i></button>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-togglers" title="'.esc_attr(__('All Panels', SLUG_TD)).'">'."\n";
@@ -47,10 +47,10 @@ class MenuPageOptions extends MenuPage
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
         if (IS_PRO && current_user_can($this->plugin->update_cap)) {
-            echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php'))).'"><i class="si si-magic"></i> '.__('Pro Updater', SLUG_TD).'</a>'."\n";
+            echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php'))).'"><i class="si si-magic"></i> '.__('Pro Updater', SLUG_TD).'</a>'."\n";
         }
         if (!IS_PRO) {
-            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1')), self_admin_url('/admin.php'))).'"><i class="si si-eye"></i> '.__('Preview Pro Features', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php'))).'"><i class="si si-eye"></i> '.__('Preview Pro Features', SLUG_TD).'</a>'."\n";
             echo '  <a href="'.esc_attr('http://zencache.com/prices/').'" target="_blank"><i class="si si-heart-o"></i> '.__('Pro Upgrade', SLUG_TD).'</a>'."\n";
         }
         echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
@@ -62,7 +62,7 @@ class MenuPageOptions extends MenuPage
             echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
 
             if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
-                echo '(<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php'))).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                echo '(<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php'))).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
             } else {
                 echo '(<a href="'.esc_attr('https://zencache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
@@ -153,7 +153,7 @@ class MenuPageOptions extends MenuPage
         }
         if (!IS_PRO && $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-notice info">'."\n";
-            echo '<a href="'.add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; float:right; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="si si-eye-slash"></i></a>'."\n";
+            echo '<a href="'.add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; float:right; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="si si-eye-slash"></i></a>'."\n";
             echo '   <i class="si si-eye"></i> '.sprintf(__('<strong>Pro Features (Preview)</strong> ~ New option panels below. Please explore before <a href="http://zencache.com/prices/" target="_blank">upgrading <i class="si si-heart-o"></i></a>.<br /><small>NOTE: the free version of %1$s (this lite version) is more-than-adequate for most sites. Please upgrade only if you desire advanced features or would like to support the developer.</small>', SLUG_TD), esc_html(NAME))."\n";
             echo '</div>'."\n";
         }
@@ -1035,7 +1035,7 @@ class MenuPageOptions extends MenuPage
             echo '      <hr />'."\n";
             echo '      <h3>'.sprintf(__('Export Existing Options from this %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
             echo '      <button type="button" class="plugin-menu-page-export-options" style="float:right; margin: 0 0 0 25px;"'.// Exports existing options from this installation.
-             '         data-action="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => array('exportOptions' => '1'))), self_admin_url('/admin.php'))).'">'.
+             '         data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['exportOptions' => '1']]), self_admin_url('/admin.php'))).'">'.
              '         '.sprintf(__('%1$s-options.json', SLUG_TD), GLOBAL_NS).' <i class="si si-arrow-circle-o-down"></i></button>'."\n";
             echo '      <p>'.sprintf(__('Download your existing options and import them all into another %1$s installation; saves time on future installs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '   </div>'."\n";

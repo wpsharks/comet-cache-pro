@@ -15,11 +15,11 @@ class AdvCacheBackCompat
      */
     public static function qcRequestVars()
     {
-        $super_gs    = array(
+        $super_gs    = [
             '_GET'     => &$_GET,
             '_REQUEST' => &$_REQUEST,
-        );
-        $qc_suffixes = array('AC', 'ABC');
+        ];
+        $qc_suffixes = ['AC', 'ABC'];
 
         foreach ($super_gs as $_super_g_key => &$_super_g_value) {
             foreach ($qc_suffixes as $_qc_suffix) {

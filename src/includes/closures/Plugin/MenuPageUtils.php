@@ -12,7 +12,7 @@ $self->enqueueAdminStyles = function () use ($self) {
     if (empty($_GET['page']) || strpos($_GET['page'], GLOBAL_NS) !== 0) {
         return; // NOT a plugin page in the administrative area.
     }
-    $deps = array(); // Plugin dependencies.
+    $deps = []; // Plugin dependencies.
 
     wp_enqueue_style(GLOBAL_NS, $self->url('/src/client-s/css/menu-pages.min.css'), $deps, VERSION, 'all');
 };
@@ -28,11 +28,11 @@ $self->enqueueAdminScripts = function () use ($self) {
     if (empty($_GET['page']) || strpos($_GET['page'], GLOBAL_NS) !== 0) {
         return; // NOT a plugin page in the administrative area.
     }
-    $deps = array('jquery', 'chartjs'); // Plugin dependencies.
+    $deps = ['jquery', 'chartjs']; // Plugin dependencies.
 
-    wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), array(), null, true);
+    wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), [], null, true);
     wp_enqueue_script(GLOBAL_NS, $self->url('/src/client-s/js/menu-pages.min.js'), $deps, VERSION, true);
-    wp_localize_script(GLOBAL_NS, GLOBAL_NS.'_menu_page_vars', array(
+    wp_localize_script(GLOBAL_NS, GLOBAL_NS.'_menu_page_vars', [
         '_wpnonce'                 => wp_create_nonce(),
         'isMultisite'              => is_multisite(), // Network?
         'currentUserHasCap'        => current_user_can($self->cap),
@@ -41,7 +41,7 @@ $self->enqueueAdminScripts = function () use ($self) {
         'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
         'emptyStatsCountsImageUrl' => $self->url('/src/client-s/images/stats-fc-empty.png'),
         'emptyStatsFilesImageUrl' => $self->url('/src/client-s/images/stats-fs-empty.png'),
-        'i18n'                     => array(
+        'i18n'                     => [
             'name'           => NAME,
             'perSymbol'      => __('%', SLUG_TD),
             'file'           => __('file', SLUG_TD),
@@ -51,8 +51,8 @@ $self->enqueueAdminScripts = function () use ($self) {
             'currentTotal'   => __('Current Total', SLUG_TD),
             'currentSite'    => __('Current Site', SLUG_TD),
             'xDayHigh'       => __('%s Day High', SLUG_TD),
-        ),
-    ));
+        ],
+    ]);
 };
 
 /*
@@ -69,17 +69,17 @@ $self->addNetworkMenuPages = function () use ($self) {
     $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
-    add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
-    add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, array($self, 'menuPageOptions'));
+    add_menu_page(NAME, NAME, $self->network_cap, GLOBAL_NS, [$self, 'menuPageOptions'], $icon);
+    add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->network_cap, GLOBAL_NS, [$self, 'menuPageOptions']);
 
     /*[pro strip-from="lite"]*/
     if ($self->options['stats_enable']) {
-        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->network_cap, GLOBAL_NS.'-stats', array($self, 'menuPageStats'));
+        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->network_cap, GLOBAL_NS.'-stats', [$self, 'menuPageStats']);
     } /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
     if (current_user_can($self->network_cap)) {
-        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', [$self, 'menuPageProUpdater']);
     } /*[/pro]*/
 };
 
@@ -97,16 +97,16 @@ $self->addMenuPages = function () use ($self) {
     $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
     $icon = 'data:image/svg+xml;base64,'.base64_encode($self->colorSvgMenuIcon($icon));
 
-    add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'), $icon);
-    add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, array($self, 'menuPageOptions'));
+    add_menu_page(NAME, NAME, $self->cap, GLOBAL_NS, [$self, 'menuPageOptions'], $icon);
+    add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $self->cap, GLOBAL_NS, [$self, 'menuPageOptions']);
 
     /*[pro strip-from="lite"]*/
     if ($self->options['stats_enable']) {
-        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->cap, GLOBAL_NS.'-stats', array($self, 'menuPageStats'));
+        add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $self->cap, GLOBAL_NS.'-stats', [$self, 'menuPageStats']);
     } /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', array($self, 'menuPageProUpdater'));
+    add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $self->update_cap, GLOBAL_NS.'-pro-updater', [$self, 'menuPageProUpdater']);
     /*[/pro]*/
 };
 
@@ -122,9 +122,9 @@ $self->addMenuPages = function () use ($self) {
  * @return array Revised array of links.
  */
 $self->addSettingsLink = function ($links) use ($self) {
-    $links[] = '<a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'">'.__('Settings', SLUG_TD).'</a>';
+    $links[] = '<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php'))).'">'.__('Settings', SLUG_TD).'</a>';
     if (!IS_PRO) {
-        $links[] = '<br/><a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1')), self_admin_url('/admin.php'))).'">'.__('Preview Pro Features', SLUG_TD).'</a>';
+        $links[] = '<br/><a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php'))).'">'.__('Preview Pro Features', SLUG_TD).'</a>';
         $links[] = '<a href="'.esc_attr('http://zencache.com/prices/').'" target="_blank">'.__('Upgrade', SLUG_TD).'</a>';
     }
     return $links;
@@ -199,16 +199,16 @@ $self->menuPageProUpdater = function () use ($self) {
  * @note These must be hard-coded, because they don't become available
  *    in core until `admin_init`; i.e., too late for `admin_menu`.
  */
-$self->wp_admin_icon_colors = array(
-    'fresh'     => array('base' => '#999999', 'focus' => '#2EA2CC', 'current' => '#FFFFFF'),
-    'light'     => array('base' => '#999999', 'focus' => '#CCCCCC', 'current' => '#CCCCCC'),
-    'blue'      => array('base' => '#E5F8FF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-    'midnight'  => array('base' => '#F1F2F3', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-    'sunrise'   => array('base' => '#F3F1F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-    'ectoplasm' => array('base' => '#ECE6F6', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-    'ocean'     => array('base' => '#F2FCFF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-    'coffee'    => array('base' => '#F3F2F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-);
+$self->wp_admin_icon_colors = [
+    'fresh'     => ['base' => '#999999', 'focus' => '#2EA2CC', 'current' => '#FFFFFF'],
+    'light'     => ['base' => '#999999', 'focus' => '#CCCCCC', 'current' => '#CCCCCC'],
+    'blue'      => ['base' => '#E5F8FF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
+    'midnight'  => ['base' => '#F1F2F3', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
+    'sunrise'   => ['base' => '#F3F1F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
+    'ectoplasm' => ['base' => '#ECE6F6', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
+    'ocean'     => ['base' => '#F2FCFF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
+    'coffee'    => ['base' => '#F3F2F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
+];
 
 /*
  * On a specific menu page?

@@ -31,18 +31,18 @@ $self->lineDelimitedPatternsToRegex = function ($patterns) use ($self) {
  */
 $self->wdRegexToActualRegexFrag = function ($string) use ($self) {
     return preg_replace(
-        array(
+        [
             '/\\\\\^/',
             '/\\\\\*\\\\\*/',
             '/\\\\\*/',
             '/\\\\\$/',
-        ),
-        array(
+        ],
+        [
             '^', // Beginning of line.
             '.*?', // Zero or more chars.
             '[^\/]*?', // Zero or more chars != /.
             '$', // End of line.
-        ),
+        ],
         preg_quote((string) $string, '/')
     );
 };

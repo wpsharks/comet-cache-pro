@@ -179,7 +179,7 @@ class CdnFilters extends AbsBase
 
         if ($cdn_whitelisted_uri_patterns) {
             $this->cdn_whitelisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/'));
+                return preg_replace(['/\\\\\*/', '/\\\\\^/'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
             }, $cdn_whitelisted_uri_patterns)).')/i'; // CaSe inSensitive.
         }
         // Blacklisted URI patterns; if applicable.
@@ -198,7 +198,7 @@ class CdnFilters extends AbsBase
 
         if ($cdn_blacklisted_uri_patterns) {
             $this->cdn_blacklisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(array('/\\\\\*/', '/\\\\\^/'), array('.*?', '[^\/]*?'), preg_quote('/'.ltrim($pattern, '/'), '/'));
+                return preg_replace(['/\\\\\*/', '/\\\\\^/'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
             }, $cdn_blacklisted_uri_patterns)).')/i'; // CaSe inSensitive.
         }
         // Maybe attach filters.
@@ -253,41 +253,41 @@ class CdnFilters extends AbsBase
             $_this->started_wp_footer_action_hook = true;
         }, -PHP_INT_MAX); // The very first hook, ideally.
 
-        add_filter('home_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
-        add_filter('site_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
+        add_filter('home_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 4);
+        add_filter('site_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 4);
 
-        add_filter('network_home_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 3);
-        add_filter('network_site_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 3);
+        add_filter('network_home_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 3);
+        add_filter('network_site_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 3);
 
-        add_filter('content_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 2);
-        add_filter('plugins_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 2);
+        add_filter('content_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 2);
+        add_filter('plugins_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 2);
 
-        add_filter('wp_get_attachment_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 1);
+        add_filter('wp_get_attachment_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
 
-        add_filter('script_loader_src', array($this, 'urlFilter'), PHP_INT_MAX - 10, 1);
-        add_filter('style_loader_src', array($this, 'urlFilter'), PHP_INT_MAX - 10, 1);
+        add_filter('script_loader_src', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
+        add_filter('style_loader_src', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
 
-        add_filter('the_content', array($this, 'contentFilter'), PHP_INT_MAX - 10, 1);
-        add_filter('get_the_excerpt', array($this, 'contentFilter'), PHP_INT_MAX - 10, 1);
-        add_filter('widget_text', array($this, 'contentFilter'), PHP_INT_MAX - 10, 1);
+        add_filter('the_content', [$this, 'contentFilter'], PHP_INT_MAX - 10, 1);
+        add_filter('get_the_excerpt', [$this, 'contentFilter'], PHP_INT_MAX - 10, 1);
+        add_filter('widget_text', [$this, 'contentFilter'], PHP_INT_MAX - 10, 1);
 
         if ($this->htmlc_enable) {
             // If the HTML Compressor is enabled, attach early hook. Runs later.
             if (empty($GLOBALS['WebSharks\\HtmlCompressor_early_hooks']) || !is_array($GLOBALS['WebSharks\\HtmlCompressor_early_hooks'])) {
-                $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'] = array(); // Initialize.
+                $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'] = []; // Initialize.
             }
-            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = array(
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = [
                 'hook'          => 'css_url()', // Filters CSS `url()`s.
-                'function'      => array($this, 'htmlCUrlFilter'),
+                'function'      => [$this, 'htmlCUrlFilter'],
                 'priority'      => PHP_INT_MAX - 10,
                 'accepted_args' => 1,
-            );
-            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = array(
+            ];
+            $GLOBALS['WebSharks\\HtmlCompressor_early_hooks'][] = [
                 'hook'          => 'part_url', // Filters JS/CSS parts.
-                'function'      => array($this, 'htmlCUrlFilter'),
+                'function'      => [$this, 'htmlCUrlFilter'],
                 'priority'      => PHP_INT_MAX - 10,
                 'accepted_args' => 2,
-            );
+            ];
         }
     }
 
@@ -520,9 +520,9 @@ class CdnFilters extends AbsBase
     protected function parseCdnHosts()
     {
         $lines           = (string) $this->cdn_hosts;
-        $this->cdn_hosts = array(); // Initialize.
+        $this->cdn_hosts = []; // Initialize.
 
-        $lines = str_replace(array("\r\n", "\r"), "\n", $lines);
+        $lines = str_replace(["\r\n", "\r"], "\n", $lines);
         $lines = trim(strtolower($lines)); // Force all mappings to lowercase.
         $lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY);
 
@@ -533,7 +533,7 @@ class CdnFilters extends AbsBase
             if (strpos($_line, '=') !== false) {
                 $_parts = explode('=', $_line, 2);
             } else {
-                $_parts = array($this->local_host, $_line);
+                $_parts = [$this->local_host, $_line];
             }
             $_parts = $this->plugin->trimDeep($_parts);
 
@@ -569,13 +569,13 @@ class CdnFilters extends AbsBase
     {
         $extensions = array_keys(wp_get_mime_types());
         $extensions = explode('|', strtolower(implode('|', $extensions)));
-        $extensions = array_merge($extensions, array('eot', 'ttf', 'otf', 'woff'));
+        $extensions = array_merge($extensions, ['eot', 'ttf', 'otf', 'woff']);
 
         if (($permalink_structure = get_option('permalink_structure'))) {
             if (strcasecmp(substr($permalink_structure, -5), '.html') === 0) {
-                $extensions = array_diff($extensions, array('html'));
+                $extensions = array_diff($extensions, ['html']);
             } elseif (strcasecmp(substr($permalink_structure, -4), '.htm') === 0) {
-                $extensions = array_diff($extensions, array('htm'));
+                $extensions = array_diff($extensions, ['htm']);
             }
         }
         return array_unique($extensions);

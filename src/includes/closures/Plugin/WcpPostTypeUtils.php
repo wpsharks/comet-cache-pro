@@ -38,7 +38,7 @@ $self->autoClearCustomPostTypeArchiveCache = function ($post_id) use ($self) {
     if (!($post_type = get_post_type($post_id))) {
         return $counter; // Nothing to do.
     }
-    if (!($all_custom_post_types = get_post_types(array('_builtin' => false)))) {
+    if (!($all_custom_post_types = get_post_types(['_builtin' => false]))) {
         return $counter; // No custom post types.
     }
     if (!in_array($post_type, array_keys($all_custom_post_types), true)) {

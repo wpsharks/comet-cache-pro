@@ -16,21 +16,21 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @return string A unique key generated for this notice.
  */
-$self->enqueueNotice = function ($notice, array $args = array(), $blog_id = 0) use ($self) {
+$self->enqueueNotice = function ($notice, array $args = [], $blog_id = 0) use ($self) {
     $notice  = trim((string) $notice);
     $blog_id = (integer) $blog_id;
 
     if (!$notice) {
         return; // Nothing to do.
     }
-    $notice = array('notice' => $notice);
+    $notice = ['notice' => $notice];
     $notice = $self->normalizeNotice($notice, $args);
     $key    = sha1(serialize($notice)); // Prevent dupes.
 
     $notices = $self->getNotices($blog_id);
 
     if ($notice['push_to_top']) {
-        $notices = array($key => $notice) + $notices;
+        $notices = [$key => $notice] + $notices;
     } else {
         $notices[$key] = $notice; // Default behavior.
     }
@@ -79,8 +79,8 @@ $self->dismissNotice = function ($key_to_dismiss, $blog_id = 0) use ($self) {
  *
  * @since 150422 Rewrite. Improved 151002.
  */
-$self->enqueueError = function ($notice, array $args = array(), $blog_id = 0) use ($self) {
-    return $self->enqueueNotice($notice, array_merge($args, array('class' => 'error')), $blog_id);
+$self->enqueueError = function ($notice, array $args = [], $blog_id = 0) use ($self) {
+    return $self->enqueueNotice($notice, array_merge($args, ['class' => 'error']), $blog_id);
 };
 
 /*
@@ -88,7 +88,7 @@ $self->enqueueError = function ($notice, array $args = array(), $blog_id = 0) us
  *
  * @since 151002. Improving multisite compat.
  */
-$self->enqueueMainNotice = function ($notice, array $args = array()) use ($self) {
+$self->enqueueMainNotice = function ($notice, array $args = []) use ($self) {
     return $self->enqueueNotice($notice, $args, -1);
 };
 
@@ -97,8 +97,8 @@ $self->enqueueMainNotice = function ($notice, array $args = array()) use ($self)
  *
  * @since 151002. Improving multisite compat.
  */
-$self->enqueueMainError = function ($notice, array $args = array()) use ($self) {
-    return $self->enqueueNotice($notice, array_merge($args, array('class' => 'error')), -1);
+$self->enqueueMainError = function ($notice, array $args = []) use ($self) {
+    return $self->enqueueNotice($notice, array_merge($args, ['class' => 'error']), -1);
 };
 
 /*
@@ -147,7 +147,7 @@ $self->allAdminNotices = function () use ($self) {
 
         $_dismiss = ''; // Reset this to its default state.
         if ($_notice['persistent_key'] && $_notice['dismissable']) { // See above. The `dismissNotice()` action requires `$self->cap` always.
-            $_dismiss = add_query_arg(urlencode_deep(array(GLOBAL_NS => array('dismissNotice' => array('key' => $_key)), '_wpnonce' => wp_create_nonce())));
+            $_dismiss = add_query_arg(urlencode_deep([GLOBAL_NS => ['dismissNotice' => ['key' => $_key]], '_wpnonce' => wp_create_nonce()]));
             $_dismiss = '<a style="display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
         }
         # Display this notice. If not persistent, we can dismiss it too.
@@ -195,7 +195,7 @@ $self->getNotices = function ($blog_id = 0) use ($self) {
         $notices = get_site_option(GLOBAL_NS.'_notices');
     }
     if (!is_array($notices)) {
-        $notices = array(); // Force array.
+        $notices = []; // Force array.
         // Prevent multiple DB queries by adding this key.
         $self->updateNotices($notices, $blog_id);
     }
@@ -253,8 +253,8 @@ $self->updateNotices = function (array $notices, $blog_id = 0) use ($self) {
 *
 * @return array Normalized notice array elements.
 */
-$self->normalizeNotice = function (array $notice, array $args = array()) use ($self) {
-    $notice_defaults = array(
+$self->normalizeNotice = function (array $notice, array $args = [] use ($self) {
+    $notice_defaults = [
        'notice'         => '',
        'only_on_uris'   => '',
        'persistent_key' => '',
@@ -264,7 +264,7 @@ $self->normalizeNotice = function (array $notice, array $args = array()) use ($s
        'class'          => 'updated',
        'cap_required'   => '', // `$self->cap` always.
        // i.e., this cap is in addition to `$self->cap`.
-    );
+    ];
     $notice = array_merge($notice_defaults, $notice, $args);
     $notice = array_intersect_key($notice, $notice_defaults);
 

@@ -8,7 +8,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @type array An array of hooks.
  */
-$self->hooks = array();
+$self->hooks = [];
 
 /*
  * Assigns an ID to each callable attached to a hook/filter.
@@ -26,7 +26,7 @@ $self->hookId = function ($function) use ($self) {
         return $function;
     }
     if (is_object($function)) {
-        $function = array($function, '');
+        $function = [$function, ''];
     } else {
         $function = (array) $function;
     }
@@ -61,10 +61,10 @@ $self->addHook = function ($hook, $function, $priority = 10, $accepted_args = 1)
     $accepted_args = max(0, (integer) $accepted_args);
     $hook_id       = $self->hookId($function);
 
-    $self->hooks[$hook][$priority][$hook_id] = array(
+    $self->hooks[$hook][$priority][$hook_id] = [
             'function'      => $function,
             'accepted_args' => $accepted_args,
-    );
+    ];
     return true; // Always returns true.
 };
 
@@ -76,7 +76,7 @@ $self->addHook = function ($hook, $function, $priority = 10, $accepted_args = 1)
  * @return boolean This always returns a `TRUE` value.
  */
 $self->addAction = function () use ($self) {
-    return call_user_func_array(array($self, 'addHook'), func_get_args());
+    return call_user_func_array([$self, 'addHook'], func_get_args());
 };
 $self->add_action = $self->addAction; // Back compat.
 
@@ -88,7 +88,7 @@ $self->add_action = $self->addAction; // Back compat.
  * @return boolean This always returns a `TRUE` value.
  */
 $self->addFilter = function () use ($self) {
-    return call_user_func_array(array($self, 'addHook'), func_get_args());
+    return call_user_func_array([$self, 'addHook'], func_get_args());
 };
 $self->add_filter = $self->addFilter; // Back compat.
 
@@ -130,7 +130,7 @@ $self->removeHook = function ($hook, $function, $priority = 10) use ($self) {
  * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
  */
 $self->removeAction = function () use ($self) {
-    return call_user_func_array(array($self, 'removeHook'), func_get_args());
+    return call_user_func_array([$self, 'removeHook'], func_get_args());
 };
 
 /*
@@ -141,7 +141,7 @@ $self->removeAction = function () use ($self) {
  * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
  */
 $self->removeFilter = function () use ($self) {
-    return call_user_func_array(array($self, 'removeHook'), func_get_args());
+    return call_user_func_array([$self, 'removeHook'], func_get_args());
 };
 
 /*

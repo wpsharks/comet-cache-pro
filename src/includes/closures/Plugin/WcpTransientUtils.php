@@ -41,7 +41,7 @@ $self->wipeExpiredTransients = function ($manually = false, $maybe = true) use (
     $counter += (int) $wpdb->query(trim($sql));
 
     $child_blogs = wp_get_sites();
-    $child_blogs = is_array($child_blogs) ? $child_blogs : array();
+    $child_blogs = is_array($child_blogs) ? $child_blogs : [];
 
     foreach ($child_blogs as $_child_blog) {
         switch_to_blog($_child_blog['blog_id']);

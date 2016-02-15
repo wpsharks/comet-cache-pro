@@ -26,7 +26,7 @@ $self->parseUrl = function ($url_uri_qsl, $component = -1) use ($self) {
         return ($part = parse_url($url_uri_qsl, $component));
     } else {
         if (!is_array($parts = parse_url($url_uri_qsl))) {
-            return ($parts = array());
+            return ($parts = []);
         }
         if (${'//'}) {
             $parts['scheme'] = '//';

@@ -18,26 +18,26 @@ $self->statsLogPinger = function () use ($self) {
     if ($self->options['last_pro_stats_log'] >= strtotime('-1 week')) {
         return; // No reason to keep pinging.
     }
-    $self->updateOptions(array('last_pro_stats_log' => time()));
+    $self->updateOptions(['last_pro_stats_log' => time()]);
 
     $wpdb               = $self->wpdb(); // WordPress DB.
     $stats_api_url      = 'https://www.websharks-inc.com/products/stats-log.php';
-    $stats_api_url_args = array( // See: <https://zencache.com/?p=1458>
+    $stats_api_url_args = [ // See: <https://zencache.com/?p=1458>
         'os'              => PHP_OS,
         'php_version'     => PHP_VERSION,
         'mysql_version'   => $wpdb->db_version(),
         'wp_version'      => get_bloginfo('version'),
         'product_version' => VERSION, // Plugin version.
         'product'         => SLUG_TD.(IS_PRO ? '-pro' : ''),
-    );
+    ];
     $stats_api_url = add_query_arg(urlencode_deep($stats_api_url_args), $stats_api_url);
 
     wp_remote_get(
         $stats_api_url,
-        array(
+        [
             'blocking'  => false,
             'sslverify' => false,
-        )
+        ]
     );
 };
 /*[/pro]*/

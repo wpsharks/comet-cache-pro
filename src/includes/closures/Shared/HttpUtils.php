@@ -57,7 +57,7 @@ $self->cacheableHeadersList = function () use ($self) {
     }
     $headers = headers_list(); // Lacks status.
 
-    $cacheable_headers = array(
+    $cacheable_headers = [
         'Access-Control-Allow-Origin',
         'Accept-Ranges',
         'Age',
@@ -102,7 +102,7 @@ $self->cacheableHeadersList = function () use ($self) {
         'X-Content-Type-Options',
         'X-Powered-By',
         'X-UA-Compatible',
-    );
+    ];
     $cacheable_headers = array_map('strtolower', $cacheable_headers);
 
     foreach ($headers as $_key => $_header) {

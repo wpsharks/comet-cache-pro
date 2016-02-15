@@ -14,7 +14,7 @@ $self->autoClearCacheOnSettingChanges = function () use ($self) {
     $pagenow          = !empty($GLOBALS['pagenow']) ? $GLOBALS['pagenow'] : '';
     $settings_updated = !empty($_REQUEST['settings-updated']);
 
-    if (!is_null($done = &$self->cacheKey('autoClearCacheOnSettingChanges', array($pagenow, $settings_updated)))) {
+    if (!is_null($done = &$self->cacheKey('autoClearCacheOnSettingChanges', [$pagenow, $settings_updated]))) {
         return $counter; // Already did this.
     }
     $done = true; // Flag as having been done.

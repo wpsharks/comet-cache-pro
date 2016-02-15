@@ -285,7 +285,7 @@ $self->deleteFilesFromHostCacheDir = function (
 
     clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
 
-    foreach (array('http', 'https') as $_host_scheme) {
+    foreach (['http', 'https'] as $_host_scheme) {
         $_host_url              = $_host_scheme.'://'.$host_token.$host_base_dir_tokens;
         $_host_cache_path_flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
         $_host_cache_path       = $self->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
@@ -395,18 +395,18 @@ $self->deleteFilesFromHostCacheDir = function (
     /* ------- Include domain mapping variations also. ------- */
 
     if (!$___considering_domain_mapping && is_multisite() && $self->canConsiderDomainMapping()) {
-        $domain_mapping_variations = array(); // Initialize array of domain variations.
+        $domain_mapping_variations = []; // Initialize array of domain variations.
 
         if (($_host_token_for_blog = $self->hostTokenForBlog())) {
             $_host_base_dir_tokens_for_blog = $self->hostBaseDirTokensForBlog();
-            $domain_mapping_variations[]    = array('host_token' => $_host_token_for_blog, 'host_base_dir_tokens' => $_host_base_dir_tokens_for_blog);
+            $domain_mapping_variations[]    = ['host_token' => $_host_token_for_blog, 'host_base_dir_tokens' => $_host_base_dir_tokens_for_blog];
         } // The original blog host; i.e., without domain mapping.
         unset($_host_token_for_blog, $_host_base_dir_tokens_for_blog); // Housekeeping.
 
         foreach ($self->domainMappingBlogDomains() as $_domain_mapping_blog_domain) {
             if (($_domain_host_token_for_blog = $self->hostTokenForBlog(false, true, $_domain_mapping_blog_domain))) {
                 $_domain_host_base_dir_tokens_for_blog = $self->hostBaseDirTokensForBlog(false, true); // This is only a formality.
-                $domain_mapping_variations[]           = array('host_token' => $_domain_host_token_for_blog, 'host_base_dir_tokens' => $_domain_host_base_dir_tokens_for_blog);
+                $domain_mapping_variations[]           = ['host_token' => $_domain_host_token_for_blog, 'host_base_dir_tokens' => $_domain_host_base_dir_tokens_for_blog];
             }
         } // This includes all of the domain mappings configured for the current blog ID.
         unset($_domain_mapping_blog_domain, $_domain_host_token_for_blog, $_domain_host_base_dir_tokens_for_blog); // Housekeeping.

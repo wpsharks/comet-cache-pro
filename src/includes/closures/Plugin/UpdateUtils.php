@@ -24,22 +24,22 @@ $self->maybeCheckLatestLiteVersion = function () use ($self) {
     if ($self->options['last_lite_update_check'] >= strtotime('-1 hour')) {
         return; // No reason to keep checking on this.
     }
-    $self->updateOptions(array('last_lite_update_check' => time()));
+    $self->updateOptions(['last_lite_update_check' => time()]);
 
     $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
-    $product_api_input_vars = array('product_api' => array('action' => 'latest_lite_version'));
+    $product_api_input_vars = ['product_api' => ['action' => 'latest_lite_version']];
 
-    $product_api_response = wp_remote_post($product_api_url, array('body' => $product_api_input_vars));
+    $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
     $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
 
     if (is_object($product_api_response) && !empty($product_api_response->lite_version)) {
-        $self->updateOptions(array('latest_lite_version' => $product_api_response->lite_version));
+        $self->updateOptions(['latest_lite_version' => $product_api_response->lite_version]);
     }
     // Disabling the notice for now. We only run this check to collect the latest version number.
     #if ($self->options['latest_lite_version'] && version_compare(VERSION, $self->options['latest_lite_version'], '<')) {
     #    $self->dismissMainNotice('new-lite-version-available'); // Dismiss any existing notices like this.
     #    $lite_updater_page = network_admin_url('/plugins.php'); // In a network this points to the master plugins list.
-    #    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($lite_updater_page), esc_html($self->options['latest_lite_version'])), array('persistent_key' => 'new-lite-version-available'));
+    #    $self->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($lite_updater_page), esc_html($self->options['latest_lite_version'])), ['persistent_key' => 'new-lite-version-available']);
     #}
 };
 
@@ -66,21 +66,21 @@ $self->maybeCheckLatestProVersion = function () use ($self) {
     if ($self->options['last_pro_update_check'] >= strtotime('-1 hour')) {
         return; // No reason to keep checking on this.
     }
-    $self->updateOptions(array('last_pro_update_check' => time()));
+    $self->updateOptions(['last_pro_update_check' => time()]);
 
     $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
-    $product_api_input_vars = array('product_api' => array('action' => 'latest_pro_version'));
+    $product_api_input_vars = ['product_api' => ['action' => 'latest_pro_version']];
 
-    $product_api_response = wp_remote_post($product_api_url, array('body' => $product_api_input_vars));
+    $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
     $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
 
     if (is_object($product_api_response) && !empty($product_api_response->pro_version)) {
-        $self->updateOptions(array('latest_pro_version' => $product_api_response->pro_version));
+        $self->updateOptions(['latest_pro_version' => $product_api_response->pro_version]);
     }
     if ($self->options['latest_pro_version'] && version_compare(VERSION, $self->options['latest_pro_version'], '<')) {
         $self->dismissMainNotice('new-pro-version-available'); // Dismiss any existing notices like this.
-        $pro_updater_page = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), network_admin_url('/admin.php'));
-        $self->enqueueMainNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($pro_updater_page), esc_html($self->options['latest_pro_version'])), array('persistent_key' => 'new-pro-version-available'));
+        $pro_updater_page = add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), network_admin_url('/admin.php'));
+        $self->enqueueMainNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($pro_updater_page), esc_html($self->options['latest_pro_version'])), ['persistent_key' => 'new-pro-version-available']);
     }
 };
 
@@ -125,12 +125,12 @@ $self->preSiteTransientUpdatePlugins = function ($transient) use ($self) {
     }
     $transient->last_checked                           = time();
     $transient->checked[plugin_basename(PLUGIN_FILE)]  = VERSION;
-    $transient->response[plugin_basename(PLUGIN_FILE)] = (object) array(
+    $transient->response[plugin_basename(PLUGIN_FILE)] = (object) [
         'id'          => 0,
         'slug'        => basename(PLUGIN_FILE, '.php'),
-        'url'         => add_query_arg(urlencode_deep(array('page' => GLOBAL_NS.'-pro-updater')), self_admin_url('/admin.php')),
+        'url'         => add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php')),
         'new_version' => $update_pro_version, 'package' => $update_pro_zip,
-    );
+    ];
     return $transient; // Nodified now.
 };
 

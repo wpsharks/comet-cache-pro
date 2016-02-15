@@ -15,7 +15,7 @@ $self->currentIp = function () use ($self) {
     if (!is_null($ip = &$self->staticKey('currentIp'))) {
         return $ip; // Already cached this.
     }
-    $sources = array(
+    $sources = [
         'HTTP_CF_CONNECTING_IP',
         'HTTP_CLIENT_IP',
         'HTTP_X_FORWARDED_FOR',
@@ -25,7 +25,7 @@ $self->currentIp = function () use ($self) {
         'HTTP_FORWARDED',
         'HTTP_VIA',
         'REMOTE_ADDR',
-    );
+    ];
     $sources = $self->applyFilters(GLOBAL_NS.'\\share::current_ip_sources', $sources);
     $sources = $self->applyFilters(GLOBAL_NS.'_current_ip_sources', $sources);
 

@@ -36,7 +36,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     $benchmark     = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
     $product_title = sprintf(__('%1$s HTML Compressor', SLUG_TD), NAME);
 
-    $html_compressor_options = array(
+    $html_compressor_options = [
         'benchmark'     => $benchmark,
         'product_title' => $product_title,
 
@@ -60,7 +60,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
         'compress_css_code'              => ZENCACHE_HTMLC_COMPRESS_CSS_CODE,
         'compress_js_code'               => ZENCACHE_HTMLC_COMPRESS_JS_CODE,
         'compress_html_code'             => ZENCACHE_HTMLC_COMPRESS_HTML_CODE,
-    );
+    ];
     try {
         $html_compressor  = new \WebSharks\HtmlCompressor\Core($html_compressor_options);
         $compressed_cache = $html_compressor->compress($cache);

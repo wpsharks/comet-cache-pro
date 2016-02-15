@@ -40,7 +40,7 @@ $self->isPostPutDeleteRequest = function () use ($self) {
         return ($is = true);
     }
     if (!empty($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD'])) {
-        if (in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('POST', 'PUT', 'DELETE'), true)) {
+        if (in_array(strtoupper($_SERVER['REQUEST_METHOD']), ['POST', 'PUT', 'DELETE'], true)) {
             return ($is = true);
         }
     }
@@ -90,7 +90,7 @@ $self->isUncacheableRequestMethod = function () use ($self) {
         return ($is = true);
     }
     if (!empty($_SERVER['REQUEST_METHOD']) && is_string($_SERVER['REQUEST_METHOD'])) {
-        if (!in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('GET'), true)) {
+        if (!in_array(strtoupper($_SERVER['REQUEST_METHOD']), ['GET'], true)) {
             return ($is = true);
         }
     }
@@ -329,7 +329,7 @@ $self->functionIsPossible = function ($function) use ($self) {
         return $is; // Already cached this.
     }
     if (is_null($disabled_functions = &$self->staticKey('functionIsPossible_disabled_functions'))) {
-        $disabled_functions = array(); // Initialize disabled/blacklisted functions.
+        $disabled_functions = []; // Initialize disabled/blacklisted functions.
 
         if (($disable_functions = trim(ini_get('disable_functions')))) {
             $disabled_functions = array_merge($disabled_functions, preg_split('/[\s;,]+/', strtolower($disable_functions), null, PREG_SPLIT_NO_EMPTY));

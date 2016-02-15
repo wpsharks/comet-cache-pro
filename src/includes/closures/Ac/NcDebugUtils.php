@@ -8,7 +8,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @type array An array of debug info; i.e. `reason_code` and `reason` (optional).
  */
-$self->debug_info = array('reason_code' => '', 'reason' => '');
+$self->debug_info = ['reason_code' => '', 'reason' => ''];
 
 /*
  * Used to setup debug info (if enabled).
@@ -26,7 +26,7 @@ $self->maybeSetDebugInfo = function ($reason_code, $reason = '') use ($self) {
     if (!($reason_code = (string) $reason_code)) {
         return; // Not applicable.
     }
-    $self->debug_info = array('reason_code' => $reason_code, 'reason' => $reason);
+    $self->debug_info = ['reason_code' => $reason_code, 'reason' => $reason];
 };
 
 /*

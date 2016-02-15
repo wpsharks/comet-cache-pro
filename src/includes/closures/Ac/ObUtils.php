@@ -217,7 +217,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
         }
         exit($cache); // Exit with cache contents.
     } else {
-        ob_start(array($self, 'outputBufferCallbackHandler'));
+        ob_start([$self, 'outputBufferCallbackHandler']);
     }
     return; // Return value not applicable.
 };

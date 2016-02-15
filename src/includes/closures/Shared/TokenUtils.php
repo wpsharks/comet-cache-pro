@@ -29,7 +29,7 @@ $self->user_login_cookie_expired_or_invalid = false;
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
 $self->hostToken = function ($dashify = false, $consider_domain_mapping = false, $consider_domain_mapping_domain = '') use ($self) {
-    if (!is_null($token = &$self->staticKey('hostToken', array($dashify, $consider_domain_mapping, $consider_domain_mapping_domain)))) {
+    if (!is_null($token = &$self->staticKey('hostToken', [$dashify, $consider_domain_mapping, $consider_domain_mapping_domain]))) {
         return $token; // Already cached this.
     }
     $token = ''; // Initialize token value.
@@ -119,7 +119,7 @@ $self->hostTokenForBlog = function ($dashify = false, $consider_domain_mapping =
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
 $self->hostBaseToken = function ($dashify = false, $consider_domain_mapping = false) use ($self) {
-    if (!is_null($token = &$self->staticKey('hostBaseToken', array($dashify, $consider_domain_mapping)))) {
+    if (!is_null($token = &$self->staticKey('hostBaseToken', [$dashify, $consider_domain_mapping]))) {
         return $token; // Already cached this.
     }
     $token = '/'; // Assume NOT multisite; or own domain.
@@ -168,7 +168,7 @@ $self->hostDirToken = function ($dashify = false, $consider_domain_mapping = fal
     }
     $path = '/'.ltrim((string) $path, '/'); // Force leading slash.
 
-    if (!is_null($token = &$self->staticKey('hostDirToken', array($dashify, $consider_domain_mapping, $path)))) {
+    if (!is_null($token = &$self->staticKey('hostDirToken', [$dashify, $consider_domain_mapping, $path]))) {
         return $token; // Already cached this.
     }
     $token = '/'; // Assume NOT multisite; or own domain.
@@ -274,7 +274,7 @@ $self->hostDirTokenForBlog = function ($dashify = false, $consider_domain_mappin
  * @note The return value of this function is cached to reduce overhead on repeat calls.
  */
 $self->hostBaseDirTokens = function ($dashify = false, $consider_domain_mapping = false, $path = null) use ($self) {
-    if (!is_null($tokens = &$self->staticKey('hostBaseDirTokens', array($dashify, $consider_domain_mapping, $path)))) {
+    if (!is_null($tokens = &$self->staticKey('hostBaseDirTokens', [$dashify, $consider_domain_mapping, $path]))) {
         return $tokens; // Already cached this.
     }
     $tokens = $self->hostBaseToken($dashify, $consider_domain_mapping);

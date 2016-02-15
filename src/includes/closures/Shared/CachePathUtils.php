@@ -149,16 +149,16 @@ $self->buildCachePath = function ($url, $with_user_token = '', $with_version_sal
         }
         if (!($flags & CACHE_PATH_NO_USER)) {
             if ($with_user_token !== '') {
-                $cache_path = rtrim($cache_path, '/').'.u/'.str_replace(array('/', '\\'), '-', $with_user_token).'/';
+                $cache_path = rtrim($cache_path, '/').'.u/'.str_replace(['/', '\\'], '-', $with_user_token).'/';
             }
         }
         if (!($flags & CACHE_PATH_NO_VSALT)) {
             if ($with_version_salt !== '') {
-                $cache_path = rtrim($cache_path, '/').'.v/'.str_replace(array('/', '\\'), '-', $with_version_salt).'/';
+                $cache_path = rtrim($cache_path, '/').'.v/'.str_replace(['/', '\\'], '-', $with_version_salt).'/';
             }
         }
     }
-    $cache_path = trim(preg_replace(array('/\/+/', '/\.+/'), array('/', '.'), $cache_path), '/');
+    $cache_path = trim(preg_replace(['/\/+/', '/\.+/'], ['/', '.'], $cache_path), '/');
 
     if ($flags & CACHE_PATH_ALLOW_WD_REGEX) {
         $cache_path = preg_replace('/[^a-z0-9\/.*\^$]/i', '-', $cache_path);

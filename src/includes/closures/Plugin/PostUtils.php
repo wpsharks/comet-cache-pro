@@ -29,9 +29,9 @@ $self->builtInPostStatuses = function () use ($self) {
     if (!is_null($statuses = &$self->cacheKey('builtInPostStatuses'))) {
         return $statuses; // Already did this.
     }
-    $statuses = array(); // Initialize.
+    $statuses = []; // Initialize.
 
-    foreach (get_post_stati(array(), 'objects') as $_key => $_status) {
+    foreach (get_post_stati([], 'objects') as $_key => $_status) {
         if (!empty($_status->_builtin)) {
             $statuses[] = $_status->name;
         }

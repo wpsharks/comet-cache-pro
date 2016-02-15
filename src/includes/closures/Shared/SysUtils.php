@@ -13,10 +13,10 @@ $self->sysLoadAverages = function () use ($self) {
         return $averages; // Already cached these.
     }
     if (!$self->functionIsPossible('sys_getloadavg')) {
-        return ($averages = array());
+        return ($averages = [];
     }
     if (!is_array($averages = sys_getloadavg()) || !$averages) {
-        return ($averages = array());
+        return ($averages = [];
     }
     $averages = array_map('floatval', $averages);
     $averages = array_slice($averages, 0, 3);
