@@ -27,6 +27,4 @@ define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
 define(__NAMESPACE__.'\\PLUGIN_FILE', ${__FILE__}['plugin']);
 define(__NAMESPACE__.'\\IS_PRO', ${__FILE__}['is_pro']);
 
-$GLOBALS[GLOBAL_NS] = null;
-
 unset(${__FILE__}); // Housekeeping.
