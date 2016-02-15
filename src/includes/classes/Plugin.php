@@ -255,8 +255,9 @@ class Plugin extends AbsBaseAp
         $this->default_options = array(
             /* Core/systematic plugin options. */
 
-            'version'  => VERSION,
-            'welcomed' => '0', // `0|1` welcomed yet?
+            'version'                       => VERSION,
+            'welcomed'                      => '0', // `0|1` welcomed yet?
+            'comet_cache_notice1_enqueued'  => '0', // `0|1` announced Comet Cache yet?
 
             'crons_setup'                             => '0', // A timestamp when last set up.
             'crons_setup_on_namespace'                => '', // The namespace on which they were set up.
