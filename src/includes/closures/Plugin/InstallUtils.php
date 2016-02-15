@@ -13,7 +13,7 @@ $self->activate = function () use ($self) {
 
     if (!$self->options['welcomed'] && !$self->options['enable']) {
         $settings_url = add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), network_admin_url('/admin.php'));
-        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url), array('push_to_top' => true)));
+        $self->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url)), array('push_to_top' => true));
         $self->updateOptions(array('welcomed' => '1'));
     }
 
