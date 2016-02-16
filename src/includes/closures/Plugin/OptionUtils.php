@@ -43,7 +43,7 @@ $self->getOptions = function () use ($self) {
  * @return array Plugin options after update.
  */
 $self->updateOptions = function (array $options) use ($self) {
-    if (!IS_PRO) { // Do not save lite option keys.
+    if (!IS_PRO) { // Do not save Pro option keys.
         $options = array_diff_key($options, $self->pro_only_option_keys);
     }
     if (!empty($options['base_dir']) && $options['base_dir'] !== $self->options['base_dir']) {

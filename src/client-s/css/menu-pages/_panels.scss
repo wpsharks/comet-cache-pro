@@ -36,13 +36,36 @@
       content:                map-get($sharkicons, chevron-up);
     }
 
-    @at-root .pro-preview .plugin-menu-page-panel .plugin-menu-page-panel-heading {
-      opacity:                0.5;
+    @at-root .pro-preview-feature {
+      @at-root .plugin-menu-page-panel-heading.pro-preview-feature {
+        background : #216095;
+      }
 
       &::after {
         font-variant:         small-caps !important;
         font-family:          sans-serif !important;
         content:              'pro version only' !important;
+        margin-left:          15px;
+        background:           #216095;
+        color:                #FFFFFF;
+        padding:              0 5px 2px 5px;
+        font-weight:          normal;
+      }
+    }
+
+    @at-root .pro-preview-additional-features {
+      @at-root .plugin-menu-page-panel-heading.pro-preview-additional-features {
+        background : #216095;
+      }
+      &::after {
+        font-variant:         small-caps !important;
+        font-family:          sans-serif !important;
+        content:              'additional pro version only features' !important;
+        margin-left:          15px;
+        background:           #216095;
+        color:                #FFFFFF;
+        padding:              0 5px 2px 5px;
+        font-weight:          normal;
       }
     }
 
