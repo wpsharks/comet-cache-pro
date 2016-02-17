@@ -21,7 +21,7 @@ $self->statsLogPinger = function () use ($self) {
     $self->updateOptions(['last_pro_stats_log' => time()]);
 
     $wpdb               = $self->wpdb(); // WordPress DB.
-    $stats_api_url      = 'https://www.websharks-inc.com/products/stats-log.php';
+    $stats_api_url      = 'https://stats.wpsharks.io/log';
     $stats_api_url_args = [ // See: <https://zencache.com/?p=1458>
         'os'              => PHP_OS,
         'php_version'     => PHP_VERSION,

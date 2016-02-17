@@ -67,7 +67,7 @@ class AutoCache extends AbsBase
         $delay = $delay > 0 ? $delay * 1000 : 0; // Convert delay to microseconds for `usleep()`.
 
         $other_urls = $this->plugin->options['auto_cache_other_urls'];
-        $other_urls = preg_split('/\s+/', $other_urls, null, PREG_SPLIT_NO_EMPTY);
+        $other_urls = preg_split('/\s+/', $other_urls, -1, PREG_SPLIT_NO_EMPTY);
 
         $blogs = [(object) ['ID' => null, 'other' => $other_urls]];
 
