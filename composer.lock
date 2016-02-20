@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ad63505a59035066c5b43da9277a40be",
-    "content-hash": "696138c99e42875e7de6e90ae2b8aea0",
+    "hash": "a36282839bb8345ddabfdb185955d218",
+    "content-hash": "b348a83ff6f0342aee7a6b00fb911cd6",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -176,16 +176,16 @@
         },
         {
             "name": "websharks/sharkicons",
-            "version": "150820",
+            "version": "160209",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/sharkicons.git",
-                "reference": "b9ed1f30c66617768c82596cb54b7507c235b047"
+                "reference": "146508cc2a77bb49528f39799d864c4fdf14e3aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/b9ed1f30c66617768c82596cb54b7507c235b047",
-                "reference": "b9ed1f30c66617768c82596cb54b7507c235b047",
+                "url": "https://api.github.com/repos/websharks/sharkicons/zipball/146508cc2a77bb49528f39799d864c4fdf14e3aa",
+                "reference": "146508cc2a77bb49528f39799d864c4fdf14e3aa",
                 "shasum": ""
             },
             "require-dev": {
@@ -223,7 +223,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-08-15 02:47:56"
+            "time": "2016-02-09 22:36:25"
         },
         {
             "name": "websharks/wp-php-rv",
