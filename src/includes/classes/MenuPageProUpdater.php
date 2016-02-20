@@ -41,13 +41,13 @@ class MenuPageProUpdater extends MenuPage
         echo '   </div>'."\n";
         echo '  <div class="plugin-menu-page-support-links">'."\n";
         if (IS_PRO) {
-            echo '  <a href="'.esc_attr('http://zencache.com/support/').'" target="_blank"> '.__('Support', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr('http://zencache.com/support/').'" target="_blank"><i class="si si-life-bouy"></i> '.__('Support', SLUG_TD).'</a>'."\n";
         }
         if (!IS_PRO) {
-            echo '  <a href="'.esc_attr('https://wordpress.org/support/plugin/zencache').'" target="_blank"> '.__('Community Forum', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr('https://wordpress.org/support/plugin/zencache').'" target="_blank"><i class="si si-comment"></i> '.__('Community Forum', SLUG_TD).'</a>'."\n";
         }
-        echo '      <a href="'.esc_attr('http://zencache.com/kb/').'" target="_blank"> '.__('Knowledge Base', SLUG_TD).'</a>'."\n";
-        echo '      <a href="'.esc_attr('http://zencache.com/blog/').'" target="_blank"> '.__('Blog', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/kb/').'" target="_blank"><i class="si si-book"></i> '.__('Knowledge Base', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/blog/').'" target="_blank"><i class="si si-rss-square"></i> '.__('Blog', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
         if (IS_PRO) {
             echo '<div class="plugin-menu-page-version">'."\n";
