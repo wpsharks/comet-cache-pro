@@ -25,6 +25,19 @@
       display:                inline-block;
     }
   }
+  .plugin-menu-page-support-links  {
+    float:                    right;
+    clear:                    right;
+    text-align:               right;
+    max-width:                350px;
+    margin:                   .5em 0 0;
+
+    a {
+      text-decoration:        none;
+      margin:                 0 0.5em;
+      display:                inline-block;
+    }
+  }
   .plugin-menu-page-version {
     float: right;
     clear: right;

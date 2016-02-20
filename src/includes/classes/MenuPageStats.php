@@ -29,8 +29,22 @@ class MenuPageStats extends MenuPage
                  '</button>'."\n";
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
+        if (current_user_can($this->plugin->cap)) {
+            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="si si-cogs"></i> '.__('Options', SLUG_TD).'</a>'."\n";
+        }
         echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
         echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
+        echo '   </div>'."\n";
+
+        echo '  <div class="plugin-menu-page-support-links">'."\n";
+        if (IS_PRO) {
+            echo '  <a href="'.esc_attr('http://cometcache.com/support/').'" target="_blank"><i class="si si-life-bouy"></i> '.__('Support', SLUG_TD).'</a>'."\n";
+        }
+        if (!IS_PRO) {
+            echo '  <a href="'.esc_attr('https://wordpress.org/support/plugin/comet-cache').'" target="_blank"><i class="si si-comment"></i> '.__('Community Forum', SLUG_TD).'</a>'."\n";
+        }
+        echo '      <a href="'.esc_attr('http://cometcache.com/kb/').'" target="_blank"><i class="si si-book"></i> '.__('Knowledge Base', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://cometcache.com/blog/').'" target="_blank"><i class="si si-rss-square"></i> '.__('Blog', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
         if (IS_PRO) {
