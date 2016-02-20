@@ -45,10 +45,10 @@ class Conflicts
                 continue; // Nothing to check in this case.
             }
             if (in_array($_active_plugin_slug, $conflicting_plugin_slugs, true)) {
-                if (in_array($_active_plugin_slug, array('comet-cache', 'comet-cache-pro', 'zencache', 'zencache-pro', 'quick-cache', 'quick-cache-pro'), true)) {
-                    if (function_exists('deactivate_plugins')) { // Can deactivate?
+                if (empty($GLOBALS[GLOBAL_NS.'_uninstalling']) && is_admin() && in_array($_active_plugin_slug, array('comet-cache', 'comet-cache-pro', 'zencache', 'zencache-pro', 'quick-cache', 'quick-cache-pro'), true)) {
+                    add_action('admin_init', function () use ($_active_plugin_basename) {
                         deactivate_plugins($_active_plugin_basename, true);
-                    }
+                     }, -1000);
                 } else {
                     return ($GLOBALS[GLOBAL_NS.'_conflicting_plugin'] = $_active_plugin_slug);
                 }

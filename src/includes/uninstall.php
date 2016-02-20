@@ -11,8 +11,9 @@ if (!defined('WPINC')) {
 }
 require_once dirname(__FILE__).'/stub.php';
 
+$GLOBALS[GLOBAL_NS.'_uninstalling'] = true; // Needs to be set before calling Conflicts class
+
 if (!Conflicts::check()) {
-    $GLOBALS[GLOBAL_NS.'_uninstalling'] = true;
-    $GLOBALS[GLOBAL_NS]                 = new Plugin(false);
+    $GLOBALS[GLOBAL_NS] = new Plugin(false);
     $GLOBALS[GLOBAL_NS]->uninstall();
 }

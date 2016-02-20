@@ -11,7 +11,9 @@ if (!defined('WPINC')) {
 }
 require_once dirname(__FILE__).'/stub.php';
 
-if (!Conflicts::check()) {
-    $GLOBALS[GLOBAL_NS] = new Plugin();
-    require_once dirname(__FILE__).'/api.php';
-}
+add_action('plugins_loaded', function() {
+    if (!Conflicts::check()) {
+        $GLOBALS[GLOBAL_NS] = new Plugin();
+        require_once dirname(__FILE__).'/api.php';
+    }
+});
