@@ -1,6 +1,6 @@
 <?php
 /*
-Version: 160221
+Version: 160222
 Text Domain: zencache
 Plugin Name: ZenCache Pro
 Network: true

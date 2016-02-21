@@ -1,4 +1,4 @@
-= v160221 =
+= v160222 =
 
 - **Announcement: ZenCache is changing its name to Comet Cache!** Learn more about this upcoming change [here](https://cometcache.com/r/announcing-comet-cache-formerly-zencache/).
 - **Announcement: This version of ZenCache requires PHP 5.4+.** As announced in the previous release, the minimum PHP version required to run ZenCache / Comet Cache has changed to PHP 5.4+ as of December 1st, 2015. Please see announcement with further details: [New Minimum PHP Version: PHP 5.4](http://zencache.com/r/new-minimum-php-version-php-5-4/)

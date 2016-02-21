@@ -7,7 +7,7 @@ namespace WebSharks\ZenCache\Pro;
  * @type array PHP's language constructs.
  *            Keys are currently unimportant. Subject to change.
  *
- * @since 160221 First documented version.
+ * @since 160222 First documented version.
  */
 $self->php_constructs = [
     'die'             => 'die',
