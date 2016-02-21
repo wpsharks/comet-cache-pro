@@ -9,7 +9,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @since 16xxxx First documented version.
  */
-$self->php_constructs = array(
+$self->php_constructs = [
     'die'             => 'die',
     'echo'            => 'echo',
     'empty'           => 'empty',
@@ -25,7 +25,7 @@ $self->php_constructs = array(
     'print'           => 'print',
     'unset'           => 'unset',
     '__halt_compiler' => '__halt_compiler',
-);
+];
 
 /*
  * Is AdvancedCache class?
