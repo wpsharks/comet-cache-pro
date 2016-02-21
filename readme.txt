@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Contributors: WebSharks, JasWSInc, raamdev, renzms, KristineDS, sitegeek
 Donate link: http://websharks-inc.com/r/wp-theme-plugin-donation/
-Tags: cache, speed, performance, fast, caching, advanced cache, wp cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
+Tags: cache, speed, performance, fast, caching, advanced cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
 
 Comet Cache is an advanced WordPress caching plugin inspired by simplicity. Speed up your site (BIG time!) with an intelligent and easy-to-use cache.
 
