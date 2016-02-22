@@ -32,3 +32,7 @@ unset(${__FILE__}); // Housekeeping.
 // Fixes PHP Fatal error with upgrades from v160211
 class_alias(__NAMESPACE__.'\\AdvCacheBackCompat', 'WebSharks\\Comet_Cache\\AdvCacheBackCompat');
 class_alias(__NAMESPACE__.'\\AdvancedCache', 'WebSharks\\Comet_Cache\\AdvancedCache');
+/*[pro strip-from="lite"]*/
+class_alias(__NAMESPACE__.'\\AdvCacheBackCompat', 'WebSharks\\Comet_Cache\\Pro\\AdvCacheBackCompat');
+class_alias(__NAMESPACE__.'\\AdvancedCache', 'WebSharks\\Comet_Cache\\Pro\\AdvancedCache');
+/*[/pro]*/
