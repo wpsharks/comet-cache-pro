@@ -278,7 +278,7 @@ if (!defined('ZENCACHE_HTMLC_URI_EXCLUSIONS')) {
 /**
  * URI exclusions for the HTML compressor.
  *
- * @since 16xxxx First documented version.
+ * @since 160222 First documented version.
  *
  * @var string A regular expression; else an empty string.
  */
