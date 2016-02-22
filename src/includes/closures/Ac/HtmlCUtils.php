@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Runs HTML Compressor (if applicable).
@@ -17,7 +17,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     if (!$self->content_url) {
         return $cache; // Not possible.
     }
-    if (!ZENCACHE_HTMLC_ENABLE) {
+    if (!COMET_CACHE_HTMLC_ENABLE) {
         return $cache; // Nothing to do here.
     }
     // Deals with multisite base & sub-directory installs.
@@ -27,13 +27,13 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
 
     $host_base_dir_tokens = $self->hostBaseDirTokens(true); // Dashify this.
 
-    $cache_dir_public     = ZENCACHE_HTMLC_CACHE_DIR_PUBLIC.rtrim($host_base_dir_tokens, '/');
+    $cache_dir_public     = COMET_CACHE_HTMLC_CACHE_DIR_PUBLIC.rtrim($host_base_dir_tokens, '/');
     $cache_dir_url_public = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_public);
 
-    $cache_dir_private     = ZENCACHE_HTMLC_CACHE_DIR_PRIVATE.rtrim($host_base_dir_tokens, '/');
+    $cache_dir_private     = COMET_CACHE_HTMLC_CACHE_DIR_PRIVATE.rtrim($host_base_dir_tokens, '/');
     $cache_dir_url_private = $self->content_url.str_replace(WP_CONTENT_DIR, '', $cache_dir_private);
 
-    $benchmark     = ZENCACHE_DEBUGGING_ENABLE >= 2 ? 'details' : ZENCACHE_DEBUGGING_ENABLE;
+    $benchmark     = COMET_CACHE_DEBUGGING_ENABLE >= 2 ? 'details' : COMET_CACHE_DEBUGGING_ENABLE;
     $product_title = sprintf(__('%1$s HTML Compressor', SLUG_TD), NAME);
 
     $html_compressor_options = array(
@@ -46,27 +46,27 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
         'cache_dir_private'     => $cache_dir_private,
         'cache_dir_url_private' => $cache_dir_url_private,
 
-        'regex_css_exclusions' => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
-        'regex_js_exclusions'  => ZENCACHE_HTMLC_JS_EXCLUSIONS,
-        'regex_uri_exclusions'  => ZENCACHE_HTMLC_URI_EXCLUSIONS,
+        'regex_css_exclusions' => COMET_CACHE_HTMLC_CSS_EXCLUSIONS,
+        'regex_js_exclusions'  => COMET_CACHE_HTMLC_JS_EXCLUSIONS,
+        'regex_uri_exclusions'  => COMET_CACHE_HTMLC_URI_EXCLUSIONS,
 
-        'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
+        'cache_expiration_time' => COMET_CACHE_HTMLC_CACHE_EXPIRATION_TIME,
 
-        'compress_combine_head_body_css' => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
-        'compress_combine_head_js'       => ZENCACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
-        'compress_combine_footer_js'     => ZENCACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS,
-        'compress_combine_remote_css_js' => ZENCACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS,
-        'compress_inline_js_code'        => ZENCACHE_HTMLC_COMPRESS_INLINE_JS_CODE,
-        'compress_css_code'              => ZENCACHE_HTMLC_COMPRESS_CSS_CODE,
-        'compress_js_code'               => ZENCACHE_HTMLC_COMPRESS_JS_CODE,
-        'compress_html_code'             => ZENCACHE_HTMLC_COMPRESS_HTML_CODE,
+        'compress_combine_head_body_css' => COMET_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS,
+        'compress_combine_head_js'       => COMET_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS,
+        'compress_combine_footer_js'     => COMET_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS,
+        'compress_combine_remote_css_js' => COMET_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS,
+        'compress_inline_js_code'        => COMET_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE,
+        'compress_css_code'              => COMET_CACHE_HTMLC_COMPRESS_CSS_CODE,
+        'compress_js_code'               => COMET_CACHE_HTMLC_COMPRESS_JS_CODE,
+        'compress_html_code'             => COMET_CACHE_HTMLC_COMPRESS_HTML_CODE,
     );
     try {
         $html_compressor  = new \WebSharks\HtmlCompressor\Core($html_compressor_options);
         $compressed_cache = $html_compressor->compress($cache);
     } catch (\Exception $exception) {
         $compressed_cache = $cache; // Fail softly.
-        if (ZENCACHE_DEBUGGING_ENABLE >= 2) { // Leave a note in the source code?
+        if (COMET_CACHE_DEBUGGING_ENABLE >= 2) { // Leave a note in the source code?
             $compressed_cache .= "\n".'<!-- '.htmlspecialchars($product_title.' '.sprintf(__('Failure: %1$s', SLUG_TD), $exception->getMessage())).' -->';
         }
     }

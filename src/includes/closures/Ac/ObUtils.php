@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Calculated protocol; one of `http://` or `https://`.
@@ -96,7 +96,7 @@ $self->cache_max_age = 0;
  *
  * @since 150422 Rewrite.
  *
- * @note This is a vital part of ZenCache. This method serves existing (fresh) cache files.
+ * @note This is a vital part of Comet Cache. This method serves existing (fresh) cache files.
  *    It is also responsible for beginning the process of collecting the output buffer.
  */
 $self->maybeStartOutputBuffering = function () use ($self) {
@@ -109,11 +109,11 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (empty($_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_REQUEST_URI);
     }
-    if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
-        return $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT);
+    if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
+        return $self->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
     }
-    if (isset($_SERVER['ZENCACHE_ALLOWED']) && !$_SERVER['ZENCACHE_ALLOWED']) {
-        return $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_SERVER_VAR);
+    if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
+        return $self->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
     }
     if (defined('DONOTCACHEPAGE')) {
         return $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
@@ -132,7 +132,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
             return $self->maybeSetDebugInfo(NC_DEBUG_SELF_SERVE_REQUEST);
         }
     }
-    if (!ZENCACHE_FEEDS_ENABLE && $self->isFeed()) {
+    if (!COMET_CACHE_FEEDS_ENABLE && $self->isFeed()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_FEED_REQUEST);
     }
     if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/i', $_SERVER['REQUEST_URI'])) {
@@ -144,30 +144,30 @@ $self->maybeStartOutputBuffering = function () use ($self) {
     if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_MS_FILES);
     }
-    if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
+    if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
-    if (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
+    if (!COMET_CACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         return $self->maybeSetDebugInfo(NC_DEBUG_GET_REQUEST_QUERIES);
     }
     if (!empty($_REQUEST['preview'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_PREVIEW);
     }
-    if (ZENCACHE_EXCLUDE_URIS && preg_match(ZENCACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
+    if (COMET_CACHE_EXCLUDE_URIS && preg_match(COMET_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
         return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_URIS);
     }
-    if (ZENCACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$self->isAutoCacheEngine())) {
-        if (preg_match(ZENCACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
+    if (COMET_CACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$self->isAutoCacheEngine())) {
+        if (preg_match(COMET_CACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_AGENTS);
         }
     }
-    if (ZENCACHE_EXCLUDE_REFS && !empty($_REQUEST['_wp_http_referer'])) {
-        if (preg_match(ZENCACHE_EXCLUDE_REFS, stripslashes($_REQUEST['_wp_http_referer']))) {
+    if (COMET_CACHE_EXCLUDE_REFS && !empty($_REQUEST['_wp_http_referer'])) {
+        if (preg_match(COMET_CACHE_EXCLUDE_REFS, stripslashes($_REQUEST['_wp_http_referer']))) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
         }
     }
-    if (ZENCACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER'])) {
-        if (preg_match(ZENCACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) {
+    if (COMET_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER'])) {
+        if (preg_match(COMET_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) {
             return $self->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
         }
     }
@@ -177,26 +177,26 @@ $self->maybeStartOutputBuffering = function () use ($self) {
 
     $self->version_salt = ''; // Initialize the version salt.
     /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
-    $self->version_salt = ZENCACHE_VERSION_SALT; // Initialize the version salt. /*[/pro]*/
+    $self->version_salt = COMET_CACHE_VERSION_SALT; // Initialize the version salt. /*[/pro]*/
     $self->version_salt = $self->applyFilters(get_class($self).'__version_salt', $self->version_salt);
     $self->version_salt = $self->applyFilters(GLOBAL_NS.'_version_salt', $self->version_salt);
 
     $self->cache_path = $self->buildCachePath($self->protocol.$self->host_token.$_SERVER['REQUEST_URI'], '', $self->version_salt);
-    $self->cache_file = ZENCACHE_DIR.'/'.$self->cache_path; // Not considering a user cache. That's done in the postload phase.
+    $self->cache_file = COMET_CACHE_DIR.'/'.$self->cache_path; // Not considering a user cache. That's done in the postload phase.
 
-    $self->cache_path_404 = $self->buildCachePath($self->protocol.$self->host_token.rtrim($self->host_base_dir_tokens, '/').'/'.ZENCACHE_404_CACHE_FILENAME);
-    $self->cache_file_404 = ZENCACHE_DIR.'/'.$self->cache_path_404; // Not considering a user cache at all here--ever.
+    $self->cache_path_404 = $self->buildCachePath($self->protocol.$self->host_token.rtrim($self->host_base_dir_tokens, '/').'/'.COMET_CACHE_404_CACHE_FILENAME);
+    $self->cache_file_404 = COMET_CACHE_DIR.'/'.$self->cache_path_404; // Not considering a user cache at all here--ever.
 
     $self->salt_location = ltrim($self->version_salt.' '.$self->protocol.$self->host_token.$_SERVER['REQUEST_URI']);
 
-    $self->cache_max_age = strtotime('-'.ZENCACHE_MAX_AGE);
+    $self->cache_max_age = strtotime('-'.COMET_CACHE_MAX_AGE);
     /*[pro strip-from="lite"]*/ // Pro version allows for load average checks.
-    if (ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE && ($load_averages = $self->sysLoadAverages())) {
-        if (max($load_averages) >= ZENCACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE) {
+    if (COMET_CACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE && ($load_averages = $self->sysLoadAverages())) {
+        if (max($load_averages) >= COMET_CACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE) {
             $self->cache_max_age = 0; // No expiration time.
         }
     } /*[/pro]*/
-    if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
+    if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN === 'postload' && $self->isLikeUserLoggedIn()) {
         $self->postload['when_logged_in'] = true; // Enable postload check.
     } elseif (is_file($self->cache_file) && (!$self->cache_max_age || filemtime($self->cache_file) >= $self->cache_max_age)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
@@ -209,7 +209,7 @@ $self->maybeStartOutputBuffering = function () use ($self) {
         }
         unset($_header); // Just a little housekeeping.
 
-        if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
+        if (COMET_CACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
             $total_time = number_format(microtime(true) - $self->timer, 5, '.', '');
             $cache .= "\n".'<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->';
             // translators: This string is actually NOT translatable because the `__()` function is not available at this point in the processing.
@@ -243,7 +243,7 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     if (!($phase & PHP_OUTPUT_HANDLER_END)) {
         throw new \Exception(sprintf(__('Unexpected OB phase: `%1$s`.', SLUG_TD), $phase));
     }
-    AdvCacheBackCompat::quickCacheConstants();
+    AdvCacheBackCompat::zenCacheConstants();
 
     $cache = trim((string) $buffer);
 
@@ -253,11 +253,11 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     if (!isset($GLOBALS[GLOBAL_NS.'_shutdown_flag'])) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_EARLY_BUFFER_TERMINATION);
     }
-    if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
-        return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_CONSTANT);
+    if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
+        return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
     }
-    if (isset($_SERVER['ZENCACHE_ALLOWED']) && !$_SERVER['ZENCACHE_ALLOWED']) {
-        return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_ZENCACHE_ALLOWED_SERVER_VAR);
+    if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
+        return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
     }
     if (defined('DONOTCACHEPAGE')) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
@@ -265,22 +265,22 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     if (isset($_SERVER['DONOTCACHEPAGE'])) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
     }
-    if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->is_user_logged_in) {
+    if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $self->is_user_logged_in) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER);
     }
-    if ((!IS_PRO || !ZENCACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
+    if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $self->isLikeUserLoggedIn()) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
     }
-    if (!ZENCACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
-        if (IS_PRO && ZENCACHE_WHEN_LOGGED_IN && $self->isLikeUserLoggedIn()) {
-            if (!ZENCACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN) {
+    if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
+        if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $self->isLikeUserLoggedIn()) {
+            if (!COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN) {
                 return (boolean)$self->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
             }
         } else { // Use the default debug notice for nonce conflicts.
             return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_PAGE_CONTAINS_NONCE);
         } // An nonce makes the page dynamic; i.e., NOT cache compatible.
     }
-    if ($self->is_404 && !ZENCACHE_CACHE_404_REQUESTS) {
+    if ($self->is_404 && !COMET_CACHE_CACHE_404_REQUESTS) {
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_404_REQUEST);
     }
     if (stripos($cache, '<body id="error-page">') !== false) {
@@ -314,8 +314,8 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
 
     # Cache directory checks. The cache file directory is created here if necessary.
 
-    if (!is_dir(ZENCACHE_DIR) && mkdir(ZENCACHE_DIR, 0775, true) && !is_file(ZENCACHE_DIR.'/.htaccess')) {
-        file_put_contents(ZENCACHE_DIR.'/.htaccess', $self->htaccess_deny);
+    if (!is_dir(COMET_CACHE_DIR) && mkdir(COMET_CACHE_DIR, 0775, true) && !is_file(COMET_CACHE_DIR.'/.htaccess')) {
+        file_put_contents(COMET_CACHE_DIR.'/.htaccess', $self->htaccess_deny);
     }
     if (!is_dir($cache_file_dir = dirname($self->cache_file))) {
         $cache_file_dir_writable = mkdir($cache_file_dir, 0775, true);
@@ -327,7 +327,7 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
 
     if ($self->is_404 && is_file($self->cache_file_404)) {
         if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
-            throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
+            throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, COMET_CACHE_DIR));
         }
         $self->cacheUnlock($cache_lock); // Release.
         return (boolean) $self->maybeSetDebugInfo(NC_DEBUG_1ST_TIME_404_SYMLINK);
@@ -338,16 +338,16 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
     $cache = $self->maybeCompressHtml($cache); // Possible HTML compression.
     /*[/pro]*/
 
-    if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
+    if (COMET_CACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
         $total_time = number_format(microtime(true) - $self->timer, 5, '.', ''); // Based on the original timer.
         $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file path: %2$s', SLUG_TD), NAME, str_replace(WP_CONTENT_DIR, '', $self->is_404 ? $self->cache_file_404 : $self->cache_file))).' -->';
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, (IS_PRO && ZENCACHE_WHEN_LOGGED_IN && $self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
-        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', SLUG_TD), NAME, date('M jS, Y @ g:i a T', strtotime('+'.ZENCACHE_MAX_AGE)))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->is_404 ? '404 [error document]' : $self->salt_location, (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $self->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $self->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+        $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', SLUG_TD), NAME, date('M jS, Y @ g:i a T', strtotime('+'.COMET_CACHE_MAX_AGE)))).' -->';
     }
     if ($self->is_404) {
         if (file_put_contents($cache_file_tmp, serialize($self->cacheableHeadersList()).'<!--headers-->'.$cache) && rename($cache_file_tmp, $self->cache_file_404)) {
             if (!(symlink($self->cache_file_404, $cache_file_tmp) && rename($cache_file_tmp, $self->cache_file))) {
-                throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, ZENCACHE_DIR));
+                throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $self->cache_file, $self->cache_file_404, COMET_CACHE_DIR));
             }
             $self->cacheUnlock($cache_lock); // Release.
             return $cache; // Return the newly built cache; with possible debug information also.
@@ -357,5 +357,5 @@ $self->outputBufferCallbackHandler = function ($buffer, $phase) use ($self) {
         return $cache; // Return the newly built cache; with possible debug information also.
     }
     @unlink($cache_file_tmp); // Clean this up (if it exists); and throw an exception with information for the site owner.
-    throw new \Exception(sprintf(__('%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), NAME, $_SERVER['REQUEST_URI'], ZENCACHE_DIR));
+    throw new \Exception(sprintf(__('%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), NAME, $_SERVER['REQUEST_URI'], COMET_CACHE_DIR));
 };

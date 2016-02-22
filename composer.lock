@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cb2449327349cfd3da0dbf9b2b719428",
-    "content-hash": "520fb390abc3c6924ea3284455aca3db",
+    "hash": "7fc065cedc62d40b9027e5364f59e234",
+    "content-hash": "9cc90972794811fc1c7d903c48a099e3",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -342,7 +342,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3"
+        "php": ">=5.4"
     },
     "platform-dev": []
 }
