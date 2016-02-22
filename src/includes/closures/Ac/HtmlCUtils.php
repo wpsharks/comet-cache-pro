@@ -48,6 +48,7 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
 
         'regex_css_exclusions' => ZENCACHE_HTMLC_CSS_EXCLUSIONS,
         'regex_js_exclusions'  => ZENCACHE_HTMLC_JS_EXCLUSIONS,
+        'regex_uri_exclusions'  => ZENCACHE_HTMLC_URI_EXCLUSIONS,
 
         'cache_expiration_time' => ZENCACHE_HTMLC_CACHE_EXPIRATION_TIME,
 

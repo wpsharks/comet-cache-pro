@@ -29,9 +29,29 @@ class MenuPageStats extends MenuPage
                  '</button>'."\n";
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
-        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
-        echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
+        if (current_user_can($this->plugin->cap)) {
+            echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="si si-cogs"></i> '.__('Options', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
+            echo '  <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
+        }
         echo '   </div>'."\n";
+        echo '  <div class="plugin-menu-page-support-links">'."\n";
+        if (IS_PRO) {
+            echo '  <a href="'.esc_attr('http://zencache.com/support/').'" target="_blank"><i class="si si-life-bouy"></i> '.__('Support', SLUG_TD).'</a>'."\n";
+        }
+        if (!IS_PRO) {
+            echo '  <a href="'.esc_attr('https://wordpress.org/support/plugin/zencache').'" target="_blank"><i class="si si-comment"></i> '.__('Community Forum', SLUG_TD).'</a>'."\n";
+        }
+        echo '      <a href="'.esc_attr('http://zencache.com/kb/').'" target="_blank"><i class="si si-book"></i> '.__('Knowledge Base', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('http://zencache.com/blog/').'" target="_blank"><i class="si si-rss-square"></i> '.__('Blog', SLUG_TD).'</a>'."\n";
+        echo '   </div>'."\n";
+
+        if (!IS_PRO) { // We show these with the Options link above in the Pro version
+            echo '   <div class="plugin-menu-page-mailing-list-links">'."\n";
+            echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
+            echo '      <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
+            echo '   </div>'."\n";
+        }
 
         if (IS_PRO) {
             echo '<div class="plugin-menu-page-version">'."\n";
@@ -45,7 +65,7 @@ class MenuPageStats extends MenuPage
             echo '</div>'."\n";
         }
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/stats.png').'" alt="'.esc_attr(__('Statistics', SLUG_TD)).'" />'."\n";
-
+        echo '<div style="clear:both;"></div>'."\n";
         echo '</div>'."\n";
 
         /* ----------------------------------------------------------------------------------------- */

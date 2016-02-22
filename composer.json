@@ -31,8 +31,8 @@
   "require": {
     "php": ">=5.3",
     "websharks/wp-php-rv": "150511",
-    "websharks/html-compressor": "150923",
-    "websharks/sharkicons": "150820"
+    "websharks/html-compressor": "160118",
+    "websharks/sharkicons": "160221"
   },
   "require-dev": {
     "package/bourbon": "4.2.3",
