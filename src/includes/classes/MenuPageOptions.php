@@ -102,8 +102,6 @@ class MenuPageOptions extends MenuPage
 
         echo '</div>'."\n";
 
-        echo '<div class="plugin-menu-page-notice warning"><p>'.sprintf(__('<strong>Important %1$s Announcement:</strong> %1$s is changing its name to <a href="https://cometcache.com/r/announcing-comet-cache-formerly-zencache/" target="_blank"><strong>Comet Cache</a></strong>! Learn more about this upcoming change <a href="https://cometcache.com/r/announcing-comet-cache-formerly-zencache/" target="_blank">here</a>.', SLUG_TD), esc_html(NAME)).'</p></div>'."\n";
-
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<hr />'."\n";

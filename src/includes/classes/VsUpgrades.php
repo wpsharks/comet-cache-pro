@@ -158,7 +158,7 @@ class VsUpgrades extends AbsBase
      *
      * If so, we need to uninstall and deactivate ZenCache.
      *
-     * @since 16xxxx Rebranding.
+     * @since 160223 Rebranding.
      */
     protected function fromZenCache()
     {

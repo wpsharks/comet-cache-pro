@@ -36,11 +36,6 @@ $self->activate = function () use ($self) {
  * @attaches-to `admin_init` hook.
  */
 $self->checkVersion = function () use ($self) {
-    if (!$self->options['comet_cache_notice1_enqueued']) {
-        $self->enqueueMainNotice(sprintf(__('<strong>Important %1$s Announcement:</strong> %1$s is changing its name to <a href="https://cometcache.com/r/announcing-comet-cache-formerly-zencache/" target="_blank"><strong>Comet Cache</a></strong>! Learn more about this upcoming change <a href="https://cometcache.com/r/announcing-comet-cache-formerly-zencache/" target="_blank">here</a>.', SLUG_TD), esc_html(NAME)), array('push_to_top' => true, 'class'=>'notice notice-warning', 'persistent_key'=>'comet_cache_notice1'));
-        $self->updateOptions(array('comet_cache_notice1_enqueued' => '1'));
-    } // This notice MUST go above the version check to show up on new installs.
-
     $prev_version = $self->options['version'];
     if (version_compare($prev_version, VERSION, '>=')) {
         return; // Nothing to do; up-to-date.
