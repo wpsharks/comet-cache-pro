@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Get the current visitor's real IP address.

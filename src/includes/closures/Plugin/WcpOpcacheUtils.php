@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Wipe (i.e., reset) OPCache.

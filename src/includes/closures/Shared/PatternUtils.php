@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Convert line-delimited patterns to a regex.

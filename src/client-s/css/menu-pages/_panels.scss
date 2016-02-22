@@ -18,6 +18,7 @@
     display:                  block;
     cursor:                   pointer;
     background:               $panel-heading-bg-color;
+    background:               linear-gradient(to right, $panel-heading-bg-color , $panel-heading-bg-color-fade);
     color:                    $panel-heading-color !important;
     box-shadow:               0 2px 2px 0 $panel-heading-box-shadow-color;
 

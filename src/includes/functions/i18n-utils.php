@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /**
  * Polyfill for {@link \__()}.

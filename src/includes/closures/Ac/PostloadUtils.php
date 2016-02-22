@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Have we caught the main WP loaded being loaded yet?
@@ -92,7 +92,7 @@ $self->postload = array(
     /*[/pro]*/
     'filter_status_header' => true,
     'wp_main_query'        => true,
-    'set_debug_info'       => ZENCACHE_DEBUGGING_ENABLE,
+    'set_debug_info'       => COMET_CACHE_DEBUGGING_ENABLE,
 );
 
 /*[pro strip-from="lite"]*/
@@ -113,7 +113,7 @@ $self->user_token = '';
  * @since 150422 Rewrite.
  */
 $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
-    if (ZENCACHE_WHEN_LOGGED_IN !== 'postload') {
+    if (COMET_CACHE_WHEN_LOGGED_IN !== 'postload') {
         return; // Nothing to do in this case.
     }
     if (is_admin()) {
@@ -127,7 +127,7 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
     }
     if ($self->isPostPutDeleteRequest() || $self->isUncacheableRequestMethod()) {
         $self->postload['invalidate_when_logged_in'] = true;
-    } elseif (!ZENCACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
+    } elseif (!COMET_CACHE_GET_REQUESTS && $self->requestContainsUncacheableQueryVars()) {
         $self->postload['invalidate_when_logged_in'] = true;
     }
 };
@@ -140,7 +140,7 @@ $self->maybePostloadInvalidateWhenLoggedIn = function () use ($self) {
  * @since 150422 Rewrite.
  */
 $self->maybeInvalidateWhenLoggedInPostload = function () use ($self) {
-    if (ZENCACHE_WHEN_LOGGED_IN !== 'postload') {
+    if (COMET_CACHE_WHEN_LOGGED_IN !== 'postload') {
         return; // Nothing to do in this case.
     }
     if (empty($self->postload['invalidate_when_logged_in'])) {
@@ -162,7 +162,7 @@ $self->maybeInvalidateWhenLoggedInPostload = function () use ($self) {
  * @since 150422 Rewrite.
  */
 $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
-    if (ZENCACHE_WHEN_LOGGED_IN !== 'postload') {
+    if (COMET_CACHE_WHEN_LOGGED_IN !== 'postload') {
         return; // Nothing to do in this case.
     }
     if (empty($self->postload['when_logged_in'])) {
@@ -174,7 +174,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
         }
     }
     $self->cache_path = $self->buildCachePath($self->protocol.$self->host_token.$_SERVER['REQUEST_URI'], $self->user_token, $self->version_salt);
-    $self->cache_file = ZENCACHE_DIR.'/'.$self->cache_path; // Now considering a user token.
+    $self->cache_file = COMET_CACHE_DIR.'/'.$self->cache_path; // Now considering a user token.
 
     if (is_file($self->cache_file) && (!$self->cache_max_age || filemtime($self->cache_file) >= $self->cache_max_age)) {
         list($headers, $cache) = explode('<!--headers-->', file_get_contents($self->cache_file), 2);
@@ -187,7 +187,7 @@ $self->maybeStartObWhenLoggedInPostload = function () use ($self) {
         }
         unset($_header); // Just a little housekeeping.
 
-        if (ZENCACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
+        if (COMET_CACHE_DEBUGGING_ENABLE && $self->isHtmlXmlDoc($cache)) {
             $total_time = number_format(microtime(true) - $self->timer, 5, '.', '');
             $cache .= "\n".'<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->';
             $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s fully functional :-) Cache file served for (%2$s; user token: %3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $self->salt_location, $self->user_token, $total_time, date('M jS, Y @ g:i a T'))).' -->';
@@ -230,7 +230,7 @@ $self->maybeFilterStatusHeaderPostload = function () use ($self) {
  * @since 150422 Rewrite.
  */
 $self->maybeSetDebugInfoPostload = function () use ($self) {
-    if (!ZENCACHE_DEBUGGING_ENABLE) {
+    if (!COMET_CACHE_DEBUGGING_ENABLE) {
         return; // Nothing to do.
     }
     if (empty($self->postload['set_debug_info'])) {
@@ -246,10 +246,10 @@ $self->maybeSetDebugInfoPostload = function () use ($self) {
 };
 
 /*
- * Grab details from WP and the ZenCache plugin itself,
+ * Grab details from WP and the Comet Cache plugin itself,
  *    after the main query is loaded (if at all possible).
  *
- * This is where we have a chance to grab any values we need from WordPress; or from the QC plugin.
+ * This is where we have a chance to grab any values we need from WordPress; or from the CC plugin.
  *    It is EXTREMEMLY important that we NOT attempt to grab any object references here.
  *    Anything acquired in this phase should be stored as a scalar value.
  *    See {@link outputBufferCallbackHandler()} for further details.
