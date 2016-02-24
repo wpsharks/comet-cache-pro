@@ -786,7 +786,7 @@ class MenuPageOptions extends MenuPage
             echo '         <hr />'."\n";
 
             echo '         <h3>'.__('Auto-Cache User-Agent String', SLUG_TD).'</h3>'."\n";
-            echo '         <table style="width:100%;"><tr><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_user_agent]" value="'.esc_attr($this->plugin->options['auto_cache_user_agent']).'" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;">; '.esc_html(SLUG_TD.' '.VERSION).'</td></tr></table>'."\n";
+            echo '         <table style="width:100%;"><tr><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][auto_cache_user_agent]" value="'.esc_attr($this->plugin->options['auto_cache_user_agent']).'" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;">; '.esc_html(GLOBAL_NS.' '.VERSION).'</td></tr></table>'."\n";
             echo '         <p class="info" style="display:block;">'.__('This is how the Auto-Cache Engine identifies itself when connecting to URLs. See <a href="http://en.wikipedia.org/wiki/User_agent" target="_blank">User Agent</a> in the Wikipedia.', SLUG_TD).'</p>'."\n";
             echo '      </div>'."\n";
             echo '   </div>'."\n";
