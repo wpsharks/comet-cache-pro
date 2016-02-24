@@ -47,6 +47,9 @@ $self->cacheLock = function () use ($self) {
     if (!($resource = fopen($mutex, 'wb')) || !flock($resource, LOCK_EX)) {
         throw new \Exception(__('Unable to obtain an exclusive lock.', SLUG_TD));
     }
+
+    @chmod($mutex, 0666); // See https://git.io/v2WAt
+
     return array('type' => 'flock', 'resource' => $resource);
 };
 
