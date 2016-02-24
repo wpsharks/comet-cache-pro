@@ -51,17 +51,17 @@ class AdvCacheBackCompat
             if (stripos($_constant, 'ZENCACHE_') !== 0) {
                 continue; // Nothing to do here.
             }
-            if (!($_constant_sub_name = substr($_constant, 12))) {
+            if (!($_constant_sub_name = substr($_constant, 9))) {
                 continue; // Nothing to do here.
             }
-            if (!defined(GLOBAL_NS.'_'.$_constant_sub_name)) {
-                define(GLOBAL_NS.'_'.$_constant_sub_name, $_value);
+            if (!defined(strtoupper(GLOBAL_NS).'_'.$_constant_sub_name)) {
+                define(strtoupper(GLOBAL_NS).'_'.$_constant_sub_name, $_value);
             }
         }
         unset($_constant, $_value); // Housekeeping.
 
-        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !isset($_SERVER[GLOBAL_NS.'_ALLOWED'])) {
-            $_SERVER[GLOBAL_NS.'_ALLOWED'] = $_SERVER['ZENCACHE_ALLOWED'];
+        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !isset($_SERVER[strtoupper(GLOBAL_NS).'_ALLOWED'])) {
+            $_SERVER[strtoupper(GLOBAL_NS).'_ALLOWED'] = $_SERVER['ZENCACHE_ALLOWED'];
         }
     }
 }
