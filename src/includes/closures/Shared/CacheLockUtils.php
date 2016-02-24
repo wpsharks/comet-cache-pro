@@ -44,7 +44,7 @@ $self->cacheLock = function () use ($self) {
     $inode_key = fileinode($wp_config_file);
     $mutex     = $tmp_dir.'/'.SLUG_TD.'-'.$inode_key.'.lock';
 
-    if (!($resource = fopen($mutex, 'w')) || !flock($resource, LOCK_EX)) {
+    if (!($resource = fopen($mutex, 'wb')) || !flock($resource, LOCK_EX)) {
         throw new \Exception(__('Unable to obtain an exclusive lock.', SLUG_TD));
     }
     return array('type' => 'flock', 'resource' => $resource);
