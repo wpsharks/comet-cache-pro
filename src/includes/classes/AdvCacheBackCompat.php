@@ -44,7 +44,7 @@ class AdvCacheBackCompat
      */
     public static function zenCacheConstants()
     {
-        $_upper_global_ns = strtoupper(GLOBAL_NS);
+        $_global_ns = strtoupper(GLOBAL_NS);
 
         if (!($constants = get_defined_constants(true)) || empty($constants['user'])) {
             return; // Nothing to do; i.e. no user-defined constants.
@@ -56,14 +56,14 @@ class AdvCacheBackCompat
             if (!($_constant_sub_name = substr($_constant, 9))) {
                 continue; // Nothing to do here.
             }
-            if (!defined($_upper_global_ns.'_'.$_constant_sub_name)) {
-                define($_upper_global_ns.'_'.$_constant_sub_name, $_value);
+            if (!defined($_global_ns.'_'.$_constant_sub_name)) {
+                define($_global_ns.'_'.$_constant_sub_name, $_value);
             }
         }
-        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !isset($_SERVER[$_upper_global_ns.'_ALLOWED'])) {
-            $_SERVER[$_upper_global_ns.'_ALLOWED'] = $_SERVER['ZENCACHE_ALLOWED'];
+        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !isset($_SERVER[$_global_ns.'_ALLOWED'])) {
+            $_SERVER[$_global_ns.'_ALLOWED'] = $_SERVER['ZENCACHE_ALLOWED'];
         }
 
-        unset($_constant, $_value, $_upper_global_ns); // Housekeeping.
+        unset($_constant, $_value, $_global_ns); // Housekeeping.
     }
 }
