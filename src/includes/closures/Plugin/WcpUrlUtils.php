@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
 * Automatically clears cache files for a list of custom URLs.
@@ -31,7 +31,7 @@ $self->autoClearUrlsCache = function () use ($self) {
     if (!is_dir($cache_dir = $self->cacheDir())) {
         return $counter; // Nothing to do.
     }
-    foreach (preg_split('/['."\r\n".']+/', $self->options['cache_clear_urls'], null, PREG_SPLIT_NO_EMPTY) as $_url) {
+    foreach (preg_split('/['."\r\n".']+/', $self->options['cache_clear_urls'], -1, PREG_SPLIT_NO_EMPTY) as $_url) {
         if (stripos($_url, 'http') === 0) {
             $_regex = $self->buildCachePathRegexFromWcUrl($_url);
             $counter += $self->deleteFilesFromCacheDir($_regex);

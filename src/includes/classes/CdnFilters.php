@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /**
  * CDN Filters.
@@ -158,7 +158,7 @@ class CdnFilters extends AbsBase
             $cdn_whitelisted_extensions = implode('|', static::defaultWhitelistedExtensions());
         }
         $this->cdn_whitelisted_extensions = trim(strtolower($cdn_whitelisted_extensions), "\r\n\t\0\x0B".' |;,');
-        $this->cdn_whitelisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_whitelisted_extensions, null, PREG_SPLIT_NO_EMPTY);
+        $this->cdn_whitelisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_whitelisted_extensions, -1, PREG_SPLIT_NO_EMPTY);
         $this->cdn_whitelisted_extensions = array_unique($this->cdn_whitelisted_extensions);
 
         // Blacklisted extensions; if applicable.
@@ -166,7 +166,7 @@ class CdnFilters extends AbsBase
         $cdn_blacklisted_extensions = $this->plugin->options['cdn_blacklisted_extensions'];
 
         $this->cdn_blacklisted_extensions   = trim(strtolower($cdn_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
-        $this->cdn_blacklisted_extensions   = preg_split('/[|;,\s]+/', $this->cdn_blacklisted_extensions, null, PREG_SPLIT_NO_EMPTY);
+        $this->cdn_blacklisted_extensions   = preg_split('/[|;,\s]+/', $this->cdn_blacklisted_extensions, -1, PREG_SPLIT_NO_EMPTY);
         $this->cdn_blacklisted_extensions[] = 'php'; // Always exclude.
 
         $this->cdn_blacklisted_extensions = array_unique($this->cdn_blacklisted_extensions);
@@ -216,10 +216,10 @@ class CdnFilters extends AbsBase
         if (is_admin()) {
             return; // Not applicable.
         }
-        if (defined('ZENCACHE_ALLOWED') && !ZENCACHE_ALLOWED) {
+        if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
             return; // Disable in this case.
         }
-        if (isset($_SERVER['ZENCACHE_ALLOWED']) && !$_SERVER['ZENCACHE_ALLOWED']) {
+        if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
             return; // Disable in this case.
         }
         if (defined('DONOTCACHEPAGE')) {

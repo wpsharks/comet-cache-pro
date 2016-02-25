@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\ZenCache\Pro;
+namespace WebSharks\CometCache\Pro;
 
 /*
  * Pings our stats log w/ anonymous details.
@@ -9,7 +9,7 @@ namespace WebSharks\ZenCache\Pro;
  *
  * @attaches-to `admin_init` hook.
  *
- * @see https://zencache.com/?p=1458
+ * @see https://cometcache.com/?p=2426
  */
 $self->statsLogPinger = function () use ($self) {
     if (!$self->applyWpFilters(GLOBAL_NS.'_statsLogPinger_enable', IS_PRO)) {
@@ -21,8 +21,8 @@ $self->statsLogPinger = function () use ($self) {
     $self->updateOptions(array('last_pro_stats_log' => time()));
 
     $wpdb               = $self->wpdb(); // WordPress DB.
-    $stats_api_url      = 'https://www.websharks-inc.com/products/stats-log.php';
-    $stats_api_url_args = array( // See: <https://zencache.com/?p=1458>
+    $stats_api_url      = 'https://stats.wpsharks.io/log';
+    $stats_api_url_args = array( // See: <https://cometcache.com/?p=2426>
         'os'              => PHP_OS,
         'php_version'     => PHP_VERSION,
         'mysql_version'   => $wpdb->db_version(),
