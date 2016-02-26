@@ -349,7 +349,7 @@ class Plugin extends AbsBaseAp
             'htmlc_compress_css_code'              => '1', // `0|1`.
             'htmlc_compress_js_code'               => '1', // `0|1`.
             'htmlc_compress_html_code'             => '1', // `0|1`.
-            'htmlc_when_logged_in' => '0', // `0|1`; enable when logged in?
+            'htmlc_when_logged_in'                 => '0', // `0|1`; enable when logged in?
 
             /* Related to auto-cache engine. */
 
