@@ -23,6 +23,8 @@ $self->cachePathRegexSuffixFrag = function ($regex_suffix_frag = CACHE_PATH_REGE
 * @since 151220 Enhancing translation support.
 *
 * @return string Default cache-path suffix frag (regex).
+*
+* @TODO Use conditional to detect the AMP plugin (e.g., `isAmpInstalled()`) to avoid edge cases with the `|\/amp` regex here
 */
 $self->cachePathRegexDefaultSuffixFrag = function () use ($self) {
     if ($self->isPlugin() && !empty($GLOBALS['wp_rewrite'])){
