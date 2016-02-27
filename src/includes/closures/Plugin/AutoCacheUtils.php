@@ -30,7 +30,7 @@ $self->autoCache = function () use ($self) {
 /**
  * Check if PHP configuration meets minimum requirements for Auto-Cache Engine and remove old notice if necessary.
  *
- * @since 15xxxx Improving Auto-Cache Engine minimum PHP requirements reporting.
+ * @since 160103 Improving Auto-Cache Engine minimum PHP requirements reporting.
  *
  * @attaches-to `admin_init`
  */
@@ -52,7 +52,7 @@ $self->autoCacheMaybeClearPhpIniError = function () use ($self) {
 /**
  * Check if PHP configuration meets minimum requirements for Auto-Cache Engine and display a notice if necessary.
  *
- * @since 15xxxx Improving Auto-Cache Engine minimum PHP requirements reporting.
+ * @since 160103 Improving Auto-Cache Engine minimum PHP requirements reporting.
  *
  * @return bool `TRUE` if all required PHP configuration is present, else `FALSE`. This also creates a dashboard notice in some cases.
  *
