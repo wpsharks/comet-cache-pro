@@ -157,7 +157,7 @@ class AutoCache extends AbsBase
                 array(
                     'blocking'   => false,
                     'user-agent' => $this->plugin->options['auto_cache_user_agent'].
-                        '; '.SLUG_TD.' '.VERSION,
+                        '; '.GLOBAL_NS.' '.VERSION,
                 )
             )
         );
