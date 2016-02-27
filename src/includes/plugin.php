@@ -12,7 +12,9 @@ if (!defined('WPINC')) {
 require_once dirname(__FILE__).'/stub.php';
 
 if (!Conflicts::check()) {
-    $GLOBALS[GLOBAL_NS] = new Plugin();
+    $GLOBALS[GLOBAL_NS]  = new Plugin();
+    $GLOBALS['zencache'] = $GLOBALS[GLOBAL_NS]; // Back compat.
+
     add_action('plugins_loaded', function() {
         require_once dirname(__FILE__).'/api.php';
     });
