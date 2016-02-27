@@ -20,6 +20,9 @@ $self->maybeCompressHtml = function ($cache) use ($self) {
     if (!COMET_CACHE_HTMLC_ENABLE) {
         return $cache; // Nothing to do here.
     }
+    if ($self->is_user_logged_in && !COMET_CACHE_HTMLC_WHEN_LOGGED_IN) {
+        return $cache; // Nothing to do here.
+    }
     // Deals with multisite base & sub-directory installs.
     // e.g. `htmlc/cache/public/www-example-com` (standard WP installation).
     // e.g. `htmlc/cache/public/[[/base]/child1]/www-example-com` (multisite network).
