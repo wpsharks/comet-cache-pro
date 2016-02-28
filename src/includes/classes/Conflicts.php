@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\CometCache\Pro;
+namespace WebSharks\CometCache\Pro\Classes;
 
 /**
  * Conflicts.

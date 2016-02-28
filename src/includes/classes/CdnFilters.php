@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\CometCache\Pro;
+namespace WebSharks\CometCache\Pro\Classes;
 
 /**
  * CDN Filters.
