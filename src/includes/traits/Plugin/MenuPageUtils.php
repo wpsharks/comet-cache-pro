@@ -180,7 +180,7 @@ trait MenuPageUtils {
      */
     public function menuPageOptions()
     {
-        new MenuPage('options');
+        new Classes\MenuPage('options');
     }
 
     /*[pro strip-from="lite"]*/
@@ -191,7 +191,7 @@ trait MenuPageUtils {
      */
     public function menuPageStats()
     {
-        new MenuPage('stats');
+        new Classes\MenuPage('stats');
     }
     /*[/pro]*/
 
@@ -203,7 +203,7 @@ trait MenuPageUtils {
      */
     public function menuPageProUpdater()
     {
-        new MenuPage('pro-updater');
+        new Classes\MenuPage('pro-updater');
     }
     /*[/pro]*/
 

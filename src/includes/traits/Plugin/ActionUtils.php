@@ -14,7 +14,7 @@ trait ActionUtils {
     public function actions()
     {
         if (!empty($_REQUEST[GLOBAL_NS])) {
-            new Actions();
+            new Classes\Actions();
         }
         /*[pro strip-from="lite"]*/
         if (!empty($_REQUEST[GLOBAL_NS.'_auto_cache_cron'])

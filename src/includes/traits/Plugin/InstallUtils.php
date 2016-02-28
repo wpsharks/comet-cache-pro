@@ -48,7 +48,7 @@ trait InstallUtils {
         }
         $this->updateOptions(['version' => VERSION]);
 
-        new VsUpgrades($prev_version);
+        new Classes\VsUpgrades($prev_version);
 
         if ($this->options['enable']) {
             $this->addWpCacheToWpConfig();

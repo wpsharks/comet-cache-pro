@@ -28,7 +28,7 @@ trait AutoCacheUtils {
         if (!$this->autoCacheCheckPhpIni()) {
             return; // Server does not meet minimum requirements.
         }
-        new AutoCache();
+        new Classes\AutoCache();
     }
 
     /**

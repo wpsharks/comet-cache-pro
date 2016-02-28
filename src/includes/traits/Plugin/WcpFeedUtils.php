@@ -45,7 +45,7 @@ trait WcpFeedUtils {
         if (!is_dir($cache_dir = $this->cacheDir())) {
             return $counter; // Nothing to do.
         }
-        $utils      = new FeedUtils(); // Feed utilities.
+        $utils      = new Classes\FeedUtils(); // Feed utilities.
         $variations = $variation_regex_frags = []; // Initialize.
 
         switch ($type) { // Handle clearing based on the `$type`.
