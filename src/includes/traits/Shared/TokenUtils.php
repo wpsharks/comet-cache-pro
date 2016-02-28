@@ -9,7 +9,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
  *
  * @type bool `TRUE` if expired or invalid.
  */
-$self->user_login_cookie_expired_or_invalid = false;
+public $user_login_cookie_expired_or_invalid = false;
 /*[/pro]*/
 
 /*

@@ -320,4 +320,4 @@ $self->getDirRegexStats = function ($dir, $regex = '', $include_paths = false, $
  *
  * @var string `.htaccess` fules.
  */
-$self->htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";
+public $htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";

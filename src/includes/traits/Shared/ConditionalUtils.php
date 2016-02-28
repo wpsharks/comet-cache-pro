@@ -9,7 +9,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
  *
  * @since 160222 First documented version.
  */
-$self->php_constructs = [
+public $php_constructs = [
     'die'             => 'die',
     'echo'            => 'echo',
     'empty'           => 'empty',

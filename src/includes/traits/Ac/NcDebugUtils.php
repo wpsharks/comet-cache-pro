@@ -8,7 +8,7 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
  *
  * @type array An array of debug info; i.e. `reason_code` and `reason` (optional).
  */
-$self->debug_info = array('reason_code' => '', 'reason' => '');
+public $debug_info = ['reason_code' => '', 'reason' => ''];
 
 /*
  * Used to setup debug info (if enabled).

@@ -203,7 +203,7 @@ $self->menuPageProUpdater = function () use ($self) {
  * @note These must be hard-coded, because they don't become available
  *    in core until `admin_init`; i.e., too late for `admin_menu`.
  */
-$self->wp_admin_icon_colors = array(
+public $wp_admin_icon_colors = [
     'fresh'     => array('base' => '#999999', 'focus' => '#2EA2CC', 'current' => '#FFFFFF'),
     'light'     => array('base' => '#999999', 'focus' => '#CCCCCC', 'current' => '#CCCCCC'),
     'blue'      => array('base' => '#E5F8FF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
@@ -212,7 +212,7 @@ $self->wp_admin_icon_colors = array(
     'ectoplasm' => array('base' => '#ECE6F6', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
     'ocean'     => array('base' => '#F2FCFF', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
     'coffee'    => array('base' => '#F3F2F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'),
-);
+];
 
 /*
  * On a specific menu page?

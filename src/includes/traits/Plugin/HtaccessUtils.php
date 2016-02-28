@@ -8,7 +8,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 *
 * @return string Used in `.htaccess` parsing.
 */
-$self->htaccess_marker = 'WmVuQ2FjaGU';
+public $htaccess_marker = 'WmVuQ2FjaGU';
 
 /*
 * Plugin options that have associated htaccess rules.
@@ -19,7 +19,7 @@ $self->htaccess_marker = 'WmVuQ2FjaGU';
 *
 * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
 */
-$self->options_with_htaccess_rules = array('cdn_enable');
+public $options_with_htaccess_rules = ['cdn_enable'];
 
 /*
  * Add template blocks to `/.htaccess` file.

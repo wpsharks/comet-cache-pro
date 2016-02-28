@@ -10,7 +10,7 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
  *
  * @see wpMainQueryPostload()
  */
-$self->is_wp_loaded_query = false;
+public $is_wp_loaded_query = false;
 
 /*
  * Is the current request a WordPress 404 error?
@@ -21,7 +21,7 @@ $self->is_wp_loaded_query = false;
  *
  * @see wpMainQueryPostload()
  */
-$self->is_404 = false;
+public $is_404 = false;
 
 /*
  * Last HTTP status code passed through {@link \status_header}.
@@ -32,7 +32,7 @@ $self->is_404 = false;
  *
  * @see maybeFilterStatusHeaderPostload()
  */
-$self->http_status = 0;
+public $http_status = 0;
 
 /*
  * Is the current request a WordPress content type?
@@ -43,7 +43,7 @@ $self->http_status = 0;
  *
  * @see wpMainQueryPostload()
  */
-$self->is_a_wp_content_type = false;
+public $is_a_wp_content_type = false;
 
 /*
  * Current WordPress {@link \content_url()}.
@@ -54,7 +54,7 @@ $self->is_a_wp_content_type = false;
  *
  * @see wpMainQueryPostload()
  */
-$self->content_url = '';
+public $content_url = '';
 
 /*
  * Flag for {@link \is_user_loged_in()}.
@@ -65,7 +65,7 @@ $self->content_url = '';
  *
  * @see wpMainQueryPostload()
  */
-$self->is_user_logged_in = false;
+public $is_user_logged_in = false;
 
 /*
  * Flag for {@link \is_maintenance()}.
@@ -76,7 +76,7 @@ $self->is_user_logged_in = false;
  *
  * @see wpMainQueryPostload()
  */
-$self->is_maintenance = false;
+public $is_maintenance = false;
 
 /*
  * Array of data targeted at the postload phase.
@@ -85,7 +85,7 @@ $self->is_maintenance = false;
  *
  * @type array Data and/or flags that work with various postload handlers.
  */
-$self->postload = array(
+public $postload = [
     /*[pro strip-from="lite"]*/
     'invalidate_when_logged_in' => false,
     'when_logged_in'            => false,
@@ -93,7 +93,7 @@ $self->postload = array(
     'filter_status_header' => true,
     'wp_main_query'        => true,
     'set_debug_info'       => COMET_CACHE_DEBUGGING_ENABLE,
-);
+];
 
 /*[pro strip-from="lite"]*/
 /*
@@ -103,7 +103,7 @@ $self->postload = array(
  *
  * @type string|int An MD5 hash token; or a specific WP user ID.
  */
-$self->user_token = '';
+public $user_token = '';
 /*[/pro]*/
 
 /*[pro strip-from="lite"]*/

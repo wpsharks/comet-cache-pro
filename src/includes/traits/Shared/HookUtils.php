@@ -8,7 +8,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
  *
  * @type array An array of hooks.
  */
-$self->hooks = array();
+public $hooks = [];
 
 /*
  * Assigns an ID to each callable attached to a hook/filter.
