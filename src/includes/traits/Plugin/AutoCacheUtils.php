@@ -166,5 +166,5 @@ trait AutoCacheUtils {
 
         return true;
     }
-    /*[/pro]*/
 }
+/*[/pro]*/

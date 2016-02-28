@@ -77,5 +77,5 @@ trait HtmlCUtils {
         }
         return $compressed_cache;
     }
-    /*[/pro]*/
 }
+/*[/pro]*/

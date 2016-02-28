@@ -19,5 +19,5 @@ trait CdnUtils {
         }
         $this->updateOptions(['cdn_invalidation_counter' => ++$this->options['cdn_invalidation_counter']]);
     }
-    /*[/pro]*/
 }
+/*[/pro]*/

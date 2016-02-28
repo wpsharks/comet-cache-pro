@@ -360,5 +360,5 @@ trait AdminBarUtils {
         }
         wp_enqueue_script(GLOBAL_NS.'-admin-bar', $this->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
     }
-    /*[/pro]*/
 }
+/*[/pro]*/
