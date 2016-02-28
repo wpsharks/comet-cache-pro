@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 use WebSharks\CometCache\Pro\Classes;
 
 trait NcDebugUtils {
-    /*
+    /**
      * An array of debug info.
      *
      * @since 150422 Rewrite.
@@ -13,7 +13,7 @@ trait NcDebugUtils {
      */
     public $debug_info = ['reason_code' => '', 'reason' => ''];
 
-    /*
+    /**
      * Used to setup debug info (if enabled).
      *
      * @since 150422 Rewrite.
@@ -33,7 +33,7 @@ trait NcDebugUtils {
         $this->debug_info = ['reason_code' => $reason_code, 'reason' => $reason];
     }
 
-    /*
+    /**
      * Echoes `NC_DEBUG_` info in the WordPress `shutdown` phase (if applicable).
      *
      * @since 150422 Rewrite.
@@ -56,7 +56,7 @@ trait NcDebugUtils {
         }
     }
 
-    /*
+    /**
      * Gets `NC_DEBUG_` info (if applicable).
      *
      * @since 150422 Rewrite.

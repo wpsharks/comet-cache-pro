@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait StatsUtils {
-    /*
+    /**
      * Pings our stats log w/ anonymous details.
      *
      * @since 150716 Adding stats logging.

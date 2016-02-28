@@ -5,7 +5,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait WcpSitemapUtils {
 
-    /*
+    /**
      * Automatically clears cache files related to XML sitemaps.
      *
      * @since 150422 Rewrite.

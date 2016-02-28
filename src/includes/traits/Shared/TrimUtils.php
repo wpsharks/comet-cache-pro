@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait TrimUtils {
-    /*
+    /**
      * Trims strings deeply.
      *
      * @since 150422 Rewrite.

@@ -5,7 +5,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait InstallUtils {
 
-    /*
+    /**
      * Plugin activation hook.
      *
      * @since 150422 Rewrite.
@@ -33,7 +33,7 @@ trait InstallUtils {
         $this->autoClearCache();
     }
 
-    /*
+    /**
      * Check current plugin version that is installed in WP.
      *
      * @since 150422 Rewrite.
@@ -61,7 +61,7 @@ trait InstallUtils {
         $this->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), ['push_to_top' => true]);
     }
 
-    /*
+    /**
      * Plugin deactivation hook.
      *
      * @since 150422 Rewrite.
@@ -79,7 +79,7 @@ trait InstallUtils {
         $this->resetCronSetup();
     }
 
-    /*
+    /**
      * Plugin uninstall hook.
      *
      * @since 150422 Rewrite.
@@ -124,7 +124,7 @@ trait InstallUtils {
         }
     }
 
-    /*
+    /**
      * Adds `define('WP_CACHE', TRUE);` to the `/wp-config.php` file.
      *
      * @since 150422 Rewrite.
@@ -173,7 +173,7 @@ trait InstallUtils {
         return $wp_config_file_contents;
     }
 
-    /*
+    /**
      * Removes `define('WP_CACHE', TRUE);` from the `/wp-config.php` file.
      *
      * @since 150422 Rewrite.
@@ -219,7 +219,7 @@ trait InstallUtils {
         return $wp_config_file_contents;
     }
 
-    /*
+    /**
      * Checks to make sure the `advanced-cache.php` file still exists;
      *    and if it doesn't, the `advanced-cache.php` is regenerated automatically.
      *
@@ -260,7 +260,7 @@ trait InstallUtils {
         }
     }
 
-    /*
+    /**
      * Creates and adds the `advanced-cache.php` file.
      *
      * @since 150422 Rewrite.
@@ -390,7 +390,7 @@ trait InstallUtils {
         return true;
     }
 
-    /*
+    /**
      * Removes the `advanced-cache.php` file.
      *
      * @since 150422 Rewrite.
@@ -430,7 +430,7 @@ trait InstallUtils {
         return true;
     }
 
-    /*
+    /**
      * Deletes the `advanced-cache.php` file.
      *
      * @since 150422 Rewrite.
@@ -460,7 +460,7 @@ trait InstallUtils {
         return true; // Deletion success.
     }
 
-    /*
+    /**
      * Checks to make sure the `[SHORT_NAME]-blog-paths` file still exists;
      *    and if it doesn't, the `[SHORT_NAME]-blog-paths` file is regenerated automatically.
      *
@@ -496,7 +496,7 @@ trait InstallUtils {
         }
     }
 
-    /*
+    /**
      * Creates and/or updates the `[SHORT_NAME]-blog-paths` file.
      *
      * @since 150422 Rewrite.
@@ -554,7 +554,7 @@ trait InstallUtils {
         return $value; // Pass through untouched (always).
     }
 
-    /*
+    /**
      * Deletes base directory.
      *
      * @since 151002 Improving multisite compat.

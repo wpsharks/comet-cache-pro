@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait BlogUtils {
-    /*
+    /**
      * Get blog details.
      *
      * @since 150821 Improving multisite compat.

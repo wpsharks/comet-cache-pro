@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpHtmlCUtils {
-    /*
+    /**
      * Wipes out all HTML Compressor cache files.
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
@@ -37,7 +37,7 @@ trait WcpHtmlCUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Clear all HTML Compressor cache files for the current blog.
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.

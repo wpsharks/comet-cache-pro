@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpCdnUtils {
-    /*
+    /**
      * Wipes out entire CDN cache.
      *
      * @since 151002 Implementing CDN cache wiping.
@@ -31,7 +31,7 @@ trait WcpCdnUtils {
         return (integer) $this->options['cdn_invalidation_counter'];
     }
 
-    /*
+    /**
      * Clears the CDN cache.
      *
      * @since 151002 Implementing CDN cache clearing.

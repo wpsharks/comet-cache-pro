@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpS2cleanUtils {
-    /*
+    /**
      * Wipe (i.e., reset) s2Clean cache.
      *
      * @since 151002 While adding OPCache support.
@@ -30,7 +30,7 @@ trait WcpS2cleanUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Clear (i.e., reset) s2Clean cache.
      *
      * @since 151002 While adding OPCache support.

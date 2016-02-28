@@ -5,7 +5,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait ObUtils {
 
-    /*
+    /**
      * Calculated protocol; one of `http://` or `https://`.
      *
      * @since 150422 Rewrite.
@@ -14,7 +14,7 @@ trait ObUtils {
      */
     public $rotocol = '';
 
-    /*
+    /**
      * Host token for this request.
      *
      * @since 150821 Improving multisite compat.
@@ -23,7 +23,7 @@ trait ObUtils {
      */
     public $host_token = '';
 
-    /*
+    /**
      * Host base/dir tokens for this request.
      *
      * @since 150821 Improving multisite compat.
@@ -32,7 +32,7 @@ trait ObUtils {
      */
     public $host_base_dir_tokens = '';
 
-    /*
+    /**
      * Calculated version salt; set by site configuration data.
      *
      * @since 150422 Rewrite.
@@ -41,7 +41,7 @@ trait ObUtils {
      */
     public $version_salt = '';
 
-    /*
+    /**
      * Relative cache path for the current request.
      *
      * @since 150422 Rewrite.
@@ -50,7 +50,7 @@ trait ObUtils {
      */
     public $cache_path = '';
 
-    /*
+    /**
      * Absolute cache file path for the current request.
      *
      * @since 150422 Rewrite.
@@ -59,7 +59,7 @@ trait ObUtils {
      */
     public $cache_file = '';
 
-    /*
+    /**
      * Relative 404 cache path for the current request.
      *
      * @since 150422 Rewrite.
@@ -68,7 +68,7 @@ trait ObUtils {
      */
     public $cache_path_404 = '';
 
-    /*
+    /**
      * Absolute 404 cache file path for the current request.
      *
      * @since 150422 Rewrite.
@@ -77,7 +77,7 @@ trait ObUtils {
      */
     public $cache_file_404 = '';
 
-    /*
+    /**
      * Version salt followed by the current request location.
      *
      * @since 150422 Rewrite.
@@ -86,7 +86,7 @@ trait ObUtils {
      */
     public $salt_location = '';
 
-    /*
+    /**
      * Calculated max age; i.e., before expiration.
      *
      * @since 151002 Load average checks in pro version.
@@ -95,7 +95,7 @@ trait ObUtils {
      */
     public $cache_max_age = 0;
 
-    /*
+    /**
      * Start output buffering (if applicable); or serve a cache file (if possible).
      *
      * @since 150422 Rewrite.
@@ -227,7 +227,7 @@ trait ObUtils {
         return; // Return value not applicable.
     }
 
-    /*
+    /**
      * Output buffer handler; i.e. the cache file generator.
      *
      * @note We CANNOT depend on any WP functionality here; it will cause problems.

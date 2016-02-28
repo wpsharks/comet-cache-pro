@@ -30,7 +30,7 @@ trait ConditionalUtils {
         '__halt_compiler' => '__halt_compiler',
     ];
 
-    /*
+    /**
      * Is AdvancedCache class?
      *
      * @since 150821 Improving multisite compat.
@@ -42,7 +42,7 @@ trait ConditionalUtils {
         return $this instanceof Classes\AdvancedCache;
     }
 
-    /*
+    /**
      * Is Plugin class?
      *
      * @since 150821 Improving multisite compat.
@@ -54,7 +54,7 @@ trait ConditionalUtils {
         return $this instanceof Classes\Plugin;
     }
 
-    /*
+    /**
      * Is the current request method `POST`, `PUT` or `DELETE`?
      *
      * @since 150422 Rewrite.
@@ -79,7 +79,7 @@ trait ConditionalUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Does the current request include an uncacheable query string?
      *
      * @since 151002 Improving Nginx support.
@@ -106,7 +106,7 @@ trait ConditionalUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Is the current request method is uncacheable?
      *
      * @since 150422 Rewrite.
@@ -131,7 +131,7 @@ trait ConditionalUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Should the current user should be considered a logged-in user?
      *
      * @since 150422 Rewrite.
@@ -173,7 +173,7 @@ trait ConditionalUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Are we in a LOCALHOST environment?
      *
      * @since 150422 Rewrite.
@@ -197,7 +197,7 @@ trait ConditionalUtils {
     }
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Is the current request for the Auto-Cache Engine?
      *
      * @since 150422 Rewrite.
@@ -220,7 +220,7 @@ trait ConditionalUtils {
     }
     /*[/pro]*/
 
-    /*
+    /**
      * Is the current request for a feed?
      *
      * @since 150422 Rewrite.
@@ -245,7 +245,7 @@ trait ConditionalUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Is a document/string an HTML/XML doc; or no?
      *
      * @since 150422 Rewrite.
@@ -271,7 +271,7 @@ trait ConditionalUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Does the current request have a cacheable content type?
      *
      * @since 150422 Rewrite.
@@ -302,7 +302,7 @@ trait ConditionalUtils {
         return ($is = true);
     }
 
-    /*
+    /**
      * Does the current request have a cacheable HTTP status code?
      *
      * @since 150422 Rewrite.
@@ -335,7 +335,7 @@ trait ConditionalUtils {
         return ($is = true);
     }
 
-    /*
+    /**
      * Checks if a PHP extension is loaded up.
      *
      * @since 150422 Rewrite.
@@ -356,7 +356,7 @@ trait ConditionalUtils {
         return ($is = (boolean) extension_loaded($extension));
     }
 
-    /*
+    /**
      * Is a particular function possible in every way?
      *
      * @since 150422 Rewrite.

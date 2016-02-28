@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait HtaccessUtils {
-    /*
+    /**
     * Unique comment marker.
     *
     * @since 151220 Enhancing `.htaccess` tweaks.
@@ -13,7 +13,7 @@ trait HtaccessUtils {
     */
     public $htaccess_marker = 'WmVuQ2FjaGU';
 
-    /*
+    /**
     * Plugin options that have associated htaccess rules.
     *
     * @since 160103 Improving `.htaccess` tweaks.
@@ -24,7 +24,7 @@ trait HtaccessUtils {
     */
     public $options_with_htaccess_rules = ['cdn_enable'];
 
-    /*
+    /**
      * Add template blocks to `/.htaccess` file.
      *
      * @since 151114 Adding `.htaccess` tweaks.
@@ -88,7 +88,7 @@ trait HtaccessUtils {
         return true; // Added successfully.
     }
 
-    /*
+    /**
      * Remove template blocks from `/.htaccess` file.
      *
      * @since 151114 Adding `.htaccess` tweaks.
@@ -124,7 +124,7 @@ trait HtaccessUtils {
         return true; // Removed successfully.
     }
 
-    /*
+    /**
      * Finds absolute server path to `/.htaccess` file.
      *
      * @since 151114 Adding `.htaccess` tweaks.
@@ -143,7 +143,7 @@ trait HtaccessUtils {
         return $file;
     }
 
-    /*
+    /**
      * Determines if there are any plugin options enabled that require htaccess rules to be added.
      *
      * @since 160103 Improving `.htaccess` tweaks.
@@ -163,7 +163,7 @@ trait HtaccessUtils {
         return false; // No, there are no options enabled that require htaccess rules.
     }
 
-    /*
+    /**
      * Utility method used to check if htaccess file contains $htaccess_marker
      *
      * @since 151114 Adding `.htaccess` tweaks.
@@ -193,7 +193,7 @@ trait HtaccessUtils {
         return true; // Htaccess has the marker
     }
 
-    /*
+    /**
      * Gets contents of `/.htaccess` file with exclusive lock to read+write. If file doesn't exist, we attempt to create it.
      *
      * @since 151220 Improving `.htaccess` utils.
@@ -232,7 +232,7 @@ trait HtaccessUtils {
         }
     }
 
-    /*
+    /**
      * Writes to `/.htaccess` file using provided file pointer.
      *
      * @since 151220 Improving `.htaccess` utils.
@@ -269,7 +269,7 @@ trait HtaccessUtils {
         return true;
     }
 
-    /*
+    /**
      * Utility method used to unlock and close htaccess file resource.
      *
      * @since 151114 Adding `.htaccess` tweaks.

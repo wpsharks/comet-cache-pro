@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait CacheLockUtils {
-    /*
+    /**
      * Get an exclusive lock on the cache directory.
      *
      * @since 150422 Rewrite.
@@ -58,7 +58,7 @@ trait CacheLockUtils {
         return ['type' => 'flock', 'resource' => $resource];
     }
 
-    /*
+    /**
      * Release an exclusive lock on the cache directory.
      *
      * @since 150422 Rewrite. Updated 151002 to remove the `array` typecast.

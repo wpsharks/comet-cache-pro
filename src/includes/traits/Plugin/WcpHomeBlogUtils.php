@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpHomeBlogUtils {
-    /*
+    /**
      * Automatically clears cache files for the home page.
      *
      * @since 150422 Rewrite.
@@ -48,7 +48,7 @@ trait WcpHomeBlogUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Automatically clears cache files for the posts page.
      *
      * @since 150422 Rewrite.

@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpPostUtils {
-    /*
+    /**
      * Automatically clears cache files for a particular post.
      *
      * @attaches-to `save_post` hook.
@@ -122,7 +122,7 @@ trait WcpPostUtils {
         return call_user_func_array([$this, 'autoClearPostCache'], func_get_args());
     }
 
-    /*
+    /**
      * Handles post status transitioning.
      *
      * @attaches-to `pre_post_update` hook.

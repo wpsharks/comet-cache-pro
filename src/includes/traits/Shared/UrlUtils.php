@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait UrlUtils {
-    /*
+    /**
      * Parses a URL.
      *
      * @since 150821 Improving multisite compat.
@@ -39,7 +39,7 @@ trait UrlUtils {
         }
     }
 
-    /*
+    /**
      * Unparses a URL.
      *
      * @since 150821 Improving multisite compat.
@@ -93,7 +93,7 @@ trait UrlUtils {
         return $scheme.$user.$pass.$host.$port.$path.$query.$fragment;
     }
 
-    /*
+    /**
      * Is the current request over SSL?
      *
      * @since 150422 Rewrite.
@@ -125,7 +125,7 @@ trait UrlUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Current URL.
      *
      * @since 150821 Improving multisite compat.

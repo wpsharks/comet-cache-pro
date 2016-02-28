@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait UserUtils {
-    /*
+    /**
      * Current user can clear the cache?
      *
      * @since 151002 Enhancing user permissions.
@@ -37,7 +37,7 @@ trait UserUtils {
         return ($can = false);
     }
 
-    /*
+    /**
      * Alias for currentUserCanClearCache()
      *
      * @since 151002 Enhancing user permissions.
@@ -49,7 +49,7 @@ trait UserUtils {
         return call_user_func_array([$this, 'currentUserCanClearCache'], func_get_args());
     }
 
-    /*
+    /**
      * Current user can clear the opcache?
      *
      * @since 151114 Enhancing user permissions.
@@ -72,7 +72,7 @@ trait UserUtils {
         return ($can = false);
     }
 
-    /*
+    /**
      * Alias for currentUserCanClearOpCache()
      *
      * @since 151114 Enhancing user permissions.
@@ -84,7 +84,7 @@ trait UserUtils {
         return call_user_func_array([$this, 'currentUserCanClearOpCache'], func_get_args());
     }
 
-    /*
+    /**
      * Current user can clear the CDN cache?
      *
      * @since 151114 Enhancing user permissions.
@@ -107,7 +107,7 @@ trait UserUtils {
         return ($can = false);
     }
 
-    /*
+    /**
      * Alias for currentUserCanClearCdnCache()
      *
      * @since 151114 Enhancing user permissions.
@@ -119,7 +119,7 @@ trait UserUtils {
         return call_user_func_array([$this, 'currentUserCanClearCdnCache'], func_get_args());
     }
 
-    /*
+    /**
     * Current user can clear expired transients?
     *
     * @since 151220 Enhancing user permissions.
@@ -142,7 +142,7 @@ trait UserUtils {
         return ($can = false);
     }
 
-    /*
+    /**
     * Alias for currentUserCanClearExpiredTransients()
     *
     * @since 151220 Enhancing user permissions.
@@ -154,7 +154,7 @@ trait UserUtils {
         return call_user_func_array([$this, 'currentUserCanClearExpiredTransients'], func_get_args());
     }
 
-    /*
+    /**
      * Current user can see stats?
      *
      * @since 151002 Enhancing user permissions.

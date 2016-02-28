@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait FsUtils {
-    /*
+    /**
      * Normalizes directory/file separators.
      *
      * @since 150422 Rewrite.
@@ -42,7 +42,7 @@ trait FsUtils {
         return $dir_file; // Normalized now.
     }
 
-    /*
+    /**
      * Acquires system tmp directory path.
      *
      * @since 150422 Rewrite.
@@ -92,7 +92,7 @@ trait FsUtils {
         return ($dir = '');
     }
 
-    /*
+    /**
      * Finds absolute server path to `/wp-config.php` file.
      *
      * @since 150422 Rewrite.
@@ -115,7 +115,7 @@ trait FsUtils {
         return $file;
     }
 
-    /*
+    /**
      * Adds a tmp name suffix to a directory/file path.
      *
      * @since 150422 Rewrite.
@@ -132,7 +132,7 @@ trait FsUtils {
         return $dir_file.'-'.str_replace('.', '', uniqid('', true)).'-tmp';
     }
 
-    /*
+    /**
      * Recursive directory iterator based on a regex pattern.
      *
      * @since 150422 Rewrite.
@@ -158,7 +158,7 @@ trait FsUtils {
         return $iterator_iterator; // Iterate everything.
     }
 
-    /*
+    /**
      * Abbreviated byte notation for file sizes.
      *
      * @since 151002 Adding a few statistics.
@@ -186,7 +186,7 @@ trait FsUtils {
         return $abbr_bytes.' '.$abbr;
     }
 
-    /*
+    /**
      * Converts an abbreviated byte notation into bytes.
      *
      * @since 151002 Adding a few statistics.
@@ -228,7 +228,7 @@ trait FsUtils {
         return (float) $value;
     }
 
-    /*
+    /**
      * Directory stats.
      *
      * @since 151002 Adding a few statistics.
@@ -324,7 +324,7 @@ trait FsUtils {
         return $stats;
     }
 
-    /*
+    /**
      * Apache `.htaccess` rules that deny public access to the contents of a directory.
      *
      * @since 150422 Rewrite.

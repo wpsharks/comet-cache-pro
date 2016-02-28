@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpOpcacheUtils {
-    /*
+    /**
      * Wipe (i.e., reset) OPCache.
      *
      * @since 151002 Adding OPCache support.
@@ -44,7 +44,7 @@ trait WcpOpcacheUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Clear (i.e., reset) OPCache.
      *
      * @since 151002 Adding OPCache support.
@@ -62,7 +62,7 @@ trait WcpOpcacheUtils {
         return 0; // Not applicable.
     }
 
-    /*
+    /**
      * Clear AC class file from Opcache (by force).
      *
      * @since 151215 Adding OPCache support.

@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait UpdateUtils {
-    /*
+    /**
      * Checks for a new lite release.
      *
      * @since 151220 Show version number in plugin options.
@@ -48,7 +48,7 @@ trait UpdateUtils {
     }
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Checks for a new pro release.
      *
      * @since 150422 Rewrite.
@@ -89,7 +89,7 @@ trait UpdateUtils {
         }
     }
 
-    /*
+    /**
      * Modifies transient data associated with this plugin.
      *
      * @since 150422 Rewrite.
@@ -140,7 +140,7 @@ trait UpdateUtils {
         return $transient; // Nodified now.
     }
 
-    /*
+    /**
      * Appends hidden inputs for pro updater when FTP credentials are requested by WP.
      *
      * @since 150422 Rewrite.

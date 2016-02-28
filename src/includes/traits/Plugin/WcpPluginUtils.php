@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpPluginUtils {
-    /*
+    /**
     * Automatically wipes/clears on plugin activation/deactivation.
     *
     * @since 151220 Adding auto-wipe|clear on plugin activations/deactivations.

@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpUtils {
-    /*
+    /**
      * Used for temporarily storing the permalink for posts transitioning from
      *    `publish` or `private` post status to `pending` or `draft` post status.
      *
@@ -15,7 +15,7 @@ trait WcpUtils {
      */
     public $pre_post_update_post_permalink = [];
 
-    /*
+    /**
      * Wipes out all cache files.
      *
      * @since 150422 Rewrite.
@@ -68,7 +68,7 @@ trait WcpUtils {
         return call_user_func_array([$this, 'wipeCache'], func_get_args());
     }
 
-    /*
+    /**
      * Clears cache files (current blog).
      *
      * @since 150422 Rewrite.
@@ -121,7 +121,7 @@ trait WcpUtils {
         return call_user_func_array([$this, 'clearCache'], func_get_args());
     }
 
-    /*
+    /**
      * Purges expired cache files (current blog).
      *
      * @since 150422 Rewrite.
@@ -162,7 +162,7 @@ trait WcpUtils {
         return call_user_func_array([$this, 'purgeCache'], func_get_args());
     }
 
-    /*
+    /**
      * Wurges (purges) all expired cache files; like wipe, but expired files only.
      *
      * @since 151002 Look at entire cache directory.
@@ -195,7 +195,7 @@ trait WcpUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Automatically wipes out all cache files.
      *
      * @attaches-to Nothing at this time.
@@ -233,7 +233,7 @@ trait WcpUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Automatically clears all cache files (current host).
      *
      * @attaches-to `switch_theme` hook.
@@ -282,7 +282,7 @@ trait WcpUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Automatically purges all cache files (current host).
      *
      * @attaches-to Nothing at this time.
@@ -319,7 +319,7 @@ trait WcpUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Automatically wurges all cache files.
      *
      * @attaches-to Nothing at this time.
@@ -356,7 +356,7 @@ trait WcpUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Allows a site owner to disable the automatic cache wiping routines.
      *
      * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_wipe_cache_routines` to return TRUE,
@@ -379,7 +379,7 @@ trait WcpUtils {
         return $is_disabled;
     }
 
-    /*
+    /**
      * Allows a site owner to disable the automatic cache clearing routines.
      *
      * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_clear_cache_routines` to return TRUE,
@@ -402,7 +402,7 @@ trait WcpUtils {
         return $is_disabled;
     }
 
-    /*
+    /**
      * Allows a site owner to disable the automatic cache purging routines.
      *
      * This is done by filtering `'.__GLOBAL_NS__.'_disable_auto_purge_cache_routines` to return TRUE,

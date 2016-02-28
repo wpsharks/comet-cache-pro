@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait HookUtils {
-    /*
+    /**
      * Array of hooks.
      *
      * @since 150422 Rewrite.
@@ -13,7 +13,7 @@ trait HookUtils {
      */
     public $hooks = [];
 
-    /*
+    /**
      * Assigns an ID to each callable attached to a hook/filter.
      *
      * @since 150422 Rewrite.
@@ -44,7 +44,7 @@ trait HookUtils {
         throw new \Exception(__('Invalid hook.', SLUG_TD));
     }
 
-    /*
+    /**
      * Adds a new hook (works with both actions & filters).
      *
      * @since 150422 Rewrite.
@@ -73,7 +73,7 @@ trait HookUtils {
         return true; // Always returns true.
     }
 
-    /*
+    /**
      * Adds a new action hook.
      *
      * @since 150422 Rewrite.
@@ -93,7 +93,7 @@ trait HookUtils {
         return call_user_func_array([$this, 'addAction'], func_get_args());
     }
 
-    /*
+    /**
      * Adds a new filter.
      *
      * @since 150422 Rewrite.
@@ -113,7 +113,7 @@ trait HookUtils {
         return call_user_func_array([$this, 'addFilter'], func_get_args());
     }
 
-    /*
+    /**
      * Removes a hook (works with both actions & filters).
      *
      * @since 150422 Rewrite.
@@ -144,7 +144,7 @@ trait HookUtils {
         return true; // Existed before it was removed.
     }
 
-    /*
+    /**
      * Removes an action.
      *
      * @since 150422 Rewrite.
@@ -156,7 +156,7 @@ trait HookUtils {
         return call_user_func_array([$this, 'removeHook'], func_get_args());
     }
 
-    /*
+    /**
      * Removes a filter.
      *
      * @since 150422 Rewrite.
@@ -168,7 +168,7 @@ trait HookUtils {
         return call_user_func_array([$this, 'removeHook'], func_get_args());
     }
 
-    /*
+    /**
      * Runs any callables attached to an action.
      *
      * @since 150422 Rewrite.
@@ -196,7 +196,7 @@ trait HookUtils {
         unset($_hook_action, $_action); // Housekeeping.
     }
 
-    /*
+    /**
      * Runs any callables attached to a filter.
      *
      * @since 150422 Rewrite.
@@ -230,7 +230,7 @@ trait HookUtils {
         return $value; // With applied filters.
     }
 
-    /*
+    /**
      * Does an action w/ back compat. for ZenCache.
      *
      * @since 150422 Rewrite.
@@ -251,7 +251,7 @@ trait HookUtils {
         }
     }
 
-    /*
+    /**
      * Applies filters w/ back compat. for ZenCache.
      *
      * @since 150422 Rewrite.

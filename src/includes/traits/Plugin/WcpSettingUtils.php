@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpSettingUtils {
-    /*
+    /**
      * Automatically clears all cache files for current blog under various conditions;
      *    used to check for conditions that don't have a hook that we can attach to.
      *

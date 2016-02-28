@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait PatternUtils {
-    /*
+    /**
      * Convert line-delimited patterns to a regex.
      *
      * @since 151114 Enhancing exclusion pattern support.
@@ -24,7 +24,7 @@ trait PatternUtils {
         return $regex;
     }
 
-    /*
+    /**
      * Convert watered-down regex to actual regex.
      *
      * @since 151114 Enhancing exclusion pattern support.

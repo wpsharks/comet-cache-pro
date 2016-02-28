@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait SysUtils {
-    /*
+    /**
      * System load averages.
      *
      * @since 151002 Adding cache directory statistics.
@@ -29,7 +29,7 @@ trait SysUtils {
         return $averages;
     }
 
-    /*
+    /**
      * System memory info.
      *
      * @since 151002 Adding cache directory statistics.
@@ -73,7 +73,7 @@ trait SysUtils {
         return $status;
     }
 
-    /*
+    /**
      * System opcache status/details.
      *
      * @since 151002 Adding cache directory statistics.

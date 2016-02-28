@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 use WebSharks\CometCache\Pro\Classes;
 
 trait HtmlCUtils {
-    /*
+    /**
      * Runs HTML Compressor (if applicable).
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.

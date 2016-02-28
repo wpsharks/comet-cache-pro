@@ -6,7 +6,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait CdnUtils {
 
-    /*
+    /**
      * Bumps CDN invalidation counter.
      *
      * @since 150422 Rewrite.

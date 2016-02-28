@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait MenuPageUtils {
-    /*
+    /**
      * Adds CSS for administrative menu pages.
      *
      * @since 150422 Rewrite.
@@ -21,7 +21,7 @@ trait MenuPageUtils {
         wp_enqueue_style(GLOBAL_NS, $this->url('/src/client-s/css/menu-pages.min.css'), $deps, VERSION, 'all');
     }
 
-    /*
+    /**
      * Adds JS for administrative menu pages.
      *
      * @since 150422 Rewrite.
@@ -62,7 +62,7 @@ trait MenuPageUtils {
         );
     }
 
-    /*
+    /**
      * Creates network admin menu pages.
      *
      * @since 150422 Rewrite.
@@ -91,7 +91,7 @@ trait MenuPageUtils {
         } /*[/pro]*/
     }
 
-    /*
+    /**
      * Creates admin menu pages.
      *
      * @since 150422 Rewrite.
@@ -119,7 +119,7 @@ trait MenuPageUtils {
         /*[/pro]*/
     }
 
-    /*
+    /**
      * Adds link(s) to Comet Cache row on the WP plugins page.
      *
      * @since 150422 Rewrite.
@@ -144,7 +144,7 @@ trait MenuPageUtils {
         return $links;
     }
 
-    /*
+    /**
      * Fills menu page inline SVG icon color.
      *
      * @since 150422 Rewrite.
@@ -173,7 +173,7 @@ trait MenuPageUtils {
         return str_replace(' fill="currentColor"', ' fill="'.esc_attr($use_icon_fill_color).'"', $svg);
     }
 
-    /*
+    /**
      * Loads the admin menu page options.
      *
      * @since 150422 Rewrite.
@@ -184,7 +184,7 @@ trait MenuPageUtils {
     }
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Loads admin menu page for stats.
      *
      * @since 151002 Directory stats.
@@ -196,7 +196,7 @@ trait MenuPageUtils {
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Loads admin menu page for pro updater.
      *
      * @since 150422 Rewrite.
@@ -207,7 +207,7 @@ trait MenuPageUtils {
     }
     /*[/pro]*/
 
-    /*
+    /**
      * WordPress admin icon color schemes.
      *
      * @since 150422 Rewrite.
@@ -228,7 +228,7 @@ trait MenuPageUtils {
         'coffee'    => ['base' => '#F3F2F1', 'focus' => '#FFFFFF', 'current' => '#FFFFFF'],
     ];
 
-    /*
+    /**
      * On a specific menu page?
      *
      * @since 151002 Improving multisite compat.

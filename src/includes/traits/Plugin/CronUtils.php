@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait CronUtils {
-    /*
+    /**
      * Extends WP-Cron schedules.
      *
      * @since 150422 Rewrite.
@@ -24,7 +24,7 @@ trait CronUtils {
         return $schedules;
     }
 
-    /*
+    /**
      * Checks Cron setup, validates schedules, and reschedules events if necessary.
      *
      * @attaches-to `init` hook.
@@ -62,7 +62,7 @@ trait CronUtils {
         }
     }
 
-    /*
+    /**
      * Resets `crons_setup` and clears WP-Cron schedules.
      *
      * @since 151220 Fixing bug with Auto-Cache Engine cron disappearing in some scenarios

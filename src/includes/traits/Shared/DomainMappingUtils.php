@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait DomainMappingUtils {
-    /*
+    /**
      * Can consider domain mapping?
      *
      * @since 150821 Improving multisite compat.
@@ -26,7 +26,7 @@ trait DomainMappingUtils {
         return ($can = false); // Cannot consider.
     }
 
-    /*
+    /**
      * Domain mapping?
      *
      * @since 150821 Improving multisite compat.
@@ -48,7 +48,7 @@ trait DomainMappingUtils {
         return ($is = 0); // Not domain mapping.
     }
 
-    /*
+    /**
      * Filters a URL in order to apply domain mapping.
      *
      * @since 150821 Improving multisite compat.
@@ -91,7 +91,7 @@ trait DomainMappingUtils {
         return ($url = $this->unParseUrl($url_parts));
     }
 
-    /*
+    /**
      * Filters a URL in order to remove domain mapping.
      *
      * @since 150821 Improving multisite compat.
@@ -129,7 +129,7 @@ trait DomainMappingUtils {
         return ($url = $this->unParseUrl($url_parts));
     }
 
-    /*
+    /**
      * Converts a host into a mapped blog ID.
      *
      * @since 150821 Improving multisite compat.
@@ -180,7 +180,7 @@ trait DomainMappingUtils {
         return ($blog_id = (integer) $blog_id);
     }
 
-    /*
+    /**
      * Converts a blog ID into a mapped domain.
      *
      * @since 150821 Improving multisite compat.
@@ -233,7 +233,7 @@ trait DomainMappingUtils {
         return ($domain = strtolower((string) $domain));
     }
 
-    /*
+    /**
      * Converts a blog ID into mapped domains (plural).
      *
      * @since 150821 Improving multisite compat.

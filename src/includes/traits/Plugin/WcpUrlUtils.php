@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpUtlUtils {
-    /*
+    /**
     * Automatically clears cache files for a list of custom URLs.
     *
     * @since 151114 Adding support for a custom list of URLs.

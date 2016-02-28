@@ -8,7 +8,7 @@ trait NoticeUtils {
      * Notice queue handlers.
      */
 
-    /*
+    /**
      * Enqueue an administrative notice.
      *
      * @since 150422 Rewrite. Improved 151002.
@@ -43,7 +43,7 @@ trait NoticeUtils {
         return $key; // For dismissals.
     }
 
-    /*
+    /**
      * Dismiss an administrative notice.
      *
      * @since 151002 Improving multisite compat.
@@ -79,7 +79,7 @@ trait NoticeUtils {
         return $notices; // All remaining notices.
     }
 
-    /*
+    /**
      * Enqueue an administrative error notice.
      *
      * @since 150422 Rewrite. Improved 151002.
@@ -89,7 +89,7 @@ trait NoticeUtils {
         return $this->enqueueNotice($notice, array_merge($args, ['class' => 'error']), $blog_id);
     }
 
-    /*
+    /**
      * Enqueue an administrative notice (main site).
      *
      * @since 151002. Improving multisite compat.
@@ -99,7 +99,7 @@ trait NoticeUtils {
         return $this->enqueueNotice($notice, $args, -1);
     }
 
-    /*
+    /**
      * Enqueue an administrative error notice (main site).
      *
      * @since 151002. Improving multisite compat.
@@ -109,7 +109,7 @@ trait NoticeUtils {
         return $this->enqueueNotice($notice, array_merge($args, ['class' => 'error']), -1);
     }
 
-    /*
+    /**
      * Dismiss an administrative notice (main site).
      *
      * @since 151002 Improving multisite compat.
@@ -123,7 +123,7 @@ trait NoticeUtils {
      * Notice display handler.
      */
 
-    /*
+    /**
      * Render admin notices.
      *
      * @since 150422 Rewrite. Improved 151002.
@@ -181,7 +181,7 @@ trait NoticeUtils {
      * Notice getter/setter.
      */
 
-    /*
+    /**
      * Get admin notices.
      *
      * @since 151002 Improving multisite compat.
@@ -222,7 +222,7 @@ trait NoticeUtils {
         return $notices;
     }
 
-    /*
+    /**
      * Update admin notices.
      *
      * @since 151002 Improving multisite compat.
@@ -255,7 +255,7 @@ trait NoticeUtils {
      * Notice property utilities.
      */
 
-    /*
+    /**
     * Normalize notice elements.
     *
     * @since 151002 Improving multisite compat.

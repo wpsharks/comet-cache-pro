@@ -5,7 +5,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait HttpUtils
 {
-    /*
+    /**
      * Current HTTP protocol.
      *
      * @since 150422 Rewrite.
@@ -26,7 +26,7 @@ trait HttpUtils
         return $protocol;
     }
 
-    /*
+    /**
      * PHP {@link headers_list()} + HTTP status.
      *
      * @since 150422 Rewrite.
@@ -48,7 +48,7 @@ trait HttpUtils
         return $headers;
     }
 
-    /*
+    /**
      * PHP {@link headers_list()} + HTTP status.
      *
      * @since 150422 Rewrite.
@@ -126,7 +126,7 @@ trait HttpUtils
         return $headers;
     }
 
-    /*
+    /**
      * HTTP status code.
      *
      * @since 150422 Rewrite.
@@ -162,7 +162,7 @@ trait HttpUtils
         return $status;
     }
 
-    /*
+    /**
     * Sends no-cache headers.
     *
     * @since 151220 Enhancing no-cache headers.

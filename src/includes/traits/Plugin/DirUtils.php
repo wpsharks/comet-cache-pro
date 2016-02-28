@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait DirUtils {
-    /*
+    /**
      * This constructs an absolute server directory path (no trailing slashes);
      *    which is always nested into {@link \WP_CONTENT_DIR} and the configured `base_dir` option value.
      *
@@ -32,7 +32,7 @@ trait DirUtils {
         return $wp_content_base_dir_to;
     }
 
-    /*
+    /**
      * This constructs a relative/base directory path (no leading/trailing slashes).
      *    Always relative to {@link \WP_CONTENT_DIR}. Depends on the configured `base_dir` option value.
      *

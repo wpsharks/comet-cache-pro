@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait CachePathUtils {
-    /*
+    /**
     * Cache-path suffix frag (regex).
     *
     * @since 151220 Enhancing translation support.
@@ -21,7 +21,7 @@ trait CachePathUtils {
         return (string) $regex_suffix_frag;
     }
 
-    /*
+    /**
     * Default cache-path suffix frag (regex).
     *
     * @since 151220 Enhancing translation support.
@@ -41,7 +41,7 @@ trait CachePathUtils {
         }
     }
 
-    /*
+    /**
      * Converts a URL into a `cache/path` based on input `$flags`.
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
@@ -181,7 +181,7 @@ trait CachePathUtils {
         return $cache_path;
     }
 
-    /*
+    /**
      * Regex pattern for a call to `deleteFilesFromCacheDir()`.
      *
      * @since 151114 Updated to support an arbitrary URL instead of a regex frag.
@@ -212,7 +212,7 @@ trait CachePathUtils {
         return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
     }
 
-    /*
+    /**
      * Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
@@ -259,7 +259,7 @@ trait CachePathUtils {
         return '/^'.$abs_relative_cache_path_regex.$regex_suffix_frag.'/i';
     }
 
-    /*
+    /**
      * Regex pattern for a call to `deleteFilesFromCacheDir()`.
      *
      * @since 151114 Improving watered-down regex syntax.
@@ -293,7 +293,7 @@ trait CachePathUtils {
         return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
     }
 
-    /*
+    /**
      * Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
@@ -337,7 +337,7 @@ trait CachePathUtils {
         return $uri_patterns ? '(?:'.implode('|', array_unique($uri_patterns)).')'.$regex_suffix_frag : '';
     }
 
-    /*
+    /**
      * Regex pattern for a call to `deleteFilesFromCacheDir()`.
      *
      * @since 151114 Moving this low-level routine into a method of a different name.

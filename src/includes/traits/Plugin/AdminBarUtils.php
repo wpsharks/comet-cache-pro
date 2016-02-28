@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait AdminBarUtils {
-    /*
+    /**
      * Showing admin bar.
      *
      * @since 151002 Improving admin bar.
@@ -77,7 +77,7 @@ trait AdminBarUtils {
         return $showing;
     }
 
-    /*
+    /**
      * Filter WordPress admin bar.
      *
      * @since 150422 Rewrite.
@@ -287,7 +287,7 @@ trait AdminBarUtils {
         }
     }
 
-    /*
+    /**
      * Injects `<meta>` tag w/ JSON-encoded data.
      *
      * @since 150422 Rewrite.
@@ -323,7 +323,7 @@ trait AdminBarUtils {
              ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
     }
 
-    /*
+    /**
      * Adds CSS for WordPress admin bar.
      *
      * @since 150422 Rewrite.
@@ -341,7 +341,7 @@ trait AdminBarUtils {
         wp_enqueue_style(GLOBAL_NS.'-admin-bar', $this->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
     }
 
-    /*
+    /**
      * Adds JS for WordPress admin bar.
      *
      * @since 150422 Rewrite.

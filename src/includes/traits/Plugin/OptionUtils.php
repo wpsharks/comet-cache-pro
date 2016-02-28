@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait OptionUtils {
-    /*
+    /**
      * Get plugin options.
      *
      * @since 151002 Improving multisite compat.
@@ -38,7 +38,7 @@ trait OptionUtils {
         return $this->options; // Plugin options.
     }
 
-    /*
+    /**
      * Update plugin options.
      *
      * @since 151002 Improving multisite compat.
@@ -62,7 +62,7 @@ trait OptionUtils {
         return $this->getOptions();
     }
 
-    /*
+    /**
      * Restore default plugin options.
      *
      * @since 151002 Improving multisite compat.

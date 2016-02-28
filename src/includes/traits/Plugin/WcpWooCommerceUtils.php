@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpWooCommerceUtils {
-    /*
+    /**
      * Automatically clears cache file for a WooCommerce Product when its stock is changed.
      *
      * @since 151220 Improving WooCommerce Compatibility.

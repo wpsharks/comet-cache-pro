@@ -6,7 +6,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait WcpTransientUtils
 {
-    /*
+    /**
     * Automatically wipes expired transients.
     *
     * @since 151220 Adding support for expired transients.
@@ -65,7 +65,7 @@ trait WcpTransientUtils
         return $counter;
     }
 
-    /*
+    /**
     * Automatically clears expired transients.
     *
     * @since 151220 Adding support for expired transients.

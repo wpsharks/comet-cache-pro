@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait StringUtils {
-    /*
+    /**
      * Clips string(s) to X chars deeply.
      *
      * @since 151114 Adding string utils.
@@ -44,7 +44,7 @@ trait StringUtils {
         return $string;
     }
 
-    /*
+    /**
      * Mid-clips string(s) to X chars deeply.
      *
      * @since 151114 Adding string utils.

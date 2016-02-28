@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait BbPressUtils {
-    /*
+    /**
      * Is bbPress active?
      *
      * @since 150821 Improving bbPress support.
@@ -16,7 +16,7 @@ trait BbPressUtils {
         return class_exists('bbPress');
     }
 
-    /*
+    /**
      * bbPress post types.
      *
      * @since 150821 Improving bbPress support.
@@ -39,7 +39,7 @@ trait BbPressUtils {
         return $types;
     }
 
-    /*
+    /**
      * bbPress post statuses.
      *
      * @since 150821 Improving bbPress support.

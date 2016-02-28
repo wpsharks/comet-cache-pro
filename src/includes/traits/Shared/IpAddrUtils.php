@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait IpAddrUtils {
-    /*
+    /**
      * Get the current visitor's real IP address.
      *
      * @since 150422 Rewrite.
@@ -57,7 +57,7 @@ trait IpAddrUtils {
         return ($ip = 'unknown'); // Not possible.
     }
 
-    /*
+    /**
      * Gets a valid/public IP address.
      *
      * @since 150422 Rewrite.

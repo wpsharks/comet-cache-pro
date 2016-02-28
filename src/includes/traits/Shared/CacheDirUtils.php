@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait CacheDirUtils {
-    /*
+    /**
      * Cache directory path.
      *
      * @since 150422 Rewrite.
@@ -30,7 +30,7 @@ trait CacheDirUtils {
         return rtrim($cache_dir, '/').($rel_path ? '/'.ltrim($rel_path) : '');
     }
 
-    /*
+    /**
      * Wipe files from the cache directory (for all hosts/blogs);
      *    i.e., those that match a specific regex pattern.
      *
@@ -45,7 +45,7 @@ trait CacheDirUtils {
         return $this->deleteFilesFromCacheDir($regex);
     }
 
-    /*
+    /**
      * Clear files from the cache directory (for the current host);
      *    i.e., those that match a specific regex pattern.
      *
@@ -60,7 +60,7 @@ trait CacheDirUtils {
         return $this->deleteFilesFromHostCacheDir($regex);
     }
 
-    /*
+    /**
      * Wurge (purge) files from the cache directory (for all hosts/blogs);
      *    i.e., those that match a specific regex pattern.
      *
@@ -75,7 +75,7 @@ trait CacheDirUtils {
         return $this->deleteFilesFromCacheDir($regex, true);
     }
 
-    /*
+    /**
      * Purge files from the cache directory (for the current host);
      *    i.e., those that match a specific regex pattern.
      *
@@ -90,7 +90,7 @@ trait CacheDirUtils {
         return $this->deleteFilesFromHostCacheDir($regex, true);
     }
 
-    /*
+    /**
      * Delete files from the cache directory (for all hosts/blogs);
      *    i.e., those that match a specific regex pattern.
      *
@@ -233,7 +233,7 @@ trait CacheDirUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Delete files from the cache directory (for the current host);
      *    i.e., those that match a specific regex pattern.
      *
@@ -431,7 +431,7 @@ trait CacheDirUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Delete all files/dirs from a directory (for all schemes/hosts);
      *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
      *
@@ -537,7 +537,7 @@ trait CacheDirUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Erase all files/dirs from a directory (for all schemes/hosts);
      *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
      *
@@ -625,7 +625,7 @@ trait CacheDirUtils {
         return $counter;
     }
 
-    /*
+    /**
      * Try to erase all files/dirs from a directory (for all schemes/hosts);
      *    including `[SHORT_NAME]-` prefixed files; or anything else for that matter.
      *

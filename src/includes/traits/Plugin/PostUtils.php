@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait PostUtils {
-    /*
+    /**
      * All post statuses.
      *
      * @since 150821 Improving bbPress support.
@@ -22,7 +22,7 @@ trait PostUtils {
         return $statuses;
     }
 
-    /*
+    /**
      * All built-in post statuses.
      *
      * @since 150821 Improving bbPress support.

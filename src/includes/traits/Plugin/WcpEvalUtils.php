@@ -6,7 +6,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait WcpEvalUtils {
 
-    /*
+    /**
      * Wipe (i.e., eval) custom code.
      *
      * @since 151002 Enhancing eval support.
@@ -35,7 +35,7 @@ trait WcpEvalUtils {
         return ($result = ob_get_clean());
     }
 
-    /*
+    /**
      * Clear (i.e., eval) custom code.
      *
      * @since 151002 Enhancing eval support.

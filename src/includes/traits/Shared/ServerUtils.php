@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait ServerUtils {
-    /*
+    /**
      * Is running on Apache?
      *
      * @since 151002 This is Apache?
@@ -27,7 +27,7 @@ trait ServerUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Is running on Nginx?
      *
      * @since 151002 This is Nginx?
@@ -47,7 +47,7 @@ trait ServerUtils {
         return ($is = false);
     }
 
-    /*
+    /**
      * Is running on Windows IIS?
      *
      * @since 151002 This is Windows IIS?

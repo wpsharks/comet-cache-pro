@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait ReplaceUtils {
-    /*
+    /**
      * String replace ONE time.
      *
      * @since 150422 Rewrite.
@@ -31,7 +31,7 @@ trait ReplaceUtils {
         return (string) substr_replace($haystack, $replace, $needle_strpos, strlen($needle));
     }
 
-    /*
+    /**
      * String replace ONE time (caSe-insensitive).
      *
      * @since 150422 Rewrite.

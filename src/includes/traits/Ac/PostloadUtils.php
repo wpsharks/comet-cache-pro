@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 use WebSharks\CometCache\Pro\Classes;
 
 trait PostloadUtils {
-    /*
+    /**
      * Have we caught the main WP loaded being loaded yet?
      *
      * @since 150422 Rewrite.
@@ -15,7 +15,7 @@ trait PostloadUtils {
      */
     public $is_wp_loaded_query = false;
 
-    /*
+    /**
      * Is the current request a WordPress 404 error?
      *
      * @since 150422 Rewrite.
@@ -26,7 +26,7 @@ trait PostloadUtils {
      */
     public $is_404 = false;
 
-    /*
+    /**
      * Last HTTP status code passed through {@link \status_header}.
      *
      * @since 150422 Rewrite.
@@ -37,7 +37,7 @@ trait PostloadUtils {
      */
     public $http_status = 0;
 
-    /*
+    /**
      * Is the current request a WordPress content type?
      *
      * @since 150422 Rewrite.
@@ -48,7 +48,7 @@ trait PostloadUtils {
      */
     public $is_a_wp_content_type = false;
 
-    /*
+    /**
      * Current WordPress {@link \content_url()}.
      *
      * @since 150422 Rewrite.
@@ -59,7 +59,7 @@ trait PostloadUtils {
      */
     public $content_url = '';
 
-    /*
+    /**
      * Flag for {@link \is_user_loged_in()}.
      *
      * @since 150422 Rewrite.
@@ -70,7 +70,7 @@ trait PostloadUtils {
      */
     public $is_user_logged_in = false;
 
-    /*
+    /**
      * Flag for {@link \is_maintenance()}.
      *
      * @since 150422 Rewrite.
@@ -81,7 +81,7 @@ trait PostloadUtils {
      */
     public $is_maintenance = false;
 
-    /*
+    /**
      * Array of data targeted at the postload phase.
      *
      * @since 150422 Rewrite.
@@ -99,7 +99,7 @@ trait PostloadUtils {
     ];
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Calculated user token; applicable w/ user postload enabled.
      *
      * @since 150422 Rewrite.
@@ -110,7 +110,7 @@ trait PostloadUtils {
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Sets a flag for possible invalidation upon certain actions in the postload phase.
      *
      * @since 150422 Rewrite.
@@ -138,7 +138,7 @@ trait PostloadUtils {
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Invalidates cache files for a user (if applicable).
      *
      * @since 150422 Rewrite.
@@ -160,7 +160,7 @@ trait PostloadUtils {
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Starts output buffering in the postload phase (i.e. a bit later);
      *    when/if user caching is enabled; and if applicable.
      *
@@ -206,7 +206,7 @@ trait PostloadUtils {
     }
     /*[/pro]*/
 
-    /*
+    /**
      * Filters WP {@link \status_header()} (if applicable).
      *
      * @since 150422 Rewrite.
@@ -231,7 +231,7 @@ trait PostloadUtils {
         );
     }
 
-    /*
+    /**
      * Hooks `NC_DEBUG_` info into the WordPress `shutdown` phase (if applicable).
      *
      * @since 150422 Rewrite.
@@ -253,7 +253,7 @@ trait PostloadUtils {
         add_action('shutdown', [$this, 'maybeEchoNcDebugInfo'], PHP_INT_MAX - 10);
     }
 
-    /*
+    /**
      * Grab details from WP and the Comet Cache plugin itself,
      *    after the main query is loaded (if at all possible).
      *

@@ -5,7 +5,7 @@ use WebSharks\CometCache\Pro\Classes;
 
 trait TokenUtils {
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * A simple utility flag.
      *
      * @since 150422 Rewrite.
@@ -15,7 +15,7 @@ trait TokenUtils {
     public $user_login_cookie_expired_or_invalid = false;
     /*[/pro]*/
 
-    /*
+    /**
      * Current host.
      *
      * @since 150422 Rewrite.
@@ -63,7 +63,7 @@ trait TokenUtils {
         return $token;
     }
 
-    /*
+    /**
      * Host for a specific blog.
      *
      * @since 150821 Improving multisite compat.
@@ -109,7 +109,7 @@ trait TokenUtils {
         return $token;
     }
 
-    /*
+    /**
      * Current site's base directory.
      *
      * @since 150422 Rewrite.
@@ -152,7 +152,7 @@ trait TokenUtils {
         return $token;
     }
 
-    /*
+    /**
      * Current blog's sub-directory.
      *
      * @since 150422 Rewrite.
@@ -211,7 +211,7 @@ trait TokenUtils {
         return $token;
     }
 
-    /*
+    /**
      * A blog's sub-directory.
      *
      * @since 150821 Improving multisite compat.
@@ -265,7 +265,7 @@ trait TokenUtils {
         return $token;
     }
 
-    /*
+    /**
      * Current site's base directory & current blog's sub-directory.
      *
      * @since 150422 Rewrite.
@@ -292,7 +292,7 @@ trait TokenUtils {
         return ($tokens = preg_replace('/\/+/', '/', $tokens));
     }
 
-    /*
+    /**
      * A site's base directory & a blog's sub-directory.
      *
      * @since 150821 Improving multisite compat.
@@ -317,7 +317,7 @@ trait TokenUtils {
     }
 
     /*[pro strip-from="lite"]*/
-    /*
+    /**
      * Produces a token based on the current user.
      *
      * @since 150422 Rewrite.

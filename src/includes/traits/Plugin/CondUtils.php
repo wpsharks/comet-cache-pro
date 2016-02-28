@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait CondUtils {
-    /*
+    /**
      * Is pro preview?
      *
      * @since 150511 Rewrite.

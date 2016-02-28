@@ -5,7 +5,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait HtmlCUtils {
-    /*
+    /**
      * Adds marker for the HTML Compressor.
      *
      * @since 150422 Rewrite.

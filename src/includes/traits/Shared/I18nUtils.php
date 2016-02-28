@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 use WebSharks\CometCache\Pro\Classes;
 
 trait I18nUtils {
-    /*
+    /**
      * `X file` or `X files`, translated w/ singlular/plural context.
      *
      * @since 150422 Rewrite.
@@ -19,7 +19,7 @@ trait I18nUtils {
         return sprintf(_n('%1$s file', '%1$s files', $counter, SLUG_TD), $counter);
     }
 
-    /*
+    /**
      * `X directory` or `X directories`, translated w/ singlular/plural context.
      *
      * @since 150422 Rewrite.
@@ -34,7 +34,7 @@ trait I18nUtils {
         return sprintf(_n('%1$s directory', '%1$s directories', $counter, SLUG_TD), $counter);
     }
 
-    /*
+    /**
      * `X file/directory` or `X files/directories`, translated w/ singlular/plural context.
      *
      * @since 150422 Rewrite.

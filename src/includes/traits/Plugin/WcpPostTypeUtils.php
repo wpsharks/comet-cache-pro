@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpPostTypeUtils {
-    /*
+    /**
      * Automatically clears cache files for a custom post type archive view.
      *
      * @since 150422 Rewrite.

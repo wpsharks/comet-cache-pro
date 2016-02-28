@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait WcpAuthorUtils {
-    /*
+    /**
      * Automatically clears cache files for the author page(s).
      *
      * @attaches-to `post_updated` hook.

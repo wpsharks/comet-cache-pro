@@ -4,7 +4,7 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 use WebSharks\CometCache\Pro\Classes;
 
 trait CleanupUtils {
-    /*
+    /**
      * Runs cleanup routine via CRON job.
      *
      * @since 151002 While working on directory stats.
