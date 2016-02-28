@@ -106,74 +106,74 @@ trait ObUtils {
     public function maybeStartOutputBuffering()
     {
         if (strcasecmp(PHP_SAPI, 'cli') === 0) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_PHP_SAPI_CLI);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_PHP_SAPI_CLI);
         }
         if (empty($_SERVER['HTTP_HOST']) || !$this->hostToken()) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_HTTP_HOST);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_NO_SERVER_HTTP_HOST);
         }
         if (empty($_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_NO_SERVER_REQUEST_URI);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_NO_SERVER_REQUEST_URI);
         }
         if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
         }
         if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
         }
         if (defined('DONOTCACHEPAGE')) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
         }
         if (isset($_SERVER['DONOTCACHEPAGE'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
         }
         if (isset($_GET[strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_AC_GET_VAR);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_AC_GET_VAR);
         }
         if ($this->isUncacheableRequestMethod()) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_UNCACHEABLE_REQUEST);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_REQUEST);
         }
         if (isset($_SERVER['SERVER_ADDR']) && $this->currentIp() === $_SERVER['SERVER_ADDR']) {
             if ((!IS_PRO || !$this->isAutoCacheEngine()) && !$this->isLocalhost()) {
-                return $this->maybeSetDebugInfo(NC_DEBUG_SELF_SERVE_REQUEST);
+                return $this->maybeSetDebugInfo($this::NC_DEBUG_SELF_SERVE_REQUEST);
             }
         }
         if (!COMET_CACHE_FEEDS_ENABLE && $this->isFeed()) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_FEED_REQUEST);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_FEED_REQUEST);
         }
         if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/i', $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_WP_SYSTEMATICS);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_SYSTEMATICS);
         }
         if (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_WP_ADMIN);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ADMIN);
         }
         if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_MS_FILES);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_MS_FILES);
         }
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
         }
         if (!COMET_CACHE_GET_REQUESTS && $this->requestContainsUncacheableQueryVars()) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_GET_REQUEST_QUERIES);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_GET_REQUEST_QUERIES);
         }
         if (!empty($_REQUEST['preview'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_PREVIEW);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_PREVIEW);
         }
         if (COMET_CACHE_EXCLUDE_URIS && preg_match(COMET_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_URIS);
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_URIS);
         }
         if (COMET_CACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$this->isAutoCacheEngine())) {
             if (preg_match(COMET_CACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
-                return $this->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_AGENTS);
+                return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_AGENTS);
             }
         }
         if (COMET_CACHE_EXCLUDE_REFS && !empty($_REQUEST['_wp_http_referer'])) {
             if (preg_match(COMET_CACHE_EXCLUDE_REFS, stripslashes($_REQUEST['_wp_http_referer']))) {
-                return $this->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
+                return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
             }
         }
         if (COMET_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER'])) {
             if (preg_match(COMET_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) {
-                return $this->maybeSetDebugInfo(NC_DEBUG_EXCLUDED_REFS);
+                return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
             }
         }
         $this->protocol             = $this->isSsl() ? 'https://' : 'http://';
@@ -257,59 +257,59 @@ trait ObUtils {
             return false; // Don't cache an empty buffer.
         }
         if (!isset($GLOBALS[GLOBAL_NS.'_shutdown_flag'])) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_EARLY_BUFFER_TERMINATION);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_EARLY_BUFFER_TERMINATION);
         }
         if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
         }
         if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
         }
         if (defined('DONOTCACHEPAGE')) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
         }
         if (isset($_SERVER['DONOTCACHEPAGE'])) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
         }
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->is_user_logged_in) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LOGGED_IN_USER);
         }
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
         }
         if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
             if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->isLikeUserLoggedIn()) {
                 if (!COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN) {
-                    return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
+                    return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
                 }
             } else { // Use the default debug notice for nonce conflicts.
-                return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_PAGE_CONTAINS_NONCE);
+                return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_PAGE_CONTAINS_NONCE);
             } // An nonce makes the page dynamic; i.e., NOT cache compatible.
         }
         if ($this->is_404 && !COMET_CACHE_CACHE_404_REQUESTS) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_404_REQUEST);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_404_REQUEST);
         }
         if (stripos($cache, '<body id="error-page">') !== false) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_WP_ERROR_PAGE);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
         }
         if (!$this->functionIsPossible('http_response_code')) {
             if (stripos($cache, '<title>database error</title>') !== false) {
-                return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_WP_ERROR_PAGE);
+                return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
             }
         }
         if (!$this->hasACacheableContentType()) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_UNCACHEABLE_CONTENT_TYPE);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_CONTENT_TYPE);
         }
         if (!$this->hasACacheableStatus()) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_UNCACHEABLE_STATUS);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_STATUS);
         }
         if ($this->is_maintenance) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_MAINTENANCE_PLUGIN);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_MAINTENANCE_PLUGIN);
         }
         if ($this->functionIsPossible('zlib_get_coding_type') && zlib_get_coding_type()
             && (!($zlib_oc = ini_get('zlib.output_compression')) || !filter_var($zlib_oc, FILTER_VALIDATE_BOOLEAN))
         ) {
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_OB_ZLIB_CODING_TYPE);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_OB_ZLIB_CODING_TYPE);
         }
         # Lock the cache directory while writes take place here.
 
@@ -337,7 +337,7 @@ trait ObUtils {
                 throw new \Exception(sprintf(__('Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`.', SLUG_TD), $this->cache_file, $this->cache_file_404, COMET_CACHE_DIR));
             }
             $this->cacheUnlock($cache_lock); // Release.
-            return (boolean) $this->maybeSetDebugInfo(NC_DEBUG_1ST_TIME_404_SYMLINK);
+            return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_1ST_TIME_404_SYMLINK);
         }
         /* ------- Otherwise, we need to construct & store a new cache file. ----------------------------------------------- */
 

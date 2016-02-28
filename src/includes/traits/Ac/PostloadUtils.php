@@ -176,7 +176,7 @@ trait PostloadUtils {
         }
         if (!($this->user_token = $this->userToken())) {
             if (!$this->user_login_cookie_expired_or_invalid) {
-                return $this->maybeSetDebugInfo(NC_DEBUG_NO_USER_TOKEN);
+                return $this->maybeSetDebugInfo($this::NC_DEBUG_NO_USER_TOKEN);
             }
         }
         $this->cache_path = $this->buildCachePath($this->protocol.$this->host_token.$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
