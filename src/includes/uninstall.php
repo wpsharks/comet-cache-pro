@@ -6,6 +6,8 @@
  */
 namespace WebSharks\CometCache\Pro;
 
+use WebSharks\CometCache\Pro\Classes;
+
 if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }
@@ -13,7 +15,7 @@ require_once dirname(__FILE__).'/stub.php';
 
 $GLOBALS[GLOBAL_NS.'_uninstalling'] = true; // Needs to be set before calling Conflicts class
 
-if (!Conflicts::check()) {
-    $GLOBALS[GLOBAL_NS] = new Plugin(false);
+if (!Classes\Conflicts::check()) {
+    $GLOBALS[GLOBAL_NS] = new Classes\Plugin(false);
     $GLOBALS[GLOBAL_NS]->uninstall();
 }

@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Classes;
 
+use WebSharks\CometCache\Pro\Classes;
+
 use WebSharks\CometCache\Pro\Traits;
 
 use WebSharks\CometCache\Pro\Interfaces;
@@ -607,7 +609,7 @@ class Plugin extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts, Inter
         if ($this->options['enable'] && $this->options['cdn_enable']) {
             add_action('upgrader_process_complete', array($this, 'bumpCdnInvalidationCounter'), 10, 0);
             if (!is_admin()) { // Don't even bother in the admin area.
-                new CdnFilters(); // Setup CDN filters.
+                new Classes\CdnFilters(); // Setup CDN filters.
             }
         }
         /*[/pro]*/
