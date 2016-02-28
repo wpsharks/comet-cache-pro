@@ -10,7 +10,7 @@ use WebSharks\CometCache\Pro\Interfaces;
  *
  * @since 150422 Rewrite.
  */
-class AdvancedCache extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts
+class AdvancedCache extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts, Interfaces\Shared\CachePathConsts
 {
     use Traits\Shared\BlogUtils;
     use Traits\Shared\CacheDirUtils;
