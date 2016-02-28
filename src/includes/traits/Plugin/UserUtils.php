@@ -34,7 +34,18 @@ trait UserUtils {
         /*[/pro]*/
         return ($can = false);
     }
-$this->currentUserCanWipeCache = $this->currentUserCanClearCache;
+
+    /*
+     * Alias for currentUserCanClearCache()
+     *
+     * @since 151002 Enhancing user permissions.
+     *
+     * @return boolean Current user can clear the cache?
+     */
+    public function currentUserCanWipeCache()
+    {
+        return call_user_func_array([$this, 'currentUserCanClearCache'], func_get_args());
+    }
 
     /*
      * Current user can clear the opcache?
@@ -58,7 +69,18 @@ $this->currentUserCanWipeCache = $this->currentUserCanClearCache;
         }
         return ($can = false);
     }
-$this->currentUserCanWipeOpCache = $this->currentUserCanClearOpCache;
+
+    /*
+     * Alias for currentUserCanClearOpCache()
+     *
+     * @since 151114 Enhancing user permissions.
+     *
+     * @return boolean Current user can clear the opcache?
+     */
+    public function currentUserCanWipeOpCache()
+    {
+        return call_user_func_array([$this, 'currentUserCanClearOpCache'], func_get_args());
+    }
 
     /*
      * Current user can clear the CDN cache?
@@ -82,7 +104,18 @@ $this->currentUserCanWipeOpCache = $this->currentUserCanClearOpCache;
         }
         return ($can = false);
     }
-$this->currentUserCanWipeCdnCache = $this->currentUserCanClearCdnCache;
+
+    /*
+     * Alias for currentUserCanClearCdnCache()
+     *
+     * @since 151114 Enhancing user permissions.
+     *
+     * @return boolean Current user can clear the CDN cache?
+     */
+    public function currentUserCanWipeCdnCache()
+    {
+        return call_user_func_array([$this, 'currentUserCanClearCdnCache'], func_get_args());
+    }
 
     /*
     * Current user can clear expired transients?
@@ -106,7 +139,18 @@ $this->currentUserCanWipeCdnCache = $this->currentUserCanClearCdnCache;
         }
         return ($can = false);
     }
-$this->currentUserCanWipeExpiredTransients = $this->currentUserCanClearExpiredTransients;
+
+    /*
+    * Alias for currentUserCanClearExpiredTransients()
+    *
+    * @since 151220 Enhancing user permissions.
+    *
+    * @return boolean Current user can clear expired transients?
+    */
+    public function currentUserCanWipeExpiredTransients()
+    {
+        return call_user_func_array([$this, 'currentUserCanClearExpiredTransients'], func_get_args());
+    }
 
     /*
      * Current user can see stats?

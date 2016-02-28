@@ -82,7 +82,14 @@ trait HookUtils {
     {
         return call_user_func_array([$this, 'addHook'], func_get_args());
     }
-$this->add_action = $this->addAction; // Back compat.
+
+    /*
+    * Back compat. alias for addAction()
+    */
+    public function add_action()
+    {
+        return call_user_func_array([$this, 'addAction'], func_get_args());
+    }
 
     /*
      * Adds a new filter.
@@ -95,7 +102,14 @@ $this->add_action = $this->addAction; // Back compat.
     {
         return call_user_func_array([$this, 'addHook'], func_get_args());
     }
-$this->add_filter = $this->addFilter; // Back compat.
+
+    /*
+    * Back compat. alias for addFilter()
+    */
+    public function add_filter()
+    {
+        return call_user_func_array([$this, 'addFilter'], func_get_args());
+    }
 
     /*
      * Removes a hook (works with both actions & filters).

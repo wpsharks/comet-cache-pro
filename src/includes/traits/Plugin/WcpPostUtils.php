@@ -111,7 +111,14 @@ trait WcpPostUtils {
         }
         return $counter;
     }
-$this->auto_clear_post_cache = $this->autoClearPostCache; // Back compat.
+
+    /*
+     * Back compat. alias for autoClearPostCache()
+     */
+    public function auto_clear_post_cache()
+    {
+        return call_user_func_array([$this, 'autoClearPostCache'], func_get_args());
+    }
 
     /*
      * Handles post status transitioning.

@@ -57,7 +57,14 @@ trait WcpUtils {
         /*[/pro]*/
         return $counter;
     }
-$this->wipe_cache = $this->wipeCache; // Back compat.
+
+    /*
+    * Back compat. alias for autoClearUserCache()
+    */
+    public function wipe_cache()
+    {
+        return call_user_func_array([$this, 'wipeCache'], func_get_args());
+    }
 
     /*
      * Clears cache files (current blog).
@@ -103,7 +110,14 @@ $this->wipe_cache = $this->wipeCache; // Back compat.
         /*[/pro]*/
         return $counter;
     }
-$this->clear_cache = $this->clearCache; // Back compat.
+
+    /*
+    * Back compat. alias for clearCache()
+    */
+    public function clear_cache()
+    {
+        return call_user_func_array([$this, 'clearCache'], func_get_args());
+    }
 
     /*
      * Purges expired cache files (current blog).
@@ -137,7 +151,14 @@ $this->clear_cache = $this->clearCache; // Back compat.
         /*[/pro]*/
         return $counter;
     }
-$this->purge_cache = $this->purgeCache; // Back compat.
+
+    /*
+    * Back compat. alias for purgeCache()
+    */
+    public function purge_cache()
+    {
+        return call_user_func_array([$this, 'purgeCache'], func_get_args());
+    }
 
     /*
      * Wurges (purges) all expired cache files; like wipe, but expired files only.

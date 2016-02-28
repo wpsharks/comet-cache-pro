@@ -48,7 +48,14 @@ trait WcpUserUtils {
         }
         return $counter;
     }
-$this->auto_clear_user_cache = $this->autoClearUserCache; // Back compat.
+
+    /*
+    * Back compat. alias for autoClearUserCache()
+    */
+    public function auto_clear_user_cache()
+    {
+        return call_user_func_array([$this, 'autoClearUserCache'], func_get_args());
+    }
 
     /*
      * Automatically clears cache files associated with a particular user.
@@ -127,6 +134,13 @@ $this->auto_clear_user_cache = $this->autoClearUserCache; // Back compat.
     {
         $this->autoClearUserCache(get_current_user_id());
     }
-$this->auto_clear_user_cache_cur = $this->autoClearUserCacheCur; // Back compat.
+
+    /*
+    * Back compat. alias for autoClearUserCache()
+    */
+    public function auto_clear_user_cache_cur()
+    {
+        return call_user_func_array([$this, 'autoClearUserCacheCur'], func_get_args());
+    }
 }
 /*[/pro]*/
