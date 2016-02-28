@@ -26,7 +26,7 @@ trait CleanupUtils {
 
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            $dir_stats = DirStats::instance();
+            $dir_stats = Classes\DirStats::instance();
             $dir_stats->forCache(true);
         }
         /*[/pro]*/

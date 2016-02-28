@@ -53,7 +53,7 @@ trait WcpUtils {
 
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            $dir_stats = DirStats::instance();
+            $dir_stats = Classes\DirStats::instance();
             $dir_stats->wipeCache();
         }
         /*[/pro]*/
@@ -106,7 +106,7 @@ trait WcpUtils {
 
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            $dir_stats = DirStats::instance();
+            $dir_stats = Classes\DirStats::instance();
             $dir_stats->clearHostCache();
         }
         /*[/pro]*/
@@ -147,7 +147,7 @@ trait WcpUtils {
         }
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            $dir_stats = DirStats::instance();
+            $dir_stats = Classes\DirStats::instance();
             $dir_stats->clearHostCache();
         }
         /*[/pro]*/
@@ -188,7 +188,7 @@ trait WcpUtils {
         }
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            $dir_stats = DirStats::instance();
+            $dir_stats = Classes\DirStats::instance();
             $dir_stats->wipeCache();
         }
         /*[/pro]*/

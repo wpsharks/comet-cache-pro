@@ -249,7 +249,7 @@ trait ObUtils {
         if (!($phase & PHP_OUTPUT_HANDLER_END)) {
             throw new \Exception(sprintf(__('Unexpected OB phase: `%1$s`.', SLUG_TD), $phase));
         }
-        AdvCacheBackCompat::zenCacheConstants();
+        Classes\AdvCacheBackCompat::zenCacheConstants();
 
         $cache = trim((string) $buffer);
 
