@@ -1,12 +1,14 @@
 <?php
 namespace WebSharks\CometCache\Pro\Classes;
 
+use WebSharks\CometCache\Pro\Interfaces;
+
 /**
  * Comet Cache Plugin.
  *
  * @since 150422 Rewrite.
  */
-class Plugin extends AbsBaseAp
+class Plugin extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts
 {
     /**
      * Enable plugin hooks?

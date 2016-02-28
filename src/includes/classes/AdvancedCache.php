@@ -1,12 +1,14 @@
 <?php
 namespace WebSharks\CometCache\Pro\Classes;
 
+use WebSharks\CometCache\Pro\Interfaces;
+
 /**
  * Advanced cache.
  *
  * @since 150422 Rewrite.
  */
-class AdvancedCache extends AbsBaseAp
+class AdvancedCache extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts
 {
     /**
      * Flagged as `TRUE` if running.
