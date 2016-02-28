@@ -35,8 +35,6 @@ class MenuPageProUpdater extends MenuPage
         echo '   <div class="plugin-menu-page-upsells">'."\n";
         if (current_user_can($this->plugin->cap)) {
             echo '  <a href="'.esc_attr(add_query_arg(urlencode_deep(array('page' => GLOBAL_NS)), self_admin_url('/admin.php'))).'"><i class="si si-cogs"></i> '.__('Options', SLUG_TD).'</a>'."\n";
-            echo '  <a href="'.esc_attr('http://zencache.com/r/zencache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
-            echo '  <a href="'.esc_attr('http://zencache.com/r/zencache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         }
         if (IS_PRO) { // We show these below in the Lite version
             echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
