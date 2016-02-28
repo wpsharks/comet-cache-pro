@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Ac;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait NcDebugUtils {
     /*
      * An array of debug info.

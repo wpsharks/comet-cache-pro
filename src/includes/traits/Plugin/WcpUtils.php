@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpUtils {
     /*
      * Used for temporarily storing the permalink for posts transitioning from

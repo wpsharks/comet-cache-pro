@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpPostUtils {
     /*
      * Automatically clears cache files for a particular post.

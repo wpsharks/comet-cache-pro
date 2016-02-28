@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Ac;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait AbortUtils {
     /*
      * Ignores user aborts; when/if the Auto-Cache Engine is running.

@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Shared;
 
+use WebSharks\CometCache\Pro\Classes;
+
 if (defined(__NAMESPACE__.'\\CACHE_PATH_DEFAULT')) {
     return; // Already defined these.
 }

@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Ac;
 
+use WebSharks\CometCache\Pro\Classes;
+
 if (defined(__NAMESPACE__.'\\NC_DEBUG_PHP_SAPI_CLI')) {
     return; // Already defined these.
 }

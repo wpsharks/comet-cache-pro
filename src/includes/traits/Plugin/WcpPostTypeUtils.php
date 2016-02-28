@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpPostTypeUtils {
     /*
      * Automatically clears cache files for a custom post type archive view.

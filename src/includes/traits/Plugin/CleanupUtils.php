@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait CleanupUtils {
     /*
      * Runs cleanup routine via CRON job.

@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpFeedUtils {
     /*
      * Automatically clears cache files related to XML feeds.

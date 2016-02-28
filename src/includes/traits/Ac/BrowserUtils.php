@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Ac;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait BrowserUtils {
     /*
     * Sends no-cache headers (if applicable).

@@ -2,6 +2,8 @@
 /*[pro strip-from="lite"]*/
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpS2cleanUtils {
     /*
      * Wipe (i.e., reset) s2Clean cache.

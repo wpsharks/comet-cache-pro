@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpUpdaterUtils {
     /*
      * Automatically clears all cache files for current blog when WordPress core, or an active component, is upgraded.

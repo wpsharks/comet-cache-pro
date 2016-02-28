@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait DirUtils {
     /*
      * This constructs an absolute server directory path (no trailing slashes);

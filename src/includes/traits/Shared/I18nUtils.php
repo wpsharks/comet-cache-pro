@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Shared;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait I18nUtils {
     /*
      * `X file` or `X files`, translated w/ singlular/plural context.

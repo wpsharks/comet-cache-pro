@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait WcpJetpackUtils {
     /*
      * Automatically clears all cache files for current blog when JetPack Custom CSS is saved.

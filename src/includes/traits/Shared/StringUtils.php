@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Shared;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait StringUtils {
     /*
      * Clips string(s) to X chars deeply.

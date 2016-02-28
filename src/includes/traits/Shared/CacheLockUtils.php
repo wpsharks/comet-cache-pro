@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Shared;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait CacheLockUtils {
     /*
      * Get an exclusive lock on the cache directory.

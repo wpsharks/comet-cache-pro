@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Ac;
 
+use WebSharks\CometCache\Pro\Classes;
+
 trait PostloadUtils {
     /*
      * Have we caught the main WP loaded being loaded yet?
