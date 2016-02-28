@@ -144,18 +144,18 @@ trait HttpUtils
         $has_property_is_404      = property_exists($this, 'is_404');
         $has_property_http_status = property_exists($this, 'http_status');
 
-        if ($has_property_is_404 && $this->{'is_404'}) {
+        if ($has_property_is_404 && $this->is_404) {
             $status = 404; // WordPress said so.
         } elseif ($this->functionIsPossible('http_response_code') && ($code = (integer) http_response_code())) {
             $status = (integer) $code; // {@link \http_response_code()} available since PHP v5.4.
-        } elseif ($has_property_http_status && (integer) $this->{'http_status'}) {
-            $status = (integer) $this->{'http_status'}; // {@link \status_header()} filter.
+        } elseif ($has_property_http_status && (integer) $this->http_status) {
+            $status = (integer) $this->http_status; // {@link \status_header()} filter.
     }
         if ($status && $has_property_http_status) {
-            $this->{'http_status'} = $status; // Prefer over {@link status_header()}.
+            $this->http_status = $status; // Prefer over {@link status_header()}.
         }
         if ($status === 404 && $has_property_is_404) {
-            $this->{'is_404'} = true; // Prefer over {@link is_404()}.
+            $this->is_404 = true; // Prefer over {@link is_404()}.
         }
         return $status;
     }
