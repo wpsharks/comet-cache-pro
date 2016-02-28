@@ -313,7 +313,6 @@ trait CachePathUtils {
         $uris              = trim((string) $uris);
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
 
-        $_this = $this; // Reference for the closure below.
         $flags = $this::CACHE_PATH_ALLOW_WILDCARDS | $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_HOST
                  | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
 
@@ -324,7 +323,7 @@ trait CachePathUtils {
 
         foreach ($uri_patterns as $_key => &$_uri_pattern) {
             if (($_uri_pattern = trim($_uri_pattern, '^$'))) {
-                $_cache_path          = $_this->buildCachePath($host_url.'/'.trim($_uri_pattern, '/'), '', '', $flags);
+                $_cache_path          = $this->buildCachePath($host_url.'/'.trim($_uri_pattern, '/'), '', '', $flags);
                 $_relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
                 $_uri_pattern         = $this->wdRegexToActualRegexFrag($_relative_cache_path);
             }

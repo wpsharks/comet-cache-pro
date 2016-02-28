@@ -216,13 +216,12 @@ trait PostloadUtils {
         if (empty($this->postload['filter_status_header'])) {
             return; // Nothing to do in this case.
         }
-        $_this = $this; // Reference needed below.
 
         add_filter(
             'status_header',
-            function ($status_header, $status_code) use ($_this) {
+            function ($status_header, $status_code) {
                 if ($status_code > 0) {
-                    $_this->http_status = (integer) $status_code;
+                    $this->http_status = (integer) $status_code;
                 }
                 return $status_header;
             },
@@ -282,12 +281,11 @@ trait PostloadUtils {
         $this->is_user_logged_in  = is_user_logged_in();
         $this->content_url        = rtrim(content_url(), '/');
         $this->is_maintenance     = $this->functionIsPossible('is_maintenance') && is_maintenance();
-        $_this                    = $this; // Reference for the closure below.
 
         add_action(
             'template_redirect',
-            function () use ($_this) {
-                $_this->is_a_wp_content_type = $_this->is_404 || $_this->is_maintenance
+            function () {
+                $this->is_a_wp_content_type = $this->is_404 || $this->is_maintenance
                                                || is_front_page() // See <https://core.trac.wordpress.org/ticket/21602#comment:7>
                                                || is_home() || is_singular() || is_archive() || is_post_type_archive() || is_tax() || is_search() || is_feed();
             },
