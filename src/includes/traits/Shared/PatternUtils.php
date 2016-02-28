@@ -19,7 +19,7 @@ trait PatternUtils {
         $patterns = (string) $patterns;
 
         if (($patterns = preg_split('/['."\r\n".']+/', $patterns, -1, PREG_SPLIT_NO_EMPTY))) {
-            $regex = '/(?:'.implode('|', array_map($this->wdRegexToActualRegexFrag, $patterns)).')/i';
+            $regex = '/(?:'.implode('|', array_map([$this, 'wdRegexToActualRegexFrag'], $patterns)).')/i';
         }
         return $regex;
     }
