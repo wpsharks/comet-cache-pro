@@ -69,16 +69,6 @@ class AdvancedCache extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts
     {
         parent::__construct();
 
-        $closures_dir = dirname(dirname(__FILE__)).'/closures/Ac';
-        $self         = $this; // Reference for closures.
-
-        foreach (scandir($closures_dir) as $_closure) {
-            if (substr($_closure, -4) === '.php') {
-                require $closures_dir.'/'.$_closure;
-            }
-        }
-        unset($_closure); // Housekeeping.
-
         if (!defined('WP_CACHE') || !WP_CACHE || !COMET_CACHE_ENABLE) {
             return; // Not enabled.
         }

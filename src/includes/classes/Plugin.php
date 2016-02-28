@@ -213,17 +213,7 @@ class Plugin extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts, Inter
     {
         parent::__construct();
 
-        $closures_dir = dirname(dirname(__FILE__)).'/closures/Plugin';
-        $self         = $this; // Reference for closures.
-
-        foreach (scandir($closures_dir) as $_closure) {
-            if (substr($_closure, -4) === '.php') {
-                require $closures_dir.'/'.$_closure;
-            }
-        }
-        unset($_closure); // Housekeeping.
         /* -------------------------------------------------------------- */
-
         if (!($this->enable_hooks = (boolean) $enable_hooks)) {
             return; // Stop here; construct without hooks.
         }

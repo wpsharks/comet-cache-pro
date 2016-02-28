@@ -16,16 +16,6 @@ abstract class AbsBaseAp extends AbsBase
     public function __construct()
     {
         parent::__construct();
-
-        $closures_dir = dirname(dirname(__FILE__)).'/closures/Shared';
-        $self         = $this; // Reference for closures.
-
-        foreach (scandir($closures_dir) as $_closure) {
-            if (substr($_closure, -4) === '.php') {
-                require $closures_dir.'/'.$_closure;
-            }
-        }
-        unset($_closure); // Housekeeping.
     }
 
     /**
