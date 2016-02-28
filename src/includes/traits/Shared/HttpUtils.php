@@ -149,7 +149,7 @@ trait HttpUtils
         } elseif ($this->functionIsPossible('http_response_code') && ($code = (integer) http_response_code())) {
             $status = (integer) $code; // {@link \http_response_code()} available since PHP v5.4.
         } elseif ($has_property_http_status && (integer) $this->{'http_status'}) {
-            $status = (integer) $this->{'http_status'} // {@link \status_header()} filter.
+            $status = (integer) $this->{'http_status'}; // {@link \status_header()} filter.
     }
         if ($status && $has_property_http_status) {
             $this->{'http_status'} = $status; // Prefer over {@link status_header()}.

@@ -181,7 +181,7 @@ trait ObUtils {
         $this->version_salt = ''; // Initialize the version salt.
         /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
         $this->version_salt = COMET_CACHE_VERSION_SALT; // Initialize the version salt. /*[/pro]*/
-        $this->version_salt = $this->applyFilters(get_class($self).'__version_salt', $this->version_salt);
+        $this->version_salt = $this->applyFilters(get_class($this).'__version_salt', $this->version_salt);
         $this->version_salt = $this->applyFilters(GLOBAL_NS.'_version_salt', $this->version_salt);
 
         $this->cache_path = $this->buildCachePath($this->protocol.$this->host_token.$_SERVER['REQUEST_URI'], '', $this->version_salt);
@@ -220,7 +220,7 @@ trait ObUtils {
             }
             exit($cache); // Exit with cache contents.
         } else {
-            ob_start([$self, 'outputBufferCallbackHandler']);
+            ob_start([$this, 'outputBufferCallbackHandler']);
         }
         return; // Return value not applicable.
     }

@@ -12,7 +12,7 @@ trait AcPluginUtils {
         if (!is_dir(WP_CONTENT_DIR.'/ac-plugins')) {
             return; // Nothing to do here.
         }
-        $GLOBALS[GLOBAL_NS.'_advanced_cache']  = $self; // Self reference.
+        $GLOBALS[GLOBAL_NS.'_advanced_cache']  = $this; // Self reference.
         $GLOBALS[GLOBAL_NS.'__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
         if (!isset($GLOBALS['zencache__advanced_cache'])) {
             $GLOBALS['zencache_advanced_cache']  = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];

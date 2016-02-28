@@ -37,7 +37,7 @@ trait ConditionalUtils {
      */
     public function isAdvancedCache()
     {
-        return $self instanceof AdvancedCache;
+        return $this instanceof AdvancedCache;
     }
 
     /*
@@ -49,7 +49,7 @@ trait ConditionalUtils {
      */
     public function isPlugin()
     {
-        return $self instanceof Plugin;
+        return $this instanceof Plugin;
     }
 
     /*

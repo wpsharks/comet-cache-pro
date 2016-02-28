@@ -75,17 +75,17 @@ trait MenuPageUtils {
         $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
         $icon = 'data:image/svg+xml;base64,'.base64_encode($this->colorSvgMenuIcon($icon));
 
-        add_menu_page(NAME.(IS_PRO ? ' Pro' : ''), NAME.(IS_PRO ? ' Pro' : ''), $this->network_cap, GLOBAL_NS, [$self, 'menuPageOptions'], $icon);
-        add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $this->network_cap, GLOBAL_NS, [$self, 'menuPageOptions']);
+        add_menu_page(NAME.(IS_PRO ? ' Pro' : ''), NAME.(IS_PRO ? ' Pro' : ''), $this->network_cap, GLOBAL_NS, [$this, 'menuPageOptions'], $icon);
+        add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $this->network_cap, GLOBAL_NS, [$this, 'menuPageOptions']);
 
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $this->network_cap, GLOBAL_NS.'-stats', [$self, 'menuPageStats']);
+            add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $this->network_cap, GLOBAL_NS.'-stats', [$this, 'menuPageStats']);
         } /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
         if (current_user_can($this->network_cap)) {
-            add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $this->update_cap, GLOBAL_NS.'-pro-updater', [$self, 'menuPageProUpdater']);
+            add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $this->update_cap, GLOBAL_NS.'-pro-updater', [$this, 'menuPageProUpdater']);
         } /*[/pro]*/
     }
 
@@ -104,16 +104,16 @@ trait MenuPageUtils {
         $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
         $icon = 'data:image/svg+xml;base64,'.base64_encode($this->colorSvgMenuIcon($icon));
 
-        add_menu_page(NAME.(IS_PRO ? ' Pro' : ''), NAME.(IS_PRO ? ' Pro' : ''), $this->cap, GLOBAL_NS, [$self, 'menuPageOptions'], $icon);
-        add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $this->cap, GLOBAL_NS, [$self, 'menuPageOptions']);
+        add_menu_page(NAME.(IS_PRO ? ' Pro' : ''), NAME.(IS_PRO ? ' Pro' : ''), $this->cap, GLOBAL_NS, [$this, 'menuPageOptions'], $icon);
+        add_submenu_page(GLOBAL_NS, __('Plugin Options', SLUG_TD), __('Plugin Options', SLUG_TD), $this->cap, GLOBAL_NS, [$this, 'menuPageOptions']);
 
         /*[pro strip-from="lite"]*/
         if ($this->options['stats_enable']) {
-            add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $this->cap, GLOBAL_NS.'-stats', [$self, 'menuPageStats']);
+            add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $this->cap, GLOBAL_NS.'-stats', [$this, 'menuPageStats']);
         } /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
-        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $this->update_cap, GLOBAL_NS.'-pro-updater', [$self, 'menuPageProUpdater']);
+        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $this->update_cap, GLOBAL_NS.'-pro-updater', [$this, 'menuPageProUpdater']);
         /*[/pro]*/
     }
 

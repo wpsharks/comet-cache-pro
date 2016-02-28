@@ -80,7 +80,7 @@ trait HookUtils {
      */
     public function addAction()
     {
-        return call_user_func_array([$self, 'addHook'], func_get_args());
+        return call_user_func_array([$this, 'addHook'], func_get_args());
     }
 $this->add_action = $this->addAction; // Back compat.
 
@@ -93,7 +93,7 @@ $this->add_action = $this->addAction; // Back compat.
      */
     public function addFilter()
     {
-        return call_user_func_array([$self, 'addHook'], func_get_args());
+        return call_user_func_array([$this, 'addHook'], func_get_args());
     }
 $this->add_filter = $this->addFilter; // Back compat.
 
@@ -137,7 +137,7 @@ $this->add_filter = $this->addFilter; // Back compat.
      */
     public function removeAction()
     {
-        return call_user_func_array([$self, 'removeHook'], func_get_args());
+        return call_user_func_array([$this, 'removeHook'], func_get_args());
     }
 
     /*
@@ -149,7 +149,7 @@ $this->add_filter = $this->addFilter; // Back compat.
      */
     public function removeFilter()
     {
-        return call_user_func_array([$self, 'removeHook'], func_get_args());
+        return call_user_func_array([$this, 'removeHook'], func_get_args());
     }
 
     /*

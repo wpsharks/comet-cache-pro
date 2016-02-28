@@ -198,7 +198,7 @@ trait PostloadUtils {
             }
             exit($cache); // Exit with cache contents.
         } else {
-            ob_start([$self, 'outputBufferCallbackHandler']);
+            ob_start([$this, 'outputBufferCallbackHandler']);
         }
         return; // Only for IDEs not to complain here.
     }
@@ -214,13 +214,13 @@ trait PostloadUtils {
         if (empty($this->postload['filter_status_header'])) {
             return; // Nothing to do in this case.
         }
-        $_self = $self; // Reference needed below.
+        $_this = $this; // Reference needed below.
 
         add_filter(
             'status_header',
-            function ($status_header, $status_code) use ($_self) {
+            function ($status_header, $status_code) use ($_this) {
                 if ($status_code > 0) {
-                    $_self->http_status = (integer) $status_code;
+                    $_this->http_status = (integer) $status_code;
                 }
                 return $status_header;
             },
@@ -248,7 +248,7 @@ trait PostloadUtils {
         if (strcasecmp(PHP_SAPI, 'cli') === 0) {
             return; // Let's not run the risk here.
         }
-        add_action('shutdown', [$self, 'maybeEchoNcDebugInfo'], PHP_INT_MAX - 10);
+        add_action('shutdown', [$this, 'maybeEchoNcDebugInfo'], PHP_INT_MAX - 10);
     }
 
     /*
@@ -280,12 +280,12 @@ trait PostloadUtils {
         $this->is_user_logged_in  = is_user_logged_in();
         $this->content_url        = rtrim(content_url(), '/');
         $this->is_maintenance     = $this->functionIsPossible('is_maintenance') && is_maintenance();
-        $_self                    = $self; // Reference for the closure below.
+        $_this                    = $this; // Reference for the closure below.
 
         add_action(
             'template_redirect',
-            function () use ($_self) {
-                $_self->is_a_wp_content_type = $_self->is_404 || $_self->is_maintenance
+            function () use ($_this) {
+                $_this->is_a_wp_content_type = $_this->is_404 || $_this->is_maintenance
                                                || is_front_page() // See <https://core.trac.wordpress.org/ticket/21602#comment:7>
                                                || is_home() || is_singular() || is_archive() || is_post_type_archive() || is_tax() || is_search() || is_feed();
             },
