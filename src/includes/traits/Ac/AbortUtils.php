@@ -1,15 +1,18 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Ac;
 
-/*
- * Ignores user aborts; when/if the Auto-Cache Engine is running.
- *
- * @since 150422 Rewrite.
- */
-$self->maybeIgnoreUserAbort = function () use ($self) {
-    /*[pro strip-from="lite"]*/
-    if ($self->isAutoCacheEngine()) {
-        ignore_user_abort(true);
+trait AbortUtils {
+    /*
+     * Ignores user aborts; when/if the Auto-Cache Engine is running.
+     *
+     * @since 150422 Rewrite.
+     */
+    public function maybeIgnoreUserAbort()
+    {
+        /*[pro strip-from="lite"]*/
+        if ($this->isAutoCacheEngine()) {
+            ignore_user_abort(true);
+        }
+        /*[/pro]*/
     }
-    /*[/pro]*/
-};
+}

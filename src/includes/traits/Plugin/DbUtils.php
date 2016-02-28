@@ -1,13 +1,16 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
-/*
- * WordPress database instance.
- *
- * @since 150422 Rewrite.
- *
- * @return \wpdb Reference for IDEs.
- */
-$self->wpdb = function () use ($self) {
-    return $GLOBALS['wpdb'];
-};
+trait DbUtils {
+    /*
+     * WordPress database instance.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @return \wpdb Reference for IDEs.
+     */
+    public function wpdb()
+    {
+        return $GLOBALS['wpdb'];
+    }
+}

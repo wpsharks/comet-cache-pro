@@ -1,70 +1,76 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
-/*
- * Get plugin options.
- *
- * @since 151002 Improving multisite compat.
- *
- * @return array Plugin options.
- */
-$self->getOptions = function () use ($self) {
-    if (!($options = $self->options)) { // Not defined yet?
-        if (!is_array($options = get_site_option(GLOBAL_NS.'_options'))) {
-            $options = array(); // Force array.
+trait OptionUtils {
+    /*
+     * Get plugin options.
+     *
+     * @since 151002 Improving multisite compat.
+     *
+     * @return array Plugin options.
+     */
+    public function getOptions()
+    {
+        if (!($options = $this->options)) { // Not defined yet?
+            if (!is_array($options = get_site_option(GLOBAL_NS.'_options'))) {
+                $options = []; // Force array.
+            }
+            if (!$options && is_array($zencache_options = get_site_option('zencache_options'))) {
+                $options                = $zencache_options; // Old ZenCache options.
+                $options['crons_setup'] = $this->default_options['crons_setup'];
+            }
         }
-        if (!$options && is_array($zencache_options = get_site_option('zencache_options'))) {
-            $options                = $zencache_options; // Old ZenCache options.
-            $options['crons_setup'] = $this->default_options['crons_setup'];
+        $this->options = array_merge($this->default_options, $options);
+        $this->options = $this->applyWpFilters(GLOBAL_NS.'_options', $this->options);
+        $this->options = array_intersect_key($this->options, $this->default_options);
+
+        foreach ($this->options as $_key => &$_value) {
+            $_value = trim((string) $_value); // Force strings.
         }
+        unset($_key, $_value); // Housekeeping.
+
+        $this->options['base_dir'] = trim($this->options['base_dir'], '\\/'." \t\n\r\0\x0B");
+        if (!$this->options['base_dir'] || strpos(basename($this->options['base_dir']), 'wp-') === 0) {
+            $this->options['base_dir'] = $this->default_options['base_dir'];
+        }
+        return $this->options; // Plugin options.
     }
-    $self->options = array_merge($self->default_options, $options);
-    $self->options = $self->applyWpFilters(GLOBAL_NS.'_options', $self->options);
-    $self->options = array_intersect_key($self->options, $self->default_options);
 
-    foreach ($self->options as $_key => &$_value) {
-        $_value = trim((string) $_value); // Force strings.
-    } unset($_key, $_value); // Housekeeping.
+    /*
+     * Update plugin options.
+     *
+     * @since 151002 Improving multisite compat.
+     *
+     * @param array $options One or more new options.
+     *
+     * @return array Plugin options after update.
+     */
+    public function updateOptions(array $options)
+    {
+        if (!IS_PRO) { // Do not save Pro option keys.
+            $options = array_diff_key($options, $this->pro_only_option_keys);
+        }
+        if (!empty($options['base_dir']) && $options['base_dir'] !== $this->options['base_dir']) {
+            $this->tryErasingAllFilesDirsIn($this->wpContentBaseDirTo(''));
+        }
+        $this->options = array_merge($this->default_options, $this->options, $options);
+        $this->options = array_intersect_key($this->options, $this->default_options);
+        update_site_option(GLOBAL_NS.'_options', $this->options);
 
-    $self->options['base_dir'] = trim($self->options['base_dir'], '\\/'." \t\n\r\0\x0B");
-    if (!$self->options['base_dir'] || strpos(basename($self->options['base_dir']), 'wp-') === 0) {
-        $self->options['base_dir'] = $self->default_options['base_dir'];
+        return $this->getOptions();
     }
-    return $self->options; // Plugin options.
-};
 
-/*
- * Update plugin options.
- *
- * @since 151002 Improving multisite compat.
- *
- * @param array $options One or more new options.
- *
- * @return array Plugin options after update.
- */
-$self->updateOptions = function (array $options) use ($self) {
-    if (!IS_PRO) { // Do not save Pro option keys.
-        $options = array_diff_key($options, $self->pro_only_option_keys);
+    /*
+     * Restore default plugin options.
+     *
+     * @since 151002 Improving multisite compat.
+     *
+     * @return array Plugin options after update.
+     */
+    public function restoreDefaultOptions()
+    {
+        delete_site_option(GLOBAL_NS.'_options'); // Force restore.
+        $this->options = $this->default_options; // In real-time.
+        return $this->getOptions();
     }
-    if (!empty($options['base_dir']) && $options['base_dir'] !== $self->options['base_dir']) {
-        $self->tryErasingAllFilesDirsIn($self->wpContentBaseDirTo(''));
-    }
-    $self->options = array_merge($self->default_options, $self->options, $options);
-    $self->options = array_intersect_key($self->options, $self->default_options);
-    update_site_option(GLOBAL_NS.'_options', $self->options);
-
-    return $self->getOptions();
-};
-
-/*
- * Restore default plugin options.
- *
- * @since 151002 Improving multisite compat.
- *
- * @return array Plugin options after update.
- */
-$self->restoreDefaultOptions = function () use ($self) {
-    delete_site_option(GLOBAL_NS.'_options'); // Force restore.
-    $self->options = $self->default_options; // In real-time.
-    return $self->getOptions();
-};
+}

@@ -1,136 +1,143 @@
 <?php
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
-/*
- * Current user can clear the cache?
- *
- * @since 151002 Enhancing user permissions.
- *
- * @return boolean Current user can clear the cache?
- */
-$self->currentUserCanClearCache = function () use ($self) {
-    if (!is_null($can = &$self->cacheKey('currentUserCanClearCache'))) {
-        return $can; // Already cached this.
-    }
-    $is_multisite = is_multisite();
-
-    if (!$is_multisite && current_user_can($self->cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    if ($is_multisite && current_user_can($self->network_cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    /*[pro strip-from="lite"]*/
-    if (current_user_can($self->clear_min_cap)) { // Might be a privileged user?
-        foreach (preg_split('/,+/', $self->options['cache_clear_admin_bar_roles_caps'], -1, PREG_SPLIT_NO_EMPTY) as $_role_cap) {
-            if ($_role_cap && current_user_can($_role_cap)) {
-                return ($can = true); // Privileged user.
-            }
+trait UserUtils {
+    /*
+     * Current user can clear the cache?
+     *
+     * @since 151002 Enhancing user permissions.
+     *
+     * @return boolean Current user can clear the cache?
+     */
+    public function currentUserCanClearCache()
+    {
+        if (!is_null($can = &$this->cacheKey('currentUserCanClearCache'))) {
+            return $can; // Already cached this.
         }
-        unset($_role_cap); // Housekeeping.
-    }
-    /*[/pro]*/
-    return ($can = false);
-};
-$self->currentUserCanWipeCache = $self->currentUserCanClearCache;
+        $is_multisite = is_multisite();
 
-/*
- * Current user can clear the opcache?
- *
- * @since 151114 Enhancing user permissions.
- *
- * @return boolean Current user can clear the opcache?
- */
-$self->currentUserCanClearOpCache = function () use ($self) {
-    if (!is_null($can = &$self->cacheKey('currentUserCanClearOpCache'))) {
-        return $can; // Already cached this.
-    }
-    $is_multisite = is_multisite();
-
-    if (!$is_multisite && current_user_can($self->cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    if ($is_multisite && current_user_can($self->network_cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    return ($can = false);
-};
-$self->currentUserCanWipeOpCache = $self->currentUserCanClearOpCache;
-
-/*
- * Current user can clear the CDN cache?
- *
- * @since 151114 Enhancing user permissions.
- *
- * @return boolean Current user can clear the CDN cache?
- */
-$self->currentUserCanClearCdnCache = function () use ($self) {
-    if (!is_null($can = &$self->cacheKey('currentUserCanClearCdnCache'))) {
-        return $can; // Already cached this.
-    }
-    $is_multisite = is_multisite();
-
-    if (!$is_multisite && current_user_can($self->cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    if ($is_multisite && current_user_can($self->network_cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    return ($can = false);
-};
-$self->currentUserCanWipeCdnCache = $self->currentUserCanClearCdnCache;
-
-/*
-* Current user can clear expired transients?
-*
-* @since 151220 Enhancing user permissions.
-*
-* @return boolean Current user can clear expired transients?
-*/
-$self->currentUserCanClearExpiredTransients = function () use ($self) {
-    if (!is_null($can = &$self->cacheKey('currentUserCanClearExpiredTransients'))) {
-        return $can; // Already cached this.
-    }
-    $is_multisite = is_multisite();
-
-    if (!$is_multisite && current_user_can($self->cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    if ($is_multisite && current_user_can($self->network_cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    return ($can = false);
-};
-$self->currentUserCanWipeExpiredTransients = $self->currentUserCanClearExpiredTransients;
-
-/*
- * Current user can see stats?
- *
- * @since 151002 Enhancing user permissions.
- *
- * @return boolean Current user can see stats?
- */
-$self->currentUserCanSeeStats = function () use ($self) {
-    if (!is_null($can = &$self->cacheKey('currentUserCanSeeStats'))) {
-        return $can; // Already cached this.
-    }
-    $is_multisite = is_multisite();
-
-    if (!$is_multisite && current_user_can($self->cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    if ($is_multisite && current_user_can($self->network_cap)) {
-        return ($can = true); // Plugin admin.
-    }
-    /*[pro strip-from="lite"]*/
-    if (current_user_can($self->stats_min_cap)) { // Might be a privileged user?
-        foreach (preg_split('/,+/', $self->options['stats_admin_bar_roles_caps'], -1, PREG_SPLIT_NO_EMPTY) as $_role_cap) {
-            if ($_role_cap && current_user_can($_role_cap)) {
-                return ($can = true); // Privileged user.
-            }
+        if (!$is_multisite && current_user_can($this->cap)) {
+            return ($can = true); // Plugin admin.
         }
-        unset($_role_cap); // Housekeeping.
+        if ($is_multisite && current_user_can($this->network_cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        /*[pro strip-from="lite"]*/
+        if (current_user_can($this->clear_min_cap)) { // Might be a privileged user?
+            foreach (preg_split('/,+/', $this->options['cache_clear_admin_bar_roles_caps'], -1, PREG_SPLIT_NO_EMPTY) as $_role_cap) {
+                if ($_role_cap && current_user_can($_role_cap)) {
+                    return ($can = true); // Privileged user.
+                }
+            }
+            unset($_role_cap); // Housekeeping.
+        }
+        /*[/pro]*/
+        return ($can = false);
     }
-    /*[/pro]*/
-    return ($can = false);
-};
+$this->currentUserCanWipeCache = $this->currentUserCanClearCache;
+
+    /*
+     * Current user can clear the opcache?
+     *
+     * @since 151114 Enhancing user permissions.
+     *
+     * @return boolean Current user can clear the opcache?
+     */
+    public function currentUserCanClearOpCache()
+    {
+        if (!is_null($can = &$this->cacheKey('currentUserCanClearOpCache'))) {
+            return $can; // Already cached this.
+        }
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite && current_user_can($this->cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        if ($is_multisite && current_user_can($this->network_cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        return ($can = false);
+    }
+$this->currentUserCanWipeOpCache = $this->currentUserCanClearOpCache;
+
+    /*
+     * Current user can clear the CDN cache?
+     *
+     * @since 151114 Enhancing user permissions.
+     *
+     * @return boolean Current user can clear the CDN cache?
+     */
+    public function currentUserCanClearCdnCache()
+    {
+        if (!is_null($can = &$this->cacheKey('currentUserCanClearCdnCache'))) {
+            return $can; // Already cached this.
+        }
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite && current_user_can($this->cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        if ($is_multisite && current_user_can($this->network_cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        return ($can = false);
+    }
+$this->currentUserCanWipeCdnCache = $this->currentUserCanClearCdnCache;
+
+    /*
+    * Current user can clear expired transients?
+    *
+    * @since 151220 Enhancing user permissions.
+    *
+    * @return boolean Current user can clear expired transients?
+    */
+    public function currentUserCanClearExpiredTransients()
+    {
+        if (!is_null($can = &$this->cacheKey('currentUserCanClearExpiredTransients'))) {
+            return $can; // Already cached this.
+        }
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite && current_user_can($this->cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        if ($is_multisite && current_user_can($this->network_cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        return ($can = false);
+    }
+$this->currentUserCanWipeExpiredTransients = $this->currentUserCanClearExpiredTransients;
+
+    /*
+     * Current user can see stats?
+     *
+     * @since 151002 Enhancing user permissions.
+     *
+     * @return boolean Current user can see stats?
+     */
+    public function currentUserCanSeeStats()
+    {
+        if (!is_null($can = &$this->cacheKey('currentUserCanSeeStats'))) {
+            return $can; // Already cached this.
+        }
+        $is_multisite = is_multisite();
+
+        if (!$is_multisite && current_user_can($this->cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        if ($is_multisite && current_user_can($this->network_cap)) {
+            return ($can = true); // Plugin admin.
+        }
+        /*[pro strip-from="lite"]*/
+        if (current_user_can($this->stats_min_cap)) { // Might be a privileged user?
+            foreach (preg_split('/,+/', $this->options['stats_admin_bar_roles_caps'], -1, PREG_SPLIT_NO_EMPTY) as $_role_cap) {
+                if ($_role_cap && current_user_can($_role_cap)) {
+                    return ($can = true); // Privileged user.
+                }
+            }
+            unset($_role_cap); // Housekeeping.
+        }
+        /*[/pro]*/
+        return ($can = false);
+    }
+}
