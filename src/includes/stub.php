@@ -27,6 +27,17 @@ define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
 define(__NAMESPACE__.'\\PLUGIN_FILE', ${__FILE__}['plugin']);
 define(__NAMESPACE__.'\\IS_PRO', ${__FILE__}['is_pro']);
 
+foreach (['Classes', 'Traits\\Shared', 'Traits\\Ac', 'Traits\\Plugin', 'Interfaces\\Shared'] as ${__FILE__}['_sub_namespace']) {
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\SHORT_NAME', SHORT_NAME);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\NAME', NAME);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\DOMAIN', DOMAIN);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\GLOBAL_NS', GLOBAL_NS);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\SLUG_TD', SLUG_TD);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\VERSION', VERSION);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\PLUGIN_FILE', PLUGIN_FILE);
+    define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\IS_PRO', IS_PRO);
+}
+
 unset(${__FILE__}); // Housekeeping.
 
 // Fixes PHP Fatal error with upgrades from v160211
