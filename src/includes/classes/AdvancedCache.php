@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Classes;
 
+use WebSharks\CometCache\Pro\Traits;
+
 use WebSharks\CometCache\Pro\Interfaces;
 
 /**
@@ -10,6 +12,36 @@ use WebSharks\CometCache\Pro\Interfaces;
  */
 class AdvancedCache extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts
 {
+    use Traits\Shared\BlogUtils;
+    use Traits\Shared\CacheDirUtils;
+    use Traits\Shared\CacheLockUtils;
+    use Traits\Shared\CachePathUtils;
+    use Traits\Shared\ConditionalUtils;
+    use Traits\Shared\DomainMappingUtils;
+    use Traits\Shared\EscapeUtils;
+    use Traits\Shared\FsUtils;
+    use Traits\Shared\HookUtils;
+    use Traits\Shared\HttpUtils;
+    use Traits\Shared\I18nUtils;
+    use Traits\Shared\IpAddrUtils;
+    use Traits\Shared\PatternUtils;
+    use Traits\Shared\ReplaceUtils;
+    use Traits\Shared\ServerUtils;
+    use Traits\Shared\StringUtils;
+    use Traits\Shared\SysUtils;
+    use Traits\Shared\TokenUtils;
+    use Traits\Shared\TrimUtils;
+    use Traits\Shared\UrlUtils;
+
+    use Traits\Ac\AbortUtils;
+    use Traits\Ac\AcPluginUtils;
+    use Traits\Ac\BrowserUtils;
+    use Traits\Ac\HtmlCUtils;
+    use Traits\Ac\NcDebugUtils;
+    use Traits\Ac\ObUtils;
+    use Traits\Ac\PostloadUtils;
+    use Traits\Ac\ShutdownUtils;
+
     /**
      * Flagged as `TRUE` if running.
      *

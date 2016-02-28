@@ -1,6 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Classes;
 
+use WebSharks\CometCache\Pro\Traits;
+
 use WebSharks\CometCache\Pro\Interfaces;
 
 /**
@@ -10,6 +12,71 @@ use WebSharks\CometCache\Pro\Interfaces;
  */
 class Plugin extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts
 {
+    use Traits\Shared\BlogUtils;
+    use Traits\Shared\CacheDirUtils;
+    use Traits\Shared\CacheLockUtils;
+    use Traits\Shared\CachePathUtils;
+    use Traits\Shared\ConditionalUtils;
+    use Traits\Shared\DomainMappingUtils;
+    use Traits\Shared\EscapeUtils;
+    use Traits\Shared\FsUtils;
+    use Traits\Shared\HookUtils;
+    use Traits\Shared\HttpUtils;
+    use Traits\Shared\I18nUtils;
+    use Traits\Shared\IpAddrUtils;
+    use Traits\Shared\PatternUtils;
+    use Traits\Shared\ReplaceUtils;
+    use Traits\Shared\ServerUtils;
+    use Traits\Shared\StringUtils;
+    use Traits\Shared\SysUtils;
+    use Traits\Shared\TokenUtils;
+    use Traits\Shared\TrimUtils;
+    use Traits\Shared\UrlUtils;
+
+    use Traits\Plugin\ActionUtils;
+    use Traits\Plugin\AdminBarUtils;
+    use Traits\Plugin\AutoCacheUtils;
+    use Traits\Plugin\BbPressUtils;
+    use Traits\Plugin\CdnUtils;
+    use Traits\Plugin\CleanupUtils;
+    use Traits\Plugin\CondUtils;
+    use Traits\Plugin\CronUtils;
+    use Traits\Plugin\DbUtils;
+    use Traits\Plugin\DirUtils;
+    use Traits\Plugin\HtaccessUtils;
+    use Traits\Plugin\HtmlCUtils;
+    use Traits\Plugin\InstallUtils;
+    use Traits\Plugin\MenuPageUtils;
+    use Traits\Plugin\NoticeUtils;
+    use Traits\Plugin\OptionUtils;
+    use Traits\Plugin\PostUtils;
+    use Traits\Plugin\StatsUtils;
+    use Traits\Plugin\UpdateUtils;
+    use Traits\Plugin\UrlUtils;
+    use Traits\Plugin\UserUtils;
+    use Traits\Plugin\WcpAuthorUtils;
+    use Traits\Plugin\WcpCdnUtils;
+    use Traits\Plugin\WcpCommentUtils;
+    use Traits\Plugin\WcpEvalUtils;
+    use Traits\Plugin\WcpFeedUtils;
+    use Traits\Plugin\WcpHomeBlogUtils;
+    use Traits\Plugin\WcpHtmlCUtils;
+    use Traits\Plugin\WcpJetpackUtils;
+    use Traits\Plugin\WcpOpcacheUtils;
+    use Traits\Plugin\WcpPluginUtils;
+    use Traits\Plugin\WcpPostTypeUtils;
+    use Traits\Plugin\WcpPostUtils;
+    use Traits\Plugin\WcpS2cleanUtils;
+    use Traits\Plugin\WcpSettingUtils;
+    use Traits\Plugin\WcpSitemapUtils;
+    use Traits\Plugin\WcpTermUtils;
+    use Traits\Plugin\WcpTransientUtils;
+    use Traits\Plugin\WcpUpdaterUtils;
+    use Traits\Plugin\WcpUrlUtils;
+    use Traits\Plugin\WcpUserUtils;
+    use Traits\Plugin\WcpUtils;
+    use Traits\Plugin\WcpWooCommerceUtils;
+
     /**
      * Enable plugin hooks?
      *
