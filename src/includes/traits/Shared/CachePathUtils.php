@@ -13,7 +13,7 @@ trait CachePathUtils {
     *
     * @return string Cache-path suffix frag (regex).
     */
-    public function cachePathRegexSuffixFrag($regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function cachePathRegexSuffixFrag($regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         if ($regex_suffix_frag === $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) {
             return $this->cachePathRegexDefaultSuffixFrag();
@@ -53,7 +53,7 @@ trait CachePathUtils {
      *
      * @return string The resulting `cache/path` based on the input `$url` & `$flags`.
      */
-    public function buildCachePath($url, $with_user_token = '', $with_version_salt = '', $flags = $this::CACHE_PATH_DEFAULT)
+    public function buildCachePath($url, $with_user_token = '', $with_version_salt = '', $flags = self::CACHE_PATH_DEFAULT)
     {
         # Force parameter types.
 
@@ -197,7 +197,7 @@ trait CachePathUtils {
      *
      * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
      */
-    public function buildCachePathRegex($url, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildCachePathRegex($url, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $url               = trim((string) $url);
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
@@ -228,7 +228,7 @@ trait CachePathUtils {
      *
      * @return string Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
      */
-    public function buildHostCachePathRegex($url, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildHostCachePathRegex($url, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $url                           = trim((string) $url);
         $regex_suffix_frag             = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
@@ -278,7 +278,7 @@ trait CachePathUtils {
      *
      * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
      */
-    public function buildCachePathRegexFromWcUrl($url, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildCachePathRegexFromWcUrl($url, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $url               = trim((string) $url, '^$');
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
@@ -308,7 +308,7 @@ trait CachePathUtils {
      *
      * @return string Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
      */
-    public function buildHostCachePathRegexFragsFromWcUris($uris, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildHostCachePathRegexFragsFromWcUris($uris, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $uris              = trim((string) $uris);
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
@@ -353,7 +353,7 @@ trait CachePathUtils {
      *
      * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
      */
-    public function assembleCachePathRegex($regex_frag, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function assembleCachePathRegex($regex_frag, $regex_suffix_frag = self::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $regex_frag        = (string) $regex_frag;
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
