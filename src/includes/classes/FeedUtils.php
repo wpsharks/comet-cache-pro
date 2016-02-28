@@ -229,8 +229,8 @@ class FeedUtils extends AbsBase
         $regex_frags                 = array();
         $is_multisite                = is_multisite();
         $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
-        $flags                       = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST // Default flags.
-                                       | CACHE_PATH_NO_USER | CACHE_PATH_NO_VSALT | CACHE_PATH_NO_EXT;
+        $flags                       = $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_HOST // Default flags.
+                                       | $this::CACHE_PATH_NO_USER | $this::CACHE_PATH_NO_VSALT | $this::CACHE_PATH_NO_EXT;
         // Flags: note that we DO allow for query string data in these regex fragments.
 
         foreach ($variations as $_key => $_url) {
@@ -252,7 +252,7 @@ class FeedUtils extends AbsBase
 
             if (is_string($_key) && strpos($_key, '::') !== false && strpos($_url, '*') !== false) {
                 list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2); // This regex replaces wildcards.
-                $_cache_path                        = $this->plugin->buildCachePath($_url, '', '', $flags | CACHE_PATH_ALLOW_WILDCARDS);
+                $_cache_path                        = $this->plugin->buildCachePath($_url, '', '', $flags | $this::CACHE_PATH_ALLOW_WILDCARDS);
                 $_relative_cache_path               = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
                 $_relative_cache_path_regex         = preg_replace('/\\\\\*/', $_wildcard_regex, preg_quote($_relative_cache_path, '/'));
             } else {

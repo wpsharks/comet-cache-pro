@@ -13,9 +13,9 @@ trait CachePathUtils {
     *
     * @return string Cache-path suffix frag (regex).
     */
-    public function cachePathRegexSuffixFrag($regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function cachePathRegexSuffixFrag($regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
-        if ($regex_suffix_frag === CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) {
+        if ($regex_suffix_frag === $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG) {
             return $this->cachePathRegexDefaultSuffixFrag();
         }
         return (string) $regex_suffix_frag;
@@ -49,11 +49,11 @@ trait CachePathUtils {
      * @param string $url               The input URL to convert.
      * @param string $with_user_token   Optional user token (if applicable).
      * @param string $with_version_salt Optional version salt (if applicable).
-     * @param int    $flags             Optional flags. A bitmask via `CACHE_PATH_*` constants.
+     * @param int    $flags             Optional flags. A bitmask via `$this::CACHE_PATH_*` constants.
      *
      * @return string The resulting `cache/path` based on the input `$url` & `$flags`.
      */
-    public function buildCachePath($url, $with_user_token = '', $with_version_salt = '', $flags = CACHE_PATH_DEFAULT)
+    public function buildCachePath($url, $with_user_token = '', $with_version_salt = '', $flags = $this::CACHE_PATH_DEFAULT)
     {
         # Force parameter types.
 
@@ -69,8 +69,8 @@ trait CachePathUtils {
 
         # Deal w/ domain mapping considerations.
 
-        if ($flags & CACHE_PATH_CONSIDER_DOMAIN_MAPPING && $is_multisite && $can_consider_domain_mapping) {
-            if ($flags & CACHE_PATH_REVERSE_DOMAIN_MAPPING) {
+        if ($flags & $this::CACHE_PATH_CONSIDER_DOMAIN_MAPPING && $is_multisite && $can_consider_domain_mapping) {
+            if ($flags & $this::CACHE_PATH_REVERSE_DOMAIN_MAPPING) {
                 $url = $this->domainMappingReverseUrlFilter($url);
             } else {
                 $url = $this->domainMappingUrlFilter($url);
@@ -100,10 +100,10 @@ trait CachePathUtils {
 
         # Build and return the cache path.
 
-        if (!($flags & CACHE_PATH_NO_SCHEME)) {
+        if (!($flags & $this::CACHE_PATH_NO_SCHEME)) {
             $cache_path .= $url_parts['scheme'].'/';
         }
-        if (!($flags & CACHE_PATH_NO_HOST)) {
+        if (!($flags & $this::CACHE_PATH_NO_HOST)) {
             $cache_path .= $url_parts['host'].'/';
 
             // Put multisite sub-roots into a host directory of their own.
@@ -113,7 +113,7 @@ trait CachePathUtils {
                 $cache_path           = rtrim($cache_path, '/').$host_base_dir_suffix.'/';
             }
         }
-        if (!($flags & CACHE_PATH_NO_PATH)) {
+        if (!($flags & $this::CACHE_PATH_NO_PATH)) {
             if (isset($url_parts['path'][201])) {
                 $_path_tmp = '/'; // Initialize tmp path.
                 foreach (explode('/', $url_parts['path']) as $_path_component) {
@@ -135,12 +135,12 @@ trait CachePathUtils {
             if (!empty($url_parts['path']) && strlen($url_parts['path'] = trim($url_parts['path'], '\\/'." \t\n\r\0\x0B"))) {
                 $cache_path .= $url_parts['path'].'/'; // Add the path as it exists.
 
-                if (!($flags & CACHE_PATH_NO_PATH_INDEX) && $is_multisite && $is_a_multisite_base_dir_root) {
+                if (!($flags & $this::CACHE_PATH_NO_PATH_INDEX) && $is_multisite && $is_a_multisite_base_dir_root) {
                     // We should build an `index/` when this ends with a multisite [[/base]/child1] root.
                     //  e.g., `http/example-com[[-base]-child1][[/base]/child1]` is a root directory.
                     $cache_path .= 'index/'; // Use an index suffix.
                 }
-            } elseif (!($flags & CACHE_PATH_NO_PATH_INDEX)) {
+            } elseif (!($flags & $this::CACHE_PATH_NO_PATH_INDEX)) {
                 $cache_path .= 'index/';
             }
         }
@@ -149,18 +149,18 @@ trait CachePathUtils {
         }
         $cache_path = str_replace('.', '-', strtolower($cache_path));
 
-        if (!($flags & CACHE_PATH_NO_QUV)) {
-            if (!($flags & CACHE_PATH_NO_QUERY)) {
+        if (!($flags & $this::CACHE_PATH_NO_QUV)) {
+            if (!($flags & $this::CACHE_PATH_NO_QUERY)) {
                 if (isset($url_parts['query']) && $url_parts['query'] !== '') {
                     $cache_path = rtrim($cache_path, '/').'.q/'.md5($url_parts['query']).'/';
                 }
             }
-            if (!($flags & CACHE_PATH_NO_USER)) {
+            if (!($flags & $this::CACHE_PATH_NO_USER)) {
                 if ($with_user_token !== '') {
                     $cache_path = rtrim($cache_path, '/').'.u/'.str_replace(['/', '\\'], '-', $with_user_token).'/';
                 }
             }
-            if (!($flags & CACHE_PATH_NO_VSALT)) {
+            if (!($flags & $this::CACHE_PATH_NO_VSALT)) {
                 if ($with_version_salt !== '') {
                     $cache_path = rtrim($cache_path, '/').'.v/'.str_replace(['/', '\\'], '-', $with_version_salt).'/';
                 }
@@ -168,14 +168,14 @@ trait CachePathUtils {
         }
         $cache_path = trim(preg_replace(['/\/+/', '/\.+/'], ['/', '.'], $cache_path), '/');
 
-        if ($flags & CACHE_PATH_ALLOW_WD_REGEX) {
+        if ($flags & $this::CACHE_PATH_ALLOW_WD_REGEX) {
             $cache_path = preg_replace('/[^a-z0-9\/.*\^$]/i', '-', $cache_path);
-        } elseif ($flags & CACHE_PATH_ALLOW_WILDCARDS) {
+        } elseif ($flags & $this::CACHE_PATH_ALLOW_WILDCARDS) {
             $cache_path = preg_replace('/[^a-z0-9\/.*]/i', '-', $cache_path);
         } else {
             $cache_path = preg_replace('/[^a-z0-9\/.]/i', '-', $cache_path);
         }
-        if (!($flags & CACHE_PATH_NO_EXT)) {
+        if (!($flags & $this::CACHE_PATH_NO_EXT)) {
             $cache_path .= '.html';
         }
         return $cache_path;
@@ -193,19 +193,19 @@ trait CachePathUtils {
      * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
      *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
      *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
-     *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+     *  See also: {@link $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
      *
      * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
      */
-    public function buildCachePathRegex($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildCachePathRegex($url, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $url               = trim((string) $url);
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
         $cache_path_regex  = ''; // Initialize regex.
 
         if ($url) {
-            $flags            = CACHE_PATH_NO_SCHEME // Scheme added below.
-                                | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+            $flags            = $this::CACHE_PATH_NO_SCHEME // Scheme added below.
+                                | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
             $cache_path       = $this->buildCachePath($url, '', '', $flags); // Without the scheme.
             $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.preg_quote($cache_path, '/') : '';
         }
@@ -224,11 +224,11 @@ trait CachePathUtils {
      * @param string $regex_suffix_frag Regex fragment to come after the relative cache/path regex frag.
      *   Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
      *   Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
-     *   See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+     *   See also: {@link $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
      *
      * @return string Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
      */
-    public function buildHostCachePathRegex($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildHostCachePathRegex($url, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $url                           = trim((string) $url);
         $regex_suffix_frag             = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
@@ -242,8 +242,8 @@ trait CachePathUtils {
                 $is_url_domain_mapped = $url && $this->domainMappingBlogId($url);
             }
             if ($url && ($url_parts = $this->parseUrl($url)) && !empty($url_parts['host'])) {
-                $flags = CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
-                         | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+                $flags = $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_HOST
+                         | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
 
                 $host_base_dir_tokens = $this->hostBaseDirTokens(false, $is_url_domain_mapped, !empty($url_parts['path']) ? $url_parts['path'] : '/');
                 $host_url             = rtrim('http://'.$url_parts['host'].$host_base_dir_tokens, '/');
@@ -274,19 +274,19 @@ trait CachePathUtils {
      * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
      *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
      *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
-     *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+     *  See also: {@link $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
      *
      * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
      */
-    public function buildCachePathRegexFromWcUrl($url, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildCachePathRegexFromWcUrl($url, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $url               = trim((string) $url, '^$');
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
         $cache_path_regex  = ''; // Initialize regex.
 
         if ($url) { // After `^$` trimming above.
-            $flags            = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME
-                                | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+            $flags            = $this::CACHE_PATH_ALLOW_WILDCARDS | $this::CACHE_PATH_NO_SCHEME
+                                | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
             $cache_path       = $this->buildCachePath($url, '', '', $flags); // Without the scheme.
             $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.$this->wdRegexToActualRegexFrag($cache_path) : '';
         }
@@ -304,18 +304,18 @@ trait CachePathUtils {
      * @param string $regex_suffix_frag Regex fragment to come after each relative cache/path.
      *   Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
      *   Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
-     *   See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+     *   See also: {@link $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
      *
      * @return string Regex pattern for a call to `deleteFilesFromHostCacheDir()`.
      */
-    public function buildHostCachePathRegexFragsFromWcUris($uris, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function buildHostCachePathRegexFragsFromWcUris($uris, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $uris              = trim((string) $uris);
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
 
         $_this = $this; // Reference for the closure below.
-        $flags = CACHE_PATH_ALLOW_WILDCARDS | CACHE_PATH_NO_SCHEME | CACHE_PATH_NO_HOST
-                 | CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+        $flags = $this::CACHE_PATH_ALLOW_WILDCARDS | $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_HOST
+                 | $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
 
         $host            = 'doesnt-matter.foo.bar';
         $host_url        = rtrim('http://'.$host, '/');
@@ -349,11 +349,11 @@ trait CachePathUtils {
      * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
      *  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
      *  Note: this should NOT have delimiters; i.e. do NOT start or end with `/`.
-     *  See also: {@link CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
+     *  See also: {@link $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG}.
      *
      * @return string Regex pattern for a call to `deleteFilesFromCacheDir()`.
      */
-    public function assembleCachePathRegex($regex_frag, $regex_suffix_frag = CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
+    public function assembleCachePathRegex($regex_frag, $regex_suffix_frag = $this::CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG)
     {
         $regex_frag        = (string) $regex_frag;
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);

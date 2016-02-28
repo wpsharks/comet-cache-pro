@@ -296,7 +296,7 @@ trait CacheDirUtils {
 
         foreach (['http', 'https'] as $_host_scheme) {
             $_host_url              = $_host_scheme.'://'.$host_token.$host_base_dir_tokens;
-            $_host_cache_path_flags = CACHE_PATH_NO_PATH_INDEX | CACHE_PATH_NO_QUV | CACHE_PATH_NO_EXT;
+            $_host_cache_path_flags = $this::CACHE_PATH_NO_PATH_INDEX | $this::CACHE_PATH_NO_QUV | $this::CACHE_PATH_NO_EXT;
             $_host_cache_path       = $this->buildCachePath($_host_url, '', '', $_host_cache_path_flags);
             $_host_cache_dir        = $this->nDirSeps($cache_dir.'/'.$_host_cache_path); // Normalize.
 
