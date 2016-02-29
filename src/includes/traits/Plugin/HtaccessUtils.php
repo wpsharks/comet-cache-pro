@@ -57,7 +57,7 @@ trait HtaccessUtils {
         }
 
         $template_blocks = ''; // Initialize.
-        if (is_dir($templates_dir = dirname(dirname(dirname(__FILE__))).'/templates/htaccess')) {
+        if (is_dir($templates_dir = dirname(dirname(__DIR__)).'/templates/htaccess')) {
             foreach (scandir($templates_dir) as $_template_file) {
                 switch ($_template_file) {
                     /*[pro strip-from="lite"]*/

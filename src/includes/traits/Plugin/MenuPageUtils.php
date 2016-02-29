@@ -74,7 +74,7 @@ trait MenuPageUtils {
         if (!is_multisite()) {
             return; // Not applicable.
         }
-        $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
+        $icon = file_get_contents(dirname(dirname(dirname(__DIR__))).'/client-s/images/inline-icon.svg');
         $icon = 'data:image/svg+xml;base64,'.base64_encode($this->colorSvgMenuIcon($icon));
 
         add_menu_page(NAME.(IS_PRO ? ' Pro' : ''), NAME.(IS_PRO ? ' Pro' : ''), $this->network_cap, GLOBAL_NS, [$this, 'menuPageOptions'], $icon);
@@ -103,7 +103,7 @@ trait MenuPageUtils {
         if (is_multisite()) {
             return; // Multisite networks MUST use network admin area.
         }
-        $icon = file_get_contents(dirname(dirname(dirname(dirname(__FILE__)))).'/client-s/images/inline-icon.svg');
+        $icon = file_get_contents(dirname(dirname(dirname(__DIR__))).'/client-s/images/inline-icon.svg');
         $icon = 'data:image/svg+xml;base64,'.base64_encode($this->colorSvgMenuIcon($icon));
 
         add_menu_page(NAME.(IS_PRO ? ' Pro' : ''), NAME.(IS_PRO ? ' Pro' : ''), $this->cap, GLOBAL_NS, [$this, 'menuPageOptions'], $icon);
