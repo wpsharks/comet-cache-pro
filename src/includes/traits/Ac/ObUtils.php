@@ -12,7 +12,7 @@ trait ObUtils {
      *
      * @type float One of `http://` or `https://`.
      */
-    public $rotocol = '';
+    public $protocol = '';
 
     /**
      * Host token for this request.
