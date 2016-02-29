@@ -5,14 +5,12 @@ use WebSharks\CometCache\Pro\Classes;
 
 use WebSharks\CometCache\Pro\Traits;
 
-use WebSharks\CometCache\Pro\Interfaces;
-
 /**
  * Comet Cache Plugin.
  *
  * @since 150422 Rewrite.
  */
-class Plugin extends AbsBaseAp implements Interfaces\Shared\NcDebugConsts, Interfaces\Shared\CachePathConsts
+class Plugin extends AbsBaseAp
 {
     use Traits\Plugin\ActionUtils;
     use Traits\Plugin\AdminBarUtils;

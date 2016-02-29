@@ -3,12 +3,14 @@ namespace WebSharks\CometCache\Pro\Classes;
 
 use WebSharks\CometCache\Pro\Traits;
 
+use WebSharks\CometCache\Pro\Interfaces;
+
 /**
  * Abstract Base for Advanced Cache and Plugin.
  *
  * @since 150422 Rewrite.
  */
-abstract class AbsBaseAp extends AbsBase
+abstract class AbsBaseAp extends AbsBase implements Interfaces\Shared\NcDebugConsts, Interfaces\Shared\CachePathConsts
 {
     use Traits\Shared\BlogUtils;
     use Traits\Shared\CacheDirUtils;
