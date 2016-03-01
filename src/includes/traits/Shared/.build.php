@@ -3,7 +3,7 @@
  * Generate use-list for Trait files in current directory
  *
  * When run inside a directory called `Plugin/`, with a PHP file inside `Plugin/` called `ActionUtils.php`,
- * this script will generate `use Traits\Plugin\ActionUtils`.
+ * this script will generate `use Traits\Plugin\ActionUtils;`.
  */
 if ($_handle = opendir(__DIR__)) {
     while (false !== ($_file = readdir($_handle))) {
