@@ -1,5 +1,7 @@
 <?php
-namespace WebSharks\CometCache\Pro;
+namespace WebSharks\CometCache\Pro\Classes;
+
+use WebSharks\CometCache\Pro\Traits;
 
 /**
  * Advanced cache.
@@ -8,6 +10,15 @@ namespace WebSharks\CometCache\Pro;
  */
 class AdvancedCache extends AbsBaseAp
 {
+    use Traits\Ac\AbortUtils;
+    use Traits\Ac\AcPluginUtils;
+    use Traits\Ac\BrowserUtils;
+    use Traits\Ac\HtmlCUtils;
+    use Traits\Ac\NcDebugUtils;
+    use Traits\Ac\ObUtils;
+    use Traits\Ac\PostloadUtils;
+    use Traits\Ac\ShutdownUtils;
+
     /**
      * Flagged as `TRUE` if running.
      *
@@ -34,16 +45,6 @@ class AdvancedCache extends AbsBaseAp
     public function __construct()
     {
         parent::__construct();
-
-        $closures_dir = dirname(dirname(__FILE__)).'/closures/Ac';
-        $self         = $this; // Reference for closures.
-
-        foreach (scandir($closures_dir) as $_closure) {
-            if (substr($_closure, -4) === '.php') {
-                require $closures_dir.'/'.$_closure;
-            }
-        }
-        unset($_closure); // Housekeeping.
 
         if (!defined('WP_CACHE') || !WP_CACHE || !COMET_CACHE_ENABLE) {
             return; // Not enabled.

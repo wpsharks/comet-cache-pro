@@ -4,7 +4,7 @@ if (!defined('WPINC')) {
 }
 $GLOBALS['wp_php_rv'] = '5.3.2'; //php-required-version// // Leaving this at v5.3.2 so that we can have more control over Dashboard messages below.
 
-if (require(dirname(__FILE__).'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
+if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
     if (!empty($_REQUEST['comet_cache_mbstring_deprecated_warning_bypass']) && is_admin()) {
         update_site_option('comet_cache_mbstring_deprecated_warning_bypass', time());
     }
@@ -80,7 +80,7 @@ if (require(dirname(__FILE__).'/src/vendor/websharks/wp-php-rv/src/includes/chec
             );
         }
 
-        require_once dirname(__FILE__).'/src/includes/plugin.php';
+        require_once __DIR__.'/src/includes/plugin.php';
     }
 } else {
     wp_php_rv_notice('Comet Cache');

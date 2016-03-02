@@ -1,5 +1,9 @@
 <?php
-namespace WebSharks\CometCache\Pro;
+namespace WebSharks\CometCache\Pro\Classes;
+
+use WebSharks\CometCache\Pro\Classes;
+
+use WebSharks\CometCache\Pro\Traits;
 
 /**
  * Comet Cache Plugin.
@@ -8,6 +12,50 @@ namespace WebSharks\CometCache\Pro;
  */
 class Plugin extends AbsBaseAp
 {
+    use Traits\Plugin\ActionUtils;
+    use Traits\Plugin\AdminBarUtils;
+    use Traits\Plugin\AutoCacheUtils;
+    use Traits\Plugin\BbPressUtils;
+    use Traits\Plugin\CdnUtils;
+    use Traits\Plugin\CleanupUtils;
+    use Traits\Plugin\CondUtils;
+    use Traits\Plugin\CronUtils;
+    use Traits\Plugin\DbUtils;
+    use Traits\Plugin\DirUtils;
+    use Traits\Plugin\HtaccessUtils;
+    use Traits\Plugin\HtmlCUtils;
+    use Traits\Plugin\InstallUtils;
+    use Traits\Plugin\MenuPageUtils;
+    use Traits\Plugin\NoticeUtils;
+    use Traits\Plugin\OptionUtils;
+    use Traits\Plugin\PostUtils;
+    use Traits\Plugin\StatsUtils;
+    use Traits\Plugin\UpdateUtils;
+    use Traits\Plugin\UrlUtils;
+    use Traits\Plugin\UserUtils;
+    use Traits\Plugin\WcpAuthorUtils;
+    use Traits\Plugin\WcpCdnUtils;
+    use Traits\Plugin\WcpCommentUtils;
+    use Traits\Plugin\WcpEvalUtils;
+    use Traits\Plugin\WcpFeedUtils;
+    use Traits\Plugin\WcpHomeBlogUtils;
+    use Traits\Plugin\WcpHtmlCUtils;
+    use Traits\Plugin\WcpJetpackUtils;
+    use Traits\Plugin\WcpOpcacheUtils;
+    use Traits\Plugin\WcpPluginUtils;
+    use Traits\Plugin\WcpPostTypeUtils;
+    use Traits\Plugin\WcpPostUtils;
+    use Traits\Plugin\WcpS2cleanUtils;
+    use Traits\Plugin\WcpSettingUtils;
+    use Traits\Plugin\WcpSitemapUtils;
+    use Traits\Plugin\WcpTermUtils;
+    use Traits\Plugin\WcpTransientUtils;
+    use Traits\Plugin\WcpUpdaterUtils;
+    use Traits\Plugin\WcpUrlUtils;
+    use Traits\Plugin\WcpUserUtils;
+    use Traits\Plugin\WcpUtils;
+    use Traits\Plugin\WcpWooCommerceUtils;
+
     /**
      * Enable plugin hooks?
      *
@@ -144,17 +192,7 @@ class Plugin extends AbsBaseAp
     {
         parent::__construct();
 
-        $closures_dir = dirname(dirname(__FILE__)).'/closures/Plugin';
-        $self         = $this; // Reference for closures.
-
-        foreach (scandir($closures_dir) as $_closure) {
-            if (substr($_closure, -4) === '.php') {
-                require $closures_dir.'/'.$_closure;
-            }
-        }
-        unset($_closure); // Housekeeping.
         /* -------------------------------------------------------------- */
-
         if (!($this->enable_hooks = (boolean) $enable_hooks)) {
             return; // Stop here; construct without hooks.
         }
@@ -548,7 +586,7 @@ class Plugin extends AbsBaseAp
         if ($this->options['enable'] && $this->options['cdn_enable']) {
             add_action('upgrader_process_complete', array($this, 'bumpCdnInvalidationCounter'), 10, 0);
             if (!is_admin()) { // Don't even bother in the admin area.
-                new CdnFilters(); // Setup CDN filters.
+                new Classes\CdnFilters(); // Setup CDN filters.
             }
         }
         /*[/pro]*/

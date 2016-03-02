@@ -1,6 +1,6 @@
 <?php
 /*[pro strip-from="lite"]*/
-namespace WebSharks\CometCache\Pro;
+namespace WebSharks\CometCache\Pro\Classes;
 
 /**
  * CDN Filters.
@@ -243,14 +243,13 @@ class CdnFilters extends AbsBase
         if (!$this->cdn_when_logged_in && $this->plugin->isLikeUserLoggedIn()) {
             return; // Disable in this case.
         }
-        $_this = $this; // Needed for closures below.
 
-        add_action('wp_head', function () use ($_this) {
-            $_this->completed_wp_head_action_hook = true;
+        add_action('wp_head', function () {
+            $this->completed_wp_head_action_hook = true;
         }, PHP_INT_MAX); // The very last hook, ideally.
 
-        add_action('wp_footer', function () use ($_this) {
-            $_this->started_wp_footer_action_hook = true;
+        add_action('wp_footer', function () {
+            $this->started_wp_footer_action_hook = true;
         }, -PHP_INT_MAX); // The very first hook, ideally.
 
         add_filter('home_url', array($this, 'urlFilter'), PHP_INT_MAX - 10, 4);
@@ -340,7 +339,6 @@ class CdnFilters extends AbsBase
         if (strpos($string, '<') === false) {
             return $string; // Nothing to do.
         }
-        $_this = $this; // Reference needed by closures below.
 
         $regex_url_attrs = '/'.// HTML attributes containing a URL.
 
@@ -361,9 +359,9 @@ class CdnFilters extends AbsBase
                            '/i'; // End regex pattern; case insensitive.
 
         $orig_string = $string; // In case of regex errors.
-        $string      = preg_replace_callback($regex_url_attrs, function ($m) use ($_this) {
+        $string      = preg_replace_callback($regex_url_attrs, function ($m) {
             unset($m[0]); // Discard full match.
-            $m[6] = $_this->filterUrl($m[6], null, true, null);
+            $m[6] = $this->filterUrl($m[6], null, true, null);
             return implode('', $m); // Concatenate all parts.
         }, $string); // End content filter.
 
