@@ -4,6 +4,8 @@
  *
  * When run inside a directory called `Plugin/`, with a PHP file inside `Plugin/` called `ActionUtils.php`,
  * this script will generate `use Traits\Plugin\ActionUtils;`.
+ *
+ * @TODO Automatically insert this list into appropriate PHP files.
  */
 if ($_handle = opendir(__DIR__)) {
     while (false !== ($_file = readdir($_handle))) {
