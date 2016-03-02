@@ -100,6 +100,7 @@ class ApiBase
     public static function clearUrl($url)
     {
         $regex = $GLOBALS[GLOBAL_NS]->buildCachePathRegexFromWcUrl($url);
+
         return $GLOBALS[GLOBAL_NS]->deleteFilesFromCacheDir($regex);
     }
 

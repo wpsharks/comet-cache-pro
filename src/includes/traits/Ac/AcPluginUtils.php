@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait AcPluginUtils {
+trait AcPluginUtils
+{
     /**
      * Loads any advanced cache plugin files found inside `/wp-content/ac-plugins`.
      *

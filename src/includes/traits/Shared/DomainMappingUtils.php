@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait DomainMappingUtils {
+trait DomainMappingUtils
+{
     /**
      * Can consider domain mapping?
      *
@@ -21,9 +22,9 @@ trait DomainMappingUtils {
         if (!$this->isAdvancedCache() && is_multisite() && $this->hostBaseToken() === '/'
             && defined('SUNRISE_LOADED') && SUNRISE_LOADED && !empty($GLOBALS['dm_domain'])
         ) {
-            return ($can = true); // Can consider.
+            return $can = true; // Can consider.
         }
-        return ($can = false); // Cannot consider.
+        return $can = false; // Cannot consider.
     }
 
     /**
@@ -31,7 +32,7 @@ trait DomainMappingUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @return integer Domain mapping ID; else `0` (false).
+     * @return int Domain mapping ID; else `0` (false).
      *
      * @note The return value of this function is cached to reduce overhead on repeat calls.
      */
@@ -43,9 +44,9 @@ trait DomainMappingUtils {
         if (!$this->isAdvancedCache() && is_multisite() && $this->canConsiderDomainMapping()
             && defined('DOMAIN_MAPPING') && DOMAIN_MAPPING && !empty($GLOBALS['domain_mapping_id'])
         ) {
-            return ($is = (integer) $GLOBALS['domain_mapping_id']); // Blog ID.
+            return $is = (integer) $GLOBALS['domain_mapping_id']; // Blog ID.
         }
-        return ($is = 0); // Not domain mapping.
+        return $is = 0; // Not domain mapping.
     }
 
     /**
@@ -88,7 +89,7 @@ trait DomainMappingUtils {
                 $url_parts['path'] = preg_replace('/^\/'.preg_quote($host_base_dir_tokens, '/').'(\/|$)/i', '${1}', $url_parts['path']);
             }
         }
-        return ($url = $this->unParseUrl($url_parts));
+        return $url = $this->unParseUrl($url_parts);
     }
 
     /**
@@ -126,7 +127,7 @@ trait DomainMappingUtils {
         if (($host_base_dir_tokens = trim($this->hostBaseDirTokens(false, false, $blog_details->path), '/'))) {
             $url_parts['path'] = '/'.$host_base_dir_tokens.'/'.ltrim(@$url_parts['path'], '/');
         }
-        return ($url = $this->unParseUrl($url_parts));
+        return $url = $this->unParseUrl($url_parts);
     }
 
     /**
@@ -134,10 +135,10 @@ trait DomainMappingUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param string $url URL containing the domain to convert.
+     * @param string $url    URL containing the domain to convert.
      * @param string $domain The domain to convert. Override URL is provided.
      *
-     * @return integer The mapped blog ID; else `0` on failure.
+     * @return int The mapped blog ID; else `0` on failure.
      *
      * @note The return value of this function is cached to reduce overhead on repeat calls.
      */
@@ -177,7 +178,7 @@ trait DomainMappingUtils {
         }
         $wpdb->suppress_errors($suppressing_errors); // Restore.
 
-        return ($blog_id = (integer) $blog_id);
+        return $blog_id = (integer) $blog_id;
     }
 
     /**
@@ -185,9 +186,8 @@ trait DomainMappingUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param integer $blog_id The blog ID.
-     *
-     * @param boolean $fallback Fallback on blog's domain?
+     * @param int  $blog_id  The blog ID.
+     * @param bool $fallback Fallback on blog's domain?
      *
      * @return string The mapped domain, else an empty string.
      *
@@ -230,7 +230,7 @@ trait DomainMappingUtils {
         }
         $wpdb->suppress_errors($suppressing_errors); // Restore.
 
-        return ($domain = strtolower((string) $domain));
+        return $domain = strtolower((string) $domain);
     }
 
     /**
@@ -238,7 +238,7 @@ trait DomainMappingUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param integer $blog_id The blog ID.
+     * @param int $blog_id The blog ID.
      *
      * @return array Mapped domains; else an empty array.
      *
@@ -272,6 +272,6 @@ trait DomainMappingUtils {
         }
         $wpdb->suppress_errors($suppressing_errors); // Restore.
 
-        return ($domains = array_unique(array_map('strtolower', (array) $domains)));
+        return $domains = array_unique(array_map('strtolower', (array) $domains));
     }
 }

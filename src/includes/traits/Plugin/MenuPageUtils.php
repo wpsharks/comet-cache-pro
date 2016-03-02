@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait MenuPageUtils {
+trait MenuPageUtils
+{
     /**
      * Adds CSS for administrative menu pages.
      *
@@ -235,7 +236,7 @@ trait MenuPageUtils {
      *
      * @param string $which Which page to check; may contain wildcards.
      *
-     * @return boolean True if is the menu page.
+     * @return bool True if is the menu page.
      */
     public function isMenuPage($which)
     {

@@ -1,8 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Interfaces\Shared;
 
-interface CachePathConsts {
-
+interface CachePathConsts
+{
     /**
      * Default cache path flags.
      *
@@ -137,5 +137,4 @@ interface CachePathConsts {
      * @type string Default regex suffix frag used in cache path patterns.
      */
     const CACHE_PATH_REGEX_DEFAULT_SUFFIX_FRAG = null;
-
 }

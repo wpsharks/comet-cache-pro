@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpTermUtils {
+trait WcpTermUtils
+{
     /**
      * Automatically clears cache files for terms associated with a post.
      *

@@ -3,18 +3,18 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait CacheLockUtils {
+trait CacheLockUtils
+{
     /**
      * Get an exclusive lock on the cache directory.
      *
      * @since 150422 Rewrite.
      *
+     * @throws \Exception If {@link \sem_get()} not available and there's
+     *                    no writable tmp directory for {@link \flock()} either.
+     * @throws \Exception If unable to obtain an exclusive lock by any available means.
      * @return array Lock type & resource handle needed to unlock later or FALSE if disabled by filter.
      *
-     * @throws \Exception If {@link \sem_get()} not available and there's
-     *    no writable tmp directory for {@link \flock()} either.
-     *
-     * @throws \Exception If unable to obtain an exclusive lock by any available means.
      *
      * @note This call is blocking; i.e. it will not return a lock until a lock becomes possible.
      *    In short, this will block the caller until such time as write access becomes possible.

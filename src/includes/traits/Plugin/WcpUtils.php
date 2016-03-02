@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpUtils {
+trait WcpUtils
+{
     /**
      * Used for temporarily storing the permalink for posts transitioning from
      *    `publish` or `private` post status to `pending` or `draft` post status.

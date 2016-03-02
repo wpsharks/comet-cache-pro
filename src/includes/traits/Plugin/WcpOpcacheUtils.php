@@ -3,17 +3,18 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpOpcacheUtils {
+trait WcpOpcacheUtils
+{
     /**
      * Wipe (i.e., reset) OPCache.
      *
      * @since 151002 Adding OPCache support.
      *
-     * @param bool $manually True if wiping is done manually.
-     * @param boolean $maybe Defaults to a true value.
-     * @param array $files Optional; wipe only specific files?
+     * @param bool  $manually True if wiping is done manually.
+     * @param bool  $maybe    Defaults to a true value.
+     * @param array $files    Optional; wipe only specific files?
      *
-     * @return integer Total keys wiped.
+     * @return int Total keys wiped.
      */
     public function wipeOpcache($manually = false, $maybe = true, $files = [])
     {
@@ -50,9 +51,9 @@ trait WcpOpcacheUtils {
      * @since 151002 Adding OPCache support.
      *
      * @param bool $manually True if clearing is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
-     * @return integer Total keys cleared.
+     * @return int Total keys cleared.
      */
     public function clearOpcache($manually = false, $maybe = true)
     {
@@ -67,7 +68,7 @@ trait WcpOpcacheUtils {
      *
      * @since 151215 Adding OPCache support.
      *
-     * @return integer Total keys cleared.
+     * @return int Total keys cleared.
      */
     public function clearAcDropinFromOpcacheByForce()
     {

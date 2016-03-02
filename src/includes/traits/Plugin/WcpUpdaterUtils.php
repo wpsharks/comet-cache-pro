@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpUpdaterUtils {
+trait WcpUpdaterUtils
+{
     /**
      * Automatically clears all cache files for current blog when WordPress core, or an active component, is upgraded.
      *
@@ -29,7 +30,7 @@ trait WcpUpdaterUtils {
         switch (!empty($data['type']) ? $data['type'] : '') {
             case 'plugin': // Plugin upgrade.
 
-                $multi_plugin_update     = $single_plugin_update = false;
+                $multi_plugin_update     = $single_plugin_update     = false;
                 $upgrading_active_plugin = false; // Initialize.
 
                 if (!empty($data['bulk']) && !empty($data['plugins']) && is_array($data['plugins'])) {
@@ -57,7 +58,7 @@ trait WcpUpdaterUtils {
 
                 $current_active_theme          = wp_get_theme();
                 $current_active_theme_parent   = $current_active_theme->parent();
-                $multi_theme_update            = $single_theme_update = false;
+                $multi_theme_update            = $single_theme_update            = false;
                 $upgrading_active_parent_theme = $upgrading_active_theme = false;
 
                 if (!empty($data['bulk']) && !empty($data['themes']) && is_array($data['themes'])) {

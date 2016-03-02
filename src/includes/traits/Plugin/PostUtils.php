@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait PostUtils {
+trait PostUtils
+{
     /**
      * All post statuses.
      *

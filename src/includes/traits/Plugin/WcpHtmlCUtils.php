@@ -4,7 +4,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpHtmlCUtils {
+trait WcpHtmlCUtils
+{
     /**
      * Wipes out all HTML Compressor cache files.
      *

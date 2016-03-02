@@ -3,8 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait ObUtils {
-
+trait ObUtils
+{
     /**
      * Calculated protocol; one of `http://` or `https://`.
      *
@@ -91,7 +91,7 @@ trait ObUtils {
      *
      * @since 151002 Load average checks in pro version.
      *
-     * @type integer Calculated max age; i.e., before expiration.
+     * @type int Calculated max age; i.e., before expiration.
      */
     public $cache_max_age = 0;
 

@@ -3,18 +3,18 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait ReplaceUtils {
+trait ReplaceUtils
+{
     /**
      * String replace ONE time.
      *
      * @since 150422 Rewrite.
      *
-     * @param string  $needle A string to search/replace.
-     * @param string  $replace What to replace `$needle` with.
-     * @param string  $haystack The string/haystack to search in.
-     *
-     * @param boolean $caSe_insensitive Defaults to a `FALSE` value.
-     *    Pass this as `TRUE` to a caSe-insensitive search/replace.
+     * @param string $needle           A string to search/replace.
+     * @param string $replace          What to replace `$needle` with.
+     * @param string $haystack         The string/haystack to search in.
+     * @param bool   $caSe_insensitive Defaults to a `FALSE` value.
+     *                                 Pass this as `TRUE` to a caSe-insensitive search/replace.
      *
      * @return string The `$haystack`, with `$needle` replaced with `$replace` ONE time only.
      */
@@ -36,8 +36,8 @@ trait ReplaceUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param string $needle A string to search/replace.
-     * @param string $replace What to replace `$needle` with.
+     * @param string $needle   A string to search/replace.
+     * @param string $replace  What to replace `$needle` with.
      * @param string $haystack The string/haystack to search in.
      *
      * @return string The `$haystack`, with `$needle` replaced with `$replace` ONE time only.

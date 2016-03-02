@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpCommentUtils {
+trait WcpCommentUtils
+{
     /**
      * Automatically clears cache files for a post associated with a particular comment.
      *

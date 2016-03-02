@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait ShutdownUtils {
+trait ShutdownUtils
+{
     /**
      * Registers a shutdown flag.
      *
