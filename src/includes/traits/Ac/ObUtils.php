@@ -292,11 +292,6 @@ trait ObUtils {
         if (stripos($cache, '<body id="error-page">') !== false) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
         }
-        if (!$this->functionIsPossible('http_response_code')) {
-            if (stripos($cache, '<title>database error</title>') !== false) {
-                return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
-            }
-        }
         if (!$this->hasACacheableContentType()) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_CONTENT_TYPE);
         }
