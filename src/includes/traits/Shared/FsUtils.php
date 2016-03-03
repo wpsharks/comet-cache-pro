@@ -286,7 +286,7 @@ trait FsUtils
             switch ($_resource->getType()) { // `link`, `file`, `dir`.
                 case 'link':
                     if ($include_paths) {
-                        $stats['link_subpaths'][] = $_sub_path;
+                        $stats['link_subpaths'][] = $_resource_sub_path;
                     }
                     ++$stats['total_resources'];
                     ++$stats['total_links_files'];
@@ -296,7 +296,7 @@ trait FsUtils
 
                 case 'file':
                     if ($include_paths) {
-                        $stats['file_subpaths'][] = $_sub_path;
+                        $stats['file_subpaths'][] = $_resource_sub_path;
                     }
                     $stats['total_size'] += $_resource->getSize();
                     ++$stats['total_resources'];
@@ -307,7 +307,7 @@ trait FsUtils
 
                 case 'dir':
                     if ($include_paths) {
-                        $stats['dir_subpaths'][] = $_sub_path;
+                        $stats['dir_subpaths'][] = $_resource_sub_path;
                     }
                     ++$stats['total_resources'];
                     ++$stats['total_dirs'];
