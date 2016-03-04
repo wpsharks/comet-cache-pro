@@ -53,7 +53,7 @@ class AdvCacheBackCompat
             if (mb_stripos($_constant, 'ZENCACHE_') !== 0) {
                 continue; // Nothing to do here.
             }
-            if (!($_constant_sub_name = substr($_constant, 9))) {
+            if (!($_constant_sub_name = mb_substr($_constant, 9))) {
                 continue; // Nothing to do here.
             }
             if (!defined($_global_ns.'_'.$_constant_sub_name)) {

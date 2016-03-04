@@ -468,7 +468,7 @@ class CdnFilters extends AbsBase
         if (!isset($parsed['path'][0]) || $parsed['path'][0] !== '/') {
             return; // Missing or unexpected path.
         }
-        if (substr($parsed['path'], -1) === '/') {
+        if (mb_substr($parsed['path'], -1) === '/') {
             return; // Directory, not a file.
         }
         if (mb_strpos($parsed['path'], '..') !== false || mb_strpos($parsed['path'], './') !== false) {
@@ -575,9 +575,9 @@ class CdnFilters extends AbsBase
         $extensions = array_merge($extensions, ['eot', 'ttf', 'otf', 'woff']);
 
         if (($permalink_structure = get_option('permalink_structure'))) {
-            if (strcasecmp(substr($permalink_structure, -5), '.html') === 0) {
+            if (strcasecmp(mb_substr($permalink_structure, -5), '.html') === 0) {
                 $extensions = array_diff($extensions, ['html']);
-            } elseif (strcasecmp(substr($permalink_structure, -4), '.htm') === 0) {
+            } elseif (strcasecmp(mb_substr($permalink_structure, -4), '.htm') === 0) {
                 $extensions = array_diff($extensions, ['htm']);
             }
         }

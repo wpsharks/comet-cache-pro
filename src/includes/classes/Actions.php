@@ -749,7 +749,7 @@ class Actions extends AbsBase
 
         if (!is_object($product_api_response) || !empty($product_api_response->error) || empty($product_api_response->pro_version) || empty($product_api_response->pro_zip)) {
             if (!empty($product_api_response->error)) {
-                $error = substr((string) $product_api_response->error, 0, 1000);
+                $error = mb_substr((string) $product_api_response->error, 0, 1000);
             } else {
                 $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
             }
