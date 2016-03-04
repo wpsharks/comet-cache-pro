@@ -133,7 +133,7 @@ trait CachePathUtils
                     $url_parts['path'] = '/lp-'.sha1($url_parts['path']).'/';
                 }
             } // Now add the path and check for a possible root `index/` suffix.
-            if (!empty($url_parts['path']) && strlen($url_parts['path'] = trim($url_parts['path'], '\\/'." \t\n\r\0\x0B"))) {
+            if (!empty($url_parts['path']) && mb_strlen($url_parts['path'] = trim($url_parts['path'], '\\/'." \t\n\r\0\x0B"))) {
                 $cache_path .= $url_parts['path'].'/'; // Add the path as it exists.
 
                 if (!($flags & $this::CACHE_PATH_NO_PATH_INDEX) && $is_multisite && $is_a_multisite_base_dir_root) {

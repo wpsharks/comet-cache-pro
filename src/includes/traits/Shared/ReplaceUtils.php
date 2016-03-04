@@ -28,7 +28,7 @@ trait ReplaceUtils
         if (($needle_strpos = $caSe_mb_strpos($haystack, $needle)) === false) {
             return $haystack; // Nothing to replace.
         }
-        return (string) substr_replace($haystack, $replace, $needle_strpos, strlen($needle));
+        return (string) substr_replace($haystack, $replace, $needle_strpos, mb_strlen($needle));
     }
 
     /**
