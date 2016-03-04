@@ -272,6 +272,6 @@ trait DomainMappingUtils
         }
         $wpdb->suppress_errors($suppressing_errors); // Restore.
 
-        return $domains = array_unique(array_map('strtolower', (array) $domains));
+        return $domains = array_unique(array_map('mb_strtolower', (array) $domains));
     }
 }

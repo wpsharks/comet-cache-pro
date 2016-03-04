@@ -110,7 +110,7 @@ trait HttpUtils
             'X-Powered-By',
             'X-UA-Compatible',
         ];
-        $cacheable_headers = array_map('strtolower', $cacheable_headers);
+        $cacheable_headers = array_map('mb_strtolower', $cacheable_headers);
 
         foreach ($headers as $_key => $_header) {
             $_header = mb_strtolower((string) strstr($_header, ':', true));
