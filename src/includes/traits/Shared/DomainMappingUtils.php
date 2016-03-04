@@ -86,7 +86,7 @@ trait DomainMappingUtils
         $url_parts['host'] = $domain; // Filter the URL now.
         if (!empty($url_parts['path']) && $url_parts['path'] !== '/') {
             if (($host_base_dir_tokens = trim($this->hostBaseDirTokens(false, false, $url_parts['path']), '/'))) {
-                $url_parts['path'] = preg_replace('/^\/'.preg_quote($host_base_dir_tokens, '/').'(\/|$)/i', '${1}', $url_parts['path']);
+                $url_parts['path'] = preg_replace('/^\/'.preg_quote($host_base_dir_tokens, '/').'(\/|$)/ui', '${1}', $url_parts['path']);
             }
         }
         return $url = $this->unParseUrl($url_parts);
@@ -159,7 +159,7 @@ trait DomainMappingUtils
         if (!$url && !$domain && ($blog_details = $this->blogDetails())) {
             $domain = $blog_details->domain;
         }
-        $domain = strtolower(preg_replace('/^www\./i', '', $domain));
+        $domain = strtolower(preg_replace('/^www\./ui', '', $domain));
 
         if (!$domain || strpos($domain, '.') === false) {
             return 0; // Not possible.
@@ -217,7 +217,7 @@ trait DomainMappingUtils
         if (!$enforcing_primary_domain) {
             if ($this->isDomainMapping() === $blog_id) {
                 $domain = $this->hostToken();
-                $domain = preg_replace('/^www\./i', '', $domain);
+                $domain = preg_replace('/^www\./ui', '', $domain);
                 $domain = (string) $wpdb->get_var('SELECT `domain` FROM `'.esc_sql($wpdb->base_prefix.'domain_mapping').'` WHERE `blog_id` = \''.esc_sql($blog_id).'\' AND `domain` IN(\''.esc_sql('www.'.$domain).'\', \''.esc_sql($domain).'\') ORDER BY CHAR_LENGTH(`domain`) DESC LIMIT 1');
             } elseif (($domains = $this->domainMappingBlogDomains($blog_id))) {
                 $domain = $domains[0]; // Use the first of all possible domains.

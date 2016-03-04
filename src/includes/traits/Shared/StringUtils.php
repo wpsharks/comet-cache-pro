@@ -32,7 +32,7 @@ trait StringUtils
         $max_length = max(4, $max_length);
 
         $string = strip_tags($string);
-        $string = preg_replace('/\s+/', ' ', strip_tags($string));
+        $string = preg_replace('/\s+/u', ' ', strip_tags($string));
         $string = trim($string); // Trim it up now.
 
         if (strlen($string) > $max_length) {
@@ -71,7 +71,7 @@ trait StringUtils
         $max_length = max(4, $max_length);
 
         $string = strip_tags($string);
-        $string = preg_replace('/\s+/', ' ', strip_tags($string));
+        $string = preg_replace('/\s+/u', ' ', strip_tags($string));
         $string = trim($string); // Trim it up now.
 
         if (strlen($string) <= $max_length) {

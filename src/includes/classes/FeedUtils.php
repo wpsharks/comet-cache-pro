@@ -177,11 +177,11 @@ class FeedUtils extends AbsBase
                 if ($include_regex_wildcard_keys && $_term_feed_link && strpos($_term_feed_link, '?') === false) {
                     // Quick example: `(?:123|slug)`; to consider both of these variations.
                     $_term_id_or_slug = '(?:'.preg_quote($_post_term->term_id, '/').
-                        '|'.preg_quote(preg_replace('/[^a-z0-9\/.]/i', '-', $_post_term->slug), '/').')';
+                        '|'.preg_quote(preg_replace('/[^a-z0-9\/.]/ui', '-', $_post_term->slug), '/').')';
 
                     // Quick example: `http://www.example.com/tax/term/feed`;
                     //    with a wildcard this becomes: `http://www.example.com/tax/*/feed`.
-                    $_term_feed_link_with_wildcard = preg_replace('/\/[^\/]+\/feed([\/?#]|$)/', '/*/feed'.'${1}', $_term_feed_link);
+                    $_term_feed_link_with_wildcard = preg_replace('/\/[^\/]+\/feed([\/?#]|$)/u', '/*/feed'.'${1}', $_term_feed_link);
 
                     // Quick example: `http://www.example.com/tax/*/feed`;
                     //   becomes: `\/http\/www\.example\.com\/tax\/.*?(?=[\/\-]?(?:123|slug)[\/\-]).*?\/feed`
@@ -253,11 +253,11 @@ class FeedUtils extends AbsBase
             if (is_string($_key) && strpos($_key, '::') !== false && strpos($_url, '*') !== false) {
                 list($_feed_type, $_wildcard_regex) = explode('::', $_key, 2); // This regex replaces wildcards.
                 $_cache_path                        = $this->plugin->buildCachePath($_url, '', '', $flags | $this::CACHE_PATH_ALLOW_WILDCARDS);
-                $_relative_cache_path               = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
-                $_relative_cache_path_regex         = preg_replace('/\\\\\*/', $_wildcard_regex, preg_quote($_relative_cache_path, '/'));
+                $_relative_cache_path               = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/ui', '', $_cache_path);
+                $_relative_cache_path_regex         = preg_replace('/\\\\\*/u', $_wildcard_regex, preg_quote($_relative_cache_path, '/'));
             } else {
                 $_cache_path                = $this->plugin->buildCachePath($_url, '', '', $flags); // Default flags.
-                $_relative_cache_path       = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
+                $_relative_cache_path       = preg_replace('/^'.preg_quote($_host_cache_path, '/').'(?:\/|$)/ui', '', $_cache_path);
                 $_relative_cache_path_regex = preg_quote($_relative_cache_path, '/');
             }
             if ($_relative_cache_path_regex) {

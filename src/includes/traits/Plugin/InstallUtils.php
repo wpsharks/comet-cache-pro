@@ -155,7 +155,7 @@ trait InstallUtils
         if (!($wp_config_file_contents = $this->removeWpCacheFromWpConfig())) {
             return ''; // Unable to remove previous value.
         }
-        if (!($wp_config_file_contents = preg_replace('/^\s*(\<\?php|\<\?)\s+/i', '${1}'."\n"."define('WP_CACHE', TRUE);"."\n", $wp_config_file_contents, 1))) {
+        if (!($wp_config_file_contents = preg_replace('/^\s*(\<\?php|\<\?)\s+/ui', '${1}'."\n"."define('WP_CACHE', TRUE);"."\n", $wp_config_file_contents, 1))) {
             return ''; // Failure; something went terribly wrong here.
         }
         if (strpos($wp_config_file_contents, "define('WP_CACHE', TRUE);") === false) {
@@ -201,7 +201,7 @@ trait InstallUtils
         if (preg_match('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:0|FALSE|NULL|([\'"])0?\\2)\s*\)\s*;/ui', $wp_config_file_contents_no_whitespace) && !is_writable($wp_config_file)) {
             return $wp_config_file_contents; // It's already disabled, and since we can't write to this file let's let this slide.
         }
-        if (!($wp_config_file_contents = preg_replace('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[0-9\.]+|TRUE|FALSE|NULL|([\'"])[^\'"]*\\2)\s*\)\s*;/i', '', $wp_config_file_contents))) {
+        if (!($wp_config_file_contents = preg_replace('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[0-9\.]+|TRUE|FALSE|NULL|([\'"])[^\'"]*\\2)\s*\)\s*;/ui', '', $wp_config_file_contents))) {
             return ''; // Failure; something went terribly wrong here.
         }
         if (preg_match('/([\'"])WP_CACHE\\1/ui', $wp_config_file_contents)) {
@@ -348,7 +348,7 @@ trait InstallUtils
                 str_ireplace(
                     [
                         "'%%".GLOBAL_NS.'_'.$_option."%%'",
-                        "'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/i', '', $_option)."%%'",
+                        "'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/ui', '', $_option)."%%'",
                     ],
                     $_value,
                     $advanced_cache_contents
@@ -539,7 +539,7 @@ trait InstallUtils
             foreach ($paths as $_key => &$_path) {
                 if ($_path && $_path !== '/' && $host_base_token && $host_base_token !== '/') {
                     // Note that each `path` in the DB looks like: `[/base]/path/` (i.e., it includes base).
-                    $_path = '/'.ltrim(preg_replace('/^'.preg_quote($host_base_token, '/').'/', '', $_path), '/');
+                    $_path = '/'.ltrim(preg_replace('/^'.preg_quote($host_base_token, '/').'/u', '', $_path), '/');
                 }
                 if (!$_path || $_path === '/') {
                     unset($paths[$_key]); // Exclude main site.

@@ -55,7 +55,7 @@ trait TokenUtils
         if ($token) { // Have token?
             $token = strtolower($token);
             if ($dashify) { // Dashify it?
-                $token = preg_replace('/[^a-z0-9]/i', '-', $token);
+                $token = preg_replace('/[^a-z0-9]/ui', '-', $token);
                 $token = trim($token, '-');
             }
         }
@@ -97,7 +97,7 @@ trait TokenUtils
         if ($token) { // Have token?
             $token = strtolower($token);
             if ($dashify) { // Dashify it?
-                $token = preg_replace('/[^a-z0-9]/i', '-', $token);
+                $token = preg_replace('/[^a-z0-9]/ui', '-', $token);
                 $token = trim($token, '-');
             }
         }
@@ -140,7 +140,7 @@ trait TokenUtils
         $token = isset($token[0]) ? '/'.$token.'/' : '/';
 
         if ($token !== '/' && $dashify) {
-            $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);
+            $token = preg_replace('/[^a-z0-9\/]/ui', '-', $token);
             $token = trim($token, '-');
         }
         return $token;
@@ -182,7 +182,7 @@ trait TokenUtils
             return $token; // Not applicable.
         }
         if ($path && $path !== '/' && ($host_base_token = trim($this->hostBaseToken(), '/'))) {
-            $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
+            $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/ui', '${1}', $path);
         } else {
             $path_minus_base = $path; // Default value.
         }
@@ -197,7 +197,7 @@ trait TokenUtils
             }
         }
         if ($token !== '/' && $dashify) {
-            $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);
+            $token = preg_replace('/[^a-z0-9\/]/ui', '-', $token);
             $token = trim($token, '-');
         }
         return $token;
@@ -233,7 +233,7 @@ trait TokenUtils
         if (($blog_details = $this->blogDetails($blog_id))) {
             $path = $blog_details->path; // e.g., `[/base]/path/` (includes base).
             if ($path && $path !== '/' && ($host_base_token = trim($this->hostBaseToken(), '/'))) {
-                $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/i', '${1}', $path);
+                $path_minus_base = preg_replace('/^\/'.preg_quote($host_base_token, '/').'(\/|$)/ui', '${1}', $path);
             } else {
                 $path_minus_base = $path; // Default value.
             }
@@ -249,7 +249,7 @@ trait TokenUtils
             }
         }
         if ($token !== '/' && $dashify) {
-            $token = preg_replace('/[^a-z0-9\/]/i', '-', $token);
+            $token = preg_replace('/[^a-z0-9\/]/ui', '-', $token);
             $token = trim($token, '-');
         }
         return $token;
@@ -277,7 +277,7 @@ trait TokenUtils
         $tokens = $this->hostBaseToken($dashify, $consider_domain_mapping);
         $tokens .= $this->hostDirToken($dashify, $consider_domain_mapping, $path);
 
-        return $tokens = preg_replace('/\/+/', '/', $tokens);
+        return $tokens = preg_replace('/\/+/u', '/', $tokens);
     }
 
     /**
@@ -299,7 +299,7 @@ trait TokenUtils
         $tokens = $this->hostBaseToken($dashify, $consider_domain_mapping);
         $tokens .= $this->hostDirTokenForBlog($dashify, $consider_domain_mapping, $blog_id);
 
-        return $tokens = preg_replace('/\/+/', '/', $tokens);
+        return $tokens = preg_replace('/\/+/u', '/', $tokens);
     }
 
     /*[pro strip-from="lite"]*/
@@ -336,7 +336,7 @@ trait TokenUtils
         } elseif (!empty($_COOKIE['wp-postpass_'.COOKIEHASH])) {
             return $token = md5(stripslashes((string) $_COOKIE['wp-postpass_'.COOKIEHASH]));
         } elseif (defined('SID') && SID) {
-            return $token = preg_replace('/[^a-z0-9]/i', '', (string) SID);
+            return $token = preg_replace('/[^a-z0-9]/ui', '', (string) SID);
         }
         return $token = '';
     }

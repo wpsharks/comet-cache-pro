@@ -180,8 +180,8 @@ class CdnFilters extends AbsBase
 
         if ($cdn_whitelisted_uri_patterns) {
             $this->cdn_whitelisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(['/\\\\\*/', '/\\\\\^/'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
-            }, $cdn_whitelisted_uri_patterns)).')/i'; // CaSe inSensitive.
+                return preg_replace(['/\\\\\*/u', '/\\\\\^/u'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
+            }, $cdn_whitelisted_uri_patterns)).')/ui'; // CaSe inSensitive.
         }
         // Blacklisted URI patterns; if applicable.
 
@@ -199,8 +199,8 @@ class CdnFilters extends AbsBase
 
         if ($cdn_blacklisted_uri_patterns) {
             $this->cdn_blacklisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(['/\\\\\*/', '/\\\\\^/'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
-            }, $cdn_blacklisted_uri_patterns)).')/i'; // CaSe inSensitive.
+                return preg_replace(['/\\\\\*/u', '/\\\\\^/u'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
+            }, $cdn_blacklisted_uri_patterns)).')/ui'; // CaSe inSensitive.
         }
         // Maybe attach filters.
 
@@ -357,7 +357,7 @@ class CdnFilters extends AbsBase
 
                            '(\>)'.// Tag close; group #9.
 
-                           '/i'; // End regex pattern; case insensitive.
+                           '/ui'; // End regex pattern; case insensitive.
 
         $orig_string = $string; // In case of regex errors.
         $string      = preg_replace_callback($regex_url_attrs, function ($m) {

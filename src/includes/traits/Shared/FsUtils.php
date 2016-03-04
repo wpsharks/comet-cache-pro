@@ -25,15 +25,15 @@ trait FsUtils
         }
         if (strpos($dir_file, '://' !== false)) {
             if (preg_match('/^(?P<stream_wrapper>[a-zA-Z0-9]+)\:\/\//u', $dir_file, $stream_wrapper)) {
-                $dir_file = preg_replace('/^(?P<stream_wrapper>[a-zA-Z0-9]+)\:\/\//', '', $dir_file);
+                $dir_file = preg_replace('/^(?P<stream_wrapper>[a-zA-Z0-9]+)\:\/\//u', '', $dir_file);
             }
         }
         if (strpos($dir_file, ':' !== false)) {
             if (preg_match('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/u', $dir_file)) {
-                $dir_file = preg_replace_callback('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/', create_function('$m', 'return strtoupper($m[0]);'), $dir_file);
+                $dir_file = preg_replace_callback('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/u', create_function('$m', 'return strtoupper($m[0]);'), $dir_file);
             }
         }
-        $dir_file = preg_replace('/\/+/', '/', str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '/', $dir_file));
+        $dir_file = preg_replace('/\/+/u', '/', str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '/', $dir_file));
         $dir_file = ($allow_trailing_slash) ? $dir_file : rtrim($dir_file, '/'); // Strip trailing slashes.
 
         if (!empty($stream_wrapper[0])) {

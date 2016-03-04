@@ -78,8 +78,8 @@ class Conflicts
             }
             $construct_name = function ($slug_or_ns) {
                 $name = trim(strtolower((string) $slug_or_ns));
-                $name = preg_replace('/[_\-]+(?:lite|pro)$/', '', $name);
-                $name = preg_replace('/[^a-z0-9]/', ' ', $name);
+                $name = preg_replace('/[_\-]+(?:lite|pro)$/u', '', $name);
+                $name = preg_replace('/[^a-z0-9]/u', ' ', $name);
                 $name = str_replace('cache', 'Cache', ucwords($name));
 
                 return $name; // e.g., `x-cache` becomes `X Cache`.

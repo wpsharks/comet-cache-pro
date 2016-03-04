@@ -185,7 +185,7 @@ class VsUpgrades extends AbsBase
 
             global $is_apache; // Remove htaccess rules added by ZenCache so that they can be re-added by Comet Cache
             if ($is_apache && $this->plugin->findHtaccessMarker('WmVuQ2FjaGU') && ($htaccess = $this->plugin->readHtaccessFile())) {
-                $regex                     = '/#\s*BEGIN\s+ZenCache\s+WmVuQ2FjaGU.*?#\s*END\s+ZenCache\s+WmVuQ2FjaGU\s*/is';
+                $regex                     = '/#\s*BEGIN\s+ZenCache\s+WmVuQ2FjaGU.*?#\s*END\s+ZenCache\s+WmVuQ2FjaGU\s*/uis';
                 $htaccess['file_contents'] = preg_replace($regex, '', $htaccess['file_contents']);
 
                 $this->plugin->writeHtaccessFile($htaccess, false);

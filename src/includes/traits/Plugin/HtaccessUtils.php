@@ -115,7 +115,7 @@ trait HtaccessUtils
             return false; // Failure; could not read file, create file, or invalid UTF8 encountered, file may be corrupt.
         }
 
-        $regex                     = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'\s*/is';
+        $regex                     = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'\s*/uis';
         $htaccess['file_contents'] = preg_replace($regex, '', $htaccess['file_contents']);
 
         if (!$this->writeHtaccessFile($htaccess, false)) {

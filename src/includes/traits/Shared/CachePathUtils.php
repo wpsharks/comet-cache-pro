@@ -110,7 +110,7 @@ trait CachePathUtils
             // Put multisite sub-roots into a host directory of their own.
             // e.g., `example-com[[-base]-child1]` instead of `example-com`.
             if ($is_a_multisite_base_dir && $host_base_dir_tokens && $host_base_dir_tokens !== '/') {
-                $host_base_dir_suffix = preg_replace('/[^a-z0-9.]/i', '-', rtrim($host_base_dir_tokens, '/'));
+                $host_base_dir_suffix = preg_replace('/[^a-z0-9.]/ui', '-', rtrim($host_base_dir_tokens, '/'));
                 $cache_path           = rtrim($cache_path, '/').$host_base_dir_suffix.'/';
             }
         }
@@ -167,14 +167,14 @@ trait CachePathUtils
                 }
             }
         }
-        $cache_path = trim(preg_replace(['/\/+/', '/\.+/'], ['/', '.'], $cache_path), '/');
+        $cache_path = trim(preg_replace(['/\/+/u', '/\.+/u'], ['/', '.'], $cache_path), '/');
 
         if ($flags & $this::CACHE_PATH_ALLOW_WD_REGEX) {
-            $cache_path = preg_replace('/[^a-z0-9\/.*\^$]/i', '-', $cache_path);
+            $cache_path = preg_replace('/[^a-z0-9\/.*\^$]/ui', '-', $cache_path);
         } elseif ($flags & $this::CACHE_PATH_ALLOW_WILDCARDS) {
-            $cache_path = preg_replace('/[^a-z0-9\/.*]/i', '-', $cache_path);
+            $cache_path = preg_replace('/[^a-z0-9\/.*]/ui', '-', $cache_path);
         } else {
-            $cache_path = preg_replace('/[^a-z0-9\/.]/i', '-', $cache_path);
+            $cache_path = preg_replace('/[^a-z0-9\/.]/ui', '-', $cache_path);
         }
         if (!($flags & $this::CACHE_PATH_NO_EXT)) {
             $cache_path .= '.html';
@@ -249,7 +249,7 @@ trait CachePathUtils
                 $host_cache_path      = $this->buildCachePath($host_url, '', '', $flags);
 
                 $cache_path          = $this->buildCachePath($url, '', '', $flags);
-                $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $cache_path);
+                $relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/ui', '', $cache_path);
 
                 $abs_relative_cache_path       = isset($relative_cache_path[0]) ? '/'.$relative_cache_path : '';
                 $abs_relative_cache_path_regex = isset($abs_relative_cache_path[0]) ? preg_quote($abs_relative_cache_path, '/') : '';
@@ -321,7 +321,7 @@ trait CachePathUtils
         foreach ($uri_patterns as $_key => &$_uri_pattern) {
             if (($_uri_pattern = trim($_uri_pattern, '^$'))) {
                 $_cache_path          = $this->buildCachePath($host_url.'/'.trim($_uri_pattern, '/'), '', '', $flags);
-                $_relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/i', '', $_cache_path);
+                $_relative_cache_path = preg_replace('/^'.preg_quote($host_cache_path, '/').'(?:\/|$)/ui', '', $_cache_path);
                 $_uri_pattern         = $this->wdRegexToActualRegexFrag($_relative_cache_path);
             }
             if (!$_uri_pattern) {
