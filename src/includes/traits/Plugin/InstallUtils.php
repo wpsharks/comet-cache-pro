@@ -158,7 +158,7 @@ trait InstallUtils
         if (!($wp_config_file_contents = preg_replace('/^\s*(\<\?php|\<\?)\s+/ui', '${1}'."\n"."define('WP_CACHE', TRUE);"."\n", $wp_config_file_contents, 1))) {
             return ''; // Failure; something went terribly wrong here.
         }
-        if (strpos($wp_config_file_contents, "define('WP_CACHE', TRUE);") === false) {
+        if (mb_strpos($wp_config_file_contents, "define('WP_CACHE', TRUE);") === false) {
             return ''; // Failure; unable to add; unexpected PHP code.
         }
         if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
@@ -356,7 +356,7 @@ trait InstallUtils
         }
         unset($_option, $_value, $_values, $_response); // Housekeeping.
 
-        if (strpos(PLUGIN_FILE, WP_CONTENT_DIR) === 0) {
+        if (mb_strpos(PLUGIN_FILE, WP_CONTENT_DIR) === 0) {
             $plugin_file = "WP_CONTENT_DIR.'".$this->escSq(str_replace(WP_CONTENT_DIR, '', PLUGIN_FILE))."'";
         } else {
             $plugin_file = "'".$this->escSq(PLUGIN_FILE)."'"; // Full absolute path.

@@ -94,7 +94,7 @@ trait CachePathUtils
         $host_base_dir_tokens = $this->hostBaseDirTokens(false, $is_url_domain_mapped, !empty($url_parts['path']) ? $url_parts['path'] : '/');
 
         $is_a_multisite_base_dir = $is_multisite && $host_base_dir_tokens && $host_base_dir_tokens !== '/' // Check?
-                                   && stripos(!empty($url_parts['path']) ? rtrim($url_parts['path'], '/').'/' : '/', $host_base_dir_tokens) === 0;
+                                   && mb_stripos(!empty($url_parts['path']) ? rtrim($url_parts['path'], '/').'/' : '/', $host_base_dir_tokens) === 0;
 
         $is_a_multisite_base_dir_root = $is_multisite && $is_a_multisite_base_dir // Save time by using the previous check here.
                                         && strcasecmp(trim($host_base_dir_tokens, '/'), trim(!empty($url_parts['path']) ? $url_parts['path'] : '/', '/')) === 0;

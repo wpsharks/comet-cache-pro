@@ -140,7 +140,7 @@ class AutoCache extends AbsBase
         if (!($url = trim((string) $url))) {
             return; // Nothing to do.
         }
-        if (!$this->plugin->options['get_requests'] && strpos($url, '?') !== false) {
+        if (!$this->plugin->options['get_requests'] && mb_strpos($url, '?') !== false) {
             return; // We're NOT caching URLs with a query string.
         }
         $cache_path      = $this->plugin->buildCachePath($url);

@@ -50,7 +50,7 @@ class AdvCacheBackCompat
             return; // Nothing to do; i.e. no user-defined constants.
         }
         foreach ($constants['user'] as $_constant => $_value) {
-            if (stripos($_constant, 'ZENCACHE_') !== 0) {
+            if (mb_stripos($_constant, 'ZENCACHE_') !== 0) {
                 continue; // Nothing to do here.
             }
             if (!($_constant_sub_name = substr($_constant, 9))) {

@@ -141,12 +141,12 @@ trait AutoCacheUtils
 
         if (is_wp_error($head = wp_remote_head($sitemap, ['redirection' => 5]))) {
             $failure = 'WP_Http says: '.$head->get_error_message().'.';
-            if (stripos($head->get_error_message(), 'timed out') !== false || stripos($head->get_error_message(), 'timeout') !== false) { // $head->get_error_code() only returns generic `http_request_failed`
+            if (mb_stripos($head->get_error_message(), 'timed out') !== false || mb_stripos($head->get_error_message(), 'timeout') !== false) { // $head->get_error_code() only returns generic `http_request_failed`
                 $failure .= '<br /><em>'.__('Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href="http://cometcache.com/r/kb-article-why-am-i-seeing-a-timeout-error/" target="_blank">this article</a>.', SLUG_TD).'</em>';
             }
         } elseif (empty($head['response']['code']) || (int) $head['response']['code'] >= 400) {
             $failure = sprintf(__('HEAD response code (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((int) @$head['response']['code']));
-        } elseif (empty($head['headers']['content-type']) || stripos($head['headers']['content-type'], 'xml') === false) {
+        } elseif (empty($head['headers']['content-type']) || mb_stripos($head['headers']['content-type'], 'xml') === false) {
             $failure = sprintf(__('Content-Type (<code>%1$s</code>) indicates an error.', SLUG_TD), esc_html((string) @$head['headers']['content-type']));
         }
         if ($failure) { // Failure encountered above?

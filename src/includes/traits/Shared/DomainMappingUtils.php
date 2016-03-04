@@ -161,7 +161,7 @@ trait DomainMappingUtils
         }
         $domain = strtolower(preg_replace('/^www\./ui', '', $domain));
 
-        if (!$domain || strpos($domain, '.') === false) {
+        if (!$domain || mb_strpos($domain, '.') === false) {
             return 0; // Not possible.
         }
         if (!is_null($blog_id = &$this->staticKey('domainMappingBlogId', $domain))) {

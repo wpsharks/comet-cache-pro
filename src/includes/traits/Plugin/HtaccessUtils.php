@@ -187,7 +187,7 @@ trait HtaccessUtils
         if (empty($htaccess_marker)) {
             $htaccess_marker = $this->htaccess_marker;
         }
-        if (stripos($htaccess_file_contents, $htaccess_marker) === false) {
+        if (mb_stripos($htaccess_file_contents, $htaccess_marker) === false) {
             return false; // Htaccess marker is missing
         }
 
@@ -253,7 +253,7 @@ trait HtaccessUtils
         }
         $htaccess_marker = $htaccess_marker ?: $this->htaccess_marker;
 
-        $_have_marker = stripos($htaccess['file_contents'], $htaccess_marker);
+        $_have_marker = mb_stripos($htaccess['file_contents'], $htaccess_marker);
 
         // Note: rewind() necessary here because we fread() above.
         if (($require_marker && $_have_marker === false) || !rewind($htaccess['fp']) || !ftruncate($htaccess['fp'], 0) || !fwrite($htaccess['fp'], $htaccess['file_contents'])) {

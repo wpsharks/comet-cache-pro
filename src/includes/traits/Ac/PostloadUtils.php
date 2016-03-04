@@ -188,7 +188,7 @@ trait PostloadUtils
 
             $headers_list = $this->headersList();
             foreach (unserialize($headers) as $_header) {
-                if (!in_array($_header, $headers_list, true) && stripos($_header, 'Last-Modified:') !== 0) {
+                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'Last-Modified:') !== 0) {
                     header($_header); // Only cacheable/safe headers are stored in the cache.
                 }
             }

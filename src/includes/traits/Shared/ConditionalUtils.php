@@ -213,7 +213,7 @@ trait ConditionalUtils
             return $is; // Already cached this.
         }
         if (!empty($_SERVER['HTTP_USER_AGENT']) && is_string($_SERVER['HTTP_USER_AGENT'])) {
-            if (stripos($_SERVER['HTTP_USER_AGENT'], GLOBAL_NS) !== false) {
+            if (mb_stripos($_SERVER['HTTP_USER_AGENT'], GLOBAL_NS) !== false) {
                 return $is = true;
             }
         }
@@ -263,10 +263,10 @@ trait ConditionalUtils
         if (!is_null($is = &$this->staticKey('isHtmlXmlDoc', $doc_hash))) {
             return $is; // Already cached this.
         }
-        if (stripos($doc, '</html>') !== false) {
+        if (mb_stripos($doc, '</html>') !== false) {
             return $is = true;
         }
-        if (stripos($doc, '<?xml') === 0) {
+        if (mb_stripos($doc, '<?xml') === 0) {
             return $is = true;
         }
         return $is = false;
@@ -289,14 +289,14 @@ trait ConditionalUtils
             return $is; // Already cached this.
         }
         foreach ($this->headersList() as $_key => $_header) {
-            if (stripos($_header, 'Content-Type:') === 0) {
+            if (mb_stripos($_header, 'Content-Type:') === 0) {
                 $content_type = $_header; // Last one.
             }
         }
         unset($_key, $_header); // Housekeeping.
 
-        if (isset($content_type[0]) && stripos($content_type, 'html') === false
-            && stripos($content_type, 'xml') === false && stripos($content_type, GLOBAL_NS) === false
+        if (isset($content_type[0]) && mb_stripos($content_type, 'html') === false
+            && mb_stripos($content_type, 'xml') === false && mb_stripos($content_type, GLOBAL_NS) === false
         ) {
             return $is = false; // Do NOT cache data sent by scripts serving other MIME types.
         }

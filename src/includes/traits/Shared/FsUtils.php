@@ -23,12 +23,12 @@ trait FsUtils
         if (!isset($dir_file[0])) {
             return ''; // Catch empty string.
         }
-        if (strpos($dir_file, '://' !== false)) {
+        if (mb_strpos($dir_file, '://' !== false)) {
             if (preg_match('/^(?P<stream_wrapper>[a-zA-Z0-9]+)\:\/\//u', $dir_file, $stream_wrapper)) {
                 $dir_file = preg_replace('/^(?P<stream_wrapper>[a-zA-Z0-9]+)\:\/\//u', '', $dir_file);
             }
         }
-        if (strpos($dir_file, ':' !== false)) {
+        if (mb_strpos($dir_file, ':' !== false)) {
             if (preg_match('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/u', $dir_file)) {
                 $dir_file = preg_replace_callback('/^(?P<drive_letter>[a-zA-Z])\:[\/\\\\]/u', create_function('$m', 'return strtoupper($m[0]);'), $dir_file);
             }
@@ -73,10 +73,10 @@ trait FsUtils
         if (!empty($_SERVER['TMP'])) {
             $possible_dirs[] = (string) $_SERVER['TMP'];
         }
-        if (stripos(PHP_OS, 'win') === 0) {
+        if (mb_stripos(PHP_OS, 'win') === 0) {
             $possible_dirs[] = 'C:/Temp';
         }
-        if (stripos(PHP_OS, 'win') !== 0) {
+        if (mb_stripos(PHP_OS, 'win') !== 0) {
             $possible_dirs[] = '/tmp';
         }
         if (defined('WP_CONTENT_DIR')) {
@@ -280,7 +280,7 @@ trait FsUtils
             if ($_resource_basename === '.htaccess') {
                 continue; // Ignore `.htaccess`.
             }
-            if (stripos($_resource_sub_path, $short_name_lc.'-') === 0) {
+            if (mb_stripos($_resource_sub_path, $short_name_lc.'-') === 0) {
                 continue; // Ignore [SHORT_NAME] files in base.
             }
             switch ($_resource->getType()) { // `link`, `file`, `dir`.

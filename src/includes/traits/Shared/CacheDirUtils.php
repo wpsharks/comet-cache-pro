@@ -145,7 +145,7 @@ trait CacheDirUtils
         $cache_dir_tmp_regex = $this->strIreplaceOnce(preg_quote($cache_dir.'/', '/'), '', $cache_dir_tmp_regex);
 
         $cache_dir_tmp_regex = ltrim($cache_dir_tmp_regex, '^\\/');
-        if (strpos($cache_dir_tmp_regex, '(?:\/') === 0 || strpos($cache_dir_tmp_regex, '(\/') === 0) {
+        if (mb_strpos($cache_dir_tmp_regex, '(?:\/') === 0 || mb_strpos($cache_dir_tmp_regex, '(\/') === 0) {
             $cache_dir_tmp_regex = '/^'.preg_quote($cache_dir_tmp, '/').$cache_dir_tmp_regex;
         } else {
             $cache_dir_tmp_regex = '/^'.preg_quote($cache_dir_tmp.'/', '/').$cache_dir_tmp_regex;
@@ -161,7 +161,7 @@ trait CacheDirUtils
             $_sub_path_name = $_resource->getSubpathname();
             $_path_name     = $_resource->getPathname();
 
-            if ($_resource_type !== 'dir' && strpos($_sub_path_name, '/') === false) {
+            if ($_resource_type !== 'dir' && mb_strpos($_sub_path_name, '/') === false) {
                 continue; // Don't delete links/files in the immediate directory; e.g. `[SHORT_NAME]-advanced-cache` or `.htaccess`, etc.
                 // Actual `http|https/...` cache links/files are nested. Links/files in the immediate directory are for other purposes.
             }
@@ -311,7 +311,7 @@ trait CacheDirUtils
             $_host_cache_dir_tmp_regex = $this->strIreplaceOnce(preg_quote($_host_cache_dir.'/', '/'), '', $_host_cache_dir_tmp_regex);
 
             $_host_cache_dir_tmp_regex = ltrim($_host_cache_dir_tmp_regex, '^\\/');
-            if (strpos($_host_cache_dir_tmp_regex, '(?:\/') === 0 || strpos($_host_cache_dir_tmp_regex, '(\/') === 0) {
+            if (mb_strpos($_host_cache_dir_tmp_regex, '(?:\/') === 0 || mb_strpos($_host_cache_dir_tmp_regex, '(\/') === 0) {
                 $_host_cache_dir_tmp_regex = '/^'.preg_quote($_host_cache_dir_tmp, '/').$_host_cache_dir_tmp_regex;
             } else {
                 $_host_cache_dir_tmp_regex = '/^'.preg_quote($_host_cache_dir_tmp.'/', '/').$_host_cache_dir_tmp_regex;
@@ -327,7 +327,7 @@ trait CacheDirUtils
                 $_sub_path_name = $_resource->getSubpathname();
                 $_path_name     = $_resource->getPathname();
 
-                if ($_host_cache_dir === $cache_dir && $_resource_type !== 'dir' && strpos($_sub_path_name, '/') === false) {
+                if ($_host_cache_dir === $cache_dir && $_resource_type !== 'dir' && mb_strpos($_sub_path_name, '/') === false) {
                     continue; // Don't delete links/files in the immediate directory; e.g. `[SHORT_NAME]-advanced-cache` or `.htaccess`, etc.
                     // Actual `http|https/...` cache links/files are nested. Links/files in the immediate directory are for other purposes.
                 }

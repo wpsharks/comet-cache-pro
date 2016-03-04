@@ -23,9 +23,9 @@ trait ReplaceUtils
         $needle      = (string) $needle;
         $replace     = (string) $replace;
         $haystack    = (string) $haystack;
-        $caSe_strpos = $caSe_insensitive ? 'stripos' : 'strpos';
+        $caSe_mb_strpos = $caSe_insensitive ? 'mb_stripos' : 'mb_strpos';
 
-        if (($needle_strpos = $caSe_strpos($haystack, $needle)) === false) {
+        if (($needle_strpos = $caSe_mb_strpos($haystack, $needle)) === false) {
             return $haystack; // Nothing to replace.
         }
         return (string) substr_replace($haystack, $replace, $needle_strpos, strlen($needle));

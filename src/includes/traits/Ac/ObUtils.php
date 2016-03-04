@@ -208,7 +208,7 @@ trait ObUtils
 
             $headers_list = $this->headersList();
             foreach (unserialize($headers) as $_header) {
-                if (!in_array($_header, $headers_list, true) && stripos($_header, 'Last-Modified:') !== 0) {
+                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'Last-Modified:') !== 0) {
                     header($_header); // Only cacheable/safe headers are stored in the cache.
                 }
             }
@@ -289,7 +289,7 @@ trait ObUtils
         if ($this->is_404 && !COMET_CACHE_CACHE_404_REQUESTS) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_404_REQUEST);
         }
-        if (stripos($cache, '<body id="error-page">') !== false) {
+        if (mb_stripos($cache, '<body id="error-page">') !== false) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
         }
         if (!$this->hasACacheableContentType()) {

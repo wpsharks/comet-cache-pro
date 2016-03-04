@@ -37,7 +37,7 @@ trait WcpUrlUtils
             return $counter; // Nothing to do.
         }
         foreach (preg_split('/['."\r\n".']+/', $this->options['cache_clear_urls'], -1, PREG_SPLIT_NO_EMPTY) as $_url) {
-            if (stripos($_url, 'http') === 0) {
+            if (mb_stripos($_url, 'http') === 0) {
                 $_regex = $this->buildCachePathRegexFromWcUrl($_url);
                 $counter += $this->deleteFilesFromCacheDir($_regex);
             }

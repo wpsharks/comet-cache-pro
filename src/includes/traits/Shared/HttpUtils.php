@@ -20,7 +20,7 @@ trait HttpUtils
         if (!empty($_SERVER['SERVER_PROTOCOL']) && is_string($_SERVER['SERVER_PROTOCOL'])) {
             $protocol = strtoupper($_SERVER['SERVER_PROTOCOL']);
         }
-        if (!$protocol || stripos($protocol, 'HTTP/') !== 0) {
+        if (!$protocol || mb_stripos($protocol, 'HTTP/') !== 0) {
             $protocol = 'HTTP/1.0'; // Default value.
         }
         return $protocol;

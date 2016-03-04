@@ -337,7 +337,7 @@ class CdnFilters extends AbsBase
         if (!($string = (string) $string)) {
             return $string; // Nothing to do.
         }
-        if (strpos($string, '<') === false) {
+        if (mb_strpos($string, '<') === false) {
             return $string; // Nothing to do.
         }
 
@@ -471,7 +471,7 @@ class CdnFilters extends AbsBase
         if (substr($parsed['path'], -1) === '/') {
             return; // Directory, not a file.
         }
-        if (strpos($parsed['path'], '..') !== false || strpos($parsed['path'], './') !== false) {
+        if (mb_strpos($parsed['path'], '..') !== false || mb_strpos($parsed['path'], './') !== false) {
             return; // A relative path that is not absolute.
         }
         $scheme = null; // Default scheme handling.
@@ -533,7 +533,7 @@ class CdnFilters extends AbsBase
             if (!($_line = trim($_line))) {
                 continue; // Invalid line.
             }
-            if (strpos($_line, '=') !== false) {
+            if (mb_strpos($_line, '=') !== false) {
                 $_parts = explode('=', $_line, 2);
             } else {
                 $_parts = [$this->local_host, $_line];

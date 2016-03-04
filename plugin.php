@@ -9,7 +9,7 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
         update_site_option('comet_cache_mbstring_deprecated_warning_bypass', time());
     }
 
-    ${__FILE__}['apc_enabled'] = (extension_loaded('apc') && filter_var(ini_get('apc.enabled'), FILTER_VALIDATE_BOOLEAN) && filter_var(ini_get('apc.cache_by_default'), FILTER_VALIDATE_BOOLEAN) && stripos((string) ini_get('apc.filters'), 'comet-cache') === false) ? true : false;
+    ${__FILE__}['apc_enabled'] = (extension_loaded('apc') && filter_var(ini_get('apc.enabled'), FILTER_VALIDATE_BOOLEAN) && filter_var(ini_get('apc.cache_by_default'), FILTER_VALIDATE_BOOLEAN) && mb_stripos((string) ini_get('apc.filters'), 'comet-cache') === false) ? true : false;
 
     if ((!version_compare(PHP_VERSION, '5.4', '>=') || ${__FILE__}['apc_enabled'])) { // If PHP <= 5.4 or APC is enabled
 
