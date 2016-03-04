@@ -4,8 +4,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait CdnUtils {
-
+trait CdnUtils
+{
     /**
      * Bumps CDN invalidation counter.
      *

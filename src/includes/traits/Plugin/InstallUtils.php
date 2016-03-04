@@ -3,8 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait InstallUtils {
-
+trait InstallUtils
+{
     /**
      * Plugin activation hook.
      *
@@ -294,7 +294,7 @@ trait InstallUtils {
         $possible_advanced_cache_constant_key_values = array_merge(
             $this->options, // The following additional keys are dynamic.
             [
-                'cache_dir'               => $this->basePathTo($this->cache_sub_dir),
+                'cache_dir' => $this->basePathTo($this->cache_sub_dir),
                 /*[pro strip-from="lite"]*/
                 'htmlc_cache_dir_public'  => $this->basePathTo($this->htmlc_cache_sub_dir_public),
                 'htmlc_cache_dir_private' => $this->basePathTo($this->htmlc_cache_sub_dir_private),

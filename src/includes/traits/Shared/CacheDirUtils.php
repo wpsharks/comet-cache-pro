@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait CacheDirUtils {
+trait CacheDirUtils
+{
     /**
      * Cache directory path.
      *
@@ -38,7 +39,7 @@ trait CacheDirUtils {
      *
      * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
      *
-     * @return integer Total files wiped by this routine.
+     * @return int Total files wiped by this routine.
      */
     public function wipeFilesFromCacheDir($regex)
     {
@@ -53,7 +54,7 @@ trait CacheDirUtils {
      *
      * @param string $regex A regex pattern; see {@link deleteFilesFromHostCacheDir()}.
      *
-     * @return integer Total files cleared by this routine (if any).
+     * @return int Total files cleared by this routine (if any).
      */
     public function clearFilesFromHostCacheDir($regex)
     {
@@ -68,7 +69,7 @@ trait CacheDirUtils {
      *
      * @param string $regex A regex pattern; see {@link deleteFilesFromCacheDir()}.
      *
-     * @return integer Total files wurged by this routine.
+     * @return int Total files wurged by this routine.
      */
     public function wurgeFilesFromCacheDir($regex)
     {
@@ -83,7 +84,7 @@ trait CacheDirUtils {
      *
      * @param string $regex A regex pattern; see {@link deleteFilesFromHostCacheDir()}.
      *
-     * @return integer Total files purged by this routine (if any).
+     * @return int Total files purged by this routine (if any).
      */
     public function purgeFilesFromHostCacheDir($regex)
     {
@@ -96,18 +97,17 @@ trait CacheDirUtils {
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
      *
-     * @param string  $regex A `/[regex pattern]/`; relative to the cache directory.
-     *    e.g. `/^http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
+     * @param string $regex A `/[regex pattern]/`; relative to the cache directory.
+     *                      e.g. `/^http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
      *
      *    Or, this can also be a full/absolute regex pattern against an absolute path;
      *    provided that it always starts with `/^`; including the full absolute cache/host directory path.
      *    e.g. `/^\/cache\/dir\/http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
-     *
-     * @param boolean $check_max_age Check max age? i.e., use purge behavior?
-     *
-     * @return integer Total files deleted by this routine (if any).
+     * @param bool $check_max_age Check max age? i.e., use purge behavior?
      *
      * @throws \Exception If unable to delete a file for any reason.
+     * @return int Total files deleted by this routine (if any).
+     *
      *
      * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
      * @TODO Optimize this for extremely large sites. A LOT of files here could slow things down.
@@ -239,22 +239,20 @@ trait CacheDirUtils {
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
      *
-     * @param string  $regex A `/[regex pattern]/`; relative to the host cache directory.
-     *    e.g. `/^my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
+     * @param string $regex A `/[regex pattern]/`; relative to the host cache directory.
+     *                      e.g. `/^my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
      *
      *    Or, this can also be a full/absolute regex pattern against an absolute path;
      *    provided that it always starts with `/^`; including the full absolute cache/host directory path.
      *    e.g. `/^\/cache\/dir\/http\/example\.com\/my\-slug(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])/`
-     *
-     * @param boolean $check_max_age Check max age? i.e., use purge behavior?
-     *
-     * @param boolean $___considering_domain_mapping For internal use only.
-     * @param boolean $___consider_domain_mapping_host_token For internal use only.
-     * @param boolean $___consider_domain_mapping_host_base_dir_tokens For internal use only.
-     *
-     * @return integer Total files deleted by this routine (if any).
+     * @param bool $check_max_age                                   Check max age? i.e., use purge behavior?
+     * @param bool $___considering_domain_mapping                   For internal use only.
+     * @param bool $___consider_domain_mapping_host_token           For internal use only.
+     * @param bool $___consider_domain_mapping_host_base_dir_tokens For internal use only.
      *
      * @throws \Exception If unable to delete a file for any reason.
+     * @return int Total files deleted by this routine (if any).
+     *
      */
     public function deleteFilesFromHostCacheDir(
         $regex,
@@ -272,7 +270,7 @@ trait CacheDirUtils {
             return $counter; // Nothing to do.
         }
         $cache_dir            = $this->nDirSeps($cache_dir); // Normalize.
-        $host_token           = $current_host_token = $this->hostToken();
+        $host_token           = $current_host_token           = $this->hostToken();
         $host_base_dir_tokens = $current_host_base_dir_tokens = $this->hostBaseDirTokens();
 
         if ($___considering_domain_mapping && isset($___consider_domain_mapping_host_token, $___consider_domain_mapping_host_base_dir_tokens)) {
@@ -437,17 +435,16 @@ trait CacheDirUtils {
      *
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
      *
-     * @param string  $dir The directory from which to delete files/dirs.
+     * @param string $dir The directory from which to delete files/dirs.
      *
      *    SECURITY: This directory MUST be located inside the `/wp-content/` directory.
      *    Also, it MUST be a sub-directory of `/wp-content/`, NOT the directory itself.
      *    Also, it cannot be: `mu-plugins`, `themes`, or `plugins`.
-     *
-     * @param boolean $delete_dir_too Delete parent? i.e., delete the `$dir` itself also?
-     *
-     * @return integer Total files/directories deleted by this routine (if any).
+     * @param bool $delete_dir_too Delete parent? i.e., delete the `$dir` itself also?
      *
      * @throws \Exception If unable to delete a file/directory for any reason.
+     * @return int Total files/directories deleted by this routine (if any).
+     *
      */
     public function deleteAllFilesDirsIn($dir, $delete_dir_too = false)
     {
@@ -545,17 +542,16 @@ trait CacheDirUtils {
      *
      * @since 150821 Improving recovery under stress.
      *
-     * @param string  $dir The directory from which to erase files/dirs.
+     * @param string $dir The directory from which to erase files/dirs.
      *
      *    SECURITY: This directory MUST be located inside the `/wp-content/` directory.
      *    Also, it MUST be a sub-directory of `/wp-content/`, NOT the directory itself.
      *    Also, it cannot be: `mu-plugins`, `themes`, or `plugins`.
-     *
-     * @param boolean $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
-     *
-     * @return integer Total files/directories erased by this routine (if any).
+     * @param bool $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
      *
      * @throws \Exception If unable to erase a file/directory for any reason.
+     * @return int Total files/directories erased by this routine (if any).
+     *
      */
     public function eraseAllFilesDirsIn($dir, $erase_dir_too = false)
     {
@@ -633,15 +629,14 @@ trait CacheDirUtils {
      *
      * @since 150821 Improving recovery under stress.
      *
-     * @param string  $dir The directory from which to erase files/dirs.
+     * @param string $dir The directory from which to erase files/dirs.
      *
      *    SECURITY: This directory MUST be located inside the `/wp-content/` directory.
      *    Also, it MUST be a sub-directory of `/wp-content/`, NOT the directory itself.
      *    Also, it cannot be: `mu-plugins`, `themes`, or `plugins`.
+     * @param bool $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
      *
-     * @param boolean $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
-     *
-     * @return integer Total files/directories erased by this routine (if any).
+     * @return int Total files/directories erased by this routine (if any).
      */
     public function tryErasingAllFilesDirsIn($dir, $erase_dir_too = false)
     {

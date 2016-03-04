@@ -4,7 +4,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait StatsUtils {
+trait StatsUtils
+{
     /**
      * Pings our stats log w/ anonymous details.
      *
@@ -34,7 +35,7 @@ trait StatsUtils {
                                 'product_version' => VERSION, // Plugin version.
                                 'product'         => SLUG_TD.(IS_PRO ? '-pro' : ''),
         ];
-        $stats_api_url      = add_query_arg(urlencode_deep($stats_api_url_args), $stats_api_url);
+        $stats_api_url = add_query_arg(urlencode_deep($stats_api_url_args), $stats_api_url);
 
         wp_remote_get(
             $stats_api_url,

@@ -4,7 +4,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpUserUtils {
+trait WcpUserUtils
+{
     /**
      * Clears cache files associated with a particular user.
      *
@@ -74,15 +75,15 @@ trait WcpUserUtils {
     }
 
     /**
-    * Automatically clears cache files associated with a particular user.
-    *
-    * @since 151220 Using `updated_user_meta` instead of `update_user_metadata`
-    *
-    * @attaches-to `updated_user_meta` hook.
-    *
-    * @param int    $meta_id    ID of updated metadata entry.
-    * @param int    $object_id  Object ID.
-    */
+     * Automatically clears cache files associated with a particular user.
+     *
+     * @since 151220 Using `updated_user_meta` instead of `update_user_metadata`
+     *
+     * @attaches-to `updated_user_meta` hook.
+     *
+     * @param int $meta_id   ID of updated metadata entry.
+     * @param int $object_id Object ID.
+     */
     public function autoClearUserCacheA2($meta_id, $object_id)
     {
         $this->autoClearUserCache($object_id);

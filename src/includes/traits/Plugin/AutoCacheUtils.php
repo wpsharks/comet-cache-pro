@@ -4,7 +4,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait AutoCacheUtils {
+trait AutoCacheUtils
+{
     /**
      * Runs the auto-cache engine via CRON job.
      *

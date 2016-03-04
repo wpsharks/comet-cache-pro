@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait UrlUtils {
+trait UrlUtils
+{
     /**
      * Parses a URL.
      *
@@ -25,12 +26,12 @@ trait UrlUtils {
         }
         if ($component > -1) {
             if (${'//'} && $component === PHP_URL_SCHEME) {
-                return ($part = '//');
+                return $part = '//';
             }
-            return ($part = parse_url($url_uri_qsl, $component));
+            return $part = parse_url($url_uri_qsl, $component);
         } else {
             if (!is_array($parts = parse_url($url_uri_qsl))) {
-                return ($parts = []);
+                return $parts = [];
             }
             if (${'//'}) {
                 $parts['scheme'] = '//';
@@ -98,7 +99,7 @@ trait UrlUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @return boolean `TRUE` if the current request is over SSL.
+     * @return bool `TRUE` if the current request is over SSL.
      *
      * @note The return value of this function is cached to reduce overhead on repeat calls.
      */
@@ -109,20 +110,20 @@ trait UrlUtils {
         }
         if (!empty($_SERVER['SERVER_PORT'])) {
             if ((integer) $_SERVER['SERVER_PORT'] === 443) {
-                return ($is = true);
+                return $is = true;
             }
         }
         if (!empty($_SERVER['HTTPS'])) {
             if (filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN)) {
-                return ($is = true);
+                return $is = true;
             }
         }
         if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
             if (strcasecmp((string) $_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0) {
-                return ($is = true);
+                return $is = true;
             }
         }
-        return ($is = false);
+        return $is = false;
     }
 
     /**

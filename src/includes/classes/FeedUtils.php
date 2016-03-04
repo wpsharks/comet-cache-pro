@@ -48,7 +48,7 @@ class FeedUtils extends AbsBase
         $this->home_url                = rtrim(home_url(), '/');
         $this->default_feed            = get_default_feed(); // Default feed type.
         $this->seo_friendly_permalinks = (boolean) get_option('permalink_structure');
-        $this->feed_types              = array_unique(array($this->default_feed, 'rdf', 'rss', 'rss2', 'atom'));
+        $this->feed_types              = array_unique([$this->default_feed, 'rdf', 'rss', 'rss2', 'atom']);
     }
 
     /**
@@ -62,7 +62,7 @@ class FeedUtils extends AbsBase
      */
     public function feedLinkVariations($type_prefix = '')
     {
-        $variations = array(); // Initialize.
+        $variations = []; // Initialize.
 
         foreach ($this->feed_types as $_feed_type) {
             $variations[] = get_feed_link((string) $type_prefix.$_feed_type);
@@ -83,7 +83,7 @@ class FeedUtils extends AbsBase
      */
     public function postCommentsFeedLinkVariations(\WP_Post $post)
     {
-        $variations = array(); // Initialize.
+        $variations = []; // Initialize.
 
         foreach ($this->feed_types as $_feed_type) {
             $variations[] = get_post_comments_feed_link($post->ID, $_feed_type);
@@ -104,15 +104,15 @@ class FeedUtils extends AbsBase
      */
     public function postAuthorFeedLinkVariations(\WP_Post $post)
     {
-        $variations = array(); // Initialize.
+        $variations = []; // Initialize.
 
         foreach ($this->feed_types as $_feed_type) {
             $variations[] = get_author_feed_link($post->post_author, $_feed_type);
         }
         if ($this->seo_friendly_permalinks && ($post_author = get_userdata($post->post_author))) {
             foreach ($this->feed_types as $_feed_type) {
-                $variations[] = add_query_arg(urlencode_deep(array('author' => $post->post_author)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
-                $variations[] = add_query_arg(urlencode_deep(array('author' => $post_author->user_nicename)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
+                $variations[] = add_query_arg(urlencode_deep(['author' => $post->post_author]), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
+                $variations[] = add_query_arg(urlencode_deep(['author' => $post_author->user_nicename]), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
             }
         }
         unset($_feed_type); // Housekeeping.
@@ -131,7 +131,7 @@ class FeedUtils extends AbsBase
      */
     public function postTypeArchiveFeedLinkVariations(\WP_Post $post)
     {
-        $variations = array(); // Initialize.
+        $variations = []; // Initialize.
 
         foreach ($this->feed_types as $_feed_type) {
             $variations[] = get_post_type_archive_feed_link($post->post_type, $_feed_type);
@@ -158,7 +158,7 @@ class FeedUtils extends AbsBase
      */
     public function postTermFeedLinkVariations(\WP_Post $post, $include_regex_wildcard_keys = false)
     {
-        $variations = $post_terms = array(); // Initialize.
+        $variations = $post_terms = []; // Initialize.
 
         if (!is_array($post_taxonomies = get_object_taxonomies($post, 'objects')) || !$post_taxonomies) {
             return $variations; // Nothing to do here; post has no terms.
@@ -202,10 +202,10 @@ class FeedUtils extends AbsBase
                     $_taxonomy_query_var = $_taxonomy->query_var;
                 }
                 foreach ($this->feed_types as $_feed_type) {
-                    $variations[] = add_query_arg(urlencode_deep(array($_taxonomy_query_var => $_post_term->term_id)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
+                    $variations[] = add_query_arg(urlencode_deep([$_taxonomy_query_var => $_post_term->term_id]), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
                 }
                 foreach ($this->feed_types as $_feed_type) {
-                    $variations[] = add_query_arg(urlencode_deep(array($_taxonomy_query_var => $_post_term->slug)), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
+                    $variations[] = add_query_arg(urlencode_deep([$_taxonomy_query_var => $_post_term->slug]), $this->home_url.'/feed/'.urlencode($_feed_type).'/');
                 }
             }
             unset($_taxonomy, $_taxonomy_query_var, $_feed_type); // Housekeeping.
@@ -226,7 +226,7 @@ class FeedUtils extends AbsBase
      */
     public function convertVariationsToHostCachePathRegexFrags(array $variations)
     {
-        $regex_frags                 = array();
+        $regex_frags                 = [];
         $is_multisite                = is_multisite();
         $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
         $flags                       = $this::CACHE_PATH_NO_SCHEME | $this::CACHE_PATH_NO_HOST // Default flags.

@@ -3,13 +3,14 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait BlogUtils {
+trait BlogUtils
+{
     /**
      * Get blog details.
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param integer $blog_id For which blog ID?
+     * @param int $blog_id For which blog ID?
      *
      * @return \stdClass|null Blog details if possible.
      *

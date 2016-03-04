@@ -3,8 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpSitemapUtils {
-
+trait WcpSitemapUtils
+{
     /**
      * Automatically clears cache files related to XML sitemaps.
      *

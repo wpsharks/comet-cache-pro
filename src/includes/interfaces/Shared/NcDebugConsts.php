@@ -1,8 +1,8 @@
 <?php
 namespace WebSharks\CometCache\Pro\Interfaces\Shared;
 
-interface NcDebugConsts {
-
+interface NcDebugConsts
+{
     /**
      * No-cache because of the current {@link \PHP_SAPI}.
      *
@@ -290,5 +290,4 @@ interface NcDebugConsts {
      * @type string A unique string identifier in the set of `NC_DEBUG_` constants.
      */
     const NC_DEBUG_EARLY_BUFFER_TERMINATION = 'nc_debug_early_buffer_termination';
-
 }

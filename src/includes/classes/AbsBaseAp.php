@@ -2,7 +2,6 @@
 namespace WebSharks\CometCache\Pro\Classes;
 
 use WebSharks\CometCache\Pro\Traits;
-
 use WebSharks\CometCache\Pro\Interfaces;
 
 /**

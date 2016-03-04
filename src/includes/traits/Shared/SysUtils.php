@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait SysUtils {
+trait SysUtils
+{
     /**
      * System load averages.
      *
@@ -17,10 +18,10 @@ trait SysUtils {
             return $averages; // Already cached these.
         }
         if (!$this->functionIsPossible('sys_getloadavg')) {
-            return ($averages = []);
+            return $averages = [];
         }
         if (!is_array($averages = sys_getloadavg()) || !$averages) {
-            return ($averages = []);
+            return $averages = [];
         }
         $averages = array_map('floatval', $averages);
         $averages = array_slice($averages, 0, 3);
@@ -34,7 +35,7 @@ trait SysUtils {
      *
      * @since 151002 Adding cache directory statistics.
      *
-     * @return \stdClass|boolean System memory info.
+     * @return \stdClass|bool System memory info.
      */
     public function sysMemoryStatus()
     {
@@ -42,28 +43,28 @@ trait SysUtils {
             return $status; // Already cached this.
         }
         if (!$this->functionIsPossible('shell_exec')) {
-            return ($status = false);
+            return $status = false;
         }
         if (!($free = trim((string) @shell_exec('free')))) {
-            return ($status = false);
+            return $status = false;
         }
         if (!($free_lines = explode("\n", $free))) {
-            return ($status = false);
+            return $status = false;
         }
         if (empty($free_lines[1])) {
-            return ($status = false);
+            return $status = false;
         }
         if (!($memory = explode(' ', $free_lines[1]))) {
-            return ($status = false);
+            return $status = false;
         }
         if (!($memory = array_merge(array_filter($memory)))) {
-            return ($status = false);
+            return $status = false;
         }
         if (!isset($memory[1], $memory[2])) {
-            return ($status = false);
+            return $status = false;
         }
         if (($total = (integer) $memory[1]) <= 0) {
-            return ($status = false);
+            return $status = false;
         }
         $used       = (integer) $memory[2];
         $percent    = $used / $total * 100;
@@ -78,7 +79,7 @@ trait SysUtils {
      *
      * @since 151002 Adding cache directory statistics.
      *
-     * @return \stdClass|boolean System opcache status/details.
+     * @return \stdClass|bool System opcache status/details.
      */
     public function sysOpcacheStatus()
     {
@@ -86,13 +87,13 @@ trait SysUtils {
             return $status; // Already cached this.
         }
         if (!$this->functionIsPossible('opcache_get_status')) {
-            return ($status = false);
+            return $status = false;
         }
         if (!is_array($status = opcache_get_status(false)) || !$status) {
-            return ($status = false);
+            return $status = false;
         }
         if (empty($status['opcache_enabled'])) {
-            return ($status = false);
+            return $status = false;
         }
         return json_decode(json_encode($status));
     }

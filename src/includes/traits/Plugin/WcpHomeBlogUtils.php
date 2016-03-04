@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpHomeBlogUtils {
+trait WcpHomeBlogUtils
+{
     /**
      * Automatically clears cache files for the home page.
      *

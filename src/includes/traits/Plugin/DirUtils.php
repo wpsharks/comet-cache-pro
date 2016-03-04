@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait DirUtils {
+trait DirUtils
+{
     /**
      * This constructs an absolute server directory path (no trailing slashes);
      *    which is always nested into {@link \WP_CONTENT_DIR} and the configured `base_dir` option value.
@@ -61,7 +62,7 @@ trait DirUtils {
     }
 
     /**
-     * Get the absolute filesystem path to the root of the WordPress installation
+     * Get the absolute filesystem path to the root of the WordPress installation.
      *
      * Copied verbatim from get_home_path() in wp-admin/includes/file.php
      *

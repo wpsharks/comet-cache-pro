@@ -3,12 +3,13 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait BrowserUtils {
+trait BrowserUtils
+{
     /**
-    * Sends no-cache headers (if applicable).
-    *
-    * @since 150422 Rewrite. Enhanced/altered 151220.
-    */
+     * Sends no-cache headers (if applicable).
+     *
+     * @since 150422 Rewrite. Enhanced/altered 151220.
+     */
     public function maybeStopBrowserCaching()
     {
         switch ((bool) COMET_CACHE_ALLOW_BROWSER_CACHE) {

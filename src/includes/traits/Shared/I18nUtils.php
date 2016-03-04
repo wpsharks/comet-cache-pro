@@ -3,13 +3,14 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait I18nUtils {
+trait I18nUtils
+{
     /**
      * `X file` or `X files`, translated w/ singlular/plural context.
      *
      * @since 150422 Rewrite.
      *
-     * @param integer $counter Total files; i.e. the counter.
+     * @param int $counter Total files; i.e. the counter.
      *
      * @return string The phrase `X file` or `X files`.
      */
@@ -24,7 +25,7 @@ trait I18nUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param integer $counter Total directories; i.e. the counter.
+     * @param int $counter Total directories; i.e. the counter.
      *
      * @return string The phrase `X directory` or `X directories`.
      */
@@ -39,7 +40,7 @@ trait I18nUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param integer $counter Total files/directories; i.e. the counter.
+     * @param int $counter Total files/directories; i.e. the counter.
      *
      * @return string The phrase `X file/directory` or `X files/directories`.
      */
