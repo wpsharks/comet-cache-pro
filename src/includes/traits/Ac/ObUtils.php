@@ -140,13 +140,13 @@ trait ObUtils
         if (!COMET_CACHE_FEEDS_ENABLE && $this->isFeed()) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_FEED_REQUEST);
         }
-        if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/i', $_SERVER['REQUEST_URI'])) {
+        if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/ui', $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_SYSTEMATICS);
         }
-        if (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
+        if (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ADMIN);
         }
-        if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
+        if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_MS_FILES);
         }
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
@@ -277,7 +277,7 @@ trait ObUtils
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
         }
-        if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
+        if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
             if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->isLikeUserLoggedIn()) {
                 if (!COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN) {
                     return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LOGGED_IN_USER_NONCE);

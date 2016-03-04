@@ -191,7 +191,7 @@ trait ConditionalUtils
         if (defined('LOCALHOST')) {
             return $is = (boolean) LOCALHOST;
         }
-        if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/i', $this->hostToken())) {
+        if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/ui', $this->hostToken())) {
             return $is = true;
         }
         return $is = false;
@@ -323,7 +323,7 @@ trait ConditionalUtils
             return $is = false; // A non-2xx & non-404 status code.
         }
         foreach ($this->headersList() as $_key => $_header) {
-            if (preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+(?:\.[0-9]+)?\s+(?P<http_status>[0-9]+))/i', $_header, $_m)) {
+            if (preg_match('/^(?:Retry\-After\:\s+(?P<retry>.+)|Status\:\s+(?P<status>[0-9]+)|HTTP\/[0-9]+(?:\.[0-9]+)?\s+(?P<http_status>[0-9]+))/ui', $_header, $_m)) {
                 if (!empty($_m['retry']) || (!empty($_m['status']) && $_m['status'][0] !== '2' && $_m['status'] !== '404')
                     || (!empty($_m['http_status']) && $_m['http_status'][0] !== '2' && $_m['http_status'] !== '404')
                 ) {

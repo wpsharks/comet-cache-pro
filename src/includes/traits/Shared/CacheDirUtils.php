@@ -458,10 +458,10 @@ trait CacheDirUtils
         $wp_content_dir       = $this->nDirSeps(WP_CONTENT_DIR);
         $wp_content_dir_regex = preg_quote($wp_content_dir, '/');
 
-        if (!preg_match('/^'.$wp_content_dir_regex.'\/[^\/]+/i', $dir)) {
+        if (!preg_match('/^'.$wp_content_dir_regex.'\/[^\/]+/ui', $dir)) {
             return $counter; // Security flag; do nothing in this case.
         }
-        if (preg_match('/^'.$wp_content_dir_regex.'\/(?:mu\-plugins|themes|plugins)(?:\/|$)/i', $dir)) {
+        if (preg_match('/^'.$wp_content_dir_regex.'\/(?:mu\-plugins|themes|plugins)(?:\/|$)/ui', $dir)) {
             return $counter; // Security flag; do nothing in this case.
         }
         /* ------- Begin lock state... ----------- */
@@ -564,10 +564,10 @@ trait CacheDirUtils
         $wp_content_dir       = $this->nDirSeps(WP_CONTENT_DIR);
         $wp_content_dir_regex = preg_quote($wp_content_dir, '/');
 
-        if (!preg_match('/^'.$wp_content_dir_regex.'\/[^\/]+/i', $dir)) {
+        if (!preg_match('/^'.$wp_content_dir_regex.'\/[^\/]+/ui', $dir)) {
             return $counter; // Security flag; do nothing in this case.
         }
-        if (preg_match('/^'.$wp_content_dir_regex.'\/(?:mu\-plugins|themes|plugins)(?:\/|$)/i', $dir)) {
+        if (preg_match('/^'.$wp_content_dir_regex.'\/(?:mu\-plugins|themes|plugins)(?:\/|$)/ui', $dir)) {
             return $counter; // Security flag; do nothing in this case.
         }
         clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
