@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait CronUtils {
+trait CronUtils
+{
     /**
      * Extends WP-Cron schedules.
      *
@@ -42,7 +43,6 @@ trait CronUtils {
             || !wp_next_scheduled('_cron_'.GLOBAL_NS.'_auto_cache')
             /*[/pro]*/
         ) {
-
             wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
             wp_schedule_event(time() + 60, $this->options['cache_cleanup_schedule'], '_cron_'.GLOBAL_NS.'_cleanup');
 

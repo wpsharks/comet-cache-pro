@@ -4,16 +4,17 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpS2cleanUtils {
+trait WcpS2cleanUtils
+{
     /**
      * Wipe (i.e., reset) s2Clean cache.
      *
      * @since 151002 While adding OPCache support.
      *
      * @param bool $manually True if wiping is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
-     * @return integer Total files wiped in s2Clean.
+     * @return int Total files wiped in s2Clean.
      */
     public function wipeS2CleanCache($manually = false, $maybe = true)
     {
@@ -36,9 +37,9 @@ trait WcpS2cleanUtils {
      * @since 151002 While adding OPCache support.
      *
      * @param bool $manually True if clearing is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
-     * @return integer Total files cleared in s2Clean.
+     * @return int Total files cleared in s2Clean.
      */
     public function clearS2CleanCache($manually = false, $maybe = true)
     {

@@ -3,25 +3,26 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait HtaccessUtils {
+trait HtaccessUtils
+{
     /**
-    * Unique comment marker.
-    *
-    * @since 151220 Enhancing `.htaccess` tweaks.
-    *
-    * @return string Used in `.htaccess` parsing.
-    */
+     * Unique comment marker.
+     *
+     * @since 151220 Enhancing `.htaccess` tweaks.
+     *
+     * @return string Used in `.htaccess` parsing.
+     */
     public $htaccess_marker = 'WmVuQ2FjaGU';
 
     /**
-    * Plugin options that have associated htaccess rules.
-    *
-    * @since 160103 Improving `.htaccess` tweaks.
-    *
-    * @return array Plugin options that have associated htaccess rules
-    *
-    * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
-    */
+     * Plugin options that have associated htaccess rules.
+     *
+     * @since 160103 Improving `.htaccess` tweaks.
+     *
+     * @return array Plugin options that have associated htaccess rules
+     *
+     * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
+     */
     public $options_with_htaccess_rules = ['cdn_enable'];
 
     /**
@@ -29,7 +30,7 @@ trait HtaccessUtils {
      *
      * @since 151114 Adding `.htaccess` tweaks.
      *
-     * @return boolean True if added successfully.
+     * @return bool True if added successfully.
      *
      * @TODO Improve error reporting detail to better catch unexpected failures; see http://git.io/vEFLT
      */
@@ -93,7 +94,7 @@ trait HtaccessUtils {
      *
      * @since 151114 Adding `.htaccess` tweaks.
      *
-     * @return boolean True if removed successfully.
+     * @return bool True if removed successfully.
      *
      * @TODO Improve error reporting detail to better catch unexpected failures; see http://git.io/vEFLT
      */
@@ -130,7 +131,7 @@ trait HtaccessUtils {
      * @since 151114 Adding `.htaccess` tweaks.
      *
      * @return string Absolute server path to `/.htaccess` file;
-     *    else an empty string if unable to locate the file.
+     *                else an empty string if unable to locate the file.
      */
     public function findHtaccessFile()
     {
@@ -164,11 +165,11 @@ trait HtaccessUtils {
     }
 
     /**
-     * Utility method used to check if htaccess file contains $htaccess_marker
+     * Utility method used to check if htaccess file contains $htaccess_marker.
      *
      * @since 151114 Adding `.htaccess` tweaks.
      *
-     * @param string    $htaccess_marker    Unique comment marker used to identify rules added by this plugin.
+     * @param string $htaccess_marker Unique comment marker used to identify rules added by this plugin.
      *
      * @return bool False on failure or when marker does not exist in htaccess, true otherwise.
      */
@@ -198,18 +199,17 @@ trait HtaccessUtils {
      *
      * @since 151220 Improving `.htaccess` utils.
      *
-     * @param string $htaccess_file     Absolute path to the htaccess file. Optional.
-     *                                  If not provided, we attempt to find it or create it if it doesn't exist.
+     * @param string $htaccess_file Absolute path to the htaccess file. Optional.
+     *                              If not provided, we attempt to find it or create it if it doesn't exist.
      *
      * @return array|bool Returns an array with data necessary to call $this->writeHtaccessFile():
-     *               `fp` a file pointer resource, `file_contents` a string. Returns `false` on failure.
+     *                    `fp` a file pointer resource, `file_contents` a string. Returns `false` on failure.
      *
      * @note If a call to this method is not followed by a call to $this->writeHtaccessFile(),
      *       you must make sure that you unlock and close the `fp` resource yourself.
      */
     public function readHtaccessFile($htaccess_file = '')
     {
-
         if (empty($htaccess_file) && !($htaccess_file = $this->findHtaccessFile())) {
             if (!is_writable($this->wpHomePath()) || file_put_contents($htaccess_file = $this->wpHomePath().'.htaccess', '') === false) {
                 return false; // Unable to find and/or create `.htaccess`.
@@ -237,15 +237,14 @@ trait HtaccessUtils {
      *
      * @since 151220 Improving `.htaccess` utils.
      *
-     * @param array     $htaccess           Array containing `fp` file resource pointing to htaccess file and `file_contents` to write to file.
-     * @param bool      $require_marker     Whether or not to require the marker be present in contents before writing.
-     * @param string    $htaccess_marker    Unique comment marker used to identify rules added by this plugin.
+     * @param array  $htaccess        Array containing `fp` file resource pointing to htaccess file and `file_contents` to write to file.
+     * @param bool   $require_marker  Whether or not to require the marker be present in contents before writing.
+     * @param string $htaccess_marker Unique comment marker used to identify rules added by this plugin.
      *
      * @return bool True on success, false on failure.
      */
     public function writeHtaccessFile(array $htaccess, $require_marker = true, $htaccess_marker = '')
     {
-
         if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
             return false; // Not possible.
         }
@@ -274,7 +273,7 @@ trait HtaccessUtils {
      *
      * @since 151114 Adding `.htaccess` tweaks.
      *
-     * @param array $htaccess                   Array containing at least an `fp` file resource pointing to htaccess file.
+     * @param array $htaccess Array containing at least an `fp` file resource pointing to htaccess file.
      *
      * @return bool False on failure, true otherwise.
      */

@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait ServerUtils {
+trait ServerUtils
+{
     /**
      * Is running on Apache?
      *
@@ -18,13 +19,13 @@ trait ServerUtils {
         }
         if (!empty($_SERVER['SERVER_SOFTWARE']) && is_string($_SERVER['SERVER_SOFTWARE'])) {
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false) {
-                return ($is = true);
+                return $is = true;
             }
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'litespeed') !== false) {
-                return ($is = true);
+                return $is = true;
             }
         }
-        return ($is = false);
+        return $is = false;
     }
 
     /**
@@ -41,10 +42,10 @@ trait ServerUtils {
         }
         if (!empty($_SERVER['SERVER_SOFTWARE']) && is_string($_SERVER['SERVER_SOFTWARE'])) {
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false) {
-                return ($is = true);
+                return $is = true;
             }
         }
-        return ($is = false);
+        return $is = false;
     }
 
     /**
@@ -61,12 +62,12 @@ trait ServerUtils {
         }
         if (!empty($_SERVER['SERVER_SOFTWARE']) && is_string($_SERVER['SERVER_SOFTWARE'])) {
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'microsoft-iis') !== false) {
-                return ($is = true);
+                return $is = true;
             }
             if (stripos($_SERVER['SERVER_SOFTWARE'], 'expressiondevserver') !== false) {
-                return ($is = true);
+                return $is = true;
             }
         }
-        return ($is = false);
+        return $is = false;
     }
 }

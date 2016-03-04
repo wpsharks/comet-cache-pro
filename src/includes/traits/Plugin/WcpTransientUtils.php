@@ -7,17 +7,17 @@ use WebSharks\CometCache\Pro\Classes;
 trait WcpTransientUtils
 {
     /**
-    * Automatically wipes expired transients.
-    *
-    * @since 151220 Adding support for expired transients.
-    *
-    * @param bool $manually True if wiping is done manually.
-    * @param boolean $maybe Defaults to a true value.
-    *
-    * @throws \Exception If a wipe failure occurs.
-    *
-    * @return int Total DB rows wiped by this routine (if any).
-    */
+     * Automatically wipes expired transients.
+     *
+     * @since 151220 Adding support for expired transients.
+     *
+     * @param bool $manually True if wiping is done manually.
+     * @param bool $maybe    Defaults to a true value.
+     *
+     * @throws \Exception If a wipe failure occurs.
+     *
+     * @return int Total DB rows wiped by this routine (if any).
+     */
     public function wipeExpiredTransients($manually = false, $maybe = true)
     {
         if (!is_multisite()) {
@@ -66,17 +66,17 @@ trait WcpTransientUtils
     }
 
     /**
-    * Automatically clears expired transients.
-    *
-    * @since 151220 Adding support for expired transients.
-    *
-    * @param bool $manually True if clearing is done manually.
-    * @param boolean $maybe Defaults to a true value.
-    *
-    * @throws \Exception If a clear failure occurs.
-    *
-    * @return int Total DB rows cleared by this routine (if any).
-    */
+     * Automatically clears expired transients.
+     *
+     * @since 151220 Adding support for expired transients.
+     *
+     * @param bool $manually True if clearing is done manually.
+     * @param bool $maybe    Defaults to a true value.
+     *
+     * @throws \Exception If a clear failure occurs.
+     *
+     * @return int Total DB rows cleared by this routine (if any).
+     */
     public function clearExpiredTransients($manually = false, $maybe = true)
     {
         $counter = 0; // Initialize.

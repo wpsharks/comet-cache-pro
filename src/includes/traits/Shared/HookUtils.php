@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait HookUtils {
+trait HookUtils
+{
     /**
      * Array of hooks.
      *
@@ -20,9 +21,9 @@ trait HookUtils {
      *
      * @param string|callable|mixed $function A string or a callable.
      *
+     * @throws \Exception If the hook/function is invalid (i.e. it's not possible to generate an ID).
      * @return string Hook ID for the given `$function`.
      *
-     * @throws \Exception If the hook/function is invalid (i.e. it's not possible to generate an ID).
      */
     public function hookId($function)
     {
@@ -49,12 +50,12 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param string                $hook The name of a hook to attach to.
-     * @param string|callable|mixed $function A string or a callable.
-     * @param integer               $priority Hook priority; defaults to `10`.
-     * @param integer               $accepted_args Max number of args that should be passed to the `$function`.
+     * @param string                $hook          The name of a hook to attach to.
+     * @param string|callable|mixed $function      A string or a callable.
+     * @param int                   $priority      Hook priority; defaults to `10`.
+     * @param int                   $accepted_args Max number of args that should be passed to the `$function`.
      *
-     * @return boolean This always returns a `TRUE` value.
+     * @return bool This always returns a `TRUE` value.
      */
     public function addHook($hook, $function, $priority = 10, $accepted_args = 1)
     {
@@ -78,7 +79,7 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @return boolean This always returns a `TRUE` value.
+     * @return bool This always returns a `TRUE` value.
      */
     public function addAction()
     {
@@ -98,7 +99,7 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @return boolean This always returns a `TRUE` value.
+     * @return bool This always returns a `TRUE` value.
      */
     public function addFilter()
     {
@@ -118,11 +119,11 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param string                $hook The name of a hook to remove.
+     * @param string                $hook     The name of a hook to remove.
      * @param string|callable|mixed $function A string or a callable.
-     * @param integer               $priority Hook priority; defaults to `10`.
+     * @param int                   $priority Hook priority; defaults to `10`.
      *
-     * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
+     * @return bool `TRUE` if removed; else `FALSE` if not removed for any reason.
      */
     public function removeHook($hook, $function, $priority = 10)
     {
@@ -149,7 +150,7 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
+     * @return bool `TRUE` if removed; else `FALSE` if not removed for any reason.
      */
     public function removeAction()
     {
@@ -161,7 +162,7 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @return boolean `TRUE` if removed; else `FALSE` if not removed for any reason.
+     * @return bool `TRUE` if removed; else `FALSE` if not removed for any reason.
      */
     public function removeFilter()
     {
@@ -201,7 +202,7 @@ trait HookUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param string $hook The name of a filter hook.
+     * @param string $hook  The name of a filter hook.
      * @param mixed  $value The value to filter.
      *
      * @return mixed The filtered `$value`.

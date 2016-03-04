@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait TokenUtils {
+trait TokenUtils
+{
     /*[pro strip-from="lite"]*/
     /**
      * A simple utility flag.
@@ -20,11 +21,9 @@ trait TokenUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
-     *
+     * @param bool   $dashify                        Optional, defaults to a `FALSE` value.
+     *                                               If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
+     * @param bool   $consider_domain_mapping        Consider?
      * @param string $consider_domain_mapping_domain A specific domain?
      *
      * @return string Current host.
@@ -68,16 +67,12 @@ trait TokenUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
-     *
+     * @param bool   $dashify                        Optional, defaults to a `FALSE` value.
+     *                                               If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
+     * @param bool   $consider_domain_mapping        Consider?
      * @param string $consider_domain_mapping_domain A specific domain?
-     *
-     * @param boolean $fallback Fallback on blog's domain when mapping?
-     *
-     * @param integer $blog_id For which blog ID?
+     * @param bool   $fallback                       Fallback on blog's domain when mapping?
+     * @param int    $blog_id                        For which blog ID?
      *
      * @return string Host for a specific blog.
      *
@@ -114,10 +109,9 @@ trait TokenUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
+     * @param bool $dashify                 Optional, defaults to a `FALSE` value.
+     *                                      If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
+     * @param bool $consider_domain_mapping Consider?
      *
      * @return string Current site's base directory.
      *
@@ -157,12 +151,10 @@ trait TokenUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
-     *
-     * @param string $path Defaults to the current URI path.
+     * @param bool   $dashify                 Optional, defaults to a `FALSE` value.
+     *                                        If `TRUE`, the token is returned with dashes in place of `[^a-z0-9\/]`.
+     * @param bool   $consider_domain_mapping Consider?
+     * @param string $path                    Defaults to the current URI path.
      *
      * @return string Current blog's sub-directory.
      *
@@ -195,8 +187,8 @@ trait TokenUtils {
             $path_minus_base = $path; // Default value.
         }
         list($token) = explode('/', trim($path_minus_base, '/'));
-        $token = trim($token, '\\/'." \t\n\r\0\x0B");
-        $token = isset($token[0]) ? '/'.$token.'/' : '/';
+        $token       = trim($token, '\\/'." \t\n\r\0\x0B");
+        $token       = isset($token[0]) ? '/'.$token.'/' : '/';
 
         if ($token !== '/') { // Perhaps NOT the main site?
             $blog_paths_file = $this->cacheDir().'/'.strtolower(SHORT_NAME).'-blog-paths';
@@ -216,12 +208,10 @@ trait TokenUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
-     *
-     * @param integer $blog_id For which blog ID?
+     * @param bool $dashify                 Optional, defaults to a `FALSE` value.
+     *                                      If `TRUE`, the token is returned with dashes in place of `[^a-z0-9]`.
+     * @param bool $consider_domain_mapping Consider?
+     * @param int  $blog_id                 For which blog ID?
      *
      * @return string A blog's sub-directory.
      *
@@ -270,12 +260,10 @@ trait TokenUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
-     *
-     * @param string $path Defaults to the current URI path.
+     * @param bool   $dashify                 Optional, defaults to a `FALSE` value.
+     *                                        If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
+     * @param bool   $consider_domain_mapping Consider?
+     * @param string $path                    Defaults to the current URI path.
      *
      * @return string Current site's base directory & current blog's sub-directory.
      *
@@ -289,7 +277,7 @@ trait TokenUtils {
         $tokens = $this->hostBaseToken($dashify, $consider_domain_mapping);
         $tokens .= $this->hostDirToken($dashify, $consider_domain_mapping, $path);
 
-        return ($tokens = preg_replace('/\/+/', '/', $tokens));
+        return $tokens = preg_replace('/\/+/', '/', $tokens);
     }
 
     /**
@@ -297,12 +285,10 @@ trait TokenUtils {
      *
      * @since 150821 Improving multisite compat.
      *
-     * @param boolean $dashify Optional, defaults to a `FALSE` value.
-     *    If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
-     *
-     * @param boolean $consider_domain_mapping Consider?
-     *
-     * @param integer $blog_id For which blog ID?
+     * @param bool $dashify                 Optional, defaults to a `FALSE` value.
+     *                                      If `TRUE`, the tokens are returned with dashes in place of `[^a-z0-9\/]`.
+     * @param bool $consider_domain_mapping Consider?
+     * @param int  $blog_id                 For which blog ID?
      *
      * @return string A site's base directory & a blog's sub-directory.
      *
@@ -313,7 +299,7 @@ trait TokenUtils {
         $tokens = $this->hostBaseToken($dashify, $consider_domain_mapping);
         $tokens .= $this->hostDirTokenForBlog($dashify, $consider_domain_mapping, $blog_id);
 
-        return ($tokens = preg_replace('/\/+/', '/', $tokens));
+        return $tokens = preg_replace('/\/+/', '/', $tokens);
     }
 
     /*[pro strip-from="lite"]*/
@@ -323,7 +309,7 @@ trait TokenUtils {
      * @since 150422 Rewrite.
      *
      * @return string Produces a token based on the current user;
-     *    else an empty string if that's not possible to do.
+     *                else an empty string if that's not possible to do.
      *
      * @note The return value of this function is cached to reduce overhead on repeat calls.
      *
@@ -340,19 +326,19 @@ trait TokenUtils {
         }
         if ($this->functionIsPossible('wp_validate_auth_cookie')) {
             if (($user_id = (integer) wp_validate_auth_cookie('', 'logged_in'))) {
-                return ($token = (string) $user_id); // A real user in this case.
+                return $token = (string) $user_id; // A real user in this case.
             } elseif (!empty($_COOKIE['wordpress_logged_in_'.COOKIEHASH])) {
                 $this->user_login_cookie_expired_or_invalid = true;
             }
         }
         if (!empty($_COOKIE['comment_author_email_'.COOKIEHASH])) {
-            return ($token = md5(strtolower(stripslashes((string) $_COOKIE['comment_author_email_'.COOKIEHASH]))));
+            return $token = md5(strtolower(stripslashes((string) $_COOKIE['comment_author_email_'.COOKIEHASH])));
         } elseif (!empty($_COOKIE['wp-postpass_'.COOKIEHASH])) {
-            return ($token = md5(stripslashes((string) $_COOKIE['wp-postpass_'.COOKIEHASH])));
+            return $token = md5(stripslashes((string) $_COOKIE['wp-postpass_'.COOKIEHASH]));
         } elseif (defined('SID') && SID) {
-            return ($token = preg_replace('/[^a-z0-9]/i', '', (string) SID));
+            return $token = preg_replace('/[^a-z0-9]/i', '', (string) SID);
         }
-        return ($token = '');
+        return $token = '';
     }
     /*[/pro]*/
 }

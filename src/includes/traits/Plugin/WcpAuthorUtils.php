@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpAuthorUtils {
+trait WcpAuthorUtils
+{
     /**
      * Automatically clears cache files for the author page(s).
      *
@@ -86,7 +87,7 @@ trait WcpAuthorUtils {
                     '<img src="'.esc_attr($this->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
                     sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Author Page: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($this->i18nFiles($_author_counter)), esc_html($_author['display_name']))
                 );
-                $enqueued_notices++; // Increment enqueued notices counter.
+                ++$enqueued_notices; // Increment enqueued notices counter.
             }
         }
         unset($_author, $_author_regex, $_author_counter); // Housekeeping.

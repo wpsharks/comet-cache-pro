@@ -4,19 +4,20 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpCdnUtils {
+trait WcpCdnUtils
+{
     /**
      * Wipes out entire CDN cache.
      *
      * @since 151002 Implementing CDN cache wiping.
      *
      * @param bool $manually True if wiping is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
      * @throws \Exception If a wipe failure occurs.
      *
-     * @return integer CDN invalidation counter after wiping.
-     *  Zero, or a negative integer if wiping did not take place.
+     * @return int CDN invalidation counter after wiping.
+     *             Zero, or a negative integer if wiping did not take place.
      */
     public function wipeCdnCache($manually = false, $maybe = true)
     {
@@ -37,12 +38,12 @@ trait WcpCdnUtils {
      * @since 151002 Implementing CDN cache clearing.
      *
      * @param bool $manually True if clearing is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
      * @throws \Exception If a clear failure occurs.
      *
-     * @return integer CDN invalidation counter after clearing.
-     *  Zero, or a negative integer if clearing did not take place.
+     * @return int CDN invalidation counter after clearing.
+     *             Zero, or a negative integer if clearing did not take place.
      */
     public function clearCdnCache($manually = false, $maybe = true)
     {

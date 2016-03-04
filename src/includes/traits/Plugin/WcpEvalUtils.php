@@ -4,15 +4,15 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpEvalUtils {
-
+trait WcpEvalUtils
+{
     /**
      * Wipe (i.e., eval) custom code.
      *
      * @since 151002 Enhancing eval support.
      *
      * @param bool $manually True if wiping is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
      * @return string Result from custom code.
      */
@@ -32,7 +32,7 @@ trait WcpEvalUtils {
         ob_start(); // Buffer output from PHP code.
         eval('?>'.$this->options['cache_clear_eval_code'].'<?php ');
 
-        return ($result = ob_get_clean());
+        return $result = ob_get_clean();
     }
 
     /**
@@ -41,7 +41,7 @@ trait WcpEvalUtils {
      * @since 151002 Enhancing eval support.
      *
      * @param bool $manually True if wiping is done manually.
-     * @param boolean $maybe Defaults to a true value.
+     * @param bool $maybe    Defaults to a true value.
      *
      * @return string Result from custom code.
      */

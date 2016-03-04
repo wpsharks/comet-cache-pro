@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait NoticeUtils {
+trait NoticeUtils
+{
     /*
      * Notice queue handlers.
      */
@@ -13,9 +14,9 @@ trait NoticeUtils {
      *
      * @since 150422 Rewrite. Improved 151002.
      *
-     * @param string $notice         HTML markup containing the notice itself.
-     * @param string $args Any additional arguments supported by the notice API in this plugin.
-     * @param integer $blog_id Optional. Defaults to the current blog ID. Use any value `< 0` to indicate the main site.
+     * @param string $notice  HTML markup containing the notice itself.
+     * @param string $args    Any additional arguments supported by the notice API in this plugin.
+     * @param int    $blog_id Optional. Defaults to the current blog ID. Use any value `< 0` to indicate the main site.
      *
      * @return string A unique key generated for this notice.
      */
@@ -49,9 +50,8 @@ trait NoticeUtils {
      * @since 151002 Improving multisite compat.
      *
      * @param string $key_to_dismiss A unique key which identifies a particular notice.
-     *  Or, a persistent key which identifies one or more persistent notices.
-     *
-     * @param integer $blog_id The blog ID from which to dismiss the notice.
+     *                               Or, a persistent key which identifies one or more persistent notices.
+     * @param int    $blog_id        The blog ID from which to dismiss the notice.
      *
      * @return array All remaining notices.
      */
@@ -59,7 +59,7 @@ trait NoticeUtils {
     {
         $key_to_dismiss = trim((string) $key_to_dismiss);
         $blog_id        = (integer) $blog_id; // For multisite compat.
-        $notices        = $enqueued_notices = $this->getNotices($blog_id);
+        $notices        = $enqueued_notices        = $this->getNotices($blog_id);
 
         if (!$key_to_dismiss) {
             return $notices; // Nothing to do.
@@ -186,8 +186,8 @@ trait NoticeUtils {
      *
      * @since 151002 Improving multisite compat.
      *
-     * @param integer $blog_id Optional. Defaults to the current blog ID.
-     *  Use any value `< 0` to indicate the main site.
+     * @param int $blog_id Optional. Defaults to the current blog ID.
+     *                     Use any value `< 0` to indicate the main site.
      *
      * @return array All notices.
      */
@@ -228,9 +228,8 @@ trait NoticeUtils {
      * @since 151002 Improving multisite compat.
      *
      * @param array $notices New array of notices.
-     *
-     * @param integer $blog_id Optional. Defaults to the current blog ID.
-     *  Use any value `< 0` to indicate the main site.
+     * @param int   $blog_id Optional. Defaults to the current blog ID.
+     *                       Use any value `< 0` to indicate the main site.
      *
      * @return array All notices.
      */
@@ -256,15 +255,15 @@ trait NoticeUtils {
      */
 
     /**
-    * Normalize notice elements.
-    *
-    * @since 151002 Improving multisite compat.
-    *
-    * @param array $notice Notice array elements.
-    * @param array $args Any additional array elements.
-    *
-    * @return array Normalized notice array elements.
-    */
+     * Normalize notice elements.
+     *
+     * @since 151002 Improving multisite compat.
+     *
+     * @param array $notice Notice array elements.
+     * @param array $args   Any additional array elements.
+     *
+     * @return array Normalized notice array elements.
+     */
     public function normalizeNotice(array $notice, array $args = [])
     {
         $notice_defaults = [
@@ -278,8 +277,8 @@ trait NoticeUtils {
             'cap_required'   => '', // `$this->cap` always.
             // i.e., this cap is in addition to `$this->cap`.
         ];
-        $notice          = array_merge($notice_defaults, $notice, $args);
-        $notice          = array_intersect_key($notice, $notice_defaults);
+        $notice = array_merge($notice_defaults, $notice, $args);
+        $notice = array_intersect_key($notice, $notice_defaults);
 
         foreach ($notice as $_key => &$_value) {
             switch ($_key) {

@@ -3,18 +3,17 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait TrimUtils {
+trait TrimUtils
+{
     /**
      * Trims strings deeply.
      *
      * @since 150422 Rewrite.
      *
-     * @param mixed  $values Any value can be converted into a trimmed string.
-     *    Actually, objects can't, but this recurses into objects.
-     *
-     * @param string $chars Specific chars to trim.
-     *    Defaults to PHP's trim: " \r\n\t\0\x0B". Use an empty string to bypass.
-     *
+     * @param mixed  $values      Any value can be converted into a trimmed string.
+     *                            Actually, objects can't, but this recurses into objects.
+     * @param string $chars       Specific chars to trim.
+     *                            Defaults to PHP's trim: " \r\n\t\0\x0B". Use an empty string to bypass.
      * @param string $extra_chars Additional chars to trim.
      *
      * @return string|array|object Trimmed string, array, object.

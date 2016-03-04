@@ -4,19 +4,20 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait WcpUrlUtils {
+trait WcpUrlUtils
+{
     /**
-    * Automatically clears cache files for a list of custom URLs.
-    *
-    * @since 151114 Adding support for a custom list of URLs.
-    *
-    * @throws \Exception If a clear failure occurs.
-    *
-    * @return int Total files cleared by this routine (if any).
-    *
-    * @note Unlike many of the other `auto_` methods, this one is NOT currently
-    *    attached to any hooks. However, it is called upon by other routines attached to hooks.
-    */
+     * Automatically clears cache files for a list of custom URLs.
+     *
+     * @since 151114 Adding support for a custom list of URLs.
+     *
+     * @throws \Exception If a clear failure occurs.
+     *
+     * @return int Total files cleared by this routine (if any).
+     *
+     * @note Unlike many of the other `auto_` methods, this one is NOT currently
+     *    attached to any hooks. However, it is called upon by other routines attached to hooks.
+     */
     public function autoClearUrlsCache()
     {
         $counter = 0; // Initialize.

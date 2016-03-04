@@ -131,7 +131,7 @@ trait HttpUtils
      *
      * @since 150422 Rewrite.
      *
-     * @return integer HTTP status code.
+     * @return int HTTP status code.
      *
      * @warning Do NOT call until end of script execution.
      *
@@ -152,7 +152,7 @@ trait HttpUtils
             $status = (integer) $code; // {@link \http_response_code()} available since PHP v5.4.
         } elseif ($has_property_http_status && (integer) $this->http_status) {
             $status = (integer) $this->http_status; // {@link \status_header()} filter.
-    }
+        }
         if ($status && $has_property_http_status) {
             $this->http_status = $status; // Prefer over {@link status_header()}.
         }
@@ -163,10 +163,10 @@ trait HttpUtils
     }
 
     /**
-    * Sends no-cache headers.
-    *
-    * @since 151220 Enhancing no-cache headers.
-    */
+     * Sends no-cache headers.
+     *
+     * @since 151220 Enhancing no-cache headers.
+     */
     public function sendNoCacheHeaders()
     {
         header_remove('Last-Modified');

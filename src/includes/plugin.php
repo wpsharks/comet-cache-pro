@@ -14,11 +14,11 @@ if (!defined('WPINC')) {
 require_once __DIR__.'/stub.php';
 
 if (!Classes\Conflicts::check()) {
-    $GLOBALS[GLOBAL_NS]  = new Classes\Plugin();
-    $GLOBALS['zencache'] = $GLOBALS[GLOBAL_NS]; // Back compat.
+    $GLOBALS[GLOBAL_NS]     = new Classes\Plugin();
+    $GLOBALS['zencache']    = $GLOBALS[GLOBAL_NS]; // Back compat.
     $GLOBALS['quick_cache'] = $GLOBALS[GLOBAL_NS]; // Back compat.
 
-    add_action('plugins_loaded', function() {
+    add_action('plugins_loaded', function () {
         require_once __DIR__.'/api.php';
     });
 }

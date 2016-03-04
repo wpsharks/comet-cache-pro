@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait IpAddrUtils {
+trait IpAddrUtils
+{
     /**
      * Get the current visitor's real IP address.
      *
@@ -39,22 +40,22 @@ trait IpAddrUtils {
 
         if (!empty($_SERVER['REMOTE_ADDR']) && $prioritize_remote_addr) {
             if (($_valid_public_ip = $this->validPublicIp((string) $_SERVER['REMOTE_ADDR']))) {
-                return ($ip = $_valid_public_ip);
+                return $ip = $_valid_public_ip;
             }
             unset($_valid_public_ip); // Housekeeping.
         }
         foreach ($sources as $_key => $_source) {
             if (!empty($_SERVER[$_source])) {
                 if (($_valid_public_ip = $this->validPublicIp((string) $_SERVER[$_source]))) {
-                    return ($ip = $_valid_public_ip);
+                    return $ip = $_valid_public_ip;
                 }
             }
             unset($_key, $_source, $_valid_public_ip); // Housekeeping.
         }
         if (!empty($_SERVER['REMOTE_ADDR'])) {
-            return ($ip = strtolower((string) $_SERVER['REMOTE_ADDR']));
+            return $ip = strtolower((string) $_SERVER['REMOTE_ADDR']);
         }
-        return ($ip = 'unknown'); // Not possible.
+        return $ip = 'unknown'; // Not possible.
     }
 
     /**

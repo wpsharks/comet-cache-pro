@@ -4,15 +4,16 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait AdminBarUtils {
+trait AdminBarUtils
+{
     /**
      * Showing admin bar.
      *
      * @since 151002 Improving admin bar.
      *
-     * @param boolean $feature Check something specific?
+     * @param bool $feature Check something specific?
      *
-     * @return boolean True if showing.
+     * @return bool True if showing.
      */
     public function adminBarShowing($feature = '')
     {
@@ -184,7 +185,7 @@ trait AdminBarUtils {
                     'title' => __('Clear Cache', SLUG_TD),
                     'href'  => '#',
                     'meta'  => [
-                        'title'    => is_multisite() && current_user_can($this->network_cap)
+                        'title' => is_multisite() && current_user_can($this->network_cap)
                             ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
                             : '',
                         'class'    => '-clear',

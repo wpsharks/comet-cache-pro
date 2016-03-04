@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait PostloadUtils {
+trait PostloadUtils
+{
     /**
      * Have we caught the main WP loaded being loaded yet?
      *
@@ -93,9 +94,9 @@ trait PostloadUtils {
         'invalidate_when_logged_in' => false,
         'when_logged_in'            => false,
         /*[/pro]*/
-        'filter_status_header'      => true,
-        'wp_main_query'             => true,
-        'set_debug_info'            => COMET_CACHE_DEBUGGING_ENABLE,
+        'filter_status_header' => true,
+        'wp_main_query'        => true,
+        'set_debug_info'       => COMET_CACHE_DEBUGGING_ENABLE,
     ];
 
     /*[pro strip-from="lite"]*/

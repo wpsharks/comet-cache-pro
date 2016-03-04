@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait UpdateUtils {
+trait UpdateUtils
+{
     /**
      * Checks for a new lite release.
      *

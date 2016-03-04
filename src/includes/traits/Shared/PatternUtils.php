@@ -3,7 +3,8 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait PatternUtils {
+trait PatternUtils
+{
     /**
      * Convert line-delimited patterns to a regex.
      *

@@ -3,16 +3,16 @@ namespace WebSharks\CometCache\Pro\Traits\Shared;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait FsUtils {
+trait FsUtils
+{
     /**
      * Normalizes directory/file separators.
      *
      * @since 150422 Rewrite.
      *
-     * @param string  $dir_file Directory/file path.
-     *
-     * @param boolean $allow_trailing_slash Defaults to FALSE.
-     *    If TRUE; and `$dir_file` contains a trailing slash; we'll leave it there.
+     * @param string $dir_file             Directory/file path.
+     * @param bool   $allow_trailing_slash Defaults to FALSE.
+     *                                     If TRUE; and `$dir_file` contains a trailing slash; we'll leave it there.
      *
      * @return string Normalized directory/file path.
      */
@@ -84,12 +84,12 @@ trait FsUtils {
         }
         foreach ($possible_dirs as $_key => $_dir) {
             if (($_dir = trim((string) $_dir)) && @is_dir($_dir) && @is_writable($_dir)) {
-                return ($dir = $this->nDirSeps($_dir));
+                return $dir = $this->nDirSeps($_dir);
             }
         }
         unset($_key, $_dir); // Housekeeping.
 
-        return ($dir = '');
+        return $dir = '';
     }
 
     /**
@@ -98,7 +98,7 @@ trait FsUtils {
      * @since 150422 Rewrite.
      *
      * @return string Absolute server path to `/wp-config.php` file;
-     *    else an empty string if unable to locate the file.
+     *                else an empty string if unable to locate the file.
      */
     public function findWpConfigFile()
     {
@@ -137,11 +137,11 @@ trait FsUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @param string $dir An absolute server directory path.
+     * @param string $dir   An absolute server directory path.
      * @param string $regex A regex pattern; compares to each full file path.
      *
      * @return \RegexIterator Navigable with {@link \foreach()} where each item
-     *    is a {@link \RecursiveDirectoryIterator}.
+     *                        is a {@link \RecursiveDirectoryIterator}.
      */
     public function dirRegexIteration($dir, $regex = '')
     {
@@ -163,8 +163,8 @@ trait FsUtils {
      *
      * @since 151002 Adding a few statistics.
      *
-     * @param float   $bytes File size in bytes. A (float) value.
-     * @param integer $precision Number of decimals to use.
+     * @param float $bytes     File size in bytes. A (float) value.
+     * @param int   $precision Number of decimals to use.
      *
      * @return string Byte notation.
      */
@@ -233,11 +233,11 @@ trait FsUtils {
      *
      * @since 151002 Adding a few statistics.
      *
-     * @param string $dir An absolute server directory path.
-     * @param string $regex A regex pattern; compares to each full file path.
-     * @param boolean $include_paths Include array of all scanned file paths?
-     * @param boolean $check_disk Also check disk statistics?
-     * @param boolean $no_cache Do not read/write cache?
+     * @param string $dir           An absolute server directory path.
+     * @param string $regex         A regex pattern; compares to each full file path.
+     * @param bool   $include_paths Include array of all scanned file paths?
+     * @param bool   $check_disk    Also check disk statistics?
+     * @param bool   $no_cache      Do not read/write cache?
      *
      * @return array Directory stats.
      */
@@ -286,7 +286,7 @@ trait FsUtils {
             switch ($_resource->getType()) { // `link`, `file`, `dir`.
                 case 'link':
                     if ($include_paths) {
-                        $stats['link_subpaths'][] = $_sub_path;
+                        $stats['link_subpaths'][] = $_resource_sub_path;
                     }
                     ++$stats['total_resources'];
                     ++$stats['total_links_files'];
@@ -296,7 +296,7 @@ trait FsUtils {
 
                 case 'file':
                     if ($include_paths) {
-                        $stats['file_subpaths'][] = $_sub_path;
+                        $stats['file_subpaths'][] = $_resource_sub_path;
                     }
                     $stats['total_size'] += $_resource->getSize();
                     ++$stats['total_resources'];
@@ -307,7 +307,7 @@ trait FsUtils {
 
                 case 'dir':
                     if ($include_paths) {
-                        $stats['dir_subpaths'][] = $_sub_path;
+                        $stats['dir_subpaths'][] = $_resource_sub_path;
                     }
                     ++$stats['total_resources'];
                     ++$stats['total_dirs'];
@@ -329,7 +329,7 @@ trait FsUtils {
      *
      * @since 150422 Rewrite.
      *
-     * @var string `.htaccess` fules.
+     * @type string `.htaccess` fules.
      */
     public $htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";
 }

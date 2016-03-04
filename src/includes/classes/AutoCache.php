@@ -1,4 +1,5 @@
 <?php
+
 /*[pro strip-from="lite"]*/
 namespace WebSharks\CometCache\Pro\Classes;
 
@@ -69,7 +70,7 @@ class AutoCache extends AbsBase
         $other_urls = $this->plugin->options['auto_cache_other_urls'];
         $other_urls = preg_split('/\s+/', $other_urls, -1, PREG_SPLIT_NO_EMPTY);
 
-        $blogs = array((object) array('ID' => null, 'other' => $other_urls));
+        $blogs = [(object) ['ID' => null, 'other' => $other_urls]];
 
         $is_multisite                = is_multisite(); // Multisite network?
         $can_consider_domain_mapping = $is_multisite && $this->plugin->canConsiderDomainMapping();
@@ -84,7 +85,7 @@ class AutoCache extends AbsBase
         shuffle($blogs); // Randomize; i.e. don't always start from the top.
 
         foreach ($blogs as $_blog) {
-            $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = array();
+            $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = [];
 
             if (!isset($_blog->ID)) { // `home_url()` fallback.
                 $_blog_url           = rtrim(network_home_url('', 'http'), '/');
@@ -154,11 +155,11 @@ class AutoCache extends AbsBase
             $url,
             wp_remote_get(
                 $url,
-                array(
+                [
                     'blocking'   => false,
                     'user-agent' => $this->plugin->options['auto_cache_user_agent'].
                         '; '.GLOBAL_NS.' '.VERSION,
-                )
+                ]
             )
         );
     }
@@ -248,7 +249,7 @@ class AutoCache extends AbsBase
      */
     protected function getSitemapUrlsDeep($sitemap, $___recursive = false)
     {
-        $urls       = array();
+        $urls       = [];
         $xml_reader = new \XMLReader();
         $failure    = ''; // Initialize.
 
@@ -297,7 +298,7 @@ class AutoCache extends AbsBase
      */
     protected function xmlGetSitemapIndexUrlsDeep(\XMLReader $xml_reader)
     {
-        $urls = array(); // Initialize.
+        $urls = []; // Initialize.
 
         if ($xml_reader->name === 'sitemapindex') {
             while ($xml_reader->read()) {
@@ -319,6 +320,7 @@ class AutoCache extends AbsBase
                     }
                 }
             }
+
             return $urls; // All sitemap URLs from this `<sitemapindex>` node; deeply.
         }
     }
@@ -334,7 +336,7 @@ class AutoCache extends AbsBase
      */
     protected function xmlGetUrlsetUrls(\XMLReader $xml_reader)
     {
-        $urls = array(); // Initialize.
+        $urls = []; // Initialize.
 
         if ($xml_reader->name === 'urlset') {
             while ($xml_reader->read()) {
@@ -356,6 +358,7 @@ class AutoCache extends AbsBase
                     }
                 }
             }
+
             return $urls; // All sitemap URLs from this `<urlset>` node.
         }
     }
