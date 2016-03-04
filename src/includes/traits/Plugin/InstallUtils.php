@@ -246,7 +246,7 @@ trait InstallUtils
         }
         $cache_dir                 = $this->cacheDir();
         $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
-        $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
+        $advanced_cache_check_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-advanced-cache';
 
         // Fixes zero-byte advanced-cache.php bug related to migrating from ZenCache
         //      See: <https://github.com/websharks/zencache/issues/432>
@@ -276,7 +276,7 @@ trait InstallUtils
         }
         $cache_dir                 = $this->cacheDir();
         $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
-        $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
+        $advanced_cache_check_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-advanced-cache';
         $advanced_cache_template   = dirname(dirname(__DIR__)).'/templates/advanced-cache.txt';
 
         if (is_file($advanced_cache_file) && !is_writable($advanced_cache_file)) {
@@ -443,7 +443,7 @@ trait InstallUtils
     {
         $cache_dir                 = $this->cacheDir();
         $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
-        $advanced_cache_check_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-advanced-cache';
+        $advanced_cache_check_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-advanced-cache';
 
         if (is_file($advanced_cache_file)) {
             if (!is_writable($advanced_cache_file) || !unlink($advanced_cache_file)) {
@@ -489,7 +489,7 @@ trait InstallUtils
             return; // Skip on plugin actions.
         }
         $cache_dir       = $this->cacheDir();
-        $blog_paths_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-blog-paths';
+        $blog_paths_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-blog-paths';
 
         if (!is_file($blog_paths_file)) {
             $this->updateBlogPaths();
@@ -520,7 +520,7 @@ trait InstallUtils
             return $value; // N/A.
         }
         $cache_dir       = $this->cacheDir();
-        $blog_paths_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-blog-paths';
+        $blog_paths_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-blog-paths';
 
         $cache_lock = $this->cacheLock();
 

@@ -74,7 +74,7 @@ trait DomainMappingUtils
         if (empty($url_parts['host'])) {
             return $original_url; // Not possible.
         }
-        $blog_domain = strtolower($url_parts['host']); // In the unfiltered URL.
+        $blog_domain = mb_strtolower($url_parts['host']); // In the unfiltered URL.
         $blog_path   = $this->hostDirToken(false, false, !empty($url_parts['path']) ? $url_parts['path'] : '/');
 
         if (!($blog_id = (integer) get_blog_id_from_url($blog_domain, $blog_path))) {
@@ -159,7 +159,7 @@ trait DomainMappingUtils
         if (!$url && !$domain && ($blog_details = $this->blogDetails())) {
             $domain = $blog_details->domain;
         }
-        $domain = strtolower(preg_replace('/^www\./ui', '', $domain));
+        $domain = mb_strtolower(preg_replace('/^www\./ui', '', $domain));
 
         if (!$domain || mb_strpos($domain, '.') === false) {
             return 0; // Not possible.
@@ -230,7 +230,7 @@ trait DomainMappingUtils
         }
         $wpdb->suppress_errors($suppressing_errors); // Restore.
 
-        return $domain = strtolower((string) $domain);
+        return $domain = mb_strtolower((string) $domain);
     }
 
     /**

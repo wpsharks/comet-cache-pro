@@ -17,7 +17,7 @@ trait AdminBarUtils
      */
     public function adminBarShowing($feature = '')
     {
-        $feature = trim(strtolower((string) $feature));
+        $feature = trim(mb_strtolower((string) $feature));
         if (!is_null($showing = &$this->cacheKey('adminBarShowing', $feature))) {
             return $showing; // Already cached this.
         }

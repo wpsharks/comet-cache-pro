@@ -178,7 +178,7 @@ class AutoCache extends AbsBase
     {
         $cache_dir           = $this->plugin->cacheDir();
         $cache_lock          = $this->plugin->cacheLock();
-        $auto_cache_log_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-auto-cache.log';
+        $auto_cache_log_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
             throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
@@ -215,7 +215,7 @@ class AutoCache extends AbsBase
     {
         $cache_dir           = $this->plugin->cacheDir();
         $cache_lock          = $this->plugin->cacheLock();
-        $auto_cache_log_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-auto-cache.log';
+        $auto_cache_log_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
             throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));

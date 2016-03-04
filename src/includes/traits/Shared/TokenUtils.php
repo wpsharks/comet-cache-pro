@@ -53,7 +53,7 @@ trait TokenUtils
             $token = (string) $_SERVER['HTTP_HOST'];
         }
         if ($token) { // Have token?
-            $token = strtolower($token);
+            $token = mb_strtolower($token);
             if ($dashify) { // Dashify it?
                 $token = preg_replace('/[^a-z0-9]/ui', '-', $token);
                 $token = trim($token, '-');
@@ -95,7 +95,7 @@ trait TokenUtils
             $token = $blog_details->domain; // Unmapped domain.
         }
         if ($token) { // Have token?
-            $token = strtolower($token);
+            $token = mb_strtolower($token);
             if ($dashify) { // Dashify it?
                 $token = preg_replace('/[^a-z0-9]/ui', '-', $token);
                 $token = trim($token, '-');
@@ -191,7 +191,7 @@ trait TokenUtils
         $token       = isset($token[0]) ? '/'.$token.'/' : '/';
 
         if ($token !== '/') { // Perhaps NOT the main site?
-            $blog_paths_file = $this->cacheDir().'/'.strtolower(SHORT_NAME).'-blog-paths';
+            $blog_paths_file = $this->cacheDir().'/'.mb_strtolower(SHORT_NAME).'-blog-paths';
             if (!is_file($blog_paths_file) || !in_array($token, unserialize(file_get_contents($blog_paths_file)), true)) {
                 $token = '/'; // NOT a real/valid child blog path.
             }
@@ -243,7 +243,7 @@ trait TokenUtils
         $token = isset($token[0]) ? '/'.$token.'/' : '/';
 
         if ($token !== '/') { // Perhaps NOT the main site?
-            $blog_paths_file = $this->cacheDir().'/'.strtolower(SHORT_NAME).'-blog-paths';
+            $blog_paths_file = $this->cacheDir().'/'.mb_strtolower(SHORT_NAME).'-blog-paths';
             if (!is_file($blog_paths_file) || !in_array($token, unserialize(file_get_contents($blog_paths_file)), true)) {
                 $token = '/'; // NOT a real/valid child blog path.
             }
@@ -332,7 +332,7 @@ trait TokenUtils
             }
         }
         if (!empty($_COOKIE['comment_author_email_'.COOKIEHASH])) {
-            return $token = md5(strtolower(stripslashes((string) $_COOKIE['comment_author_email_'.COOKIEHASH])));
+            return $token = md5(mb_strtolower(stripslashes((string) $_COOKIE['comment_author_email_'.COOKIEHASH])));
         } elseif (!empty($_COOKIE['wp-postpass_'.COOKIEHASH])) {
             return $token = md5(stripslashes((string) $_COOKIE['wp-postpass_'.COOKIEHASH]));
         } elseif (defined('SID') && SID) {

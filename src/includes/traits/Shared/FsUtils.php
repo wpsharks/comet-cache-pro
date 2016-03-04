@@ -37,7 +37,7 @@ trait FsUtils
         $dir_file = ($allow_trailing_slash) ? $dir_file : rtrim($dir_file, '/'); // Strip trailing slashes.
 
         if (!empty($stream_wrapper[0])) {
-            $dir_file = strtolower($stream_wrapper[0]).$dir_file;
+            $dir_file = mb_strtolower($stream_wrapper[0]).$dir_file;
         }
         return $dir_file; // Normalized now.
     }
@@ -204,7 +204,7 @@ trait FsUtils
             return (float) 0;
         }
         $value    = (float) $_m['value'];
-        $modifier = strtolower($_m['modifier']);
+        $modifier = mb_strtolower($_m['modifier']);
         unset($_m); // Housekeeping.
 
         switch ($modifier) {
@@ -268,7 +268,7 @@ trait FsUtils
         if (!$dir || !is_dir($dir)) {
             return $stats; // Not possible.
         }
-        $short_name_lc = strtolower(SHORT_NAME); // Once only.
+        $short_name_lc = mb_strtolower(SHORT_NAME); // Once only.
 
         foreach ($this->dirRegexIteration($dir, $regex) as $_resource) {
             $_resource_sub_path = $_resource->getSubpathname();

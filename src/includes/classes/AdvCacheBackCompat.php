@@ -44,7 +44,7 @@ class AdvCacheBackCompat
      */
     public static function zenCacheConstants()
     {
-        $_global_ns = strtoupper(GLOBAL_NS);
+        $_global_ns = mb_strtoupper(GLOBAL_NS);
 
         if (!($constants = get_defined_constants(true)) || empty($constants['user'])) {
             return; // Nothing to do; i.e. no user-defined constants.
