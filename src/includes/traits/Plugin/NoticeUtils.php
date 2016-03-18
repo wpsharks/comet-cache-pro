@@ -15,7 +15,7 @@ trait NoticeUtils
      * @since 150422 Rewrite. Improved 151002.
      *
      * @param string $notice  HTML markup containing the notice itself.
-     * @param string $args    Any additional arguments supported by the notice API in this plugin.
+     * @param array $args    Any additional arguments supported by the notice API in this plugin.
      * @param int    $blog_id Optional. Defaults to the current blog ID. Use any value `< 0` to indicate the main site.
      *
      * @return string A unique key generated for this notice.
@@ -155,14 +155,17 @@ trait NoticeUtils
             }
             # If persistent, allow a site owner to dismiss.
 
-            $_dismiss = ''; // Reset this to its default state.
             if ($_notice['persistent_key'] && $_notice['dismissable']) { // See above. The `dismissNotice()` action requires `$this->cap` always.
-                $_dismiss = add_query_arg(urlencode_deep([GLOBAL_NS => ['dismissNotice' => ['key' => $_key]], '_wpnonce' => wp_create_nonce()]));
-                $_dismiss = '<a style="display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
+                $_dismiss       = add_query_arg(urlencode_deep([GLOBAL_NS => ['dismissNotice' => ['key' => $_key]], '_wpnonce' => wp_create_nonce()]));
+                $_dismiss       = '<a href="'.esc_attr($_dismiss).'"><button type="button" class="notice-dismiss"><span class="screen-reader-text">'.__('Dismiss this notice.', SLUG_TD).'</span></button></a>';
+                $_dismiss_class = ''; // We handle the dismiss action ourselves for persistent notices.
+            } else {
+                $_dismiss       = '<button type="button" class="notice-dismiss"><span class="screen-reader-text">'.__('Dismiss this notice.', SLUG_TD).'</span></button>';
+                $_dismiss_class = 'notice is-dismissible'; // This allows WordPress JS to handle dismissing non-persistent notices.
             }
             # Display this notice. If not persistent, we can dismiss it too.
 
-            echo '<div class="'.esc_attr($_notice['class']).'"><p>'.$_notice['notice'].$_dismiss.'</p></div>';
+            echo '<div class="'.esc_attr($_notice['class']).' '.$_dismiss_class.'" style="clear:both; padding-right:38px; position: relative;"><p>'.$_notice['notice'].'</p>'.$_dismiss.'</div>';
 
             if (!$_notice['persistent_key']) { // If not persistent, dismiss.
                 unset($notices[$_key]); // Dismiss; this notice has been displayed now.
