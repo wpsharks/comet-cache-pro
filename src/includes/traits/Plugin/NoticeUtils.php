@@ -15,7 +15,7 @@ trait NoticeUtils
      * @since 150422 Rewrite. Improved 151002.
      *
      * @param string $notice  HTML markup containing the notice itself.
-     * @param string $args    Any additional arguments supported by the notice API in this plugin.
+     * @param array $args    Any additional arguments supported by the notice API in this plugin.
      * @param int    $blog_id Optional. Defaults to the current blog ID. Use any value `< 0` to indicate the main site.
      *
      * @return string A unique key generated for this notice.
