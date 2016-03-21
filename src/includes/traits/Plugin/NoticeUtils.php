@@ -273,6 +273,7 @@ trait NoticeUtils
             'notice'         => '',
             'only_on_uris'   => '',
             'persistent_key' => '',
+            'combinable'     => false,
             'dismissable'    => true,
             'is_transient'   => true,
             'push_to_top'    => false,
@@ -293,6 +294,7 @@ trait NoticeUtils
 
                 case 'is_transient':
                 case 'push_to_top':
+                case 'combinable':
                 case 'dismissable':
                     $_value = (boolean) $_value;
                     break; // Stop here.
