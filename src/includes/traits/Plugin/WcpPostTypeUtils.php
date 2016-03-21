@@ -62,9 +62,8 @@ trait WcpPostTypeUtils
         $counter += $this->clearFilesFromHostCacheDir($regex);
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(
-                '<img src="'.esc_attr($this->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Custom Post Type: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($this->i18nFiles($counter)), esc_html($custom_post_type_name))
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for Custom Post Type: <code>%2$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter)), esc_html($custom_post_type_name)),
+                ['combinable' => true]
             );
         }
         $counter += $this->autoClearXmlFeedsCache('custom-post-type', $post_id);
