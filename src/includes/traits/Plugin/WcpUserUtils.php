@@ -44,9 +44,8 @@ trait WcpUserUtils
         $counter += $this->wipeFilesFromCacheDir($regex); // Clear matching files.
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(
-                '<img src="'.esc_attr($this->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache for user ID: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($this->i18nFiles($counter)), esc_html($user_id))
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for user ID: <code>%2$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter)), esc_html($user_id)),
+                ['combinable' => true]
             );
         }
         return $counter;
