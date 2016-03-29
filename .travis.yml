@@ -1,0 +1,42 @@
+# Container.
+
+dist: trusty
+sudo: required
+language: generic
+script: ./.travis.bash
+
+# Notifications.
+
+notifications:
+  email: false # Disable emails.
+  slack: websharks:EpVKoMF6MQKjLKVw0CAX33Og
+
+# Example build matrix (default configuration).
+
+# <custom> Begin custom matrix.
+
+matrix: # Tests for Comet Cache WordPress plugin.
+
+  include: # Cover both ends of our PHP spectrum.
+
+    - env: CI_RUN=PHP_VERSION=7.0,WP=standard,WP_VERSION=latest
+    - env: CI_RUN=PHP_VERSION=7.0,WP=multisite,WP_VERSION=latest
+    - env: CI_RUN=PHP_VERSION=7.0,WP=standard,WP_VERSION=nightly
+    - env: CI_RUN=PHP_VERSION=7.0,WP=multisite,WP_VERSION=nightly
+
+    - env: CI_RUN=PHP_VERSION=5.5,WP=standard,WP_VERSION=latest
+    - env: CI_RUN=PHP_VERSION=5.5,WP=multisite,WP_VERSION=latest
+    - env: CI_RUN=PHP_VERSION=5.5,WP=standard,WP_VERSION=nightly
+    - env: CI_RUN=PHP_VERSION=5.5,WP=multisite,WP_VERSION=nightly
+
+  allow_failures: # Allow nightly failures.
+
+    - env: CI_RUN=PHP_VERSION=7.0,WP=standard,WP_VERSION=nightly
+    - env: CI_RUN=PHP_VERSION=7.0,WP=multisite,WP_VERSION=nightly
+
+    - env: CI_RUN=PHP_VERSION=5.5,WP=standard,WP_VERSION=nightly
+    - env: CI_RUN=PHP_VERSION=5.5,WP=multisite,WP_VERSION=nightly
+
+  fast_finish: true # Before allowed failures.
+
+# </custom>
