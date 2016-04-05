@@ -21,6 +21,8 @@ trait OptionUtils
             if (!$options && is_array($zencache_options = get_site_option('zencache_options'))) {
                 $options                = $zencache_options; // Old ZenCache options.
                 $options['crons_setup'] = $this->default_options['crons_setup'];
+                $options['latest_lite_version'] = $this->default_options['latest_lite_version'];
+                $options['latest_pro_version'] = $this->default_options['latest_pro_version'];
             }
         }
         $this->options = array_merge($this->default_options, $options);
