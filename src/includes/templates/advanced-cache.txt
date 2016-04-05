@@ -436,3 +436,7 @@ if (!isset($GLOBALS['zencache__advanced_cache'])) {
     $GLOBALS['zencache_advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
     $GLOBALS['zencache__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 }
+if (!isset($GLOBALS['quick_cache__advanced_cache'])) {
+    $GLOBALS['quick_cache_advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
+    $GLOBALS['quick_cache__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
+}
