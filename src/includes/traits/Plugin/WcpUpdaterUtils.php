@@ -96,9 +96,7 @@ trait WcpUpdaterUtils
 
             case 'core': // Core upgrade.
             default: // Or any other sort of upgrade.
-
                 $counter += $this->autoClearCache();
-
                 break; // Break switch.
         }
     }

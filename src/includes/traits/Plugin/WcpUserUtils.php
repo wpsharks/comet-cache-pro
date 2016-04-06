@@ -44,18 +44,17 @@ trait WcpUserUtils
         $counter += $this->wipeFilesFromCacheDir($regex); // Clear matching files.
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for user ID: <code>%2$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter)), esc_html($user_id)),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for user ID: <code>%2$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter)), esc_html($user_id)), ['combinable' => true]);
         }
         return $counter;
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for autoClearUserCache()
     */
     public function auto_clear_user_cache()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'autoClearUserCache'], func_get_args());
     }
 
@@ -137,11 +136,12 @@ trait WcpUserUtils
         $this->autoClearUserCache(get_current_user_id());
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for autoClearUserCache()
     */
     public function auto_clear_user_cache_cur()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'autoClearUserCacheCur'], func_get_args());
     }
 }

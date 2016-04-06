@@ -45,9 +45,7 @@ trait WcpSitemapUtils
         $counter += $this->clearFilesFromHostCacheDir($regex);
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for XML sitemaps; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for XML sitemaps; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         return $counter;
     }

@@ -39,9 +39,7 @@ trait WcpHomeBlogUtils
         $counter += $this->clearFilesFromHostCacheDir($regex);
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for the designated "Home Page"; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for the designated "Home Page"; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         $counter += $this->autoClearXmlFeedsCache('blog');
 
@@ -99,9 +97,7 @@ trait WcpHomeBlogUtils
         $counter += $this->clearFilesFromHostCacheDir($regex);
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for the designated "Posts Page"; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for the designated "Posts Page"; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         $counter += $this->autoClearXmlFeedsCache('blog');
 

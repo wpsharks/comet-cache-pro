@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 /**
  * Stub.
  *
@@ -37,7 +38,6 @@ foreach (['Classes', 'Traits\\Shared', 'Traits\\Ac', 'Traits\\Plugin', 'Interfac
     define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\PLUGIN_FILE', PLUGIN_FILE);
     define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\IS_PRO', IS_PRO);
 }
-
 unset(${__FILE__}); // Housekeeping.
 
 // Fixes PHP Fatal error with upgrades from v160211

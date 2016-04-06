@@ -21,11 +21,9 @@ trait InstallUtils
             $this->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url)), ['push_to_top' => true]);
             $this->updateOptions(['welcomed' => '1']);
         }
-
         if (!$this->options['enable']) {
             return; // Nothing to do.
         }
-
         $this->addWpCacheToWpConfig();
         $this->addWpHtaccess();
         $this->addAdvancedCache();
@@ -339,9 +337,7 @@ trait InstallUtils
                 /*[/pro]*/
 
                 default: // Default case handler.
-
                     $_value = "'".$this->escSq($_value)."'";
-
                     break; // Break switch handler.
             }
             $advanced_cache_contents = // Fill replacement codes.
