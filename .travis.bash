@@ -5,18 +5,14 @@
 if [[ "$(whoami)" != 'root' ]]; then
   sudo -E "${BASH_SOURCE[0]}"; exit; fi;
 
+# ----------------------------------------------------------------------------------------------------------------------
+
 # Clone the websharks/travis-ci repo.
-# This serves as the official `/bootstrap`.
-
-mkdir --parents ~/ws/repos &>/dev/null || exit 1;
-git clone https://github.com/websharks/travis-ci /bootstrap --branch=master --depth=1 &>/dev/null || exit 1;
-
 # Run setup scripts in websharks/travis-ci repo.
 
-. /bootstrap/src/setup.bash &>/dev/null || exit 1;
+git clone https://github.com/websharks/travis-ci /bootstrap-ci --branch=master --depth=1 || exit 1;
+. /bootstrap-ci/src/travis || exit 1; # In strict mode after this line finishes.
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 # Custom code reinserted here via [custom] marker. Add your <custom></custom> comment markers here please.
-
-# Run build now; i.e., Phing, etc (after custom code).
-
-. /bootstrap/src/build.bash;
