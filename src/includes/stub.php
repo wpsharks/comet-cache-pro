@@ -47,3 +47,11 @@ class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\Comet_Cache\\A
 class_alias(__NAMESPACE__.'\\Classes\\AdvCacheBackCompat', 'WebSharks\\Comet_Cache\\Pro\\AdvCacheBackCompat');
 class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\Comet_Cache\\Pro\\AdvancedCache');
 /*[/pro]*/
+
+// Fixes PHP Fatal error with upgrades from v160227
+class_alias(__NAMESPACE__.'\\Classes\\AdvCacheBackCompat', 'WebSharks\\CometCache\\AdvCacheBackCompat');
+class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\CometCache\\AdvancedCache');
+/*[pro strip-from="lite"]*/
+class_alias(__NAMESPACE__.'\\Classes\\AdvCacheBackCompat', 'WebSharks\\CometCache\\Pro\\AdvCacheBackCompat');
+class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\CometCache\\Pro\\AdvancedCache');
+/*[/pro]*/

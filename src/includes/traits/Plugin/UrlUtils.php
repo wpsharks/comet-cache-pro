@@ -25,4 +25,28 @@ trait UrlUtils
         }
         return $url;
     }
+
+    /**
+     * Retrieves the home URL for a given site preserving the home URL scheme.
+     *
+     * @since 16xxxx Improving Auto-Cache Engine Sitemap routines.
+     *
+     * @param int $blog_id (Optional) Blog ID. Default null (current blog).
+     *
+     * @return string $url Home URL link with Home URL scheme preserved.
+     */
+    public function getHomeUrlWithHomeScheme($blog_id = null)
+    {
+        if (empty($blog_id) || !is_multisite()) {
+            $url = get_option('home');
+        } else {
+            switch_to_blog($blog_id);
+            $url = get_option('home');
+            restore_current_blog();
+        }
+
+        $url = set_url_scheme($url, parse_url($url, PHP_URL_SCHEME));
+
+        return $url;
+    }
 }
