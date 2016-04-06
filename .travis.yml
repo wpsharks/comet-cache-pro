@@ -11,9 +11,9 @@ script: ./.travis.bash
 
 # Notifications.
 
-#notifications:
-#  email: false # Disable.
-#  slack: websharks:EpVKoMF6MQKjLKVw0CAX33Og
+notifications:
+  email: false # Disable.
+  slack: websharks:EpVKoMF6MQKjLKVw0CAX33Og
 
 # ----------------------------------------------------------------------------------------------------------------------
 
