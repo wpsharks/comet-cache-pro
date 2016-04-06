@@ -88,10 +88,10 @@ class AutoCache extends AbsBase
             $_blog_sitemap_urls = $_blog_other_urls = $_blog_urls = [];
 
             if (!isset($_blog->ID)) { // `home_url()` fallback.
-                $_blog_url           = rtrim(network_home_url('', 'http'), '/');
+                $_blog_url           = rtrim($this->plugin->getHomeUrlWithHomeScheme(), '/');
                 $this->is_child_blog = false; // Simple flag.
             } else { // This calls upon `switch_to_blog()` to acquire.
-                $_blog_url           = rtrim(get_home_url($_blog->ID, '', 'http'), '/');
+                $_blog_url           = rtrim($this->plugin->getHomeUrlWithHomeScheme($_blog->ID), '/');
                 $this->is_child_blog = true; // Simple flag; yes it is!
             }
             if ($is_multisite && $can_consider_domain_mapping) {
