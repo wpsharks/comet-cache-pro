@@ -5,12 +5,11 @@ $.test.begin('Check if plugin is active.', function () {
   if ($$.wp.isMultisite()) {
     $.thenOpen($$.www.url('/wp-admin/network/admin.php?page=' + $$$.GLOBAL_NS));
   } else {
-    $.thenOpen($$.www.url('/wp-admin/admin.php?page=' + $$$.GLOBAL_NS), function() {
-    this.echo(this.getHTML());
-  });
+    $.echo($$.www.url('/wp-admin/admin.php?page=' + $$$.GLOBAL_NS));
+    $.thenOpen($$.www.url('/wp-admin/admin.php?page=' + $$$.GLOBAL_NS));
   }
   $.then(function () {
-    this.echo(this.getHTML());
+    $.echo($.getHTML());
     $.test.assertExists('input[type="radio"][name="' + $$$.GLOBAL_NS + '[saveOptions][enable]"][value="1"]:checked');
   });
   $$.wp.thenLogout();
