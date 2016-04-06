@@ -5,7 +5,9 @@ $.test.begin('Check if plugin is active.', function () {
   if ($$.wp.isMultisite()) {
     $.thenOpen($$.www.url('/wp-admin/network/admin.php?page=' + $$$.GLOBAL_NS));
   } else {
-    $.thenOpen($$.www.url('/wp-admin/admin.php?page=' + $$$.GLOBAL_NS));
+    $.thenOpen($$.www.url('/wp-admin/admin.php?page=' + $$$.GLOBAL_NS), function() {
+    $.echo($.getHTML());
+  });
   }
   $.then(function () {
     $.echo($.getHTML());
