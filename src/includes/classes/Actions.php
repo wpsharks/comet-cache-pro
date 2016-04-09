@@ -766,15 +766,28 @@ class Actions extends AbsBase
         if (!is_object($product_api_response) || !empty($product_api_response->error) || empty($product_api_response->pro_version) || empty($product_api_response->pro_zip)) {
             if (!empty($product_api_response->error)) {
                 $error = substr((string) $product_api_response->error, 0, 1000);
-            } else {
-                $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
+            } else { // Let's try the proxy server
+                $product_api_url      = 'http://proxy.websharks-inc.net/'.urlencode(SLUG_TD).'/';
+                $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
+                $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
+
+                if (!is_object($product_api_response) || !empty($product_api_response->error) || empty($product_api_response->pro_version) || empty($product_api_response->pro_zip)) {
+                    if (!empty($product_api_response->error)) {
+                        $error = substr((string) $product_api_response->error, 0, 1000);
+                    } else {
+                        $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
+                    }
+                }
             }
+        }
+
+        if (!empty($error)) {
             $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
             $query_args  = ['page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'_error' => $error];
             $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
-
             wp_redirect($redirect_to).exit();
         }
+
         $this->plugin->updateOptions([
             'last_pro_update_check'   => time(),
             'pro_update_check'        => $args['check'],
@@ -787,14 +800,14 @@ class Actions extends AbsBase
 
         $redirect_to = self_admin_url('/update.php');
         $query_args  = [ // Like a normal WP plugin.
-            'action'   => 'upgrade-plugin',
-            'plugin'   => plugin_basename(PLUGIN_FILE),
-            '_wpnonce' => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
+                         'action'   => 'upgrade-plugin',
+                         'plugin'   => plugin_basename(PLUGIN_FILE),
+                         '_wpnonce' => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
 
-            // See: `preSiteTransientUpdatePlugins()` where these are picked up.
-            GLOBAL_NS.'_update_pro_version' => $product_api_response->pro_version,
-            GLOBAL_NS.'_update_pro_zip'     => base64_encode($product_api_response->pro_zip),
-            // @TODO Encrypt/decrypt to avoid mod_security issues. Base64 is not enough.
+                         // See: `preSiteTransientUpdatePlugins()` where these are picked up.
+                         GLOBAL_NS.'_update_pro_version' => $product_api_response->pro_version,
+                         GLOBAL_NS.'_update_pro_zip'     => base64_encode($product_api_response->pro_zip),
+                         // @TODO Encrypt/decrypt to avoid mod_security issues. Base64 is not enough.
         ];
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
