@@ -1,6 +1,6 @@
 <?php
-namespace WebSharks\CometCache\Pro
-{
+namespace WebSharks\CometCache\Pro {
+
     /**
      * Polyfill for {@link \__()}.
      *
@@ -21,15 +21,15 @@ namespace WebSharks\CometCache\Pro
         return $string; // Not possible (yet).
     }
 }
-namespace WebSharks\CometCache\Pro\Traits\Ac
-{
+namespace WebSharks\CometCache\Pro\Traits\Ac {
+
     function __($string, $text_domain)
     {
         return \WebSharks\CometCache\Pro\__($string, $text_domain);
     }
 }
-namespace WebSharks\CometCache\Pro\Traits\Shared
-{
+namespace WebSharks\CometCache\Pro\Traits\Shared {
+
     function __($string, $text_domain)
     {
         return \WebSharks\CometCache\Pro\__($string, $text_domain);

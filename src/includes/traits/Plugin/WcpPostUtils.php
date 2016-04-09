@@ -90,9 +90,7 @@ trait WcpPostUtils
         $counter += $this->clearFilesFromHostCacheDir($regex);
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for %2$s ID: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter)), esc_html($post_type_singular_name), esc_html($post_id)),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache for %2$s ID: <code>%3$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter)), esc_html($post_type_singular_name), esc_html($post_id)), ['combinable' => true]);
         }
         $counter += $this->autoClearXmlFeedsCache('blog');
         $counter += $this->autoClearXmlFeedsCache('post-terms', $post_id);
@@ -114,11 +112,12 @@ trait WcpPostUtils
         return $counter;
     }
 
+    // @codingStandardsIgnoreStart
     /*
      * Back compat. alias for autoClearPostCache()
      */
     public function auto_clear_post_cache()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'autoClearPostCache'], func_get_args());
     }
 

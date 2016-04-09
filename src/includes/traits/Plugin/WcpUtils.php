@@ -61,11 +61,12 @@ trait WcpUtils
         return $counter;
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for autoClearUserCache()
     */
     public function wipe_cache()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'wipeCache'], func_get_args());
     }
 
@@ -114,11 +115,12 @@ trait WcpUtils
         return $counter;
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for clearCache()
     */
     public function clear_cache()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'clearCache'], func_get_args());
     }
 
@@ -155,11 +157,12 @@ trait WcpUtils
         return $counter;
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for purgeCache()
     */
     public function purge_cache()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'purgeCache'], func_get_args());
     }
 
@@ -226,9 +229,7 @@ trait WcpUtils
         $counter += $this->wipeCache();
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Detected significant changes that require a full wipe of the cache. Found %1$s in the cache; auto-wiping.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Detected significant changes that require a full wipe of the cache. Found %1$s in the cache; auto-wiping.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         return $counter;
     }
@@ -274,9 +275,7 @@ trait WcpUtils
         $counter += $this->clearCache();
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Detected important site changes that affect the entire cache. Found %1$s in the cache for this site; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Detected important site changes that affect the entire cache. Found %1$s in the cache for this site; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         return $counter;
     }
@@ -310,9 +309,7 @@ trait WcpUtils
         $counter += $this->purgeCache();
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Detected important site changes. Found %1$s in the cache for this site that were expired; auto-purging.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Detected important site changes. Found %1$s in the cache for this site that were expired; auto-purging.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         return $counter;
     }
@@ -346,9 +343,7 @@ trait WcpUtils
         $counter += $this->wurgeCache();
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(sprintf(__('Detected important site changes. Found %1$s in the cache that were expired; auto-purging.', SLUG_TD), esc_html($this->i18nFiles($counter))),
-                ['combinable' => true]
-            );
+            $this->enqueueNotice(sprintf(__('Detected important site changes. Found %1$s in the cache that were expired; auto-purging.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         return $counter;
     }

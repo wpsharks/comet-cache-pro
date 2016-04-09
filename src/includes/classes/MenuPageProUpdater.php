@@ -26,7 +26,7 @@ class MenuPageProUpdater extends MenuPage
 
         echo '<div class="plugin-menu-page-heading">'."\n";
 
-        echo '   <button type="submit" style="float:right;">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
+        echo '   <button type="submit" name="'.esc_attr(GLOBAL_NS).'[proUpdate][update]" value="1" style="float:right;">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-togglers" title="'.esc_attr(__('All Panels', SLUG_TD)).'">'."\n";
         echo '      <button type="button" class="plugin-menu-page-panels-open"><i class="si si-chevron-down"></i></button>'."\n";
@@ -84,6 +84,11 @@ class MenuPageProUpdater extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
+        if (!empty($_REQUEST[GLOBAL_NS.'_updated'])) {
+            echo '<div class="plugin-menu-page-notice notice">'."\n";
+            echo '   <i class="si si-thumbs-up"></i> '.__('Options updated successfully.', SLUG_TD)."\n";
+            echo '</div>'."\n";
+        }
         if (!empty($_REQUEST[GLOBAL_NS.'_error'])) {
             echo '<div class="plugin-menu-page-error error">'."\n";
             echo '   <i class="si si-thumbs-down"></i> '.esc_html(stripslashes((string) $_REQUEST[GLOBAL_NS.'_error']))."\n";
@@ -160,7 +165,7 @@ class MenuPageProUpdater extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<div class="plugin-menu-page-save">'."\n";
-        echo '   <button type="submit">'.sprintf(__('Update %1$s Now', SLUG_TD), esc_html(NAME)).' <i class="si si-magic"></i></button>'."\n";
+        echo '   <button type="submit" name="'.esc_attr(GLOBAL_NS).'[proUpdate][update]" value="0">'.__('Save All Changes', SLUG_TD).' <i class="si si-save"></i></button>'."\n";
         echo '</div>'."\n";
 
         /* ----------------------------------------------------------------------------------------- */

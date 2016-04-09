@@ -83,9 +83,7 @@ trait WcpAuthorUtils
             $counter += $_author_counter; // Add to overall counter.
 
             if ($_author_counter && $enqueued_notices < 100 && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-                $this->enqueueNotice(sprintf(__('Found %1$s in the cache for Author Page: <code>%2$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($_author_counter)), esc_html($_author['display_name'])),
-                    ['combinable' => true]
-                );
+                $this->enqueueNotice(sprintf(__('Found %1$s in the cache for Author Page: <code>%2$s</code>; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($_author_counter)), esc_html($_author['display_name'])), ['combinable' => true]);
                 ++$enqueued_notices; // Increment enqueued notices counter.
             }
         }

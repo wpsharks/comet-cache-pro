@@ -197,7 +197,7 @@ class Plugin extends AbsBaseAp
         }
         /* -------------------------------------------------------------- */
 
-        add_action('after_setup_theme', [$this, 'setup']);
+        add_action('plugins_loaded', [$this, 'setup']);
         register_activation_hook(PLUGIN_FILE, [$this, 'activate']);
         register_deactivation_hook(PLUGIN_FILE, [$this, 'deactivate']);
     }

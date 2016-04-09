@@ -22,8 +22,8 @@ trait HookUtils
      * @param string|callable|mixed $function A string or a callable.
      *
      * @throws \Exception If the hook/function is invalid (i.e. it's not possible to generate an ID).
-     * @return string Hook ID for the given `$function`.
      *
+     * @return string Hook ID for the given `$function`.
      */
     public function hookId($function)
     {
@@ -86,11 +86,12 @@ trait HookUtils
         return call_user_func_array([$this, 'addHook'], func_get_args());
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for addAction()
     */
     public function add_action()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'addAction'], func_get_args());
     }
 
@@ -106,11 +107,12 @@ trait HookUtils
         return call_user_func_array([$this, 'addHook'], func_get_args());
     }
 
+    // @codingStandardsIgnoreStart
     /*
     * Back compat. alias for addFilter()
     */
     public function add_filter()
-    {
+    { // @codingStandardsIgnoreEnd
         return call_user_func_array([$this, 'addFilter'], func_get_args());
     }
 
