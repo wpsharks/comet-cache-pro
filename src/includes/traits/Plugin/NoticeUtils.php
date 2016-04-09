@@ -15,7 +15,7 @@ trait NoticeUtils
      * @since 150422 Rewrite. Improved 151002.
      *
      * @param string $notice  HTML markup containing the notice itself.
-     * @param string $args    Any additional arguments supported by the notice API in this plugin.
+     * @param array $args    Any additional arguments supported by the notice API in this plugin.
      * @param int    $blog_id Optional. Defaults to the current blog ID. Use any value `< 0` to indicate the main site.
      *
      * @return string A unique key generated for this notice.
@@ -132,7 +132,8 @@ trait NoticeUtils
      */
     public function allAdminNotices()
     {
-        $notices = $enqueued_notices = $this->getNotices();
+        $notices          = $enqueued_notices = $this->getNotices();
+        $combined_notices = []; // Initialize
 
         foreach ($notices as $_key => $_notice) {
             # Always dismiss all non-persistent transients.
@@ -155,20 +156,45 @@ trait NoticeUtils
             }
             # If persistent, allow a site owner to dismiss.
 
-            $_dismiss = ''; // Reset this to its default state.
+            $_dismiss = ''; // Initialize
             if ($_notice['persistent_key'] && $_notice['dismissable']) { // See above. The `dismissNotice()` action requires `$this->cap` always.
                 $_dismiss = add_query_arg(urlencode_deep([GLOBAL_NS => ['dismissNotice' => ['key' => $_key]], '_wpnonce' => wp_create_nonce()]));
-                $_dismiss = '<a style="display:inline-block; float:right; margin:0 0 0 15px; text-decoration:none; font-weight:bold;" href="'.esc_attr($_dismiss).'">'.__('dismiss &times;', SLUG_TD).'</a>';
+                $_dismiss = '<a href="'.esc_attr($_dismiss).'"><button type="button" class="notice-dismiss"><span class="screen-reader-text">'.__('Dismiss this notice.', SLUG_TD).'</span></button></a>';
             }
-            # Display this notice. If not persistent, we can dismiss it too.
+            # Display this notice, or save for displaying compacted later. If not persistent, we can dismiss it too.
 
-            echo '<div class="'.esc_attr($_notice['class']).'"><p>'.$_notice['notice'].$_dismiss.'</p></div>';
+            if ($_notice['combinable'] && !$_notice['persistent_key']) {
+                $combined_notices[] = $_notice['notice']; // Save this for displaying as part of a single, combined notice.
+            } else {
+                echo '<div class="'.esc_attr($_notice['class']).'" style="clear:both; padding-right:38px; position: relative;"><p>'.$_notice['notice'].'</p>'.$_dismiss.'</div>';
+            }
 
             if (!$_notice['persistent_key']) { // If not persistent, dismiss.
                 unset($notices[$_key]); // Dismiss; this notice has been displayed now.
             }
         }
         unset($_key, $_notice, $_dismiss); // Housekeeping.
+
+        if (!empty($combined_notices)) { // Display a single notice with details hidden by default.
+            $_line_items = ''; // Initialize
+            foreach ($combined_notices as $_item) {
+                $_line_items .= '<p><span class="dashicons dashicons-yes"></span> '.$_item.'</p>'."\n";
+            }
+
+            $_show_details = __('Show details.', SLUG_TD);
+            $_hide_details = __('Hide details.', SLUG_TD);
+
+            $_combined = '<div class="updated notice is-dismissible" style="clear:both; padding-right:38px; position: relative;">';
+            $_combined .= '<p><img src="'.esc_attr($this->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />';
+            $_combined .= sprintf(__('<strong>%1$s</strong> detected changes and intelligently cleared the cache to keep your site up-to-date. <a href="#" id="'.SLUG_TD.'-toggle-notices" onclick="jQuery(\'#'.SLUG_TD.'-combined-notices\').toggle();if (jQuery(\'#comet-cache-combined-notices\').is(\':visible\')) { jQuery(this).text(\''.$_hide_details.'\'); } else { jQuery(this).text(\''.$_show_details.'\'); }">'.$_show_details.'</a>', SLUG_TD), esc_html(NAME)).'</p>';
+            $_combined .= '<div id="'.SLUG_TD.'-combined-notices" style="display: none;">'.$_line_items.'</div>';
+            $_combined .= '<button type="button" class="notice-dismiss"><span class="screen-reader-text">'.__('Dismiss this notice.', SLUG_TD).'</span></button>';
+            $_combined .= '</div>';
+
+            echo $_combined;
+
+            unset($_item, $_line_item, $_combined); // Housekeeping.
+        }
 
         # Update notices if something changed above.
 
@@ -270,6 +296,7 @@ trait NoticeUtils
             'notice'         => '',
             'only_on_uris'   => '',
             'persistent_key' => '',
+            'combinable'     => false,
             'dismissable'    => true,
             'is_transient'   => true,
             'push_to_top'    => false,
@@ -290,6 +317,7 @@ trait NoticeUtils
 
                 case 'is_transient':
                 case 'push_to_top':
+                case 'combinable':
                 case 'dismissable':
                     $_value = (boolean) $_value;
                     break; // Stop here.

@@ -198,9 +198,9 @@ class VsUpgrades extends AbsBase
             $this->plugin->activate(); // Reactivate plugin w/ new options.
 
             $this->plugin->enqueueMainNotice(
-              '<p>'.sprintf(__('<strong>Woohoo! %1$s activated.</strong> :-)', SLUG_TD), esc_html(NAME)).'</p>'.
-              '<p>'.sprintf(__('NOTE: Your ZenCache options were preserved by %1$s (for more details, visit the <a href="%2$s" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME), esc_attr(IS_PRO ? 'http://cometcache.com/r/zencache-pro-migration-faq/' : 'https://cometcache.com/r/zencache-migration-faq/')).'</p>'.
-              '<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s → Plugin Options</a>.'.'', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))).'</p>'
+                '<p>'.sprintf(__('<strong>Woohoo! %1$s activated.</strong> :-)', SLUG_TD), esc_html(NAME)).'</p>'.
+                '<p>'.sprintf(__('NOTE: Your ZenCache options were preserved by %1$s (for more details, visit the <a href="%2$s" target="_blank">Migration FAQ</a>).'.'', SLUG_TD), esc_html(NAME), esc_attr(IS_PRO ? 'http://cometcache.com/r/zencache-pro-migration-faq/' : 'https://cometcache.com/r/zencache-migration-faq/')).'</p>'.
+                '<p>'.sprintf(__('To review your configuration, please see: <a href="%2$s">%1$s → Plugin Options</a>.'.'', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))).'</p>'
             );
         }
     }

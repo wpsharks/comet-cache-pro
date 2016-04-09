@@ -735,6 +735,22 @@ class Actions extends AbsBase
         if (empty($args['password'])) {
             $args['password'] = $this->plugin->options['pro_update_password'];
         }
+
+        if ($args['update'] === '0') { // We're only saving the options, not updating.
+            $this->plugin->updateOptions([
+                'pro_update_check'        => $args['check'],
+                'pro_update_check_stable' => $args['check_stable'],
+                'pro_update_username'     => $args['username'],
+                'pro_update_password'     => $args['password'],
+            ]);
+
+            $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
+            $query_args  = ['page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'_updated' => '1'];
+            $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
+
+            wp_redirect($redirect_to).exit();
+        }
+
         $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
         $product_api_input_vars = [
             'product_api' => [

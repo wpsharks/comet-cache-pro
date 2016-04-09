@@ -22,8 +22,10 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
             }
 
             add_action(
-              'all_admin_notices', create_function(
-                '', 'if(!current_user_can(\'activate_plugins\'))'.
+                'all_admin_notices',
+                create_function(
+                    '',
+                    'if(!current_user_can(\'activate_plugins\'))'.
                     '   return;'."\n".// User missing capability.
 
                     'echo \''.// Wrap `$notice` inside a WordPress error.
@@ -33,7 +35,7 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
                     '</div>'.
 
                     '\';'
-              )
+                )
             );
         } elseif (${__FILE__}['apc_enabled'] && is_admin()) {
             ${__FILE__}['apc_deprecated_notice'] = '<h3 style="margin:.5em 0 .25em 0;">'.__('<strong>NOTICE: Comet Cache + PHP APC Extension</strong></h3>', 'comet-cache');
@@ -46,8 +48,10 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
             ${__FILE__}['apc_deprecated_notice'] .= '<p style="margin-top:0;">'.__('To learn more about this change, please see the announcement: <a href="http://cometcache.com/r/php-apc-extension-no-longer-supported/" target="_blank">PHP APC Extension No Longer Supported</a>', 'comet-cache').'</p>';
 
             add_action(
-              'all_admin_notices', create_function(
-                '', 'if(!current_user_can(\'activate_plugins\'))'.
+                'all_admin_notices',
+                create_function(
+                    '',
+                    'if(!current_user_can(\'activate_plugins\'))'.
                     '   return;'."\n".// User missing capability.
 
                     'echo \''.// Wrap `$notice` inside a WordPress error.
@@ -57,7 +61,7 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
                     '</div>'.
 
                     '\';'
-              )
+                )
             );
         }
     } else { // Load the plugin
@@ -68,8 +72,10 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
             ${__FILE__}['mbstring_deprecated_warning'] .= '<p style="margin-top:0;">'.__('The <code>mbstring</code> extension provides Multibyte String support to PHP and is required to properly handle UTF-8 characters, which many sites now use. Without Multibyte String support, Comet Cache will be unstable. For that reason we are requiring the <code>mbstring</code> extension to improve reliablity when caching and to prevent your site from experiencing unforeseen issues in the future.', 'comet-cache').'</p>';
             ${__FILE__}['mbstring_deprecated_warning'] .= '<p style="margin-bottom:.5em;">'.__('<a href="'.esc_attr(add_query_arg('comet_cache_mbstring_deprecated_warning_bypass', '1')).'" onclick="if(!confirm(\'Are you sure? Press OK to continue, or Cancel to stop and read carefully.\')) return false;">Dismiss this notice.</a>', 'comet-cache').'</p>';
             add_action(
-                'all_admin_notices', create_function(
-                    '', 'if(!current_user_can(\'activate_plugins\'))'.
+                'all_admin_notices',
+                create_function(
+                    '',
+                    'if(!current_user_can(\'activate_plugins\'))'.
                         '   return;'."\n".// User missing capability.
                         'echo \''.// Wrap `$notice` inside a WordPress error.
                         '<div class="notice notice-warning">'.
@@ -87,4 +93,3 @@ if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
 }
 
 unset(${__FILE__}); // Housekeeping.
-

@@ -45,10 +45,7 @@ trait WcpUrlUtils
         unset($_url, $_regex); // Housekeeping.
 
         if ($counter && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
-            $this->enqueueNotice(
-                '<img src="'.esc_attr($this->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />'.
-                sprintf(__('<strong>%1$s:</strong> detected changes. Found %2$s in the cache matching a custom list of URLs; auto-clearing.', SLUG_TD), esc_html(NAME), esc_html($this->i18nFiles($counter)))
-            );
+            $this->enqueueNotice(sprintf(__('Found %1$s in the cache matching a custom list of URLs; auto-clearing.', SLUG_TD), esc_html($this->i18nFiles($counter))), ['combinable' => true]);
         }
         return $counter;
     }

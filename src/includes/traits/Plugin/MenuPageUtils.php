@@ -39,27 +39,29 @@ trait MenuPageUtils
         wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), [], null, true);
         wp_enqueue_script(GLOBAL_NS, $this->url('/src/client-s/js/menu-pages.min.js'), $deps, VERSION, true);
         wp_localize_script(
-            GLOBAL_NS, GLOBAL_NS.'_menu_page_vars', [
-            '_wpnonce'                 => wp_create_nonce(),
-            'isMultisite'              => is_multisite(), // Network?
-            'currentUserHasCap'        => current_user_can($this->cap),
-            'currentUserHasNetworkCap' => current_user_can($this->network_cap),
-            'htmlCompressorEnabled'    => (boolean) $this->options['htmlc_enable'],
-            'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
-            'emptyStatsCountsImageUrl' => $this->url('/src/client-s/images/stats-fc-empty.png'),
-            'emptyStatsFilesImageUrl'  => $this->url('/src/client-s/images/stats-fs-empty.png'),
-            'i18n'                     => [
-                'name'           => NAME,
-                'perSymbol'      => __('%', SLUG_TD),
-                'file'           => __('file', SLUG_TD),
-                'files'          => __('files', SLUG_TD),
-                'pageCache'      => __('Page Cache', SLUG_TD),
-                'htmlCompressor' => __('HTML Compressor', SLUG_TD),
-                'currentTotal'   => __('Current Total', SLUG_TD),
-                'currentSite'    => __('Current Site', SLUG_TD),
-                'xDayHigh'       => __('%s Day High', SLUG_TD),
-            ],
-        ]
+            GLOBAL_NS,
+            GLOBAL_NS.'_menu_page_vars',
+            [
+                '_wpnonce'                 => wp_create_nonce(),
+                'isMultisite'              => is_multisite(), // Network?
+                'currentUserHasCap'        => current_user_can($this->cap),
+                'currentUserHasNetworkCap' => current_user_can($this->network_cap),
+                'htmlCompressorEnabled'    => (boolean) $this->options['htmlc_enable'],
+                'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
+                'emptyStatsCountsImageUrl' => $this->url('/src/client-s/images/stats-fc-empty.png'),
+                'emptyStatsFilesImageUrl'  => $this->url('/src/client-s/images/stats-fs-empty.png'),
+                'i18n'                     => [
+                    'name'           => NAME,
+                    'perSymbol'      => __('%', SLUG_TD),
+                    'file'           => __('file', SLUG_TD),
+                    'files'          => __('files', SLUG_TD),
+                    'pageCache'      => __('Page Cache', SLUG_TD),
+                    'htmlCompressor' => __('HTML Compressor', SLUG_TD),
+                    'currentTotal'   => __('Current Total', SLUG_TD),
+                    'currentSite'    => __('Current Site', SLUG_TD),
+                    'xDayHigh'       => __('%s Day High', SLUG_TD),
+                ],
+            ]
         );
     }
 
