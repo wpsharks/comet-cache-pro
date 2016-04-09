@@ -10,15 +10,7 @@ use WebSharks\CometCache\Pro\Traits;
  */
 class AdvancedCache extends AbsBaseAp
 {
-    use Traits\Ac\AbortUtils;
-    use Traits\Ac\AcPluginUtils;
-    use Traits\Ac\BrowserUtils;
-    use Traits\Ac\HtmlCUtils;
-    use Traits\Ac\NcDebugUtils;
-    use Traits\Ac\ObUtils;
-    use Traits\Ac\PostloadUtils;
-    use Traits\Ac\ShutdownUtils;
-
+    /*[.build.php-auto-generate-use-Traits]*/
     /**
      * Flagged as `TRUE` if running.
      *
