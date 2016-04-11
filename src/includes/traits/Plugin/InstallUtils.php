@@ -16,6 +16,9 @@ trait InstallUtils
     {
         $this->setup(); // Ensure setup is complete.
 
+        if (defined('WP_CLI') && WP_CLI) {
+            $this->updateOptions(['enable' => '1']);
+        }
         if (!$this->options['welcomed'] && !$this->options['enable']) {
             $settings_url = add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), network_admin_url('/admin.php'));
             $this->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url)), ['push_to_top' => true]);

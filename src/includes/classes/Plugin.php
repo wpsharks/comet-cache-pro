@@ -11,6 +11,7 @@ use WebSharks\CometCache\Pro\Traits;
  */
 class Plugin extends AbsBaseAp
 {
+    /*[.build.php-auto-generate-use-Traits]*/
     use Traits\Plugin\ActionUtils;
     use Traits\Plugin\AdminBarUtils;
     use Traits\Plugin\AutoCacheUtils;
@@ -54,6 +55,7 @@ class Plugin extends AbsBaseAp
     use Traits\Plugin\WcpUserUtils;
     use Traits\Plugin\WcpUtils;
     use Traits\Plugin\WcpWooCommerceUtils;
+    /*[/.build.php-auto-generate-use-Traits]*/
 
     /**
      * Enable plugin hooks?
