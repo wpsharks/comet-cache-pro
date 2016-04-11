@@ -11,6 +11,7 @@ use WebSharks\CometCache\Pro\Interfaces;
  */
 abstract class AbsBaseAp extends AbsBase implements Interfaces\Shared\NcDebugConsts, Interfaces\Shared\CachePathConsts
 {
+    /*[.build.php-auto-generate-use-Traits]*/
     use Traits\Shared\BlogUtils;
     use Traits\Shared\CacheDirUtils;
     use Traits\Shared\CacheLockUtils;
@@ -31,6 +32,7 @@ abstract class AbsBaseAp extends AbsBase implements Interfaces\Shared\NcDebugCon
     use Traits\Shared\TokenUtils;
     use Traits\Shared\TrimUtils;
     use Traits\Shared\UrlUtils;
+    /*[/.build.php-auto-generate-use-Traits]*/
 
     /**
      * Class constructor.
