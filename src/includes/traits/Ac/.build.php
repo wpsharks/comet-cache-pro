@@ -17,10 +17,12 @@ if ($_handle = opendir(__DIR__)) {
     unset($_file, $_files);
 }
 
-foreach ($dest_files as $file) {
+$use_traits_list = PHP_EOL.'    '.$use_traits_list; // Prepare formatting.
+
+foreach ($dest_files as $file) { // Update file(s) with use Traits list
     echo 'Updating '.$file.PHP_EOL;
-    echo '    '.$use_traits_list;
+    echo $use_traits_list;
     $file_contents = file_get_contents($file);
-    $file_contents = str_replace('/*[.build.php-auto-generate-use-Traits]*/', $use_traits_list, $file_contents);
+    $file_contents = preg_replace('/(\/\*\[\.build\.php\-auto\-generate\-use\-Traits\]\*\/)(?:.*?)(\/\*\[\/\.build\.php\-auto\-generate\-use\-Traits\]\*\/)/us', '${1}'.$use_traits_list.'${2}', $file_contents);
     file_put_contents($file, $file_contents);
 }
