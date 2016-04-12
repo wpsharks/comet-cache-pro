@@ -84,7 +84,7 @@ trait UpdateUtils
             $this->updateOptions(['latest_pro_version' => $product_api_response->pro_version]);
         } else { // Let's try the proxy server
             $product_api_url      = 'http://proxy.websharks-inc.net/'.urlencode(SLUG_TD).'/';
-            $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
+            $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars, 'timeout' => 15]);
             $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
 
             if (is_object($product_api_response) && !empty($product_api_response->pro_version)) {
