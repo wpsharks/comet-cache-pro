@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Comet Cache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Comet Cache Pro 160227\n"
+"Project-Id-Version: Comet Cache Pro 160412-RC\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/comet-cache-pro\n"
-"POT-Creation-Date: 2016-02-27 19:53:17+00:00\n"
+"POT-Creation-Date: 2016-04-12 02:18:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,55 +28,55 @@ msgstr ""
 msgid "Your server is also running the <strong>outdated PHP APC extension</strong>. Please see: <a href=\"http://cometcache.com/r/php-apc-extension-no-longer-supported/\" target=\"_blank\">PHP APC Extension No Longer Supported</a>"
 msgstr ""
 
-#: plugin.php:39
+#: plugin.php:41
 msgid "<strong>NOTICE: Comet Cache + PHP APC Extension</strong></h3>"
 msgstr ""
 
-#: plugin.php:40
+#: plugin.php:42
 msgid "<strong>As of December 1st, 2015 Comet Cache no longer runs with the outdated PHP APC extension.</strong> It appears that you're currently running PHP v%1$s with APC enabled. You will need to follow one of the actions below to run this version of Comet Cache."
 msgstr ""
 
-#: plugin.php:41
+#: plugin.php:43
 msgid "<h4 style=\"margin:0 0 .5em 0; font-size:1.25em;\"><span class=\"dashicons dashicons-lightbulb\"></span> Options Available (Action Required):</h4>"
 msgstr ""
 
-#: plugin.php:43
+#: plugin.php:45
 msgid "Please add <code>ini_set('apc.cache_by_default', false);</code> to the top of your <code>/wp-config.php</code> file. That will get rid of this message and allow Comet Cache to run without issue."
 msgstr ""
 
-#: plugin.php:44
+#: plugin.php:46
 msgid "Or, contact your web hosting provider and ask about upgrading to PHP v5.5+; which includes the new <a href=\"http://cometcache.com/r/php-opcache-extension/\" target=\"_blank\">OPcache extension for PHP</a>. The new OPcache extension replaces APC in modern versions of PHP."
 msgstr ""
 
-#: plugin.php:46
+#: plugin.php:48
 msgid "To learn more about this change, please see the announcement: <a href=\"http://cometcache.com/r/php-apc-extension-no-longer-supported/\" target=\"_blank\">PHP APC Extension No Longer Supported</a>"
 msgstr ""
 
-#: plugin.php:66
+#: plugin.php:70
 msgid "<strong>NOTICE: Comet Cache Will Require the PHP <code>mbstring</code> Extension</strong></h3>"
 msgstr ""
 
-#: plugin.php:67
+#: plugin.php:71
 msgid "<strong>After March 1st, 2016 Comet Cache will require PHP Multibyte String support.</strong> It appears that your site is currently running PHP v%1$s <strong>without</strong> the <code>mbstring</code> extension enabled. You will need to contact your web hosting company and have them enable the PHP <code>mbstring</code> extension if you want to run the next version of Comet Cache."
 msgstr ""
 
-#: plugin.php:68
+#: plugin.php:72
 msgid "The <code>mbstring</code> extension provides Multibyte String support to PHP and is required to properly handle UTF-8 characters, which many sites now use. Without Multibyte String support, Comet Cache will be unstable. For that reason we are requiring the <code>mbstring</code> extension to improve reliablity when caching and to prevent your site from experiencing unforeseen issues in the future."
 msgstr ""
 
-#: src/includes/classes/AbsBase.php:116
+#: src/includes/classes/AbsBase.php:117
 msgid "Undefined overload property: `%1$s`."
 msgstr ""
 
-#: src/includes/classes/AbsBase.php:134
+#: src/includes/classes/AbsBase.php:135
 msgid "Refused to set overload property: `%1$s`."
 msgstr ""
 
-#: src/includes/classes/AbsBase.php:151
+#: src/includes/classes/AbsBase.php:152
 msgid "Refused to unset overload property: `%1$s`."
 msgstr ""
 
-#: src/includes/classes/AbsBaseAp.php:57
+#: src/includes/classes/AbsBaseAp.php:73
 msgid "Undefined method/closure: `%1$s`."
 msgstr ""
 
@@ -184,34 +184,34 @@ msgstr ""
 msgid "<p>Cleared <code>%1$s</code> expired transients for this site.</p>"
 msgstr ""
 
-#: src/includes/classes/Actions.php:754
+#: src/includes/classes/Actions.php:778
 msgid "Unknown error. Please wait 15 minutes and try again."
 msgstr ""
 
-#: src/includes/classes/AutoCache.php:183
-#: src/includes/classes/AutoCache.php:220
+#: src/includes/classes/AutoCache.php:184
+#: src/includes/classes/AutoCache.php:221
 msgid "Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases."
 msgstr ""
 
-#: src/includes/classes/Conflicts.php:89
+#: src/includes/classes/Conflicts.php:91
 msgid "Pro"
 msgstr ""
 
-#: src/includes/classes/Conflicts.php:90
+#: src/includes/classes/Conflicts.php:92
 msgid "Lite"
 msgstr ""
 
-#: src/includes/classes/Conflicts.php:95
+#: src/includes/classes/Conflicts.php:97
 msgid "<strong>%1$s</strong> is NOT running. A conflicting plugin, <strong>%2$s</strong>, is currently active. Please deactivate the %2$s plugin to clear this message."
 msgstr ""
 
-#: src/includes/classes/DirStats.php:505 src/includes/classes/DirStats.php:576
-#: src/includes/classes/DirStats.php:610 src/includes/classes/DirStats.php:682
+#: src/includes/classes/DirStats.php:514 src/includes/classes/DirStats.php:585
+#: src/includes/classes/DirStats.php:619 src/includes/classes/DirStats.php:692
 msgid "Unexpected data type."
 msgstr ""
 
-#: src/includes/classes/DirStats.php:559
-#: src/includes/closures/Shared/CacheDirUtils.php:274
+#: src/includes/classes/DirStats.php:568
+#: src/includes/traits/Shared/CacheDirUtils.php:281
 msgid "Invalid argument; host token empty!"
 msgstr ""
 
@@ -220,7 +220,7 @@ msgid "Wipe Cache (Start Fresh); clears the cache for all sites in this network 
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:32
-#: src/includes/closures/Plugin/AdminBarUtils.php:95
+#: src/includes/traits/Plugin/AdminBarUtils.php:102
 msgid "Wipe"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgid "Restore"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:43
-#: src/includes/classes/MenuPageProUpdater.php:30
+#: src/includes/classes/MenuPageProUpdater.php:31
 msgid "All Panels"
 msgstr ""
 
@@ -255,27 +255,25 @@ msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:51
 #: src/includes/classes/MenuPageOptions.php:73
-#: src/includes/classes/MenuPageProUpdater.php:38
-#: src/includes/classes/MenuPageProUpdater.php:42
-#: src/includes/classes/MenuPageProUpdater.php:60
-#: src/includes/classes/MenuPageStats.php:36
-#: src/includes/classes/MenuPageStats.php:54
+#: src/includes/classes/MenuPageProUpdater.php:41
+#: src/includes/classes/MenuPageProUpdater.php:59
+#: src/includes/classes/MenuPageStats.php:37
+#: src/includes/classes/MenuPageStats.php:55
 msgid "Newsletter"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:52
 #: src/includes/classes/MenuPageOptions.php:74
-#: src/includes/classes/MenuPageProUpdater.php:39
-#: src/includes/classes/MenuPageProUpdater.php:43
-#: src/includes/classes/MenuPageProUpdater.php:61
-#: src/includes/classes/MenuPageProUpdater.php:144
-#: src/includes/classes/MenuPageStats.php:37
-#: src/includes/classes/MenuPageStats.php:55
+#: src/includes/classes/MenuPageProUpdater.php:42
+#: src/includes/classes/MenuPageProUpdater.php:60
+#: src/includes/classes/MenuPageProUpdater.php:148
+#: src/includes/classes/MenuPageStats.php:38
+#: src/includes/classes/MenuPageStats.php:56
 msgid "Beta Testers"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:55
-#: src/includes/closures/Plugin/MenuPageUtils.php:131
+#: src/includes/traits/Plugin/MenuPageUtils.php:144
 msgid "Preview Pro Features"
 msgstr ""
 
@@ -284,46 +282,46 @@ msgid "Pro Upgrade"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:62
-#: src/includes/classes/MenuPageProUpdater.php:49
-#: src/includes/classes/MenuPageStats.php:43
+#: src/includes/classes/MenuPageProUpdater.php:48
+#: src/includes/classes/MenuPageStats.php:44
 msgid "Support"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:65
-#: src/includes/classes/MenuPageProUpdater.php:52
-#: src/includes/classes/MenuPageStats.php:46
+#: src/includes/classes/MenuPageProUpdater.php:51
+#: src/includes/classes/MenuPageStats.php:47
 msgid "Community Forum"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:67
-#: src/includes/classes/MenuPageProUpdater.php:54
-#: src/includes/classes/MenuPageStats.php:48
+#: src/includes/classes/MenuPageProUpdater.php:53
+#: src/includes/classes/MenuPageStats.php:49
 msgid "Knowledge Base"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:68
-#: src/includes/classes/MenuPageProUpdater.php:55
-#: src/includes/classes/MenuPageStats.php:49
+#: src/includes/classes/MenuPageProUpdater.php:54
+#: src/includes/classes/MenuPageStats.php:50
 msgid "Blog"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:80
-#: src/includes/classes/MenuPageProUpdater.php:67
-#: src/includes/classes/MenuPageStats.php:61
+#: src/includes/classes/MenuPageProUpdater.php:66
+#: src/includes/classes/MenuPageStats.php:62
 msgid "%1$s&trade; Pro v%2$s"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:83
 #: src/includes/classes/MenuPageOptions.php:93
-#: src/includes/classes/MenuPageProUpdater.php:70
-#: src/includes/classes/MenuPageStats.php:64
+#: src/includes/classes/MenuPageProUpdater.php:69
+#: src/includes/classes/MenuPageStats.php:65
 msgid "update available"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:85
 #: src/includes/classes/MenuPageOptions.php:95
-#: src/includes/classes/MenuPageProUpdater.php:72
-#: src/includes/classes/MenuPageStats.php:66
+#: src/includes/classes/MenuPageProUpdater.php:71
+#: src/includes/classes/MenuPageStats.php:67
 msgid "changelog"
 msgstr ""
 
@@ -332,12 +330,13 @@ msgid "%1$s&trade; v%2$s"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:99
-#: src/includes/closures/Plugin/MenuPageUtils.php:73
-#: src/includes/closures/Plugin/MenuPageUtils.php:101
+#: src/includes/traits/Plugin/MenuPageUtils.php:84
+#: src/includes/traits/Plugin/MenuPageUtils.php:113
 msgid "Plugin Options"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:113
+#: src/includes/classes/MenuPageProUpdater.php:89
 msgid "Options updated successfully."
 msgstr ""
 
@@ -1634,174 +1633,174 @@ msgid "Download your existing options and import them all into another %1$s inst
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:1075
+#: src/includes/classes/MenuPageProUpdater.php:168
 msgid "Save All Changes"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:28
-#: src/includes/classes/MenuPageProUpdater.php:164
+#: src/includes/classes/MenuPageProUpdater.php:29
 msgid "Update %1$s Now"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:37
-#: src/includes/classes/MenuPageStats.php:33
+#: src/includes/classes/MenuPageProUpdater.php:38
+#: src/includes/classes/MenuPageStats.php:34
 msgid "Options"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:76
-#: src/includes/closures/Plugin/MenuPageUtils.php:82
-#: src/includes/closures/Plugin/MenuPageUtils.php:109
+#: src/includes/classes/MenuPageProUpdater.php:75
+#: src/includes/traits/Plugin/MenuPageUtils.php:93
+#: src/includes/traits/Plugin/MenuPageUtils.php:121
 msgid "Pro Plugin Updater"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:102
+#: src/includes/classes/MenuPageProUpdater.php:106
 msgid "Update Credentials"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:107
-msgid "%1$s™ Authentication"
-msgstr ""
-
-#: src/includes/classes/MenuPageProUpdater.php:108
-msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://cometcache.com/prices/\" target=\"_blank\">cometcache.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href=\"http://cometcache.com/\" target=\"_blank\">cometcache.com</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://cometcache.com/\" target=\"_blank\">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"si si-smile-o\"></i>"
-msgstr ""
-
-#: src/includes/classes/MenuPageProUpdater.php:110
-msgid "Customer Username"
+#: src/includes/classes/MenuPageProUpdater.php:111
+msgid "CometCache.com Authentication"
 msgstr ""
 
 #: src/includes/classes/MenuPageProUpdater.php:112
-msgid "Customer Password or Product License Key"
+msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://cometcache.com/prices/\" target=\"_blank\">cometcache.com</a>. In order to connect with our update servers, you must supply your License Key. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://cometcache.com/\" target=\"_blank\">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"si si-smile-o\"></i> If you prefer to upgrade manually, see <a href=\"https://cometcache.com/r/kb-article-how-to-manually-upgrade-comet-cache-pro/\">this article</a>."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:123
+#: src/includes/classes/MenuPageProUpdater.php:114
+msgid "Username"
+msgstr ""
+
+#: src/includes/classes/MenuPageProUpdater.php:116
+msgid "License Key"
+msgstr ""
+
+#: src/includes/classes/MenuPageProUpdater.php:127
 msgid "Update Notifier"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:128
+#: src/includes/classes/MenuPageProUpdater.php:132
 msgid "%1$s™ Update Notifier"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:129
+#: src/includes/classes/MenuPageProUpdater.php:133
 msgid "When a new version of %1$s Pro becomes available, %1$s Pro can display a notification in your WordPress Dashboard prompting you to return to this page and perform an upgrade. Would you like this functionality enabled or disabled?"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:132
+#: src/includes/classes/MenuPageProUpdater.php:136
 msgid "Yes, display a notification in my WordPress Dashboard when a new version is available."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:133
+#: src/includes/classes/MenuPageProUpdater.php:137
 msgid "No, do not display any %1$s update notifications in my WordPress Dashboard."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:149
+#: src/includes/classes/MenuPageProUpdater.php:153
 msgid "%1$s™ Beta Testers"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:150
+#: src/includes/classes/MenuPageProUpdater.php:154
 msgid "If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn't mean you'll want to do the same. :-) Please report any issues with Release Candidates on <a href=\"https://github.com/websharks/comet-cache/issues/\" target=\"_blank\">GitHub</a>."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:153
+#: src/includes/classes/MenuPageProUpdater.php:157
 msgid "No, do not check for Release Candidates; I only want public releases."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:154
+#: src/includes/classes/MenuPageProUpdater.php:158
 msgid "Yes, check for Release Candidates; I want to help with testing."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:156
-msgid "<strong>How do I know if I'm running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., Comet Cache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href=\"http://cometcache.com/r/comet-cache-beta-testers-list/\" target=\"_blank\">beta testers mailing list</a>."
+#: src/includes/classes/MenuPageProUpdater.php:160
+msgid "<strong>How do you know if you're running a Release Candidate?</strong> If you're running a Release Candidate, the version number will end with <code>-RC</code>, e.g., Comet Cache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href=\"http://cometcache.com/r/comet-cache-beta-testers-list/\" target=\"_blank\">beta testers mailing list</a>."
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:28
+#: src/includes/classes/MenuPageStats.php:29
 msgid "Refresh Stats/Charts"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:70
+#: src/includes/classes/MenuPageStats.php:71
 msgid "Statistics"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:93
-#: src/includes/closures/Plugin/AdminBarUtils.php:256
+#: src/includes/classes/MenuPageStats.php:94
+#: src/includes/traits/Plugin/AdminBarUtils.php:263
 msgid "Current Cache Totals"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:100
-#: src/includes/closures/Plugin/AdminBarUtils.php:263
+#: src/includes/classes/MenuPageStats.php:101
+#: src/includes/traits/Plugin/AdminBarUtils.php:270
 msgid "Current Disk Health"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:101
-#: src/includes/closures/Plugin/AdminBarUtils.php:264
+#: src/includes/classes/MenuPageStats.php:102
+#: src/includes/traits/Plugin/AdminBarUtils.php:271
 msgid "total capacity"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:102
-#: src/includes/closures/Plugin/AdminBarUtils.php:265
+#: src/includes/classes/MenuPageStats.php:103
+#: src/includes/traits/Plugin/AdminBarUtils.php:272
 msgid "available"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:106
+#: src/includes/classes/MenuPageStats.php:107
 msgid "Current System Health"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:107
+#: src/includes/classes/MenuPageStats.php:108
 msgid "Memory Usage:"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:108
+#: src/includes/classes/MenuPageStats.php:109
 msgid "Load Average:"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:114
+#: src/includes/classes/MenuPageStats.php:115
 msgid "Cache File Counts"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:120
+#: src/includes/classes/MenuPageStats.php:121
 msgid "Cache File Sizes"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:129
+#: src/includes/classes/MenuPageStats.php:130
 msgid "OPcache Memory"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:130
+#: src/includes/classes/MenuPageStats.php:131
 msgid "free"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:131
+#: src/includes/classes/MenuPageStats.php:132
 msgid "used"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:132
+#: src/includes/classes/MenuPageStats.php:133
 msgid "wasted"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:136
+#: src/includes/classes/MenuPageStats.php:137
 msgid "OPcache Totals"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:137
+#: src/includes/classes/MenuPageStats.php:138
 msgid "cached scripts"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:138
+#: src/includes/classes/MenuPageStats.php:139
 msgid "total cached keys"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:142
+#: src/includes/classes/MenuPageStats.php:143
 msgid "OPcache Hits/Misses"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:143
+#: src/includes/classes/MenuPageStats.php:144
 msgid "hits"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:144
+#: src/includes/classes/MenuPageStats.php:145
 msgid "misses"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:145
+#: src/includes/classes/MenuPageStats.php:146
 msgid "hit rate"
 msgstr ""
 
@@ -1809,557 +1808,566 @@ msgstr ""
 msgid "<strong>Woohoo! %1$s activated.</strong> :-)"
 msgstr ""
 
-#: src/includes/closures/Ac/HtmlCUtils.php:40
+#: src/includes/traits/Ac/HtmlCUtils.php:46
 msgid "%1$s HTML Compressor"
 msgstr ""
 
-#: src/includes/closures/Ac/HtmlCUtils.php:73
+#: src/includes/traits/Ac/HtmlCUtils.php:79
 msgid "Failure: %1$s"
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:75
+#: src/includes/traits/Ac/NcDebugUtils.php:82
 msgid "because `PHP_SAPI` reports that you are currently running from the command line."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:79
+#: src/includes/traits/Ac/NcDebugUtils.php:86
 msgid "because `$_SERVER['HTTP_HOST']` is missing from your server configuration."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:83
+#: src/includes/traits/Ac/NcDebugUtils.php:90
 msgid "because `$_SERVER['REQUEST_URI']` is missing from your server configuration."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:88
+#: src/includes/traits/Ac/NcDebugUtils.php:95
 msgid "because the s2Member plugin set the PHP constant `COMET_CACHE_ALLOWED` to a boolean-ish `FALSE` value at runtime. The s2Member plugin is serving content that must remain dynamic on this particular page, and therefore this page was intentionally not cached for a very good reason."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:90
+#: src/includes/traits/Ac/NcDebugUtils.php:97
 msgid "because the PHP constant `COMET_CACHE_ALLOWED` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:95
+#: src/includes/traits/Ac/NcDebugUtils.php:102
 msgid "because the environment variable `$_SERVER['COMET_CACHE_ALLOWED']` has been set to a boolean-ish `FALSE` value at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:99
+#: src/includes/traits/Ac/NcDebugUtils.php:106
 msgid "because the PHP constant `DONOTCACHEPAGE` has been set at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:103
+#: src/includes/traits/Ac/NcDebugUtils.php:110
 msgid "because the environment variable `$_SERVER['DONOTCACHEPAGE']` has been set at runtime. Perhaps by WordPress itself, or by one of your themes/plugins. This usually means that you have a theme/plugin intentionally disabling the cache on this page; and it's usually for a very good reason."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:107
+#: src/includes/traits/Ac/NcDebugUtils.php:114
 msgid "because `$_GET['%1$sAC']` is set to a boolean-ish FALSE value."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:111
+#: src/includes/traits/Ac/NcDebugUtils.php:118
 msgid "because `$_SERVER['REQUEST_METHOD']` is `POST`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, `TRACE` or `CONNECT`. These request methods should never (ever) be cached in any way."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:115
+#: src/includes/traits/Ac/NcDebugUtils.php:122
 msgid "because `[current IP address]` === `$_SERVER['SERVER_ADDR']`; i.e. a self-serve request. DEVELOPER TIP: if you are testing on a localhost installation, please add `define('LOCALHOST', TRUE);` to your `/wp-config.php` file while you run tests :-) Remove it (or set it to a `FALSE` value) once you go live on the web."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:119
+#: src/includes/traits/Ac/NcDebugUtils.php:126
 msgid "because `$_SERVER['REQUEST_URI']` indicates this is a `/feed`; and the configuration of this site says not to cache XML-based feeds."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:123
+#: src/includes/traits/Ac/NcDebugUtils.php:130
 msgid "because `$_SERVER['REQUEST_URI']` indicates this is a `wp-` or `xmlrpc` file; i.e. a WordPress systematic file. WordPress systematics are never (ever) cached in any way."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:127
+#: src/includes/traits/Ac/NcDebugUtils.php:134
 msgid "because `$_SERVER['REQUEST_URI']` or the `is_admin()` function indicates this is an administrative area of the site."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:131
+#: src/includes/traits/Ac/NcDebugUtils.php:138
 msgid "because `$_SERVER['REQUEST_URI']` indicates this is a Multisite Network; and this was a request for `/files/*`, not a page."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:136
+#: src/includes/traits/Ac/NcDebugUtils.php:143
 msgid "because the current user visiting this page (usually YOU), appears to be logged-in. The current configuration says NOT to cache pages for logged-in visitors. This message may also appear if you have an active PHP session on this site, or if you've left (or replied to) a comment recently. If this message continues, please clear your cookies and try again."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:140
+#: src/includes/traits/Ac/NcDebugUtils.php:147
 msgid "because the current page contains `_wpnonce` or `akismet_comment_nonce`. While your current configuration states that pages SHOULD be cache for logged-in visitors, `*nonce*` values in the markup are not cache-compatible. See http://wsharks.com/1O1Kudy for further details."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:144
+#: src/includes/traits/Ac/NcDebugUtils.php:151
 msgid "because the current page contains `_wpnonce` or `akismet_comment_nonce`. Note that `*nonce*` values in the markup are not cache-compatible. See http://wsharks.com/1O1Kudy for further details."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:148
+#: src/includes/traits/Ac/NcDebugUtils.php:155
 msgid "because the current user appeared to be logged into the site (in one way or another); but %1$s was unable to formulate a User Token for them. Please report this as a possible bug."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:152
+#: src/includes/traits/Ac/NcDebugUtils.php:159
 msgid "because `$_GET` contains query string data. The current configuration says NOT to cache GET requests with a query string."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:156
+#: src/includes/traits/Ac/NcDebugUtils.php:163
 msgid "because `$_REQUEST` indicates this is simply a preview of something to come."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:160
+#: src/includes/traits/Ac/NcDebugUtils.php:167
 msgid "because `$_SERVER['REQUEST_URI']` matches a configured URI Exclusion Pattern on this installation."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:164
+#: src/includes/traits/Ac/NcDebugUtils.php:171
 msgid "because `$_SERVER['HTTP_USER_AGENT']` matches a configured User-Agent Exclusion Pattern on this installation."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:168
+#: src/includes/traits/Ac/NcDebugUtils.php:175
 msgid "because `$_SERVER['HTTP_REFERER']` and/or `$_GET['_wp_http_referer']` matches a configured HTTP Referrer Exclusion Pattern on this installation."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:172
+#: src/includes/traits/Ac/NcDebugUtils.php:179
 msgid "because the WordPress `is_404()` Conditional Tag says the current page is a 404 error. The current configuration says NOT to cache 404 errors."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:176
+#: src/includes/traits/Ac/NcDebugUtils.php:183
 msgid "because a plugin running on this installation says this page is in Maintenance Mode; i.e. is not available publicly at this time."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:180
+#: src/includes/traits/Ac/NcDebugUtils.php:187
 msgid "because %1$s is unable to cache already-compressed output. Please use `mod_deflate` w/ Apache; or use `zlib.output_compression` in your `php.ini` file. %1$s is NOT compatible with `ob_gzhandler()` and others like this."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:184
+#: src/includes/traits/Ac/NcDebugUtils.php:191
 msgid "because the contents of this document contain `<body id=\"error-page\">`, which indicates this is an auto-generated WordPress error message."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:188
+#: src/includes/traits/Ac/NcDebugUtils.php:195
 msgid "because a `Content-Type:` header was set via PHP at runtime. The header contains a MIME type which is NOT a variation of HTML or XML. This header might have been set by your hosting company, by WordPress itself; or by one of your themes/plugins."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:192
+#: src/includes/traits/Ac/NcDebugUtils.php:199
 msgid "because a `Status:` header (or an `HTTP/` header) was set via PHP at runtime. The header contains a non-`2xx` status code. This indicates the current page was not loaded successfully. This header might have been set by your hosting company, by WordPress itself; or by one of your themes/plugins."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:196
+#: src/includes/traits/Ac/NcDebugUtils.php:203
 msgid "because the WordPress `is_404()` Conditional Tag says the current page is a 404 error; and this is the first time it's happened on this page. Your current configuration says that 404 errors SHOULD be cached, so %1$s built a cached symlink which points future requests for this location to your already-cached 404 error document. If you reload this page (assuming you don't clear the cache before you do so); you should get a cached version of your 404 error document. This message occurs ONCE for each new/unique 404 error request."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:200
+#: src/includes/traits/Ac/NcDebugUtils.php:207
 msgid "because %1$s detected an early output buffer termination. This may happen when a theme/plugin ends, cleans, or flushes all output buffers before reaching the PHP shutdown phase. It's not always a bad thing. Sometimes it is necessary for a theme/plugin to do this. However, in this scenario it is NOT possible to cache the output; since %1$s is effectively disabled at runtime when this occurs."
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:204
+#: src/includes/traits/Ac/NcDebugUtils.php:211
 msgid "due to an unexpected behavior in the application. Please report this as a bug!"
 msgstr ""
 
-#: src/includes/closures/Ac/NcDebugUtils.php:208
+#: src/includes/traits/Ac/NcDebugUtils.php:215
 msgid "%1$s is NOT caching this page, %2$s"
 msgstr ""
 
 #. translators: This string is actually NOT translatable because the `__()`
 #. function is not available at this point in the processing.
-#: src/includes/closures/Ac/ObUtils.php:216
+#: src/includes/traits/Ac/ObUtils.php:221
 msgid "%1$s fully functional :-) Cache file served for (%2$s) in %3$s seconds, on: %4$s."
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:244
+#: src/includes/traits/Ac/ObUtils.php:250
 msgid "Unexpected OB phase: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:324
+#: src/includes/traits/Ac/ObUtils.php:326
 msgid "Cache directory not writable. %1$s needs this directory please: `%2$s`. Set permissions to `755` or higher; `777` might be needed in some cases."
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:330
-#: src/includes/closures/Ac/ObUtils.php:350
+#: src/includes/traits/Ac/ObUtils.php:332
+#: src/includes/traits/Ac/ObUtils.php:352
 msgid "Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`."
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:343
+#: src/includes/traits/Ac/ObUtils.php:345
 msgid "%1$s file path: %2$s"
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:344
+#: src/includes/traits/Ac/ObUtils.php:346
 msgid "%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s."
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:344
+#: src/includes/traits/Ac/ObUtils.php:346
 msgid "user token: %1$s"
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:345
+#: src/includes/traits/Ac/ObUtils.php:347
 msgid "This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time)."
 msgstr ""
 
-#: src/includes/closures/Ac/ObUtils.php:360
+#: src/includes/traits/Ac/ObUtils.php:362
 msgid "%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`."
 msgstr ""
 
-#: src/includes/closures/Ac/PostloadUtils.php:193
+#: src/includes/traits/Ac/PostloadUtils.php:200
 msgid "%1$s fully functional :-) Cache file served for (%2$s; user token: %3$s) in %4$s seconds, on: %5$s."
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:99
+#: src/includes/traits/Plugin/AdminBarUtils.php:106
 msgid "Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:108
+#: src/includes/traits/Plugin/AdminBarUtils.php:115
 msgid "Clear the Home Page cache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:108
+#: src/includes/traits/Plugin/AdminBarUtils.php:115
 msgid "Home Page"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:111
+#: src/includes/traits/Plugin/AdminBarUtils.php:118
 msgid "Clear the cache for the current URL"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:111
+#: src/includes/traits/Plugin/AdminBarUtils.php:118
 msgid "Current URL"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:113
+#: src/includes/traits/Plugin/AdminBarUtils.php:120
 msgid "Clear the cache for a specific URL"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:113
+#: src/includes/traits/Plugin/AdminBarUtils.php:120
 msgid "Specific URL"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:116
+#: src/includes/traits/Plugin/AdminBarUtils.php:123
 msgid "Clear PHP's OPcache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:116
+#: src/includes/traits/Plugin/AdminBarUtils.php:123
 msgid "OPcache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:119
+#: src/includes/traits/Plugin/AdminBarUtils.php:126
 msgid "Clear the CDN cache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:119
+#: src/includes/traits/Plugin/AdminBarUtils.php:126
 msgid "CDN Cache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:122
+#: src/includes/traits/Plugin/AdminBarUtils.php:129
 msgid "Clear expired transients from the database"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:122
+#: src/includes/traits/Plugin/AdminBarUtils.php:129
 msgid "Expired Transients"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:136
+#: src/includes/traits/Plugin/AdminBarUtils.php:143
 msgid "Clear Options"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:158
-#: src/includes/closures/Plugin/AdminBarUtils.php:179
+#: src/includes/traits/Plugin/AdminBarUtils.php:165
+#: src/includes/traits/Plugin/AdminBarUtils.php:186
 msgid "Clear Cache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:183
+#: src/includes/traits/Plugin/AdminBarUtils.php:190
 msgid "Clear Cache (Start Fresh). Affects the current site only."
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:226
+#: src/includes/traits/Plugin/AdminBarUtils.php:233
 msgid "Cache Stats"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:270
+#: src/includes/traits/Plugin/AdminBarUtils.php:277
 msgid "More Info"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:305
-#: src/includes/closures/Plugin/MenuPageUtils.php:46
+#: src/includes/traits/Plugin/AdminBarUtils.php:313
+#: src/includes/traits/Plugin/MenuPageUtils.php:55
 msgid "%"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:306
-#: src/includes/closures/Plugin/MenuPageUtils.php:47
+#: src/includes/traits/Plugin/AdminBarUtils.php:314
+#: src/includes/traits/Plugin/MenuPageUtils.php:56
 msgid "file"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:307
-#: src/includes/closures/Plugin/MenuPageUtils.php:48
+#: src/includes/traits/Plugin/AdminBarUtils.php:315
+#: src/includes/traits/Plugin/MenuPageUtils.php:57
 msgid "files"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:308
-#: src/includes/closures/Plugin/MenuPageUtils.php:49
+#: src/includes/traits/Plugin/AdminBarUtils.php:316
+#: src/includes/traits/Plugin/MenuPageUtils.php:58
 msgid "Page Cache"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:309
-#: src/includes/closures/Plugin/MenuPageUtils.php:50
+#: src/includes/traits/Plugin/AdminBarUtils.php:317
+#: src/includes/traits/Plugin/MenuPageUtils.php:59
 msgid "HTML Compressor"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:310
-#: src/includes/closures/Plugin/MenuPageUtils.php:51
+#: src/includes/traits/Plugin/AdminBarUtils.php:318
+#: src/includes/traits/Plugin/MenuPageUtils.php:60
 msgid "Current Total"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:311
-#: src/includes/closures/Plugin/MenuPageUtils.php:52
+#: src/includes/traits/Plugin/AdminBarUtils.php:319
+#: src/includes/traits/Plugin/MenuPageUtils.php:61
 msgid "Current Site"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:312
-#: src/includes/closures/Plugin/MenuPageUtils.php:53
+#: src/includes/traits/Plugin/AdminBarUtils.php:320
+#: src/includes/traits/Plugin/MenuPageUtils.php:62
 msgid "%s Day High"
 msgstr ""
 
-#: src/includes/closures/Plugin/AdminBarUtils.php:313
+#: src/includes/traits/Plugin/AdminBarUtils.php:321
 msgid "Enter a specific URL to clear the cache for that page:"
 msgstr ""
 
-#: src/includes/closures/Plugin/AutoCacheUtils.php:136
+#: src/includes/traits/Plugin/AutoCacheUtils.php:146
 msgid "Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href=\"http://cometcache.com/r/kb-article-why-am-i-seeing-a-timeout-error/\" target=\"_blank\">this article</a>."
 msgstr ""
 
-#: src/includes/closures/Plugin/AutoCacheUtils.php:139
+#: src/includes/traits/Plugin/AutoCacheUtils.php:149
 msgid "HEAD response code (<code>%1$s</code>) indicates an error."
 msgstr ""
 
-#: src/includes/closures/Plugin/AutoCacheUtils.php:141
+#: src/includes/traits/Plugin/AutoCacheUtils.php:151
 msgid "Content-Type (<code>%1$s</code>) indicates an error."
 msgstr ""
 
-#: src/includes/closures/Plugin/AutoCacheUtils.php:147
+#: src/includes/traits/Plugin/AutoCacheUtils.php:157
 msgid "<strong>%1$s says...</strong> The Auto-Cache Engine is currently configured with an XML Sitemap location that could not be found. We suggest that you install the <a href=\"http://cometcache.com/r/google-xml-sitemaps-plugin/\" target=\"_blank\">Google XML Sitemaps</a> plugin. Or, empty the XML Sitemap field and only use the list of URLs instead. See: <strong>Dashboard → %1$s → Auto-Cache Engine → XML Sitemap URL</strong>"
 msgstr ""
 
-#: src/includes/closures/Plugin/AutoCacheUtils.php:148
+#: src/includes/traits/Plugin/AutoCacheUtils.php:158
 msgid "<p><strong>Problematic Sitemap URL:</strong> <a href=\"%1$s\" target=\"_blank\">%1$s</a> / <strong>Diagnostic Report:</strong> %2$s"
 msgstr ""
 
-#: src/includes/closures/Plugin/CronUtils.php:18
+#: src/includes/traits/Plugin/CronUtils.php:23
 msgid "Every 15 Minutes"
 msgstr ""
 
-#: src/includes/closures/Plugin/DirUtils.php:21
-#: src/includes/closures/Plugin/DirUtils.php:48
+#: src/includes/traits/Plugin/DirUtils.php:26
+#: src/includes/traits/Plugin/DirUtils.php:54
 msgid "Missing `base_dir` option value."
 msgstr ""
 
-#: src/includes/closures/Plugin/InstallUtils.php:16
+#: src/includes/traits/Plugin/InstallUtils.php:24
 msgid "<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href=\"%2$s\">enable caching and review options</a>.</strong>"
 msgstr ""
 
-#: src/includes/closures/Plugin/InstallUtils.php:55
+#: src/includes/traits/Plugin/InstallUtils.php:62
 msgid "<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)"
 msgstr ""
 
-#: src/includes/closures/Plugin/InstallUtils.php:320
+#: src/includes/traits/Plugin/InstallUtils.php:334
 msgid "<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors."
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:77
-#: src/includes/closures/Plugin/MenuPageUtils.php:105
+#: src/includes/traits/Plugin/MenuPageUtils.php:88
+#: src/includes/traits/Plugin/MenuPageUtils.php:117
 msgid "Stats / Charts"
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:82
-#: src/includes/closures/Plugin/MenuPageUtils.php:109
+#: src/includes/traits/Plugin/MenuPageUtils.php:93
+#: src/includes/traits/Plugin/MenuPageUtils.php:121
 msgid "Plugin Updater"
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:129
+#: src/includes/traits/Plugin/MenuPageUtils.php:142
 msgid "Settings"
 msgstr ""
 
-#: src/includes/closures/Plugin/MenuPageUtils.php:132
+#: src/includes/traits/Plugin/MenuPageUtils.php:145
 msgid "Upgrade"
 msgstr ""
 
-#: src/includes/closures/Plugin/NoticeUtils.php:151
-msgid "dismiss &times;"
+#: src/includes/traits/Plugin/NoticeUtils.php:162
+#: src/includes/traits/Plugin/NoticeUtils.php:191
+msgid "Dismiss this notice."
 msgstr ""
 
-#: src/includes/closures/Plugin/UpdateUtils.php:83
+#: src/includes/traits/Plugin/NoticeUtils.php:184
+msgid "Show details."
+msgstr ""
+
+#: src/includes/traits/Plugin/NoticeUtils.php:185
+msgid "Hide details."
+msgstr ""
+
+#: src/includes/traits/Plugin/UpdateUtils.php:97
 msgid "<strong>%1$s Pro:</strong> a new version is now available. Please <a href=\"%2$s\">upgrade to v%3$s</a>."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpAuthorUtils.php:82
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Author Page: <code>%3$s</code>; auto-clearing."
+#: src/includes/traits/Plugin/WcpAuthorUtils.php:86
+msgid "Found %1$s in the cache for Author Page: <code>%2$s</code>; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpFeedUtils.php:113
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache, for XML feeds of type: <code>%3$s</code>; auto-clearing."
+#: src/includes/traits/Plugin/WcpFeedUtils.php:117
+msgid "Found %1$s in the cache, for XML feeds of type: <code>%2$s</code>; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpHomeBlogUtils.php:38
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for the designated \"Home Page\"; auto-clearing."
+#: src/includes/traits/Plugin/WcpHomeBlogUtils.php:42
+msgid "Found %1$s in the cache for the designated \"Home Page\"; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpHomeBlogUtils.php:96
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for the designated \"Posts Page\"; auto-clearing."
+#: src/includes/traits/Plugin/WcpHomeBlogUtils.php:100
+msgid "Found %1$s in the cache for the designated \"Posts Page\"; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpPostTypeUtils.php:51
+#: src/includes/traits/Plugin/WcpPostTypeUtils.php:56
 msgid "Untitled"
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpPostTypeUtils.php:61
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for Custom Post Type: <code>%3$s</code>; auto-clearing."
+#: src/includes/traits/Plugin/WcpPostTypeUtils.php:65
+msgid "Found %1$s in the cache for Custom Post Type: <code>%2$s</code>; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpPostUtils.php:82
+#: src/includes/traits/Plugin/WcpPostUtils.php:87
 msgid "Post"
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpPostUtils.php:89
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s ID: <code>%4$s</code>; auto-clearing."
+#: src/includes/traits/Plugin/WcpPostUtils.php:93
+msgid "Found %1$s in the cache for %2$s ID: <code>%3$s</code>; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpSitemapUtils.php:44
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for XML sitemaps; auto-clearing."
+#: src/includes/traits/Plugin/WcpSitemapUtils.php:48
+msgid "Found %1$s in the cache for XML sitemaps; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpTermUtils.php:130
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for %3$s: <code>%4$s</code>; auto-clearing."
+#: src/includes/traits/Plugin/WcpTermUtils.php:134
+msgid "Found %1$s in the cache for %2$s: <code>%3$s</code>; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUrlUtils.php:43
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache matching a custom list of URLs; auto-clearing."
+#: src/includes/traits/Plugin/WcpUrlUtils.php:49
+msgid "Found %1$s in the cache matching a custom list of URLs; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUserUtils.php:43
-msgid "<strong>%1$s:</strong> detected changes. Found %2$s in the cache for user ID: <code>%3$s</code>; auto-clearing."
+#: src/includes/traits/Plugin/WcpUserUtils.php:48
+msgid "Found %1$s in the cache for user ID: <code>%2$s</code>; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:200
-msgid "<strong>%1$s:</strong> detected significant changes. Found %2$s in the cache; auto-wiping."
+#: src/includes/traits/Plugin/WcpUtils.php:232
+msgid "Detected significant changes that require a full wipe of the cache. Found %1$s in the cache; auto-wiping."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:246
-msgid "<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache for this site; auto-clearing."
+#: src/includes/traits/Plugin/WcpUtils.php:278
+msgid "Detected important site changes that affect the entire cache. Found %1$s in the cache for this site; auto-clearing."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:280
-msgid "<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache for this site that were expired; auto-purging."
+#: src/includes/traits/Plugin/WcpUtils.php:312
+msgid "Detected important site changes. Found %1$s in the cache for this site that were expired; auto-purging."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:314
-msgid "<strong>%1$s:</strong> detected important site changes. Found %2$s in the cache that were expired; auto-purging."
+#: src/includes/traits/Plugin/WcpUtils.php:346
+msgid "Detected important site changes. Found %1$s in the cache that were expired; auto-purging."
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:334
+#: src/includes/traits/Plugin/WcpUtils.php:368
 msgid "<strong>%1$s:</strong> detected significant changes that would normally trigger cache wiping routines. However, cache wiping routines have been disabled by a site administrator. [<a href=\"http://cometcache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:354
+#: src/includes/traits/Plugin/WcpUtils.php:391
 msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger cache clearing routines. However, cache clearing routines have been disabled by a site administrator. [<a href=\"http://cometcache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
-#: src/includes/closures/Plugin/WcpUtils.php:374
+#: src/includes/traits/Plugin/WcpUtils.php:414
 msgid "<strong>%1$s:</strong> detected important site changes that would normally trigger cache purging routines. However, cache purging routines have been disabled by a site administrator. [<a href=\"http://cometcache.com/r/kb-clear-and-wipe-cache-routines/\" target=\"_blank\">?</a>]"
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:24
+#: src/includes/traits/Shared/CacheDirUtils.php:29
 msgid "Unable to determine cache directory location."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:121
-#: src/includes/closures/Shared/CacheDirUtils.php:277
+#: src/includes/traits/Shared/CacheDirUtils.php:130
+#: src/includes/traits/Shared/CacheDirUtils.php:284
 msgid "Invalid argument; isAdvancedCache!"
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:148
+#: src/includes/traits/Shared/CacheDirUtils.php:157
 msgid "Unable to delete files. Rename failure on directory: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:172
-#: src/includes/closures/Shared/CacheDirUtils.php:340
-#: src/includes/closures/Shared/CacheDirUtils.php:480
+#: src/includes/traits/Shared/CacheDirUtils.php:181
+#: src/includes/traits/Shared/CacheDirUtils.php:347
+#: src/includes/traits/Shared/CacheDirUtils.php:487
 msgid "Unable to delete symlink: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:187
-#: src/includes/closures/Shared/CacheDirUtils.php:355
-#: src/includes/closures/Shared/CacheDirUtils.php:490
+#: src/includes/traits/Shared/CacheDirUtils.php:196
+#: src/includes/traits/Shared/CacheDirUtils.php:362
+#: src/includes/traits/Shared/CacheDirUtils.php:497
 msgid "Unable to delete file: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:203
-#: src/includes/closures/Shared/CacheDirUtils.php:371
-#: src/includes/closures/Shared/CacheDirUtils.php:500
+#: src/includes/traits/Shared/CacheDirUtils.php:212
+#: src/includes/traits/Shared/CacheDirUtils.php:378
+#: src/includes/traits/Shared/CacheDirUtils.php:507
 msgid "Unable to delete dir: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:211
-#: src/includes/closures/Shared/CacheDirUtils.php:379
-#: src/includes/closures/Shared/CacheDirUtils.php:508
-#: src/includes/closures/Shared/CacheDirUtils.php:603
+#: src/includes/traits/Shared/CacheDirUtils.php:220
+#: src/includes/traits/Shared/CacheDirUtils.php:386
+#: src/includes/traits/Shared/CacheDirUtils.php:515
+#: src/includes/traits/Shared/CacheDirUtils.php:610
 msgid "Unexpected resource type: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:218
-#: src/includes/closures/Shared/CacheDirUtils.php:316
-#: src/includes/closures/Shared/CacheDirUtils.php:386
+#: src/includes/traits/Shared/CacheDirUtils.php:227
+#: src/includes/traits/Shared/CacheDirUtils.php:323
+#: src/includes/traits/Shared/CacheDirUtils.php:393
 msgid "Unable to delete files. Rename failure on tmp directory: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:467
-#: src/includes/closures/Shared/CacheDirUtils.php:515
+#: src/includes/traits/Shared/CacheDirUtils.php:474
+#: src/includes/traits/Shared/CacheDirUtils.php:522
 msgid "Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:519
+#: src/includes/traits/Shared/CacheDirUtils.php:526
 msgid "Unable to delete directory: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:578
+#: src/includes/traits/Shared/CacheDirUtils.php:585
 msgid "Unable to erase symlink: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:587
+#: src/includes/traits/Shared/CacheDirUtils.php:594
 msgid "Unable to erase file: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:596
+#: src/includes/traits/Shared/CacheDirUtils.php:603
 msgid "Unable to erase dir: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheDirUtils.php:610
+#: src/includes/traits/Shared/CacheDirUtils.php:617
 msgid "Unable to erase directory: `%1$s`."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheLockUtils.php:25
+#: src/includes/traits/Shared/CacheLockUtils.php:30
 msgid "Unable to find the wp-config.php file."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheLockUtils.php:42
+#: src/includes/traits/Shared/CacheLockUtils.php:47
 msgid "No writable tmp directory."
 msgstr ""
 
-#: src/includes/closures/Shared/CacheLockUtils.php:48
+#: src/includes/traits/Shared/CacheLockUtils.php:53
 msgid "Unable to obtain an exclusive lock."
 msgstr ""
 
-#: src/includes/closures/Shared/HookUtils.php:40
+#: src/includes/traits/Shared/HookUtils.php:45
 msgid "Invalid hook."
 msgstr ""
 
-#: src/includes/closures/Shared/I18nUtils.php:15
+#: src/includes/traits/Shared/I18nUtils.php:20
 msgid "%1$s file"
 msgid_plural "%1$s files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/includes/closures/Shared/I18nUtils.php:29
+#: src/includes/traits/Shared/I18nUtils.php:35
 msgid "%1$s directory"
 msgid_plural "%1$s directories"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/includes/closures/Shared/I18nUtils.php:43
+#: src/includes/traits/Shared/I18nUtils.php:50
 msgid "%1$s file/directory"
 msgid_plural "%1$s files/directories"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/includes/closures/Shared/SysUtils.php:65
+#: src/includes/traits/Shared/SysUtils.php:71
 msgid "%s%%"
 msgstr ""
 

@@ -1,7 +1,7 @@
 === Comet Cache ===
 
-Stable tag: 160227
-Requires at least: 4.2
+Stable tag: 160412-RC
+Requires at least: 4.1
 Tested up to: 4.5-alpha
 Text Domain: comet-cache
 
