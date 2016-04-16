@@ -1,5 +1,5 @@
 <?php
-namespace WebSharks\CometCache\Pro;
+namespace WebSharks\CometCache\Pro\Classes;
 
 /**
  * API Base Class.
@@ -100,6 +100,7 @@ class ApiBase
     public static function clearUrl($url)
     {
         $regex = $GLOBALS[GLOBAL_NS]->buildCachePathRegexFromWcUrl($url);
+
         return $GLOBALS[GLOBAL_NS]->deleteFilesFromCacheDir($regex);
     }
 

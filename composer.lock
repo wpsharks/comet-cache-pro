@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7fc065cedc62d40b9027e5364f59e234",
+    "hash": "7565e6888953726ba658eae58d3fa0d3",
     "content-hash": "9cc90972794811fc1c7d903c48a099e3",
     "packages": [
         {
@@ -292,12 +292,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/wp-i18n-tools.git",
-                "reference": "47a2af9f88cfaf0ad33a81c2c882cd70bfed95b6"
+                "reference": "0275dc189293aee71e80a8bde43c4087f81ce9bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/wp-i18n-tools/zipball/47a2af9f88cfaf0ad33a81c2c882cd70bfed95b6",
-                "reference": "47a2af9f88cfaf0ad33a81c2c882cd70bfed95b6",
+                "url": "https://api.github.com/repos/websharks/wp-i18n-tools/zipball/0275dc189293aee71e80a8bde43c4087f81ce9bb",
+                "reference": "0275dc189293aee71e80a8bde43c4087f81ce9bb",
                 "shasum": ""
             },
             "type": "library",
@@ -331,7 +331,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-05-11 14:42:39"
+            "time": "2016-04-16 08:29:33"
         }
     ],
     "aliases": [],
