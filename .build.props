@@ -18,5 +18,5 @@ project_lite_alter_namespace_in_other_files_pattern     = src/includes/templates
 project_version                                         = %y%m%d
 project_php_required_version                            = 5.4
 project_php_tested_up_to_version                        = ${php.version}
-project_wp_required_version                             = 4.1
-project_wp_tested_up_to_version                         = 4.5-alpha
+project_wp_required_version                             = 4.2
+project_wp_tested_up_to_version                         = 4.6-alpha
