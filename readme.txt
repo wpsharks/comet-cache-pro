@@ -338,7 +338,7 @@ Requires WordPress v4.2+.
 
 = v160417 =
 
-- **Bug Fix**: Fixed a "PHP Fatal error: Undefined class constant 'CACHE_PATH_NO_SCHEME'" with introduced by the previous release (v160416). This issue only affected sites where Feed Caching was enabled (_Comet Cache → Plugin Options → RSS, RDF, and Atom Feeds_). Props to MassimoD and @emanwebdev for reporting. See [Issue #739](https://github.com/websharks/comet-cache/issues/739).
+- **Bug Fix**: Fixed a "PHP Fatal error: Undefined class constant 'CACHE_PATH_NO_SCHEME'" introduced by the previous release (v160416). This issue only affected sites where Feed Caching was enabled (_Comet Cache → Plugin Options → RSS, RDF, and Atom Feeds_). Props to MassimoD and @emanwebdev for reporting. See [Issue #739](https://github.com/websharks/comet-cache/issues/739).
 
 = v160416 =
 
