@@ -1,4 +1,4 @@
-## Comet Cache Pro
+## Comet Cache Pro [![Build Status](https://travis-ci.org/websharks/comet-cache-pro.svg?branch=000000-dev)](https://travis-ci.org/websharks/comet-cache-pro)
 
 Caching plugin for WordPress®.
 
