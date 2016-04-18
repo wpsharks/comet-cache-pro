@@ -615,7 +615,22 @@ class MenuPageOptions extends MenuPage
             echo '            <option value="postload"'.selected($this->plugin->options['cdn_when_logged_in'], 'postload', false).'>'.__('Yes, enable Static CDN Filters for logged-in users (recommended) .', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
             echo '      <p class="info">'.__('<strong>Note:</strong> Static CDN Filters serve <em>static</em> resources. Static resources, are, simply put, static. Thus, it is not a problem to cache these resources for any visitor (logged-in or not logged-in). To avoid confusion, this defaults to a value of <code>No</code>, and we ask that you set it to <code>Yes</code> on your own so that you\'ll know to expect this behavior; i.e., that static resources will always be served from the CDN (logged-in or not logged-in) even though Logged-In User caching may be disabled above.', SLUG_TD).'</p>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3>'.__('Enable the Admin Bar for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('When Logged-In User caching is enabled, Comet Cache will automatically disable the WordPress Admin Bar for logged-in users (on the front-end of the site). This option allows you to override this and turn back on the Admin Bar when Logged-In User caching is enabled.).', SLUG_TD).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][when_logged_in]">'."\n";
+            echo '            <option value="postload"'.selected($this->plugin->options['when_logged_in'], 'postload', false).'>'.__('Yes, enable the Admin Bar for logged-in users.', SLUG_TD).'</option>'."\n";
+            if ($this->plugin->options['when_logged_in'] === '1' || get_site_option(GLOBAL_NS.'_when_logged_in_was_1')) {
+               update_site_option(GLOBAL_NS.'_when_logged_in_was_1', '1' && $this->plugin->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', false));
+            echo '            <option value="1"'.selected($this->plugin->options['when_logged_in'], '1', false).'>'.__('No, leave the Admin Bar disabled for logged-in users.(recommended option)', SLUG_TD).'</option>'."\n";
+            }
+            echo '         </select></p>'."\n";
+            if ($this->plugin->options['when_logged_in'] === '1' && $this->plugin->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
+            echo '<p class="warning">'.sprintf(__('<strong>Warning:</strong> Whenever you enable caching for logged-in users (without a separate cache for each user), the WordPress Admin Bar <em>must</em> be disabled to prevent one user from seeing another user\'s details in the Admin Bar. <strong>Given your current configuration, %1$s will automatically hide the WordPress Admin Bar on the front-end of your site.</strong>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            }
+            echo '      <p class="info">'.__('<strong>Note:</strong> If you are enabling the WordPress Admin Bar for logged-in users, and are allowing Nonce caching using <code>COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN;</code>, please see this <a href="https://cometcache.com/kb-article/what-are-wordpress-nonces-and-why-are-they-not-cache-compatible/" target="_blank">article</a>.', SLUG_TD).'</p>'."\n";
             echo '   </div>'."\n";
+
 
             echo '</div>'."\n";
         }
