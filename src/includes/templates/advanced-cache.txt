@@ -132,6 +132,18 @@ if (!defined('COMET_CACHE_FEEDS_ENABLE')) {
     define('COMET_CACHE_FEEDS_ENABLE', '%%COMET_CACHE_FEEDS_ENABLE%%');
 }
 /*[pro strip-from="lite"]*/
+if (!defined('ADMIN_BAR_WHEN_LOGGED_IN')) {
+    /**
+     * Enable HTML compressor when logged in?
+     *
+     * @since 140422 First documented version.
+     *
+     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+     */
+    define('ADMIN_BAR_WHEN_LOGGED_IN', '%%ADMIN_BAR_WHEN_LOGGED_IN%%');
+}
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_WHEN_LOGGED_IN')) {
     /**
      * Cache logged-in users?
