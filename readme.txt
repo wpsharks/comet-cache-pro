@@ -378,4 +378,4 @@ Requires WordPress v4.2+.
 - **Bug Fix (Multisite)**: Fixed a bug where when Comet Cache was Network Activated the plugin settings link would show up in the plugins list for the Main Site and would lead to a 404 error. The settings link is now only shown when viewing the plugins list from the Network Admin. Props @jaswsinc. See [Issue #675](https://github.com/websharks/zencache/issues/675).
 - **Enhancement**: Added support-related links to the plugin options page. Props @renzms. See [Issue #612](https://github.com/websharks/zencache/issues/612#issuecomment-186827661).
 
-For older Changelog entries going back to 2009, please see the `CHANGELOG.md` file.
+For older changelog history going back to 2009, please see [CHANGELOG.md](https://github.com/websharks/comet-cache/blob/master/CHANGELOG.md).
