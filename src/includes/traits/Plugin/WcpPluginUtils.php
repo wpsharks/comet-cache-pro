@@ -26,7 +26,7 @@ trait WcpPluginUtils
             return 0; // Nothing to do here.
         }
 
-        add_action('shutdown', [$this, 'wipeOpcacheByForce'], -PHP_INT_MAX);
+        add_action('shutdown', [$this, 'wipeOpcacheByForce'], PHP_INT_MAX);
 
         return $this->{($network_wide ? 'autoWipeCache' : 'autoClearCache')}();
     }
