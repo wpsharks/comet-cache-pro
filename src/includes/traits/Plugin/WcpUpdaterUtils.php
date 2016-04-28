@@ -51,6 +51,7 @@ trait WcpUpdaterUtils
                 }
                 if ($upgrading_active_plugin) {
                     $counter += $this->autoClearCache();
+                    add_action('shutdown', [$this, 'wipeOpcacheByForce'], -PHP_INT_MAX);
                 }
                 break; // Break switch.
 
@@ -91,12 +92,14 @@ trait WcpUpdaterUtils
 
                 if ($upgrading_active_theme || $upgrading_active_parent_theme) {
                     $counter += $this->autoClearCache();
+                    add_action('shutdown', [$this, 'wipeOpcacheByForce'], -PHP_INT_MAX);
                 }
                 break; // Break switch.
 
             case 'core': // Core upgrade.
             default: // Or any other sort of upgrade.
                 $counter += $this->autoClearCache();
+                add_action('shutdown', [$this, 'wipeOpcacheByForce'], -PHP_INT_MAX);
                 break; // Break switch.
         }
     }
