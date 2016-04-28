@@ -525,6 +525,7 @@ class Plugin extends AbsBaseAp
         add_action('admin_init', [$this, 'autoClearCacheOnSettingChanges']);
         add_action('safecss_save_pre', [$this, 'autoClearCacheOnJetpackCustomCss'], 10, 1);
         add_action('upgrader_process_complete', [$this, 'autoClearOnUpgraderProcessComplete'], 10, 2);
+        add_action('upgrader_process_complete', [$this, 'wipeOpcacheByForce'], PHP_INT_MAX);
 
         add_action('switch_theme', [$this, 'autoClearCache']);
         add_action('wp_create_nav_menu', [$this, 'autoClearCache']);
