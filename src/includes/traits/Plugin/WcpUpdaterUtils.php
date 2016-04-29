@@ -46,7 +46,7 @@ trait WcpUpdaterUtils
                         }
                     }
                     unset($_plugin); // Housekeeping.
-                } elseif ($single_plugin_update && is_plugin_active($data['plugin'])) {
+                } elseif ($single_plugin_update && ( is_plugin_active($data['plugin']) || $upgrader_instance->skin->upgrader->skin->plugin_active || $upgrader_instance->skin->upgrader->skin->plugin_network_active)) {
                     $upgrading_active_plugin = true;
                 }
                 if ($upgrading_active_plugin) {
