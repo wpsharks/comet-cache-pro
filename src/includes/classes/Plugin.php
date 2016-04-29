@@ -238,8 +238,9 @@ class Plugin extends AbsBaseAp
             'cache_clear_eval_code',
             'cache_clear_urls',
 
-            'admin_bar_when_logged_in'
             'when_logged_in',
+            'when_logged_in_admin_bar',
+
             'version_salt',
 
             'htmlc_enable',
@@ -391,7 +392,7 @@ class Plugin extends AbsBaseAp
             'htmlc_when_logged_in'                 => '0', // `0|1`; enable when logged in?
 
             /* Related to Logged-In User Caching */
-            'admin_bar_when_logged_in' => '1', // `0|1`; enable when logged in?
+            'when_logged_in_admin_bar' => '1', // `0|1`; enable when logged in?
 
             /* Related to auto-cache engine. */
 
