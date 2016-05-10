@@ -805,8 +805,8 @@ class Actions extends AbsBase
                          '_wpnonce' => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
 
                          // See: `preSiteTransientUpdatePlugins()` where these are picked up.
-                         GLOBAL_NS.'_update_pro_version' => $product_api_response->pro_version,
-                         GLOBAL_NS.'_update_pro_zip'     => base64_encode($product_api_response->pro_zip),
+                         GLOBAL_NS.'_update_pro_version' => apply_filters(GLOBAL_NS.'_update_pro_version', $product_api_response->pro_version),
+                         GLOBAL_NS.'_update_pro_zip'     => base64_encode(apply_filters(GLOBAL_NS.'_update_pro_zip', $product_api_response->pro_zip)),
                          // @TODO Encrypt/decrypt to avoid mod_security issues. Base64 is not enough.
         ];
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
