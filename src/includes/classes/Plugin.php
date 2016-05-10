@@ -350,7 +350,7 @@ class Plugin extends AbsBaseAp
 
             'cache_clear_term_category_enable' => '1', // `0|1`.
             'cache_clear_term_post_tag_enable' => '1', // `0|1`.
-            'cache_clear_term_other_enable'    => '0', // `0|1`.
+            'cache_clear_term_other_enable'    => '1', // `0|1`.
 
             /* Misc. cache behaviors. */
 
