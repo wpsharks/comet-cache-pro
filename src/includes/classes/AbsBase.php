@@ -1,12 +1,14 @@
 <?php
 namespace WebSharks\CometCache\Pro\Classes;
 
+use WebSharks\CometCache\Pro\Interfaces;
+
 /**
  * Abstract Base.
  *
  * @since 150422 Rewrite.
  */
-abstract class AbsBase
+abstract class AbsBase implements Interfaces\Shared\NcDebugConsts, Interfaces\Shared\CachePathConsts
 {
     /**
      * @type null|plugin Plugin reference.
