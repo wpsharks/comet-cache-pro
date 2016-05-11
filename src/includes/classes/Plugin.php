@@ -11,6 +11,7 @@ use WebSharks\CometCache\Pro\Traits;
  */
 class Plugin extends AbsBaseAp
 {
+    /*[.build.php-auto-generate-use-Traits]*/
     use Traits\Plugin\ActionUtils;
     use Traits\Plugin\AdminBarUtils;
     use Traits\Plugin\AutoCacheUtils;
@@ -54,6 +55,7 @@ class Plugin extends AbsBaseAp
     use Traits\Plugin\WcpUserUtils;
     use Traits\Plugin\WcpUtils;
     use Traits\Plugin\WcpWooCommerceUtils;
+    /*[/.build.php-auto-generate-use-Traits]*/
 
     /**
      * Enable plugin hooks?
@@ -346,7 +348,7 @@ class Plugin extends AbsBaseAp
 
             'cache_clear_term_category_enable' => '1', // `0|1`.
             'cache_clear_term_post_tag_enable' => '1', // `0|1`.
-            'cache_clear_term_other_enable'    => '0', // `0|1`.
+            'cache_clear_term_other_enable'    => '1', // `0|1`.
 
             /* Misc. cache behaviors. */
 
@@ -523,6 +525,7 @@ class Plugin extends AbsBaseAp
         add_action('admin_init', [$this, 'autoClearCacheOnSettingChanges']);
         add_action('safecss_save_pre', [$this, 'autoClearCacheOnJetpackCustomCss'], 10, 1);
         add_action('upgrader_process_complete', [$this, 'autoClearOnUpgraderProcessComplete'], 10, 2);
+        add_action('upgrader_process_complete', [$this, 'wipeOpcacheByForce'], PHP_INT_MAX);
 
         add_action('switch_theme', [$this, 'autoClearCache']);
         add_action('wp_create_nav_menu', [$this, 'autoClearCache']);

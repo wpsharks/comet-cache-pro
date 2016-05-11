@@ -1,5 +1,5 @@
 <?php
-
+/*[pro exclude-file-from="lite"]*/
 /*[pro strip-from="lite"]*/
 namespace WebSharks\CometCache\Pro\Classes;
 
@@ -108,12 +108,12 @@ class MenuPageProUpdater extends MenuPage
 
         echo '   <div class="plugin-menu-page-panel-body clearfix open">'."\n";
         echo '      <i class="si si-user si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
-        echo '      <h3>'.sprintf(__('%1$s™ Authentication', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-        echo '      <p>'.sprintf(__('From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href="http://cometcache.com/prices/" target="_blank">cometcache.com</a>. In order to connect with our update servers, we ask that you supply your account login details for <a href="http://cometcache.com/" target="_blank">cometcache.com</a>. If you prefer not to provide your password, you can use your License Key in place of your password. Your License Key is located under "My Account" when you log in @ <a href="http://cometcache.com/" target="_blank">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="si si-smile-o"></i>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <h3>'.__('CometCache.com Authentication', SLUG_TD).'</h3>'."\n";
+        echo '      <p>'.sprintf(__('From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href="http://cometcache.com/prices/" target="_blank">cometcache.com</a>. In order to connect with our update servers, you must supply your License Key. Your License Key is located under "My Account" when you log in @ <a href="http://cometcache.com/" target="_blank">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="si si-smile-o"></i> If you prefer to upgrade manually, see <a href="https://cometcache.com/r/kb-article-how-to-manually-upgrade-comet-cache-pro/">this article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <hr />'."\n";
-        echo '      <h3>'.sprintf(__('Customer Username', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+        echo '      <h3>'.sprintf(__('Username', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
         echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[proUpdate][username]" value="'.esc_attr($this->plugin->options['pro_update_username']).'" autocomplete="off" /></p>'."\n";
-        echo '      <h3>'.sprintf(__('Customer Password or Product License Key', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+        echo '      <h3>'.sprintf(__('License Key', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
         echo '      <p><input type="password" name="'.esc_attr(GLOBAL_NS).'[proUpdate][password]" value="'.esc_attr($this->plugin->options['pro_update_password']).'" autocomplete="off" /></p>'."\n";
         echo '   </div>'."\n";
 
@@ -157,7 +157,7 @@ class MenuPageProUpdater extends MenuPage
         echo '            <option value="1"'.selected($this->plugin->options['pro_update_check_stable'], '1', false).'>'.sprintf(__('No, do not check for Release Candidates; I only want public releases.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
         echo '            <option value="0"'.selected($this->plugin->options['pro_update_check_stable'], '0', false).'>'.sprintf(__('Yes, check for Release Candidates; I want to help with testing.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
         echo '         </select></p>'."\n";
-        echo '         <p class="info" style="display:block;">'.__('<strong>How do I know if I\'m running a Release Candidate?</strong> If you are running a Release Candidate, the version number will end with <code>-RC</code>, e.g., Comet Cache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href="http://cometcache.com/r/comet-cache-beta-testers-list/" target="_blank">beta testers mailing list</a>.', SLUG_TD).'</p>'."\n";
+        echo '         <p class="info" style="display:block;">'.__('<strong>How do you know if you\'re running a Release Candidate?</strong> If you\'re running a Release Candidate, the version number will end with <code>-RC</code>, e.g., Comet Cache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href="http://cometcache.com/r/comet-cache-beta-testers-list/" target="_blank">beta testers mailing list</a>.', SLUG_TD).'</p>'."\n";
         echo '   </div>'."\n";
 
         echo '</div>'."\n";

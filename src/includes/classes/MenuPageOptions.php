@@ -251,9 +251,9 @@ class MenuPageOptions extends MenuPage
         /* --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '<div class="plugin-menu-page-panel">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
             echo '      <i class="si si-broom"></i> '.__('Manual Cache Clearing', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
