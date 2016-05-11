@@ -146,7 +146,7 @@ trait CachePathUtils
             }
         }
         if ($this->isExtensionLoaded('mbstring') && mb_check_encoding($cache_path, 'UTF-8')) {
-            $cache_path = mb_mb_strtolower($cache_path, 'UTF-8');
+            $cache_path = mb_strtolower($cache_path, 'UTF-8');
         }
         $cache_path = str_replace('.', '-', mb_strtolower($cache_path));
 
