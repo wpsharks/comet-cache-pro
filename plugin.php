@@ -2,7 +2,8 @@
 if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }
-$GLOBALS['wp_php_rv'] = '5.3.2'; //php-required-version// // Leaving this at v5.3.2 so that we can have more control over Dashboard messages below.
+$GLOBALS['wp_php_rv']['rv'] = '5.3.2'; //php-required-version// // Leaving this at v5.3.2 so that we can have more control over Dashboard messages below.
+$GLOBALS['wp_php_rv']['re'] = array('mbstring');
 
 if (require(__DIR__.'/src/vendor/websharks/wp-php-rv/src/includes/check.php')) {
     if (!empty($_REQUEST['comet_cache_mbstring_deprecated_warning_bypass']) && is_admin()) {
