@@ -41,6 +41,9 @@ trait WcpUserUtils
         if ($this->options['when_logged_in'] !== 'postload') {
             return $counter; // Nothing to do.
         }
+        if ($this->applyWpFilters(GLOBAL_NS.'_invalidate_when_logged_in_postload', true) === false) {
+            return $counter; // Nothing to do in this case (disabled via filter).
+        }
         $regex = $this->assembleCachePathRegex('', '.*?\.u\/'.preg_quote($user_id, '/').'[.\/]');
         $counter += $this->wipeFilesFromCacheDir($regex); // Clear matching files.
 
