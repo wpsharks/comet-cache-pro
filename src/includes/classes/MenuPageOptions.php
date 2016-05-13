@@ -616,14 +616,14 @@ class MenuPageOptions extends MenuPage
             echo '         </select></p>'."\n";
             echo '      <p class="info">'.__('<strong>Note:</strong> Static CDN Filters serve <em>static</em> resources. Static resources, are, simply put, static. Thus, it is not a problem to cache these resources for any visitor (logged-in or not logged-in). To avoid confusion, this defaults to a value of <code>No</code>, and we ask that you set it to <code>Yes</code> on your own so that you\'ll know to expect this behavior; i.e., that static resources will always be served from the CDN (logged-in or not logged-in) even though Logged-In User caching may be disabled above.', SLUG_TD).'</p>'."\n";
             echo '      <hr />'."\n";
-            echo '      <h3>'.__('Enable the Admin Bar for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.__('When Logged-In User caching is enabled, Comet Cache will automatically disable the WordPress Admin Bar for logged-in users (on the front-end of the site). This option allows you to override this and turn back on the Admin Bar when Logged-In User caching is enabled.).', SLUG_TD).'</p>'."\n";
+            echo '      <h3>'.__('Enable the Admin Toolbar for Logged-In Users &amp; Comment Authors?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('When Logged-In User caching is enabled above, Comet Cache will automatically disable the WordPress Admin Toolbar for logged-in users (on the front-end of the site) because the Toolbar is generally NOT cache-compatible. If you want to enable the Toolbar for logged-in users anyway, you can do that below.', SLUG_TD).'</p>'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][when_logged_in_admin_bar]">'."\n";
             echo '            <option value="0"'.selected($this->plugin->options['when_logged_in_admin_bar'], '0', false).'>'.__('No, leave the Admin Bar disabled for logged-in users (recommended option).', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.selected($this->plugin->options['when_logged_in_admin_bar'], '1', false).'>'.__('Yes, enable the Admin Bar for logged-in users.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
 
-            echo '      <p class="info">'.__('<strong>Note:</strong> If you are enabling the WordPress Admin Bar for logged-in users, and are allowing Nonce caching using <code>COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN;</code>, please see this <a href="https://cometcache.com/kb-article/what-are-wordpress-nonces-and-why-are-they-not-cache-compatible/" target="_blank">article</a>.', SLUG_TD).'</p>'."\n";
+            echo '      <p class="info">'.__('<strong>Note:</strong> Enabling the Toolbar for logged-in users will cause WordPress Nonce values to appear in the page source; nonce values are generally NOT cache-compatible. Please see <a href="https://cometcache.com/r/kb-article-what-are-wordpress-nonces-and-why-are-they-not-cache-compatible/" target="_blank">this article</a> for details.', SLUG_TD).'</p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";
