@@ -392,7 +392,7 @@ class Plugin extends AbsBaseAp
             'htmlc_when_logged_in'                 => '0', // `0|1`; enable when logged in?
 
             /* Related to Logged-In User Caching */
-            'when_logged_in_admin_bar' => '1', // `0|1`; enable when logged in?
+            'when_logged_in_admin_bar' => '0', // `0|1`; enable when logged in?
 
             /* Related to auto-cache engine. */
 
@@ -575,7 +575,7 @@ class Plugin extends AbsBaseAp
         }
 
         /*[pro strip-from="lite"]*/
-        if ($this->options['when_logged_in'] && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
+        if ($this->options['when_logged_in'] && !$this->options['when_logged_in_admin_bar'] && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
             show_admin_bar(false); // Prevent admin bar from being cached.
         }
         /*[/pro]*/
