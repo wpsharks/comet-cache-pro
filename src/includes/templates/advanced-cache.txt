@@ -143,18 +143,6 @@ if (!defined('COMET_CACHE_WHEN_LOGGED_IN')) {
     define('COMET_CACHE_WHEN_LOGGED_IN', '%%COMET_CACHE_WHEN_LOGGED_IN%%');
 }
 /*[/pro]*/
-/*[pro strip-from="lite"]*/
-if (!defined('COMET_CACHE_WHEN_LOGGED_IN_ADMIN_BAR')) {
-    /**
-     * Enable Admin Bar when caching for logged-in users is enabled?
-     *
-     * @since 160xxx First documented version.
-     *
-     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
-     */
-    define('COMET_CACHE_WHEN_LOGGED_IN_ADMIN_BAR', '%%COMET_CACHE_WHEN_LOGGED_IN_ADMIN_BAR%%');
-}
-/*[/pro]*/
 if (!defined('COMET_CACHE_DIR')) {
     /**
      * Directory used to store cache files; relative to `WP_CONTENT_DIR`.
