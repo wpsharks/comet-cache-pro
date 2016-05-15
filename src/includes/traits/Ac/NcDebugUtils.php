@@ -163,6 +163,10 @@ trait NcDebugUtils
                     $reason = __('because `$_REQUEST` indicates this is simply a preview of something to come.', SLUG_TD);
                     break; // Break switch handler.
 
+                case $this::NC_DEBUG_EXCLUDED_HOSTS:
+                    $reason = __('because `$_SERVER[\'HTTP_HOST\']` matches a configured Host Exclusion Pattern on this installation.', SLUG_TD);
+                    break; // Break switch handler.
+
                 case $this::NC_DEBUG_EXCLUDED_URIS:
                     $reason = __('because `$_SERVER[\'REQUEST_URI\']` matches a configured URI Exclusion Pattern on this installation.', SLUG_TD);
                     break; // Break switch handler.

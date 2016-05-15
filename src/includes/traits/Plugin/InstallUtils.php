@@ -309,6 +309,7 @@ trait InstallUtils
             $_value = (string) $_value; // Force string.
 
             switch ($_option) {
+                case 'exclude_hosts': // Converts to regex (caSe insensitive).
                 case 'exclude_uris': // Converts to regex (caSe insensitive).
                 case 'exclude_client_side_uris': // Converts to regex (caSe insensitive).
                 case 'exclude_refs': // Converts to regex (caSe insensitive).
