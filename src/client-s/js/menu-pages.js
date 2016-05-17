@@ -75,7 +75,8 @@
     var $this = $(this),
       thisValue = $this.val(),
       thisName = $this.attr('name'),
-      enabled = Number(thisValue) >= 1,
+      thisEnabledStrings = String($this.data('enabledStrings') || '1,2,3,4,5').split(/,+/),
+      enabled = $.inArray(thisValue, thisEnabledStrings) !== -1,
 
       $thisPanelBody = $this.closest('.plugin-menu-page-panel-body'),
 
