@@ -22,7 +22,7 @@
     $('[data-action]', plugin.$menuPage).on('click', plugin.doDataAction);
     $('[data-toggle-target]', plugin.$menuPage).on('click', plugin.doDataToggleTarget);
 
-    $('select[name$="_enable\\]"]', plugin.$menuPage).not('.-no-if-enabled').on('change', plugin.enableDisable).trigger('change');
+    $('select[name$="_enable\\]"], select[data-toggle~="enable-disable"]', plugin.$menuPage).not('.-no-if-enabled').on('change', plugin.enableDisable).trigger('change');
 
     /*![pro strip-from='lite']*/
     $('textarea[name$="\[cdn_hosts\]"]', plugin.$menuPage).on('input propertychange', plugin.handleCdnHostsChange);
