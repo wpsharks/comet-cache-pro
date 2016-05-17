@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7565e6888953726ba658eae58d3fa0d3",
-    "content-hash": "9cc90972794811fc1c7d903c48a099e3",
+    "hash": "7a3d7d2ad333fe40afad5a5545e322de",
+    "content-hash": "71ff57fa00146645e5fc1a40aa5520b3",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -227,16 +227,16 @@
         },
         {
             "name": "websharks/wp-php-rv",
-            "version": "150511",
+            "version": "160504",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/wp-php-rv.git",
-                "reference": "ed0a58f3647e59c740560235da1e61904dca8d84"
+                "reference": "275e387f582ca8bf96354abe0aa10c3e0d7a3fe8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/ed0a58f3647e59c740560235da1e61904dca8d84",
-                "reference": "ed0a58f3647e59c740560235da1e61904dca8d84",
+                "url": "https://api.github.com/repos/websharks/wp-php-rv/zipball/275e387f582ca8bf96354abe0aa10c3e0d7a3fe8",
+                "reference": "275e387f582ca8bf96354abe0aa10c3e0d7a3fe8",
                 "shasum": ""
             },
             "require": {
@@ -271,7 +271,7 @@
                 "websharks",
                 "wordpress"
             ],
-            "time": "2015-05-10 10:30:04"
+            "time": "2016-05-05 07:44:00"
         }
     ],
     "packages-dev": [
