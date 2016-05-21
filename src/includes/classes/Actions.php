@@ -798,17 +798,20 @@ class Actions extends AbsBase
         ]);
         $this->plugin->dismissMainNotice('new-pro-version-available');
 
-        $redirect_to = self_admin_url('/update.php');
-        $query_args  = [ // Like a normal WP plugin.
-                         'action'   => 'upgrade-plugin',
-                         'plugin'   => plugin_basename(PLUGIN_FILE),
-                         '_wpnonce' => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
-
-                         // See: `preSiteTransientUpdatePlugins()` where these are picked up.
-                         GLOBAL_NS.'_update_pro_version' => apply_filters(GLOBAL_NS.'_update_pro_version', $product_api_response->pro_version),
-                         GLOBAL_NS.'_update_pro_zip'     => base64_encode(apply_filters(GLOBAL_NS.'_update_pro_zip', $product_api_response->pro_zip)),
-                         // @TODO Encrypt/decrypt to avoid mod_security issues. Base64 is not enough.
+        $update_pro_version = $this->plugin->applyWpFilters(GLOBAL_NS.'_update_pro_version', $product_api_response->pro_version);
+        $update_pro_zip     = $this->plugin->applyWpFilters(GLOBAL_NS.'_update_pro_zip', $product_api_response->pro_zip);
+        $redirect_to        = self_admin_url('/update.php');
+        $query_args         = [ // Like a normal WP plugin.
+                                'action'                        => 'upgrade-plugin',
+                                'plugin'                        => plugin_basename(PLUGIN_FILE),
+                                '_wpnonce'                      => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
+                                GLOBAL_NS.'_update_pro_version' => $update_pro_version,
         ];
+
+        // Store the Pro Zip URL in Transient with a 5 minute expiration
+        // See: `preSiteTransientUpdatePlugins()` where these are picked up.
+        set_site_transient(GLOBAL_NS.'_update_pro_zip_'.$update_pro_version, $update_pro_zip, 60*5);
+
         $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
 
         wp_redirect($redirect_to).exit();
