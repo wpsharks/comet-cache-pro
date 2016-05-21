@@ -164,7 +164,7 @@ class MenuPageOptions extends MenuPage
         if (!empty($_REQUEST[GLOBAL_NS.'_advanced_cache_add_failure'])) {
             echo '<div class="plugin-menu-page-notice error">'."\n";
             if ($_REQUEST[GLOBAL_NS.'_advanced_cache_add_failure'] === 'advanced-cache') {
-                echo '<i class="si si-thumbs-down"></i> '.sprintf(__('Failed to update your <code>/wp-content/advanced-cache.php</code> file. Cannot write stat file: <code>%1$s/%2$s-advanced-cache</code>. Please be sure this directory exists (and that it\'s writable): <code>%1$s</code>. Please use directory permissions <code>755</code> or higher (perhaps <code>777</code>). Once you\'ve done this, please try again.', SLUG_TD), esc_html($this->plugin->cacheDir()), esc_html(strtolower(SHORT_NAME)))."\n";
+                echo '<i class="si si-thumbs-down"></i> '.sprintf(__('Failed to update your <code>/wp-content/advanced-cache.php</code> file. Cannot write file: <code>%1$s/%2$s-advanced-cache</code>. Please be sure this directory exists (and that it\'s writable): <code>%1$s</code>. Please use directory permissions <code>755</code> or higher (perhaps <code>777</code>). Once you\'ve done this, please try again.', SLUG_TD), esc_html($this->plugin->cacheDir()), esc_html(strtolower(SHORT_NAME)))."\n";
             } else {
                 echo '<i class="si si-thumbs-down"></i> '.__('Failed to update your <code>/wp-content/advanced-cache.php</code> file. Most likely a permissions error. Please create an empty file here: <code>/wp-content/advanced-cache.php</code> (just an empty PHP file, with nothing in it); give it permissions <code>644</code> or higher (perhaps <code>666</code>). Once you\'ve done this, please try again.', SLUG_TD)."\n";
             }
