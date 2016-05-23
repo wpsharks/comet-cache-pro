@@ -94,6 +94,9 @@ class VsUpgrades extends AbsBase
                 if (!empty($existing_options['cache_clear_xml_sitemap_patterns']) && strpos($existing_options['cache_clear_xml_sitemap_patterns'], '**') === false) {
                     $this->plugin->options['cache_clear_xml_sitemap_patterns'] = str_replace('*', '**', $existing_options['cache_clear_xml_sitemap_patterns']);
                 }
+                if (!empty($existing_options['exclude_hosts']) && strpos($existing_options['exclude_hosts'], '**') === false) {
+                    $this->plugin->options['exclude_hosts'] = str_replace('*', '**', $existing_options['exclude_hosts']);
+                }
                 if (!empty($existing_options['exclude_uris']) && strpos($existing_options['exclude_uris'], '**') === false) {
                     $this->plugin->options['exclude_uris'] = str_replace('*', '**', $existing_options['exclude_uris']);
                 }
