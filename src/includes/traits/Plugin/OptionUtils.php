@@ -57,6 +57,7 @@ trait OptionUtils
         }
         if (!empty($options['base_dir']) && $options['base_dir'] !== $this->options['base_dir']) {
             $this->tryErasingAllFilesDirsIn($this->wpContentBaseDirTo(''));
+            file_put_contents(WP_CONTENT_DIR.'/debug.log', print_r(get_defined_vars(), true)."\n\n", FILE_APPEND);
         }
         $this->options = array_merge($this->default_options, $this->options, $options);
         $this->options = array_intersect_key($this->options, $this->default_options);
