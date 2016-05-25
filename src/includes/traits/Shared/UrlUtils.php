@@ -135,6 +135,9 @@ trait UrlUtils
      */
     public function currentUrl()
     {
-        return ($this->isSsl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+      if (empty($_SERVER['HTTP_HOST']) || empty($_SERVER['REQUEST_URI'])) {
+          return ''; // Not possible.
+      }
+      return ($this->isSsl() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     }
 }
