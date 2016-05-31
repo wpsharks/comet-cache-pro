@@ -699,7 +699,10 @@ class MenuPageOptions extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
-        if ($this->plugin->applyWpFilters(GLOBAL_NS.'_exclude_hosts_option_enable', is_multisite())) {
+        $exclude_hosts_option_enable = is_multisite() &&
+            ((defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL) || $this->plugin->canConsiderDomainMapping());
+
+        if ($this->plugin->applyWpFilters(GLOBAL_NS.'_exclude_hosts_option_enable', $exclude_hosts_option_enable)) {
             // Display option panel for Host Exclusion Patterns.
 
             echo '<div class="plugin-menu-page-panel">'."\n";
