@@ -34,6 +34,11 @@
     "websharks/html-compressor": "160118",
     "websharks/sharkicons": "160221"
   },
+  "require-lite": {
+    "php": ">=5.4",
+    "websharks/wp-php-rv": "160504",
+    "websharks/sharkicons": "160221"
+  },
   "require-dev": {
     "package/bourbon": "4.2.3",
     "websharks/wp-i18n-tools": "dev-master"
