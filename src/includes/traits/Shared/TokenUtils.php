@@ -52,6 +52,9 @@ trait TokenUtils
         if (!$token) { // Use default?
             $token = !empty($_SERVER['HTTP_HOST']) ? (string) $_SERVER['HTTP_HOST'] : '';
         }
+        if (!$token && $this->isPlugin()) {
+            $token = (string) parse_url(home_url(), PHP_URL_HOST);
+        }
         if ($token) { // Have token?
             $token = strtolower($token);
             if ($dashify) { // Dashify it?
