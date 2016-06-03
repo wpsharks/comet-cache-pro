@@ -74,7 +74,7 @@ trait DirUtils
     {
         $home    = set_url_scheme(get_option('home'), 'http');
         $siteurl = set_url_scheme(get_option('siteurl'), 'http');
-        if (!empty($home) && 0 !== strcasecmp($home, $siteurl)) {
+        if (!empty($home) && 0 !== strcasecmp($home, $siteurl) && !empty($_SERVER['SCRIPT_FILENAME'])) {
             $wp_path_rel_to_home = str_ireplace($home, '', $siteurl); /* $siteurl - $home */
             $pos                 = strripos(str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME']), trailingslashit($wp_path_rel_to_home));
             $home_path           = mb_substr($_SERVER['SCRIPT_FILENAME'], 0, $pos);
