@@ -128,12 +128,15 @@ trait UpdateUtils
         if (empty($_r['_wpnonce']) || !wp_verify_nonce((string) $_r['_wpnonce'], 'upgrade-plugin_'.plugin_basename(PLUGIN_FILE))) {
             return $transient; // Nothing to do here.
         }
-        if (empty($_r[GLOBAL_NS.'_update_pro_version']) || empty($_r[GLOBAL_NS.'_update_pro_zip'])) {
+        if (empty($_r[GLOBAL_NS.'_update_pro_version'])) {
             return $transient; // Nothing to do here.
         }
+
         $update_pro_version = (string) $_r[GLOBAL_NS.'_update_pro_version'];
-        $update_pro_zip     = base64_decode((string) $_r[GLOBAL_NS.'_update_pro_zip'], true);
-        // @TODO Encrypt/decrypt to avoid mod_security issues. Base64 is not enough.
+
+        if (!($update_pro_zip = get_site_transient(GLOBAL_NS.'_update_pro_zip_'.$update_pro_version))) {
+            return $transient; // Nothing to do here.
+        }
 
         if (!is_object($transient)) {
             $transient = new \stdClass();
@@ -146,7 +149,7 @@ trait UpdateUtils
             'url'         => add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php')),
             'new_version' => $update_pro_version, 'package' => $update_pro_zip,
         ];
-        return $transient; // Nodified now.
+        return $transient; // Notified now.
     }
 
     /**
