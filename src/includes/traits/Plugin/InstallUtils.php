@@ -346,7 +346,7 @@ trait InstallUtils
             $advanced_cache_contents = preg_replace(
                 [
                     '/'.preg_quote("'%%".GLOBAL_NS.'_'.$_option."%%'", '/').'/ui',
-                    '/'.preq_quote("'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/ui', '', $_option)."%%'", '/').'/ui',
+                    '/'.preg_quote("'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/ui', '', $_option)."%%'", '/').'/ui',
                 ],
                 $_value,
                 $advanced_cache_contents
