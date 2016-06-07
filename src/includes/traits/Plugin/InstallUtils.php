@@ -343,15 +343,14 @@ trait InstallUtils
                     $_value = "'".$this->escSq($_value)."'";
                     break; // Break switch handler.
             }
-            $advanced_cache_contents = // Fill replacement codes.
-                str_ireplace(
-                    [
-                        "'%%".GLOBAL_NS.'_'.$_option."%%'",
-                        "'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/ui', '', $_option)."%%'",
-                    ],
-                    $_value,
-                    $advanced_cache_contents
-                );
+            $advanced_cache_contents = preg_replace(
+                [
+                    '/'.preg_quote("'%%".GLOBAL_NS.'_'.$_option."%%'", '/').'/ui',
+                    '/'.preq_quote("'%%".GLOBAL_NS.'_'.preg_replace('/^cache_/ui', '', $_option)."%%'", '/').'/ui',
+                ],
+                $_value,
+                $advanced_cache_contents
+            );
         }
         unset($_option, $_value, $_values, $_response); // Housekeeping.
 
@@ -361,7 +360,7 @@ trait InstallUtils
             $plugin_file = "'".$this->escSq(PLUGIN_FILE)."'"; // Full absolute path.
         }
         // Make it possible for the `advanced-cache.php` handler to find the plugin directory reliably.
-        $advanced_cache_contents = str_ireplace("'%%".GLOBAL_NS."_PLUGIN_FILE%%'", $plugin_file, $advanced_cache_contents);
+        $advanced_cache_contents = preg_replace('/'.preg_quote("'%%".GLOBAL_NS."_PLUGIN_FILE%%'", '/').'/ui', $plugin_file, $advanced_cache_contents);
 
         // Ignore; this is created by Comet Cache; and we don't need to obey in this case.
         #if(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)

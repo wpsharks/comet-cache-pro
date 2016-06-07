@@ -142,7 +142,7 @@ trait CacheDirUtils
 
         $cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
         $cache_dir_tmp_regex = '\\/'.ltrim($cache_dir_tmp_regex, '^\\/'); // Make sure it begins with an escaped `/`.
-        $cache_dir_tmp_regex = $this->strIreplaceOnce(preg_quote($cache_dir.'/', '/'), '', $cache_dir_tmp_regex);
+        $cache_dir_tmp_regex = preg_replace('/'.preg_quote(preg_quote($cache_dir.'/', '/'), '/').'/ui', '', $cache_dir_tmp_regex, 1);
 
         $cache_dir_tmp_regex = ltrim($cache_dir_tmp_regex, '^\\/');
         if (mb_strpos($cache_dir_tmp_regex, '(?:\/') === 0 || mb_strpos($cache_dir_tmp_regex, '(\/') === 0) {
@@ -150,7 +150,7 @@ trait CacheDirUtils
         } else {
             $cache_dir_tmp_regex = '/^'.preg_quote($cache_dir_tmp.'/', '/').$cache_dir_tmp_regex;
         }
-        # if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/'.strtolower(SHORT_NAME).'-debug.log', print_r($regex, TRUE)."\n".print_r($cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
+        # if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/'.mb_strtolower(SHORT_NAME).'-debug.log', print_r($regex, TRUE)."\n".print_r($cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
         // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
         if (!rename($cache_dir, $cache_dir_tmp)) {
@@ -307,8 +307,8 @@ trait CacheDirUtils
 
             $_host_cache_dir_tmp_regex = $regex; // Initialize host-specific regex pattern for the tmp directory.
             $_host_cache_dir_tmp_regex = '\\/'.ltrim($_host_cache_dir_tmp_regex, '^\\/'); // Make sure it begins with an escaped `/`.
-            $_host_cache_dir_tmp_regex = $this->strIreplaceOnce(preg_quote($_host_cache_path.'/', '/'), '', $_host_cache_dir_tmp_regex);
-            $_host_cache_dir_tmp_regex = $this->strIreplaceOnce(preg_quote($_host_cache_dir.'/', '/'), '', $_host_cache_dir_tmp_regex);
+            $_host_cache_dir_tmp_regex = preg_replace('/'.preg_quote(preg_quote($_host_cache_path.'/', '/'), '/').'/ui', '', $_host_cache_dir_tmp_regex, 1);
+            $_host_cache_dir_tmp_regex = preg_replace('/'.preg_quote(preg_quote($_host_cache_dir.'/', '/'), '/').'/ui', '', $_host_cache_dir_tmp_regex, 1);
 
             $_host_cache_dir_tmp_regex = ltrim($_host_cache_dir_tmp_regex, '^\\/');
             if (mb_strpos($_host_cache_dir_tmp_regex, '(?:\/') === 0 || mb_strpos($_host_cache_dir_tmp_regex, '(\/') === 0) {
@@ -316,7 +316,7 @@ trait CacheDirUtils
             } else {
                 $_host_cache_dir_tmp_regex = '/^'.preg_quote($_host_cache_dir_tmp.'/', '/').$_host_cache_dir_tmp_regex;
             }
-            #if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/'.strtolower(SHORT_NAME).'-debug.log', print_r($regex, TRUE)."\n".print_r($_host_cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
+            #if(WP_DEBUG) file_put_contents(WP_CONTENT_DIR.'/'.mb_strtolower(SHORT_NAME).'-debug.log', print_r($regex, TRUE)."\n".print_r($_host_cache_dir_tmp_regex, TRUE)."\n\n", FILE_APPEND);
             // Uncomment the above line to debug regex pattern matching used by this routine; and others that call upon it.
 
             if (!rename($_host_cache_dir, $_host_cache_dir_tmp)) {
