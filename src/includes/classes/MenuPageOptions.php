@@ -730,8 +730,12 @@ class MenuPageOptions extends MenuPage
             echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][exclude_hosts]" rows="5" spellcheck="false" class="monospace">'.format_to_edit($this->plugin->options['exclude_hosts']).'</textarea></p>'."\n";
 
             echo '      <p class="info">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g., one exclusion pattern per line.', SLUG_TD).'</p>'."\n";
-            echo '   </div>'."\n";
 
+            if (is_multisite() && define('SUBDOMAIN_INSTALL', false)) {
+                echo '      <p class="info">'.__('<strong>Multisite Networks w/ Sub-Directories:</strong> You could also use URI Exclusion Patterns to exclude specific sites from being cached, e.g., <code>/site1/*</code>.', SLUG_TD).'</p>'."\n";
+            }
+
+            echo '   </div>'."\n";
             echo '</div>'."\n";
         }
 
