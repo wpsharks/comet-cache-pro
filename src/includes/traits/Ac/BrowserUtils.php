@@ -21,7 +21,7 @@ trait BrowserUtils
                         return $this->sendNoCacheHeaders(); // Disallow.
                     } // Else, allow client-side caching; because `ABC` is a true-ish value.
                     // ↑ Note that exclusion patterns are ignored in this case, in favor of `ABC`.
-                } elseif (COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS && preg_match(COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS, $_SERVER['REQUEST_URI'])) {
+                } elseif (COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS && (empty($_SERVER['REQUEST_URI']) || preg_match(COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS, $_SERVER['REQUEST_URI']))) {
                     return $this->sendNoCacheHeaders(); // Disallow.
                 }
                 return; // Allow browser caching; default behavior in this mode.

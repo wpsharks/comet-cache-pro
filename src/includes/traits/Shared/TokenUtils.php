@@ -38,19 +38,22 @@ trait TokenUtils
         $token = ''; // Initialize token value.
 
         if (!is_multisite() || $this->isAdvancedCache()) {
-            $token = (string) $_SERVER['HTTP_HOST'];
+            $token = !empty($_SERVER['HTTP_HOST']) ? (string) $_SERVER['HTTP_HOST'] : '';
         } elseif ($consider_domain_mapping && $this->canConsiderDomainMapping()) {
             if (($consider_domain_mapping_domain = trim((string) $consider_domain_mapping_domain))) {
                 $token = $consider_domain_mapping_domain;
             } elseif ($this->isDomainMapping()) {
-                $token = (string) $_SERVER['HTTP_HOST'];
+                $token = !empty($_SERVER['HTTP_HOST']) ? (string) $_SERVER['HTTP_HOST'] : '';
             } else { // For the current blog ID.
                 $token = $this->domainMappingUrlFilter($this->currentUrl());
                 $token = $this->parseUrl($token, PHP_URL_HOST);
             }
         }
         if (!$token) { // Use default?
-            $token = (string) $_SERVER['HTTP_HOST'];
+            $token = !empty($_SERVER['HTTP_HOST']) ? (string) $_SERVER['HTTP_HOST'] : '';
+        }
+        if (!$token && $this->isPlugin()) {
+            $token = (string) parse_url(home_url(), PHP_URL_HOST);
         }
         if ($token) { // Have token?
             $token = strtolower($token);
