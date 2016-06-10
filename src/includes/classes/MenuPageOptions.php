@@ -731,7 +731,7 @@ class MenuPageOptions extends MenuPage
 
             echo '      <p class="info">'.__('<strong>Note:</strong> please remember that your entries here should be formatted as a line-delimited list; e.g., one exclusion pattern per line.', SLUG_TD).'</p>'."\n";
 
-            if (is_multisite() && define('SUBDOMAIN_INSTALL', false)) {
+            if (is_multisite() && defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL) {
                 echo '      <p class="info">'.__('<strong>Multisite Networks w/ Sub-Directories:</strong> You could also use URI Exclusion Patterns to exclude specific sites from being cached, e.g., <code>/site1/*</code>.', SLUG_TD).'</p>'."\n";
             }
 
