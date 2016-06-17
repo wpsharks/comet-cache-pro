@@ -67,6 +67,17 @@ trait HtaccessUtils
                             $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
                         } // Only if CDN filters are enabled at this time.
                         break;
+                    case 'permalink-structure-ts-enable.txt':
+                        if ($this->options['htaccess_permalink_structure_enable'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                        } // Only if permalink structure is enabled via .htaccess at this time.
+                        break;
+
+                    case 'permalink-structure-no-ts-enable.txt':
+                        if ($this->options['htaccess_permalink_structure_enable'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                        } // Only if permalink structure is enabled via .htaccess at this time.
+                        break;
                     /*[/pro]*/
                 }
             }

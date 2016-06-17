@@ -897,27 +897,6 @@ class MenuPageOptions extends MenuPage
         }
         /* ----------------------------------------------------------------------------------------- */
 
-        echo '<div class="plugin-menu-page-panel">'."\n";
-
-        echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-file-archive-o"></i> '.__('GZIP Compression', SLUG_TD)."\n";
-        echo '   </a>'."\n";
-
-        echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/gzip.png')).'" class="screenshot" />'."\n";
-        echo '      <h3>'.__('<a href="https://developers.google.com/speed/articles/gzip" target="_blank">GZIP Compression</a> (Optional; Highly Recommended)', SLUG_TD).'</h3>'."\n";
-        echo '      <p>'.__('You don\'t have to use an <code>.htaccess</code> file to enjoy the performance enhancements provided by this plugin; caching is handled automatically by WordPress/PHP alone. That being said, if you want to take advantage of the additional speed enhancements associated w/ GZIP compression (and we do recommend this), then you WILL need an <code>.htaccess</code> file to accomplish that part.', SLUG_TD).'</p>'."\n";
-        echo '      <p>'.sprintf(__('%1$s fully supports GZIP compression on its output. However, it does not handle GZIP compression directly. We purposely left GZIP compression out of this plugin, because GZIP compression is something that should really be enabled at the Apache level or inside your <code>php.ini</code> file. GZIP compression can be used for things like JavaScript and CSS files as well, so why bother turning it on for only WordPress-generated pages when you can enable GZIP at the server level and cover all the bases!', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '      <p>'.__('If you want to enable GZIP, create an <code>.htaccess</code> file in your WordPress® installation directory, and put the following few lines in it. Alternatively, if you already have an <code>.htaccess</code> file, just add these lines to it, and that is all there is to it. GZIP is now enabled in the recommended way! See also: <a href="https://developers.google.com/speed/articles/gzip" target="_blank"><i class="si si-youtube-play"></i> video about GZIP Compression</a>.', SLUG_TD).'</p>'."\n";
-        echo '      <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/gzip-htaccess.txt')).'</code></pre>'."\n";
-        echo '      <hr />'."\n";
-        echo '      <p class="info" style="display:block;"><strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <strong>php.ini</strong> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a></p>'."\n";
-        echo '   </div>'."\n";
-
-        echo '</div>'."\n";
-
-        /* ----------------------------------------------------------------------------------------- */
-
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
@@ -1018,84 +997,119 @@ class MenuPageOptions extends MenuPage
         }
         /* ----------------------------------------------------------------------------------------- */
 
-        if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+            echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
-            echo '      <i class="si si-octi-versions"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
+            echo '      <i class="si si-feat-server"></i> '.__('Apache Optimizations', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-            echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/salt.png')).'" class="screenshot" />'."\n";
-            echo '      <h3>'.__('<i class="si si-flask"></i> <span style="display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;"><span style="font-weight:bold; font-size:80%;">GEEK ALERT</span></span> This is for VERY advanced users only...', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('<em>Note: Understanding the %1$s <a href="http://cometcache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p>'.__('A Version Salt gives you the ability to dynamically create multiple variations of the cache, and those dynamic variations will be served on subsequent visits; e.g., if a visitor has a specific cookie (of a certain value) they will see pages which were cached with that version (i.e., w/ that Version Salt: the value of the cookie). A Version Salt can really be anything.', SLUG_TD).'</p>'."\n";
-            echo '      <p>'.__('A Version Salt can be a single variable like <code>$_COOKIE[\'my_cookie\']</code>, or it can be a combination of multiple variables, like <code>$_COOKIE[\'my_cookie\'].$_COOKIE[\'my_other_cookie\']</code>. (When using multiple variables, please separate them with a dot, as shown in the example.)', SLUG_TD).'</p>'."\n";
-            echo '      <p>'.__('Experts could even use PHP ternary expressions that evaluate into something. For example: <code>((preg_match(\'/iPhone/i\', $_SERVER[\'HTTP_USER_AGENT\'])) ? \'iPhones\' : \'\')</code>. This would force a separate version of the cache to be created for iPhones (e.g., <code>/cache/PROTOCOL/HOST/REQUEST-URI.v/iPhones.html</code>).', SLUG_TD).'</p>'."\n";
-            echo '      <p>'.__('For more documentation, please see <a href="http://cometcache.com/r/kb-dynamic-version-salts/" target="_blank">Dynamic Version Salts</a>.', SLUG_TD).'</p>'."\n";
+            echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/gzip.png')).'" class="screenshot" />'."\n";
+            echo '      <h3>'.__('<a href="https://developers.google.com/speed/articles/gzip" target="_blank">GZIP Compression</a> (Optional; Highly Recommended)', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('You don\'t have to use an <code>.htaccess</code> file to enjoy the performance enhancements provided by this plugin; caching is handled automatically by WordPress/PHP alone. That being said, if you want to take advantage of the additional speed enhancements associated w/ GZIP compression (and we do recommend this), then you WILL need an <code>.htaccess</code> file to accomplish that part.', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.sprintf(__('%1$s fully supports GZIP compression on its output. However, it does not handle GZIP compression directly. We purposely left GZIP compression out of this plugin, because GZIP compression is something that should really be enabled at the Apache level or inside your <code>php.ini</code> file. GZIP compression can be used for things like JavaScript and CSS files as well, so why bother turning it on for only WordPress-generated pages when you can enable GZIP at the server level and cover all the bases!', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p>'.__('If you want to enable GZIP, create an <code>.htaccess</code> file in your WordPress® installation directory, and put the following few lines in it. Alternatively, if you already have an <code>.htaccess</code> file, just add these lines to it, and that is all there is to it. GZIP is now enabled in the recommended way! See also: <a href="https://developers.google.com/speed/articles/gzip" target="_blank"><i class="si si-youtube-play"></i> video about GZIP Compression</a>.', SLUG_TD).'</p>'."\n";
+            echo '      <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/gzip-htaccess.txt')).'</code></pre>'."\n";
             echo '      <hr />'."\n";
-            echo '      <h3>'.sprintf(__('Create a Dynamic Version Salt For %1$s? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size:90%%; opacity:0.5;">150%% OPTIONAL</span>', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-            echo '      <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">/cache/PROTOCOL/HOST/REQUEST_URI.</td><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][version_salt]" value="'.esc_attr($this->plugin->options['version_salt']).'" class="monospace" placeholder="$_COOKIE[\'my_cookie\']" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;"></td></tr></table>'."\n";
-            echo '      <p class="info" style="display:block;">'.__('<a href="http://php.net/manual/en/language.variables.superglobals.php" target="_blank">Super Globals</a> work here; <a href="http://codex.wordpress.org/Editing_wp-config.php#table_prefix" target="_blank"><code>$GLOBALS[\'table_prefix\']</code></a> is a popular one.<br />Or, perhaps a PHP Constant defined in <code>/wp-config.php</code>; such as <code>WPLANG</code> or <code>DB_HOST</code>.', SLUG_TD).'</p>'."\n";
-            echo '      <p class="notice" style="display:block;">'.__('<strong>Important:</strong> your Version Salt is scanned for PHP syntax errors via <a href="http://phpcodechecker.com/" target="_blank"><code>phpCodeChecker.com</code></a>. If errors are found, you\'ll receive a notice in the Dashboard.', SLUG_TD).'</p>'."\n";
-            echo '      <p class="info" style="display:block;">'.__('If you\'ve enabled a separate cache for each user (optional) that\'s perfectly OK. A Version Salt works with user caching too.', SLUG_TD).'</p>'."\n";
-            echo '   </div>'."\n";
+            echo '      <p class="info" style="display:block;"><strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <strong>php.ini</strong> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a></p>'."\n";
+
+
+        if (IS_PRO || $this->plugin->isProPreview()) {
+
+                echo '      <hr />'."\n";
+                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enable permalink structure via <code>.htaccess</code> and force trailing slash?', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.__('Comet Cache will detect the permalink settings that either requires or does not require a trailing slash and add the appropriate code snippet to tweak the <code>.htaccess</code> of your WordPress site. This will allow redirection from <code>example.com/test</code> to <code>example.com/test/</code> (with the slash). ', SLUG_TD).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_permalink_structure_enable]" data-target=".-htaccess-permalink-structure-options">'."\n";
+                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '0', false)).'>'.__('No, do NOT enable permalink structure via .htaccess.', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '1', false)).'>'.__('Yes, I want to enable permalink structure via .htaccess', SLUG_TD).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p class="info" style="display:block;">If you configure your Permalink structure with a trailing <code>/</code>, WordPress generates all permalinks that way. Moreover, by default, the <code>redirect_canonical()</code> function in WordPress enforces that behavior. The issue here is that <code>redirect_canonical()</code> is bypassed whenever caching is enabled; i.e., whenever Comet Cache is running.'."\n";
+                echo '   </div>'."\n";
+        }
 
             echo '</div>'."\n";
-        }
-        /* ----------------------------------------------------------------------------------------- */
-
-        echo '<div class="plugin-menu-page-panel">'."\n";
-
-        echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-octi-plug"></i> '.__('Theme/Plugin Developers', SLUG_TD)."\n";
-        echo '   </a>'."\n";
-
-        echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-        echo '      <i class="si si-puzzle-piece si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
-        echo '      <h3>'.__('Developing a Theme or Plugin for WordPress?', SLUG_TD).'</h3>'."\n";
-        echo '      <p>'.sprintf(__('<strong>Tip:</strong> %1$s can be disabled temporarily. If you\'re a theme/plugin developer, you can set a flag within your PHP code to disable the cache engine at runtime. Perhaps on a specific page, or in a specific scenario. In your PHP script, set: <code>$_SERVER[\'COMET_CACHE_ALLOWED\'] = FALSE;</code> or <code>define(\'COMET_CACHE_ALLOWED\', FALSE)</code>. %1$s is also compatible with: <code>define(\'DONOTCACHEPAGE\', TRUE)</code>. It does\'t matter where or when you define one of these, because %1$s is the last thing to run before script execution ends.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '      <hr />'."\n";
-        echo '      <h3>'.sprintf(__('Writing "Advanced Cache" Plugins Specifically for %1$s', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-        echo '      <p>'.sprintf(__('Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href="http://cometcache.com/r/ac-plugin-example/" target="_blank">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '      <p class="info">'.sprintf(__('<strong>Why does %1$s have it\'s own plugin architecture?</strong> WordPress loads the <code>advanced-cache.php</code> drop-in file (for caching purposes) very early-on; before any other plugins or a theme. For this reason, %1$s implements it\'s own watered-down version of functions like <code>add_action()</code>, <code>do_action()</code>, <code>add_filter()</code>, <code>apply_filters()</code>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '   </div>'."\n";
-
-        echo '</div>'."\n";
 
         /* ----------------------------------------------------------------------------------------- */
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+                echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
-            echo '      <i class="si si-arrow-circle-o-up"></i> '.__('Import/Export Options', SLUG_TD)."\n";
+                echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+                echo '      <i class="si si-octi-versions"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
+                echo '   </a>'."\n";
+
+                echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+                echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/salt.png')).'" class="screenshot" />'."\n";
+                echo '      <h3>'.__('<i class="si si-flask"></i> <span style="display:inline-block; padding:5px; border-radius:3px; background:#FFFFFF; color:#354913;"><span style="font-weight:bold; font-size:80%;">GEEK ALERT</span></span> This is for VERY advanced users only...', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.sprintf(__('<em>Note: Understanding the %1$s <a href="http://cometcache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+                echo '      <p>'.__('A Version Salt gives you the ability to dynamically create multiple variations of the cache, and those dynamic variations will be served on subsequent visits; e.g., if a visitor has a specific cookie (of a certain value) they will see pages which were cached with that version (i.e., w/ that Version Salt: the value of the cookie). A Version Salt can really be anything.', SLUG_TD).'</p>'."\n";
+                echo '      <p>'.__('A Version Salt can be a single variable like <code>$_COOKIE[\'my_cookie\']</code>, or it can be a combination of multiple variables, like <code>$_COOKIE[\'my_cookie\'].$_COOKIE[\'my_other_cookie\']</code>. (When using multiple variables, please separate them with a dot, as shown in the example.)', SLUG_TD).'</p>'."\n";
+                echo '      <p>'.__('Experts could even use PHP ternary expressions that evaluate into something. For example: <code>((preg_match(\'/iPhone/i\', $_SERVER[\'HTTP_USER_AGENT\'])) ? \'iPhones\' : \'\')</code>. This would force a separate version of the cache to be created for iPhones (e.g., <code>/cache/PROTOCOL/HOST/REQUEST-URI.v/iPhones.html</code>).', SLUG_TD).'</p>'."\n";
+                echo '      <p>'.__('For more documentation, please see <a href="http://cometcache.com/r/kb-dynamic-version-salts/" target="_blank">Dynamic Version Salts</a>.', SLUG_TD).'</p>'."\n";
+                echo '      <hr />'."\n";
+                echo '      <h3>'.sprintf(__('Create a Dynamic Version Salt For %1$s? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size:90%%; opacity:0.5;">150%% OPTIONAL</span>', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+                echo '      <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">/cache/PROTOCOL/HOST/REQUEST_URI.</td><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][version_salt]" value="'.esc_attr($this->plugin->options['version_salt']).'" class="monospace" placeholder="$_COOKIE[\'my_cookie\']" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;"></td></tr></table>'."\n";
+                echo '      <p class="info" style="display:block;">'.__('<a href="http://php.net/manual/en/language.variables.superglobals.php" target="_blank">Super Globals</a> work here; <a href="http://codex.wordpress.org/Editing_wp-config.php#table_prefix" target="_blank"><code>$GLOBALS[\'table_prefix\']</code></a> is a popular one.<br />Or, perhaps a PHP Constant defined in <code>/wp-config.php</code>; such as <code>WPLANG</code> or <code>DB_HOST</code>.', SLUG_TD).'</p>'."\n";
+                echo '      <p class="notice" style="display:block;">'.__('<strong>Important:</strong> your Version Salt is scanned for PHP syntax errors via <a href="http://phpcodechecker.com/" target="_blank"><code>phpCodeChecker.com</code></a>. If errors are found, you\'ll receive a notice in the Dashboard.', SLUG_TD).'</p>'."\n";
+                echo '      <p class="info" style="display:block;">'.__('If you\'ve enabled a separate cache for each user (optional) that\'s perfectly OK. A Version Salt works with user caching too.', SLUG_TD).'</p>'."\n";
+                echo '   </div>'."\n";
+
+                echo '</div>'."\n";
+        }
+
+        /* ----------------------------------------------------------------------------------------- */
+
+            echo '<div class="plugin-menu-page-panel">'."\n";
+
+            echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
+            echo '      <i class="si si-octi-plug"></i> '.__('Theme/Plugin Developers', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-            echo '      <i class="si si-arrow-circle-o-up si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
-            echo '      <h3>'.sprintf(__('Import Options from Another %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-            echo '      <p>'.sprintf(__('Upload your <code>%1$s-options.json</code> file and click "Save All Changes" below. The options provided by your import file will override any that exist currently.', SLUG_TD), GLOBAL_NS).'</p>'."\n";
-            echo '      <p><input type="file" name="'.esc_attr(GLOBAL_NS).'[import_options]" /></p>'."\n";
+            echo '      <i class="si si-puzzle-piece si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+            echo '      <h3>'.__('Developing a Theme or Plugin for WordPress?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('<strong>Tip:</strong> %1$s can be disabled temporarily. If you\'re a theme/plugin developer, you can set a flag within your PHP code to disable the cache engine at runtime. Perhaps on a specific page, or in a specific scenario. In your PHP script, set: <code>$_SERVER[\'COMET_CACHE_ALLOWED\'] = FALSE;</code> or <code>define(\'COMET_CACHE_ALLOWED\', FALSE)</code>. %1$s is also compatible with: <code>define(\'DONOTCACHEPAGE\', TRUE)</code>. It does\'t matter where or when you define one of these, because %1$s is the last thing to run before script execution ends.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <hr />'."\n";
-            echo '      <h3>'.sprintf(__('Export Existing Options from this %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-            echo '      <button type="button" class="plugin-menu-page-export-options" style="float:right; margin: 0 0 0 25px;"'.// Exports existing options from this installation.
-             '         data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['exportOptions' => '1']]), self_admin_url('/admin.php'))).'">'.
-             '         '.sprintf(__('%1$s-options.json', SLUG_TD), GLOBAL_NS).' <i class="si si-arrow-circle-o-down"></i></button>'."\n";
-            echo '      <p>'.sprintf(__('Download your existing options and import them all into another %1$s installation; saves time on future installs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <h3>'.sprintf(__('Writing "Advanced Cache" Plugins Specifically for %1$s', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('Theme/plugin developers can take advantage of the %1$s plugin architecture by creating PHP files inside this special directory: <code>/wp-content/ac-plugins/</code>. There is an <a href="http://cometcache.com/r/ac-plugin-example/" target="_blank">example plugin file @ GitHub</a> (please review it carefully and ask questions). If you develop a plugin for %1$s, please share it with the community by publishing it in the plugins respository at WordPress.org.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p class="info">'.sprintf(__('<strong>Why does %1$s have it\'s own plugin architecture?</strong> WordPress loads the <code>advanced-cache.php</code> drop-in file (for caching purposes) very early-on; before any other plugins or a theme. For this reason, %1$s implements it\'s own watered-down version of functions like <code>add_action()</code>, <code>do_action()</code>, <code>add_filter()</code>, <code>apply_filters()</code>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '   </div>'."\n";
 
             echo '</div>'."\n";
+
+        /* ----------------------------------------------------------------------------------------- */
+
+        if (IS_PRO || $this->plugin->isProPreview()) {
+                echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+
+                echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+                echo '      <i class="si si-arrow-circle-o-up"></i> '.__('Import/Export Options', SLUG_TD)."\n";
+                echo '   </a>'."\n";
+
+                echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+                echo '      <i class="si si-arrow-circle-o-up si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+                echo '      <h3>'.sprintf(__('Import Options from Another %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+                echo '      <p>'.sprintf(__('Upload your <code>%1$s-options.json</code> file and click "Save All Changes" below. The options provided by your import file will override any that exist currently.', SLUG_TD), GLOBAL_NS).'</p>'."\n";
+                echo '      <p><input type="file" name="'.esc_attr(GLOBAL_NS).'[import_options]" /></p>'."\n";
+                echo '      <hr />'."\n";
+                echo '      <h3>'.sprintf(__('Export Existing Options from this %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+                echo '      <button type="button" class="plugin-menu-page-export-options" style="float:right; margin: 0 0 0 25px;"'.// Exports existing options from this installation.
+                '         data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['exportOptions' => '1']]), self_admin_url('/admin.php'))).'">'.
+                '         '.sprintf(__('%1$s-options.json', SLUG_TD), GLOBAL_NS).' <i class="si si-arrow-circle-o-down"></i></button>'."\n";
+                echo '      <p>'.sprintf(__('Download your existing options and import them all into another %1$s installation; saves time on future installs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+                echo '   </div>'."\n";
+
+                echo '</div>'."\n";
         }
         /* ----------------------------------------------------------------------------------------- */
 
-        echo '<div class="plugin-menu-page-save">'."\n";
-        echo '   <button type="submit">'.__('Save All Changes', SLUG_TD).' <i class="si si-save"></i></button>'."\n";
-        echo '</div>'."\n";
+            echo '<div class="plugin-menu-page-save">'."\n";
+            echo '   <button type="submit">'.__('Save All Changes', SLUG_TD).' <i class="si si-save"></i></button>'."\n";
+            echo '</div>'."\n";
 
         /* ----------------------------------------------------------------------------------------- */
 
-        echo '</div>'."\n";
-        echo '</form>';
+            echo '</div>'."\n";
+            echo '</form>';
     }
 }
