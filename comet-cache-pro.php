@@ -14,4 +14,4 @@ Description: Comet Cache is an advanced WordPress caching plugin inspired by sim
 if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }
-require_once __DIR__.'/plugin.php';
+require_once dirname(__FILE__).'/plugin.php';
