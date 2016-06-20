@@ -140,7 +140,7 @@ class AutoCache extends AbsBase
         if (!($url = trim((string) $url))) {
             return; // Nothing to do.
         }
-        if (!$this->plugin->options['get_requests'] && strpos($url, '?') !== false) {
+        if (!$this->plugin->options['get_requests'] && mb_strpos($url, '?') !== false) {
             return; // We're NOT caching URLs with a query string.
         }
         $cache_path      = $this->plugin->buildCachePath($url);
@@ -178,7 +178,7 @@ class AutoCache extends AbsBase
     {
         $cache_dir           = $this->plugin->cacheDir();
         $cache_lock          = $this->plugin->cacheLock();
-        $auto_cache_log_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-auto-cache.log';
+        $auto_cache_log_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
             throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
@@ -196,7 +196,7 @@ class AutoCache extends AbsBase
         file_put_contents($auto_cache_log_file, $log_entry, FILE_APPEND);
 
         if (filesize($auto_cache_log_file) > 2097152) {
-            rename($auto_cache_log_file, substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
+            rename($auto_cache_log_file, mb_substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
         }
         $this->plugin->cacheUnlock($cache_lock); // Release.
     }
@@ -215,7 +215,7 @@ class AutoCache extends AbsBase
     {
         $cache_dir           = $this->plugin->cacheDir();
         $cache_lock          = $this->plugin->cacheLock();
-        $auto_cache_log_file = $cache_dir.'/'.strtolower(SHORT_NAME).'-auto-cache.log';
+        $auto_cache_log_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-auto-cache.log';
 
         if (is_file($auto_cache_log_file) && !is_writable($auto_cache_log_file)) {
             throw new \Exception(sprintf(__('Auto-cache log file is NOT writable: `%1$s`. Please set permissions to `644` (or higher). `666` might be needed in some cases.', SLUG_TD), $auto_cache_log_file));
@@ -228,7 +228,7 @@ class AutoCache extends AbsBase
         file_put_contents($auto_cache_log_file, $log_entry, FILE_APPEND);
 
         if (filesize($auto_cache_log_file) > 2097152) {
-            rename($auto_cache_log_file, substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
+            rename($auto_cache_log_file, mb_substr($auto_cache_log_file, 0, -4).'-archived-'.time().'.log');
         }
         $this->plugin->cacheUnlock($cache_lock); // Release.
     }

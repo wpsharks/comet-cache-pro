@@ -115,7 +115,7 @@ trait HtaccessUtils
             return false; // Failure; could not read file, create file, or invalid UTF8 encountered, file may be corrupt.
         }
 
-        $regex                     = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'\s*/is';
+        $regex                     = '/#\s*BEGIN\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'.*?#\s*END\s+'.preg_quote(NAME, '/').'\s+'.$this->htaccess_marker.'\s*/uis';
         $htaccess['file_contents'] = preg_replace($regex, '', $htaccess['file_contents']);
 
         if (!$this->writeHtaccessFile($htaccess, false)) {
@@ -187,7 +187,7 @@ trait HtaccessUtils
         if (empty($htaccess_marker)) {
             $htaccess_marker = $this->htaccess_marker;
         }
-        if (stripos($htaccess_file_contents, $htaccess_marker) === false) {
+        if (mb_stripos($htaccess_file_contents, $htaccess_marker) === false) {
             return false; // Htaccess marker is missing
         }
 
@@ -253,7 +253,7 @@ trait HtaccessUtils
         }
         $htaccess_marker = $htaccess_marker ?: $this->htaccess_marker;
 
-        $_have_marker = stripos($htaccess['file_contents'], $htaccess_marker);
+        $_have_marker = mb_stripos($htaccess['file_contents'], $htaccess_marker);
 
         // Note: rewind() necessary here because we fread() above.
         if (($require_marker && $_have_marker === false) || !rewind($htaccess['fp']) || !ftruncate($htaccess['fp'], 0) || !fwrite($htaccess['fp'], $htaccess['file_contents'])) {

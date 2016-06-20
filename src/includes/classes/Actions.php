@@ -250,8 +250,8 @@ class Actions extends AbsBase
         }
         $is_multisite    = is_multisite();
         $is_home         = rtrim($url, '/') === rtrim($home_url, '/');
-        $url_host        = strtolower(parse_url($url, PHP_URL_HOST));
-        $home_host       = strtolower(parse_url($home_url, PHP_URL_HOST));
+        $url_host        = mb_strtolower(parse_url($url, PHP_URL_HOST));
+        $home_host       = mb_strtolower(parse_url($home_url, PHP_URL_HOST));
         $is_offsite_host = !$is_multisite && $url_host !== $home_host;
 
         if (!$this->plugin->currentUserCanClearCache()) {

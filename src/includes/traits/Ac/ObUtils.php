@@ -126,7 +126,7 @@ trait ObUtils
         if (isset($_SERVER['DONOTCACHEPAGE'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
         }
-        if (isset($_GET[strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
+        if (isset($_GET[mb_strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[mb_strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_AC_GET_VAR);
         }
         if ($this->isUncacheableRequestMethod()) {
@@ -140,13 +140,13 @@ trait ObUtils
         if (!COMET_CACHE_FEEDS_ENABLE && $this->isFeed()) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_FEED_REQUEST);
         }
-        if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/i', $_SERVER['REQUEST_URI'])) {
+        if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/ui', $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_SYSTEMATICS);
         }
-        if (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
+        if (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ADMIN);
         }
-        if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/i', $_SERVER['REQUEST_URI'])) {
+        if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_MS_FILES);
         }
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
@@ -208,7 +208,7 @@ trait ObUtils
 
             $headers_list = $this->headersList();
             foreach (unserialize($headers) as $_header) {
-                if (!in_array($_header, $headers_list, true) && stripos($_header, 'Last-Modified:') !== 0) {
+                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'Last-Modified:') !== 0) {
                     header($_header); // Only cacheable/safe headers are stored in the cache.
                 }
             }
@@ -277,7 +277,7 @@ trait ObUtils
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
         }
-        if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/', $cache)) {
+        if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
             if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->isLikeUserLoggedIn()) {
                 if (!COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN) {
                     return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LOGGED_IN_USER_NONCE);
@@ -289,7 +289,7 @@ trait ObUtils
         if ($this->is_404 && !COMET_CACHE_CACHE_404_REQUESTS) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_404_REQUEST);
         }
-        if (stripos($cache, '<body id="error-page">') !== false) {
+        if (mb_stripos($cache, '<body id="error-page">') !== false) {
             return (boolean) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
         }
         if (!$this->hasACacheableContentType()) {

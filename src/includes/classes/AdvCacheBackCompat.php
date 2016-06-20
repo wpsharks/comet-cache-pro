@@ -44,16 +44,16 @@ class AdvCacheBackCompat
      */
     public static function zenCacheConstants()
     {
-        $_global_ns = strtoupper(GLOBAL_NS);
+        $_global_ns = mb_strtoupper(GLOBAL_NS);
 
         if (!($constants = get_defined_constants(true)) || empty($constants['user'])) {
             return; // Nothing to do; i.e. no user-defined constants.
         }
         foreach ($constants['user'] as $_constant => $_value) {
-            if (stripos($_constant, 'ZENCACHE_') !== 0) {
+            if (mb_stripos($_constant, 'ZENCACHE_') !== 0) {
                 continue; // Nothing to do here.
             }
-            if (!($_constant_sub_name = substr($_constant, 9))) {
+            if (!($_constant_sub_name = mb_substr($_constant, 9))) {
                 continue; // Nothing to do here.
             }
             if (!defined($_global_ns.'_'.$_constant_sub_name)) {
