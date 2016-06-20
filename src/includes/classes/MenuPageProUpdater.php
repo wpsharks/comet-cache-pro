@@ -164,7 +164,7 @@ class MenuPageProUpdater extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
-        echo '<div class="plugin-menu-page-save">'."\n";
+        echo '<div class="plugin-menu-page-save-and-update">'."\n";
         echo '   <button type="submit" name="'.esc_attr(GLOBAL_NS).'[proUpdate][update]" value="0">'.__('Save All Changes', SLUG_TD).' <i class="si si-save"></i></button>'."\n";
         echo '   <button type="submit" name="'.esc_attr(GLOBAL_NS).'[proUpdate][update]" value="1">'.__('Save and Update Comet Cache Now', SLUG_TD).' <i class="si si-save"></i></button>'."\n";
         echo '</div>'."\n";

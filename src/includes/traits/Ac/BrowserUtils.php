@@ -16,8 +16,8 @@ trait BrowserUtils
 
             case true: // If global config allows, check exclusions.
 
-                if (isset($_GET[strtolower(SHORT_NAME).'ABC'])) {
-                    if (!filter_var($_GET[strtolower(SHORT_NAME).'ABC'], FILTER_VALIDATE_BOOLEAN)) {
+                if (isset($_GET[mb_strtolower(SHORT_NAME).'ABC'])) {
+                    if (!filter_var($_GET[mb_strtolower(SHORT_NAME).'ABC'], FILTER_VALIDATE_BOOLEAN)) {
                         return $this->sendNoCacheHeaders(); // Disallow.
                     } // Else, allow client-side caching; because `ABC` is a true-ish value.
                     // ↑ Note that exclusion patterns are ignored in this case, in favor of `ABC`.
@@ -28,8 +28,8 @@ trait BrowserUtils
 
             case false: // Global config disallows; check inclusions.
 
-                if (isset($_GET[strtolower(SHORT_NAME).'ABC'])) {
-                    if (filter_var($_GET[strtolower(SHORT_NAME).'ABC'], FILTER_VALIDATE_BOOLEAN)) {
+                if (isset($_GET[mb_strtolower(SHORT_NAME).'ABC'])) {
+                    if (filter_var($_GET[mb_strtolower(SHORT_NAME).'ABC'], FILTER_VALIDATE_BOOLEAN)) {
                         return; // Allow, because `ABC` is a false-ish value.
                     } // Else, disallow client-side caching; because `ABC` is a true-ish value.
                     // ↑ Note that inclusion patterns are ignored in this case, in favor of `ABC`.

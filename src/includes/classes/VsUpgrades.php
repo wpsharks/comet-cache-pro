@@ -91,22 +91,22 @@ class VsUpgrades extends AbsBase
     {
         if (version_compare($this->prev_version, '151107', '<=')) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
-                if (!empty($existing_options['cache_clear_xml_sitemap_patterns']) && strpos($existing_options['cache_clear_xml_sitemap_patterns'], '**') === false) {
+                if (!empty($existing_options['cache_clear_xml_sitemap_patterns']) && mb_strpos($existing_options['cache_clear_xml_sitemap_patterns'], '**') === false) {
                     $this->plugin->options['cache_clear_xml_sitemap_patterns'] = str_replace('*', '**', $existing_options['cache_clear_xml_sitemap_patterns']);
                 }
-                if (!empty($existing_options['exclude_uris']) && strpos($existing_options['exclude_uris'], '**') === false) {
+                if (!empty($existing_options['exclude_uris']) && mb_strpos($existing_options['exclude_uris'], '**') === false) {
                     $this->plugin->options['exclude_uris'] = str_replace('*', '**', $existing_options['exclude_uris']);
                 }
-                if (!empty($existing_options['exclude_refs']) && strpos($existing_options['exclude_refs'], '**') === false) {
+                if (!empty($existing_options['exclude_refs']) && mb_strpos($existing_options['exclude_refs'], '**') === false) {
                     $this->plugin->options['exclude_refs'] = str_replace('*', '**', $existing_options['exclude_refs']);
                 }
-                if (!empty($existing_options['exclude_agents']) && strpos($existing_options['exclude_agents'], '**') === false) {
+                if (!empty($existing_options['exclude_agents']) && mb_strpos($existing_options['exclude_agents'], '**') === false) {
                     $this->plugin->options['exclude_agents'] = str_replace('*', '**', $existing_options['exclude_agents']);
                 }
-                if (!empty($existing_options['htmlc_css_exclusions']) && strpos($existing_options['htmlc_css_exclusions'], '**') === false) {
+                if (!empty($existing_options['htmlc_css_exclusions']) && mb_strpos($existing_options['htmlc_css_exclusions'], '**') === false) {
                     $this->plugin->options['htmlc_css_exclusions'] = str_replace('*', '**', $existing_options['htmlc_css_exclusions']);
                 }
-                if (!empty($existing_options['htmlc_js_exclusions']) && strpos($existing_options['htmlc_js_exclusions'], '**') === false) {
+                if (!empty($existing_options['htmlc_js_exclusions']) && mb_strpos($existing_options['htmlc_js_exclusions'], '**') === false) {
                     $this->plugin->options['htmlc_js_exclusions'] = str_replace('*', '**', $existing_options['htmlc_js_exclusions']);
                 }
                 if ($existing_options['cdn_blacklisted_extensions'] === 'eot,ttf,otf,woff') {
@@ -186,7 +186,7 @@ class VsUpgrades extends AbsBase
 
             global $is_apache; // Remove htaccess rules added by ZenCache so that they can be re-added by Comet Cache
             if ($is_apache && $this->plugin->findHtaccessMarker('WmVuQ2FjaGU') && ($htaccess = $this->plugin->readHtaccessFile())) {
-                $regex                     = '/#\s*BEGIN\s+ZenCache\s+WmVuQ2FjaGU.*?#\s*END\s+ZenCache\s+WmVuQ2FjaGU\s*/is';
+                $regex                     = '/#\s*BEGIN\s+ZenCache\s+WmVuQ2FjaGU.*?#\s*END\s+ZenCache\s+WmVuQ2FjaGU\s*/uis';
                 $htaccess['file_contents'] = preg_replace($regex, '', $htaccess['file_contents']);
 
                 $this->plugin->writeHtaccessFile($htaccess, false);

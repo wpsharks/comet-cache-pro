@@ -2814,6 +2814,13 @@ html {
 .plugin-menu-page-save {
   margin-top: 2em; }
 .plugin-menu-page-save button {
+  line-height: 1.3em;
+  width: 100%; }
+
+.plugin-menu-page-save-and-update {
+  margin-top: 2em; }
+.plugin-menu-page-save-and-update button {
+  line-height: 1.3em;
   display: inline;
   width: 45%;
   margin-left: 1.5em; }

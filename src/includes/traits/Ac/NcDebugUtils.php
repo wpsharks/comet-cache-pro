@@ -111,7 +111,7 @@ trait NcDebugUtils
                     break; // Break switch handler.
 
                 case $this::NC_DEBUG_AC_GET_VAR:
-                    $reason = sprintf(__('because `$_GET[\'%1$sAC\']` is set to a boolean-ish FALSE value.', SLUG_TD), strtolower(SHORT_NAME));
+                    $reason = sprintf(__('because `$_GET[\'%1$sAC\']` is set to a boolean-ish FALSE value.', SLUG_TD), mb_strtolower(SHORT_NAME));
                     break; // Break switch handler.
 
                 case $this::NC_DEBUG_UNCACHEABLE_REQUEST:

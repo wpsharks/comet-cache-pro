@@ -138,9 +138,9 @@ class CdnFilters extends AbsBase
 
         // Host-related properties.
 
-        $this->local_host = strtolower($this->plugin->hostToken());
-        $this->cdn_host   = strtolower($this->plugin->options['cdn_host']);
-        $this->cdn_hosts  = strtolower($this->plugin->options['cdn_hosts']);
+        $this->local_host = mb_strtolower($this->plugin->hostToken());
+        $this->cdn_host   = mb_strtolower($this->plugin->options['cdn_host']);
+        $this->cdn_hosts  = mb_strtolower($this->plugin->options['cdn_hosts']);
         $this->parseCdnHosts(); // Convert CDN hosts to an array.
 
         // Configure invalidation-related properties.
@@ -158,7 +158,7 @@ class CdnFilters extends AbsBase
         if (!($cdn_whitelisted_extensions = trim($this->plugin->options['cdn_whitelisted_extensions']))) {
             $cdn_whitelisted_extensions = implode('|', static::defaultWhitelistedExtensions());
         }
-        $this->cdn_whitelisted_extensions = trim(strtolower($cdn_whitelisted_extensions), "\r\n\t\0\x0B".' |;,');
+        $this->cdn_whitelisted_extensions = trim(mb_strtolower($cdn_whitelisted_extensions), "\r\n\t\0\x0B".' |;,');
         $this->cdn_whitelisted_extensions = preg_split('/[|;,\s]+/', $this->cdn_whitelisted_extensions, -1, PREG_SPLIT_NO_EMPTY);
         $this->cdn_whitelisted_extensions = array_unique($this->cdn_whitelisted_extensions);
 
@@ -166,7 +166,7 @@ class CdnFilters extends AbsBase
 
         $cdn_blacklisted_extensions = $this->plugin->options['cdn_blacklisted_extensions'];
 
-        $this->cdn_blacklisted_extensions   = trim(strtolower($cdn_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
+        $this->cdn_blacklisted_extensions   = trim(mb_strtolower($cdn_blacklisted_extensions), "\r\n\t\0\x0B".' |;,');
         $this->cdn_blacklisted_extensions   = preg_split('/[|;,\s]+/', $this->cdn_blacklisted_extensions, -1, PREG_SPLIT_NO_EMPTY);
         $this->cdn_blacklisted_extensions[] = 'php'; // Always exclude.
 
@@ -174,18 +174,18 @@ class CdnFilters extends AbsBase
 
         // Whitelisted URI patterns; if applicable.
 
-        $cdn_whitelisted_uri_patterns = trim(strtolower($this->plugin->options['cdn_whitelisted_uri_patterns']));
+        $cdn_whitelisted_uri_patterns = trim(mb_strtolower($this->plugin->options['cdn_whitelisted_uri_patterns']));
         $cdn_whitelisted_uri_patterns = preg_split('/['."\r\n".']+/', $cdn_whitelisted_uri_patterns, null, PREG_SPLIT_NO_EMPTY);
         $cdn_whitelisted_uri_patterns = array_unique($cdn_whitelisted_uri_patterns);
 
         if ($cdn_whitelisted_uri_patterns) {
             $this->cdn_whitelisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(['/\\\\\*/', '/\\\\\^/'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
-            }, $cdn_whitelisted_uri_patterns)).')/i'; // CaSe inSensitive.
+                return preg_replace(['/\\\\\*/u', '/\\\\\^/u'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
+            }, $cdn_whitelisted_uri_patterns)).')/ui'; // CaSe inSensitive.
         }
         // Blacklisted URI patterns; if applicable.
 
-        $cdn_blacklisted_uri_patterns   = trim(strtolower($this->plugin->options['cdn_blacklisted_uri_patterns']));
+        $cdn_blacklisted_uri_patterns   = trim(mb_strtolower($this->plugin->options['cdn_blacklisted_uri_patterns']));
         $cdn_blacklisted_uri_patterns   = preg_split('/['."\r\n".']+/', $cdn_blacklisted_uri_patterns, null, PREG_SPLIT_NO_EMPTY);
         $cdn_blacklisted_uri_patterns[] = '*/wp-admin/*'; // Always.
 
@@ -199,8 +199,8 @@ class CdnFilters extends AbsBase
 
         if ($cdn_blacklisted_uri_patterns) {
             $this->cdn_blacklisted_uri_patterns = '/(?:'.implode('|', array_map(function ($pattern) {
-                return preg_replace(['/\\\\\*/', '/\\\\\^/'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
-            }, $cdn_blacklisted_uri_patterns)).')/i'; // CaSe inSensitive.
+                return preg_replace(['/\\\\\*/u', '/\\\\\^/u'], ['.*?', '[^\/]*?'], preg_quote('/'.ltrim($pattern, '/'), '/'));
+            }, $cdn_blacklisted_uri_patterns)).')/ui'; // CaSe inSensitive.
         }
         // Maybe attach filters.
 
@@ -337,7 +337,7 @@ class CdnFilters extends AbsBase
         if (!($string = (string) $string)) {
             return $string; // Nothing to do.
         }
-        if (strpos($string, '<') === false) {
+        if (mb_strpos($string, '<') === false) {
             return $string; // Nothing to do.
         }
 
@@ -357,7 +357,7 @@ class CdnFilters extends AbsBase
 
                            '(\>)'.// Tag close; group #9.
 
-                           '/i'; // End regex pattern; case insensitive.
+                           '/ui'; // End regex pattern; case insensitive.
 
         $orig_string = $string; // In case of regex errors.
         $string      = preg_replace_callback($regex_url_attrs, function ($m) {
@@ -462,16 +462,16 @@ class CdnFilters extends AbsBase
         if (empty($parsed['host']) && empty($this->cdn_hosts[$this->local_host])) {
             return; // Not on this host name.
         }
-        if (!empty($parsed['host']) && empty($this->cdn_hosts[strtolower($parsed['host'])])) {
+        if (!empty($parsed['host']) && empty($this->cdn_hosts[mb_strtolower($parsed['host'])])) {
             return; // Not on this host name.
         }
         if (!isset($parsed['path'][0]) || $parsed['path'][0] !== '/') {
             return; // Missing or unexpected path.
         }
-        if (substr($parsed['path'], -1) === '/') {
+        if (mb_substr($parsed['path'], -1) === '/') {
             return; // Directory, not a file.
         }
-        if (strpos($parsed['path'], '..') !== false || strpos($parsed['path'], './') !== false) {
+        if (mb_strpos($parsed['path'], '..') !== false || mb_strpos($parsed['path'], './') !== false) {
             return; // A relative path that is not absolute.
         }
         $scheme = null; // Default scheme handling.
@@ -479,10 +479,10 @@ class CdnFilters extends AbsBase
         $uri    = $parsed['path']; // Put URI together.
 
         if (!empty($parsed['scheme'])) {
-            $scheme = strtolower($parsed['scheme']);
+            $scheme = mb_strtolower($parsed['scheme']);
         }
         if (!empty($parsed['host'])) {
-            $host = strtolower($parsed['host']);
+            $host = mb_strtolower($parsed['host']);
         }
         if (!empty($parsed['query'])) {
             $uri .= '?'.$parsed['query'];
@@ -512,7 +512,7 @@ class CdnFilters extends AbsBase
             return ''; // No path.
         }
 
-        return strtolower(ltrim((string) strrchr(basename($path), '.'), '.'));
+        return mb_strtolower(ltrim((string) strrchr(basename($path), '.'), '.'));
     }
 
     /**
@@ -526,14 +526,14 @@ class CdnFilters extends AbsBase
         $this->cdn_hosts = []; // Initialize.
 
         $lines = str_replace(["\r\n", "\r"], "\n", $lines);
-        $lines = trim(strtolower($lines)); // Force all mappings to lowercase.
+        $lines = trim(mb_strtolower($lines)); // Force all mappings to lowercase.
         $lines = preg_split('/['."\r\n".']+/', $lines, null, PREG_SPLIT_NO_EMPTY);
 
         foreach ($lines as $_line) {
             if (!($_line = trim($_line))) {
                 continue; // Invalid line.
             }
-            if (strpos($_line, '=') !== false) {
+            if (mb_strpos($_line, '=') !== false) {
                 $_parts = explode('=', $_line, 2);
             } else {
                 $_parts = [$this->local_host, $_line];
@@ -556,7 +556,7 @@ class CdnFilters extends AbsBase
 
         if (empty($this->cdn_hosts[$this->local_host])) {
             if ($this->cdn_host && (!is_multisite() || is_main_site())) {
-                $this->cdn_hosts[strtolower((string) $this->plugin->parseUrl(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
+                $this->cdn_hosts[mb_strtolower((string) $this->plugin->parseUrl(network_home_url(), PHP_URL_HOST))][] = $this->cdn_host;
             }
         }
     }
@@ -571,13 +571,13 @@ class CdnFilters extends AbsBase
     public static function defaultWhitelistedExtensions()
     {
         $extensions = array_keys(wp_get_mime_types());
-        $extensions = explode('|', strtolower(implode('|', $extensions)));
+        $extensions = explode('|', mb_strtolower(implode('|', $extensions)));
         $extensions = array_merge($extensions, ['eot', 'ttf', 'otf', 'woff']);
 
         if (($permalink_structure = get_option('permalink_structure'))) {
-            if (strcasecmp(substr($permalink_structure, -5), '.html') === 0) {
+            if (strcasecmp(mb_substr($permalink_structure, -5), '.html') === 0) {
                 $extensions = array_diff($extensions, ['html']);
-            } elseif (strcasecmp(substr($permalink_structure, -4), '.htm') === 0) {
+            } elseif (strcasecmp(mb_substr($permalink_structure, -4), '.htm') === 0) {
                 $extensions = array_diff($extensions, ['htm']);
             }
         }
