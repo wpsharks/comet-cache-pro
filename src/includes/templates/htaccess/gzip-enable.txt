@@ -8,10 +8,5 @@
     AddOutputFilterByType DEFLATE text/css text/javascript application/javascript application/x-javascript
     AddOutputFilterByType DEFLATE font/opentype application/font-otf application/x-font-otf
     AddOutputFilterByType DEFLATE font/truetype application/font-ttf application/x-font-ttf
-    <IfModule headers_module>
-      <FilesMatch \.(?:js|css|xml|svg|xhtml|html|txt|ttf|otf|gz)$>
-        Header append vary: accept-encoding
-      </FilesMatch>
-    </IfModule>
   </IfModule>
 </IfModule>
