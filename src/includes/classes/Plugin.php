@@ -266,6 +266,10 @@ class Plugin extends AbsBaseAp
             'auto_cache_other_urls',
             'auto_cache_user_agent',
 
+            'htaccess_client_side_cache_enable',
+            'htaccess_gzip_enable',
+            'htaccess_permalink_structure_enable',
+
             'cdn_enable',
             'cdn_host',
             'cdn_hosts',
@@ -403,6 +407,12 @@ class Plugin extends AbsBaseAp
             'auto_cache_ms_children_too' => '0', // `0|1`. Try child blogs too?
             'auto_cache_other_urls'      => '', // A line-delimited list of any other URLs.
             'auto_cache_user_agent'      => 'WordPress',
+
+            /* Related to .htaccess tweaks. */
+
+            'htaccess_client_side_cache_enable' => '0', // `0|1`; enable client-side caching via .htaccess?
+            'htaccess_gzip_enable' => '0', // `0|1`; enable GZIP via .htaccess?
+            'htaccess_permalink_structure_enable' => '0', // `0|1`; enable permalink structure via .htaccess?
 
             /* Related to CDN functionality. */
 

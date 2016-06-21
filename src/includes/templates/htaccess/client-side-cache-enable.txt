@@ -1,0 +1,8 @@
+# Client-side caching.
+
+FileETag mtime size
+
+<IfModule expires_module>
+  ExpiresActive on
+  ExpiresDefault "access plus 5 days"
+</IfModule>
