@@ -259,7 +259,7 @@ class AutoCache extends AbsBase
         if (!$this->plugin->autoCacheCheckXmlSitemap($sitemap, $___recursive, $this->is_child_blog)) {
             goto finale; // Nothing we can do.
         }
-        if (!$allow_url_fopen) { // Try cURL instead
+        if (!$allow_url_fopen || $this->applyWpFilters(GLOBAL_NS.'_auto_cache_use_curl', false)) { // Try cURL instead
             $sitemap = $this->plugin->autoCacheGetSitemapViaCurl($sitemap);
         }
 
