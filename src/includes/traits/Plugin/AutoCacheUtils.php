@@ -188,29 +188,19 @@ trait AutoCacheUtils
             throw new \Exception(__('No writable tmp directory.', SLUG_TD));
         }
 
-        $tmp_file = $tmp_dir.'/'.$this->addTmpSuffix($tmp_dir).'.xml';
+        $tmp_file = tempnam($tmp_dir, SLUG_TD.'-').'.xml';
 
         if (!($fp = fopen($tmp_file, 'wb'))) {
             throw new \Exception(sprintf(__('Unable to open tmp file for writing:  `%1$s`.', SLUG_TD), $tmp_file));
         }
 
-        $ch = curl_init();
+        $response = wp_remote_get($url, ['user-agent'=> $this->plugin->options['auto_cache_user_agent'].'; '.GLOBAL_NS.' '.VERSION]);
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->options['auto_cache_user_agent'].'; '.GLOBAL_NS.' '.VERSION);
-        curl_setopt_array($ch, $this->applyWpFilters(GLOBAL_NS.'_auto_cache_curl_options', array()));
-
-        if (curl_exec($ch) === false) {
-            throw new \Exception(sprintf(__('Failed to download XML Sitemap: `%1$s`.', SLUG_TD), curl_error($ch)));
+        if ($response && !is_wp_error($response)) {
+            file_put_contents($tmp_file, $response['body']);
+        } else {
+            throw new \Exception(sprintf(__('Failed to download XML Sitemap: `%1$s`.', SLUG_TD), $response->get_error_message()));
         }
-
-        curl_close($ch);
-        fclose($fp);
 
         return $tmp_file;
     }
