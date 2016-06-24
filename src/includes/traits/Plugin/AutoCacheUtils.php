@@ -172,7 +172,7 @@ trait AutoCacheUtils
     }
 
     /**
-     * Download XML Sitemap via cURL and store in a temp file.
+     * Download XML Sitemap via WP HTTP API and store in a temp file.
      *
      * @since 16xxxx
      *
@@ -182,7 +182,7 @@ trait AutoCacheUtils
      *
      * @return string Path to downloaded XML Sitemap file
      */
-    public function autoCacheGetSitemapViaCurl($url)
+    public function autoCacheWpRemoteGetXmlSitemap($url)
     {
         if (!($tmp_dir = $this->getTmpDir())) {
             throw new \Exception(__('No writable tmp directory.', SLUG_TD));
