@@ -158,6 +158,9 @@ trait ObUtils
         if (!empty($_REQUEST['preview'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_PREVIEW);
         }
+        if (COMET_CACHE_EXCLUDE_HOSTS && preg_match(COMET_CACHE_EXCLUDE_HOSTS, $_SERVER['HTTP_HOST'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_HOSTS);
+        }
         if (COMET_CACHE_EXCLUDE_URIS && preg_match(COMET_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_URIS);
         }
