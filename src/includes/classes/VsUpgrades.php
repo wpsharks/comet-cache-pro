@@ -223,4 +223,16 @@ class VsUpgrades extends AbsBase
             }
         }
     }
+
+    /**
+     * Before we changed the Auto-Cache Engine requirements check to include cURL (notice name changed)
+     *
+     * @since 16xxxx
+     */
+    protected function fromLte160521()
+    {
+        if (version_compare($this->prev_version, '160521', '<=')) {
+            $this->plugin->dismissMainNotice('allow_url_fopen_disabled');
+        }
+    }
 }

@@ -249,15 +249,18 @@ class AutoCache extends AbsBase
      */
     protected function getSitemapUrlsDeep($sitemap, $___recursive = false)
     {
-        $urls       = [];
-        $xml_reader = new \XMLReader();
-        $failure    = ''; // Initialize.
+        $urls            = [];
+        $xml_reader      = new \XMLReader();
+        $allow_url_fopen = filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN);
 
         if (!($sitemap = trim((string) $sitemap))) {
             goto finale; // Nothing we can do.
         }
         if (!$this->plugin->autoCacheCheckXmlSitemap($sitemap, $___recursive, $this->is_child_blog)) {
             goto finale; // Nothing we can do.
+        }
+        if (!$allow_url_fopen) { // Try cURL instead
+            $sitemap = $this->plugin->autoCacheGetSitemapViaCurl($sitemap);
         }
 
         if ($xml_reader->open($sitemap)) {
@@ -282,6 +285,11 @@ class AutoCache extends AbsBase
             }
             unset($_sitemapindex_urls, $_urlset_urls);
         }
+
+        if (!$allow_url_fopen) {
+            unlink($sitemap); // Delete temp file downloaded by cURL
+        }
+
         finale: // Target point; grand finale.
 
         return $urls; // A full set of all sitemap URLs; i.e. `<loc>` tags.

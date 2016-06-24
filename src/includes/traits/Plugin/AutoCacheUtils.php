@@ -27,7 +27,7 @@ trait AutoCacheUtils
                 return; // Nothing to do.
             }
         }
-        if (!$this->autoCacheCheckPhpIni()) {
+        if (!$this->autoCacheCheckPhpReqs()) {
             return; // Server does not meet minimum requirements.
         }
         new Classes\AutoCache();
@@ -40,9 +40,9 @@ trait AutoCacheUtils
      *
      * @attaches-to `admin_init`
      */
-    public function autoCacheMaybeClearPhpIniError()
+    public function autoCacheMaybeClearPhpReqsError()
     {
-        if (!is_null($done = &$this->cacheKey('autoCacheMaybeClearPhpIniError'))) {
+        if (!is_null($done = &$this->cacheKey('autoCacheMaybeClearPhpReqsError'))) {
             return; // Already did this.
         }
         $done = true; // Flag as having been done.
@@ -53,7 +53,7 @@ trait AutoCacheUtils
         if (!$this->options['auto_cache_enable']) {
             return; // Nothing to do.
         }
-        $this->autoCacheCheckPhpIni();
+        $this->autoCacheCheckPhpReqs();
     }
 
     /**
@@ -67,17 +67,17 @@ trait AutoCacheUtils
      *        However, this routine is called prior to running the Auto-Cache Engine, so caching here should be avoided (this gets called during
      *        `admin_init` and prior to running the Auto-Cache Engine).
      */
-    public function autoCacheCheckPhpIni()
+    public function autoCacheCheckPhpReqs()
     {
-        if (!filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN)) { // Is allow_url_fopen=1?
-            $this->dismissMainNotice('allow_url_fopen_disabled'); // Clear any previous allow_url_fopen notice.
+        if (!filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN) && !$this->functionIsPossible('curl_version')) { // Is allow_url_fopen=0 and cURL unavailable?
+            $this->dismissMainNotice('auto_cache_engine_minimum_requirements'); // Clear any previous notice.
             $this->enqueueMainNotice(
-                sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine requires <a href="http://cometcache.com/r/allow_url_fopen/" target="_blank">PHP URL-aware fopen wrappers</a> (<code>allow_url_fopen=1</code>), however this option has been disabled by your <code>php.ini</code> runtime configuration. Please contact your web hosting company to resolve this issue or disable the Auto-Cache Engine in the <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php'))).'">settings</a>.', SLUG_TD), esc_html(NAME)),
-                ['class' => 'error', 'persistent_key' => 'allow_url_fopen_disabled', 'dismissable' => false]
+                sprintf(__('<strong>%1$s says...</strong> The Auto-Cache Engine requires <a href="http://cometcache.com/r/allow_url_fopen/" target="_blank">PHP URL-aware fopen wrappers</a> (<code>allow_url_fopen=1</code>) or the <a href="https://cometcache.com/r/php-net-curl/" target="_blank">PHP cURL functions</a> to be installed and available, however your PHP configuration does not meet these minimum requirements. Please contact your web hosting company to resolve this issue or disable the Auto-Cache Engine in the <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php'))).'">settings</a>.', SLUG_TD), esc_html(NAME)),
+                ['class' => 'error', 'persistent_key' => 'auto_cache_engine_minimum_requirements', 'dismissable' => false]
             );
             return false; // Nothing more we can do in this case.
         }
-        $this->dismissMainNotice('allow_url_fopen_disabled'); // Any previous problems have been fixed; dismiss any existing failure notice
+        $this->dismissMainNotice('auto_cache_engine_minimum_requirements'); // Any previous problems have been fixed; dismiss any existing failure notice
 
         return true;
     }
@@ -140,7 +140,7 @@ trait AutoCacheUtils
     {
         $failure = ''; // Initialize.
 
-        if (is_wp_error($head = wp_remote_head($sitemap, ['redirection' => 5]))) {
+        if (is_wp_error($head = wp_remote_head($sitemap, ['redirection' => 5, 'user-agent' =>$this->options['auto_cache_user_agent'].'; '.GLOBAL_NS.' '.VERSION]))) {
             $failure = 'WP_Http says: '.$head->get_error_message().'.';
             if (mb_stripos($head->get_error_message(), 'timed out') !== false || mb_stripos($head->get_error_message(), 'timeout') !== false) { // $head->get_error_code() only returns generic `http_request_failed`
                 $failure .= '<br /><em>'.__('Note: Most timeout errors are resolved by refreshing the page and trying again. If timeout errors persist, please see <a href="http://cometcache.com/r/kb-article-why-am-i-seeing-a-timeout-error/" target="_blank">this article</a>.', SLUG_TD).'</em>';
@@ -169,6 +169,50 @@ trait AutoCacheUtils
         }
 
         return true;
+    }
+
+    /**
+     * Download XML Sitemap via cURL and store in a temp file.
+     *
+     * @since 16xxxx
+     *
+     * @param string $url to XML Sitemap that needs to be downloaded
+     *
+     * @throws \Exception If unable to write temporary file or download XML Sitemap
+     *
+     * @return string Path to downloaded XML Sitemap file
+     */
+    public function autoCacheGetSitemapViaCurl($url)
+    {
+        if (!($tmp_dir = $this->getTmpDir())) {
+            throw new \Exception(__('No writable tmp directory.', SLUG_TD));
+        }
+
+        $tmp_file = $tmp_dir.'/'.$this->addTmpSuffix($tmp_dir).'.xml';
+
+        if (!($fp = fopen($tmp_file, 'wb'))) {
+            throw new \Exception(sprintf(__('Unable to open tmp file for writing:  `%1$s`.', SLUG_TD), $tmp_file));
+        }
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->options['auto_cache_user_agent'].'; '.GLOBAL_NS.' '.VERSION);
+        curl_setopt_array($ch, $this->applyWpFilters(GLOBAL_NS.'_auto_cache_curl_options', array()));
+
+        if (curl_exec($ch) === false) {
+            throw new \Exception(sprintf(__('Failed to download XML Sitemap: `%1$s`.', SLUG_TD), curl_error($ch)));
+        }
+
+        curl_close($ch);
+        fclose($fp);
+
+        return $tmp_file;
     }
 }
 /*[/pro]*/
