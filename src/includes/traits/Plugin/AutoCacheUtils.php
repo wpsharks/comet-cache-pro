@@ -187,15 +187,9 @@ trait AutoCacheUtils
         if (!($tmp_dir = $this->getTmpDir())) {
             throw new \Exception(__('No writable tmp directory.', SLUG_TD));
         }
-
         $tmp_file = tempnam($tmp_dir, SLUG_TD.'-').'.xml';
 
-        if (!($fp = fopen($tmp_file, 'wb'))) {
-            throw new \Exception(sprintf(__('Unable to open tmp file for writing:  `%1$s`.', SLUG_TD), $tmp_file));
-        }
-
         $response = wp_remote_get($url, ['user-agent'=> $this->plugin->options['auto_cache_user_agent'].'; '.GLOBAL_NS.' '.VERSION]);
-
         if ($response && !is_wp_error($response)) {
             file_put_contents($tmp_file, $response['body']);
         } else {
