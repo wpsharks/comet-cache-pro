@@ -246,18 +246,24 @@ class AutoCache extends AbsBase
      * @throws \Exception If `$sitemap` is NOT actually a sitemap.
      *
      * @return array URLs from an XML sitemap deeply.
+     *
+     * @note The XMLReader class reads the input XML from a stream, but if the PHP config has `allow_fopen_url=0`
+     *       we need to download the XML Sitemap and read it from a local file. We use the WP HTTP API as a fallback.
      */
     protected function getSitemapUrlsDeep($sitemap, $___recursive = false)
     {
-        $urls       = [];
-        $xml_reader = new \XMLReader();
-        $failure    = ''; // Initialize.
+        $urls            = [];
+        $xml_reader      = new \XMLReader();
+        $allow_url_fopen = filter_var(ini_get('allow_url_fopen'), FILTER_VALIDATE_BOOLEAN);
 
         if (!($sitemap = trim((string) $sitemap))) {
             goto finale; // Nothing we can do.
         }
         if (!$this->plugin->autoCacheCheckXmlSitemap($sitemap, $___recursive, $this->is_child_blog)) {
             goto finale; // Nothing we can do.
+        }
+        if (!$allow_url_fopen || $this->applyWpFilters(GLOBAL_NS.'_auto_cache_sitemap_force_wp_http_api', false)) { // Try the WP HTTP API instead.
+            $sitemap = $this->plugin->autoCacheWpRemoteGetXmlSitemap($sitemap);
         }
 
         if ($xml_reader->open($sitemap)) {
@@ -282,6 +288,11 @@ class AutoCache extends AbsBase
             }
             unset($_sitemapindex_urls, $_urlset_urls);
         }
+
+        if (!$allow_url_fopen || $this->applyWpFilters(GLOBAL_NS.'_auto_cache_sitemap_force_wp_http_api', false)) {
+            unlink($sitemap); // Delete temp file downloaded by cURL
+        }
+
         finale: // Target point; grand finale.
 
         return $urls; // A full set of all sitemap URLs; i.e. `<loc>` tags.
