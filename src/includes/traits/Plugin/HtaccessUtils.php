@@ -23,7 +23,7 @@ trait HtaccessUtils
      *
      * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
      */
-    public $options_with_htaccess_rules = ['cdn_enable'];
+    public $options_with_htaccess_rules = ['cdn_enable', 'htaccess_client_side_cache_enable', 'htaccess_gzip_enable', 'htaccess_permalink_structure_enable',];
 
     /**
      * Add template blocks to `/.htaccess` file.
