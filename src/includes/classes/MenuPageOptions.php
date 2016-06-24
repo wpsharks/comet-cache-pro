@@ -452,6 +452,9 @@ class MenuPageOptions extends MenuPage
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            if ($this->plugin->isProPreview()) {
+                echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/stats-preview.png')).'" style="width:100%;border: 1px dashed #cac9c9;margin-bottom: 20px;">';
+            }
             echo '      <i class="si si-pie-chart si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable Cache-Related Stats &amp; Charts?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('%1$s can collect and display cache-related statistics (including charts). Stats are displayed in the WordPress Admin Bar, and also in your Dashboard under: <strong>%1$s → Stats/Charts</strong>. Cache-related stats provide you with a quick look at what\'s happening behind-the-scenes. Your site grows faster and faster as the cache grows larger in size.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
