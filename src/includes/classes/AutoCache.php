@@ -286,7 +286,7 @@ class AutoCache extends AbsBase
             unset($_sitemapindex_urls, $_urlset_urls);
         }
 
-        if (!$allow_url_fopen) {
+        if (!$allow_url_fopen || $this->applyWpFilters(GLOBAL_NS.'_auto_cache_use_curl', false)) {
             unlink($sitemap); // Delete temp file downloaded by cURL
         }
 
