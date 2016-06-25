@@ -1033,50 +1033,65 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
-            echo '      <i class="si si-feat-server"></i> '.__('Apache Optimizations', SLUG_TD)."\n";
+            echo '      <i class="si si-server"></i> '.__('Apache Optimizations', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-            echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/gzip.png')).'" class="screenshot" />'."\n";
-            echo '      <h3>'.__('<a href="https://developers.google.com/speed/articles/gzip" target="_blank">GZIP Compression</a> (Optional; Highly Recommended)', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.__('You don\'t have to use an <code>.htaccess</code> file to enjoy the performance enhancements provided by this plugin; caching is handled automatically by WordPress/PHP alone. That being said, if you want to take advantage of the additional speed enhancements associated w/ GZIP compression (and we do recommend this), then you WILL need an <code>.htaccess</code> file to accomplish that part.', SLUG_TD).'</p>'."\n";
-            echo '      <p>'.sprintf(__('%1$s fully supports GZIP compression on its output. However, it does not handle GZIP compression directly. We purposely left GZIP compression out of this plugin, because GZIP compression is something that should really be enabled at the Apache level or inside your <code>php.ini</code> file. GZIP compression can be used for things like JavaScript and CSS files as well, so why bother turning it on for only WordPress-generated pages when you can enable GZIP at the server level and cover all the bases!', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p>'.__('If you want to enable GZIP, create an <code>.htaccess</code> file in your WordPress® installation directory, and put the following few lines in it. Alternatively, if you already have an <code>.htaccess</code> file, just add these lines to it, and that is all there is to it. GZIP is now enabled in the recommended way! See also: <a href="https://developers.google.com/speed/articles/gzip" target="_blank"><i class="si si-youtube-play"></i> video about GZIP Compression</a>.', SLUG_TD).'</p>'."\n";
-            echo '      <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/gzip-htaccess.txt')).'</code></pre>'."\n";
+            echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/apache.png')).'" class="screenshot" />'."\n";
+            echo '      <h3>'.__('Apache Performance Tuning (Optional; Highly Recommended)', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('You don\'t have to use an <code>.htaccess</code> file to enjoy the performance enhancements provided by this plugin; caching is handled automatically by WordPress/PHP alone. That being said, if you want to take advantage of additional speed enhancements by optimizing the Apache web server to achieve maximize performance (and we do recommend this), then you WILL need an <code>.htaccess</code> file to accomplish that part.', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.__('WordPress itself uses the <code>.htaccess</code> file to create Apache rewrite rules when you enable fancy Permalinks, so there\'s a good chance you already have an <code>.htaccess</code> file. The options below allow for additional performance tuning using recommendations provided by Comet Cache.', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.__('When you enable one of the options below, Comet Cache will attempt to automatically insert the appropriate configuration into your <code>.htaccess</code> file (or remove it automatically if you are disabling an option). If Comet Cache is unable to update the file, or if you would prefer to add the configuration yourself, the recommended configuration to add to the file can be viewed at the bottom of each option.', SLUG_TD).'</p>'."\n";
+            echo '              <p class="info" style="display:block;">'.__('<strong>Note:</strong> The <code>.htaccess</code> file is parsed by the web server directly, before WordPress is even loaded. For this reason, if something goes wrong in the file you can end up with a broken site. We recommend creating a backup of your current <code>.htaccess</code> file before making any modifications.', SLUG_TD).'</p>'."\n";
             echo '      <hr />'."\n";
-            echo '      <p class="info" style="display:block;"><strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <strong>php.ini</strong> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a></p>'."\n";
+            echo '      <h3>'.__('GZIP Compression', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('GZIP compression is highly recommended. It\'s not uncommon to achieve compression rates as high as 70-90%, which is a huge savings in the amount of data that needs to be transferred with each visit to your site.', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.sprintf(__('%1$s fully supports <a href="https://developers.google.com/speed/articles/gzip" target="_blank">GZIP compression</a> on its output. However, it does not handle GZIP compression directly like some caching plugins. We purposely left GZIP compression out of this plugin because GZIP compression is something that should really be enabled at the Apache level or inside your <code>php.ini</code> file. GZIP compression can be used for things like JavaScript and CSS files as well, so why bother turning it on for only WordPress-generated pages when you can enable GZIP at the server level and cover all the bases!', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_gzip_enable]" data-target=".-htaccess-gzip-enable-options">'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_gzip_enable'], '0', false)).'>'.__('No, do NOT enable GZIP Compression (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_gzip_enable'], '1', false)).'>'.__('Yes, enable GZIP Compression (recommended)', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--gzip-configuration').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
+            echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--gzip-configuration').'" style="display:none; margin-top:1em;">'."\n";
+            echo '        <p>'.__('<strong>To enable GZIP compression:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+            echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/gzip-enable.txt')).'</code></pre>'."\n";
+            echo '        <p class="info" style="display:block;"><strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <code>php.ini</code> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a></p>'."\n";
+            echo '      </div>'."\n";
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-                echo '      <hr />'."\n";
-                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Automatic GZIP Compression via <code>.htaccess</code>', SLUG_TD).'</h3>'."\n";
-                echo '      <p>'.__('Comet Cache will automatically add the appropriate code snippet to tweak the <code>.htaccess</code> file in your WordPress® installation directory. GZIP is now enabled in the recommended way! See also: <a href="https://developers.google.com/speed/articles/gzip" target="_blank"><i class="si si-youtube-play"></i> video about GZIP Compression</a>.', SLUG_TD).'</p>'."\n";
-                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_gzip_enable]" data-target=".-htaccess-gzip-enable-options">'."\n";
-                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_gzip_enable'], '0', false)).'>'.__('No, do NOT enable Automatic GZIP Compression via .htaccess.', SLUG_TD).'</option>'."\n";
-                echo '            <option value="1"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_gzip_enable'], '1', false)).'>'.__('Yes, I want to enable Automatic GZIP Compression via .htaccess', SLUG_TD).'</option>'."\n";
-                echo '         </select></p>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Leverage Browser Caching', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('<a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching?hl=en" target="_blank">Browser Caching</a> is highly recommended. When loading a single page, downloading all of the resources for that page may require multiple roundtrips between the browser and server, which delays processing and may block rendering of page content. This also incurs data costs for the visitor. With browser caching, your server tells the visitor\'s browser that it is allowed to cache static resources for a certain amount of time (Google recommends 1 week and that\'s what Comet Cache uses).', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.__('In WordPress, \'Page Caching\' is all about server-side performance (reducing the amount of time it takes the server to generate the page content). With Comet Cache installed, you\'re drastically reducing page generation time. However, you can make a vistior\'s experience ​<em>even faster</em>​ when you leverage browser caching too. When this option is enabled, the visitor\'s browser will cache static resources from each page and reuse those cached resources on subsequent page loads. In this way, future visits to the same page will not require additional connections to your site to download static resources that the visitor\'s browser has already cached.', SLUG_TD).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_client_side_cache_enable]" data-target=".-htaccess-client-side-cache-enable-options">'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_client_side_cache_enable'], '0', false)).'>'.__('No, do NOT enable Browser Caching (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_client_side_cache_enable'], '1', false)).'>'.__('Yes, enable Browser Caching for static resources (recommended)', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
+            echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'" style="display:none; margin-top:1em;">'."\n";
+            echo '        <p>'.__('<strong>To enable Browser Caching:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+            echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/client-side-cache-enable.txt')).'</code></pre>'."\n";
+            echo '      </div>'."\n";
         }
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-                echo '      <hr />'."\n";
-                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Leverage browser caching via <code>.htaccess</code> and enable client side cache?', SLUG_TD).'</h3>'."\n";
-                echo '      <p>'.__('Comet Cache will add the appropriate code snippet to tweak the <code>.htaccess</code> file in your WordPress® installation directory to detect if any resources are set to be cached for a specific period of time or if the response from the server does not include caching headers.', SLUG_TD).'</p>'."\n";
-                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_client_side_cache_enable]" data-target=".-htaccess-client-side-cache-enable-options">'."\n";
-                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_client_side_cache_enable'], '0', false)).'>'.__('No, do NOT enable client side cache via .htaccess.', SLUG_TD).'</option>'."\n";
-                echo '            <option value="1"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_client_side_cache_enable'], '1', false)).'>'.__('Yes, I want to enable client side cache via .htaccess', SLUG_TD).'</option>'."\n";
-                echo '         </select></p>'."\n";
-                echo '      <p class="info" style="display:block;">Using <code>ETags</code> will provide a revalidation token sent by the browser to verify if the resource has been updated since the last time it was requested. See this <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#validating-cached-responses-with-etags" target="_blank">article</a> regarding validating cached responses with <code>ETags</code>.'."\n";
-        }
-
-        if (IS_PRO || $this->plugin->isProPreview()) {
-                echo '      <hr />'."\n";
-                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enable permalink structure via <code>.htaccess</code>?', SLUG_TD).'</h3>'."\n";
-                echo '      <p>'.__('Comet Cache will detect the permalink settings that either requires or does not require a trailing slash and add the appropriate code snippet to tweak the <code>.htaccess</code>file in your WordPress® installation directory. This will allow redirection from <code>example.com/test</code> to <code>example.com/test/</code> (with the slash). ', SLUG_TD).'</p>'."\n";
-                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_permalink_structure_enable]" data-target=".-htaccess-permalink-structure-options">'."\n";
-                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '0', false)).'>'.__('No, do NOT enable permalink structure via .htaccess.', SLUG_TD).'</option>'."\n";
-                echo '            <option value="1"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '1', false)).'>'.__('Yes, I want to enable permalink structure via .htaccess', SLUG_TD).'</option>'."\n";
-                echo '         </select></p>'."\n";
-                echo '      <p class="info" style="display:block;">If you configure your Permalink structure with a trailing <code>/</code>, WordPress generates all permalinks that way. Moreover, by default, the <code>redirect_canonical()</code> function in WordPress enforces that behavior. The issue here is that <code>redirect_canonical()</code> is bypassed whenever caching is enabled; i.e., whenever Comet Cache is running.'."\n";
-                echo '   </div>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enforce Canonical URLs', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('Permalinks (URLs) leading to Posts/Pages on your site (based on your WordPress Permalink Settings) '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? 'require a <code>.../trailing-slash/</code>' : 'do not require a <code>.../trailing-slash</code>').'. Ordinarily, WordPress enforces this by redirecting a request for '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something</code>' : '<code>.../something/</code>').', to '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something/</code>' : '<code>.../something</code>').', thereby forcing the final location to match your Permalink configuration. However, whenever you install a plugin like Comet Cache, much of WordPress (including this automatic redirection) is out of the picture when the cached copy of a page is being served. So enabling this option will add rules to your `.htaccess` file that make Apache aware of your WordPess Permalink configuration. Apache can do what WordPress normally would, only much more efficiently.', SLUG_TD).'</p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_permalink_structure_enable]" data-target=".-htaccess-permalink-structure-options">'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '0', false)).'>'.__('No, do NOT enforce canonical URLs (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '1', false)).'>'.__('Yes, enforce canonical URLs (recommended)', SLUG_TD).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
+            echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'" style="display:none; margin-top:1em;">'."\n";
+            echo '        <p>'.__('<strong>To enforce Canonical URLs:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+            if ($GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/permalink-structure-ts-enable.txt')).'</code></pre>'."\n";
+            } else {
+                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/permalink-structure-no-ts-enable.txt')).'</code></pre>'."\n";
+            }
+            echo '      </div>'."\n";
+            echo '   </div>'."\n";
         }
 
             echo '</div>'."\n";
