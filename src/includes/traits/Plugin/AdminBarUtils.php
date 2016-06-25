@@ -231,7 +231,7 @@ trait AdminBarUtils
                     'id'     => GLOBAL_NS.'-stats',
 
                     'title' => __('Cache Stats', SLUG_TD),
-                    'href'  => '#',
+                    'href'  => esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'',
 
                     'meta' => [
                         'class'    => '-stats',

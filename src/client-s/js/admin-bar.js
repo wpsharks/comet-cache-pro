@@ -55,7 +55,6 @@
         childList: true,
         characterData: true
       }); // See: <http://jas.xyz/1JlzCdi>
-      $stats.find('> a').on('click', plugin.preventDefault);
     }
   };
 
