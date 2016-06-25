@@ -4,5 +4,5 @@ FileETag mtime size
 
 <IfModule expires_module>
   ExpiresActive on
-  ExpiresDefault "access plus 5 days"
+  ExpiresDefault "access plus 1 week"
 </IfModule>
