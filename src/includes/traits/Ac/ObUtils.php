@@ -158,6 +158,9 @@ trait ObUtils
         if (!empty($_REQUEST['preview'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_PREVIEW);
         }
+        if (COMET_CACHE_EXCLUDE_HOSTS && preg_match(COMET_CACHE_EXCLUDE_HOSTS, $_SERVER['HTTP_HOST'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_HOSTS);
+        }
         if (COMET_CACHE_EXCLUDE_URIS && preg_match(COMET_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_URIS);
         }
@@ -342,8 +345,9 @@ trait ObUtils
 
         if (COMET_CACHE_DEBUGGING_ENABLE && $this->isHtmlXmlDoc($cache)) {
             $total_time = number_format(microtime(true) - $this->timer, 5, '.', ''); // Based on the original timer.
+            $via = IS_PRO && $this->isAutoCacheEngine() ? __('Auto-Cache Engine', SLUG_TD) : __('HTTP request', SLUG_TD);
             $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file path: %2$s', SLUG_TD), NAME, str_replace(WP_CONTENT_DIR, '', $this->is_404 ? $this->cache_file_404 : $this->cache_file))).' -->';
-            $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s.', SLUG_TD), NAME, $this->is_404 ? '404 [error document]' : $this->salt_location, (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'))).' -->';
+            $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('%1$s file built for (%2$s%3$s) in %4$s seconds, on: %5$s; via %6$s.', SLUG_TD), NAME, $this->is_404 ? '404 [error document]' : $this->salt_location, (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->user_token ? '; '.sprintf(__('user token: %1$s', SLUG_TD), $this->user_token) : ''), $total_time, date('M jS, Y @ g:i a T'), $via)).' -->';
             $cache .= "\n".'<!-- '.htmlspecialchars(sprintf(__('This %1$s file will auto-expire (and be rebuilt) on: %2$s (based on your configured expiration time).', SLUG_TD), NAME, date('M jS, Y @ g:i a T', strtotime('+'.COMET_CACHE_MAX_AGE)))).' -->';
         }
         if ($this->is_404) {

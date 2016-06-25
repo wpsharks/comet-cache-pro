@@ -368,6 +368,7 @@ class Plugin extends AbsBaseAp
 
             /* Related to exclusions. */
 
+            'exclude_hosts'            => '', // Empty string or line-delimited patterns.
             'exclude_uris'             => '', // Empty string or line-delimited patterns.
             'exclude_client_side_uris' => '', // Line-delimited list of URIs.
             'exclude_refs'             => '', // Empty string or line-delimited patterns.
@@ -500,7 +501,7 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', [$this, 'autoCacheMaybeClearPrimaryXmlSitemapError']);
-        add_action('admin_init', [$this, 'autoCacheMaybeClearPhpIniError']);
+        add_action('admin_init', [$this, 'autoCacheMaybeClearPhpReqsError']);
         add_action('admin_init', [$this, 'statsLogPinger']);
         /*[/pro]*/
 
