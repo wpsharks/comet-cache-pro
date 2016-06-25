@@ -410,7 +410,7 @@ class Plugin extends AbsBaseAp
 
             /* Related to .htaccess tweaks. */
 
-            'htaccess_client_side_cache_enable' => '0', // `0|1`; enable client-side caching via .htaccess?
+            'htaccess_browser_caching_enable' => '0', // `0|1`; enable browser caching?
             'htaccess_gzip_enable'              => '0', // `0|1`; enable GZIP compression?
             'htaccess_enforce_canonical_urls'   => '0', // `0|1`; enforce canonical URLs?
 

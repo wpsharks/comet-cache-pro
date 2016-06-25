@@ -23,7 +23,7 @@ trait HtaccessUtils
      *
      * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
      */
-    public $options_with_htaccess_rules = ['cdn_enable', 'htaccess_client_side_cache_enable', 'htaccess_gzip_enable', 'htaccess_enforce_canonical_urls',];
+    public $options_with_htaccess_rules = ['cdn_enable', 'htaccess_browser_caching_enable', 'htaccess_gzip_enable', 'htaccess_enforce_canonical_urls',];
 
     /**
      * Add template blocks to `/.htaccess` file.
@@ -68,16 +68,16 @@ trait HtaccessUtils
                         } // Only if CDN filters are enabled at this time.
                         break;
 
-                    case 'client-side-cache-enable.txt':
-                        if ($this->options['htaccess_client_side_cache_enable']) {
+                    case 'browser-caching-enable.txt':
+                        if ($this->options['htaccess_browser_caching_enable']) {
                             $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if client-side caching is enabled via .htaccess at this time.
+                        } // Only if browser caching is enabled at this time.
                         break;
 
                     case 'gzip-enable.txt':
                         if ($this->options['htaccess_gzip_enable']) {
                             $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if GZIP is enabled via .htaccess at this time.
+                        } // Only if GZIP is enabled at this time.
                         break;
 
                     case 'canonical-urls-ts-enable.txt':
