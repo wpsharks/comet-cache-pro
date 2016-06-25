@@ -267,7 +267,6 @@ class Plugin extends AbsBaseAp
             'auto_cache_user_agent',
 
             'htaccess_client_side_cache_enable',
-            'htaccess_gzip_enable',
             'htaccess_enforce_canonical_urls',
 
             'cdn_enable',
@@ -412,8 +411,8 @@ class Plugin extends AbsBaseAp
             /* Related to .htaccess tweaks. */
 
             'htaccess_client_side_cache_enable' => '0', // `0|1`; enable client-side caching via .htaccess?
-            'htaccess_gzip_enable' => '0', // `0|1`; enable GZIP via .htaccess?
-            'htaccess_enforce_canonical_urls' => '0', // `0|1`; enforce canonical URLs?
+            'htaccess_gzip_enable'              => '0', // `0|1`; enable GZIP compression?
+            'htaccess_enforce_canonical_urls'   => '0', // `0|1`; enforce canonical URLs?
 
             /* Related to CDN functionality. */
 
