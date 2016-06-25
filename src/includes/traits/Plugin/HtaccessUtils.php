@@ -23,7 +23,7 @@ trait HtaccessUtils
      *
      * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
      */
-    public $options_with_htaccess_rules = ['cdn_enable', 'htaccess_client_side_cache_enable', 'htaccess_gzip_enable', 'htaccess_permalink_structure_enable',];
+    public $options_with_htaccess_rules = ['cdn_enable', 'htaccess_client_side_cache_enable', 'htaccess_gzip_enable', 'htaccess_enforce_canonical_urls',];
 
     /**
      * Add template blocks to `/.htaccess` file.
@@ -80,16 +80,16 @@ trait HtaccessUtils
                         } // Only if GZIP is enabled via .htaccess at this time.
                         break;
 
-                    case 'permalink-structure-ts-enable.txt':
-                        if ($this->options['htaccess_permalink_structure_enable'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                    case 'canonical-urls-ts-enable.txt':
+                        if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
                             $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if permalink structure is enabled via .htaccess at this time.
+                        } // Only if enforce canonical URLs enabled at this time.
                         break;
 
-                    case 'permalink-structure-no-ts-enable.txt':
-                        if ($this->options['htaccess_permalink_structure_enable'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                    case 'canonical-urls-no-ts-enable.txt':
+                        if ($this->options['htaccess_enforce_canonical_urls'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
                             $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if permalink structure is enabled via .htaccess at this time.
+                        } // Only if enforce canonical URLs enabled at this time.
                         break;
                     /*[/pro]*/
                 }

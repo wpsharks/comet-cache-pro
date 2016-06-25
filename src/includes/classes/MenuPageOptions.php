@@ -1079,17 +1079,17 @@ class MenuPageOptions extends MenuPage
             echo '      <hr />'."\n";
             echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enforce Canonical URLs', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.__('Permalinks (URLs) leading to Posts/Pages on your site (based on your WordPress Permalink Settings) '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? 'require a <code>.../trailing-slash/</code>' : 'do not require a <code>.../trailing-slash</code>').'. Ordinarily, WordPress enforces this by redirecting a request for '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something</code>' : '<code>.../something/</code>').', to '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something/</code>' : '<code>.../something</code>').', thereby forcing the final location to match your Permalink configuration. However, whenever you install a plugin like Comet Cache, much of WordPress (including this automatic redirection) is out of the picture when the cached copy of a page is being served. So enabling this option will add rules to your `.htaccess` file that make Apache aware of your WordPess Permalink configuration. Apache can do what WordPress normally would, only much more efficiently.', SLUG_TD).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_permalink_structure_enable]" data-target=".-htaccess-permalink-structure-options">'."\n";
-            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '0', false)).'>'.__('No, do NOT enforce canonical URLs (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
-            echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_permalink_structure_enable'], '1', false)).'>'.__('Yes, enforce canonical URLs (recommended)', SLUG_TD).'</option>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
+            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '0', false)).'>'.__('No, do NOT enforce canonical URLs (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+            echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '1', false)).'>'.__('Yes, enforce canonical URLs (recommended)', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
             echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
             echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'" style="display:none; margin-top:1em;">'."\n";
             echo '        <p>'.__('<strong>To enforce Canonical URLs:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
             if ($GLOBALS['wp_rewrite']->use_trailing_slashes) {
-                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/permalink-structure-ts-enable.txt')).'</code></pre>'."\n";
+                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/canonical-urls-ts-enable.txt')).'</code></pre>'."\n";
             } else {
-                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/permalink-structure-no-ts-enable.txt')).'</code></pre>'."\n";
+                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/canonical-urls-no-ts-enable.txt')).'</code></pre>'."\n";
             }
             echo '      </div>'."\n";
             echo '   </div>'."\n";

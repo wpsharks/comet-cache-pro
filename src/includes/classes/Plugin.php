@@ -268,7 +268,7 @@ class Plugin extends AbsBaseAp
 
             'htaccess_client_side_cache_enable',
             'htaccess_gzip_enable',
-            'htaccess_permalink_structure_enable',
+            'htaccess_enforce_canonical_urls',
 
             'cdn_enable',
             'cdn_host',
@@ -413,7 +413,7 @@ class Plugin extends AbsBaseAp
 
             'htaccess_client_side_cache_enable' => '0', // `0|1`; enable client-side caching via .htaccess?
             'htaccess_gzip_enable' => '0', // `0|1`; enable GZIP via .htaccess?
-            'htaccess_permalink_structure_enable' => '0', // `0|1`; enable permalink structure via .htaccess?
+            'htaccess_enforce_canonical_urls' => '0', // `0|1`; enforce canonical URLs?
 
             /* Related to CDN functionality. */
 
