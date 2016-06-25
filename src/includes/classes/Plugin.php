@@ -357,7 +357,7 @@ class Plugin extends AbsBaseAp
 
             /* Misc. cache behaviors. */
 
-            'allow_browser_cache'               => '0', // `0|1`.
+            'allow_client_side_cache'           => '0', // `0|1`.
             'when_logged_in'                    => '0', // `0|1|postload`.
             'get_requests'                      => '0', // `0|1`.
             'feeds_enable'                      => '0', // `0|1`.

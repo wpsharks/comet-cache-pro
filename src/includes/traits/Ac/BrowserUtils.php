@@ -3,7 +3,7 @@ namespace WebSharks\CometCache\Pro\Traits\Ac;
 
 use WebSharks\CometCache\Pro\Classes;
 
-trait BrowserUtils
+trait ClientSideUtils
 {
     /**
      * Sends no-cache headers (if applicable).
@@ -12,7 +12,7 @@ trait BrowserUtils
      */
     public function maybeStopBrowserCaching()
     {
-        switch ((bool) COMET_CACHE_ALLOW_BROWSER_CACHE) {
+        switch ((bool) COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE) {
 
             case true: // If global config allows, check exclusions.
 
@@ -24,7 +24,7 @@ trait BrowserUtils
                 } elseif (COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS && (empty($_SERVER['REQUEST_URI']) || preg_match(COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS, $_SERVER['REQUEST_URI']))) {
                     return $this->sendNoCacheHeaders(); // Disallow.
                 }
-                return; // Allow browser caching; default behavior in this mode.
+                return; // Allow client-side caching; default behavior in this mode.
 
             case false: // Global config disallows; check inclusions.
 

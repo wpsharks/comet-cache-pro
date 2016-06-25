@@ -226,6 +226,7 @@ class VsUpgrades extends AbsBase
 
     /**
      * Before we changed the Auto-Cache Engine requirements check to include cURL (notice name changed)
+     * and before we renamed the `allow_browser_cache` option to `allow_client_side_cache`.
      *
      * @since 16xxxx
      */
@@ -233,6 +234,13 @@ class VsUpgrades extends AbsBase
     {
         if (version_compare($this->prev_version, '160521', '<=')) {
             $this->plugin->dismissMainNotice('allow_url_fopen_disabled');
+
+            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
+                if (isset($existing_options['allow_browser_cache'])) {
+                    $this->plugin->options['allow_client_side_cache'] = $existing_options['allow_browser_cache'];
+                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                }
+            }
         }
     }
 }
