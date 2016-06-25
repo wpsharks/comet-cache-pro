@@ -1075,7 +1075,7 @@ class MenuPageOptions extends MenuPage
             echo '      </div>'."\n";
         }
 
-        if (IS_PRO || $this->plugin->isProPreview()) {
+        if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {
             echo '      <hr />'."\n";
             echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enforce Canonical URLs', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.__('Permalinks (URLs) leading to Posts/Pages on your site (based on your WordPress Permalink Settings) '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? 'require a <code>.../trailing-slash/</code>' : 'do not require a <code>.../trailing-slash</code>').'. Ordinarily, WordPress enforces this by redirecting a request for '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something</code>' : '<code>.../something/</code>').', to '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something/</code>' : '<code>.../something</code>').', thereby forcing the final location to match your Permalink configuration. However, whenever you install a plugin like Comet Cache, much of WordPress (including this automatic redirection) is out of the picture when the cached copy of a page is being served. So enabling this option will add rules to your `.htaccess` file that make Apache aware of your WordPess Permalink configuration. Apache can do what WordPress normally would, only much more efficiently.', SLUG_TD).'</p>'."\n";
