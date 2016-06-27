@@ -76,13 +76,8 @@ class AdvCacheBackCompat
     {
         $_global_ns = mb_strtoupper(GLOBAL_NS);
 
-        if (!($constants = get_defined_constants(true)) || empty($constants['user'])) {
-            return; // Nothing to do; i.e. no user-defined constants.
-        }
-        if (in_array('COMET_CACHE_ALLOW_BROWSER_CACHE', $constants['user'])) {
-            if (!defined($_global_ns.'_ALLOW_CLIENT_SIDE_CACHE')) {
-                define($_global_ns.'_ALLOW_CLIENT_SIDE_CACHE', $constants['user']['COMET_CACHE_ALLOW_BROWSER_CACHE']);
-            }
+        if (defined('COMET_CACHE_ALLOW_BROWSER_CACHE')) {
+            define($_global_ns.'_ALLOW_CLIENT_SIDE_CACHE', COMET_CACHE_ALLOW_BROWSER_CACHE);
         }
     }
 }
