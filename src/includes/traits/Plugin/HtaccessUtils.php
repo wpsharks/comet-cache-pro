@@ -36,7 +36,7 @@ trait HtaccessUtils
      */
     public function addWpHtaccess()
     {
-        global $is_apache;
+        global $is_apache; // WP global for web server checks below.
 
         if (!$is_apache) {
             return false; // Not running the Apache web server.
@@ -87,13 +87,13 @@ trait HtaccessUtils
                     break;
 
                 case 'canonical-urls-ts-enable.txt':
-                    if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                    if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->permalink_structure && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
                         $template_blocks .= $_template_file_contents."\n\n";
                     } // ↑ Only if enforce canonical URLs enabled at this time.
                     break;
 
                 case 'canonical-urls-no-ts-enable.txt':
-                    if ($this->options['htaccess_enforce_canonical_urls'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                    if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->permalink_structure && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
                         $template_blocks .= $_template_file_contents."\n\n";
                     } // ↑ Only if enforce canonical URLs enabled at this time.
                     break;
