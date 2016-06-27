@@ -268,6 +268,7 @@ class Plugin extends AbsBaseAp
 
             'htaccess_browser_caching_enable',
             'htaccess_enforce_canonical_urls',
+            'htaccess_access_control_allow_origin',
 
             'cdn_enable',
             'cdn_host',
@@ -410,9 +411,10 @@ class Plugin extends AbsBaseAp
 
             /* Related to .htaccess tweaks. */
 
-            'htaccess_browser_caching_enable' => '0', // `0|1`; enable browser caching?
-            'htaccess_gzip_enable'              => '0', // `0|1`; enable GZIP compression?
-            'htaccess_enforce_canonical_urls'   => '0', // `0|1`; enforce canonical URLs?
+            'htaccess_browser_caching_enable'      => '0', // `0|1`; enable browser caching?
+            'htaccess_gzip_enable'                 => '0', // `0|1`; enable GZIP compression?
+            'htaccess_enforce_canonical_urls'      => '0', // `0|1`; enforce canonical URLs?
+            'htaccess_access_control_allow_origin' => '0', // `0|1`; send Access-Control-Allow-Origin header?
 
             /* Related to CDN functionality. */
 

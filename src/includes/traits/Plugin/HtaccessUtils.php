@@ -61,34 +61,33 @@ trait HtaccessUtils
         if (is_dir($templates_dir = dirname(dirname(__DIR__)).'/templates/htaccess')) {
             foreach (scandir($templates_dir) as $_template_file) {
                 switch ($_template_file) {
+                    case 'gzip-enable.txt':
+                        if ($this->options['htaccess_gzip_enable']) {
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
+                        } // Only if GZIP is enabled at this time.
+                        break;
                     /*[pro strip-from="lite"]*/
-                    case 'cdn-filters.txt':
-                        if ($this->options['cdn_enable']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if CDN filters are enabled at this time.
+                    case 'access-control-allow-origin-enable.txt':
+                        if ($this->options['htaccess_access_control_allow_origin']) {
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
+                        } // Only if Access-Control-Allow-Origin is enabled at this time.
                         break;
 
                     case 'browser-caching-enable.txt':
                         if ($this->options['htaccess_browser_caching_enable']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
                         } // Only if browser caching is enabled at this time.
-                        break;
-
-                    case 'gzip-enable.txt':
-                        if ($this->options['htaccess_gzip_enable']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if GZIP is enabled at this time.
                         break;
 
                     case 'canonical-urls-ts-enable.txt':
                         if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
                         } // Only if enforce canonical URLs enabled at this time.
                         break;
 
                     case 'canonical-urls-no-ts-enable.txt':
                         if ($this->options['htaccess_enforce_canonical_urls'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
+                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
                         } // Only if enforce canonical URLs enabled at this time.
                         break;
                     /*[/pro]*/
@@ -102,9 +101,9 @@ trait HtaccessUtils
             return true; // Nothing to do, but no failures either.
         }
 
-        $template_header           = '# BEGIN '.NAME.' '.$this->htaccess_marker.' (the '.$this->htaccess_marker.' marker is required for '.NAME.'; do not remove)'."\n";
+        $template_header           = '# BEGIN '.NAME.' '.$this->htaccess_marker.' (the '.$this->htaccess_marker.' marker is required for '.NAME.'; do not remove)';
         $template_footer           = '# END '.NAME.' '.$this->htaccess_marker;
-        $htaccess['file_contents'] = $template_header.trim($template_blocks)."\n".$template_footer."\n\n".$htaccess['file_contents'];
+        $htaccess['file_contents'] = $template_header."\n\n".trim($template_blocks)."\n\n".$template_footer."\n\n".$htaccess['file_contents'];
 
         if (!$this->writeHtaccessFile($htaccess, true)) {
             return false; // Failure; could not write changes.

@@ -225,8 +225,9 @@ class VsUpgrades extends AbsBase
     }
 
     /**
-     * Before we changed the Auto-Cache Engine requirements check to include cURL (notice name changed)
-     * and before we renamed the `allow_browser_cache` option to `allow_client_side_cache`.
+     * Before we renamed the Auto-Cache Engine requirements check notice to `auto_cache_engine_minimum_requirements`,
+     * and before we renamed the `allow_browser_cache` option to `allow_client_side_cache`,
+     * and before we added the `htaccess_access_control_allow_origin` option.
      *
      * @since 16xxxx
      */
@@ -238,7 +239,13 @@ class VsUpgrades extends AbsBase
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (isset($existing_options['allow_browser_cache'])) {
                     $this->plugin->options['allow_client_side_cache'] = $existing_options['allow_browser_cache'];
+                }
+                if (isset($existing_options['cdn_enable'])) {
+                    $this->plugin->options['htaccess_access_control_allow_origin'] = $existing_options['cdn_enable'];
+                }
+                if ($this->plugin->options !== $existing_options) {
                     $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
             }
         }

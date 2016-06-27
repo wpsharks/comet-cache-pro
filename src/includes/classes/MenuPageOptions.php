@@ -18,6 +18,7 @@ class MenuPageOptions extends MenuPage
         parent::__construct(); // Parent constructor.
 
         global $is_nginx; // WP global for web server checks below.
+        global $is_apache; // WP global for web server checks below.
 
         echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data"'.
              ' action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce()]), self_admin_url('/admin.php'))).'">'."\n";
@@ -952,7 +953,9 @@ class MenuPageOptions extends MenuPage
             echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['cdn_enable'], '0', false)).'>'.__('No, I do NOT want CDN filters applied at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['cdn_enable'], '1', false)).'>'.__('Yes, I want CDN filters applied w/ my configuration below.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
-
+            if ($is_apache && $this->plugin->options['cdn_enable'] && !$this->plugin->options['htaccess_access_control_allow_origin']) {
+                echo '        <p class="warning" style="display:block;">'.__('<strong>Warning:</strong> Static CDN Filters are enabled above but the <strong>Send Access-Control-Allow-Origin Header</strong> option has been disabled in <strong>Apache Optimizations</strong>. We recommend sending the <code>Access-Control-Allow-Origin</code> header to avoid <a href="https://cometcache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/" target="_blank">CORS errors</a> when a CDN is configured.', SLUG_TD).'</p>'."\n";
+            }
             echo '      <hr />'."\n";
 
             echo '      <div class="plugin-menu-page-panel-if-enabled -static-cdn-filter-options">'."\n";
@@ -1031,6 +1034,8 @@ class MenuPageOptions extends MenuPage
         }
         /* ----------------------------------------------------------------------------------------- */
 
+        if ($is_apache || $this->plugin->isProPreview()) {
+
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
@@ -1052,50 +1057,69 @@ class MenuPageOptions extends MenuPage
             echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_gzip_enable'], '0', false)).'>'.__('No, do NOT enable GZIP Compression (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_gzip_enable'], '1', false)).'>'.__('Yes, enable GZIP Compression (recommended)', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
-            echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--gzip-configuration').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
+            echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--gzip-configuration').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
             echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--gzip-configuration').'" style="display:none; margin-top:1em;">'."\n";
             echo '        <p>'.__('<strong>To enable GZIP compression:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
             echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/gzip-enable.txt')).'</code></pre>'."\n";
-            echo '        <p class="info" style="display:block;"><strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <code>php.ini</code> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a></p>'."\n";
+            echo '        <p class="info" style="display:block;">'.__('<strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <code>php.ini</code> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a>', SLUG_TD).'</p>'."\n";
             echo '      </div>'."\n";
 
-        if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '      <hr />'."\n";
-            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Leverage Browser Caching', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.__('<a href="https://cometcache.com/r/google-developers-http-caching/" target="_blank">Browser Caching</a> is highly recommended. When loading a single page, downloading all of the resources for that page may require multiple roundtrips between the browser and server, which delays processing and may block rendering of page content. This also incurs data costs for the visitor. With browser caching, your server tells the visitor\'s browser that it is allowed to cache static resources for a certain amount of time (Google recommends 1 week and that\'s what Comet Cache uses).', SLUG_TD).'</p>'."\n";
-            echo '      <p>'.__('In WordPress, \'Page Caching\' is all about server-side performance (reducing the amount of time it takes the server to generate the page content). With Comet Cache installed, you\'re drastically reducing page generation time. However, you can make a vistior\'s experience ​<em>even faster</em>​ when you leverage browser caching too. When this option is enabled, the visitor\'s browser will cache static resources from each page and reuse those cached resources on subsequent page loads. In this way, future visits to the same page will not require additional connections to your site to download static resources that the visitor\'s browser has already cached.', SLUG_TD).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_browser_caching_enable]" data-target=".-htaccess-browser-caching-enable-options">'."\n";
-            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_browser_caching_enable'], '0', false)).'>'.__('No, do NOT enable Browser Caching (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
-            echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_browser_caching_enable'], '1', false)).'>'.__('Yes, enable Browser Caching for static resources (recommended)', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
-            echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'" style="display:none; margin-top:1em;">'."\n";
-            echo '        <p>'.__('<strong>To enable Browser Caching:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
-            echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/browser-caching-enable.txt')).'</code></pre>'."\n";
-            echo '      </div>'."\n";
-        }
-
-        if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {
-            echo '      <hr />'."\n";
-            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enforce Canonical URLs', SLUG_TD).'</h3>'."\n";
-            echo '      <p>'.__('Permalinks (URLs) leading to Posts/Pages on your site (based on your WordPress Permalink Settings) '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? 'require a <code>.../trailing-slash/</code>' : 'do not require a <code>.../trailing-slash</code>').'. Ordinarily, WordPress enforces this by redirecting a request for '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something</code>' : '<code>.../something/</code>').', to '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something/</code>' : '<code>.../something</code>').', thereby forcing the final location to match your Permalink configuration. However, whenever you install a plugin like Comet Cache, much of WordPress (including this automatic redirection) is out of the picture when the cached copy of a page is being served. So enabling this option will add rules to your `.htaccess` file that make Apache aware of your WordPess Permalink configuration. Apache can do what WordPress normally would, only much more efficiently.', SLUG_TD).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
-            echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '0', false)).'>'.__('No, do NOT enforce canonical URLs (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
-            echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '1', false)).'>'.__('Yes, enforce canonical URLs (recommended)', SLUG_TD).'</option>'."\n";
-            echo '         </select></p>'."\n";
-            echo '      <p>Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]</p>'."\n";
-            echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'" style="display:none; margin-top:1em;">'."\n";
-            echo '        <p>'.__('<strong>To enforce Canonical URLs:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
-            if ($GLOBALS['wp_rewrite']->use_trailing_slashes) {
-                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/canonical-urls-ts-enable.txt')).'</code></pre>'."\n";
-            } else {
-                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/canonical-urls-no-ts-enable.txt')).'</code></pre>'."\n";
+            if (IS_PRO || $this->plugin->isProPreview()) {
+                echo '      <hr />'."\n";
+                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Leverage Browser Caching', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.__('<a href="https://cometcache.com/r/google-developers-http-caching/" target="_blank">Browser Caching</a> is highly recommended. When loading a single page, downloading all of the resources for that page may require multiple roundtrips between the browser and server, which delays processing and may block rendering of page content. This also incurs data costs for the visitor. With browser caching, your server tells the visitor\'s browser that it is allowed to cache static resources for a certain amount of time (Google recommends 1 week and that\'s what Comet Cache uses).', SLUG_TD).'</p>'."\n";
+                echo '      <p>'.__('In WordPress, \'Page Caching\' is all about server-side performance (reducing the amount of time it takes the server to generate the page content). With Comet Cache installed, you\'re drastically reducing page generation time. However, you can make a vistior\'s experience ​<em>even faster</em>​ when you leverage browser caching too. When this option is enabled, the visitor\'s browser will cache static resources from each page and reuse those cached resources on subsequent page loads. In this way, future visits to the same page will not require additional connections to your site to download static resources that the visitor\'s browser has already cached.', SLUG_TD).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_browser_caching_enable]" data-target=".-htaccess-browser-caching-enable-options">'."\n";
+                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_browser_caching_enable'], '0', false)).'>'.__('No, do NOT enable Browser Caching (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_browser_caching_enable'], '1', false)).'>'.__('Yes, enable Browser Caching for static resources (recommended)', SLUG_TD).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
+                echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'" style="display:none; margin-top:1em;">'."\n";
+                echo '        <p>'.__('<strong>To enable Browser Caching:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/browser-caching-enable.txt')).'</code></pre>'."\n";
+                echo '      </div>'."\n";
             }
-            echo '      </div>'."\n";
-            echo '   </div>'."\n";
-        }
 
+            if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {
+                echo '      <hr />'."\n";
+                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enforce Canonical URLs', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.__('Permalinks (URLs) leading to Posts/Pages on your site (based on your WordPress Permalink Settings) '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? 'require a <code>.../trailing-slash/</code>' : 'do not require a <code>.../trailing-slash</code>').'. Ordinarily, WordPress enforces this by redirecting a request for '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something</code>' : '<code>.../something/</code>').', to '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something/</code>' : '<code>.../something</code>').', thereby forcing the final location to match your Permalink configuration. However, whenever you install a plugin like Comet Cache, much of WordPress (including this automatic redirection) is out of the picture when the cached copy of a page is being served. So enabling this option will add rules to your `.htaccess` file that make Apache aware of your WordPess Permalink configuration. Apache can do what WordPress normally would, only much more efficiently.', SLUG_TD).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
+                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '0', false)).'>'.__('No, do NOT enforce canonical URLs (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '1', false)).'>'.__('Yes, enforce canonical URLs (recommended)', SLUG_TD).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
+                echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-cononical-urls').'" style="display:none; margin-top:1em;">'."\n";
+                echo '        <p>'.__('<strong>To enforce Canonical URLs:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+                if ($GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                    echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/canonical-urls-ts-enable.txt')).'</code></pre>'."\n";
+                } else {
+                    echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/canonical-urls-no-ts-enable.txt')).'</code></pre>'."\n";
+                }
+                echo '      </div>'."\n";
+            }
+
+            if ((IS_PRO && $this->plugin->options['cdn_enable']) || $this->plugin->isProPreview()) {
+                echo '      <hr />'."\n";
+                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Send Access-Control-Allow-Origin Header', SLUG_TD).'</h3>'."\n";
+                if ($this->plugin->options['cdn_enable'] && !$this->plugin->options['htaccess_access_control_allow_origin']) {
+                    echo '        <p class="warning" style="display:block;">'.__('<strong>Warning:</strong> Static CDN Filters are enabled but the <code>Access-Control-Allow-Origin</code> header has been disabled below. We recommend enabling this option to avoid <a href="https://cometcache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/" target="_blank">CORS errors</a> when a CDN is configured.', SLUG_TD).'</p>'."\n";
+                }
+                echo '      <p>'.__('When you are using Static CDN Filters to load resources for your site from another domain, it\'s important that your server sends an <code>Access-Control-Allow-Origin</code> header to prevent Cross Origin Resource Sharing (CORS) errors. This option is enabled automatically when you enable Static CDN Filters. For more information, see <a href="https://cometcache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/" target="_blank">this article</a>.', SLUG_TD).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_access_control_allow_origin]" data-target=".-htaccess-access-control-allow-origin-options">'."\n";
+                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_access_control_allow_origin'], '0', false)).'>'.__('No, do NOT send the Access-Control-Allow-Origin header (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_access_control_allow_origin'], '1', false)).'>'.__('Yes, send the Access-Control-Allow-Origin header (recommended for Static CDN Filters)', SLUG_TD).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--access-control-allow-origin').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
+                echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--access-control-allow-origin').'" style="display:none; margin-top:1em;">'."\n";
+                echo '        <p>'.__('<strong>To send the `Access-Control-Allow-Origin` header:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+                echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/access-control-allow-origin-enable.txt')).'</code></pre>'."\n";
+                echo '      </div>'."\n";
+            }
+            echo '   </div>'."\n";
             echo '</div>'."\n";
+
+        }
 
                /* ----------------------------------------------------------------------------------------- */
 

@@ -553,6 +553,10 @@ class Actions extends AbsBase
             unset($args['last_pro_update_check']); // CANNOT be imported!
             unset($args['last_pro_stats_log']); // CANNOT be imported!
         }
+        // Auto-enable `htaccess_access_control_allow_origin` option only when Static CDN Filters are being enabled
+        if (IS_PRO && $this->plugin->options['enable'] && !$this->plugin->options['cdn_enable'] && $args['cdn_enable']) {
+            $args['htaccess_access_control_allow_origin'] = 1;
+        }
         $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
         $this->plugin->updateOptions($args); // Save/update options.
 
