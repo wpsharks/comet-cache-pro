@@ -266,7 +266,7 @@ class Plugin extends AbsBaseAp
             'auto_cache_other_urls',
             'auto_cache_user_agent',
 
-            'htaccess_client_side_cache_enable',
+            'htaccess_browser_caching_enable',
             'htaccess_enforce_canonical_urls',
 
             'cdn_enable',
