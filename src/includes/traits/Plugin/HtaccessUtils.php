@@ -58,43 +58,49 @@ trait HtaccessUtils
         }
 
         $template_blocks = ''; // Initialize.
-        if (is_dir($templates_dir = dirname(dirname(__DIR__)).'/templates/htaccess')) {
-            foreach (scandir($templates_dir) as $_template_file) {
-                switch ($_template_file) {
-                    case 'gzip-enable.txt':
-                        if ($this->options['htaccess_gzip_enable']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
-                        } // Only if GZIP is enabled at this time.
-                        break;
-                    /*[pro strip-from="lite"]*/
-                    case 'access-control-allow-origin-enable.txt':
-                        if ($this->options['htaccess_access_control_allow_origin']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
-                        } // Only if Access-Control-Allow-Origin is enabled at this time.
-                        break;
 
-                    case 'browser-caching-enable.txt':
-                        if ($this->options['htaccess_browser_caching_enable']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
-                        } // Only if browser caching is enabled at this time.
-                        break;
+        foreach (array('gzip-enable.txt', 'access-control-allow-origin-enable.txt', 'browser-caching-enable.txt', 'canonical-urls-ts-enable.txt', 'canonical-urls-no-ts-enable.txt') as $_template) {
+            if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
+                continue; // Template file missing; bypass.
+            } // ↑ Some files might be missing in the lite version.
+            elseif (!($_template_file_contents = trim(file_get_contents($_template_file)))) {
+                continue; // Template file empty; bypass.
+            } // ↑ Some files might be empty in the lite version.
 
-                    case 'canonical-urls-ts-enable.txt':
-                        if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
-                        } // Only if enforce canonical URLs enabled at this time.
-                        break;
+            switch ($_template) {
+                case 'gzip-enable.txt':
+                    if ($this->options['htaccess_gzip_enable']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if GZIP is enabled at this time.
+                    break;
+                /*[pro strip-from="lite"]*/
+                case 'access-control-allow-origin-enable.txt':
+                    if ($this->options['htaccess_access_control_allow_origin']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if Access-Control-Allow-Origin is enabled at this time.
+                    break;
 
-                    case 'canonical-urls-no-ts-enable.txt':
-                        if ($this->options['htaccess_enforce_canonical_urls'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n\n";
-                        } // Only if enforce canonical URLs enabled at this time.
-                        break;
-                    /*[/pro]*/
-                }
+                case 'browser-caching-enable.txt':
+                    if ($this->options['htaccess_browser_caching_enable']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if browser caching is enabled at this time.
+                    break;
+
+                case 'canonical-urls-ts-enable.txt':
+                    if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if enforce canonical URLs enabled at this time.
+                    break;
+
+                case 'canonical-urls-no-ts-enable.txt':
+                    if ($this->options['htaccess_enforce_canonical_urls'] && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if enforce canonical URLs enabled at this time.
+                    break;
+                /*[/pro]*/
             }
-            unset($_template_file); // Housekeeping.
         }
+        unset($_template_file); // Housekeeping
 
         if (empty($template_blocks)) { // Do we need to add anything to htaccess?
             $this->closeHtaccessFile($htaccess); // No need to write to htaccess file in this case.
