@@ -1,5 +1,4 @@
-# Client-side caching.
-
+# Enable browser caching.
 FileETag mtime size
 
 <IfModule expires_module>
