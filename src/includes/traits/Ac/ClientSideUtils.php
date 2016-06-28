@@ -12,6 +12,10 @@ trait ClientSideUtils
      */
     public function maybeStopBrowserCaching()
     {
+        if (!defined('COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE')) {
+            return $this->sendNoCacheHeaders(); // Upgrading from <= v160521, before we renamed this constant. Return default.
+        }
+
         switch ((bool) COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE) {
 
             case true: // If global config allows, check exclusions.

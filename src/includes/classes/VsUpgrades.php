@@ -42,6 +42,7 @@ class VsUpgrades extends AbsBase
         $this->fromLte151114();
         $this->fromZenCache();
         $this->fromLte160227();
+        $this->fromLte160521();
     }
 
     /**
@@ -227,14 +228,18 @@ class VsUpgrades extends AbsBase
     /**
      * Before we renamed the Auto-Cache Engine requirements check notice to `auto_cache_engine_minimum_requirements`,
      * and before we renamed the `allow_browser_cache` option to `allow_client_side_cache`,
-     * and before we added the `htaccess_access_control_allow_origin` option.
+     * and before we added the `htaccess_access_control_allow_origin` option,
+     * and before we renamed COMET_CACHE_ALLOW_BROWSER_CACHE to COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE.
      *
      * @since 16xxxx
      */
     protected function fromLte160521()
     {
         if (version_compare($this->prev_version, '160521', '<=')) {
+            global $is_apache; // WP global for web server checks below.
+
             $this->plugin->dismissMainNotice('allow_url_fopen_disabled');
+            $this->plugin->removeAdvancedCache();
 
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (isset($existing_options['allow_browser_cache'])) {
