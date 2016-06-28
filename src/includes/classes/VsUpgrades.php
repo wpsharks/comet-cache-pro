@@ -253,6 +253,10 @@ class VsUpgrades extends AbsBase
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
             }
+
+            if ($is_apache) {
+                $this->plugin->enqueueMainNotice(sprintf(__('<strong>New %1$s Feature!</strong> This release of %1$s includes a whole new panel for Apache Performance Tuning. Visit the <a href="%2$s">settings</a> and see the new options in <strong>Comet Cache → Plugin Options → Apache Optimizations</strong>.', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))));
+            }
         }
     }
 }
