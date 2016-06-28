@@ -1064,6 +1064,11 @@ class MenuPageOptions extends MenuPage
             echo '        <p class="info" style="display:block;">'.__('<strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <code>php.ini</code> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a>', SLUG_TD).'</p>'."\n";
             echo '      </div>'."\n";
 
+            if ((!IS_PRO && $is_apache) && !$this->plugin->isProPreview()) {
+                echo '      <hr />'."\n";
+                echo '      <p class="warning" style="display:block;">'.__('<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php'))).'">Enable the Pro Preview</a> to see <strong>Leverage Browser Caching</strong>, <strong>Enforce Canonical URLs</strong>, and more!', SLUG_TD).'</p>'."\n";
+            }
+
             if (IS_PRO || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
                 echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Leverage Browser Caching?', SLUG_TD).'</h3>'."\n";
