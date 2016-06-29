@@ -66,4 +66,18 @@ class AdvCacheBackCompat
 
         unset($_constant, $_value, $_global_ns); // Housekeeping.
     }
+
+    /**
+     * Back compat. with `COMET_CACHE_ALLOW_BROWSER_CACHE` constants.
+     *
+     * @since 16xxxx Renaming COMET_CACHE_ALLOW_BROWSER_CACHE to COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE
+     */
+    public static function browserCacheConstant()
+    {
+        $_global_ns = mb_strtoupper(GLOBAL_NS);
+
+        if (defined('COMET_CACHE_ALLOW_BROWSER_CACHE')) {
+            define($_global_ns.'_ALLOW_CLIENT_SIDE_CACHE', COMET_CACHE_ALLOW_BROWSER_CACHE);
+        }
+    }
 }

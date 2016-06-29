@@ -266,6 +266,10 @@ class Plugin extends AbsBaseAp
             'auto_cache_other_urls',
             'auto_cache_user_agent',
 
+            'htaccess_browser_caching_enable',
+            'htaccess_enforce_canonical_urls',
+            'htaccess_access_control_allow_origin',
+
             'cdn_enable',
             'cdn_host',
             'cdn_hosts',
@@ -354,7 +358,7 @@ class Plugin extends AbsBaseAp
 
             /* Misc. cache behaviors. */
 
-            'allow_browser_cache'               => '0', // `0|1`.
+            'allow_client_side_cache'           => '0', // `0|1`.
             'when_logged_in'                    => '0', // `0|1|postload`.
             'get_requests'                      => '0', // `0|1`.
             'feeds_enable'                      => '0', // `0|1`.
@@ -404,6 +408,13 @@ class Plugin extends AbsBaseAp
             'auto_cache_ms_children_too' => '0', // `0|1`. Try child blogs too?
             'auto_cache_other_urls'      => '', // A line-delimited list of any other URLs.
             'auto_cache_user_agent'      => 'WordPress',
+
+            /* Related to .htaccess tweaks. */
+
+            'htaccess_browser_caching_enable'      => '0', // `0|1`; enable browser caching?
+            'htaccess_gzip_enable'                 => '0', // `0|1`; enable GZIP compression?
+            'htaccess_enforce_canonical_urls'      => '0', // `0|1`; enforce canonical URLs?
+            'htaccess_access_control_allow_origin' => '0', // `0|1`; send Access-Control-Allow-Origin header?
 
             /* Related to CDN functionality. */
 

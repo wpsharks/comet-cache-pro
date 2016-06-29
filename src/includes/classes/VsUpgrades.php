@@ -42,6 +42,7 @@ class VsUpgrades extends AbsBase
         $this->fromLte151114();
         $this->fromZenCache();
         $this->fromLte160227();
+        $this->fromLte160521();
     }
 
     /**
@@ -225,14 +226,37 @@ class VsUpgrades extends AbsBase
     }
 
     /**
-     * Before we changed the Auto-Cache Engine requirements check to include cURL (notice name changed)
+     * Before we renamed the Auto-Cache Engine requirements check notice to `auto_cache_engine_minimum_requirements`,
+     * and before we renamed the `allow_browser_cache` option to `allow_client_side_cache`,
+     * and before we added the `htaccess_access_control_allow_origin` option,
+     * and before we renamed COMET_CACHE_ALLOW_BROWSER_CACHE to COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE.
      *
      * @since 16xxxx
      */
     protected function fromLte160521()
     {
         if (version_compare($this->prev_version, '160521', '<=')) {
+            global $is_apache; // WP global for web server checks below.
+
             $this->plugin->dismissMainNotice('allow_url_fopen_disabled');
+            $this->plugin->removeAdvancedCache();
+
+            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
+                if (isset($existing_options['allow_browser_cache'])) {
+                    $this->plugin->options['allow_client_side_cache'] = $existing_options['allow_browser_cache'];
+                }
+                if (isset($existing_options['cdn_enable'])) {
+                    $this->plugin->options['htaccess_access_control_allow_origin'] = $existing_options['cdn_enable'];
+                }
+                if ($this->plugin->options !== $existing_options) {
+                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->activate(); // Reactivate plugin w/ new options.
+                }
+            }
+
+            if ($is_apache) {
+                $this->plugin->enqueueMainNotice(sprintf(__('<strong>New %1$s Feature!</strong> This release of %1$s includes a whole new panel for Apache Performance Tuning. Visit the <a href="%2$s">settings</a> and see the new options in <strong>Comet Cache → Plugin Options → Apache Optimizations</strong>.', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))));
+            }
         }
     }
 }

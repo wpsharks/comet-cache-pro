@@ -23,7 +23,7 @@ trait HtaccessUtils
      *
      * @note We keep track of this to avoid the issue described here: http://git.io/vEFIH
      */
-    public $options_with_htaccess_rules = ['cdn_enable'];
+    public $options_with_htaccess_rules = ['cdn_enable', 'htaccess_browser_caching_enable', 'htaccess_gzip_enable', 'htaccess_enforce_canonical_urls',];
 
     /**
      * Add template blocks to `/.htaccess` file.
@@ -36,7 +36,7 @@ trait HtaccessUtils
      */
     public function addWpHtaccess()
     {
-        global $is_apache;
+        global $is_apache; // WP global for web server checks below.
 
         if (!$is_apache) {
             return false; // Not running the Apache web server.
@@ -58,29 +58,58 @@ trait HtaccessUtils
         }
 
         $template_blocks = ''; // Initialize.
-        if (is_dir($templates_dir = dirname(dirname(__DIR__)).'/templates/htaccess')) {
-            foreach (scandir($templates_dir) as $_template_file) {
-                switch ($_template_file) {
-                    /*[pro strip-from="lite"]*/
-                    case 'cdn-filters.txt':
-                        if ($this->options['cdn_enable']) {
-                            $template_blocks .= trim(file_get_contents($templates_dir.'/'.$_template_file))."\n";
-                        } // Only if CDN filters are enabled at this time.
-                        break;
-                    /*[/pro]*/
-                }
+
+        foreach (array('gzip-enable.txt', 'access-control-allow-origin-enable.txt', 'browser-caching-enable.txt', 'canonical-urls-ts-enable.txt', 'canonical-urls-no-ts-enable.txt') as $_template) {
+            if (!is_file($_template_file = dirname(dirname(dirname(__FILE__))).'/templates/htaccess/'.$_template)) {
+                continue; // Template file missing; bypass.
+            } // ↑ Some files might be missing in the lite version.
+            elseif (!($_template_file_contents = trim(file_get_contents($_template_file)))) {
+                continue; // Template file empty; bypass.
+            } // ↑ Some files might be empty in the lite version.
+
+            switch ($_template) {
+                case 'gzip-enable.txt':
+                    if ($this->options['htaccess_gzip_enable']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if GZIP is enabled at this time.
+                    break;
+                /*[pro strip-from="lite"]*/
+                case 'access-control-allow-origin-enable.txt':
+                    if ($this->options['htaccess_access_control_allow_origin']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if Access-Control-Allow-Origin is enabled at this time.
+                    break;
+
+                case 'browser-caching-enable.txt':
+                    if ($this->options['htaccess_browser_caching_enable']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if browser caching is enabled at this time.
+                    break;
+
+                case 'canonical-urls-ts-enable.txt':
+                    if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->permalink_structure && $GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if enforce canonical URLs enabled at this time.
+                    break;
+
+                case 'canonical-urls-no-ts-enable.txt':
+                    if ($this->options['htaccess_enforce_canonical_urls'] && $GLOBALS['wp_rewrite']->permalink_structure && !$GLOBALS['wp_rewrite']->use_trailing_slashes) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if enforce canonical URLs enabled at this time.
+                    break;
+                /*[/pro]*/
             }
-            unset($_template_file); // Housekeeping.
         }
+        unset($_template_file); // Housekeeping
 
         if (empty($template_blocks)) { // Do we need to add anything to htaccess?
             $this->closeHtaccessFile($htaccess); // No need to write to htaccess file in this case.
             return true; // Nothing to do, but no failures either.
         }
 
-        $template_header           = '# BEGIN '.NAME.' '.$this->htaccess_marker.' (the '.$this->htaccess_marker.' marker is required for '.NAME.'; do not remove)'."\n";
+        $template_header           = '# BEGIN '.NAME.' '.$this->htaccess_marker.' (the '.$this->htaccess_marker.' marker is required for '.NAME.'; do not remove)';
         $template_footer           = '# END '.NAME.' '.$this->htaccess_marker;
-        $htaccess['file_contents'] = $template_header.trim($template_blocks)."\n".$template_footer."\n\n".$htaccess['file_contents'];
+        $htaccess['file_contents'] = $template_header."\n\n".trim($template_blocks)."\n\n".$template_footer."\n\n".$htaccess['file_contents'];
 
         if (!$this->writeHtaccessFile($htaccess, true)) {
             return false; // Failure; could not write changes.
