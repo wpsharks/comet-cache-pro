@@ -1117,7 +1117,7 @@ class MenuPageOptions extends MenuPage
                 echo '         </select></p>'."\n";
                 echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--access-control-allow-origin').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
                 echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--access-control-allow-origin').'" style="display:none; margin-top:1em;">'."\n";
-                echo '        <p>'.__('<strong>To send the `Access-Control-Allow-Origin` header:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+                echo '        <p>'.__('<strong>To send the Access-Control-Allow-Origin header:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
                 echo '        <pre class="code"><code>'.esc_html(file_get_contents(dirname(__DIR__).'/templates/htaccess/access-control-allow-origin-enable.txt')).'</code></pre>'."\n";
                 echo '      </div>'."\n";
             }
