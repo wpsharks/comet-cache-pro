@@ -239,7 +239,8 @@ trait HtaccessUtils
             return $template_blocks; // No replacement codes to fill
         }
 
-        $replacement_codes = ['%%REWRITE_BASE%%' => trailingslashit(parse_url(home_url(), PHP_URL_PATH))];
+        $home_url         = is_multisite() ? network_home_url() : home_url();
+        $replacement_codes = ['%%REWRITE_BASE%%' => trailingslashit(parse_url($home_url, PHP_URL_PATH))];
 
         foreach ($replacement_codes as $_code => $_replacement) {
             $template_blocks = preg_replace('/'.preg_quote($_code, '/').'/ui', $_replacement, $template_blocks);
