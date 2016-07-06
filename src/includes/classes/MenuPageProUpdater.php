@@ -54,12 +54,14 @@ class MenuPageProUpdater extends MenuPage
         echo '      <a href="'.esc_attr('http://cometcache.com/blog/').'" target="_blank"><i class="si si-rss-square"></i> '.__('Blog', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
+        echo '  <div class="plugin-menu-page-mailing-list-links">'."\n";
         if (!IS_PRO) { // We show these above in the Pro version
-            echo '  <div class="plugin-menu-page-mailing-list-links">'."\n";
             echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
             echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
-            echo '   </div>'."\n";
         }
+        echo '      <a href="'.esc_attr('https://twitter.com/cometcache/').'" target="_blank"><i class="si si-twitter"></i> '.__('Twitter', SLUG_TD).'</a>'."\n";
+        echo '      <a href="'.esc_attr('https://www.facebook.com/cometcache/').'" target="_blank"><i class="si si-facebook"></i> '.__('Facebook', SLUG_TD).'</a>'."\n";
+        echo '   </div>'."\n";
 
         if (IS_PRO) {
             echo '<div class="plugin-menu-page-version">'."\n";
