@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Comet Cache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Comet Cache Pro 160629-RC\n"
+"Project-Id-Version: Comet Cache Pro 160706\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/comet-cache-pro\n"
-"POT-Creation-Date: 2016-06-29 11:24:45+00:00\n"
+"POT-Creation-Date: 2016-07-06 23:13:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -266,7 +266,7 @@ msgstr ""
 #: src/includes/classes/MenuPageOptions.php:76
 #: src/includes/classes/MenuPageProUpdater.php:42
 #: src/includes/classes/MenuPageProUpdater.php:60
-#: src/includes/classes/MenuPageProUpdater.php:148
+#: src/includes/classes/MenuPageProUpdater.php:150
 #: src/includes/classes/MenuPageStats.php:38
 #: src/includes/classes/MenuPageStats.php:56
 msgid "Beta Testers"
@@ -306,30 +306,34 @@ msgid "Blog"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:78
+#: src/includes/classes/MenuPageProUpdater.php:62
+#: src/includes/classes/MenuPageStats.php:58
 msgid "Twitter"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:79
+#: src/includes/classes/MenuPageProUpdater.php:63
+#: src/includes/classes/MenuPageStats.php:59
 msgid "Facebook"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:85
-#: src/includes/classes/MenuPageProUpdater.php:66
-#: src/includes/classes/MenuPageStats.php:62
+#: src/includes/classes/MenuPageProUpdater.php:68
+#: src/includes/classes/MenuPageStats.php:64
 msgid "%1$s&trade; Pro v%2$s"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:88
 #: src/includes/classes/MenuPageOptions.php:98
-#: src/includes/classes/MenuPageProUpdater.php:69
-#: src/includes/classes/MenuPageStats.php:65
+#: src/includes/classes/MenuPageProUpdater.php:71
+#: src/includes/classes/MenuPageStats.php:67
 msgid "update available"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:90
 #: src/includes/classes/MenuPageOptions.php:100
-#: src/includes/classes/MenuPageProUpdater.php:71
-#: src/includes/classes/MenuPageStats.php:67
+#: src/includes/classes/MenuPageProUpdater.php:73
+#: src/includes/classes/MenuPageStats.php:69
 msgid "changelog"
 msgstr ""
 
@@ -344,7 +348,7 @@ msgid "Plugin Options"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:118
-#: src/includes/classes/MenuPageProUpdater.php:89
+#: src/includes/classes/MenuPageProUpdater.php:91
 msgid "Options updated successfully."
 msgstr ""
 
@@ -1791,7 +1795,7 @@ msgid "Download your existing options and import them all into another %1$s inst
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:1203
-#: src/includes/classes/MenuPageProUpdater.php:168
+#: src/includes/classes/MenuPageProUpdater.php:170
 msgid "Save All Changes"
 msgstr ""
 
@@ -1804,73 +1808,73 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:75
+#: src/includes/classes/MenuPageProUpdater.php:77
 #: src/includes/traits/Plugin/MenuPageUtils.php:93
 #: src/includes/traits/Plugin/MenuPageUtils.php:121
 msgid "Pro Plugin Updater"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:106
+#: src/includes/classes/MenuPageProUpdater.php:108
 msgid "Update Credentials"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:111
+#: src/includes/classes/MenuPageProUpdater.php:113
 msgid "CometCache.com Authentication"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:112
+#: src/includes/classes/MenuPageProUpdater.php:114
 msgid "From this page you can update to the latest version of %1$s Pro for WordPress. %1$s Pro is a premium product available for purchase @ <a href=\"http://cometcache.com/prices/\" target=\"_blank\">cometcache.com</a>. In order to connect with our update servers, you must supply your License Key. Your License Key is located under \"My Account\" when you log in @ <a href=\"http://cometcache.com/\" target=\"_blank\">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class=\"si si-smile-o\"></i> If you prefer to upgrade manually, see <a href=\"https://cometcache.com/r/kb-article-how-to-manually-upgrade-comet-cache-pro/\">this article</a>."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:114
+#: src/includes/classes/MenuPageProUpdater.php:116
 msgid "Username"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:116
+#: src/includes/classes/MenuPageProUpdater.php:118
 msgid "License Key"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:127
+#: src/includes/classes/MenuPageProUpdater.php:129
 msgid "Update Notifier"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:132
+#: src/includes/classes/MenuPageProUpdater.php:134
 msgid "%1$s™ Update Notifier"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:133
+#: src/includes/classes/MenuPageProUpdater.php:135
 msgid "When a new version of %1$s Pro becomes available, %1$s Pro can display a notification in your WordPress Dashboard prompting you to return to this page and perform an upgrade. Would you like this functionality enabled or disabled?"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:136
+#: src/includes/classes/MenuPageProUpdater.php:138
 msgid "Yes, display a notification in my WordPress Dashboard when a new version is available."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:137
+#: src/includes/classes/MenuPageProUpdater.php:139
 msgid "No, do not display any %1$s update notifications in my WordPress Dashboard."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:153
+#: src/includes/classes/MenuPageProUpdater.php:155
 msgid "%1$s™ Beta Testers"
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:154
+#: src/includes/classes/MenuPageProUpdater.php:156
 msgid "If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn't mean you'll want to do the same. :-) Please report any issues with Release Candidates on <a href=\"https://github.com/websharks/comet-cache/issues/\" target=\"_blank\">GitHub</a>."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:157
+#: src/includes/classes/MenuPageProUpdater.php:159
 msgid "No, do not check for Release Candidates; I only want public releases."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:158
+#: src/includes/classes/MenuPageProUpdater.php:160
 msgid "Yes, check for Release Candidates; I want to help with testing."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:160
+#: src/includes/classes/MenuPageProUpdater.php:162
 msgid "<strong>How do you know if you're running a Release Candidate?</strong> If you're running a Release Candidate, the version number will end with <code>-RC</code>, e.g., Comet Cache™ Pro v151201-RC. To receive updates about Release Candidates, including a Release Candidate changelog for each release, please sign up for the <a href=\"http://cometcache.com/r/comet-cache-beta-testers-list/\" target=\"_blank\">beta testers mailing list</a>."
 msgstr ""
 
-#: src/includes/classes/MenuPageProUpdater.php:169
+#: src/includes/classes/MenuPageProUpdater.php:171
 msgid "Save and Update Comet Cache Now"
 msgstr ""
 
@@ -1878,91 +1882,91 @@ msgstr ""
 msgid "Refresh Stats/Charts"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:71
+#: src/includes/classes/MenuPageStats.php:73
 msgid "Statistics"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:94
+#: src/includes/classes/MenuPageStats.php:96
 #: src/includes/traits/Plugin/AdminBarUtils.php:263
 msgid "Current Cache Totals"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:101
+#: src/includes/classes/MenuPageStats.php:103
 #: src/includes/traits/Plugin/AdminBarUtils.php:270
 msgid "Current Disk Health"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:102
+#: src/includes/classes/MenuPageStats.php:104
 #: src/includes/traits/Plugin/AdminBarUtils.php:271
 msgid "total capacity"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:103
+#: src/includes/classes/MenuPageStats.php:105
 #: src/includes/traits/Plugin/AdminBarUtils.php:272
 msgid "available"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:107
+#: src/includes/classes/MenuPageStats.php:109
 msgid "Current System Health"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:108
+#: src/includes/classes/MenuPageStats.php:110
 msgid "Memory Usage:"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:109
+#: src/includes/classes/MenuPageStats.php:111
 msgid "Load Average:"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:115
+#: src/includes/classes/MenuPageStats.php:117
 msgid "Cache File Counts"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:121
+#: src/includes/classes/MenuPageStats.php:123
 msgid "Cache File Sizes"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:130
+#: src/includes/classes/MenuPageStats.php:132
 msgid "OPcache Memory"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:131
+#: src/includes/classes/MenuPageStats.php:133
 msgid "free"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:132
+#: src/includes/classes/MenuPageStats.php:134
 msgid "used"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:133
+#: src/includes/classes/MenuPageStats.php:135
 msgid "wasted"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:137
+#: src/includes/classes/MenuPageStats.php:139
 msgid "OPcache Totals"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:138
+#: src/includes/classes/MenuPageStats.php:140
 msgid "cached scripts"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:139
+#: src/includes/classes/MenuPageStats.php:141
 msgid "total cached keys"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:143
+#: src/includes/classes/MenuPageStats.php:145
 msgid "OPcache Hits/Misses"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:144
+#: src/includes/classes/MenuPageStats.php:146
 msgid "hits"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:145
+#: src/includes/classes/MenuPageStats.php:147
 msgid "misses"
 msgstr ""
 
-#: src/includes/classes/MenuPageStats.php:146
+#: src/includes/classes/MenuPageStats.php:148
 msgid "hit rate"
 msgstr ""
 

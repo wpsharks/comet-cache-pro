@@ -174,7 +174,7 @@ trait AutoCacheUtils
     /**
      * Download XML Sitemap via WP HTTP API and store in a temp file.
      *
-     * @since 16xxxx
+     * @since 160706
      *
      * @param string $url to XML Sitemap that needs to be downloaded
      *

@@ -227,7 +227,7 @@ trait HtaccessUtils
     /**
      * Utility method used to update replacement codes in .htaccess templates
      *
-     * @since 16xxxx Adding Apache Optimizations
+     * @since 160706 Adding Apache Optimizations
      *
      * @param string $template_blocks .htaccess template blocks that may contain replacement codes
      *
