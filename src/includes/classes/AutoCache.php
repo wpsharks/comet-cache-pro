@@ -262,7 +262,7 @@ class AutoCache extends AbsBase
         if (!$this->plugin->autoCacheCheckXmlSitemap($sitemap, $___recursive, $this->is_child_blog)) {
             goto finale; // Nothing we can do.
         }
-        if (!$allow_url_fopen || $this->applyWpFilters(GLOBAL_NS.'_auto_cache_sitemap_force_wp_http_api', false)) { // Try the WP HTTP API instead.
+        if (!$allow_url_fopen || $this->plugin->applyWpFilters(GLOBAL_NS.'_auto_cache_sitemap_force_wp_http_api', false)) { // Try the WP HTTP API instead.
             $sitemap = $this->plugin->autoCacheWpRemoteGetXmlSitemap($sitemap);
         }
 
@@ -289,7 +289,7 @@ class AutoCache extends AbsBase
             unset($_sitemapindex_urls, $_urlset_urls);
         }
 
-        if (!$allow_url_fopen || $this->applyWpFilters(GLOBAL_NS.'_auto_cache_sitemap_force_wp_http_api', false)) {
+        if (!$allow_url_fopen || $this->plugin->applyWpFilters(GLOBAL_NS.'_auto_cache_sitemap_force_wp_http_api', false)) {
             unlink($sitemap); // Delete temp file downloaded by cURL
         }
 
