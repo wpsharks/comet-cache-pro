@@ -1066,7 +1066,7 @@ class MenuPageOptions extends MenuPage
 
             if ((!IS_PRO && $is_apache) && !$this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
-                echo '      <p class="warning" style="display:block;">'.__('<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php'))).'">Enable the Pro Preview</a> to see <strong>Leverage Browser Caching</strong>, <strong>Enforce Canonical URLs</strong>, and more!', SLUG_TD).'</p>'."\n";
+                echo '      <p class="warning" style="display:block;">'.sprintf(__('<a href="%1$s">Enable the Pro Preview</a> to see <strong>Leverage Browser Caching</strong>, <strong>Enforce Canonical URLs</strong>, and more!', SLUG_TD), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php')))).'</p>'."\n";
             }
 
             if (IS_PRO || $this->plugin->isProPreview()) {
