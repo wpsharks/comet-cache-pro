@@ -378,11 +378,11 @@ msgid "It appears that your server is running NGINX and does not support <code>.
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:157
-msgid "Failed to update your <code>/wp-config.php</code> file automatically. Please add the following line to your <code>/wp-config.php</code> file (right after the opening <code>&lt;?php</code> tag; on it's own line). <pre class=\"code\"><code>define('WP_CACHE', TRUE);</code></pre>"
+msgid "Failed to update your <code>/wp-config.php</code> file automatically. Please add the following line to your <code>/wp-config.php</code> file (right after the opening <code>&lt;?php</code> tag; on it's own line). <pre class=\"code\"><code>define( 'WP_CACHE', true );</code></pre>"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:162
-msgid "Failed to update your <code>/wp-config.php</code> file automatically. Please remove the following line from your <code>/wp-config.php</code> file, or set <code>WP_CACHE</code> to a <code>FALSE</code> value. <pre class=\"code\"><code>define('WP_CACHE', TRUE);</code></pre>"
+msgid "Failed to update your <code>/wp-config.php</code> file automatically. Please remove the following line from your <code>/wp-config.php</code> file, or set <code>WP_CACHE</code> to a <code>FALSE</code> value. <pre class=\"code\"><code>define( 'WP_CACHE', true );</code></pre>"
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:168

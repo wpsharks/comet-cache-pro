@@ -126,7 +126,7 @@ trait InstallUtils
     }
 
     /**
-     * Adds `define('WP_CACHE', TRUE);` to the `/wp-config.php` file.
+     * Adds `define( 'WP_CACHE', true );` to the `/wp-config.php` file.
      *
      * @since 150422 Rewrite.
      *
@@ -150,16 +150,16 @@ trait InstallUtils
         if (!($wp_config_file_contents_no_whitespace = php_strip_whitespace($wp_config_file))) {
             return ''; // Failure; file empty
         }
-        if (preg_match('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[1-9][0-9\.]*|TRUE|([\'"])(?:[^0\'"]|[^\'"]{2,})\\2)\s*\)\s*;/ui', $wp_config_file_contents_no_whitespace)) {
+        if (preg_match('/\bdefine\s*\(\s*([\'"])WP_CACHE\\1\s*,\s*(?:\-?[1-9][0-9\.]*|true|([\'"])(?:[^0\'"]|[^\'"]{2,})\\2)\s*\)\s*;/ui', $wp_config_file_contents_no_whitespace)) {
             return $wp_config_file_contents; // It's already in there; no need to modify this file.
         }
         if (!($wp_config_file_contents = $this->removeWpCacheFromWpConfig())) {
             return ''; // Unable to remove previous value.
         }
-        if (!($wp_config_file_contents = preg_replace('/^\s*(\<\?php|\<\?)\s+/ui', '${1}'."\n"."define('WP_CACHE', TRUE);"."\n", $wp_config_file_contents, 1))) {
+        if (!($wp_config_file_contents = preg_replace('/^\s*(\<\?php|\<\?)\s+/ui', '${1}'."\n"."define( 'WP_CACHE', true );"."\n", $wp_config_file_contents, 1))) {
             return ''; // Failure; something went terribly wrong here.
         }
-        if (mb_strpos($wp_config_file_contents, "define('WP_CACHE', TRUE);") === false) {
+        if (mb_strpos($wp_config_file_contents, "define( 'WP_CACHE', true );") === false) {
             return ''; // Failure; unable to add; unexpected PHP code.
         }
         if (defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS) {
@@ -175,7 +175,7 @@ trait InstallUtils
     }
 
     /**
-     * Removes `define('WP_CACHE', TRUE);` from the `/wp-config.php` file.
+     * Removes `define( 'WP_CACHE', true );` from the `/wp-config.php` file.
      *
      * @since 150422 Rewrite.
      *
@@ -252,7 +252,7 @@ trait InstallUtils
         // Fixes zero-byte advanced-cache.php bug related to migrating from ZenCache
         //      See: <https://github.com/websharks/zencache/issues/432>
 
-        // Also fixes a missing `define('WP_CACHE', TRUE)` bug related to migrating from ZenCache
+        // Also fixes a missing `define( 'WP_CACHE', true )` bug related to migrating from ZenCache
         //      See <https://github.com/websharks/zencache/issues/450>
 
         if (!is_file($advanced_cache_check_file) || !is_file($advanced_cache_file) || filesize($advanced_cache_file) === 0) {
