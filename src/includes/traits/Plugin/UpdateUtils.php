@@ -97,59 +97,5 @@ trait UpdateUtils
             $this->enqueueMainNotice(sprintf(__('<strong>%1$s Pro:</strong> a new version is now available. Please <a href="%2$s">upgrade to v%3$s</a>.', SLUG_TD), esc_html(NAME), esc_attr($pro_updater_page), esc_html($this->options['latest_pro_version'])), ['persistent_key' => 'new-pro-version-available']);
         }
     }
-
-    /**
-     * Modifies transient data associated with this plugin.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @attaches-to `pre_site_transient_update_plugins` filter.
-     *
-     * @param object $transient Transient data provided by the WP filter.
-     *
-     * @return object Transient object; possibly altered by this routine.
-     */
-    public function preSiteTransientUpdatePlugins($transient)
-    {
-        if (!current_user_can($this->update_cap)) {
-            return $transient; // Nothing to do.
-        }
-        if (is_multisite() && !current_user_can($this->network_cap)) {
-            return $transient; // Nothing to do.
-        }
-        if (!is_admin() || $GLOBALS['pagenow'] !== 'update.php') {
-            return $transient; // Nothing to do.
-        }
-        $_r = $this->trimDeep(stripslashes_deep($_REQUEST));
-
-        if (empty($_r['action']) || $_r['action'] !== 'upgrade-plugin') {
-            return $transient; // Nothing to do here.
-        }
-        if (empty($_r['_wpnonce']) || !wp_verify_nonce((string) $_r['_wpnonce'], 'upgrade-plugin_'.plugin_basename(PLUGIN_FILE))) {
-            return $transient; // Nothing to do here.
-        }
-        if (empty($_r[GLOBAL_NS.'_update_pro_version'])) {
-            return $transient; // Nothing to do here.
-        }
-
-        $update_pro_version = (string) $_r[GLOBAL_NS.'_update_pro_version'];
-
-        if (!($update_pro_zip = get_site_transient(GLOBAL_NS.'_update_pro_zip_'.$update_pro_version))) {
-            return $transient; // Nothing to do here.
-        }
-
-        if (!is_object($transient)) {
-            $transient = new \stdClass();
-        }
-        $transient->last_checked                           = time();
-        $transient->checked[plugin_basename(PLUGIN_FILE)]  = VERSION;
-        $transient->response[plugin_basename(PLUGIN_FILE)] = (object) [
-            'id'          => 0,
-            'slug'        => basename(PLUGIN_FILE, '.php'),
-            'url'         => add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php')),
-            'new_version' => $update_pro_version, 'package' => $update_pro_zip,
-        ];
-        return $transient; // Notified now.
-    }
     /*[/pro]*/
 }
