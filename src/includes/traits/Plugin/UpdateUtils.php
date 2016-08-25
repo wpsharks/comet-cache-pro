@@ -151,49 +151,5 @@ trait UpdateUtils
         ];
         return $transient; // Notified now.
     }
-
-    /**
-     * Appends hidden inputs for pro updater when FTP credentials are requested by WP.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @attaches-to `fs_ftp_connection_types` filter.
-     *
-     * @param array $types Types of connections.
-     *
-     * @return array $types Types of connections.
-     */
-    public function fsFtpConnectionTypes($types)
-    {
-        if (!current_user_can($this->update_cap)) {
-            return $types; // Nothing to do.
-        }
-        if (is_multisite() && !current_user_can($this->network_cap)) {
-            return $types; // Nothing to do.
-        }
-        if (!is_admin() || $GLOBALS['pagenow'] !== 'update.php') {
-            return $types; // Nothing to do.
-        }
-        $_r = $this->trimDeep(stripslashes_deep($_REQUEST));
-
-        if (empty($_r['action']) || $_r['action'] !== 'upgrade-plugin') {
-            return $types; // Nothing to do.
-        }
-        if (empty($_r[GLOBAL_NS.'_update_pro_version']) || empty($_r[GLOBAL_NS.'_update_pro_zip'])) {
-            return $types; // Nothing to do.
-        }
-        $update_pro_version = (string) $_r[GLOBAL_NS.'_update_pro_version'];
-        $update_pro_zip     = (string) $_r[GLOBAL_NS.'_update_pro_zip']; // Encrypted!
-
-        echo '<script type="text/javascript">';
-        echo '   (function($){ $(document).ready(function(){';
-        echo '      var $form = $(\'input#hostname\').closest(\'form\');';
-        echo '      $form.append(\'<input type="hidden" name="'.esc_attr(GLOBAL_NS.'_update_pro_version').'" value="'.esc_attr($update_pro_version).'" />\');';
-        echo '      $form.append(\'<input type="hidden" name="'.esc_attr(GLOBAL_NS.'_update_pro_zip').'" value="'.esc_attr($update_pro_zip).'" />\');';
-        echo '   }); })(jQuery);';
-        echo '</script>';
-
-        return $types; // Filter through.
-    }
     /*[/pro]*/
 }

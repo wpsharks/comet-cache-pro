@@ -508,7 +508,6 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', [$this, 'maybeCheckLatestProVersion']);
-        add_filter('fs_ftp_connection_types', [$this, 'fsFtpConnectionTypes']);
         add_filter('pre_site_transient_update_plugins', [$this, 'preSiteTransientUpdatePlugins']);
         /*[/pro]*/
 
