@@ -292,11 +292,14 @@ class Plugin extends AbsBaseAp
 
             'pro_update_check',
             'pro_update_check_stable',
+            'last_pro_update_check',
+
             'latest_pro_version',
             'latest_pro_package',
-            'last_pro_update_check',
+
             'pro_update_username',
             'pro_update_password',
+
             'last_pro_stats_log',
         ];
         $this->default_options = [
