@@ -53,10 +53,6 @@ class Actions extends AbsBase
         'exportOptions',
         /*[/pro]*/
 
-        /*[pro strip-from="lite"]*/
-        'proUpdate',
-        /*[/pro]*/
-
         'dismissNotice',
     ];
 
@@ -709,122 +705,6 @@ class Actions extends AbsBase
         header('Content-Disposition: attachment; filename="'.$file_name.'"');
 
         exit($export); // Deliver the export file.
-    }
-    /*[/pro]*/
-
-    /*[pro strip-from="lite"]*/
-    /**
-     * Action handler.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @param mixed Input action argument(s).
-     */
-    protected function proUpdate($args)
-    {
-        if (!current_user_can($this->plugin->update_cap)) {
-            return; // Nothing to do.
-        }
-        if (is_multisite() && !current_user_can($this->plugin->network_cap)) {
-            return; // Nothing to do.
-        }
-        if (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
-            return; // Unauthenticated POST data.
-        }
-        $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
-
-        if (!isset($args['check'])) {
-            $args['check'] = $this->plugin->options['pro_update_check'];
-        }
-        if (!isset($args['check_stable'])) {
-            $args['check_stable'] = $this->plugin->options['pro_update_check_stable'];
-        }
-        if (empty($args['username'])) {
-            $args['username'] = $this->plugin->options['pro_update_username'];
-        }
-        if (empty($args['password'])) {
-            $args['password'] = $this->plugin->options['pro_update_password'];
-        }
-
-        if ($args['update'] === '0') { // We're only saving the options, not updating.
-            $this->plugin->updateOptions([
-                'pro_update_check'        => $args['check'],
-                'pro_update_check_stable' => $args['check_stable'],
-                'pro_update_username'     => $args['username'],
-                'pro_update_password'     => $args['password'],
-            ]);
-
-            $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-            $query_args  = ['page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'_updated' => '1'];
-            $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
-
-            wp_redirect($redirect_to).exit();
-        }
-
-        $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
-        $product_api_input_vars = [
-            'product_api' => [
-                'action'   => 'latest_pro_update',
-                'stable'   => $args['check_stable'],
-                'username' => $args['username'],
-                'password' => $args['password'],
-            ],
-        ];
-        $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
-        $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
-
-        if (!is_object($product_api_response) || !empty($product_api_response->error) || empty($product_api_response->pro_version) || empty($product_api_response->pro_zip)) {
-            if (!empty($product_api_response->error)) {
-                $error = substr((string) $product_api_response->error, 0, 1000);
-            } else { // Let's try the proxy server
-                $product_api_url      = 'http://proxy.websharks-inc.net/'.urlencode(SLUG_TD).'/';
-                $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars, 'timeout' => 15]);
-                $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
-
-                if (!is_object($product_api_response) || !empty($product_api_response->error) || empty($product_api_response->pro_version) || empty($product_api_response->pro_zip)) {
-                    if (!empty($product_api_response->error)) {
-                        $error = substr((string) $product_api_response->error, 0, 1000);
-                    } else {
-                        $error = __('Unknown error. Please wait 15 minutes and try again.', SLUG_TD);
-                    }
-                }
-            }
-        }
-
-        if (!empty($error)) {
-            $redirect_to = self_admin_url('/admin.php'); // Redirect preparations.
-            $query_args  = ['page' => GLOBAL_NS.'-pro-updater', GLOBAL_NS.'_error' => $error];
-            $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
-            wp_redirect($redirect_to).exit();
-        }
-
-        $this->plugin->updateOptions([
-            'last_pro_update_check'   => time(),
-            'pro_update_check'        => $args['check'],
-            'pro_update_check_stable' => $args['check_stable'],
-            'pro_update_username'     => $args['username'],
-            'pro_update_password'     => $args['password'],
-            'latest_pro_version'      => $product_api_response->pro_version,
-        ]);
-        $this->plugin->dismissMainNotice('new-pro-version-available');
-
-        $update_pro_version = $this->plugin->applyWpFilters(GLOBAL_NS.'_update_pro_version', $product_api_response->pro_version);
-        $update_pro_zip     = $this->plugin->applyWpFilters(GLOBAL_NS.'_update_pro_zip', $product_api_response->pro_zip);
-        $redirect_to        = self_admin_url('/update.php');
-        $query_args         = [ // Like a normal WP plugin.
-                                'action'                        => 'upgrade-plugin',
-                                'plugin'                        => plugin_basename(PLUGIN_FILE),
-                                '_wpnonce'                      => wp_create_nonce('upgrade-plugin_'.plugin_basename(PLUGIN_FILE)),
-                                GLOBAL_NS.'_update_pro_version' => $update_pro_version,
-        ];
-
-        // Store the Pro Zip URL in Transient with a 5 minute expiration
-        // See: `preSiteTransientUpdatePlugins()` where these are picked up.
-        set_site_transient(GLOBAL_NS.'_update_pro_zip_'.$update_pro_version, $update_pro_zip, 60*5);
-
-        $redirect_to = add_query_arg(urlencode_deep($query_args), $redirect_to);
-
-        wp_redirect($redirect_to).exit();
     }
     /*[/pro]*/
 
