@@ -48,7 +48,6 @@ class MenuPageOptions extends MenuPage
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
         if (IS_PRO && current_user_can($this->plugin->update_cap)) {
-            echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php'))).'"><i class="si si-magic"></i> '.__('Pro Updater', SLUG_TD).'</a>'."\n";
             echo '<a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
             echo '<a href="'.esc_attr('http://cometcache.com/r/comet-cache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         }
@@ -69,7 +68,6 @@ class MenuPageOptions extends MenuPage
         echo '      <a href="'.esc_attr('http://cometcache.com/blog/').'" target="_blank"><i class="si si-rss-square"></i> '.__('Blog', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-
         echo '  <div class="plugin-menu-page-mailing-list-links">'."\n";
         if (!IS_PRO) { // We show these above in the Pro version
             echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
@@ -79,13 +77,12 @@ class MenuPageOptions extends MenuPage
         echo '      <a href="'.esc_attr('https://www.facebook.com/cometcache/').'" target="_blank"><i class="si si-facebook"></i> '.__('Facebook', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-
         if (IS_PRO) {
             echo '<div class="plugin-menu-page-version">'."\n";
             echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
 
             if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
-                echo '(<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php'))).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                echo '(<a href="'.esc_attr(self_admin_url('/update-core.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
             } else {
                 echo '(<a href="'.esc_attr('https://cometcache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
@@ -1035,7 +1032,6 @@ class MenuPageOptions extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         if ($is_apache || $this->plugin->isProPreview()) {
-
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
@@ -1123,7 +1119,6 @@ class MenuPageOptions extends MenuPage
             }
             echo '   </div>'."\n";
             echo '</div>'."\n";
-
         }
 
                /* ----------------------------------------------------------------------------------------- */
