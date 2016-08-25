@@ -507,7 +507,6 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
-        add_action('admin_init', [$this, 'maybeCheckLatestProVersion']);
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
