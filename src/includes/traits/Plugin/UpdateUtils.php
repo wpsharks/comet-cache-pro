@@ -131,6 +131,23 @@ trait UpdateUtils
     }
 
     /**
+     * Show latest pro version changelog.
+     *
+     * @since $v Enhancing update utils.
+     *
+     * @attaches-to `admin_init` hook.
+     */
+    public function maybeShowLatestProVersionChangelog()
+    {
+        if (!empty($GLOBALS['pagenow']) && $GLOBALS['pagenow'] === 'plugin-install.php'
+            && !empty($_REQUEST['plugin']) && $_REQUEST['plugin'] === SLUG_TD.'-pro'
+            && !empty($_REQUEST['tab']) && $_REQUEST['tab'] === 'plugin-information') {
+            wp_redirect('https://'.urlencode(DOMAIN).'/changelog/?in-wp');
+            exit();
+        }
+    }
+
+    /**
      * Transient filter.
      *
      * @since $v Enhancing update utils.

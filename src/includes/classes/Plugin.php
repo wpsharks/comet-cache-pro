@@ -514,6 +514,7 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', [$this, 'maybeCheckLatestProVersion']);
+        add_action('admin_init', [$this, 'maybeShowLatestProVersionChangelog']);
         add_action('site_transient_update_plugins', [$this, 'onGetSiteTransientUpdatePlugins']);
         /*[/pro]*/
 
