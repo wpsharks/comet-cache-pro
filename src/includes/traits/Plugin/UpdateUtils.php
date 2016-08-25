@@ -20,7 +20,9 @@ trait UpdateUtils
         } elseif (!$this->options['lite_update_check']) {
             return; // Nothing to do.
         } elseif ($this->options['last_lite_update_check'] >= strtotime('-1 hour')) {
-            return; // No reason to keep checking on this.
+            if (empty($_REQUEST['force-check'])) {
+                return; // Nothing to do.
+            }
         }
         $this->updateOptions(['last_lite_update_check' => time()]);
 
@@ -49,7 +51,9 @@ trait UpdateUtils
         if (!$this->options['pro_update_check']) {
             return; // Nothing to do.
         } elseif ($this->options['last_pro_update_check'] >= strtotime('-1 hour')) {
-            return; // No reason to keep checking on this.
+            if (empty($_REQUEST['force-check'])) {
+                return; // Nothing to do.
+            }
         }
         $this->updateOptions(['last_pro_update_check' => time()]);
 
