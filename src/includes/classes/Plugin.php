@@ -293,6 +293,7 @@ class Plugin extends AbsBaseAp
             'pro_update_check',
             'pro_update_check_stable',
             'latest_pro_version',
+            'latest_pro_package',
             'last_pro_update_check',
             'pro_update_username',
             'pro_update_password',
@@ -461,6 +462,7 @@ class Plugin extends AbsBaseAp
             'pro_update_check'        => '1', // `0|1`; enable?
             'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
             'latest_pro_version'      => VERSION, // Latest version.
+            'latest_pro_package'      => '', // Latest package URL.
             'last_pro_update_check'   => '0', // Timestamp.
 
             'pro_update_username' => '', // Username.
@@ -507,6 +509,8 @@ class Plugin extends AbsBaseAp
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
+        add_action('admin_init', [$this, 'maybeCheckLatestProVersion']);
+        add_action('site_transient_update_plugins', [$this, 'onGetSiteTransientUpdatePlugins']);
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
