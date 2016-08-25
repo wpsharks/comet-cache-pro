@@ -225,25 +225,26 @@ class MenuPageOptions extends MenuPage
 
         /* ----------------------------------------------------------------------------------------- */
 
-        echo '<div class="plugin-menu-page-panel">'."\n";
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '<div class="plugin-menu-page-panel">'."\n";
 
-        echo '   <a href="#" class="plugin-menu-page-panel-heading open">'."\n";
-        echo '      <i class="si si-sign-in"></i> '.__('Update Credentials', SLUG_TD)."\n";
-        echo '   </a>'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '      <i class="si si-sign-in"></i> '.__('Update Credentials', SLUG_TD)."\n";
+            echo '   </a>'."\n";
 
-        echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-        echo '      <i class="si si-user si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
-        echo '      <h3>'.__('CometCache.com Authentication', SLUG_TD).'</h3>'."\n";
-        echo '      <p>'.sprintf(__('%1$s Pro is a premium product available for purchase @ <a href="http://cometcache.com/prices/" target="_blank">cometcache.com</a>. In order to connect with our update servers, you must supply your License Key. Your License Key is located under "My Account" when you log in @ <a href="http://cometcache.com/" target="_blank">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="si si-smile-o"></i> If you prefer to upgrade manually, see <a href="https://cometcache.com/r/kb-article-how-to-manually-upgrade-comet-cache-pro/">this article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '      <hr />'."\n";
-        echo '      <h3>'.sprintf(__('Username', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-        echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_username]" value="'.esc_attr($this->plugin->options['pro_update_username']).'" autocomplete="new-password" /></p>'."\n";
-        echo '      <h3>'.sprintf(__('License Key', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-        echo '      <p><input type="password" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_password]" value="'.esc_attr($this->plugin->options['pro_update_password']).'" autocomplete="new-password" /></p>'."\n";
-        echo '   </div>'."\n";
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '      <i class="si si-user si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+            echo '      <h3>'.__('CometCache.com Authentication', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('%1$s Pro is a premium product available for purchase @ <a href="http://cometcache.com/prices/" target="_blank">cometcache.com</a>. In order to connect with our update servers, you must supply your License Key. Your License Key is located under "My Account" when you log in @ <a href="http://cometcache.com/" target="_blank">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="si si-smile-o"></i> If you prefer to upgrade manually, see <a href="https://cometcache.com/r/kb-article-how-to-manually-upgrade-comet-cache-pro/">this article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <hr />'."\n";
+            echo '      <h3>'.sprintf(__('Username', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+            echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_username]" value="'.esc_attr($this->plugin->options['pro_update_username']).'" autocomplete="new-password" /></p>'."\n";
+            echo '      <h3>'.sprintf(__('License Key', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+            echo '      <p><input type="password" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_password]" value="'.esc_attr($this->plugin->options['pro_update_password']).'" autocomplete="new-password" /></p>'."\n";
+            echo '   </div>'."\n";
 
-        echo '</div>'."\n";
-
+            echo '</div>'."\n";
+        }
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<div class="plugin-menu-page-panel">'."\n";
