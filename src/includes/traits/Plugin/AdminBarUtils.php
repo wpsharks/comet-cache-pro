@@ -1,5 +1,148 @@
 <?php
-/*[pro exclude-file-from="lite"]*/
+namespace WebSharks\CometCache\Traits\Plugin;
+
+use WebSharks\CometCache\Classes;
+
+trait AdminBarUtils
+{
+    /**
+     * Showing admin bar.
+     *
+     * @since 16xxxx Improving admin bar.
+     *
+     * @param bool $feature Check something specific?
+     *
+     * @return bool True if showing.
+     */
+    public function adminBarShowing($feature = '')
+    {
+        $feature = trim(mb_strtolower((string) $feature));
+        if (!is_null($showing = &$this->cacheKey('adminBarShowing', $feature))) {
+            return $showing; // Already cached this.
+        }
+
+
+        if ($showing) {
+
+            $current_user_can_clear_cache = $this->currentUserCanClearCache();
+
+                case 'cache_clear':
+                case 'cache_clear_options':
+                    $showing = $current_user_can_clear_cache;
+                    break;
+
+
+                default: // Default case handler.
+                    $showing = $current_user_can_clear_cache
+
+                    break;
+            }
+        }
+        return $showing;
+    }
+
+    /**
+     * Filter WordPress admin bar.
+     *
+     * @since 16xxxx Rewrite.
+     *
+     * @attaches-to `admin_bar_menu` hook.
+     *
+     * @param $wp_admin_bar \WP_Admin_Bar
+     */
+    public function adminBarMenu(\WP_Admin_Bar &$wp_admin_bar)
+    {
+        if (!$this->adminBarShowing()) {
+            return; // Nothing to do.
+        }
+        if ($this->adminBarShowing('cache_wipe')) {
+            $wp_admin_bar->add_menu(
+                [
+                    'parent' => 'top-secondary',
+                    'id'     => GLOBAL_NS.'-wipe',
+
+                    'title' => __('Wipe', SLUG_TD),
+                    'href'  => '#',
+
+                    'meta' => [
+                        'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
+                        'class'    => '-wipe',
+                        'tabindex' => -1,
+                    ],
+                ]
+            );
+        }
+        if ($this->adminBarShowing('cache_clear')) {
+            if (($cache_clear_options_showing = $this->adminBarShowing('cache_clear_options'))) {
+                $cache_clear_options = '<li class="-home-url-only"><a href="#" title="'.__('Clear the Home Page cache', SLUG_TD).'">'.__('Home Page', SLUG_TD).'</a></li>';
+
+            } else {
+                $cache_clear_options = ''; // Empty in this default case.
+            }
+
+            }
+
+            }
+        }
+    }
+
+    /**
+     * Injects `<meta>` tag w/ JSON-encoded data.
+     *
+     * @since 150422 Rewrite.
+     *
+     * @attaches-to `admin_head` hook.
+     */
+    public function adminBarMetaTags()
+    {
+        if (!$this->adminBarShowing()) {
+            return; // Nothing to do.
+        }
+        $vars = [
+            '_wpnonce'                 => wp_create_nonce(),
+            ],
+        ];
+        echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
+             ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
+    }
+
+    /**
+     * Adds CSS for WordPress admin bar.
+     *
+     * @since 16xxxx Rewrite.
+     *
+     * @attaches-to `wp_enqueue_scripts` hook.
+     * @attaches-to `admin_enqueue_scripts` hook.
+     */
+    public function adminBarStyles()
+    {
+        if (!$this->adminBarShowing()) {
+            return; // Nothing to do.
+        }
+        $deps = []; // Plugin dependencies.
+
+        wp_enqueue_style(GLOBAL_NS.'-admin-bar', $this->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
+    }
+
+    /**
+     * Adds JS for WordPress admin bar.
+     *
+     * @since 16xxxx Rewrite.
+     *
+     * @attaches-to `wp_enqueue_scripts` hook.
+     * @attaches-to `admin_enqueue_scripts` hook.
+     */
+    public function adminBarScripts()
+    {
+        if (!$this->adminBarShowing()) {
+            return; // Nothing to do.
+        }
+        $deps = ['jquery', 'admin-bar']; // Plugin dependencies.
+
+        wp_enqueue_script(GLOBAL_NS.'-admin-bar', $this->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
+    }
+}
+
 /*[pro strip-from="lite"]*/
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 

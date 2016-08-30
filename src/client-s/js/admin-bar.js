@@ -1,5 +1,3 @@
-/*![pro strip-from='lite']*/
-
 (function ($) {
   'use strict'; // Standards.
 
@@ -10,13 +8,22 @@
     $document = $(document);
 
   plugin.onReady = function () {
+
+    /*![pro strip-from='lite']*/
+
     plugin.statsData = null;
     plugin.statsRunning = false;
+
+    /*![/pro]*/
+
     plugin.hideAJAXResponseTimeout = null;
     plugin.vars = $('#' + plugin.namespace + '-admin-bar-vars').data('json');
 
-    $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
+
+    /*![pro strip-from='lite']*/
+
+    $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
 
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-home-url-only > a').on('click', plugin.clearCacheHomeUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-current-url-only > a').on('click', plugin.clearCacheCurrentUrlOnly);
@@ -201,6 +208,8 @@
     });
   };
 
+  /*![/pro]*/
+
   plugin.showAJAXResponse = function () {
     clearTimeout(plugin.hideAJAXResponseTimeout);
 
@@ -235,6 +244,8 @@
     $('.' + plugin.namespace + '-ajax-response')
       .off(plugin.animationEndEvents).remove();
   };
+
+  /*![pro strip-from='lite']*/
 
   plugin.stats = function () {
     if (plugin.statsRunning) {
@@ -554,6 +565,8 @@
     });
   };
 
+/*![/pro]*/
+
   plugin.preventDefault = function (event, stop) {
     if (!event) {
       return; // Not possible.
@@ -582,5 +595,3 @@
   $document.ready(plugin.onReady); // On DOM ready.
 
 })(jQuery);
-
-/*![/pro]*/
