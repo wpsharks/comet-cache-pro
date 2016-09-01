@@ -512,18 +512,17 @@ class Plugin extends AbsBaseAp
         add_filter('pre_site_transient_update_plugins', [$this, 'preSiteTransientUpdatePlugins']);
         /*[/pro]*/
 
-        /*[pro strip-from="lite"]*/
+
         add_action('admin_bar_menu', [$this, 'adminBarMenu']);
         add_action('wp_head', [$this, 'adminBarMetaTags'], 0);
         add_action('wp_enqueue_scripts', [$this, 'adminBarStyles']);
         add_action('wp_enqueue_scripts', [$this, 'adminBarScripts']);
-        /*[/pro]*/
 
-        /*[pro strip-from="lite"]*/
+
         add_action('admin_head', [$this, 'adminBarMetaTags'], 0);
         add_action('admin_enqueue_scripts', [$this, 'adminBarStyles']);
         add_action('admin_enqueue_scripts', [$this, 'adminBarScripts']);
-        /*[/pro]*/
+
 
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminStyles']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
