@@ -48,7 +48,6 @@ class MenuPageOptions extends MenuPage
 
         echo '   <div class="plugin-menu-page-upsells">'."\n";
         if (IS_PRO && current_user_can($this->plugin->update_cap)) {
-            echo '<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php'))).'"><i class="si si-magic"></i> '.__('Pro Updater', SLUG_TD).'</a>'."\n";
             echo '<a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
             echo '<a href="'.esc_attr('http://cometcache.com/r/comet-cache-beta-testers-list/').'" target="_blank"><i class="si si-envelope"></i> '.__('Beta Testers', SLUG_TD).'</a>'."\n";
         }
@@ -69,7 +68,6 @@ class MenuPageOptions extends MenuPage
         echo '      <a href="'.esc_attr('http://cometcache.com/blog/').'" target="_blank"><i class="si si-rss-square"></i> '.__('Blog', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-
         echo '  <div class="plugin-menu-page-mailing-list-links">'."\n";
         if (!IS_PRO) { // We show these above in the Pro version
             echo '      <a href="'.esc_attr('http://cometcache.com/r/comet-cache-subscribe/').'" target="_blank"><i class="si si-envelope"></i> '.__('Newsletter', SLUG_TD).'</a>'."\n";
@@ -79,13 +77,16 @@ class MenuPageOptions extends MenuPage
         echo '      <a href="'.esc_attr('https://www.facebook.com/cometcache/').'" target="_blank"><i class="si si-facebook"></i> '.__('Facebook', SLUG_TD).'</a>'."\n";
         echo '   </div>'."\n";
 
-
         if (IS_PRO) {
             echo '<div class="plugin-menu-page-version">'."\n";
             echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
 
             if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
-                echo '(<a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-pro-updater']), self_admin_url('/admin.php'))).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                if (!$this->plugin->options['pro_update_username'] || !$this->plugin->options['pro_update_password']) {
+                    echo '(<a href="#" style="font-weight:bold;" onclick="alert(\''.sprintf(__('A username and license key are required to complete an upgrade. See: %1$s → Plugin Options → \\\'Authentication for Automatic Updates\\\'. Enter the required details and try again.', SLUG_TD), NAME).'\'); return false;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                } else {
+                    echo '(<a href="'.esc_attr(self_admin_url('/update-core.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                }
             } else {
                 echo '(<a href="'.esc_attr('https://cometcache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
@@ -226,6 +227,42 @@ class MenuPageOptions extends MenuPage
 
         echo '</div>'."\n";
 
+        /* ----------------------------------------------------------------------------------------- */
+
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '<div class="plugin-menu-page-panel">'."\n";
+
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '      <i class="si si-sign-in"></i> '.__('Update Credentials', SLUG_TD)."\n";
+            echo '   </a>'."\n";
+
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+
+            echo '      <i class="si si-user si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
+
+            echo '      <h3>'.__('Authentication for Automatic Updates', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.sprintf(__('%1$s Pro is a premium product available for purchase @ <a href="http://cometcache.com/prices/" target="_blank">cometcache.com</a>. In order to connect with our update servers, you must supply your License Key. Your License Key is located under "My Account" when you log in @ <a href="http://cometcache.com/" target="_blank">cometcache.com</a>. This will authenticate your copy of %1$s Pro; providing you with access to the latest version. You only need to enter these credentials once. %1$s Pro will save them in your WordPress database; making future upgrades even easier. <i class="si si-smile-o"></i> If you prefer to upgrade manually, see <a href="https://cometcache.com/r/kb-article-how-to-manually-upgrade-comet-cache-pro/">this article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '      <hr />'."\n";
+
+            echo '      <h3>'.sprintf(__('Username', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+            echo '      <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_username]" value="'.esc_attr($this->plugin->options['pro_update_username']).'" autocomplete="new-password" /></p>'."\n";
+            echo '      <h3>'.sprintf(__('License Key', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
+            echo '      <p><input type="password" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_password]" value="'.esc_attr($this->plugin->options['pro_update_password']).'" autocomplete="new-password" /></p>'."\n";
+
+            echo '      <hr />'."\n";
+            echo '      <p>'.sprintf(__('If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for automatic updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn\'t mean you\'ll want to do the same. :-) Please report any issues with Release Candidates on <a href="https://github.com/websharks/comet-cache/issues/" target="_blank">GitHub</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_check_stable]" autocomplete="off">'."\n";
+            echo '            <option value="1"'.selected($this->plugin->options['pro_update_check_stable'], '1', false).'>'.sprintf(__('No, do not check for Release Candidates; I only want public releases.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+            echo '            <option value="0"'.selected($this->plugin->options['pro_update_check_stable'], '0', false).'>'.sprintf(__('Yes, check for Release Candidates; I want to help with testing.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+            echo '         </select></p>'."\n";
+            echo '         <p class="info" style="display:block;">'.__('<strong>How will I know that I\'m running a Release Candidate?</strong><br />If you\'re running a Release Candidate, the version ends with <code>-RC</code>, e.g., Comet Cache™ Pro v151201-RC.', SLUG_TD).'</p>'."\n";
+            echo '         <p class="info" style="display:block;">'.__('<strong>Email Alternative:</strong> Instead, if you\'d just like to receive updates about Release Candidates (via email), including a Release Candidate changelog, please sign up for the <a href="http://cometcache.com/r/comet-cache-beta-testers-list/" target="_blank">beta testers mailing list</a>.', SLUG_TD).'</p>'."\n";
+
+            echo '   </div>'."\n";
+
+            echo '</div>'."\n";
+        }
         /* ----------------------------------------------------------------------------------------- */
 
         echo '<div class="plugin-menu-page-panel">'."\n";
@@ -1035,7 +1072,6 @@ class MenuPageOptions extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         if ($is_apache || $this->plugin->isProPreview()) {
-
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
@@ -1123,7 +1159,6 @@ class MenuPageOptions extends MenuPage
             }
             echo '   </div>'."\n";
             echo '</div>'."\n";
-
         }
 
                /* ----------------------------------------------------------------------------------------- */
