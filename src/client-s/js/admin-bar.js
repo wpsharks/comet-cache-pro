@@ -1,5 +1,3 @@
-/*![pro strip-from='lite']*/
-
 (function ($) {
   'use strict'; // Standards.
 
@@ -582,5 +580,3 @@
   $document.ready(plugin.onReady); // On DOM ready.
 
 })(jQuery);
-
-/*![/pro]*/

@@ -4,10 +4,11 @@
 @include sharkicons-font('../../vendor/websharks/sharkicons/src');
 
 @import 'admin-bar/animations';
+@import 'admin-bar/wipe-clear';
+@import 'admin-bar/ajax-response';
+
 /*![pro strip-from='lite']*/
 
 @import 'admin-bar/stats';
-@import 'admin-bar/wipe-clear';
-@import 'admin-bar/ajax-response';
 
 /*![/pro]*/
