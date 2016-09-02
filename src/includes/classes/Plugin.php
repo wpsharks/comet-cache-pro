@@ -228,7 +228,6 @@ class Plugin extends AbsBaseAp
 
             'change_notifications_enable',
 
-            'cache_clear_admin_bar_enable',
             'cache_clear_admin_bar_options_enable',
             'cache_clear_admin_bar_roles_caps',
 
