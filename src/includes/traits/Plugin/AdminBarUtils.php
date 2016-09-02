@@ -108,23 +108,7 @@ trait AdminBarUtils
         }
         /*[/pro]*/
         if ($this->adminBarShowing('cache_clear')) {
-            if (!IS_PRO) {
-                $wp_admin_bar->add_menu(
-                    [
-                    'parent' => 'top-secondary',
-                    'id'     => GLOBAL_NS.'-clear',
-
-                    'title' => __('Clear Cache', SLUG_TD),
-                    'href'  => '#',
-                    'meta'  => [
-
-                    'class'    => '-clear',
-                    'tabindex' => -1,
-                    ],
-                    ]
-                );
-            }
-            /*[pro strip-from="lite"]*/
+          /*[pro strip-from="lite"]*/
             if (($cache_clear_options_showing = $this->adminBarShowing('cache_clear_options'))) {
                 $cache_clear_options = '<li class="-home-url-only"><a href="#" title="'.__('Clear the Home Page cache', SLUG_TD).'">'.__('Home Page', SLUG_TD).'</a></li>';
                 if (!is_admin()) {
@@ -184,6 +168,7 @@ trait AdminBarUtils
                     ]
                 );
             }
+            /*[/pro]*/
             $wp_admin_bar->add_menu(
                 [
                     'parent' => 'top-secondary',
@@ -199,6 +184,7 @@ trait AdminBarUtils
                     ],
                 ]
             );
+            /*[pro strip-from="lite"]*/
             if ($cache_clear_options && $this->options['cache_clear_admin_bar_options_enable'] === '1') {
                 $wp_admin_bar->add_group(
                     [
@@ -224,7 +210,9 @@ trait AdminBarUtils
                     ]
                 );
             }
+        /*[/pro]*/
         }
+        /*[pro strip-from="lite"]*/
         if ($this->adminBarShowing('stats')) {
             $wp_admin_bar->add_menu(
                 [
@@ -277,11 +265,11 @@ trait AdminBarUtils
                     ],
                 ]
             );
-            /*[/pro]*/
         }
+        /*[/pro]*/
     }
 
-    /*[pro strip-from="lite"]*/
+
     /**
      * Injects `<meta>` tag w/ JSON-encoded data.
      *
@@ -294,8 +282,10 @@ trait AdminBarUtils
         if (!$this->adminBarShowing()) {
             return; // Nothing to do.
         }
+
         $vars = [
             '_wpnonce'                 => wp_create_nonce(),
+            /*[pro strip-from="lite"]*/
             'isMultisite'              => is_multisite(),
             'currentUserHasCap'        => current_user_can($this->cap),
             'currentUserHasNetworkCap' => current_user_can($this->network_cap),
@@ -313,11 +303,13 @@ trait AdminBarUtils
                 'xDayHigh'         => __('%s Day High', SLUG_TD),
                 'enterSpecificUrl' => __('Enter a specific URL to clear the cache for that page:', SLUG_TD),
             ],
+        /*[/pro]*/
         ];
+
         echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
              ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
     }
-    /*[/pro]*/
+
 
     /**
      * Adds CSS for WordPress admin bar.

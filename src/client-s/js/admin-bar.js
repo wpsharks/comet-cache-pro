@@ -32,7 +32,11 @@
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-transients-only > a').on('click', plugin.clearExpiredTransientsOnly);
 
+    /*![/pro]*/
+
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
+
+    /*![pro strip-from='lite']*/
 
     var $stats = $('#wp-admin-bar-' + plugin.namespace + '-stats'),
       $statsWrapper = $stats.find('.-wrapper'),
@@ -93,11 +97,13 @@
       plugin.showAJAXResponse(); // Show response.
     });
   };
+  /*![/pro]*/
 
   plugin.clearCache = function (event, options) {
     plugin.preventDefault(event);
     plugin.statsData = null;
 
+    /*![pro strip-from='lite']*/
     options = options || {};
     var o = $.extend({}, {
       urlOnly: '',
@@ -105,11 +111,11 @@
       cdnOnly: false,
       transientsOnly: false
     }, options);
-
+    /*![/pro]*/
     var postVars = {
       _wpnonce: plugin.vars._wpnonce
     }; // HTTP post vars.
-
+    /*![pro strip-from='lite']*/
     var isClearOption = false;
 
     if (o.urlOnly) {
@@ -133,16 +139,20 @@
         ajaxClearExpiredTransients: '1'
       };
     } else {
+      /*![/pro]*/
       postVars[plugin.namespace] = {
         ajaxClearCache: '1'
       };
+    /*![pro strip-from='lite']*/
     }
+    /*![/pro]*/
     var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
+    /*![pro strip-from='lite']*/
     var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-label');
     var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper  .-options');
-
+    /*![/pro]*/
     plugin.removeAJAXResponse();
-
+    /*![pro strip-from='lite']*/
     if (isClearOption && $clearOptionsLabel.length) {
       $clearOptionsLabel.addClass('-processing');
     } else {
@@ -150,22 +160,23 @@
     }
     $clear.add($clearOptions.find('a')).attr('disabled', 'disabled');
 
+    /*![/pro]*/
     $.post(plugin.vars.ajaxURL, postVars, function (data) {
       plugin.removeAJAXResponse();
-
+      /*![pro strip-from='lite']*/
       if (isClearOption && $clearOptionsLabel.length) {
         $clearOptionsLabel.removeClass('-processing');
       } else {
         $clear.parent().removeClass('-processing');
       }
       $clear.add($clearOptions.find('a')).removeAttr('disabled');
-
+      /*![/pro]*/
       var $response = $('<div class="' + plugin.namespace + '-ajax-response -clear">' + data + '</div>');
       $('body').append($response); // Append response.
       plugin.showAJAXResponse(); // Show response.
     });
   };
-
+  /*![pro strip-from='lite']*/
   plugin.clearCacheHomeUrlOnly = function (event) {
     plugin.clearCache(event, {
       urlOnly: 'home'
