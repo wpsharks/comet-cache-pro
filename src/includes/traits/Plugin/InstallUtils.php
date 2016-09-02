@@ -372,7 +372,8 @@ trait InstallUtils
         }
         $cache_lock = $this->cacheLock(); // Lock cache.
 
-        if (!is_dir($cache_dir)) {
+        clearstatcache();
+        if (!file_exists($cache_dir)) {
             mkdir($cache_dir, 0775, true);
         }
         if (is_writable($cache_dir) && !is_file($cache_dir.'/.htaccess')) {
@@ -523,7 +524,8 @@ trait InstallUtils
 
         $cache_lock = $this->cacheLock();
 
-        if (!is_dir($cache_dir)) {
+        clearstatcache();
+        if (!file_exists($cache_dir)) {
             mkdir($cache_dir, 0775, true);
         }
         if (is_writable($cache_dir) && !is_file($cache_dir.'/.htaccess')) {
