@@ -64,7 +64,11 @@ class MenuPageStats extends MenuPage
             echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
 
             if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
-                echo '(<a href="'.esc_attr(self_admin_url('/update-core.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                if (!$this->plugin->options['pro_update_username'] || !$this->plugin->options['pro_update_password']) {
+                    echo '(<a href="#" style="font-weight:bold;" onclick="alert(\''.sprintf(__('A username and license key are required to complete an upgrade. See: %1$s → Plugin Options → \\\'Authentication for Automatic Updates\\\'. Enter the required details and try again.', SLUG_TD), NAME).'\'); return false;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                } else {
+                    echo '(<a href="'.esc_attr(self_admin_url('/update-core.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
+                }
             } else {
                 echo '(<a href="'.esc_attr('https://cometcache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             }
