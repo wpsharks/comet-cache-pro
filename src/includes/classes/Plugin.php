@@ -62,7 +62,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type bool If `FALSE`, run without hooks.
+     * @var bool If `FALSE`, run without hooks.
      */
     public $enable_hooks = true;
 
@@ -71,7 +71,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type array Pro-only option keys.
+     * @var array Pro-only option keys.
      */
     public $pro_only_option_keys = [];
 
@@ -80,7 +80,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type array Default options.
+     * @var array Default options.
      */
     public $default_options = [];
 
@@ -89,7 +89,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type array Configured options.
+     * @var array Configured options.
      */
     public $options = [];
 
@@ -98,7 +98,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string WordPress capability.
+     * @var string WordPress capability.
      */
     public $cap = 'activate_plugins';
 
@@ -107,7 +107,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string WordPress capability.
+     * @var string WordPress capability.
      */
     public $update_cap = 'update_plugins';
 
@@ -116,7 +116,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string WordPress capability.
+     * @var string WordPress capability.
      */
     public $network_cap = 'manage_network_plugins';
 
@@ -125,7 +125,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string WordPress capability.
+     * @var string WordPress capability.
      */
     public $uninstall_cap = 'delete_plugins';
 
@@ -135,7 +135,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 151002 Cache clearing cap.
      *
-     * @type string WordPress capability.
+     * @var string WordPress capability.
      */
     public $clear_min_cap = 'edit_posts';
     /*[/pro]*/
@@ -146,7 +146,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 151002 Cache clearing cap.
      *
-     * @type string WordPress capability.
+     * @var string WordPress capability.
      */
     public $stats_min_cap = 'edit_posts';
     /*[/pro]*/
@@ -156,7 +156,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string Cache directory; relative to the configured base directory.
+     * @var string Cache directory; relative to the configured base directory.
      */
     public $cache_sub_dir = 'cache';
 
@@ -166,7 +166,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string Public HTML Compressor cache directory; relative to the configured base directory.
+     * @var string Public HTML Compressor cache directory; relative to the configured base directory.
      */
     public $htmlc_cache_sub_dir_public = 'htmlc/public';
     /*[/pro]*/
@@ -177,7 +177,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @type string Private HTML Compressor cache directory; relative to the configured base directory.
+     * @var string Private HTML Compressor cache directory; relative to the configured base directory.
      */
     public $htmlc_cache_sub_dir_private = 'htmlc/private';
     /*[/pro]*/
@@ -291,10 +291,14 @@ class Plugin extends AbsBaseAp
 
             'pro_update_check',
             'pro_update_check_stable',
-            'latest_pro_version',
             'last_pro_update_check',
+
+            'latest_pro_version',
+            'latest_pro_package',
+
             'pro_update_username',
             'pro_update_password',
+
             'last_pro_stats_log',
         ];
         $this->default_options = [
@@ -459,8 +463,10 @@ class Plugin extends AbsBaseAp
 
             'pro_update_check'        => '1', // `0|1`; enable?
             'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
-            'latest_pro_version'      => VERSION, // Latest version.
             'last_pro_update_check'   => '0', // Timestamp.
+
+            'latest_pro_version' => VERSION, // Latest version.
+            'latest_pro_package' => '', // Latest package URL.
 
             'pro_update_username' => '', // Username.
             'pro_update_password' => '', // Password or license key.
@@ -507,8 +513,8 @@ class Plugin extends AbsBaseAp
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', [$this, 'maybeCheckLatestProVersion']);
-        add_filter('fs_ftp_connection_types', [$this, 'fsFtpConnectionTypes']);
-        add_filter('pre_site_transient_update_plugins', [$this, 'preSiteTransientUpdatePlugins']);
+        add_action('admin_init', [$this, 'maybeShowLatestProVersionChangelog']);
+        add_action('site_transient_update_plugins', [$this, 'onGetSiteTransientUpdatePlugins']);
         /*[/pro]*/
 
 

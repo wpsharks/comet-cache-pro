@@ -87,11 +87,6 @@ trait MenuPageUtils
         if ($this->options['stats_enable']) {
             add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $this->network_cap, GLOBAL_NS.'-stats', [$this, 'menuPageStats']);
         } /*[/pro]*/
-
-        /*[pro strip-from="lite"]*/
-        if (current_user_can($this->network_cap)) {
-            add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $this->update_cap, GLOBAL_NS.'-pro-updater', [$this, 'menuPageProUpdater']);
-        } /*[/pro]*/
     }
 
     /**
@@ -116,10 +111,6 @@ trait MenuPageUtils
         if ($this->options['stats_enable']) {
             add_submenu_page(GLOBAL_NS, __('Stats / Charts', SLUG_TD), __('Stats / Charts', SLUG_TD), $this->cap, GLOBAL_NS.'-stats', [$this, 'menuPageStats']);
         } /*[/pro]*/
-
-        /*[pro strip-from="lite"]*/
-        add_submenu_page(GLOBAL_NS, __('Pro Plugin Updater', SLUG_TD), __('Plugin Updater', SLUG_TD), $this->update_cap, GLOBAL_NS.'-pro-updater', [$this, 'menuPageProUpdater']);
-        /*[/pro]*/
     }
 
     /**
@@ -198,24 +189,12 @@ trait MenuPageUtils
     }
     /*[/pro]*/
 
-    /*[pro strip-from="lite"]*/
-    /**
-     * Loads admin menu page for pro updater.
-     *
-     * @since 150422 Rewrite.
-     */
-    public function menuPageProUpdater()
-    {
-        new Classes\MenuPage('pro-updater');
-    }
-    /*[/pro]*/
-
     /**
      * WordPress admin icon color schemes.
      *
      * @since 150422 Rewrite.
      *
-     * @type array WP admin icon colors.
+     * @var array WP admin icon colors.
      *
      * @note These must be hard-coded, because they don't become available
      *    in core until `admin_init`; i.e., too late for `admin_menu`.
