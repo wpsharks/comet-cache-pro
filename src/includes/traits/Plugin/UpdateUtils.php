@@ -180,6 +180,7 @@ trait UpdateUtils
         if ($latest_version && $latest_package && version_compare($latest_version, VERSION, '>')) {
             $report->response[$plugin_basename] = (object) [
                 'id'          => 0,
+                'autoupdate'  => true,
                 'url'         => $plugin_url,
                 'slug'        => $plugin_slug,
                 'plugin'      => $plugin_basename,
