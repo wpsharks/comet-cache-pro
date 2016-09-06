@@ -163,7 +163,7 @@ class Actions extends AbsBase
         $cdn_counter     = $this->plugin->wipeCdnCache(true);
 
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
-        $response .= __('<p>Cache wiped for all sites. Recreation will occur automatically over time.</p>', SLUG_TD);
+        $response .= __('<p>Cache wiped for all sites. Re-creation will occur automatically over time.</p>', SLUG_TD);
 
         if ($opcache_counter) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
@@ -206,9 +206,9 @@ class Actions extends AbsBase
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
 
         if (is_multisite() && is_main_site()) {
-            $response .= __('<p>Cache cleared for main site. Recreation will occur automatically over time.</p>', SLUG_TD);
+            $response .= __('<p>Cache cleared for main site. Re-creation will occur automatically over time.</p>', SLUG_TD);
         } else {
-            $response .= __('<p>Cache cleared for this site. Recreation will occur automatically over time.</p>', SLUG_TD);
+            $response .= __('<p>Cache cleared for this site. Re-creation will occur automatically over time.</p>', SLUG_TD);
         }
         if ($opcache_counter) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
