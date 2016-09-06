@@ -47,7 +47,7 @@ trait OptionUtils
      * @since 151002 Improving multisite compat.
      *
      * @param array $options One or more new options.
-     * @param bool  $intersect Discard options not present in array of defaults
+     * @param bool  $intersect Discard options not present in $this->default_options
      *
      * @return array Plugin options after update.
      *
