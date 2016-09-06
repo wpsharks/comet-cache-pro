@@ -47,10 +47,13 @@ trait OptionUtils
      * @since 151002 Improving multisite compat.
      *
      * @param array $options One or more new options.
+     * @param bool  $intersect Discard options not present in array of defaults
      *
      * @return array Plugin options after update.
+     *
+     * @note $intersect should be `false` when this method is called via a VS upgrade routine. See https://git.io/viGIK
      */
-    public function updateOptions(array $options)
+    public function updateOptions(array $options, $intersect = true)
     {
         if (!IS_PRO) { // Do not save Pro option keys.
             $options = array_diff_key($options, $this->pro_only_option_keys);
@@ -59,7 +62,7 @@ trait OptionUtils
             $this->tryErasingAllFilesDirsIn($this->wpContentBaseDirTo(''));
         }
         $this->options = array_merge($this->default_options, $this->options, $options);
-        $this->options = array_intersect_key($this->options, $this->default_options);
+        $this->options = $intersect ? array_intersect_key($this->options, $this->default_options) : $this->options;
         update_site_option(GLOBAL_NS.'_options', $this->options);
 
         return $this->getOptions();

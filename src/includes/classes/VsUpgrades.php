@@ -76,7 +76,7 @@ class VsUpgrades extends AbsBase
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (isset($existing_options['admin_bar_enable'])) {
                     $this->plugin->options['cache_clear_admin_bar_enable'] = $existing_options['admin_bar_enable'];
-                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->updateOptions($this->plugin->options, false); // Save/update options.
                 }
             }
         }
@@ -115,7 +115,7 @@ class VsUpgrades extends AbsBase
                     $this->plugin->options['cdn_blacklisted_extensions'] = $this->plugin->default_options['cdn_blacklisted_extensions'];
                 }
                 if ($this->plugin->options !== $existing_options) {
-                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->updateOptions($this->plugin->options, false); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
             }
@@ -196,7 +196,7 @@ class VsUpgrades extends AbsBase
             $this->plugin->options['base_dir']    = $this->plugin->default_options['base_dir'];
             $this->plugin->options['crons_setup'] = $this->plugin->default_options['crons_setup'];
 
-            $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+            $this->plugin->updateOptions($this->plugin->options, false); // Save/update options.
             $this->plugin->activate(); // Reactivate plugin w/ new options.
 
             $this->plugin->enqueueMainNotice(
@@ -218,7 +218,7 @@ class VsUpgrades extends AbsBase
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 $this->plugin->options['cache_clear_term_other_enable'] = $this->plugin->default_options['cache_clear_term_other_enable'];
                 if ($this->plugin->options !== $existing_options) {
-                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->updateOptions($this->plugin->options, false); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
             }
@@ -249,7 +249,7 @@ class VsUpgrades extends AbsBase
                     $this->plugin->options['htaccess_access_control_allow_origin'] = $existing_options['cdn_enable'];
                 }
                 if ($this->plugin->options !== $existing_options) {
-                    $this->plugin->updateOptions($this->plugin->options); // Save/update options.
+                    $this->plugin->updateOptions($this->plugin->options, false); // Save/update options.
                     $this->plugin->activate(); // Reactivate plugin w/ new options.
                 }
             }

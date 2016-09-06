@@ -47,7 +47,7 @@ trait InstallUtils
         if (version_compare($prev_version, VERSION, '>=')) {
             return; // Nothing to do; up-to-date.
         }
-        $this->updateOptions(['version' => VERSION]);
+        $this->updateOptions(['version' => VERSION], false);
 
         new Classes\VsUpgrades($prev_version);
 
