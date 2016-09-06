@@ -481,7 +481,11 @@ class Plugin extends AbsBaseAp
             'uninstall_on_deletion' => '0', // `0|1`.
         ];
         $this->default_options = $this->applyWpFilters(GLOBAL_NS.'_default_options', $this->default_options);
-        $this->options         = $this->getOptions(); // Filters, validates, and returns plugin options.
+
+        $this->options = $this->getOptions(false); // Do not filter old options yet because VS Upgrade routines may need them.
+        if ($this->options['version'] === VERSION) { // Not upgrading? Filter, validate, and return plugin options.
+            $this->options = $this->getOptions(true);
+        }
 
         $this->cap           = $this->applyWpFilters(GLOBAL_NS.'_cap', $this->cap);
         $this->update_cap    = $this->applyWpFilters(GLOBAL_NS.'_update_cap', $this->update_cap);

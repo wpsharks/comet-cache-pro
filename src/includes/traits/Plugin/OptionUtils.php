@@ -10,9 +10,13 @@ trait OptionUtils
      *
      * @since 151002 Improving multisite compat.
      *
+     * @param bool  $intersect Discard options not present in $this->default_options
+     *
      * @return array Plugin options.
+     *
+     * @note $intersect should be `false` when this method is called via a VS upgrade routine or during inital startup on when upgrading. See https://git.io/viGIK
      */
-    public function getOptions()
+    public function getOptions($intersect = true)
     {
         if (!($options = $this->options)) { // Not defined yet?
             if (!is_array($options = get_site_option(GLOBAL_NS.'_options'))) {
@@ -27,7 +31,7 @@ trait OptionUtils
         }
         $this->options = array_merge($this->default_options, $options);
         $this->options = $this->applyWpFilters(GLOBAL_NS.'_options', $this->options);
-        $this->options = array_intersect_key($this->options, $this->default_options);
+        $this->options = $intersect ? array_intersect_key($this->options, $this->default_options) : $this->options;
 
         foreach ($this->options as $_key => &$_value) {
             $_value = trim((string) $_value); // Force strings.
