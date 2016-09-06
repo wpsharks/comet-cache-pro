@@ -11,14 +11,15 @@ trait OptionUtils
      * @since 151002 Improving multisite compat.
      *
      * @param bool  $intersect Discard options not present in $this->default_options
+     * @param bool  $refresh   Force-pull options directly from get_site_option()
      *
      * @return array Plugin options.
      *
      * @note $intersect should be `false` when this method is called via a VS upgrade routine or during inital startup on when upgrading. See https://git.io/viGIK
      */
-    public function getOptions($intersect = true)
+    public function getOptions($intersect = true, $refresh = false)
     {
-        if (!($options = $this->options)) { // Not defined yet?
+        if (!($options = $this->options) || $refresh) { // If not defined yet, or if we're forcing a refresh via get_site_option()
             if (!is_array($options = get_site_option(GLOBAL_NS.'_options'))) {
                 $options = []; // Force array.
             }
@@ -69,7 +70,7 @@ trait OptionUtils
         $this->options = $intersect ? array_intersect_key($this->options, $this->default_options) : $this->options;
         update_site_option(GLOBAL_NS.'_options', $this->options);
 
-        return $this->getOptions();
+        return $this->getOptions($intersect);
     }
 
     /**
