@@ -43,6 +43,7 @@ class VsUpgrades extends AbsBase
         $this->fromZenCache();
         $this->fromLte160227();
         $this->fromLte160521();
+        $this->fromLte160709();
     }
 
     /**
@@ -257,6 +258,18 @@ class VsUpgrades extends AbsBase
             if ($is_apache) {
                 $this->plugin->enqueueMainNotice(sprintf(__('<strong>New %1$s Feature!</strong> This release of %1$s includes a whole new panel for Apache Performance Tuning. Visit the <a href="%2$s">settings</a> and see the new options in <strong>Comet Cache → Plugin Options → Apache Optimizations</strong>.', SLUG_TD), esc_html(NAME), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))));
             }
+        }
+    }
+
+    /**
+     * Before we replaced the Pro Plugin Updater system with the WordPress Plugin Update system.
+     *
+     * @since $v
+     */
+    protected function fromLte160709()
+    {
+        if (version_compare($this->prev_version, '160709', '<=')) {
+            $this->plugin->dismissMainNotice('new-pro-version-available'); // Dismiss any existing notices like this; upgrade notices are handled by WordPress now.
         }
     }
 }
