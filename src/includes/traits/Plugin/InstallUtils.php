@@ -47,9 +47,13 @@ trait InstallUtils
         if (version_compare($prev_version, VERSION, '>=')) {
             return; // Nothing to do; up-to-date.
         }
-        $this->updateOptions(['version' => VERSION]);
+        $this->options = $this->getOptions(false, true); // Don't discard options not present in $this->default_options, and DO force-pull options directly from get_site_option()
+
+        $this->updateOptions(['version' => VERSION], false); // Retain all options in database for VS Upgrade routine
 
         new Classes\VsUpgrades($prev_version);
+
+        $this->updateOptions(['version' => VERSION], true); // Discard options not present in $this->default_options
 
         if ($this->options['enable']) {
             $this->addWpCacheToWpConfig();
