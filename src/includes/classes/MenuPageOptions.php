@@ -126,15 +126,15 @@ class MenuPageOptions extends MenuPage
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_cache_wiped'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
-            echo '   <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" /> '.__('Cache wiped across all sites; recreation will occur automatically over time.', SLUG_TD)."\n";
+            echo '   <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" /> '.__('Cache wiped across all sites; re-creation will occur automatically over time.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
         if (!empty($_REQUEST[GLOBAL_NS.'_cache_cleared'])) {
             echo '<div class="plugin-menu-page-notice notice">'."\n";
             if (is_multisite() && is_main_site()) {
-                echo '<img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" /> '.__('Cache cleared for main site; recreation will occur automatically over time.', SLUG_TD)."\n";
+                echo '<img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" /> '.__('Cache cleared for main site; re-creation will occur automatically over time.', SLUG_TD)."\n";
             } else {
-                echo '<img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" /> '.__('Cache cleared for this site; recreation will occur automatically over time.', SLUG_TD)."\n";
+                echo '<img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" /> '.__('Cache cleared for this site; re-creation will occur automatically over time.', SLUG_TD)."\n";
             }
             echo '</div>'."\n";
         }
@@ -250,6 +250,7 @@ class MenuPageOptions extends MenuPage
             echo '      <p><input type="password" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_password]" value="'.esc_attr($this->plugin->options['pro_update_password']).'" autocomplete="new-password" /></p>'."\n";
 
             echo '      <hr />'."\n";
+            echo '      <h3>'.__('Beta Program', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for automatic updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn\'t mean you\'ll want to do the same. :-) Please report any issues with Release Candidates on <a href="https://github.com/websharks/comet-cache/issues/" target="_blank">GitHub</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
 
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_check_stable]" autocomplete="off">'."\n";
@@ -902,6 +903,9 @@ class MenuPageOptions extends MenuPage
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-question-circle si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable WebSharks™ HTML Compression?', SLUG_TD).'</h3>'."\n";
+            if (is_plugin_active('autoptimize/autoptimize.php')) {
+                echo '      <p class="warning">'.__('<strong>Autoptimize + Comet Cache:</strong> Comet Cache has detected that you are running the Autoptimize plugin. Autoptimize and the HTML Compressor feature of Comet Cache are both designed to compress HTML, CSS, and JavaScript. Enabling the HTML Compressor alongside Autoptimize may result in unexpected behavior. If you\'re happy with Autoptimize, you can leave the HTML Compressor disabled. All other Comet Cache features run great alongside Autoptimize.', SLUG_TD).' <i class="si si-smile-o"></i></p>';
+            }
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htmlc_enable]" data-target=".-htmlc-options">'."\n";
             echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htmlc_enable'], '0', false)).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['htmlc_enable'], '1', false)).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', SLUG_TD).'</option>'."\n";
