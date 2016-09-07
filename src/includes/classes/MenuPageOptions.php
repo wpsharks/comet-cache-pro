@@ -902,6 +902,9 @@ class MenuPageOptions extends MenuPage
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
             echo '      <i class="si si-question-circle si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
             echo '      <h3>'.__('Enable WebSharks™ HTML Compression?', SLUG_TD).'</h3>'."\n";
+            if (is_plugin_active('autoptimize/autoptimize.php')) {
+                echo '      <p class="warning">'.__('<strong>Autoptimize + Comet Cache:</strong> Comet Cache has detected that you are running the Autoptimize plugin. Autoptimize and the HTML Compressor feature of Comet Cache are both designed to compress HTML, CSS, and JavaScript. Enabling the HTML Compressor alongside Autoptimize may result in unexpected behavior. If you\'re happy with Autoptimize, you can leave the HTML Compressor disabled. All other Comet Cache features run great alongside Autoptimize.', SLUG_TD).' <i class="si si-smile-o"></i></p>';
+            }
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htmlc_enable]" data-target=".-htmlc-options">'."\n";
             echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htmlc_enable'], '0', false)).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['htmlc_enable'], '1', false)).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', SLUG_TD).'</option>'."\n";
