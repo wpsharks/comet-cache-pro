@@ -8,7 +8,7 @@ Text Domain: comet-cache
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Contributors: WebSharks, JasWSInc, raamdev, renzms, KristineDS, sitegeek
+Contributors: WebSharks, JasWSInc, raamdev, renzms, KristineDS
 Donate link: http://websharks-inc.com/r/wp-theme-plugin-donation/
 Tags: cache, speed, performance, fast, caching, advanced cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
 
