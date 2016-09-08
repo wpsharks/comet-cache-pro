@@ -22,10 +22,8 @@ class Actions extends AbsBase
         'ajaxDirStats',
         /*[/pro]*/
 
-        /*[pro strip-from="lite"]*/
         'ajaxWipeCache',
         'ajaxClearCache',
-        /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
         'ajaxClearCacheUrl',
@@ -140,7 +138,7 @@ class Actions extends AbsBase
         wp_redirect($redirect_to).exit();
     }
 
-    /*[pro strip-from="lite"]*/
+
     /**
      * Action handler.
      *
@@ -157,14 +155,17 @@ class Actions extends AbsBase
             return; // Unauthenticated POST data.
         }
         $counter         = $this->plugin->wipeCache(true);
+        /*[pro strip-from="lite"]*/
         $s2clean_counter = $this->plugin->wipeS2CleanCache(true);
         $eval_output     = $this->plugin->wipeEvalCode(true);
         $opcache_counter = $this->plugin->wipeOpcache(true);
         $cdn_counter     = $this->plugin->wipeCdnCache(true);
+        /*[/pro]*/
 
         $response = sprintf(__('<p>Wiped a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
         $response .= __('<p>Cache wiped for all sites. Re-creation will occur automatically over time.</p>', SLUG_TD);
 
+        /*[pro strip-from="lite"]*/
         if ($opcache_counter) {
             $response .= sprintf(__('<p><strong>Also wiped <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
@@ -177,11 +178,12 @@ class Actions extends AbsBase
         if ($cdn_counter > 0) {
             $response .= sprintf(__('<p><strong>Also wiped CDN cache. Invalidation counter is now <code>%1$s</code>.</strong></p>', SLUG_TD), $cdn_counter);
         }
+        /*[/pro]*/
         exit($response); // JavaScript will take it from here.
     }
-    /*[/pro]*/
 
-    /*[pro strip-from="lite"]*/
+
+
     /**
      * Action handler.
      *
@@ -198,11 +200,12 @@ class Actions extends AbsBase
             return; // Unauthenticated POST data.
         }
         $counter         = $this->plugin->clearCache(true);
+        /*[pro strip-from="lite"]*/
         $s2clean_counter = $this->plugin->clearS2CleanCache(true);
         $eval_output     = $this->plugin->clearEvalCode(true);
         $opcache_counter = $this->plugin->clearOpcache(true);
         $cdn_counter     = $this->plugin->clearCdnCache(true);
-
+        /*[/pro]*/
         $response = sprintf(__('<p>Cleared a total of <code>%2$s</code> cache files.</p>', SLUG_TD), esc_html(NAME), esc_html($counter));
 
         if (is_multisite() && is_main_site()) {
@@ -210,6 +213,7 @@ class Actions extends AbsBase
         } else {
             $response .= __('<p>Cache cleared for this site. Re-creation will occur automatically over time.</p>', SLUG_TD);
         }
+        /*[pro strip-from="lite"]*/
         if ($opcache_counter) {
             $response .= sprintf(__('<p><strong>Also cleared <code>%1$s</code> OPcache keys.</strong></p>', SLUG_TD), $opcache_counter);
         }
@@ -222,9 +226,10 @@ class Actions extends AbsBase
         if ($cdn_counter > 0) {
             $response .= sprintf(__('<p><strong>Also cleared CDN cache. Invalidation counter is now <code>%1$s</code>.</strong></p>', SLUG_TD), $cdn_counter);
         }
+        /*[/pro]*/
         exit($response); // JavaScript will take it from here.
     }
-    /*[/pro]*/
+
 
     /*[pro strip-from="lite"]*/
     /**

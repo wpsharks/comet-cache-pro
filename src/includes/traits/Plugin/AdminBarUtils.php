@@ -1,6 +1,5 @@
 <?php
-/*[pro exclude-file-from="lite"]*/
-/*[pro strip-from="lite"]*/
+
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
@@ -23,14 +22,13 @@ trait AdminBarUtils
             return $showing; // Already cached this.
         }
         $is_multisite = is_multisite(); // Call this once only.
-
         if (($showing = $this->options['enable'] && is_admin_bar_showing())) {
             switch ($feature) {
                 case 'cache_wipe':
                     $showing = $this->options['cache_clear_admin_bar_enable'] && $is_multisite;
                     break;
-
                 case 'cache_clear':
+                /*[pro strip-from="lite"]*/
                 case 'cache_clear_options':
                     $showing = $this->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $this->isMenuPage(GLOBAL_NS.'*'));
                     // `$this->isMenuPage(GLOBAL_NS.'*')` shows "Cache Clear" button in Network Admin when configuring options; i.e., avoids confusion.
@@ -42,25 +40,29 @@ trait AdminBarUtils
                 case 'stats':
                     $showing = $this->options['stats_enable'] && $this->options['stats_admin_bar_enable'];
                     break;
+                /*[/pro]*/
 
                 default: // Default case handler.
                     $showing = ($this->options['cache_clear_admin_bar_enable'] && $is_multisite)
-                               || ($this->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $this->isMenuPage(GLOBAL_NS.'*')))
-                               || ($this->options['stats_enable'] && $this->options['stats_admin_bar_enable']);
+                               /*[pro strip-from="lite"]*/
+                               || ($this->options['stats_enable'] && $this->options['stats_admin_bar_enable'])
+                               /*[/pro]*/
+                               || ($this->options['cache_clear_admin_bar_enable'] && (!$is_multisite || !is_network_admin() || $this->isMenuPage(GLOBAL_NS.'*')));
                     break;
             }
         }
         if ($showing) {
             $current_user_can_wipe_cache  = $is_multisite && current_user_can($this->network_cap);
             $current_user_can_clear_cache = $this->currentUserCanClearCache();
+            /*[pro strip-from="lite"]*/
             $current_user_can_see_stats   = $this->currentUserCanSeeStats();
-
+            /*[/pro]*/
             switch ($feature) {
                 case 'cache_wipe':
                     $showing = $current_user_can_wipe_cache;
                     break;
-
                 case 'cache_clear':
+                /*[pro strip-from="lite"]*/
                 case 'cache_clear_options':
                     $showing = $current_user_can_clear_cache;
                     break;
@@ -68,17 +70,19 @@ trait AdminBarUtils
                 case 'stats':
                     $showing = $current_user_can_see_stats;
                     break;
-
+                /*[/pro]*/
                 default: // Default case handler.
                     $showing = $current_user_can_wipe_cache
-                               || $current_user_can_clear_cache
-                               || $current_user_can_see_stats;
+                               /*[pro strip-from="lite"]*/
+                               || $current_user_can_see_stats
+                               /*[/pro]*/
+                               || $current_user_can_clear_cache;
+
                     break;
             }
         }
         return $showing;
     }
-
     /**
      * Filter WordPress admin bar.
      *
@@ -98,10 +102,8 @@ trait AdminBarUtils
                 [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-wipe',
-
                     'title' => __('Wipe', SLUG_TD),
                     'href'  => '#',
-
                     'meta' => [
                         'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
                         'class'    => '-wipe',
@@ -111,14 +113,13 @@ trait AdminBarUtils
             );
         }
         if ($this->adminBarShowing('cache_clear')) {
+            /*[pro strip-from="lite"]*/
             if (($cache_clear_options_showing = $this->adminBarShowing('cache_clear_options'))) {
                 $cache_clear_options = '<li class="-home-url-only"><a href="#" title="'.__('Clear the Home Page cache', SLUG_TD).'">'.__('Home Page', SLUG_TD).'</a></li>';
-
                 if (!is_admin()) {
                     $cache_clear_options .= '<li class="-current-url-only"><a href="#" title="'.__('Clear the cache for the current URL', SLUG_TD).'">'.__('Current URL', SLUG_TD).'</a></li>';
                 }
                 $cache_clear_options .= '<li class="-specific-url-only"><a href="#" title="'.__('Clear the cache for a specific URL', SLUG_TD).'">'.__('Specific URL', SLUG_TD).'</a></li>';
-
                 if ($this->functionIsPossible('opcache_reset') && $this->currentUserCanClearOpCache()) {
                     $cache_clear_options .= '<li class="-opcache-only"><a href="#" title="'.__('Clear PHP\'s OPcache', SLUG_TD).'">'.__('OPcache', SLUG_TD).'</a></li>';
                 }
@@ -131,12 +132,12 @@ trait AdminBarUtils
             } else {
                 $cache_clear_options = ''; // Empty in this default case.
             }
+
             if ($cache_clear_options && $this->options['cache_clear_admin_bar_options_enable'] === '2') {
                 $wp_admin_bar->add_menu(
                     [
                         'parent' => 'top-secondary',
                         'id'     => GLOBAL_NS.'-clear-options',
-
                         'title' => '',
                         'href'  => '#',
                         'meta'  => [
@@ -150,7 +151,6 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear-options',
                         'id'     => GLOBAL_NS.'-clear-options-wrapper',
-
                         'meta' => [
                             'class' => '-wrapper',
                         ],
@@ -160,17 +160,13 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear-options-wrapper',
                         'id'     => GLOBAL_NS.'-clear-options-container',
-
                         'title' => '<div class="-label">'.
                                    '   <span class="-text">'.__('Clear Cache', SLUG_TD).'</span>'.
                                    '</div>'.
-
                                    '<ul class="-options">'.
                                    '   '.$cache_clear_options.
                                    '</ul>'.
-
                                    '<div class="-spacer"></div>',
-
                         'meta' => [
                             'class'    => '-container',
                             'tabindex' => -1,
@@ -178,11 +174,11 @@ trait AdminBarUtils
                     ]
                 );
             }
+            /*[/pro]*/
             $wp_admin_bar->add_menu(
                 [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-clear',
-
                     'title' => __('Clear Cache', SLUG_TD),
                     'href'  => '#',
                     'meta'  => [
@@ -194,12 +190,12 @@ trait AdminBarUtils
                     ],
                 ]
             );
+            /*[pro strip-from="lite"]*/
             if ($cache_clear_options && $this->options['cache_clear_admin_bar_options_enable'] === '1') {
                 $wp_admin_bar->add_group(
                     [
                         'parent' => GLOBAL_NS.'-clear',
                         'id'     => GLOBAL_NS.'-clear-options-wrapper',
-
                         'meta' => [
                             'class' => '-wrapper',
                         ],
@@ -209,13 +205,10 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear-options-wrapper',
                         'id'     => GLOBAL_NS.'-clear-options-container',
-
                         'title' => '<ul class="-options">'.
                                    '   '.$cache_clear_options.
                                    '</ul>'.
-
                                    '<div class="-spacer"></div>',
-
                         'meta' => [
                             'class'    => '-container',
                             'tabindex' => -1,
@@ -223,16 +216,16 @@ trait AdminBarUtils
                     ]
                 );
             }
+            /*[/pro]*/
         }
+        /*[pro strip-from="lite"]*/
         if ($this->adminBarShowing('stats')) {
             $wp_admin_bar->add_menu(
                 [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-stats',
-
                     'title' => __('Cache Stats', SLUG_TD),
                     'href'  => esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'',
-
                     'meta' => [
                         'class'    => '-stats',
                         'tabindex' => -1,
@@ -243,7 +236,6 @@ trait AdminBarUtils
                 [
                     'parent' => GLOBAL_NS.'-stats',
                     'id'     => GLOBAL_NS.'-stats-wrapper',
-
                     'meta' => [
                         'class' => '-wrapper',
                     ],
@@ -253,33 +245,26 @@ trait AdminBarUtils
                 [
                     'parent' => GLOBAL_NS.'-stats-wrapper',
                     'id'     => GLOBAL_NS.'-stats-container',
-
                     'title' => '<div class="-refreshing"></div>'.
-
                                '<canvas class="-chart-a"></canvas>'.
                                // '<canvas class="-chart-b"></canvas>'.
-
                                '<div class="-totals">'.
                                '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
                                '  <div class="-files"><span class="-value">&nbsp;</span></div>'.
                                '  <div class="-size"><span class="-value">&nbsp;</span></div>'.
                                '  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$this->options['base_dir'].'/*').'</div>'.
                                '</div>'.
-
                                '<div class="-disk">'.
                                '  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'.
                                '  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
                                '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
                                '</div>'.
-
                                (current_user_can($this->cap) ?
                                    '<div class="-more-info">'.
                                    '  <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
                                    '</div>'
                                    : '').
-
                                '<div class="-spacer"></div>',
-
                     'meta' => [
                         'class'    => '-container',
                         'tabindex' => -1,
@@ -287,8 +272,8 @@ trait AdminBarUtils
                 ]
             );
         }
+        /*[/pro]*/
     }
-
     /**
      * Injects `<meta>` tag w/ JSON-encoded data.
      *
@@ -324,7 +309,6 @@ trait AdminBarUtils
         echo '<meta property="'.esc_attr(GLOBAL_NS).':admin-bar-vars" content="data-json"'.
              ' data-json="'.esc_attr(json_encode($vars)).'" id="'.esc_attr(GLOBAL_NS).'-admin-bar-vars" />'."\n";
     }
-
     /**
      * Adds CSS for WordPress admin bar.
      *
@@ -339,10 +323,8 @@ trait AdminBarUtils
             return; // Nothing to do.
         }
         $deps = []; // Plugin dependencies.
-
         wp_enqueue_style(GLOBAL_NS.'-admin-bar', $this->url('/src/client-s/css/admin-bar.min.css'), $deps, VERSION, 'all');
     }
-
     /**
      * Adds JS for WordPress admin bar.
      *
@@ -357,7 +339,6 @@ trait AdminBarUtils
             return; // Nothing to do.
         }
         $deps = ['jquery', 'admin-bar']; // Plugin dependencies.
-
         if ($this->adminBarShowing('stats')) {
             $deps[] = 'chartjs'; // Add ChartJS dependency.
             wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), [], null, true);
@@ -365,4 +346,3 @@ trait AdminBarUtils
         wp_enqueue_script(GLOBAL_NS.'-admin-bar', $this->url('/src/client-s/js/admin-bar.min.js'), $deps, VERSION, true);
     }
 }
-/*[/pro]*/

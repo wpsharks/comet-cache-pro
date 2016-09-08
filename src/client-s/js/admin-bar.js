@@ -1,5 +1,3 @@
-/*![pro strip-from='lite']*/
-
 (function ($) {
   'use strict'; // Standards.
 
@@ -10,23 +8,25 @@
     $document = $(document);
 
   plugin.onReady = function () {
+    /*[pro strip-from="lite"]*/
     plugin.statsData = null;
     plugin.statsRunning = false;
+    /*[/pro]*/
     plugin.hideAJAXResponseTimeout = null;
     plugin.vars = $('#' + plugin.namespace + '-admin-bar-vars').data('json');
 
     $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
-
+    /*[pro strip-from="lite"]*/
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-home-url-only > a').on('click', plugin.clearCacheHomeUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-current-url-only > a').on('click', plugin.clearCacheCurrentUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-specific-url-only > a').on('click', plugin.clearCacheSpecificUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-opcache-only > a').on('click', plugin.clearCacheOpCacheOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-transients-only > a').on('click', plugin.clearExpiredTransientsOnly);
-
+    /*[/pro]*/
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
-
+    /*[pro strip-from="lite"]*/
     var $stats = $('#wp-admin-bar-' + plugin.namespace + '-stats'),
       $statsWrapper = $stats.find('.-wrapper'),
       $statsContainer = $statsWrapper.find('.-container');
@@ -56,6 +56,7 @@
         characterData: true
       }); // See: <http://jas.xyz/1JlzCdi>
     }
+    /*[/pro]*/
   };
 
   plugin.wipeCache = function (event) {
@@ -89,6 +90,7 @@
 
   plugin.clearCache = function (event, options) {
     plugin.preventDefault(event);
+    /*[pro strip-from="lite"]*/
     plugin.statsData = null;
 
     options = options || {};
@@ -98,13 +100,14 @@
       cdnOnly: false,
       transientsOnly: false
     }, options);
+    /*[/pro]*/
 
     var postVars = {
       _wpnonce: plugin.vars._wpnonce
     }; // HTTP post vars.
 
     var isClearOption = false;
-
+    /*[pro strip-from="lite"]*/
     if (o.urlOnly) {
       isClearOption = true;
       postVars[plugin.namespace] = {
@@ -125,15 +128,18 @@
       postVars[plugin.namespace] = {
         ajaxClearExpiredTransients: '1'
       };
-    } else {
+    } else
+     /*[/pro]*/
+     {
       postVars[plugin.namespace] = {
         ajaxClearCache: '1'
       };
     }
     var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
+    /*[pro strip-from="lite"]*/
     var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-label');
     var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper  .-options');
-
+    /*[/pro]*/
     plugin.removeAJAXResponse();
 
     if (isClearOption && $clearOptionsLabel.length) {
@@ -158,7 +164,7 @@
       plugin.showAJAXResponse(); // Show response.
     });
   };
-
+  /*[pro strip-from="lite"]*/
   plugin.clearCacheHomeUrlOnly = function (event) {
     plugin.clearCache(event, {
       urlOnly: 'home'
@@ -200,6 +206,7 @@
       transientsOnly: true
     });
   };
+  /*[/pro]*/
 
   plugin.showAJAXResponse = function () {
     clearTimeout(plugin.hideAJAXResponseTimeout);
@@ -235,7 +242,7 @@
     $('.' + plugin.namespace + '-ajax-response')
       .off(plugin.animationEndEvents).remove();
   };
-
+  /*[pro strip-from="lite"]*/
   plugin.stats = function () {
     if (plugin.statsRunning) {
       return; // Still running.
@@ -514,6 +521,7 @@
     beforeData(); // Begin w/ data acquisition.
   };
 
+
   plugin.bytesToSizeLabel = function (bytes, decimals) {
     if (typeof bytes !== 'number' || bytes <= 1) {
       return bytes === 1 ? '1 byte' : '0 bytes';
@@ -575,12 +583,10 @@
     });
     return observer; // See: <http://caniuse.com/#feat=mutationobserver>
   }());
-
+  /*[/pro]*/
   plugin.animationEndEvents = // All vendor prefixes.
     'webkitAnimationEnd mozAnimationEnd msAnimationEnd oAnimationEnd animationEnd';
 
   $document.ready(plugin.onReady); // On DOM ready.
 
 })(jQuery);
-
-/*![/pro]*/
