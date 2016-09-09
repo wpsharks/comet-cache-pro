@@ -1,0 +1,22 @@
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+    .plugin-menu-page-section-heading>small {
+      font-size: 80%;
+      font-style: italic;
+      margin: 0;
+      display: block;
+      opacity: 0.5;
+    }
+
+    .plugin-menu-page img.screenshot {
+      float: right;
+      width:90%;
+      min-width:480px;
+      border-radius: 2px;
+      padding: 0.5em;
+      margin: 0 0 2em 2em;
+      background: #fff;
+      border: 1px solid #afafaf;
+      box-shadow: 0 0 5px 0 rgba(0,0,0,0.2) inset;
+    }
+    
+	}
