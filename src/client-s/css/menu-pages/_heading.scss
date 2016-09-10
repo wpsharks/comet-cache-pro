@@ -1,4 +1,7 @@
 .plugin-menu-page-heading {
+  @media only screen and (max-device-width: 500px) {
+    margin-right:             100px;
+  }
   .plugin-menu-page-restore-defaults,
   .plugin-menu-page-panel-togglers {
     float:                    right;
@@ -23,9 +26,34 @@
       line-height:            1.5em;
       margin:                 0 0.5em;
       display:                inline-block;
+
+      @media only screen and (max-device-width: 500px) {
+        text-decoration:        none;
+        line-height:            1.5em;
+        margin:                 0 3em 0 0;
+        display:                inline-block;
+      }
     }
   }
-  .plugin-menu-page-support-links,
+  .plugin-menu-page-support-links{
+    float:                    right;
+    clear:                    right;
+    text-align:               right;
+    max-width:                400px;
+    margin:                   .5em 0 0;
+
+    a {
+      text-decoration:        none;
+      margin:                 0 0.5em;
+      display:                inline-block;
+
+      @media only screen and (max-device-width: 500px) {
+        text-decoration:        none;
+        margin:                 0 1em;
+        display:                inline-block;
+      }
+    }
+  }
   .plugin-menu-page-mailing-list-links {
     float:                    right;
     clear:                    right;
@@ -37,6 +65,12 @@
       text-decoration:        none;
       margin:                 0 0.5em;
       display:                inline-block;
+
+      @media only screen and (max-device-width: 500px) {
+        text-decoration:        none;
+        margin:                 0 1em;
+        display:                inline-block;
+      }
     }
   }
   .plugin-menu-page-version {
@@ -45,5 +79,13 @@
     min-width: 350px;
     margin: 0.5em 0 0 0;
     text-align: right;
+
+    @media only screen and (max-device-width: 500px) {
+      float: right;
+      clear: right;
+      min-width: 350px;
+      margin: 0.5em 2em 0 0;
+      text-align: right;
+    }
   }
 }
