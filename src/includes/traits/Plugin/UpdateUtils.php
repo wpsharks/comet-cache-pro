@@ -116,9 +116,16 @@ trait UpdateUtils
         $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
         $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
 
+        $this->dismissMainNotice('pro_update_error'); // Clear any previous error notice in case a previous issue has been fixed.
+
+        if (!empty($product_api_response->error)) {
+            $this->enqueueMainNotice(sprintf(__('<strong>Comet Cache Pro:</strong> An error occurred while checking for updates: <code>%1$s</code><br/><br/>Please review <strong><a href="%2$s">Comet Cache Pro → Plugin Options → Update Credentials</a></strong>.', SLUG_TD), esc_attr($product_api_response->error), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))), ['class' => 'error', 'persistent_key' => 'pro_update_error', 'dismissable' => false]);
+
+            return; // Nothing more we can do.
+        }
+
         if (is_object($product_api_response) && !empty($product_api_response->pro_version) && !empty($product_api_response->pro_zip)) {
             $this->updateOptions(['latest_pro_version' => $product_api_response->pro_version, 'latest_pro_package' => $product_api_response->pro_zip]);
-            //
         } else { // Let's try the proxy server as a fallback.
             $product_api_url      = 'http://proxy.websharks-inc.net/'.urlencode(SLUG_TD).'/';
             $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars, 'timeout' => 15]);

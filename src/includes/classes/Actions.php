@@ -563,6 +563,7 @@ class Actions extends AbsBase
         if ($this->plugin->options['enable'] && !$args['cdn_enable']) {
             $args['htaccess_access_control_allow_origin'] = 0;
         }
+        $this->plugin->dismissMainNotice('pro_update_error'); // Clear any previous error notice in case the issue has been fixed.
         /*[/pro]*/
         $args = $this->plugin->trimDeep(stripslashes_deep((array) $args));
         $this->plugin->updateOptions($args); // Save/update options.
