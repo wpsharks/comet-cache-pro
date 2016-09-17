@@ -1,5 +1,5 @@
 .plugin-menu-page-heading {
-  @media only screen and (max-device-width: 500px) {
+  @media only screen and (max-device-width: 480px) {
     margin-right:             100px;
   }
   .plugin-menu-page-restore-defaults,
@@ -27,7 +27,7 @@
       margin:                 0 0.5em;
       display:                inline-block;
 
-      @media only screen and (max-device-width: 500px) {
+      @media only screen and (max-device-width: 480px) {
         text-decoration:        none;
         line-height:            1.5em;
         margin:                 0 3em 0 0;
@@ -47,7 +47,7 @@
       margin:                 0 0.5em;
       display:                inline-block;
 
-      @media only screen and (max-device-width: 500px) {
+      @media only screen and (max-device-width: 480px) {
         text-decoration:        none;
         margin:                 0 1em;
         display:                inline-block;
@@ -66,7 +66,7 @@
       margin:                 0 0.5em;
       display:                inline-block;
 
-      @media only screen and (max-device-width: 500px) {
+      @media only screen and (max-device-width: 480px) {
         text-decoration:        none;
         margin:                 0 1em;
         display:                inline-block;
@@ -80,7 +80,7 @@
     margin: 0.5em 0 0 0;
     text-align: right;
 
-    @media only screen and (max-device-width: 500px) {
+    @media only screen and (max-device-width: 480px) {
       float: right;
       clear: right;
       min-width: 350px;
