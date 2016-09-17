@@ -9,7 +9,7 @@ trait UpdateUtils
      * Checks for a new lite release.
      *
      * @since 151220 Show version number in plugin options.
-     * @since $v Don't check current user.
+     * @since 160917 Don't check current user.
      *
      * @attaches-to `admin_init` hook.
      */
@@ -42,7 +42,7 @@ trait UpdateUtils
      * Checks for a new pro release.
      *
      * @since 150422 Rewrite.
-     * @since $v Don't check current user.
+     * @since 160917 Don't check current user.
      *
      * @attaches-to `admin_init` hook.
      */
@@ -91,7 +91,7 @@ trait UpdateUtils
     /**
      * Checks for a new pro release package.
      *
-     * @since $v Enhancing update utils.
+     * @since 160917 Enhancing update utils.
      */
     protected function maybeCheckLatestProPackage()
     {
@@ -140,7 +140,7 @@ trait UpdateUtils
     /**
      * Show latest pro version changelog.
      *
-     * @since $v Enhancing update utils.
+     * @since 160917 Enhancing update utils.
      *
      * @attaches-to `admin_init` hook.
      */
@@ -157,7 +157,7 @@ trait UpdateUtils
     /**
      * Transient filter.
      *
-     * @since $v Enhancing update utils.
+     * @since 160917 Enhancing update utils.
      *
      * @attaches-to `site_transient_update_plugins` filter.
      *
