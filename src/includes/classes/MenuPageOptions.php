@@ -910,7 +910,6 @@ class MenuPageOptions extends MenuPage
             echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htmlc_enable'], '0', false)).'>'.__('No, do NOT compress HTML/CSS/JS code at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['htmlc_enable'], '1', false)).'>'.__('Yes, I want to compress HTML/CSS/JS for blazing fast speeds.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
-            echo '      <p class="info" style="display:block;">'.__('<strong>Note:</strong> This is experimental. Please <a href="https://github.com/websharks/comet-cache/issues" target="_blank">report issues here</a>.', SLUG_TD).'</p>'."\n";
             echo '      <hr />'."\n";
             echo '      <div class="plugin-menu-page-panel-if-enabled -htmlc-options">'."\n";
             echo '         <h3>'.__('HTML Compression Options', SLUG_TD).'</h3>'."\n";
