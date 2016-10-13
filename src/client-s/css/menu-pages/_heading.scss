@@ -1,11 +1,13 @@
 .plugin-menu-page-heading {
-  @media only screen and (max-device-width: 480px) {
-    margin-right:             100px;
-  }
+
   .plugin-menu-page-restore-defaults,
   .plugin-menu-page-panel-togglers {
     float:                    right;
     margin:                   0 1em 0 0;
+    @media (max-width: 480px) {
+      float:                    left;
+      margin:                   0 3em 0 0;
+   }
   }
 
   .plugin-menu-page-panel-togglers {
@@ -21,19 +23,20 @@
     max-width:                350px;
     margin:                   1em 0 0;
 
+    @media (max-width: 480px) {
+      float:                    none;
+      clear:                    both;
+      text-align:               center;
+      margin:                   0 auto 0 auto;
+      padding:                  1em 0 0 0;
+    }
+
     a {
       text-decoration:        none;
       line-height:            1.5em;
       margin:                 0 0.5em;
       display:                inline-block;
-
-      @media only screen and (max-device-width: 480px) {
-        text-decoration:        none;
-        line-height:            1.5em;
-        margin:                 0 3em 0 0;
-        display:                inline-block;
-      }
-    }
+     }
   }
   .plugin-menu-page-support-links{
     float:                    right;
@@ -42,17 +45,18 @@
     max-width:                400px;
     margin:                   .5em 0 0;
 
+    @media (max-width: 480px) {
+      float:                    none;
+      clear:                    both;
+      text-align:               center;
+      margin:                   1em auto 1em auto;
+    }
+
     a {
       text-decoration:        none;
       margin:                 0 0.5em;
       display:                inline-block;
-
-      @media only screen and (max-device-width: 480px) {
-        text-decoration:        none;
-        margin:                 0 1em;
-        display:                inline-block;
-      }
-    }
+     }
   }
   .plugin-menu-page-mailing-list-links {
     float:                    right;
@@ -61,17 +65,18 @@
     max-width:                400px;
     margin:                   .5em 0 0;
 
+    @media (max-width: 480px) {
+      float:                    none;
+      clear:                    both;
+      text-align:               center;
+      margin:                   1em auto 1em auto;
+    }
+
     a {
       text-decoration:        none;
       margin:                 0 0.5em;
       display:                inline-block;
-
-      @media only screen and (max-device-width: 480px) {
-        text-decoration:        none;
-        margin:                 0 1em;
-        display:                inline-block;
-      }
-    }
+     }
   }
   .plugin-menu-page-version {
     float: right;
@@ -80,12 +85,11 @@
     margin: 0.5em 0 0 0;
     text-align: right;
 
-    @media only screen and (max-device-width: 480px) {
-      float: right;
-      clear: right;
-      min-width: 350px;
-      margin: 0.5em 2em 0 0;
-      text-align: right;
+   @media (max-width: 480px) {
+      float:                    none;
+      clear:                    both;
+      text-align:               center;
     }
+
   }
 }

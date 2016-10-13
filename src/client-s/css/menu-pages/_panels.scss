@@ -99,6 +99,17 @@
       color:                  $panel-body-p-color;
     }
 
+    p.speed {
+      float:                 right;
+      font-size:             120%;
+      font-weight:           bold;
+
+      @media (max-width: 480px) {
+        float:               none;
+        font-size:           120%;
+        font-weight:         bold;
+     }
+    }
     p.notice,
     p.info,
     p.warning,

@@ -1,5 +1,4 @@
 .plugin-menu-page {
-  min-width:                  500px;
   margin:                     1.25em 1.25em 1.25em 0.25em;
 
   &,
@@ -54,6 +53,7 @@
 
   img {
     border:                   0;
+    max-width:                99%;
 
     &.screenshot {
       float:                  right;
@@ -63,18 +63,7 @@
       background:             $img-screenshot-bg-color;
       border:                 1px solid $img-screenshot-border-color;
       box-shadow:             0 0 5px 0 $img-screenshot-box-shadow-color inset;
-
-      @media only screen and (max-device-width: 480px) {
-        float:                  right;
-        border-radius:          1em;
-        padding:                0.1em;
-        margin:                 0 0 1em 2em;
-        background:             $img-screenshot-bg-color;
-        border:                 1px solid $img-screenshot-border-color;
-        box-shadow:             0 0 5px 0 $img-screenshot-box-shadow-color inset;
-        height:                 auto;
-        width:                  55%;
-      }
+      max-width:              97%;
     }
   }
 
@@ -88,10 +77,6 @@
 
   label {
     @include user-select(none);
-    @media only screen and (max-device-width: 480px) {
-      @include user-select(none);
-      margin:                 7em;
-    }
 
     &.switch-primary {
       font-size:              120%;
@@ -103,17 +88,6 @@
       background:             $primary-switch-bg-color;
       border:                 1px solid $primary-switch-border-color;
       box-shadow:            -1px -1px 0 0 $primary-switch-box-shadow-color-a inset, 1px 1px 0 0 $primary-switch-box-shadow-color-b inset;
-      @media only screen and (max-device-width: 480px) {
-        font-size:              100%;
-        margin:                 7em;
-        padding:                0.5em;
-        border-radius:          4px;
-        display:                inline;
-        color:                  $primary-switch-color;
-        background:             $primary-switch-bg-color;
-        border:                 1px solid $primary-switch-border-color;
-        box-shadow:            -1px -1px 0 0 $primary-switch-box-shadow-color-a inset, 1px 1px 0 0 $primary-switch-box-shadow-color-b inset;
-      }
     }
   }
 
