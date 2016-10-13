@@ -282,7 +282,7 @@ trait InstallUtils
         $cache_dir                 = $this->cacheDir();
         $advanced_cache_file       = WP_CONTENT_DIR.'/advanced-cache.php';
         $advanced_cache_check_file = $cache_dir.'/'.mb_strtolower(SHORT_NAME).'-advanced-cache';
-        $advanced_cache_template   = dirname(dirname(__DIR__)).'/templates/advanced-cache.txt';
+        $advanced_cache_template   = dirname(dirname(__DIR__)).'/templates/advanced-cache.x-php';
 
         if (is_file($advanced_cache_file) && !is_writable($advanced_cache_file)) {
             return false; // Not possible to create.

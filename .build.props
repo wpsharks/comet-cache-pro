@@ -5,14 +5,14 @@ project_namespace                                       = WebSharks\\CometCache\
 project_text_domain                                     = comet-cache
 project_sub_namespace                                   = CometCachePro
 project_other_phar_fileset_exclusions                   = README.md
-project_other_zip_tgz_fileset_exclusions                = README.md
+project_other_zip_tgz_fileset_exclusions                = README.md, **/composer.lock, **/composer.json
 
 project_lite_title                                      = Comet Cache
 project_lite_slug                                       = comet-cache
 project_lite_namespace                                  = WebSharks\\CometCache
 project_lite_sub_namespace                              = CometCache
 project_lite_text_domain                                = comet-cache
-project_lite_other_zip_tgz_fileset_exclusions           = README.md, **/cdn-filters.txt, **/options-pro.png, **/pro-updater.png, **/stats.png, **/stats-f*.png, **/comet-cache-pro.pot
+project_lite_other_zip_tgz_fileset_exclusions           = README.md, **/cdn-filters.txt, **/options-pro.png, **/pro-updater.png, **/stats.png, **/stats-f*.png, **/comet-cache-pro.pot, **/composer.lock, **/composer.json
 project_lite_text_domain_regex_replacement_pattern      = \$this\-\>text_domain|SLUG_TD
 project_lite_alter_namespace_in_other_files_pattern     = src/includes/templates/advanced-cache.txt
 
@@ -20,4 +20,4 @@ project_version                                         = %y%m%d
 project_php_required_version                            = 5.4
 project_php_tested_up_to_version                        = ${php.version}
 project_wp_required_version                             = 4.2
-project_wp_tested_up_to_version                         = 4.6-alpha
+project_wp_tested_up_to_version                         = 4.7-alpha
