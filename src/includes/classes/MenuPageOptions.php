@@ -30,11 +30,11 @@ class MenuPageOptions extends MenuPage
         if (is_multisite()) {
             echo '<button type="button" class="plugin-menu-page-wipe-cache" style="float:right; margin-left:15px;" title="'.esc_attr(__('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD)).'"'.
                  '  data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['wipeCache' => '1']]), self_admin_url('/admin.php'))).'">'.
-                 '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+                 '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px; display:inline-block;" /></button>'."\n";
         }
         echo '   <button type="button" class="plugin-menu-page-clear-cache" style="float:right;" title="'.esc_attr(__('Clear Cache (Start Fresh)', SLUG_TD).((is_multisite()) ? __('; affects the current site only.', SLUG_TD) : '')).'"'.
              '      data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['clearCache' => '1']]), self_admin_url('/admin.php'))).'">'.
-             '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+             '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px; display:inline-block;" /></button>'."\n";
 
         echo '   <button type="button" class="plugin-menu-page-restore-defaults"'.// Restores default options.
              '      data-confirmation="'.esc_attr(__('Restore default plugin options? You will lose all of your current settings! Are you absolutely sure about this?', SLUG_TD)).'"'.
@@ -102,7 +102,7 @@ class MenuPageOptions extends MenuPage
             }
             echo '</div>'."\n";
         }
-        echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
+        echo '    <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
         echo '<div style="clear:both;"></div>'."\n";
 
@@ -305,7 +305,7 @@ class MenuPageOptions extends MenuPage
             echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear-cache-ops1-ss.png')).'" class="-clear-cache-ops-ss screenshot" />'."\n";
             echo '      <p>'.sprintf(__('Once %1$s is enabled, you will find this new option in your WordPress Admin Bar (screenshot on right). Clicking this button will clear the cache and you can start fresh at anytime (e.g., you can do this manually; and as often as you wish).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.sprintf(__('Depending on the structure of your site, there could be many reasons to clear the cache. However, the most common reasons are related to Post/Page edits or deletions, Category/Tag edits or deletions, and Theme changes. %1$s handles most scenarios all by itself. However, many site owners like to clear the cache manually; for a variety of reasons (just to force a refresh).', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_enable]" data-target=".-cache-clear-admin-bar-options, .-cache-clear-admin-bar-roles-caps" style="width:auto;">'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_enable]" data-target=".-cache-clear-admin-bar-options, .-cache-clear-admin-bar-roles-caps">'."\n";
             echo '          <option value="1"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '1', false).'>'.__('Yes, enable &quot;Clear Cache&quot; button in admin bar', SLUG_TD).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['cache_clear_admin_bar_enable'], '0', false).'>'.__('No, I don\'t intend to clear the cache manually.', SLUG_TD).'</option>'."\n";
             echo '         </select>'."\n";
@@ -980,7 +980,7 @@ class MenuPageOptions extends MenuPage
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-            echo '   <button type="button" class="plugin-menu-page-clear-cdn-cache" style="float:right; margin:0 0 1em 1em;" title="'.esc_attr(__('Clear CDN Cache (Bump CDN Invalidation Counter)', SLUG_TD)).'">'.__('Clear CDN Cache', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+            echo '   <button type="button" class="plugin-menu-page-clear-cdn-cache" style="float:right; margin:0 0 1em 1em;" title="'.esc_attr(__('Clear CDN Cache (Bump CDN Invalidation Counter)', SLUG_TD)).'">'.__('Clear CDN Cache', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px; display:inline-block;" /></button>'."\n";
             echo '      <h3>'.__('Enable Static CDN Filters (e.g., MaxCDN/CloudFront)?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn\'t require any DNS changes either. :-) Please <a href="http://cometcache.com/r/static-cdn-filters-general-instructions/" target="_blank">click here</a> for a general set of instructions.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.__('<strong>What\'s a CDN?</strong> It\'s a Content Delivery Network (i.e., a network of optimized servers) designed to cache static resources served from your site (e.g., JS/CSS/images and other static files) onto it\'s own servers, which are located strategically in various geographic areas around the world. Integrating a CDN for static files can dramatically improve the speed and performance of your site, lower the burden on your own server, and reduce latency associated with visitors attempting to access your site from geographic areas of the world that might be very far away from the primary location of your own web servers.', SLUG_TD).'</p>'."\n";

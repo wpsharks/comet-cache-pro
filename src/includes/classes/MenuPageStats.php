@@ -25,7 +25,7 @@ class MenuPageStats extends MenuPage
 
         echo '<div class="plugin-menu-page-heading">'."\n";
 
-        echo '   <button type="button" class="plugin-menu-page-stats-button" style="float:right;">'.
+        echo '   <button type="button" class="plugin-menu-page-stats-button">'.
                     __('Refresh Stats/Charts', SLUG_TD).' <i class="si si-refresh"></i>'.
                  '</button>'."\n";
 
@@ -74,7 +74,7 @@ class MenuPageStats extends MenuPage
             }
             echo '</div>'."\n";
         }
-        echo '   <img src="'.$this->plugin->url('/src/client-s/images/stats.png').'" alt="'.esc_attr(__('Statistics', SLUG_TD)).'" />'."\n";
+        echo '    <img src="'.$this->plugin->url('/src/client-s/images/stats.png').'" alt="'.esc_attr(__('Statistics', SLUG_TD)).'" />'."\n";
 
         echo '<div style="clear:both;"></div>'."\n";
 

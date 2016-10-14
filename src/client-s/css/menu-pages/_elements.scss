@@ -53,7 +53,12 @@
 
   img {
     border:                   0;
-    max-width:                99%;
+    max-width:                100%;
+
+    @media (max-width: 876px) {
+      display:                block;
+      margin:                 auto;
+    }
 
     &.screenshot {
       float:                  right;
@@ -78,6 +83,10 @@
   label {
     @include user-select(none);
 
+    @media (max-width: 500px) {
+      margin-left:                 -15px;
+    }
+
     &.switch-primary {
       font-size:              120%;
       margin:                 0;
@@ -88,6 +97,17 @@
       background:             $primary-switch-bg-color;
       border:                 1px solid $primary-switch-border-color;
       box-shadow:            -1px -1px 0 0 $primary-switch-box-shadow-color-a inset, 1px 1px 0 0 $primary-switch-box-shadow-color-b inset;
+
+      @media (max-width: 500px) {
+        margin:                 0;
+        padding:                0.5em;
+        border-radius:          4px;
+        display:                inline;
+        color:                  $primary-switch-color;
+        background:             $primary-switch-bg-color;
+        border:                 1px solid $primary-switch-border-color;
+        box-shadow:            -1px -1px 0 0 $primary-switch-box-shadow-color-a inset, 1px 1px 0 0 $primary-switch-box-shadow-color-b inset;
+      }
     }
   }
 
@@ -178,6 +198,7 @@
     &:active {
       @include transform(scale(0.98, 0.98));
     }
+
   }
 
   .info,
