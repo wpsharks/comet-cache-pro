@@ -1,6 +1,10 @@
+## [coming soon]
+
+- **HTML Debug Notes:** This version enhances the HTML comments left in the source code. When debug notes are enabled (i.e., HTML comments) they are now broken down into key/value pairs and tabulated for a cleaner display and easier debugging.
+
 = v160917 =
 
-- **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache. 
+- **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.
 - **New Feature** (Pro): Comet Cache Pro is now fully compatible with [WordPress Automatic Background Updates](https://codex.wordpress.org/Configuring_Automatic_Background_Updates#Plugin_.26_Theme_Updates_via_Filter). If you enable automatic background updates for plugins, and you save valid Comet Cache Pro License Credentials in the _Comet Cache Pro → Plugin Options → Update Credentials_ panel, you will automatically receive Pro plugin updates. Props @jaswsinc. See [Issue #289](https://github.com/websharks/comet-cache/issues/289).
 - **Bug Fix**: In some scenarios Comet Cache might produce a false-positive "Warning: mkdir(): File exists" message when checking if the cache directory exists. Comet Cache now calls `clearstatcache()` and uses `file_exists()` instead of `is_dir()` to help make this check more robust. See [Issue #786](https://github.com/websharks/comet-cache/issues/786).
 - **Bug Fix**: Fixed a bug where the Comet Cache PHP requirements check would fail and produce a fatal error when upgrading from a version of Comet Cache that did not require an extension that is now required by newer releases. This would occur when, for example, the required PHP `mbstring` extension was missing. Props @jaswsinc for finding the bug. See [Issue #817](https://github.com/websharks/comet-cache/issues/817).
