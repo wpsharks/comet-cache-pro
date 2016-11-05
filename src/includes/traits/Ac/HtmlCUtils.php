@@ -79,7 +79,7 @@ trait HtmlCUtils
                 $compressed_cache .= "\n".'<!-- '.htmlspecialchars($product_title.' '.sprintf(__('Failure: %1$s', SLUG_TD), $exception->getMessage())).' -->';
             }
         }
-        return $compressed_cache;
+        return $compressed_cache.(COMET_CACHE_DEBUGGING_ENABLE ? "\n" : '');
     }
 }
 /*[/pro]*/
