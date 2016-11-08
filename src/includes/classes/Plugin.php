@@ -194,7 +194,7 @@ class Plugin extends AbsBaseAp
         parent::__construct();
 
         /* -------------------------------------------------------------- */
-        if (!($this->enable_hooks = (boolean) $enable_hooks)) {
+        if (!($this->enable_hooks = (bool) $enable_hooks)) {
             return; // Stop here; construct without hooks.
         }
         /* -------------------------------------------------------------- */
@@ -517,17 +517,14 @@ class Plugin extends AbsBaseAp
         add_action('site_transient_update_plugins', [$this, 'onGetSiteTransientUpdatePlugins']);
         /*[/pro]*/
 
-
         add_action('admin_bar_menu', [$this, 'adminBarMenu']);
         add_action('wp_head', [$this, 'adminBarMetaTags'], 0);
         add_action('wp_enqueue_scripts', [$this, 'adminBarStyles']);
         add_action('wp_enqueue_scripts', [$this, 'adminBarScripts']);
 
-
         add_action('admin_head', [$this, 'adminBarMetaTags'], 0);
         add_action('admin_enqueue_scripts', [$this, 'adminBarStyles']);
         add_action('admin_enqueue_scripts', [$this, 'adminBarScripts']);
-
 
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminStyles']);
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminScripts']);
@@ -560,6 +557,7 @@ class Plugin extends AbsBaseAp
         add_action('pre_post_update', [$this, 'autoClearPostCacheTransition'], 10, 2);
 
         add_action('woocommerce_product_set_stock', [$this, 'autoClearPostCacheOnWooCommerceSetStock'], 10, 1);
+        add_action('woocommerce_product_set_stock_status', [$this, 'autoClearPostCacheOnWooCommerceSetStockStatus'], 10, 1);
         add_action('update_option_comment_mail_options', [$this, 'autoClearCache']);
 
         add_action('added_term_relationship', [$this, 'autoClearPostTermsCache'], 10, 1);
