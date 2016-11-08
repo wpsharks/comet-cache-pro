@@ -9,7 +9,7 @@ namespace WebSharks\CometCache\Pro\Classes;
 class VsUpgrades extends AbsBase
 {
     /**
-     * @type string Version they are upgrading from.
+     * @var string Version they are upgrading from.
      *
      * @since 150422 Rewrite.
      */
@@ -44,6 +44,7 @@ class VsUpgrades extends AbsBase
         $this->fromLte160227();
         $this->fromLte160521();
         $this->fromLte160709();
+        $this->fromLte161108();
     }
 
     /**
@@ -66,7 +67,7 @@ class VsUpgrades extends AbsBase
                     delete_option(GLOBAL_NS.'_options');
                     delete_option(GLOBAL_NS.'_apc_warning_bypass');
 
-                    if ((integer) $_child_blog['blog_id'] !== (integer) $current_site->blog_id) {
+                    if ((int) $_child_blog['blog_id'] !== (int) $current_site->blog_id) {
                         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_auto_cache');
                         wp_clear_scheduled_hook('_cron_'.GLOBAL_NS.'_cleanup');
                     }
@@ -270,6 +271,24 @@ class VsUpgrades extends AbsBase
     {
         if (version_compare($this->prev_version, '160709', '<=')) {
             $this->plugin->dismissMainNotice('new-pro-version-available'); // Dismiss any existing notices like this; upgrade notices are handled by WordPress now.
+        }
+    }
+
+    /**
+     * @since 161108 When we enhanced built-in CSS exclusions.
+     */
+    protected function fromLte161108()
+    {
+        if (version_compare($this->prev_version, '161108', '<=')) {
+            if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
+                if (IS_PRO && isset($existing_options['htmlc_css_exclusions']) && empty($existing_options['htmlc_css_exclusions'])) {
+                    $this->plugin->options['htmlc_css_exclusions'] = $this->plugin->default_options['htmlc_css_exclusions'];
+                }
+                if ($this->plugin->options !== $existing_options) {
+                    $this->plugin->updateOptions($this->plugin->options, false);
+                    $this->plugin->activate();
+                }
+            }
         }
     }
 }
