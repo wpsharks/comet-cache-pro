@@ -10,7 +10,7 @@
 
 - **Bug Fix:** Multisite installations inside a sub-directory were broken by Apache Optimizations via `.htaccess` in some scenarios. Fixed in this release. See also [issue #798](https://github.com/websharks/comet-cache/issues/798) if you'd like additional details.
 
-- **Minor UI Enhancement:** This release improves the toggle link that allows you to see additional details whenever Comet Cache automatically clears more than one facet of the cache. See also [issue #837](https://github.com/websharks/comet-cache/issues/837) if you'd like additional details.
+- **Minor UI Enhancement:** This release improves the toggle link that allows you to see additional details whenever Comet Cache automatically clears more than one facet of the cache. See also [issue #837](https://github.com/websharks/comet-cache/issues/837) and [issue #831](https://github.com/websharks/comet-cache/issues/831) if you'd like additional details.
 
 = v160917 =
 
