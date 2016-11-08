@@ -29,7 +29,7 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
     return; // Unable to find stub. Fail softly.
 }
 if (defined('WP_DEBUG') && WP_DEBUG) {
-    if ((@include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
+    if ((include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
       return; // Unable to find postload function(s). Fail softly w/ PHP warning.
     }
 } elseif ((@include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
@@ -91,6 +91,16 @@ if (!defined('COMET_CACHE_GET_REQUESTS')) {
      * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
      */
     define('COMET_CACHE_GET_REQUESTS', '%%COMET_CACHE_GET_REQUESTS%%');
+}
+if (!defined('COMET_CACHE_IGNORE_GET_REQUEST_VARS')) {
+    /**
+     * Ignore `$_GET` request query vars?
+     *
+     * @since 16xxxx First documented version.
+     *
+     * @var string A regular expression; else an empty string.
+     */
+    define('COMET_CACHE_IGNORE_GET_REQUEST_VARS', '%%COMET_CACHE_IGNORE_GET_REQUEST_VARS%%');
 }
 if (!defined('COMET_CACHE_CACHE_404_REQUESTS')) {
     /**
