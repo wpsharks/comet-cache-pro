@@ -20,7 +20,7 @@ class MenuPageOptions extends MenuPage
         global $is_nginx; // WP global for web server checks below.
         global $is_apache; // WP global for web server checks below.
 
-        echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data"'.
+        echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data" autocomplete="off"'.
              ' action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce()]), self_admin_url('/admin.php'))).'">'."\n";
 
         /* ----------------------------------------------------------------------------------------- */
