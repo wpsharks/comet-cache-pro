@@ -1,5 +1,7 @@
 ## [coming soon]
 
+- **i18n Compat.** This release makes all pro preview labels translatable by moving the labels that were previously defined in CSS only into HTML attribute values. See [issue #808](https://github.com/websharks/comet-cache/issues/808) if you'd like additional details.
+
 - Fixed a broken link to the [Static CDN Filters tutorial for MaxCDN integration](http://cometcache.com/r/static-cdn-filters-maxcdn/). Props @kristineds. See [Issue #842](https://github.com/websharks/comet-cache/issues/842).
 
 - **HTML Debug Notes:** This version enhances the HTML comments left in the source code. When debug notes are enabled (i.e., HTML comments) they are now broken down into key/value pairs and tabulated for a cleaner display and easier debugging.
