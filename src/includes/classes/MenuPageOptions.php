@@ -232,7 +232,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-sign-in"></i> '.__('Update Credentials', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -296,7 +296,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-broom"></i> '.__('Manual Cache Clearing', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -371,7 +371,7 @@ class MenuPageOptions extends MenuPage
 
         echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
-        echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
+        echo '   <a href="#" class="plugin-menu-page-panel-heading" data-additional-pro-features="'.(!IS_PRO && $this->plugin->isProPreview() ? __('additional pro features', SLUG_TD) : '').'">'."\n";
         echo '      <i class="si si-server"></i> '.__('Automatic Cache Clearing', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
@@ -381,7 +381,7 @@ class MenuPageOptions extends MenuPage
         echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/auto-clear-ss.png')).'" class="screenshot" />'."\n";
         echo '      <p>'.sprintf(__('This is built into the %1$s plugin; i.e., this functionality is "always on". If you edit a Post/Page (or delete one), %1$s will automatically clear the cache file(s) associated with that content. This way a new updated version of the cache will be created automatically the next time this content is accessed. Simple updates like this occur each time you make changes in the Dashboard, and %1$s will notify you of these as they occur. %1$s monitors changes to Posts (of any kind, including Pages), Categories, Tags, Links, Themes (even Users), and more.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '  <div class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'."\n";
+            echo '  <div data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][change_notifications_enable]" class="-no-if-enabled" style="width:auto;">'."\n";
             echo '          <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when changes are detected &amp; one or more cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['change_notifications_enable'], '0', false).'>'.sprintf(__('No, I don\'t want to know (don\'t really care) what %1$s is doing behind-the-scene.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
@@ -471,7 +471,7 @@ class MenuPageOptions extends MenuPage
 
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '      <hr />'."\n";
-            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
+            echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Misc. Auto-Clear Options', SLUG_TD).'</h3>'."\n";
             echo '      <h4 style="margin-bottom:0;">'.__('Auto-Clear a List of Custom URLs Too?', SLUG_TD).'</h4>'."\n";
             echo '      <p style="margin-top:2px;">'.sprintf(__('When you update a Post/Page, approve a Comment, or make other changes where %1$s can detect that a Post/Page cache should be cleared to keep your site up-to-date; then %1$s will also clear a list of custom URLs that you list here. <strong>Please list one URL per line.</strong> A wildcard <code>*</code> character can also be used when necessary; e.g., <code>https://example.com/category/abc-followed-by-*</code>, (where <code>*</code> = 0 or more characters that are NOT a slash <code>/</code>). Other special characters include: <code>**</code> = 0 or more characters of any kind, including <code>/</code> slashes; <code>^</code> = beginning of the string; <code>$</code> = end of the string. To learn more about this syntax, please see <a href ="http://cometcache.com/r/watered-down-regex-syntax/" target="_blank">this KB article</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><textarea name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_urls]" spellcheck="false" wrap="off" rows="5">'.format_to_edit($this->plugin->options['cache_clear_urls']).'</textarea></p>'."\n";
@@ -486,7 +486,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-pie-chart"></i> '.__('Cache-Related Statistics', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -552,7 +552,7 @@ class MenuPageOptions extends MenuPage
 
         echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
-        echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
+        echo '   <a href="#" class="plugin-menu-page-panel-heading" data-additional-pro-features="'.(!IS_PRO && $this->plugin->isProPreview() ? __('additional pro features', SLUG_TD) : '').'">'."\n";
         echo '      <i class="si si-clock-o"></i> '.__('Cache Expiration Time', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
@@ -581,7 +581,7 @@ class MenuPageOptions extends MenuPage
             $_sys_getloadavg_unavailable = ($this->plugin->isProPreview() ? false : !$this->plugin->sysLoadAverages());
             echo '  <div>'."\n";
             echo '      <hr />'."\n";
-            echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'" style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.__('Disable Cache Expiration If Server Load Average is High?', SLUG_TD).'</h3>'."\n";
+            echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'" style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.__('Disable Cache Expiration If Server Load Average is High?', SLUG_TD).'</h3>'."\n";
             echo '      <p style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.sprintf(__('If you have high traffic at certain times of the day, %1$s can be told to check the current load average via <a href="http://cometcache.com/r/system-load-average-via-php/" target="_blank"><code>sys_getloadavg()</code></a>. If your server\'s load average has been high in the last 15 minutes or so, cache expiration is disabled automatically to help reduce stress on the server; i.e., to avoid generating a new version of the cache while the server is very busy.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p style="'.($_sys_getloadavg_unavailable ? 'opacity: 0.5;' : '').'">'.sprintf(__('To enable this functionality you should first determine what a high load average is for your server. If you log into your machine via SSH you can run the <code>top</code> command to get a feel for what a high load average looks like. Once you know the number, you can enter it in the field below; e.g., <code>1.05</code> might be a high load average for a server with one CPU. See also: <a href="http://cometcache.com/r/understanding-load-average/" target="_blank">Understanding Load Average</a>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p><input '.($_sys_getloadavg_unavailable ? 'disabled' : '').' type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_max_age_disable_if_load_average_is_gte]" value="'.esc_attr($this->plugin->options['cache_max_age_disable_if_load_average_is_gte']).'" /></p>'."\n";
@@ -635,7 +635,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-octi-organization"></i> '.__('Logged-In Users', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -842,7 +842,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-sitemap"></i> '.__('Auto-Cache Engine', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -896,7 +896,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-html5"></i> '.__('HTML Compression', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -975,7 +975,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-cloud"></i> '.__('Static CDN Filters', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -1077,7 +1077,7 @@ class MenuPageOptions extends MenuPage
         if ($is_apache || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.((!IS_PRO && $this->plugin->isProPreview()) ? ' pro-preview-additional-features' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-additional-pro-features="'.(!IS_PRO && $this->plugin->isProPreview() ? __('additional pro features', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-server"></i> '.__('Apache Optimizations', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -1110,7 +1110,7 @@ class MenuPageOptions extends MenuPage
 
             if (IS_PRO || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
-                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Leverage Browser Caching?', SLUG_TD).'</h3>'."\n";
+                echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Leverage Browser Caching?', SLUG_TD).'</h3>'."\n";
                 echo '      <p>'.__('<a href="https://cometcache.com/r/google-developers-http-caching/" target="_blank">Browser Caching</a> is highly recommended. When loading a single page, downloading all of the resources for that page may require multiple roundtrips between the browser and server, which delays processing and may block rendering of page content. This also incurs data costs for the visitor. With browser caching, your server tells the visitor\'s browser that it is allowed to cache static resources for a certain amount of time (Google recommends 1 week and that\'s what Comet Cache uses).', SLUG_TD).'</p>'."\n";
                 echo '      <p>'.__('In WordPress, \'Page Caching\' is all about server-side performance (reducing the amount of time it takes the server to generate the page content). With Comet Cache installed, you\'re drastically reducing page generation time. However, you can make a visitor\'s experience ​<em>even faster</em>​ when you leverage browser caching too. When this option is enabled, the visitor\'s browser will cache static resources from each page and reuse those cached resources on subsequent page loads. In this way, future visits to the same page will not require additional connections to your site to download static resources that the visitor\'s browser has already cached.', SLUG_TD).'</p>'."\n";
                 echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_browser_caching_enable]" data-target=".-htaccess-browser-caching-enable-options">'."\n";
@@ -1126,7 +1126,7 @@ class MenuPageOptions extends MenuPage
 
             if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
-                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Enforce Canonical URLs?', SLUG_TD).'</h3>'."\n";
+                echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Enforce Canonical URLs?', SLUG_TD).'</h3>'."\n";
                 echo '      <p>'.__('Permalinks (URLs) leading to Posts/Pages on your site (based on your WordPress Permalink Settings) '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? 'require a <code>.../trailing-slash/</code>' : 'do not require a <code>.../trailing-slash</code>').'. Ordinarily, WordPress enforces this by redirecting a request for '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something</code>' : '<code>.../something/</code>').', to '.($GLOBALS['wp_rewrite']->use_trailing_slashes ? '<code>.../something/</code>' : '<code>.../something</code>').', thereby forcing the final location to match your Permalink configuration. However, whenever you install a plugin like Comet Cache, much of WordPress (including this automatic redirection) is out of the picture when the cached copy of a page is being served. So enabling this option will add rules to your <code>.htaccess</code> file that make Apache aware of your WordPess Permalink configuration. Apache can do what WordPress normally would, only much more efficiently.', SLUG_TD).'</p>'."\n";
                 echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
                 echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_canonical_urls'], '0', false)).'>'.__('No, do NOT enforce canonical URLs (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
@@ -1145,7 +1145,7 @@ class MenuPageOptions extends MenuPage
 
             if ((IS_PRO && $this->plugin->options['cdn_enable']) || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
-                echo '      <h3 class="'.(!IS_PRO ? 'pro-preview-feature' : '').'">'.__('Send Access-Control-Allow-Origin Header?', SLUG_TD).'</h3>'."\n";
+                echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Send Access-Control-Allow-Origin Header?', SLUG_TD).'</h3>'."\n";
                 if ($this->plugin->options['cdn_enable'] && !$this->plugin->options['htaccess_access_control_allow_origin']) {
                     echo '        <p class="warning" style="display:block;">'.__('<strong>Warning:</strong> Send Access-Control-Allow-Origin Header has been disabled below but <strong>Comet Cache → Plugin Options → Static CDN Filters</strong> are enabled. We recommend configuring your server to send the <code>Access-Control-Allow-Origin</code> header to avoid <a href="https://cometcache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/" target="_blank">CORS errors</a> when a CDN is configured.', SLUG_TD).'</p>'."\n";
                 }
@@ -1169,7 +1169,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-octi-versions"></i> '.__('Dynamic Version Salt', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
@@ -1216,7 +1216,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!IS_PRO ? ' pro-preview-feature' : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-arrow-circle-o-up"></i> '.__('Import/Export Options', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
