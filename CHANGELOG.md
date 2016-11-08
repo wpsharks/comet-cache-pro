@@ -14,6 +14,8 @@
 
 - **Bug Fix:** Don't enqueue Chart.js unnecessarily in lite version of the sofware. See also: [issue #830](https://github.com/websharks/comet-cache/issues/830) if you'd like additional details.
 
+- **Bug Fix:** Enhancing WooCommerce integration by listening to the `woocommerce_product_set_stock_status` hook in addition to the `woocommerce_product_set_stock` hook. See also: [issue #674](https://github.com/websharks/comet-cache/issues/674) if you'd like additional details.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.
