@@ -79,27 +79,13 @@ class MenuPageOptions extends MenuPage
 
         if (IS_PRO) {
             echo '<div class="plugin-menu-page-version">'."\n";
-            echo '  '.sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
-
-            if ($this->plugin->options['latest_pro_version'] && version_compare(VERSION, $this->plugin->options['latest_pro_version'], '<')) {
-                if (!$this->plugin->options['pro_update_username'] || !$this->plugin->options['pro_update_password']) {
-                    echo '(<a href="#" style="font-weight:bold;" onclick="alert(\''.sprintf(__('A username and license key are required to complete an upgrade. See: %1$s → Plugin Options → \\\'Authentication for Automatic Updates\\\'. Enter the required details and try again.', SLUG_TD), NAME).'\'); return false;">'.__('update available', SLUG_TD).'</a>)'."\n";
-                } else {
-                    echo '(<a href="'.esc_attr(self_admin_url('/update-core.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
-                }
-            } else {
-                echo '(<a href="'.esc_attr('https://cometcache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
-            }
+            echo    sprintf(__('%1$s&trade; Pro v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
+            echo    '(<a href="'.esc_attr('https://cometcache.com/changelog/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             echo '</div>'."\n";
         } else { // For the lite version (default behavior).
             echo '<div class="plugin-menu-page-version">'."\n";
-            echo '  '.sprintf(__('%1$s&trade; v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
-
-            if ($this->plugin->options['latest_lite_version'] && version_compare(VERSION, $this->plugin->options['latest_lite_version'], '<')) {
-                echo '(<a href="'.esc_attr(self_admin_url('/plugins.php')).'" style="font-weight:bold;">'.__('update available', SLUG_TD).'</a>)'."\n";
-            } else {
-                echo '(<a href="'.esc_attr('http://cometcache.com/changelog-lite/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
-            }
+            echo    sprintf(__('%1$s&trade; v%2$s', SLUG_TD), esc_html(NAME), esc_html(VERSION))."\n";
+            echo    '(<a href="'.esc_attr('http://cometcache.com/changelog-lite/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             echo '</div>'."\n";
         }
         echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
