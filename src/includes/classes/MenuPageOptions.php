@@ -216,13 +216,13 @@ class MenuPageOptions extends MenuPage
         /* ----------------------------------------------------------------------------------------- */
 
         if (IS_PRO || $this->plugin->isProPreview()) {
-            echo '<div class="plugin-menu-page-panel">'."\n";
+            echo '<div class="plugin-menu-page-panel" id="'.esc_attr(SLUG_TD.'-configure-pro-updater').'">'."\n";
 
-            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
+            echo '   <a href="#" class="plugin-menu-page-panel-heading'.(!empty($_REQUEST[GLOBAL_NS.'_configure_pro_updater']) ? ' open' : '').'" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <i class="si si-sign-in"></i> '.__('Update Credentials', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
-            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '   <div class="plugin-menu-page-panel-body'.(!empty($_REQUEST[GLOBAL_NS.'_configure_pro_updater']) ? ' open' : '').' clearfix">'."\n";
 
             echo '      <i class="si si-user si-4x" style="float:right; margin: 0 0 0 25px;"></i>'."\n";
 
