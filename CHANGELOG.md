@@ -18,6 +18,8 @@
 
 - **Bug Fix:** Avoid browser autocomplete in configuration fields by adding `autocomplete="off"` to all form tags in Comet Cache menu pages. See also: [issue #832](https://github.com/websharks/comet-cache/issues/832) if you'd like additional details.
 
+- **Bug Fix:** Automatically dismiss any persistent update notifications whenever a new version of the software is recompiled; i.e., don't continue to show an upgrade notice whenever the software has just been updated by a site owner. See also: [issue #806](https://github.com/websharks/comet-cache/issues/806) if you'd like additional details.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.

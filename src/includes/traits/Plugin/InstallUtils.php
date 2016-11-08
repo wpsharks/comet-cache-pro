@@ -64,6 +64,10 @@ trait InstallUtils
         $this->wipeCache(); // Fresh start now.
 
         $this->enqueueMainNotice(sprintf(__('<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)', SLUG_TD), esc_html(NAME)), ['push_to_top' => true]);
+
+        $this->dismissMainNotice('pro_update_error');
+        $this->dismissMainNotice('new-lite-version-available');
+        $this->dismissMainNotice('new-pro-version-available');
     }
 
     /**
