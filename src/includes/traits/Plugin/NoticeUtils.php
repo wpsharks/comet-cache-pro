@@ -166,9 +166,12 @@ trait NoticeUtils
             if ($_notice['combinable'] && !$_notice['persistent_key']) {
                 $combined_notices[] = $_notice['notice']; // Save this for displaying as part of a single, combined notice.
             } else {
-                echo '<div class="'.esc_attr($_notice['class']).'" style="clear:both; padding-right:38px; position: relative;"><p>'.$_notice['notice'].'</p>'.$_dismiss.'</div>';
+                $_notice['notice'] = trim($_notice['notice']);
+                if (!preg_match('/^\<(?:p|div|form|h[1-6]|ul|ol)[\s>]/ui', $_notice['notice'])) {
+                    $_notice['notice'] = '<p>'.$_notice['notice'].'</p>'; // Add `<p>` tag.
+                }
+                echo '<div class="'.esc_attr($_notice['class']).'" style="clear:both; padding-right:38px; position: relative;">'.$_notice['notice'].$_dismiss.'</div>';
             }
-
             if (!$_notice['persistent_key']) { // If not persistent, dismiss.
                 unset($notices[$_key]); // Dismiss; this notice has been displayed now.
             }
@@ -180,7 +183,6 @@ trait NoticeUtils
             foreach ($combined_notices as $_item) {
                 $_line_items .= '<p><span class="dashicons dashicons-yes"></span> '.$_item.'</p>'."\n";
             }
-
             $_see_details  = __('See details.', SLUG_TD);
             $_hide_details = __('Hide details.', SLUG_TD);
 
@@ -195,7 +197,6 @@ trait NoticeUtils
 
             unset($_item, $_line_item, $_combined); // Housekeeping.
         }
-
         # Update notices if something changed above.
 
         if ($notices !== $enqueued_notices) { // Something changed?

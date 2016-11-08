@@ -20,6 +20,8 @@
 
 - **Bug Fix:** Automatically dismiss any persistent update notifications whenever a new version of the software is recompiled; i.e., don't continue to show an upgrade notice whenever the software has just been updated by a site owner. See also: [issue #806](https://github.com/websharks/comet-cache/issues/806) if you'd like additional details.
 
+- **UI Enhancement:** On pro version activation, display a notice that reminds site owners to configure their Pro Update Credentials so they'll be notified by WordPress about new versions of the pro software. See also: [issue #477](https://github.com/websharks/comet-cache/issues/477) if you'd like additional details.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.

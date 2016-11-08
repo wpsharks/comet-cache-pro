@@ -19,6 +19,10 @@ trait InstallUtils
         if (defined('WP_CLI') && WP_CLI) {
             $this->updateOptions(['enable' => '1']);
         }
+        if (IS_PRO && (!$this->options['pro_update_username'] || !$this->options['pro_update_password'])) {
+            $configure_pro_updater_url = add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_configure_pro_updater' => 1]), network_admin_url('/admin.php')).'#'.SLUG_TD.'-configure-pro-updater';
+            $this->enqueueMainNotice('<form method="post" action="'.esc_url($configure_pro_updater_url).'" style="margin:.5em 0;">'.sprintf(__('<strong>IMPORTANT:</strong> To be notified when a new version of %1$s is available, please &nbsp; %2$s', SLUG_TD), esc_html(NAME), '<button type="submit" class="button" style="vertical-align:middle;">'.__('Configure Pro Update Credentials', SLUG_TD).'</button>').'</form>', ['class' => 'notice notice-info', 'push_to_top' => true, 'persistent' => true, 'persistent_key' => 'configure-pro-updater', 'dismissable' => true]);
+        }
         if (!$this->options['welcomed'] && !$this->options['enable']) {
             $settings_url = add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), network_admin_url('/admin.php'));
             $this->enqueueMainNotice(sprintf(__('<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href="%2$s">enable caching and review options</a>.</strong>', SLUG_TD), esc_html(NAME), esc_attr($settings_url)), ['push_to_top' => true]);
