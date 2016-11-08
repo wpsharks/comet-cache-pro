@@ -186,7 +186,7 @@ trait NoticeUtils
 
             $_combined = '<div class="updated notice is-dismissible" style="clear:both; padding-right:38px; position: relative;">';
             $_combined .= '<p><img src="'.esc_attr($this->url('/src/client-s/images/clear.png')).'" style="float:left; margin:0 10px 0 0; border:0;" />';
-            $_combined .= sprintf(__('<strong>%1$s</strong> detected changes and intelligently cleared the cache to keep your site up-to-date. <a href="#" id="'.SLUG_TD.'-toggle-notices" style="text-decoration:none; border-bottom:1px dotted;" onclick="jQuery(\'#'.SLUG_TD.'-combined-notices\').toggle(); if (jQuery(\'#comet-cache-combined-notices\').is(\':visible\')) { jQuery(this).text(\''.$_hide_details.'\'); } else { jQuery(this).text(\''.$_see_details.'\'); }">'.$_see_details.'</a>', SLUG_TD), esc_html(NAME)).'</p>';
+            $_combined .= sprintf(__('<strong>%1$s</strong> detected changes and intelligently cleared the cache to keep your site up-to-date.', SLUG_TD), esc_html(NAME)).' <a href="#" id="'.SLUG_TD.'-toggle-notices" style="text-decoration:none; border-bottom:1px dotted;" onclick="jQuery(\'#'.SLUG_TD.'-combined-notices\').toggle(); if (jQuery(\'#comet-cache-combined-notices\').is(\':visible\')) { jQuery(this).text(\''.$_hide_details.'\'); } else { jQuery(this).text(\''.$_see_details.'\'); }">'.$_see_details.'</a></p>';
             $_combined .= '<div id="'.SLUG_TD.'-combined-notices" style="display: none;">'.$_line_items.'</div>';
             $_combined .= '<button type="button" class="notice-dismiss"><span class="screen-reader-text">'.__('Dismiss this notice.', SLUG_TD).'</span></button>';
             $_combined .= '</div>';
