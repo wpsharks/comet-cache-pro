@@ -22,6 +22,10 @@
 
 - **UI Enhancement:** On pro version activation, display a notice that reminds site owners to configure their Pro Update Credentials so they'll be notified by WordPress about new versions of the pro software. See also: [issue #477](https://github.com/websharks/comet-cache/issues/477) if you'd like additional details.
 
+- **HTML Compressor:** Updating to the latest release of the [HTML Compressor](https://github.com/websharks/html-compressor) library. Comet Cache now comes with the new improved v161108 (latest release).
+
+- **RevSlider Compat.:** This release includes a built-in exclusion rule for the HTML Compressor to allow for improved compatibility with the popular RevSlider plugin for WordPress. The new built-in exclusion rule looks for and automatically bypasses an important style tag that must be preserved for the RevSlider plugin to work in all scenarios; i.e., `<style id='rs-plugin-settings-inline-css'`.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.

@@ -31,7 +31,7 @@
   "require": {
     "php": ">=5.4",
     "websharks/wp-php-rv": "160824.6416",
-    "websharks/html-compressor": "160118",
+    "websharks/html-compressor": "161108",
     "websharks/sharkicons": "160221"
   },
   "require-lite": {

@@ -383,8 +383,11 @@ class Plugin extends AbsBaseAp
 
             /* Related to HTML compressor. */
 
-            'htmlc_enable'                => '0', // Enable HTML compression?
-            'htmlc_css_exclusions'        => '', // Empty string or line-delimited patterns.
+            'htmlc_enable' => '0', // Enable HTML compression?
+
+            'htmlc_css_exclusions' => "id='rs-plugin-settings-inline-css'", // Empty string or line-delimited patterns.
+            // This defaults to an exclusion rule that handles compatibility with RevSlider. See: <https://github.com/websharks/comet-cache/issues/614>
+
             'htmlc_js_exclusions'         => '.php?', // Empty string or line-delimited patterns.
             'htmlc_uri_exclusions'        => '', // Empty string or line-delimited patterns.
             'htmlc_cache_expiration_time' => '14 days', // `strtotime()` compatible.
