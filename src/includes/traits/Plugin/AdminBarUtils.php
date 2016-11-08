@@ -1,5 +1,4 @@
 <?php
-
 namespace WebSharks\CometCache\Pro\Traits\Plugin;
 
 use WebSharks\CometCache\Pro\Classes;
@@ -55,7 +54,7 @@ trait AdminBarUtils
             $current_user_can_wipe_cache  = $is_multisite && current_user_can($this->network_cap);
             $current_user_can_clear_cache = $this->currentUserCanClearCache();
             /*[pro strip-from="lite"]*/
-            $current_user_can_see_stats   = $this->currentUserCanSeeStats();
+            $current_user_can_see_stats = $this->currentUserCanSeeStats();
             /*[/pro]*/
             switch ($feature) {
                 case 'cache_wipe':
@@ -102,9 +101,9 @@ trait AdminBarUtils
                 [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-wipe',
-                    'title' => __('Wipe', SLUG_TD),
-                    'href'  => '#',
-                    'meta' => [
+                    'title'  => __('Wipe', SLUG_TD),
+                    'href'   => '#',
+                    'meta'   => [
                         'title'    => __('Wipe Cache (Start Fresh). Clears the cache for all sites in this network at once!', SLUG_TD),
                         'class'    => '-wipe',
                         'tabindex' => -1,
@@ -138,9 +137,9 @@ trait AdminBarUtils
                     [
                         'parent' => 'top-secondary',
                         'id'     => GLOBAL_NS.'-clear-options',
-                        'title' => '',
-                        'href'  => '#',
-                        'meta'  => [
+                        'title'  => '',
+                        'href'   => '#',
+                        'meta'   => [
                             'title'    => __('Clear Options', SLUG_TD),
                             'class'    => '-clear-options',
                             'tabindex' => -1,
@@ -151,7 +150,7 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear-options',
                         'id'     => GLOBAL_NS.'-clear-options-wrapper',
-                        'meta' => [
+                        'meta'   => [
                             'class' => '-wrapper',
                         ],
                     ]
@@ -160,7 +159,7 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear-options-wrapper',
                         'id'     => GLOBAL_NS.'-clear-options-container',
-                        'title' => '<div class="-label">'.
+                        'title'  => '<div class="-label">'.
                                    '   <span class="-text">'.__('Clear Cache', SLUG_TD).'</span>'.
                                    '</div>'.
                                    '<ul class="-options">'.
@@ -179,9 +178,9 @@ trait AdminBarUtils
                 [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-clear',
-                    'title' => __('Clear Cache', SLUG_TD),
-                    'href'  => '#',
-                    'meta'  => [
+                    'title'  => __('Clear Cache', SLUG_TD),
+                    'href'   => '#',
+                    'meta'   => [
                         'title' => is_multisite() && current_user_can($this->network_cap)
                             ? __('Clear Cache (Start Fresh). Affects the current site only.', SLUG_TD)
                             : '',
@@ -196,7 +195,7 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear',
                         'id'     => GLOBAL_NS.'-clear-options-wrapper',
-                        'meta' => [
+                        'meta'   => [
                             'class' => '-wrapper',
                         ],
                     ]
@@ -205,7 +204,7 @@ trait AdminBarUtils
                     [
                         'parent' => GLOBAL_NS.'-clear-options-wrapper',
                         'id'     => GLOBAL_NS.'-clear-options-container',
-                        'title' => '<ul class="-options">'.
+                        'title'  => '<ul class="-options">'.
                                    '   '.$cache_clear_options.
                                    '</ul>'.
                                    '<div class="-spacer"></div>',
@@ -224,9 +223,9 @@ trait AdminBarUtils
                 [
                     'parent' => 'top-secondary',
                     'id'     => GLOBAL_NS.'-stats',
-                    'title' => __('Cache Stats', SLUG_TD),
-                    'href'  => esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'',
-                    'meta' => [
+                    'title'  => __('Cache Stats', SLUG_TD),
+                    'href'   => esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'',
+                    'meta'   => [
                         'class'    => '-stats',
                         'tabindex' => -1,
                     ],
@@ -236,7 +235,7 @@ trait AdminBarUtils
                 [
                     'parent' => GLOBAL_NS.'-stats',
                     'id'     => GLOBAL_NS.'-stats-wrapper',
-                    'meta' => [
+                    'meta'   => [
                         'class' => '-wrapper',
                     ],
                 ]
@@ -245,7 +244,7 @@ trait AdminBarUtils
                 [
                     'parent' => GLOBAL_NS.'-stats-wrapper',
                     'id'     => GLOBAL_NS.'-stats-container',
-                    'title' => '<div class="-refreshing"></div>'.
+                    'title'  => '<div class="-refreshing"></div>'.
                                '<canvas class="-chart-a"></canvas>'.
                                // '<canvas class="-chart-b"></canvas>'.
                                '<div class="-totals">'.
@@ -291,7 +290,7 @@ trait AdminBarUtils
             'isMultisite'              => is_multisite(),
             'currentUserHasCap'        => current_user_can($this->cap),
             'currentUserHasNetworkCap' => current_user_can($this->network_cap),
-            'htmlCompressorEnabled'    => (boolean) $this->options['htmlc_enable'],
+            'htmlCompressorEnabled'    => (bool) $this->options['htmlc_enable'],
             'ajaxURL'                  => site_url('/wp-load.php', is_ssl() ? 'https' : 'http'),
             'i18n'                     => [
                 'name'             => NAME,
@@ -339,7 +338,8 @@ trait AdminBarUtils
             return; // Nothing to do.
         }
         $deps = ['jquery', 'admin-bar']; // Plugin dependencies.
-        if ($this->adminBarShowing('stats')) {
+
+        if (IS_PRO && $this->adminBarShowing('stats')) {
             $deps[] = 'chartjs'; // Add ChartJS dependency.
             wp_enqueue_script('chartjs', set_url_scheme('//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'), [], null, true);
         }

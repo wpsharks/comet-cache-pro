@@ -1,16 +1,18 @@
 ## [coming soon]
 
-- **i18n Compat.** This release makes all pro preview labels translatable by moving the labels that were previously defined in CSS only into HTML attribute values. See [issue #808](https://github.com/websharks/comet-cache/issues/808) if you'd like additional details.
+- **i18n Compat.** This release makes all pro preview labels translatable by moving the labels that were previously defined in CSS only into HTML attribute values. See also: [issue #808](https://github.com/websharks/comet-cache/issues/808) if you'd like additional details.
 
-- **Bug Fix:** Fixed a broken link to the [Static CDN Filters tutorial for MaxCDN integration](http://cometcache.com/r/static-cdn-filters-maxcdn/). Props @kristineds. See [Issue #842](https://github.com/websharks/comet-cache/issues/842).
+- **Bug Fix:** Fixed a broken link to the [Static CDN Filters tutorial for MaxCDN integration](http://cometcache.com/r/static-cdn-filters-maxcdn/). Props @kristineds. See also: [issue #842](https://github.com/websharks/comet-cache/issues/842) if you'd like additional details.
 
 - **HTML Debug Notes:** This version enhances the HTML comments left in the source code. When debug notes are enabled (i.e., HTML comments) they are now broken down into key/value pairs and tabulated for a cleaner display and easier debugging.
 
-- **UI Enhancement:** Following improvements to the update API in a previous release of Comet Cache that made it possible to update both the lite and pro versions of the software through normal WordPress update mechanisms, this release removes some clutter from the menu pages for Comet Cache. In short, now that we have a tighter integration with WordPress core, it's no longer necessary for Comet Cache to display update notifications in a custom way. See also [issue #829](https://github.com/websharks/comet-cache/issues/829) for further details.
+- **UI Enhancement:** Following improvements to the update API in a previous release of Comet Cache that made it possible to update both the lite and pro versions of the software through normal WordPress update mechanisms, this release removes some clutter from the menu pages for Comet Cache. In short, now that we have a tighter integration with WordPress core, it's no longer necessary for Comet Cache to display update notifications in a custom way. See also: [issue #829](https://github.com/websharks/comet-cache/issues/829) for further details.
 
-- **Bug Fix:** Multisite installations inside a sub-directory were broken by Apache Optimizations via `.htaccess` in some scenarios. Fixed in this release. See also [issue #798](https://github.com/websharks/comet-cache/issues/798) if you'd like additional details.
+- **Bug Fix:** Multisite installations inside a sub-directory were broken by Apache Optimizations via `.htaccess` in some scenarios. Fixed in this release. See also: [issue #798](https://github.com/websharks/comet-cache/issues/798) if you'd like additional details.
 
-- **Minor UI Enhancement:** This release improves the toggle link that allows you to see additional details whenever Comet Cache automatically clears more than one facet of the cache. See also [issue #837](https://github.com/websharks/comet-cache/issues/837) and [issue #831](https://github.com/websharks/comet-cache/issues/831) if you'd like additional details.
+- **Minor UI Enhancement:** This release improves the toggle link that allows you to see additional details whenever Comet Cache automatically clears more than one facet of the cache. See also: [issue #837](https://github.com/websharks/comet-cache/issues/837) and [issue #831](https://github.com/websharks/comet-cache/issues/831) if you'd like additional details.
+
+- **Bug Fix:** Don't enqueue Chart.js unnecessarily in lite version of the sofware. See also: [issue #830](https://github.com/websharks/comet-cache/issues/830) if you'd like additional details.
 
 = v160917 =
 
