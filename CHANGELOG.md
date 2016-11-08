@@ -8,6 +8,8 @@
 
 - **UI Enhancement:** Following improvements to the update API in a previous release of Comet Cache that made it possible to update both the lite and pro versions of the software through normal WordPress update mechanisms, this release removes some clutter from the menu pages for Comet Cache. In short, now that we have a tighter integration with WordPress core, it's no longer necessary for Comet Cache to display update notifications in a custom way. See also [issue #829](https://github.com/websharks/comet-cache/issues/829) for further details.
 
+- **Bug Fix:** Multisite installations inside a sub-directory were broken by Apache Optimizations via `.htaccess` in some scenarios. Fixed in this release. See also [issue #798](https://github.com/websharks/comet-cache/issues/798) if you'd like additional details.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.
