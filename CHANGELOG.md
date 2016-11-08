@@ -16,6 +16,8 @@
 
 - **Bug Fix:** Enhancing WooCommerce integration by listening to the `woocommerce_product_set_stock_status` hook in addition to the `woocommerce_product_set_stock` hook. See also: [issue #674](https://github.com/websharks/comet-cache/issues/674) if you'd like additional details.
 
+- **Bug Fix:** Avoid browser autocomplete in configuration fields by adding `autocomplete="off"` to all form tags in Comet Cache menu pages. See also: [issue #832](https://github.com/websharks/comet-cache/issues/832) if you'd like additional details.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.
