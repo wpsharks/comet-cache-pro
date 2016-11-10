@@ -8,7 +8,7 @@ trait ConditionalUtils
     /**
      * PHP's language constructs.
      *
-     * @type array PHP's language constructs.
+     * @var array PHP's language constructs.
      *            Keys are currently unimportant. Subject to change.
      *
      * @since 160222 First documented version.
@@ -91,8 +91,8 @@ trait ConditionalUtils
      */
     public function requestContainsUncacheableQueryVars()
     {
-        if (!is_null($is = &$this->staticKey('requestContainsUncacheableQueryVars'))) {
-            return $is; // Already cached this.
+        if (!is_null($contains = &$this->staticKey('requestContainsUncacheableQueryVars'))) {
+            return $contains; // Already cached this.
         }
         if (!empty($_GET) || !empty($_SERVER['QUERY_STRING'])) {
             $_get_count         = !empty($_GET) ? count($_GET) : 0;
@@ -101,10 +101,10 @@ trait ConditionalUtils
             $is_ac_get_var_true = isset($_GET[mb_strtolower(SHORT_NAME).'AC']) && filter_var($_GET[mb_strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN);
 
             if (!$is_abc_only && !$is_nginx_q_only && !$is_ac_get_var_true) {
-                return $is = true;
+                return $contains = true;
             }
         }
-        return $is = false;
+        return $contains = false;
     }
 
     /**
@@ -189,7 +189,7 @@ trait ConditionalUtils
             return $is; // Already cached this.
         }
         if (defined('LOCALHOST')) {
-            return $is = (boolean) LOCALHOST;
+            return $is = (bool) LOCALHOST;
         }
         if (preg_match('/\b(?:localhost|127\.0\.0\.1)\b/ui', $this->hostToken())) {
             return $is = true;
@@ -354,7 +354,7 @@ trait ConditionalUtils
         if (!is_null($is = &$this->staticKey('isExtensionLoaded', $extension))) {
             return $is; // Already cached this.
         }
-        return $is = (boolean) extension_loaded($extension);
+        return $is = (bool) extension_loaded($extension);
     }
 
     /**

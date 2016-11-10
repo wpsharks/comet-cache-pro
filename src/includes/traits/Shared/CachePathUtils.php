@@ -6,6 +6,31 @@ use WebSharks\CometCache\Pro\Classes;
 trait CachePathUtils
 {
     /**
+     * Filter GET vars; e.g., remove those we ignore.
+     *
+     * @since 16xxxx Adding support for ignored GET vars.
+     *
+     * @param array $get_vars GET vars to filter.
+     *
+     * @return array Filtered GET vars.
+     */
+    public function filterGetVars($get_vars)
+    {
+        $get_vars = (array) $get_vars;
+
+        if (!COMET_CACHE_IGNORE_GET_REQUEST_VARS) {
+            return $get_vars; // No change.
+        }
+        foreach ($get_vars as $_key => $_value) {
+            if (preg_match(COMET_CACHE_IGNORE_GET_REQUEST_VARS, $_key)) {
+                unset($get_vars[$_key]); // Ignore.
+            }
+        } // unset($_key, $_value); // Housekeeping.
+
+        return $get_vars;
+    }
+
+    /**
      * Cache-path suffix frag (regex).
      *
      * @since 151220 Enhancing translation support.
