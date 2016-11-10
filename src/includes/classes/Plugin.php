@@ -238,6 +238,7 @@ class Plugin extends AbsBaseAp
             'cache_clear_urls',
 
             'ignore_get_request_vars',
+            'cache_nonce_values_when_logged_in',
 
             'when_logged_in',
             'when_logged_in_admin_bar',
@@ -370,7 +371,7 @@ class Plugin extends AbsBaseAp
             'feeds_enable'                      => '0', // `0|1`.
             'cache_404_requests'                => '0', // `0|1`.
             'cache_nonce_values'                => '0', // `0|1`.
-            'cache_nonce_values_when_logged_in' => '0', // `0|1`.
+            'cache_nonce_values_when_logged_in' => '1', // `0|1`.
 
             /* Related to exclusions. */
 
