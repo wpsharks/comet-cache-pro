@@ -120,7 +120,7 @@ trait ObUtils
         if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
         }
-        if (defined('DONOTCACHEPAGE')) {
+        if (defined('DONOTCACHEPAGE')) { // Common to most WP cache plugins.
             return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
         }
         if (isset($_SERVER['DONOTCACHEPAGE'])) {
@@ -135,7 +135,7 @@ trait ObUtils
         if (isset($_SERVER['SERVER_ADDR']) && $this->currentIp() === $_SERVER['SERVER_ADDR']) {
             if ((!IS_PRO || !$this->isAutoCacheEngine()) && !$this->isLocalhost()) {
                 return $this->maybeSetDebugInfo($this::NC_DEBUG_SELF_SERVE_REQUEST);
-            }
+            } // Don't trip on requests by the auto-cache engine.
         }
         if (!COMET_CACHE_FEEDS_ENABLE && $this->isFeed()) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_FEED_REQUEST);
@@ -155,7 +155,7 @@ trait ObUtils
         if (!COMET_CACHE_GET_REQUESTS && $this->requestContainsUncacheableQueryVars()) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_GET_REQUEST_QUERIES);
         }
-        if (!empty($_REQUEST['preview'])) {
+        if (!empty($_REQUEST['preview'])) { // Don't cache previews under any circumstance.
             return $this->maybeSetDebugInfo($this::NC_DEBUG_PREVIEW);
         }
         if (COMET_CACHE_EXCLUDE_HOSTS && preg_match(COMET_CACHE_EXCLUDE_HOSTS, $_SERVER['HTTP_HOST'])) {
@@ -167,21 +167,21 @@ trait ObUtils
         if (COMET_CACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$this->isAutoCacheEngine())) {
             if (preg_match(COMET_CACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
                 return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_AGENTS);
-            }
+            } // Don't trip on requests by the auto-cache engine.
         }
         if (COMET_CACHE_EXCLUDE_REFS && !empty($_REQUEST['_wp_http_referer'])) {
             if (preg_match(COMET_CACHE_EXCLUDE_REFS, stripslashes($_REQUEST['_wp_http_referer']))) {
                 return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
-            }
+            } // This variable is set by WordPress core in some cases.
         }
         if (COMET_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER'])) {
             if (preg_match(COMET_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) {
                 return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
-            }
+            } // Based on the HTTP referrer in this case.
         }
-        $this->protocol             = $this->isSsl() ? 'https://' : 'http://';
         $this->host_token           = $this->hostToken();
         $this->host_base_dir_tokens = $this->hostBaseDirTokens();
+        $this->protocol             = $this->isSsl() ? 'https://' : 'http://';
 
         $this->version_salt = ''; // Initialize the version salt.
         /*[pro strip-from="lite"]*/ // Fill the version salt in pro version.
