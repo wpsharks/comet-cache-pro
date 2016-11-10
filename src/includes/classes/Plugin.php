@@ -241,7 +241,6 @@ class Plugin extends AbsBaseAp
             'cache_nonce_values_when_logged_in',
 
             'when_logged_in',
-            'when_logged_in_admin_bar',
 
             'version_salt',
 
@@ -405,9 +404,6 @@ class Plugin extends AbsBaseAp
             'htmlc_compress_js_code'               => '1', // `0|1`.
             'htmlc_compress_html_code'             => '1', // `0|1`.
             'htmlc_when_logged_in'                 => '0', // `0|1`; enable when logged in?
-
-            /* Related to Logged-In User Caching */
-            'when_logged_in_admin_bar' => '1', // `0|1`; enable when logged in?
 
             /* Related to auto-cache engine. */
 
@@ -597,20 +593,12 @@ class Plugin extends AbsBaseAp
                 return 'disabled-by-'.SLUG_TD; // MUST return a string literal that is not 'true' or '' (an empty string). See <http://bit.ly/1YItpdE>
             }); // See also why the Akismet nonce should be disabled: <http://jas.xyz/1R23f5c>
         }
-
-        /*[pro strip-from="lite"]*/
-        if ($this->options['when_logged_in'] && !$this->options['when_logged_in_admin_bar'] && $this->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
-            show_admin_bar(false); // Prevent admin bar from being cached.
-        }
-        /*[/pro]*/
-
         /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->options['htmlc_enable']) {
             add_action('wp_print_footer_scripts', [$this, 'htmlCFooterScripts'], -PHP_INT_MAX);
             add_action('wp_print_footer_scripts', [$this, 'htmlCFooterScripts'], PHP_INT_MAX);
         }
         /*[/pro]*/
-
         /*[pro strip-from="lite"]*/
         if ($this->options['enable'] && $this->options['cdn_enable']) {
             add_action('upgrader_process_complete', [$this, 'bumpCdnInvalidationCounter'], 10, 0);
