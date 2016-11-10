@@ -189,32 +189,35 @@ trait PostloadUtils
         if (is_file($this->cache_file) && (!$this->cache_max_age || filemtime($this->cache_file) >= $this->cache_max_age)) {
             list($headers, $cache) = explode('<!--headers-->', file_get_contents($this->cache_file), 2);
 
-            $headers_list = $this->headersList();
-            foreach (unserialize($headers) as $_header) {
-                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'Last-Modified:') !== 0) {
-                    header($_header); // Only cacheable/safe headers are stored in the cache.
+            if ($this->cache_max_age < $this->nonce_cache_max_age && filemtime($this->cache_file) < $this->nonce_cache_max_age
+                    && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
+                ob_start([$this, 'outputBufferCallbackHandler']);
+            } else {
+                $headers_list = $this->headersList();
+                foreach (unserialize($headers) as $_header) {
+                    if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'last-modified:') !== 0) {
+                        header($_header); // Only cacheable/safe headers are stored in the cache.
+                    }
+                } // unset($_header); // Just a little housekeeping.
+
+                if (COMET_CACHE_DEBUGGING_ENABLE && $this->isHtmlXmlDoc($cache)) {
+                    $total_time = number_format(microtime(true) - $this->timer, 5, '.', '');
+
+                    $DebugNotes = new Classes\Notes();
+
+                    $DebugNotes->addAsciiArt(sprintf(__('%1$s is Fully Functional', SLUG_TD), NAME));
+                    $DebugNotes->addLineBreak();
+
+                    $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
+                    $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
+
+                    $cache .= "\n\n".$DebugNotes->asHtmlComments();
                 }
+                exit($cache); // Exit with cache contents.
             }
-            unset($_header); // Just a little housekeeping.
-
-            if (COMET_CACHE_DEBUGGING_ENABLE && $this->isHtmlXmlDoc($cache)) {
-                $total_time = number_format(microtime(true) - $this->timer, 5, '.', '');
-
-                $DebugNotes = new Classes\Notes();
-
-                $DebugNotes->addAsciiArt(sprintf(__('%1$s is Fully Functional', SLUG_TD), NAME));
-                $DebugNotes->addLineBreak();
-
-                $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
-                $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
-
-                $cache .= "\n\n".$DebugNotes->asHtmlComments();
-            }
-            exit($cache); // Exit with cache contents.
         } else {
             ob_start([$this, 'outputBufferCallbackHandler']);
         }
-        return; // Only for IDEs not to complain here.
     }
     /*[/pro]*/
 

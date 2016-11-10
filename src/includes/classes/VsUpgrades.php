@@ -276,6 +276,7 @@ class VsUpgrades extends AbsBase
 
     /**
      * @since 161108 When we enhanced built-in CSS exclusions.
+     * @since 161108 Start caching `nonce` values for logged-in users.
      */
     protected function fromLte161108()
     {
@@ -283,6 +284,9 @@ class VsUpgrades extends AbsBase
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (IS_PRO && isset($existing_options['htmlc_css_exclusions']) && empty($existing_options['htmlc_css_exclusions'])) {
                     $this->plugin->options['htmlc_css_exclusions'] = $this->plugin->default_options['htmlc_css_exclusions'];
+                }
+                if (IS_PRO) { // Start caching `nonce` values for logged-in users.
+                    $this->plugin->options['cache_nonce_values_when_logged_in'] = $this->plugin->default_options['cache_nonce_values_when_logged_in'];
                 }
                 if ($this->plugin->options !== $existing_options) {
                     $this->plugin->updateOptions($this->plugin->options, false);

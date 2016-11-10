@@ -96,6 +96,15 @@ trait ObUtils
     public $cache_max_age = 0;
 
     /**
+     * Calculated 12 hour expiration time.
+     *
+     * @since 16xxxx Calculated 12 hour expiration time.
+     *
+     * @var int Calculated 12 hour expiration time.
+     */
+    public $nonce_cache_max_age = 0;
+
+    /**
      * Start output buffering (if applicable); or serve a cache file (if possible).
      *
      * @since 150422 Rewrite.
@@ -197,13 +206,16 @@ trait ObUtils
 
         $this->salt_location = ltrim($this->version_salt.' '.$this->protocol.$this->host_token.$_SERVER['REQUEST_URI']);
 
-        $this->cache_max_age = strtotime('-'.COMET_CACHE_MAX_AGE);
+        $this->cache_max_age       = strtotime('-'.COMET_CACHE_MAX_AGE); // Initialize; global config.
+        $this->nonce_cache_max_age = strtotime('-12 hours'); // Initialize; based on a fixed expiration time.
+
         /*[pro strip-from="lite"]*/ // Pro version allows for load average checks.
         if (COMET_CACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE && ($load_averages = $this->sysLoadAverages())) {
             if (max($load_averages) >= COMET_CACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE) {
                 $this->cache_max_age = 0; // No expiration time.
             }
         } /*[/pro]*/
+
         if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN === 'postload' && $this->isLikeUserLoggedIn()) {
             $this->postload['when_logged_in'] = true; // Enable postload check.
         } elseif (is_file($this->cache_file) && (!$this->cache_max_age || filemtime($this->cache_file) >= $this->cache_max_age)) {
@@ -352,6 +364,7 @@ trait ObUtils
 
         if (COMET_CACHE_DEBUGGING_ENABLE && $this->isHtmlXmlDoc($cache)) {
             $total_time = number_format(microtime(true) - $this->timer, 5, '.', '');
+            $time       = time(); // Needed below for expiration calculation.
 
             $DebugNotes = new Classes\Notes();
             $DebugNotes->addAsciiArt(sprintf(__('%1$s Notes', SLUG_TD), NAME));
@@ -375,9 +388,15 @@ trait ObUtils
 
             $DebugNotes->addLineBreak();
 
-            $DebugNotes->add(__('Cache File Expires On', SLUG_TD), date('M jS, Y @ g:i a T', strtotime('+'.COMET_CACHE_MAX_AGE)));
-            $DebugNotes->add(__('Cache File Auto-Rebuild On', SLUG_TD), date('M jS, Y @ g:i a T', strtotime('+'.COMET_CACHE_MAX_AGE)));
-
+            if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->cache_max_age < $this->nonce_cache_max_age
+                    && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
+                $DebugNotes->add(__('Cache File Expires Early', SLUG_TD), __('yes, due to nonce in markup', SLUG_TD));
+                $DebugNotes->add(__('Cache File Expires On', SLUG_TD), date('M jS, Y @ g:i a T', $time + ($time - $this->nonce_cache_max_age)));
+                $DebugNotes->add(__('Cache File Auto-Rebuild On', SLUG_TD), date('M jS, Y @ g:i a T', $time + ($time - $this->nonce_cache_max_age)));
+            } else {
+                $DebugNotes->add(__('Cache File Expires On', SLUG_TD), date('M jS, Y @ g:i a T', $time + ($time - $this->cache_max_age)));
+                $DebugNotes->add(__('Cache File Auto-Rebuild On', SLUG_TD), date('M jS, Y @ g:i a T', $time + ($time - $this->cache_max_age)));
+            }
             $cache .= "\n".$DebugNotes->asHtmlComments();
         }
         if ($this->is_404) {
