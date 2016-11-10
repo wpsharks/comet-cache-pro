@@ -32,6 +32,8 @@
 
 - **RevSlider Compat.:** This release includes a built-in exclusion rule for the HTML Compressor to allow for improved compatibility with the popular RevSlider plugin for WordPress. The new built-in exclusion rule looks for and automatically bypasses an important style tag that must be preserved for the RevSlider plugin to work in all scenarios; i.e., `<style id='rs-plugin-settings-inline-css'`.
 
+- **UI Enhancement:** The Comet Cache UI is now fully Responsive with an improved UI on laptop and mobile devices. Props @renzms. See also: [issue #699](https://github.com/websharks/comet-cache/issues/699) if you'd like additional details.
+
 = v160917 =
 
 - **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.
