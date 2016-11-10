@@ -18,16 +18,14 @@ trait CachePathUtils
     {
         $get_vars = (array) $get_vars;
 
-        if (!COMET_CACHE_IGNORE_GET_REQUEST_VARS) {
-            return $get_vars; // No change.
+        if (COMET_CACHE_IGNORE_GET_REQUEST_VARS) {
+            foreach ($get_vars as $_key => $_value) {
+                if (is_string($_key) && preg_match(COMET_CACHE_IGNORE_GET_REQUEST_VARS, $_key)) {
+                    unset($get_vars[$_key]); // Ignore.
+                }
+            } // unset($_key, $_value); // Housekeeping.
         }
-        foreach ($get_vars as $_key => $_value) {
-            if (preg_match(COMET_CACHE_IGNORE_GET_REQUEST_VARS, $_key)) {
-                unset($get_vars[$_key]); // Ignore.
-            }
-        } // unset($_key, $_value); // Housekeeping.
-
-        return $get_vars;
+        return $this->ksortDeep($get_vars);
     }
 
     /**
