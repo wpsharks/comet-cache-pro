@@ -388,7 +388,7 @@ trait ObUtils
 
             $DebugNotes->addLineBreak();
 
-            if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->user_token && $this->cache_max_age < $this->nonce_cache_max_age
+            if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->cache_max_age < $this->nonce_cache_max_age
                     && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
                 $DebugNotes->add(__('Cache File Expires Early', SLUG_TD), __('yes, due to nonce in markup', SLUG_TD));
                 $DebugNotes->add(__('Cache File Expires On', SLUG_TD), date('M jS, Y @ g:i a T', $time + ($time - $this->nonce_cache_max_age)));
