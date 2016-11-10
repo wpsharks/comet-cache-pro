@@ -30,11 +30,11 @@ class MenuPageOptions extends MenuPage
         if (is_multisite()) {
             echo '<button type="button" class="plugin-menu-page-wipe-cache" style="float:right; margin-left:15px;" title="'.esc_attr(__('Wipe Cache (Start Fresh); clears the cache for all sites in this network at once!', SLUG_TD)).'"'.
                  '  data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['wipeCache' => '1']]), self_admin_url('/admin.php'))).'">'.
-                 '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+                 '  '.__('Wipe', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/wipe.png')).'" style="width:16px; height:16px; display:inline-block;" /></button>'."\n";
         }
         echo '   <button type="button" class="plugin-menu-page-clear-cache" style="float:right;" title="'.esc_attr(__('Clear Cache (Start Fresh)', SLUG_TD).((is_multisite()) ? __('; affects the current site only.', SLUG_TD) : '')).'"'.
              '      data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['clearCache' => '1']]), self_admin_url('/admin.php'))).'">'.
-             '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+             '      '.__('Clear', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px; display:inline-block;" /></button>'."\n";
 
         echo '   <button type="button" class="plugin-menu-page-restore-defaults"'.// Restores default options.
              '      data-confirmation="'.esc_attr(__('Restore default plugin options? You will lose all of your current settings! Are you absolutely sure about this?', SLUG_TD)).'"'.
@@ -88,7 +88,7 @@ class MenuPageOptions extends MenuPage
             echo    '(<a href="'.esc_attr('http://cometcache.com/changelog-lite/').'" target="_blank">'.__('changelog', SLUG_TD).'</a>)'."\n";
             echo '</div>'."\n";
         }
-        echo '   <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
+        echo '    <img src="'.$this->plugin->url('/src/client-s/images/options-'.(IS_PRO ? 'pro' : 'lite').'.png').'" alt="'.esc_attr(__('Plugin Options', SLUG_TD)).'" />'."\n";
 
         echo '<div style="clear:both;"></div>'."\n";
 
@@ -194,8 +194,7 @@ class MenuPageOptions extends MenuPage
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body'.((!$this->plugin->options['enable']) ? ' open' : '').' clearfix">'."\n";
-        echo '      <img src="'.esc_attr($this->plugin->url('/src/client-s/images/tach.png')).'" style="float:right; width:100px; margin-left:1em;" />'."\n";
-        echo '      <p style="float:right; font-size:120%; font-weight:bold;">'.sprintf(__('%1$s&trade; = SPEED<em>!!</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+        echo '      <p class="speed"><img src="'.esc_attr($this->plugin->url('/src/client-s/images/tach.png')).'" style="float:right; width:100px; margin-left:1em;" />'.sprintf(__('%1$s&trade; = SPEED<em>!!</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <p><label class="switch-primary"><input type="radio" name="'.esc_attr(GLOBAL_NS).'[saveOptions][enable]" value="1"'.checked($this->plugin->options['enable'], '1', false).' /> '.sprintf(__('Yes, enable %1$s&trade;', SLUG_TD), esc_html(NAME)).' <i class="si si-magic si-flip-horizontal"></i></label> &nbsp;&nbsp;&nbsp; <label><input type="radio" name="'.esc_attr(GLOBAL_NS).'[saveOptions][enable]" value="0"'.checked($this->plugin->options['enable'], '0', false).' /> '.__('No, disable.', SLUG_TD).'</label></p>'."\n";
         echo '      <p class="info" style="font-family:\'Georgia\', serif; font-size:110%; margin-top:1.5em;">'.sprintf(__('<strong>HUGE Time-Saver:</strong> Approx. 95%% of all WordPress sites running %1$s, simply enable it here; and that\'s it :-) <strong>No further configuration is necessary (really).</strong> All of the other options (down below) are already tuned for the BEST performance on a typical WordPress installation. Simply enable %1$s here and click "Save All Changes". If you get any warnings please follow the instructions given. Otherwise, you\'re good <i class="si si-smile-o"></i>. This plugin is designed to run just fine like it is. Take it for a spin right away; you can always fine-tune things later if you deem necessary.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
         echo '      <hr />'."\n";
@@ -369,7 +368,7 @@ class MenuPageOptions extends MenuPage
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '  <div data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][change_notifications_enable]" class="-no-if-enabled" style="width:auto;">'."\n";
-            echo '          <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when changes are detected &amp; one or more cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+            echo '          <option value="1"'.selected($this->plugin->options['change_notifications_enable'], '1', false).'>'.sprintf(__('Yes, enable %1$s notifications in the Dashboard when cache files are cleared automatically.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
             echo '          <option value="0"'.selected($this->plugin->options['change_notifications_enable'], '0', false).'>'.sprintf(__('No, I don\'t want to know (don\'t really care) what %1$s is doing behind-the-scene.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
             echo '      </select></p>'."\n";
             echo '  </div>'."\n";
@@ -734,7 +733,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-feed"></i> '.__('RSS, RDF, and Atom Feeds', SLUG_TD)."\n";
+        echo '      <i class="si si-feed"></i> '.__('Feed Caching', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -756,12 +755,10 @@ class MenuPageOptions extends MenuPage
             ((defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL) || $this->plugin->canConsiderDomainMapping());
 
         if ($this->plugin->applyWpFilters(GLOBAL_NS.'_exclude_hosts_option_enable', $exclude_hosts_option_enable)) {
-            // Display option panel for Host Exclusion Patterns.
-
             echo '<div class="plugin-menu-page-panel">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-            echo '      <i class="si si-ban"></i> '.__('Host Exclusion Patterns', SLUG_TD)."\n";
+            echo '      <i class="si si-ban"></i> '.__('Host Exclusions', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -782,7 +779,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-ban"></i> '.__('URI Exclusion Patterns', SLUG_TD)."\n";
+        echo '      <i class="si si-ban"></i> '.__('URI Exclusions', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -804,7 +801,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-ban"></i> '.__('HTTP Referrer Exclusion Patterns', SLUG_TD)."\n";
+        echo '      <i class="si si-ban"></i> '.__('HTTP Referrer Exclusions', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -822,7 +819,7 @@ class MenuPageOptions extends MenuPage
         echo '<div class="plugin-menu-page-panel">'."\n";
 
         echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";
-        echo '      <i class="si si-ban"></i> '.__('User-Agent Exclusion Patterns', SLUG_TD)."\n";
+        echo '      <i class="si si-ban"></i> '.__('User-Agent Exclusions', SLUG_TD)."\n";
         echo '   </a>'."\n";
 
         echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -978,7 +975,7 @@ class MenuPageOptions extends MenuPage
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
-            echo '   <button type="button" class="plugin-menu-page-clear-cdn-cache" style="float:right; margin:0 0 1em 1em;" title="'.esc_attr(__('Clear CDN Cache (Bump CDN Invalidation Counter)', SLUG_TD)).'">'.__('Clear CDN Cache', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px;" /></button>'."\n";
+            echo '   <button type="button" class="plugin-menu-page-clear-cdn-cache" style="float:right; margin:0 0 1em 1em;" title="'.esc_attr(__('Clear CDN Cache (Bump CDN Invalidation Counter)', SLUG_TD)).'">'.__('Clear CDN Cache', SLUG_TD).' <img src="'.esc_attr($this->plugin->url('/src/client-s/images/clear.png')).'" style="width:16px; height:16px; display:inline-block;" /></button>'."\n";
             echo '      <h3>'.__('Enable Static CDN Filters (e.g., MaxCDN/CloudFront)?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn\'t require any DNS changes either. :-) Please <a href="http://cometcache.com/r/static-cdn-filters-general-instructions/" target="_blank">click here</a> for a general set of instructions.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.__('<strong>What\'s a CDN?</strong> It\'s a Content Delivery Network (i.e., a network of optimized servers) designed to cache static resources served from your site (e.g., JS/CSS/images and other static files) onto it\'s own servers, which are located strategically in various geographic areas around the world. Integrating a CDN for static files can dramatically improve the speed and performance of your site, lower the burden on your own server, and reduce latency associated with visitors attempting to access your site from geographic areas of the world that might be very far away from the primary location of your own web servers.', SLUG_TD).'</p>'."\n";
@@ -1177,11 +1174,11 @@ class MenuPageOptions extends MenuPage
             echo '      <p>'.sprintf(__('<em>Note: Understanding the %1$s <a href="http://cometcache.com/r/kb-branched-cache-structure/" target="_blank">Branched Cache Structure</a> is a prerequisite to understanding how Dynamic Version Salts are added to the mix.</em>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.__('A Version Salt gives you the ability to dynamically create multiple variations of the cache, and those dynamic variations will be served on subsequent visits; e.g., if a visitor has a specific cookie (of a certain value) they will see pages which were cached with that version (i.e., w/ that Version Salt: the value of the cookie). A Version Salt can really be anything.', SLUG_TD).'</p>'."\n";
             echo '      <p>'.__('A Version Salt can be a single variable like <code>$_COOKIE[\'my_cookie\']</code>, or it can be a combination of multiple variables, like <code>$_COOKIE[\'my_cookie\'].$_COOKIE[\'my_other_cookie\']</code>. (When using multiple variables, please separate them with a dot, as shown in the example.)', SLUG_TD).'</p>'."\n";
-            echo '      <p>'.__('Experts could even use PHP ternary expressions that evaluate into something. For example: <code>((preg_match(\'/iPhone/i\', $_SERVER[\'HTTP_USER_AGENT\'])) ? \'iPhones\' : \'\')</code>. This would force a separate version of the cache to be created for iPhones (e.g., <code>/cache/PROTOCOL/HOST/REQUEST-URI.v/iPhones.html</code>).', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.__('Experts could even use PHP ternary expressions that evaluate into something. For example: <code>((preg_match(\'/iPhone/i\', $_SERVER[\'HTTP_USER_AGENT\'])) ? \'iPhones\' : \'\')</code>. This would force a separate version of the cache to be created for iPhones (e.g., <code>PROTOCOL.HOST.URI[...]v/iPhones.html</code>).', SLUG_TD).'</p>'."\n";
             echo '      <p>'.__('For more documentation, please see <a href="http://cometcache.com/r/kb-dynamic-version-salts/" target="_blank">Dynamic Version Salts</a>.', SLUG_TD).'</p>'."\n";
             echo '      <hr />'."\n";
             echo '      <h3>'.sprintf(__('Create a Dynamic Version Salt For %1$s? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-size:90%%; opacity:0.5;">150%% OPTIONAL</span>', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
-            echo '      <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">/cache/PROTOCOL/HOST/REQUEST_URI.</td><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][version_salt]" value="'.esc_attr($this->plugin->options['version_salt']).'" class="monospace" placeholder="$_COOKIE[\'my_cookie\']" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;"></td></tr></table>'."\n";
+            echo '      <table style="width:100%;"><tr><td style="width:1px; font-weight:bold; white-space:nowrap;">PROTOCOL.HOST.URI.v.</td><td><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][version_salt]" value="'.esc_attr($this->plugin->options['version_salt']).'" class="monospace" placeholder="$_COOKIE[\'my_cookie\']" /></td><td style="width:1px; font-weight:bold; white-space:nowrap;"></td></tr></table>'."\n";
             echo '      <p class="info" style="display:block;">'.__('<a href="http://php.net/manual/en/language.variables.superglobals.php" target="_blank">Super Globals</a> work here; <a href="http://codex.wordpress.org/Editing_wp-config.php#table_prefix" target="_blank"><code>$GLOBALS[\'table_prefix\']</code></a> is a popular one.<br />Or, perhaps a PHP Constant defined in <code>/wp-config.php</code>; such as <code>WPLANG</code> or <code>DB_HOST</code>.', SLUG_TD).'</p>'."\n";
             echo '      <p class="notice" style="display:block;">'.__('<strong>Important:</strong> your Version Salt is scanned for PHP syntax errors via <a href="http://phpcodechecker.com/" target="_blank"><code>phpCodeChecker.com</code></a>. If errors are found, you\'ll receive a notice in the Dashboard.', SLUG_TD).'</p>'."\n";
             echo '      <p class="info" style="display:block;">'.__('If you\'ve enabled a separate cache for each user (optional) that\'s perfectly OK. A Version Salt works with user caching too.', SLUG_TD).'</p>'."\n";
@@ -1227,7 +1224,7 @@ class MenuPageOptions extends MenuPage
             echo '      <h3>'.sprintf(__('Export Existing Options from this %1$s Installation?', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
             echo '      <button type="button" class="plugin-menu-page-export-options" style="float:right; margin: 0 0 0 25px;"'.// Exports existing options from this installation.
              '         data-action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce(), GLOBAL_NS => ['exportOptions' => '1']]), self_admin_url('/admin.php'))).'">'.
-             '         '.sprintf(__('%1$s-options.json', SLUG_TD), GLOBAL_NS).' <i class="si si-arrow-circle-o-down"></i></button>'."\n";
+             '         '.__('options.json', SLUG_TD).' <i class="si si-arrow-circle-o-down"></i></button>'."\n";
             echo '      <p>'.sprintf(__('Download your existing options and import them all into another %1$s installation; saves time on future installs.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '   </div>'."\n";
 
