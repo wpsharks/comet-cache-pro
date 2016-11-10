@@ -324,14 +324,15 @@ trait InstallUtils
                 case 'exclude_hosts': // Converts to regex (caSe insensitive).
                 case 'exclude_uris': // Converts to regex (caSe insensitive).
                 case 'exclude_client_side_uris': // Converts to regex (caSe insensitive).
+                case 'ignore_get_request_vars': // Converts to regex (caSe insensitive).
                 case 'exclude_refs': // Converts to regex (caSe insensitive).
                 case 'exclude_agents': // Converts to regex (caSe insensitive).
 
-                    /*[pro strip-from="lite"]*/
+                /*[pro strip-from="lite"]*/
                 case 'htmlc_css_exclusions': // Converts to regex (caSe insensitive).
                 case 'htmlc_js_exclusions': // Converts to regex (caSe insensitive).
                 case 'htmlc_uri_exclusions': // Converts to regex (caSe insensitive).
-                    /*[/pro]*/
+                /*[/pro]*/
 
                     $_value = "'".$this->escSq($this->lineDelimitedPatternsToRegex($_value))."'";
 
