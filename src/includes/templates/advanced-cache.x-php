@@ -12,7 +12,7 @@ if (!defined('WPINC')) {
     exit('Do NOT access this file directly: '.basename(__FILE__));
 }
 if (!defined('COMET_CACHE_PLUGIN_FILE')) {
-    /**
+    /*
      * Plugin file path.
      *
      * @since 140725 Reorganizing class members.
@@ -23,14 +23,14 @@ if (!defined('COMET_CACHE_PLUGIN_FILE')) {
 }
 if (defined('WP_DEBUG') && WP_DEBUG) {
     if ((include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/stub.php')) === false) {
-      return; // Unable to find stub. Fail softly w/ PHP warning.
+        return; // Unable to find stub. Fail softly w/ PHP warning.
     }
 } elseif ((@include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/stub.php')) === false) {
     return; // Unable to find stub. Fail softly.
 }
 if (defined('WP_DEBUG') && WP_DEBUG) {
     if ((include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
-      return; // Unable to find postload function(s). Fail softly w/ PHP warning.
+        return; // Unable to find postload function(s). Fail softly w/ PHP warning.
     }
 } elseif ((@include_once(dirname(COMET_CACHE_PLUGIN_FILE).'/src/includes/functions/wp-cache-postload.php')) === false) {
     return; // Unable to find postload function(s). Fail softly.
@@ -40,7 +40,7 @@ Classes\AdvCacheBackCompat::zcRequestVars();
 Classes\AdvCacheBackCompat::browserCacheConstant();
 
 if (!defined('COMET_CACHE_PRO')) {
-    /**
+    /*
      * Comet Cache Pro flag.
      *
      * @since 140422 First documented version.
@@ -50,7 +50,7 @@ if (!defined('COMET_CACHE_PRO')) {
     define('COMET_CACHE_PRO', IS_PRO);
 }
 if (!defined('COMET_CACHE_ENABLE')) {
-    /**
+    /*
      * Is Comet Cache enabled?
      *
      * @since 140422 First documented version.
@@ -60,7 +60,7 @@ if (!defined('COMET_CACHE_ENABLE')) {
     define('COMET_CACHE_ENABLE', '%%COMET_CACHE_ENABLE%%');
 }
 if (!defined('COMET_CACHE_DEBUGGING_ENABLE')) {
-    /**
+    /*
      * Is Comet Cache debugging enabled?
      *
      * @since 140422 First documented version.
@@ -70,7 +70,7 @@ if (!defined('COMET_CACHE_DEBUGGING_ENABLE')) {
     define('COMET_CACHE_DEBUGGING_ENABLE', '%%COMET_CACHE_DEBUGGING_ENABLE%%');
 }
 if (!defined('COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE')) {
-    /**
+    /*
      * Allow browsers to cache each document?
      *
      * @since 140422 First documented version.
@@ -83,7 +83,7 @@ if (!defined('COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE')) {
     define('COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE', '%%COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE%%');
 }
 if (!defined('COMET_CACHE_GET_REQUESTS')) {
-    /**
+    /*
      * Cache `$_GET` requests w/ a query string?
      *
      * @since 140422 First documented version.
@@ -93,7 +93,7 @@ if (!defined('COMET_CACHE_GET_REQUESTS')) {
     define('COMET_CACHE_GET_REQUESTS', '%%COMET_CACHE_GET_REQUESTS%%');
 }
 if (!defined('COMET_CACHE_IGNORE_GET_REQUEST_VARS')) {
-    /**
+    /*
      * Ignore `$_GET` request query vars?
      *
      * @since 16xxxx First documented version.
@@ -103,7 +103,7 @@ if (!defined('COMET_CACHE_IGNORE_GET_REQUEST_VARS')) {
     define('COMET_CACHE_IGNORE_GET_REQUEST_VARS', '%%COMET_CACHE_IGNORE_GET_REQUEST_VARS%%');
 }
 if (!defined('COMET_CACHE_CACHE_404_REQUESTS')) {
-    /**
+    /*
      * Cache 404 errors?
      *
      * @since 140422 First documented version.
@@ -113,7 +113,7 @@ if (!defined('COMET_CACHE_CACHE_404_REQUESTS')) {
     define('COMET_CACHE_CACHE_404_REQUESTS', '%%COMET_CACHE_CACHE_404_REQUESTS%%');
 }
 if (!defined('COMET_CACHE_CACHE_NONCE_VALUES')) {
-    /**
+    /*
      * Cache HTML containing nonce values?
      *
      * @since 160103 First documented version.
@@ -123,7 +123,7 @@ if (!defined('COMET_CACHE_CACHE_NONCE_VALUES')) {
     define('COMET_CACHE_CACHE_NONCE_VALUES', '%%COMET_CACHE_CACHE_NONCE_VALUES%%');
 }
 if (!defined('COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN')) {
-    /**
+    /*
      * Cache HTML containing nonce values for Logged-In Users?
      *
      * @since 160103 First documented version.
@@ -133,7 +133,7 @@ if (!defined('COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN')) {
     define('COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN', '%%COMET_CACHE_CACHE_NONCE_VALUES_WHEN_LOGGED_IN%%');
 }
 if (!defined('COMET_CACHE_FEEDS_ENABLE')) {
-    /**
+    /*
      * Cache XML/RSS/Atom feeds?
      *
      * @since 140422 First documented version.
@@ -144,7 +144,7 @@ if (!defined('COMET_CACHE_FEEDS_ENABLE')) {
 }
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_WHEN_LOGGED_IN')) {
-    /**
+    /*
      * Cache logged-in users?
      *
      * @since 140422 First documented version.
@@ -155,7 +155,7 @@ if (!defined('COMET_CACHE_WHEN_LOGGED_IN')) {
 }
 /*[/pro]*/
 if (!defined('COMET_CACHE_DIR')) {
-    /**
+    /*
      * Directory used to store cache files; relative to `WP_CONTENT_DIR`.
      *
      * @since 140422 First documented version.
@@ -165,7 +165,7 @@ if (!defined('COMET_CACHE_DIR')) {
     define('COMET_CACHE_DIR', WP_CONTENT_DIR.'/'.'%%COMET_CACHE_DIR%%');
 }
 if (!defined('COMET_CACHE_MAX_AGE')) {
-    /**
+    /*
      * Cache expiration time.
      *
      * @since 140422 First documented version.
@@ -176,7 +176,7 @@ if (!defined('COMET_CACHE_MAX_AGE')) {
 }
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE')) {
-    /**
+    /*
      * Cache expiration disabled if load average is >= to this.
      *
      * @since 151002 Adding support for load average check.
@@ -187,7 +187,7 @@ if (!defined('COMET_CACHE_MAX_AGE_DISABLE_IF_LOAD_AVERAGE_IS_GTE')) {
 }
 /*[/pro]*/
 if (!defined('COMET_CACHE_EXCLUDE_HOSTS')) {
-    /**
+    /*
      * Host exclusions.
      *
      * @since 160706 Adding host exclusions.
@@ -197,7 +197,7 @@ if (!defined('COMET_CACHE_EXCLUDE_HOSTS')) {
     define('COMET_CACHE_EXCLUDE_HOSTS', '%%COMET_CACHE_EXCLUDE_HOSTS%%');
 }
 if (!defined('COMET_CACHE_EXCLUDE_URIS')) {
-    /**
+    /*
      * URI exclusions.
      *
      * @since 140422 First documented version.
@@ -207,7 +207,7 @@ if (!defined('COMET_CACHE_EXCLUDE_URIS')) {
     define('COMET_CACHE_EXCLUDE_URIS', '%%COMET_CACHE_EXCLUDE_URIS%%');
 }
 if (!defined('COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS')) {
-    /**
+    /*
      * Client-side URI exclusions.
      *
      * @since 151220 Adding support for client-side URI exclusions.
@@ -217,7 +217,7 @@ if (!defined('COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS')) {
     define('COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS', '%%COMET_CACHE_EXCLUDE_CLIENT_SIDE_URIS%%');
 }
 if (!defined('COMET_CACHE_EXCLUDE_REFS')) {
-    /**
+    /*
      * HTTP referrer exclusions.
      *
      * @since 140422 First documented version.
@@ -227,7 +227,7 @@ if (!defined('COMET_CACHE_EXCLUDE_REFS')) {
     define('COMET_CACHE_EXCLUDE_REFS', '%%COMET_CACHE_EXCLUDE_REFS%%');
 }
 if (!defined('COMET_CACHE_EXCLUDE_AGENTS')) {
-    /**
+    /*
      * HTTP user-agent exclusions.
      *
      * @since 140422 First documented version.
@@ -237,7 +237,7 @@ if (!defined('COMET_CACHE_EXCLUDE_AGENTS')) {
     define('COMET_CACHE_EXCLUDE_AGENTS', '%%COMET_CACHE_EXCLUDE_AGENTS%%');
 }
 if (!defined('COMET_CACHE_404_CACHE_FILENAME')) {
-    /**
+    /*
      * 404 file name (if applicable).
      *
      * @since 140422 First documented version.
@@ -249,7 +249,7 @@ if (!defined('COMET_CACHE_404_CACHE_FILENAME')) {
 }
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_VERSION_SALT')) {
-    /**
+    /*
      * Version salt.
      *
      * @since 140422 First documented version.
@@ -262,7 +262,7 @@ if (!defined('COMET_CACHE_VERSION_SALT')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_ENABLE')) {
-    /**
+    /*
      * Enable HTML compressor?
      *
      * @since 140422 First documented version.
@@ -274,7 +274,7 @@ if (!defined('COMET_CACHE_HTMLC_ENABLE')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_WHEN_LOGGED_IN')) {
-    /**
+    /*
      * Enable HTML compressor when logged in?
      *
      * @since 140422 First documented version.
@@ -286,7 +286,7 @@ if (!defined('COMET_CACHE_HTMLC_WHEN_LOGGED_IN')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_CSS_EXCLUSIONS')) {
-    /**
+    /*
      * CSS exclusions for the HTML compressor.
      *
      * @since 140422 First documented version.
@@ -298,7 +298,7 @@ if (!defined('COMET_CACHE_HTMLC_CSS_EXCLUSIONS')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_JS_EXCLUSIONS')) {
-    /**
+    /*
      * JS exclusions for the HTML compressor.
      *
      * @since 140422 First documented version.
@@ -310,7 +310,7 @@ if (!defined('COMET_CACHE_HTMLC_JS_EXCLUSIONS')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_URI_EXCLUSIONS')) {
-/**
+    /*
  * URI exclusions for the HTML compressor.
  *
  * @since 160222 First documented version.
@@ -321,7 +321,7 @@ define('COMET_CACHE_HTMLC_URI_EXCLUSIONS', '%%COMET_CACHE_HTMLC_URI_EXCLUSIONS%%
 }
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_CACHE_EXPIRATION_TIME')) {
-    /**
+    /*
      * Cache expiration time for the HTML compressor.
      *
      * @since 140422 First documented version.
@@ -333,7 +333,7 @@ if (!defined('COMET_CACHE_HTMLC_CACHE_EXPIRATION_TIME')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_CACHE_DIR_PUBLIC')) {
-    /**
+    /*
      * Public cache directory for the HTML compressor.
      *
      * @since 140422 First documented version.
@@ -345,7 +345,7 @@ if (!defined('COMET_CACHE_HTMLC_CACHE_DIR_PUBLIC')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_CACHE_DIR_PRIVATE')) {
-    /**
+    /*
      * Private cache directory for the HTML compressor.
      *
      * @since 140422 First documented version.
@@ -357,7 +357,7 @@ if (!defined('COMET_CACHE_HTMLC_CACHE_DIR_PRIVATE')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) {
-    /**
+    /*
      * Compress/combine `<head>` and `<body>` CSS?
      *
      * @since 140422 First documented version.
@@ -369,7 +369,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_BODY_CSS')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) {
-    /**
+    /*
      * Compress/combine `<head>` JS?
      *
      * @since 140422 First documented version.
@@ -381,7 +381,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_HEAD_JS')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) {
-    /**
+    /*
      * Compress/combine `<!--footer-scripts-->`?
      *
      * @since 140422 First documented version.
@@ -393,7 +393,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_FOOTER_JS')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS')) {
-    /**
+    /*
      * Compress/combine remotely hosted CSS/JS files?
      *
      * @since 140422 First documented version.
@@ -405,7 +405,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_COMBINE_REMOTE_CSS_JS')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) {
-    /**
+    /*
      * Compress inline `<script>` tags?
      *
      * @since 140422 First documented version.
@@ -417,7 +417,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_INLINE_JS_CODE')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_CSS_CODE')) {
-    /**
+    /*
      * Compress CSS code after combining files?
      *
      * @since 140422 First documented version.
@@ -429,7 +429,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_CSS_CODE')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_JS_CODE')) {
-    /**
+    /*
      * Compress JS code after combining files?
      *
      * @since 140422 First documented version.
@@ -441,7 +441,7 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_JS_CODE')) {
 /*[/pro]*/
 /*[pro strip-from="lite"]*/
 if (!defined('COMET_CACHE_HTMLC_COMPRESS_HTML_CODE')) {
-    /**
+    /*
      * Compress the resulting HTML code?
      *
      * @since 140422 First documented version.
@@ -454,10 +454,10 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_HTML_CODE')) {
 $GLOBALS[GLOBAL_NS.'_advanced_cache']  = new Classes\AdvancedCache();
 $GLOBALS[GLOBAL_NS.'__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 if (!isset($GLOBALS['zencache__advanced_cache'])) {
-    $GLOBALS['zencache_advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
+    $GLOBALS['zencache_advanced_cache']  = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
     $GLOBALS['zencache__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 }
 if (!isset($GLOBALS['quick_cache__advanced_cache'])) {
-    $GLOBALS['quick_cache_advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
+    $GLOBALS['quick_cache_advanced_cache']  = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
     $GLOBALS['quick_cache__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 }
