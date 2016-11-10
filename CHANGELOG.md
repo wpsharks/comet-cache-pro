@@ -4,6 +4,8 @@
 
 - **Performance Enhancement:** For sites configured to allow query string variables into the cache, those variables are now sorted by key name internally to avoid duplicate cache files; i.e., whenever the order of query string variables changes from one request to another, but with the same exact values. In short, Comet Cache now knows how to serve the same underlying cache file; i.e., from a previous request that may have had the same query string, just in a slightly different order. See also: [issue #639](https://github.com/websharks/comet-cache/issues/639) if you'd like additional details.
 
+- **Nonce Support:** In the pro version, when logged-in user caching is enabled, Comet Cache is now capable of intelligently caching pages that contain Nonce values ([numbers used once](https://cometcache.com/r/numbers-used-once-nonce/)). This allows for pages containing the WordPress Admin Bar to be cached without issue. It also improves compatibility with plugins like bbPress and BuddyPress, resulting in better performance and faster speeds for logged-in users. See also: [issue #793](https://github.com/websharks/comet-cache/issues/793) if you'd like additional details.
+
 - **i18n Compat.** This release makes all pro preview labels translatable by moving the labels that were previously defined in CSS only into HTML attribute values. See also: [issue #808](https://github.com/websharks/comet-cache/issues/808) if you'd like additional details.
 
 - **Bug Fix:** Fixed a broken link to the [Static CDN Filters tutorial for MaxCDN integration](http://cometcache.com/r/static-cdn-filters-maxcdn/). Props @kristineds. See also: [issue #842](https://github.com/websharks/comet-cache/issues/842) if you'd like additional details.
