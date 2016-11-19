@@ -59,7 +59,7 @@ trait ConditionalUtils
      * `POST`, `PUT`, `DELETE`?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if `POST`, `PUT`, `DELETE`.
      */
@@ -80,7 +80,7 @@ trait ConditionalUtils
      * Is the current request method is uncacheable?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if current request method is uncacheable.
      */
@@ -101,7 +101,7 @@ trait ConditionalUtils
      * Does the current request include an uncacheable query string?
      *
      * @since 151002 Improving Nginx support.
-     * @since 16xxxx Adding support for ignored GET vars.
+     * @since 161119 Adding support for ignored GET vars.
      *
      * @return bool True if request includes an uncacheable query string.
      */
@@ -125,7 +125,7 @@ trait ConditionalUtils
      * Should the current user should be considered a logged-in user?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if current user should be considered a logged-in user.
      */
@@ -167,7 +167,7 @@ trait ConditionalUtils
      * Are we in a LOCALHOST environment?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if we are in a LOCALHOST environment.
      */
@@ -189,7 +189,7 @@ trait ConditionalUtils
      * Is the current request for the Auto-Cache Engine?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if the current request is for the Auto-Cache Engine.
      */
@@ -209,7 +209,7 @@ trait ConditionalUtils
      * Is the current request for a feed?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if the current request is for a feed.
      */
@@ -230,7 +230,7 @@ trait ConditionalUtils
      * Is a document/string an HTML/XML doc; or no?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @param string $doc Input string/document to check.
      *
@@ -254,7 +254,7 @@ trait ConditionalUtils
      * Does the current request have a cacheable content type?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if the current request has a cacheable content type.
      *
@@ -282,7 +282,7 @@ trait ConditionalUtils
      * Does the current request have a cacheable HTTP status code?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @return bool True if the current request has a cacheable HTTP status code.
      *
@@ -312,7 +312,7 @@ trait ConditionalUtils
      * Checks if a PHP extension is loaded up.
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @param string $extension A PHP extension slug (i.e. extension name).
      *
@@ -332,7 +332,7 @@ trait ConditionalUtils
      * Is a particular function possible in every way?
      *
      * @since 150422 Rewrite.
-     * @since 16xxxx Enhancements.
+     * @since 161119 Enhancements.
      *
      * @param string $function A PHP function (or user function) to check.
      *
