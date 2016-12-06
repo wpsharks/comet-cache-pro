@@ -2,7 +2,7 @@
 
 Stable tag: 161119
 Requires at least: 4.2
-Tested up to: 4.7-alpha
+Tested up to: 4.7
 Text Domain: comet-cache
 
 License: GPLv2 or later
