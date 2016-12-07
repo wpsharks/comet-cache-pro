@@ -1,4 +1,8 @@
-= v161119 = 
+= [coming soon] =
+
+- **Bug Fix:** Improving OPcache detection. Now considering INI option `opcache.restrict_api`. Comet Cache is now smart enough to avoid the error: _PHP Warning: Zend OPcache API is restricted by "restrict_api" configuration directive_. See [Issue #733](https://github.com/websharks/comet-cache/issues/733).
+
+= v161119 =
 
 - **Bug Fix:** Avoid browser autocomplete in configuration fields by adding `autocomplete="off"` to all form tags in Comet Cache menu pages. See [Issue #832](https://github.com/websharks/comet-cache/issues/832).
 - **Bug Fix:** Fixed a broken link to the [Static CDN Filters tutorial for MaxCDN integration](http://cometcache.com/r/static-cdn-filters-maxcdn/). Props @kristineds. See [Issue #842](https://github.com/websharks/comet-cache/issues/842).
