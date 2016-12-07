@@ -451,6 +451,18 @@ if (!defined('COMET_CACHE_HTMLC_COMPRESS_HTML_CODE')) {
     define('COMET_CACHE_HTMLC_COMPRESS_HTML_CODE', '%%COMET_CACHE_HTMLC_COMPRESS_HTML_CODE%%');
 }
 /*[/pro]*/
+/*[pro strip-from="lite"]*/
+if (!defined('COMET_CACHE_HTMLC_AMP_EXCLUSIONS_ENABLE')) {
+    /*
+     * Enable automatic AMP exclusions?
+     *
+     * @since 16xxxx First documented version.
+     *
+     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+     */
+    define('COMET_CACHE_HTMLC_AMP_EXCLUSIONS_ENABLE', '%%COMET_CACHE_HTMLC_AMP_EXCLUSIONS_ENABLE%%');
+}
+/*[/pro]*/
 $GLOBALS[GLOBAL_NS.'_advanced_cache']  = new Classes\AdvancedCache();
 $GLOBALS[GLOBAL_NS.'__advanced_cache'] = &$GLOBALS[GLOBAL_NS.'_advanced_cache'];
 if (!isset($GLOBALS['zencache__advanced_cache'])) {

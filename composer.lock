@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "99b2420267cefeff6e8a0f5db6370929",
-    "content-hash": "4e8bbf7b85f44fbf23964b75ef313b0e",
+    "hash": "86898242a2dfb3f1cd8c21853f27ed9d",
+    "content-hash": "bb7696c91838d5ebae49d194e4c38e89",
     "packages": [
         {
             "name": "websharks/css-minifier",
@@ -63,23 +63,23 @@
         },
         {
             "name": "websharks/html-compressor",
-            "version": "161108",
+            "version": "161207",
             "source": {
                 "type": "git",
                 "url": "https://github.com/websharks/html-compressor.git",
-                "reference": "73a047734ab585cfaaa3e54526a484b788d768f5"
+                "reference": "ca3b5ec4d191790485a24bae9307d746b9111461"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/73a047734ab585cfaaa3e54526a484b788d768f5",
-                "reference": "73a047734ab585cfaaa3e54526a484b788d768f5",
+                "url": "https://api.github.com/repos/websharks/html-compressor/zipball/ca3b5ec4d191790485a24bae9307d746b9111461",
+                "reference": "ca3b5ec4d191790485a24bae9307d746b9111461",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "php": ">=5.3",
+                "php": ">=5.4",
                 "websharks/css-minifier": "dev-master",
                 "websharks/js-minifier": "dev-master"
             },
@@ -117,7 +117,7 @@
                 "html",
                 "websharks"
             ],
-            "time": "2016-11-08 20:56:04"
+            "time": "2016-12-07 17:42:49"
         },
         {
             "name": "websharks/js-minifier",
