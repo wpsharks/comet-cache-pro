@@ -69,6 +69,7 @@ trait HtmlCUtils
             'compress_css_code'              => COMET_CACHE_HTMLC_COMPRESS_CSS_CODE,
             'compress_js_code'               => COMET_CACHE_HTMLC_COMPRESS_JS_CODE,
             'compress_html_code'             => COMET_CACHE_HTMLC_COMPRESS_HTML_CODE,
+            'amp_exclusions_enable'          => COMET_CACHE_HTMLC_AMP_EXCLUSIONS_ENABLE,
         ];
         try {
             $html_compressor  = new \WebSharks\HtmlCompressor\Core($html_compressor_options);
