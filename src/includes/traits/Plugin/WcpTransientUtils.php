@@ -46,7 +46,7 @@ trait WcpTransientUtils
             AND CAST(`timeouts`.`option_value` AS UNSIGNED) < \''.esc_sql($time).'\'';
         $counter += (int) $wpdb->query(trim($sql));
 
-        $child_blogs = wp_get_sites();
+        $child_blogs = $this->getBlogs();
         $child_blogs = is_array($child_blogs) ? $child_blogs : [];
 
         foreach ($child_blogs as $_child_blog) {

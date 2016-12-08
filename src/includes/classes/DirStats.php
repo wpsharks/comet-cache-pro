@@ -15,7 +15,7 @@ class DirStats extends AbsBase
      *
      * @since 151002 Directory stats.
      *
-     * @type string Cache key.
+     * @var string Cache key.
      */
     protected $cache_key = '';
 
@@ -24,7 +24,7 @@ class DirStats extends AbsBase
      *
      * @since 151002 Directory stats.
      *
-     * @type string History cache key.
+     * @var string History cache key.
      */
     protected $history_cache_key = '';
 
@@ -33,7 +33,7 @@ class DirStats extends AbsBase
      *
      * @since 151002 Directory stats.
      *
-     * @type string Allowed history cache keys.
+     * @var string Allowed history cache keys.
      */
     protected $allowed_history_cache_keys = [];
 
@@ -42,7 +42,7 @@ class DirStats extends AbsBase
      *
      * @since 151002 Directory stats.
      *
-     * @type string Allowed history cache keys (current host).
+     * @var string Allowed history cache keys (current host).
      */
     protected $allowed_host_history_cache_keys = [];
 
@@ -299,7 +299,7 @@ class DirStats extends AbsBase
             $like    = '%'.$wpdb->esc_like($this->cache_key).'%';
             $wpdb->query('DELETE FROM `'.$wpdb->sitemeta.'` WHERE `site_id` = \''.esc_sql($site_id).'\' AND `meta_key` LIKE \''.esc_sql($like).'\'');
 
-            if (is_array($child_blogs = wp_get_sites())) {
+            if (is_array($child_blogs = $this->plugin->getBlogs())) {
                 foreach ($child_blogs as $_child_blog) {
                     $_host_cache_key = $this->cacheKeyForBlog($_child_blog['blog_id']);
                     wp_cache_delete($site_id.':'.$_host_cache_key, 'site-options');
@@ -350,7 +350,7 @@ class DirStats extends AbsBase
             $like    = '%'.$wpdb->esc_like($this->history_cache_key).'%';
             $wpdb->query('DELETE FROM `'.$wpdb->sitemeta.'` WHERE `site_id` = \''.esc_sql($site_id).'\' AND `meta_key` LIKE \''.esc_sql($like).'\'');
 
-            if (is_array($child_blogs = wp_get_sites())) {
+            if (is_array($child_blogs = $this->plugin->getBlogs())) {
                 foreach ($child_blogs as $_child_blog) {
                     $_host_history_cache_key = $this->historyCacheKeyForBlog($_child_blog['blog_id']);
                     wp_cache_delete($site_id.':'.$_host_history_cache_key, 'site-options');
@@ -398,11 +398,11 @@ class DirStats extends AbsBase
     protected function cacheKeyForBlog($blog_id = 0)
     {
         if (is_multisite()) {
-            if (($blog_id = (integer) $blog_id) < 0) {
-                $blog_id = (integer) get_current_site()->blog_id;
+            if (($blog_id = (int) $blog_id) < 0) {
+                $blog_id = (int) get_current_site()->blog_id;
             }
             if (!$blog_id) {
-                $blog_id = (integer) get_current_blog_id();
+                $blog_id = (int) get_current_blog_id();
             }
 
             return $this->cache_key.'_'.$blog_id;
@@ -423,11 +423,11 @@ class DirStats extends AbsBase
     protected function historyCacheKeyForBlog($blog_id = 0)
     {
         if (is_multisite()) {
-            if (($blog_id = (integer) $blog_id) < 0) {
-                $blog_id = (integer) get_current_site()->blog_id;
+            if (($blog_id = (int) $blog_id) < 0) {
+                $blog_id = (int) get_current_site()->blog_id;
             }
             if (!$blog_id) {
-                $blog_id = (integer) get_current_blog_id();
+                $blog_id = (int) get_current_blog_id();
             }
 
             return $this->history_cache_key.'_'.$blog_id;
@@ -452,7 +452,7 @@ class DirStats extends AbsBase
      */
     public function forCache($no_cache = false, $include_paths = false)
     {
-        $cache_key = md5(__FUNCTION__.(integer) $include_paths);
+        $cache_key = md5(__FUNCTION__.(int) $include_paths);
 
         if (!$no_cache && ($cache = $this->getCache()) && isset($cache[$cache_key])) {
             if (isset($cache[$cache_key]->stats, $cache[$cache_key]->time) && is_object($cache[$cache_key]->stats)
@@ -486,7 +486,7 @@ class DirStats extends AbsBase
      */
     public function forHtmlCCache($no_cache = false, $include_paths = false)
     {
-        $cache_key = md5(__FUNCTION__.(integer) $include_paths);
+        $cache_key = md5(__FUNCTION__.(int) $include_paths);
 
         if (!$no_cache && ($cache = $this->getCache()) && isset($cache[$cache_key])) {
             if (isset($cache[$cache_key]->stats, $cache[$cache_key]->time) && is_object($cache[$cache_key]->stats)
@@ -545,7 +545,7 @@ class DirStats extends AbsBase
         $___consider_domain_mapping_host_token = null,
         $___consider_domain_mapping_host_base_dir_tokens = null
     ) {
-        $cache_key = md5(__FUNCTION__.(integer) $include_paths);
+        $cache_key = md5(__FUNCTION__.(int) $include_paths);
         $no_cache  = $___considering_domain_mapping ? true : $no_cache;
 
         if (!$no_cache && ($cache = $this->getHostCache()) && isset($cache[$cache_key])) {
@@ -644,7 +644,7 @@ class DirStats extends AbsBase
      */
     public function forHtmlCHostCache($no_cache = false, $include_paths = false)
     {
-        $cache_key = md5(__FUNCTION__.(integer) $include_paths);
+        $cache_key = md5(__FUNCTION__.(int) $include_paths);
 
         if (!$no_cache && ($cache = $this->getHostCache()) && isset($cache[$cache_key])) {
             if (isset($cache[$cache_key]->stats, $cache[$cache_key]->time) && is_object($cache[$cache_key]->stats)
