@@ -595,6 +595,9 @@ class Plugin extends AbsBaseAp
         add_action('clear_auth_cookie', [$this, 'autoClearUserCacheCur']);
         /*[/pro]*/
 
+        add_action('delete_user', [$this, 'autoClearAuthorPageCacheOnUserDeletion'], 10, 2);
+        add_action('remove_user_from_blog', [$this, 'autoClearAuthorPageCacheOnUserDeletion'], 10, 1);
+
         if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
             add_filter('akismet_comment_nonce', function () {
                 return 'disabled-by-'.SLUG_TD; // MUST return a string literal that is not 'true' or '' (an empty string). See <http://bit.ly/1YItpdE>

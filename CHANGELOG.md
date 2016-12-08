@@ -1,5 +1,7 @@
 = [coming soon] =
 
+- **Auto-Clearing:** This release makes Comet Cache smart enough to detect when a user is deleted (or removed from a child blog in a Network). At which time the Author page for that user will be cleared from the cache so it can be regenerated automatically. See [Issue #304](https://github.com/websharks/comet-cache/issues/304).
+
 - **Watered-Down Regex Documentation:** Adding notes to the inline documentation (in the software) about the use of `^` and `$` in some places where these special characters are not fully supported. Also adding the same notes to the [Watered-Down Regex KB Article](https://cometcache.com/kb-article/watered-down-regex-syntax/). See also: [Issue #611](https://github.com/websharks/comet-cache/issues/611).
 
 - **Multibyte Compatibility:** This release improves support for WordPress Permalinks that contain UTF-8 symbols (or emojis) in them. More specifically, this release adds the `/u` flag to all `preg_*()` calls in cache clearing routines that generate cache paths from Watered-Down Regex patterns entered by a site owner. See: [Issue #611](https://github.com/websharks/comet-cache/issues/611).
