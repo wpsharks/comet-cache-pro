@@ -106,6 +106,7 @@ trait CacheDirUtils
      * @param bool $check_max_age Check max age? i.e., use purge behavior?
      *
      * @throws \Exception If unable to delete a file for any reason.
+     *
      * @return int Total files deleted by this routine (if any).
      *
      *
@@ -201,7 +202,7 @@ trait CacheDirUtils
 
                 case 'dir': // A regular directory; i.e., not a symlink.
 
-                    if ($regex !== '/^.+/i') {
+                    if (!in_array(rtrim($regex, 'ui'), ['/.*/', '/.+/'], true)) {
                         break; // Not deleting everything.
                     }
                     if ($check_max_age && !empty($max_age)) {
@@ -251,8 +252,8 @@ trait CacheDirUtils
      * @param bool $___consider_domain_mapping_host_base_dir_tokens For internal use only.
      *
      * @throws \Exception If unable to delete a file for any reason.
-     * @return int Total files deleted by this routine (if any).
      *
+     * @return int Total files deleted by this routine (if any).
      */
     public function deleteFilesFromHostCacheDir(
         $regex,
@@ -379,7 +380,7 @@ trait CacheDirUtils
 
                     case 'dir': // A regular directory; i.e., not a symlink.
 
-                        if ($regex !== '/^.+/i') {
+                        if (!in_array(rtrim($regex, 'ui'), ['/.*/', '/.+/'], true)) {
                             break; // Not deleting everything.
                         }
                         if ($check_max_age && !empty($max_age)) {
@@ -455,8 +456,8 @@ trait CacheDirUtils
      * @param bool $delete_dir_too Delete parent? i.e., delete the `$dir` itself also?
      *
      * @throws \Exception If unable to delete a file/directory for any reason.
-     * @return int Total files/directories deleted by this routine (if any).
      *
+     * @return int Total files/directories deleted by this routine (if any).
      */
     public function deleteAllFilesDirsIn($dir, $delete_dir_too = false)
     {
@@ -485,7 +486,7 @@ trait CacheDirUtils
         if (!rename($dir, $dir_temp)) {
             throw new \Exception(sprintf(__('Unable to delete all files/dirs. Rename failure on tmp directory: `%1$s`.', SLUG_TD), $dir));
         }
-        foreach (($_dir_regex_iteration = $this->dirRegexIteration($dir_temp, '/.+/')) as $_resource) {
+        foreach (($_dir_regex_iteration = $this->dirRegexIteration($dir_temp, '/.+/u')) as $_resource) {
             $_resource_type = $_resource->getType();
             $_sub_path_name = $_resource->getSubpathname();
             $_path_name     = $_resource->getPathname();
@@ -562,8 +563,8 @@ trait CacheDirUtils
      * @param bool $erase_dir_too Erase parent? i.e., erase the `$dir` itself also?
      *
      * @throws \Exception If unable to erase a file/directory for any reason.
-     * @return int Total files/directories erased by this routine (if any).
      *
+     * @return int Total files/directories erased by this routine (if any).
      */
     public function eraseAllFilesDirsIn($dir, $erase_dir_too = false)
     {
@@ -584,7 +585,7 @@ trait CacheDirUtils
         }
         clearstatcache(); // Clear stat cache to be sure we have a fresh start below.
 
-        foreach (($_dir_regex_iteration = $this->dirRegexIteration($dir, '/.+/')) as $_resource) {
+        foreach (($_dir_regex_iteration = $this->dirRegexIteration($dir, '/.+/u')) as $_resource) {
             $_resource_type = $_resource->getType();
             $_sub_path_name = $_resource->getSubpathname();
             $_path_name     = $_resource->getPathname();
