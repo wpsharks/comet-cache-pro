@@ -263,7 +263,7 @@ class CdnFilters extends AbsBase
         add_filter('plugins_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 2);
 
         add_filter('wp_get_attachment_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
-        add_filter('wp_calculate_image_srcset', [$this, 'srcSetFilter'], PHP_INT_MAX - 10, 5);
+        add_filter('wp_calculate_image_srcset', [$this, 'srcSetFilter'], PHP_INT_MAX - 10, 1);
 
         add_filter('script_loader_src', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
         add_filter('style_loader_src', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
@@ -329,26 +329,22 @@ class CdnFilters extends AbsBase
      *
      * @since 16xxxx Adding support for `srcset`.
      *
-     * @param array $sources {
-     *                       One or more arrays of source data.
-     *
-     *     @var array $width {
-     *         @var string $url        The URL of an image source.
-     *         @var string $descriptor The descriptor type used in the image candidate string, either 'w' or 'x'.
-     *         @var int    $value      The source width if paired with a 'w' descriptor, or a pixel density value if paired with an 'x' descriptor.
-     *     }
-     * }
-     *
-     * @param array  $size_array    Array of width and height values in pixels (in that order).
-     * @param string $image_src     The 'src' of the image.
-     * @param array  $image_meta    The image meta data as returned by 'wp_get_attachment_metadata()'.
-     * @param int    $attachment_id Image attachment ID or 0.
+     * @param array $sources An array of all sources.
      *
      * return array $sources Possibly filtered by this handler.
      */
-    public function srcSetFilter($sources, $size_array, $image_src, $image_meta, $attachment_id)
+    public function srcSetFilter($sources)
     {
-        return $sources; // @TODO
+        if (!is_array($sources)) {
+            return $sources;
+        }
+        foreach ($sources as &$_source) {
+            if (!empty($_source['url'])) {
+                $_source['url'] = $this->filterUrl($_source['url'], null, false, 'body');
+            }
+        } // unset($_source); // Housekeeping.
+
+        return $sources;
     }
 
     /**
