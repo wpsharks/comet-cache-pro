@@ -558,6 +558,7 @@ class Plugin extends AbsBaseAp
         add_action('wp_create_nav_menu', [$this, 'autoClearCache']);
         add_action('wp_update_nav_menu', [$this, 'autoClearCache']);
         add_action('wp_delete_nav_menu', [$this, 'autoClearCache']);
+        add_action('update_option_sidebars_widgets', [$this, 'autoClearCache']);
 
         add_action('save_post', [$this, 'autoClearPostCache']);
         add_action('delete_post', [$this, 'autoClearPostCache']);

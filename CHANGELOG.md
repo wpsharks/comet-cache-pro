@@ -1,8 +1,10 @@
 = [coming soon] =
 
+- **Widget Change Detection:** Comet Cache can now detect when **Appearance → Widgets** are added/edited/removed, and Comet Cache will automatically clear the cache so that your site remains up-to-date. See [Issue #411](https://github.com/websharks/comet-cache/issues/411).
+
 - **Automatic Background Updates:** It is now possible (in Comet Cache Pro) to enable automatic background updates that occur quietly in the background whenever new features, bug fixes, or security issues are addressed by our developers. See: **Dashboard → Comet Cache Pro → Config. Options → Update Credentials**. See also: [Issue #827](https://github.com/websharks/comet-cache/issues/827).
 
-- **HTML Compressor:** Updated to the latest available release of the HTML Compressor (v161207) with improved support for [Accelerated Mobile Pages](https://www.ampproject.org/). See: [Issue #733](https://github.com/websharks/comet-cache/issues/733). See also: [HTML Compressor v161207 changelog](https://github.com/websharks/html-compressor/releases/tag/161207).
+- **HTML Compressor:** Updated to the latest available release of the HTML Compressor (v161208) with improved support for [Accelerated Mobile Pages](https://www.ampproject.org/). See: [Issue #733](https://github.com/websharks/comet-cache/issues/733). See also: [HTML Compressor v161208 changelog](https://github.com/websharks/html-compressor/releases/tag/161208).
 
 - **HTML Compressor / AMP Compatibility:** Improved compatibility with [Accelerated Mobile Pages](https://www.ampproject.org/). There is a new HTML Compressor option that is enabled by default and it makes Comet Cache smart enough to auto-detect and selectively disable portions of the HTML Compressor that are incompatible with the AMP spec; i.e., routines that are not necessary when serving APMd pages. In short, if the URI being compressed ends with `/amp/`, or the document contains a top-level `<html ⚡>` tag (`<html amp>` is accepted as well), then features which are incompatible with [Accelerated Mobile Pages](https://www.ampproject.org/) will be disabled accordingly.
 
