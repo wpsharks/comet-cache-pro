@@ -234,10 +234,19 @@ class MenuPageOptions extends MenuPage
             echo '      <h3>'.sprintf(__('License Key', SLUG_TD), esc_html(NAME)).'</h3>'."\n";
             echo '      <p><input type="password" name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_password]" value="'.esc_attr($this->plugin->options['pro_update_password']).'" autocomplete="new-password" /></p>'."\n";
 
+            if ((!defined('DISALLOW_FILE_MODS') || !DISALLOW_FILE_MODS) && !apply_filters('automatic_updater_disabled', defined('AUTOMATIC_UPDATER_DISABLED') && AUTOMATIC_UPDATER_DISABLED)) {
+                // See: <http://jas.xyz/2gFcnPd> and note that `automatic_updater_disabled` is a core filter.
+                echo '      <hr />'."\n";
+                echo '      <h3>'.__('Automatic Background Updates', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.sprintf(__('Enable this if you\'d like %1$s to download and install bug fixes and security updates automatically in the background. Requires a valid license key in the field above.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_auto_update_enable]" autocomplete="off">'."\n";
+                echo '            <option value="0"'.selected($this->plugin->options['pro_auto_update_enable'], '0', false).'>'.sprintf(__('No, I\'ll wait for an update notification in my dashboard.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+                echo '            <option value="1"'.selected($this->plugin->options['pro_auto_update_enable'], '1', false).'>'.sprintf(__('Yes, enable automatic background updates.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
+                echo '         </select></p>'."\n";
+            }
             echo '      <hr />'."\n";
             echo '      <h3>'.__('Beta Program', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('If you would like to participate in our beta program and receive new features and bug fixes before they are released to the public, %1$s can include Release Candidates when checking for automatic updates. Release Candidates are almost-ready-for-production and have already been through many internal test runs. Our team runs the latest Release Candidate on all of our production sites, but that doesn\'t mean you\'ll want to do the same. :-) Please report any issues with Release Candidates on <a href="https://github.com/websharks/comet-cache/issues/" target="_blank">GitHub</a>.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-
             echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][pro_update_check_stable]" autocomplete="off">'."\n";
             echo '            <option value="1"'.selected($this->plugin->options['pro_update_check_stable'], '1', false).'>'.sprintf(__('No, do not check for Release Candidates; I only want public releases.', SLUG_TD), esc_html(NAME)).'</option>'."\n";
             echo '            <option value="0"'.selected($this->plugin->options['pro_update_check_stable'], '0', false).'>'.sprintf(__('Yes, check for Release Candidates; I want to help with testing.', SLUG_TD), esc_html(NAME)).'</option>'."\n";

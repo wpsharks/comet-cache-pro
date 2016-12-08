@@ -302,6 +302,8 @@ class Plugin extends AbsBaseAp
             'pro_update_username',
             'pro_update_password',
 
+            'pro_auto_update_enable',
+
             'last_pro_stats_log',
         ];
         $this->default_options = [
@@ -476,6 +478,8 @@ class Plugin extends AbsBaseAp
             'pro_update_username' => '', // Username.
             'pro_update_password' => '', // Password or license key.
 
+            'pro_auto_update_enable' => '0', // `0|1`; enable?
+
             /* Related to stats logging. */
 
             'last_pro_stats_log' => '0', // Timestamp.
@@ -607,6 +611,11 @@ class Plugin extends AbsBaseAp
             if (!is_admin()) { // Don't even bother in the admin area.
                 new Classes\CdnFilters(); // Setup CDN filters.
             }
+        }
+        /*[/pro]*/
+        /*[pro strip-from="lite"]*/
+        if ($this->options['pro_auto_update_enable']) {
+            add_filter('auto_update_plugin', [$this, 'maybeAutoUpdateInBackground'], 10, 2);
         }
         /*[/pro]*/
         /* -------------------------------------------------------------- */

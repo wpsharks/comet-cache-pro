@@ -194,5 +194,26 @@ trait UpdateUtils
         }
         return $report; // With possible update for this app.
     }
+
+    /**
+     * Auto-update filter.
+     *
+     * @since 16xxxx Adding auto-update option.
+     *
+     * @attaches-to `auto_update_plugin` filter.
+     *
+     * @param bool   $update Should update?
+     * @param object $item   Item to check.
+     *
+     * @return bool Should update?
+     */
+    public function maybeAutoUpdateInBackground($update, $item)
+    {
+        if (!empty($item->slug) && $item->slug === str_replace('_', '-', GLOBAL_NS).'-pro') {
+            return $update = true; // Auto-update.
+        } else {
+            return $update; // Unchanged in this case.
+        }
+    }
     /*[/pro]*/
 }
