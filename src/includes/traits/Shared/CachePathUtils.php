@@ -63,8 +63,6 @@ trait CachePathUtils
      * @since 151220 Enhancing translation support.
      *
      * @return string Default cache-path suffix frag (regex).
-     *
-     * @TODO Use conditional to detect the AMP plugin (e.g., `isAmpInstalled()`) to avoid edge cases with the `|\/amp` regex here
      */
     public function cachePathRegexDefaultSuffixFrag()
     {
@@ -224,7 +222,7 @@ trait CachePathUtils
      * @since 151114 Updated to support an arbitrary URL instead of a regex frag.
      *
      * @param string $url               The input URL to convert. This CAN be left empty when necessary.
-     *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+     *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/ui`.
      *                                  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
      * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
      *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
@@ -245,7 +243,7 @@ trait CachePathUtils
             $cache_path       = $this->buildCachePath($url, '', '', $flags); // Without the scheme.
             $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.preg_quote($cache_path, '/') : '';
         }
-        return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
+        return '/^'.$cache_path_regex.$regex_suffix_frag.'/ui';
     }
 
     /**
@@ -254,7 +252,7 @@ trait CachePathUtils
      * @since 150422 Rewrite. Updated 151002 w/ multisite compat. improvements.
      *
      * @param string $url               The input URL to convert. This CAN be left empty when necessary.
-     *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+     *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/ui`.
      *                                  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
      * @param string $regex_suffix_frag Regex fragment to come after the relative cache/path regex frag.
      *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
@@ -291,7 +289,7 @@ trait CachePathUtils
                 $abs_relative_cache_path_regex = isset($abs_relative_cache_path[0]) ? preg_quote($abs_relative_cache_path, '/') : '';
             }
         }
-        return '/^'.$abs_relative_cache_path_regex.$regex_suffix_frag.'/i';
+        return '/^'.$abs_relative_cache_path_regex.$regex_suffix_frag.'/ui';
     }
 
     /**
@@ -303,7 +301,7 @@ trait CachePathUtils
      *                    This may also contain watered-down regex; i.e., `*^$` characters are OK here.
      *                    However, `^$` are discarded, as they are unnecessary in this context.
      *
-     *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+     *   If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/ui`.
      *   If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
      * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
      *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
@@ -324,7 +322,7 @@ trait CachePathUtils
             $cache_path       = $this->buildCachePath($url, '', '', $flags); // Without the scheme.
             $cache_path_regex = isset($cache_path[0]) ? '\/https?\/'.$this->wdRegexToActualRegexFrag($cache_path) : '';
         }
-        return '/^'.$cache_path_regex.$regex_suffix_frag.'/i';
+        return '/^'.$cache_path_regex.$regex_suffix_frag.'/ui';
     }
 
     /**
@@ -375,7 +373,7 @@ trait CachePathUtils
      * @since 151114 Moving this low-level routine into a method of a different name.
      *
      * @param string $regex_frag        A regex fragment. This CAN be left empty when necessary.
-     *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/i`.
+     *                                  If empty, the final regex pattern will be `/^'.$regex_suffix_frag.'/ui`.
      *                                  If empty, it's a good idea to start `$regex_suffix_frag` with `.*?`.
      * @param string $regex_suffix_frag Regex fragment to come after the `$regex_frag`.
      *                                  Defaults to: `(?:\/index)?(?:\.|\/(?:page\/[0-9]+|comment\-page\-[0-9]+)[.\/])`.
@@ -389,6 +387,6 @@ trait CachePathUtils
         $regex_frag        = (string) $regex_frag;
         $regex_suffix_frag = $this->cachePathRegexSuffixFrag($regex_suffix_frag);
 
-        return '/^'.$regex_frag.$regex_suffix_frag.'/i';
+        return '/^'.$regex_frag.$regex_suffix_frag.'/ui';
     }
 }
