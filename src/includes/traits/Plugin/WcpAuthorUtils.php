@@ -121,11 +121,11 @@ trait WcpAuthorUtils
         } elseif (!is_dir($cache_dir = $this->cacheDir())) {
             return $counter; // Nothing to do.
         }
-        if (($WP_User = new \WP_User($user_id))->exists() && $WP_User->has_cap('edit_posts')) {
+        if (($WP_User = new \WP_User($user_id)) && $WP_User->exists() && $WP_User->has_cap('edit_posts')) {
             $authors_to_clear[$WP_User->ID]['posts_url']    = get_author_posts_url($WP_User->ID);
             $authors_to_clear[$WP_User->ID]['display_name'] = get_the_author_meta('display_name', $WP_User->ID);
         }
-        if ($rat_user_id && ($rat_WP_User = new \WP_User($rat_user_id))->exists() && $rat_WP_User->has_cap('edit_posts')) {
+        if ($rat_user_id && ($rat_WP_User = new \WP_User($rat_user_id)) && $rat_WP_User->exists() && $rat_WP_User->has_cap('edit_posts')) {
             $authors_to_clear[$rat_WP_User->ID]['posts_url']    = get_author_posts_url($rat_WP_User->ID);
             $authors_to_clear[$rat_WP_User->ID]['display_name'] = get_the_author_meta('display_name', $rat_WP_User->ID);
         }
