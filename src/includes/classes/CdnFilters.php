@@ -13,98 +13,98 @@ class CdnFilters extends AbsBase
     /**
      * @since 150422 Rewrite.
      *
-     * @type string Local host name.
+     * @var string Local host name.
      */
     protected $local_host;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type bool Enable CDN filters?
+     * @var bool Enable CDN filters?
      */
     protected $cdn_enable;
 
     /**
      * @since 150409 Improving CDN support.
      *
-     * @type bool Enable CDN filters in HTML Compressor?
+     * @var bool Enable CDN filters in HTML Compressor?
      */
     protected $htmlc_enable;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type string CDN serves files from this host.
+     * @var string CDN serves files from this host.
      */
     protected $cdn_host;
 
     /**
      * @since 150626 Improving CDN host parsing.
      *
-     * @type array An array of all CDN host mappings.
+     * @var array An array of all CDN host mappings.
      */
     protected $cdn_hosts;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type bool CDN over SSL connections?
+     * @var bool CDN over SSL connections?
      */
     protected $cdn_over_ssl;
 
     /**
      * @since 151220 Adding logged-in check.
      *
-     * @type bool CDN when logged in?
+     * @var bool CDN when logged in?
      */
     protected $cdn_when_logged_in;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type string Invalidation variable name.
+     * @var string Invalidation variable name.
      */
     protected $cdn_invalidation_var;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type int Invalidation counter.
+     * @var int Invalidation counter.
      */
     protected $cdn_invalidation_counter;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type array Array of whitelisted extensions.
+     * @var array Array of whitelisted extensions.
      */
     protected $cdn_whitelisted_extensions;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type array Array of blacklisted extensions.
+     * @var array Array of blacklisted extensions.
      */
     protected $cdn_blacklisted_extensions;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type string|null CDN whitelisted URI patterns.
+     * @var string|null CDN whitelisted URI patterns.
      */
     protected $cdn_whitelisted_uri_patterns;
 
     /**
      * @since 150422 Rewrite.
      *
-     * @type string|null CDN blacklisted URI patterns.
+     * @var string|null CDN blacklisted URI patterns.
      */
     protected $cdn_blacklisted_uri_patterns;
 
     /**
      * @since 150626 Improving CDN host parsing.
      *
-     * @type bool Did the `wp_head` action hook yet?
+     * @var bool Did the `wp_head` action hook yet?
      *
      * @note This is only public for PHP v5.3 compat.
      */
@@ -113,7 +113,7 @@ class CdnFilters extends AbsBase
     /**
      * @since 150626 Improving CDN host parsing.
      *
-     * @type bool Did the `wp_footer` action hook yet?
+     * @var bool Did the `wp_footer` action hook yet?
      *
      * @note This is only public for PHP v5.3 compat.
      */
@@ -130,11 +130,11 @@ class CdnFilters extends AbsBase
 
         // Primary switch; CDN filters enabled?
 
-        $this->cdn_enable = (boolean) $this->plugin->options['cdn_enable'];
+        $this->cdn_enable = (bool) $this->plugin->options['cdn_enable'];
 
         // Another switch; HTML Compressor enabled?
 
-        $this->htmlc_enable = (boolean) $this->plugin->options['htmlc_enable'];
+        $this->htmlc_enable = (bool) $this->plugin->options['htmlc_enable'];
 
         // Host-related properties.
 
@@ -146,12 +146,12 @@ class CdnFilters extends AbsBase
         // Configure invalidation-related properties.
 
         $this->cdn_invalidation_var     = (string) $this->plugin->options['cdn_invalidation_var'];
-        $this->cdn_invalidation_counter = (integer) $this->plugin->options['cdn_invalidation_counter'];
+        $this->cdn_invalidation_counter = (int) $this->plugin->options['cdn_invalidation_counter'];
 
         // CDN supports SSL connections?
 
-        $this->cdn_over_ssl       = (boolean) $this->plugin->options['cdn_over_ssl'];
-        $this->cdn_when_logged_in = (boolean) $this->plugin->options['cdn_when_logged_in'];
+        $this->cdn_over_ssl       = (bool) $this->plugin->options['cdn_over_ssl'];
+        $this->cdn_when_logged_in = (bool) $this->plugin->options['cdn_when_logged_in'];
 
         // Whitelisted extensions; MUST have these at all times.
 
@@ -263,6 +263,7 @@ class CdnFilters extends AbsBase
         add_filter('plugins_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 2);
 
         add_filter('wp_get_attachment_url', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
+        add_filter('wp_calculate_image_srcset', [$this, 'srcSetFilter'], PHP_INT_MAX - 10, 1);
 
         add_filter('script_loader_src', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
         add_filter('style_loader_src', [$this, 'urlFilter'], PHP_INT_MAX - 10, 1);
@@ -321,6 +322,29 @@ class CdnFilters extends AbsBase
     public function htmlCUrlFilter($url, $for = 'body')
     {
         return $this->filterUrl($url, null, false, $for);
+    }
+
+    /**
+     * Filters an image's 'srcset' sources.
+     *
+     * @since 16xxxx Adding support for `srcset`.
+     *
+     * @param array $sources An array of all sources.
+     *
+     * return array $sources Possibly filtered by this handler.
+     */
+    public function srcSetFilter($sources)
+    {
+        if (!is_array($sources)) {
+            return $sources;
+        }
+        foreach ($sources as &$_source) {
+            if (!empty($_source['url'])) {
+                $_source['url'] = $this->filterUrl($_source['url'], null, false, 'body');
+            }
+        } // unset($_source); // Housekeeping.
+
+        return $sources;
     }
 
     /**
