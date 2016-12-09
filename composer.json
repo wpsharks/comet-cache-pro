@@ -32,6 +32,7 @@
     "php": ">=5.4",
     "websharks/wp-php-rv": "160824.6416",
     "websharks/html-compressor": "161208",
+    "thadafinser/user-agent-parser": "1.5.0",
     "websharks/sharkicons": "160221"
   },
   "require-lite": {
