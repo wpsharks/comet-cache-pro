@@ -566,9 +566,13 @@ trait InstallUtils
         if (!$this->options['mobile_adaptive_salt_enable']
                 || !$this->options['mobile_adaptive_salt']) {
             return true; // Not applicable.
+        } elseif (is_dir($this->uaInfoDir('/browscap'))
+                && $this->options['ua_info_last_data_update'] >= strtotime('-30 days')) {
+            return true; // Not necessary to update this again.
         }
         try { // Return `true` on success.
             $this->populateUaInfoDirectory(true);
+            $this->updateOptions(['ua_info_last_data_update' => time()]);
             return true; // Success.
         } catch (\Exception $Exception) {
             return false;

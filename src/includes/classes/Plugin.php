@@ -256,6 +256,7 @@ class Plugin extends AbsBaseAp
             'version_salt',
             'mobile_adaptive_salt',
             'mobile_adaptive_salt_enable',
+            'ua_info_last_data_update',
 
             'htmlc_enable',
             'htmlc_css_exclusions',
@@ -406,6 +407,7 @@ class Plugin extends AbsBaseAp
             // i.e., to indicate that being mobile is the only factor worth considering.
             'mobile_adaptive_salt'        => 'os.name + device.type + browser.name',
             'mobile_adaptive_salt_enable' => '0', // `0|1` Enable the mobile adaptive salt?
+            'ua_info_last_data_update'    => '0', // Timestamp.
 
             /* Related to HTML compressor. */
 

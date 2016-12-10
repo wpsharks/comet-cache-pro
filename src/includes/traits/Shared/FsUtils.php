@@ -151,7 +151,7 @@ trait FsUtils
         $dir_iterator      = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_SELF | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS);
         $iterator_iterator = new \RecursiveIteratorIterator($dir_iterator, \RecursiveIteratorIterator::CHILD_FIRST);
 
-        if ($regex && !in_array(rtrim($regex, 'ui'), ['/.*/', '/.+/'], true)) { // Apply regex filter?
+        if ($regex && !in_array(rtrim(str_replace(['^', '$'], '', $regex), 'ui'), ['/.*/', '/.+/'], true)) { // Apply regex filter?
             return new \RegexIterator($iterator_iterator, $regex, \RegexIterator::MATCH, \RegexIterator::USE_KEY);
         }
         return $iterator_iterator; // Iterate everything.
@@ -328,7 +328,7 @@ trait FsUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var string `.htaccess` fules.
+     * @type string `.htaccess` fules.
      */
     public $htaccess_deny = "<IfModule authz_core_module>\n\tRequire all denied\n</IfModule>\n<IfModule !authz_core_module>\n\tdeny from all\n</IfModule>";
 }

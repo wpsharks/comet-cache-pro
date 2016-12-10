@@ -159,6 +159,7 @@ trait UaUtils
         } // unset($_token, $_value); // Housekeeping.
 
         if ($as_path) { // Disallow special chars.
+            $tokens        = preg_replace('/\s+/u', '', $tokens);
             $tokens        = preg_replace('/[^a-z0-9+\-]/ui', '-', $tokens);
             // Important NOT to trim `+` separators away in this scenario.
             // Doing so would break the overall logic behind cache locations.
@@ -188,7 +189,8 @@ trait UaUtils
             return; // Not possible.
         }
         $cache_lock   = $this->cacheLock();
-        $browscap_dir = $this->uaInfoDir('/browscap');
+        $ua_info_dir  = $this->uaInfoDir();
+        $browscap_dir = $ua_info_dir.'/browscap';
 
         clearstatcache(); // Clear `stat()` cache.
 
@@ -206,10 +208,10 @@ trait UaUtils
             } // Else use soft failure.
             return; // Not possible.
         }
-        if (is_writable($browscap_dir) && !is_file($cache_dir.'/.htaccess')) {
-            file_put_contents($browscap_dir.'/.htaccess', $this->htaccess_deny);
+        if (is_writable($ua_info_dir) && !is_file($ua_info_dir.'/.htaccess')) {
+            file_put_contents($ua_info_dir.'/.htaccess', $this->htaccess_deny);
         }
-        if (!is_dir($browscap_dir) || !is_writable($browscap_dir) || !is_file($browscap_dir.'/.htaccess')) {
+        if (!is_dir($browscap_dir) || !is_writable($browscap_dir) || !is_file($ua_info_dir.'/.htaccess')) {
             $this->cacheUnlock($cache_lock);
             if ($throw_exception_on_failure) {
                 throw new \Exception('UA info directory population failure.');

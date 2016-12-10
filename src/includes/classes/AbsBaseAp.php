@@ -31,6 +31,7 @@ abstract class AbsBaseAp extends AbsBase
     use Traits\Shared\SysUtils;
     use Traits\Shared\TokenUtils;
     use Traits\Shared\TrimUtils;
+    use Traits\Shared\UaUtils;
     use Traits\Shared\UrlUtils;
     /*[/.build.php-auto-generate-use-Traits]*/
 
