@@ -32,7 +32,7 @@ $UserAgent          = $BrowscapLiteParser->parse($UA_to_test);
 echo 'os.name = '.$UserAgent->getOperatingSystem()->getName()."\n\n";
 
 echo 'device.type = '.$UserAgent->getDevice()->getType()."\n";
-echo '%%device.is_mobile%% = '.$UserAgent->getDevice()->getIsMobile()."\n\n";
+echo 'device.is_mobile = '.$UserAgent->getDevice()->getIsMobile()."\n\n";
 
 echo 'browser.name = '.$UserAgent->getBrowser()->getName()."\n";
 echo 'browser.version = '.$UserAgent->getBrowser()->getVersion()->getComplete()."\n";
