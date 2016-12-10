@@ -164,6 +164,18 @@ if (!defined('COMET_CACHE_DIR')) {
      */
     define('COMET_CACHE_DIR', WP_CONTENT_DIR.'/'.'%%COMET_CACHE_DIR%%');
 }
+/*[pro strip-from="lite"]*/
+if (!defined('COMET_CACHE_UA_INFO_DIR')) {
+    /*
+     * Directory used to store UA info; relative to `WP_CONTENT_DIR`.
+     *
+     * @since 16xxxx Mobile-adaptive salt.
+     *
+     * @var string Absolute server directory path.
+     */
+    define('COMET_CACHE_UA_INFO_DIR', WP_CONTENT_DIR.'/'.'%%COMET_CACHE_UA_INFO_DIR%%');
+}
+/*[/pro]*/
 if (!defined('COMET_CACHE_MAX_AGE')) {
     /*
      * Cache expiration time.
@@ -258,6 +270,31 @@ if (!defined('COMET_CACHE_VERSION_SALT')) {
      *    or a PHP expression that results in a scalar value.
      */
     define('COMET_CACHE_VERSION_SALT', '%%COMET_CACHE_VERSION_SALT%%');
+}
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
+if (!defined('COMET_CACHE_MOBILE_ADAPTIVE_SALT')) {
+    /*
+     * Mobile-adaptive salt.
+     *
+     * @since 16xxxx Mobile-adaptive salt.
+     *
+     * @var string Set this to a `+` delimited string containing any of these tokens:
+     * `os.name + device.is_mobile + device.type + browser.name + browser.version` (version should be avoided).
+     */
+    define('COMET_CACHE_MOBILE_ADAPTIVE_SALT', '%%COMET_CACHE_MOBILE_ADAPTIVE_SALT%%');
+}
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
+if (!defined('COMET_CACHE_MOBILE_ADAPTIVE_SALT_ENABLE')) {
+    /*
+     * Mobile-adaptive salt enable?
+     *
+     * @since 16xxxx Mobile-adaptive salt.
+     *
+     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+     */
+    define('COMET_CACHE_MOBILE_ADAPTIVE_SALT_ENABLE', '%%COMET_CACHE_MOBILE_ADAPTIVE_SALT_ENABLE%%');
 }
 /*[/pro]*/
 /*[pro strip-from="lite"]*/

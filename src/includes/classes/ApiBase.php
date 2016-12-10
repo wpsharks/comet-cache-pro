@@ -44,6 +44,50 @@ class ApiBase
         return $GLOBALS[GLOBAL_NS]->options;
     }
 
+    /*[pro strip-from="lite"]*/
+
+    /**
+     * UA (User-Agent) info.
+     *
+     * @since 16xxxx Mobile-adaptive salt.
+     *
+     * @param string|null $ua User-Agent (optional).
+     * @note Defaults to `$_SERVER['HTTP_USER_AGENT']`.
+     *
+     * @return array UA info (or empty array on failure).
+     *
+     * The array will contain the following keys:
+     *
+     * - `os.name` = iOS, Android, WinPhone10, WinPhone8.1.
+     *
+     * - `device.type` = Tablet, Mobile Device, Mobile Phone.
+     * - `device.is_mobile` = True if a mobile device (e.g., tablet|phone).
+     *
+     * - `browser.name` = Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast.
+     * - `browser.version` = 55.0, 1.3, 9383242.2392, etc.
+     */
+    public static function uaInfo($ua = null)
+    {
+        return $GLOBALS[GLOBAL_NS]->getUaInfo($ua);
+    }
+
+    /**
+     * UA (User-Agent) is mobile?
+     *
+     * @param string|null $ua User-Agent (optional).
+     * @note Defaults to `$_SERVER['HTTP_USER_AGENT']`.
+     *
+     * @since 16xxxx Mobile-adaptive salt.
+     *
+     * @return true True if is mobile.
+     */
+    public static function uaIsMobile($ua = null)
+    {
+        return $GLOBALS[GLOBAL_NS]->uaIsMobile($ua);
+    }
+
+    /*[/pro]*/
+
     /**
      * Purges expired cache files, leaving all others intact.
      *
@@ -105,6 +149,7 @@ class ApiBase
     }
 
     /*[pro strip-from="lite"]*/
+
     /**
      * This erases the cache for a specific user ID.
      *
@@ -130,6 +175,7 @@ class ApiBase
     {
         return $GLOBALS[GLOBAL_NS]->autoClearUserCacheCur();
     }
+
     /*[/pro]*/
 
     /**

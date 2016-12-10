@@ -163,6 +163,11 @@ class MenuPageOptions extends MenuPage
             echo '   <i class="si si-thumbs-down"></i> '.__('Failed to remove your <code>/wp-content/advanced-cache.php</code> file. Most likely a permissions error. Please delete (or empty the contents of) this file: <code>/wp-content/advanced-cache.php</code>.', SLUG_TD)."\n";
             echo '</div>'."\n";
         }
+        if (!empty($_REQUEST[GLOBAL_NS.'_ua_info_dir_population_failure'])) {
+            echo '<div class="plugin-menu-page-notice error">'."\n";
+            echo '   <i class="si si-thumbs-down"></i> '.sprintf(__('Failed to populate User-Agent detection files for Mobile-Adaptive Mode. User-Agent detection files are pulled from a remote location so you\'ll always have the most up-to-date information needed for accurate detection. However, it appears the remote source of this information is currently unvailable. Please wait 15 minutes, then try saving your %1$s options again.', SLUG_TD), esc_html(NAME))."\n";
+            echo '</div>'."\n";
+        }
         if (!IS_PRO && $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-notice info">'."\n";
             echo '<a href="'.add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')).'" class="pull-right" style="margin:0 0 15px 25px; float:right; font-variant:small-caps; text-decoration:none;">'.__('close', SLUG_TD).' <i class="si si-eye-slash"></i></a>'."\n";
@@ -315,7 +320,6 @@ class MenuPageOptions extends MenuPage
                 echo '      <p style="margin-top:2px;">'.sprintf(__('In a Multisite Network, each child site can clear its own cache. If you want child sites to see the "Clear Cache" button in their WordPress Admin Bar, you can specify a comma-delimited list of <a href="http://cometcache.com/r/wp-roles-caps/" target="_blank">Roles and/or Capabilities</a> that are allowed. For example, if I want Administrators to be capable of clearing the cache from their Admin Bar, I could enter <code>administrator</code> here. If I also want to allow Editors, I can use a comma-delimited list: <code>administrator,editor</code>. Or, I could use a single Capability of: <code>edit_others_posts</code>; which covers both Administrators &amp; Editors at the same time.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
                 echo '      <p style="margin-bottom:0;"><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_roles_caps]" value="'.esc_attr($this->plugin->options['cache_clear_admin_bar_roles_caps']).'" /></p>'."\n";
                 echo '      <p style="margin-top:0;">'.sprintf(__('<strong>Note:</strong> As a security measure, in addition to the Role(s) and/or Capabilities that you list here, each child site owner must also have the ability to <code>%1$s</code>.', SLUG_TD), esc_html(IS_PRO ? $this->plugin->clear_min_cap : 'edit_posts')).'</p>'."\n";
-                echo '      </select></p>'."\n";
                 echo '  </div>'."\n";
             } else {
                 echo '  <div class="plugin-menu-page-panel-if-enabled -cache-clear-admin-bar-roles-caps">'."\n";
@@ -323,7 +327,6 @@ class MenuPageOptions extends MenuPage
                 echo '      <p style="margin-top:2px;">'.sprintf(__('If you want others to see the "Clear Cache" button in their WordPress Admin Bar, you can specify a comma-delimited list of <a href="http://cometcache.com/r/wp-roles-caps/" target="_blank">Roles and/or Capabilities</a> that are allowed. For example, if I want Editors to be capable of clearing the cache from their Admin Bar, I could enter <code>editor</code> here. If I also want to allow Authors, I can use a comma-delimited list: <code>editor,author</code>. Or, I could use a single Capability of: <code>publish_posts</code>; which covers both Editors &amp; Authors at the same time.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
                 echo '      <p style="margin-bottom:0;"><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_admin_bar_roles_caps]" value="'.esc_attr($this->plugin->options['cache_clear_admin_bar_roles_caps']).'" /></p>'."\n";
                 echo '      <p style="margin-top:0;">'.sprintf(__('<strong>Note:</strong> As a security measure, in addition to the Role(s) and/or Capabilities that you list here, each user must also have the ability to <code>%1$s</code>.', SLUG_TD), esc_html(IS_PRO ? $this->plugin->clear_min_cap : 'edit_posts')).'</p>'."\n";
-                echo '      </select></p>'."\n";
                 echo '  </div>'."\n";
             }
             if ($this->plugin->functionIsPossible('opcache_reset')) {
@@ -510,7 +513,6 @@ class MenuPageOptions extends MenuPage
                 echo '          <p style="margin-top:2px;">'.sprintf(__('In a Multisite Network, each child site has stats of its own. If you want child sites to see cache-related stats in their WordPress Admin Bar, you can specify a comma-delimited list of <a href="http://cometcache.com/r/wp-roles-caps/" target="_blank">Roles and/or Capabilities</a> that are allowed to see stats. For example, if I want the Administrator to see stats in their Admin Bar, I could enter <code>administrator</code> here. If I also want to show stats to Editors, I can use a comma-delimited list: <code>administrator,editor</code>. Or, I could use a single Capability of: <code>edit_others_posts</code>; which covers both Administrators &amp; Editors at the same time.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
                 echo '          <p style="margin-bottom:0;"><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][stats_admin_bar_roles_caps]" value="'.esc_attr($this->plugin->options['stats_admin_bar_roles_caps']).'" /></p>'."\n";
                 echo '          <p style="margin-top:0;">'.sprintf(__('<strong>Note:</strong> As a security measure, in addition to the Role(s) and/or Capabilities that you list here, each child site owner must also have the ability to <code>%1$s</code>.', SLUG_TD), esc_html(IS_PRO ? $this->plugin->stats_min_cap : 'edit_posts')).'</p>'."\n";
-                echo '          </select></p>'."\n";
                 echo '      </div>'."\n";
             } else {
                 echo '      <div class="plugin-menu-page-panel-if-enabled -stats-admin-bar-roles-caps">'."\n";
@@ -518,7 +520,6 @@ class MenuPageOptions extends MenuPage
                 echo '          <p style="margin-top:2px;">'.sprintf(__('If you want others to see cache-related stats in their WordPress Admin Bar, you can specify a comma-delimited list of <a href="http://cometcache.com/r/wp-roles-caps/" target="_blank">Roles and/or Capabilities</a> that are allowed to see stats. For example, if I want Editors to see stats in their Admin Bar, I could enter <code>editor</code> here. If I also want to show stats to Authors, I can use a comma-delimited list: <code>editor,author</code>. Or, I could use a single Capability of: <code>publish_posts</code>; which covers both Editors &amp; Authors at the same time.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
                 echo '          <p style="margin-bottom:0;"><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][stats_admin_bar_roles_caps]" value="'.esc_attr($this->plugin->options['stats_admin_bar_roles_caps']).'" /></p>'."\n";
                 echo '          <p style="margin-top:0;">'.sprintf(__('<strong>Note:</strong> As a security measure, in addition to the Role(s) and/or Capabilities that you list here, each user must also have the ability to <code>%1$s</code>.', SLUG_TD), esc_html(IS_PRO ? $this->plugin->stats_min_cap : 'edit_posts')).'</p>'."\n";
-                echo '          </select></p>'."\n";
                 echo '      </div>'."\n";
             }
             echo '      </div>'."\n";
@@ -1115,7 +1116,6 @@ class MenuPageOptions extends MenuPage
                 echo '      <hr />'."\n";
                 echo '      <p class="warning" style="display:block;">'.sprintf(__('<a href="%1$s">Enable the Pro Preview</a> to see <strong>Leverage Browser Caching</strong>, <strong>Enforce Canonical URLs</strong>, and more!', SLUG_TD), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php')))).'</p>'."\n";
             }
-
             if (IS_PRO || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
                 echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Leverage Browser Caching?', SLUG_TD).'</h3>'."\n";
@@ -1131,7 +1131,6 @@ class MenuPageOptions extends MenuPage
                 echo '        <pre class="code"><code>'.esc_html($this->plugin->fillReplacementCodes(file_get_contents(dirname(__DIR__).'/templates/htaccess/browser-caching-enable.txt'))).'</code></pre>'."\n";
                 echo '      </div>'."\n";
             }
-
             if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
                 echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Enforce Canonical URLs?', SLUG_TD).'</h3>'."\n";
@@ -1150,7 +1149,6 @@ class MenuPageOptions extends MenuPage
                 }
                 echo '      </div>'."\n";
             }
-
             if ((IS_PRO && $this->plugin->options['cdn_enable']) || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
                 echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Send Access-Control-Allow-Origin Header?', SLUG_TD).'</h3>'."\n";
@@ -1171,8 +1169,47 @@ class MenuPageOptions extends MenuPage
             echo '   </div>'."\n";
             echo '</div>'."\n";
         }
+        /* ----------------------------------------------------------------------------------------- */
 
-               /* ----------------------------------------------------------------------------------------- */
+        if (IS_PRO || $this->plugin->isProPreview()) {
+            echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
+
+            echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
+            echo '      <i class="si si-tablet"></i> '.__('Mobile-Adaptive Mode', SLUG_TD)."\n";
+            echo '   </a>'."\n";
+
+            echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
+            echo '      <h3>'.__('<i class="si si-tablet"></i> <i class="si si-mobile"></i> Enable Mobile-Adaptive Mode?', SLUG_TD).'</h3>'."\n";
+            echo '      <p>'.__('<em><strong>Tip:</strong> Generally speaking, you should only enable this if your WordPress theme uses an \'Adaptive\' design, as opposed to a design that\'s \'Responsive\'—the way most WordPress themes are built.', SLUG_TD).'</em></p>'."\n";
+            echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][mobile_adaptive_salt_enable]" data-target=".-mobile-adaptive-options">'."\n";
+            echo '          <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['mobile_adaptive_salt_enable'], '0', false)).'>'.__('No, my theme is Responsive; i.e., not Adaptive.', SLUG_TD).'</option>'."\n";
+            echo '          <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['mobile_adaptive_salt_enable'], '1', false)).'>'.__('Yes, create multiple cache variations based on mobile device type.', SLUG_TD).'</option>'."\n";
+            echo '      </select></p>'."\n";
+
+            echo '      <h4 style="margin-bottom:0;">'.__('What\'s the Difference Between Responsive and Adaptive?', SLUG_TD).'</h4>'."\n";
+            echo '      <p>'.__('Responsive and Adaptive designs both attempt to optimize the user experience across different devices, adjusting for different viewport sizes, resolutions, usage contexts, control mechanisms, and so on. Responsive design (common for WordPress sites) works on the principle of flexibility — a single fluid website that can look good on any device. Responsive websites use media queries, flexible grids, and responsive images to create a user experience that flexes and changes based on a multitude of factors. If you have a Responsive theme, you probably do NOT need to enable Mobile-Adaptive Mode.', SLUG_TD).'</p>'."\n";
+            echo '      <p>'.sprintf(__('<strong>Adaptive design</strong> detects the device and other features, and then it provides the appropriate feature and layout based on a predefined set of viewport sizes and other characteristics. Adaptive themes generally decide what to display based on a visitor\'s User-Agent (i.e., OS, device, browser, version). Since this design choice results in multiple versions of a page being served to visitors, based on the device they access the site with, it then becomes important to cache each of those variations separately. That way a visitor on an iPhone isn\'t accidentally shown the cached copy of a page that was originally viewed by another visitor who was on a desktop computer. If your theme uses an Adaptive design, you probably DO want to enable Mobile-Adaptive Mode in %1$s.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+
+            echo '      <div class="plugin-menu-page-panel-if-enabled -mobile-adaptive-options"><hr />'."\n";
+            echo '          <h3>'.__('Mobile-Adaptive Tokens', SLUG_TD).'</h3>'."\n";
+            echo '          <p>'.sprintf(__('When %1$s runs in Mobile-Adaptive Mode and it detects that a device is Mobile (e.g., a phone, tablet), it needs to know which factors you\'d like to consider. Mobile-Adaptive Tokens make this easy. In the field below, please configure a list of Mobile-Adaptive Tokens that establish the important factors on your site. Each token must be separated by a <code>+</code> sign. You can use just one, or use them all. <strong>However, it\'s IMPORTANT to note:</strong> With each new token, you add additional permutations that can fragment the cache and eat up a lot of disk space. Enable and monitor Cache Statistics so you can keep an eye on this. See: <strong>%1$s → Plugin Options → Cache-Related Statistics</strong>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
+            echo '          <p>'.__('The available Tokens are as follows:', SLUG_TD).'</p>'."\n";
+            echo '          <ul style="list-style-type:disc; margin-left: 1.5em;">'."\n";
+            echo '              <li>'.__('<code>os.name</code> e.g., <em>iOS, Android, WinPhone10, WinPhone8.1, etc.</em>', SLUG_TD).'</li>'."\n";
+            echo '              <li>'.__('<code>device.type</code> e.g., <em>Tablet, Mobile Device, Mobile Phone, etc.</em>', SLUG_TD).'</li>'."\n";
+            echo '              <li>'.__('<code>browser.name</code> e.g., <em>Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast, etc.</em>', SLUG_TD).'</li>'."\n";
+            echo '              <li>'.__('<code>browser.version</code> e.g., <em>55.0, 1.3, 9383242.2392, etc.</em> — <small>we suggest avoiding this token because there are many permutations</small>.', SLUG_TD).'</li>'."\n";
+            echo '          </ul>'."\n";
+            echo '          <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][mobile_adaptive_salt]" value="'.esc_attr($this->plugin->options['mobile_adaptive_salt']).'" /></p>'."\n";
+            echo '          <p>'.sprintf(__('The suggested default value is: <code>%2$s</code>.<br />However, just: <code>os.name + device.type</code> is better, if that will do.', SLUG_TD), esc_html(NAME), esc_html($this->plugin->default_options['mobile_adaptive_salt'])).'</p>'."\n";
+            echo '          <p class="info">'.__('The special token: <code>device.is_mobile</code> (i.e., any mobile device, including tablets, excluding laptops) can be used by itself. For example, if you simply want to break the cache down into mobile vs. NOT mobile.', SLUG_TD).'</p>'."\n";
+            echo '          <p><small><em>'.sprintf(__('<strong>Note:</strong> The underlying logic behind mobile detection is accomplished using a faster, precompiled version of <a href="https://cometcache.com/r/browscap/" target="_blank">Browscap Lite</a>, and Browcap data is automatically updated (and recompiled) whenever you save %1$s options and/or when upgrading %1$s to a new version.', SLUG_TD), esc_html(NAME)).'</em></small></p>'."\n";
+            echo '      </div>'."\n";
+
+            echo '   </div>'."\n";
+            echo '</div>'."\n";
+        }
+        /* ----------------------------------------------------------------------------------------- */
 
         if (IS_PRO || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
