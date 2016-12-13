@@ -1175,7 +1175,7 @@ class MenuPageOptions extends MenuPage
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading" data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'."\n";
-            echo '      <i class="si si-tablet"></i> '.__('Mobile-Adaptive Mode', SLUG_TD)."\n";
+            echo '      <i class="si si-tablet"></i> '.__('Mobile Mode', SLUG_TD)."\n";
             echo '   </a>'."\n";
 
             echo '   <div class="plugin-menu-page-panel-body clearfix">'."\n";
@@ -1187,7 +1187,7 @@ class MenuPageOptions extends MenuPage
             echo '      </select></p>'."\n";
 
             if (!version_compare(PHP_VERSION, '5.6', '>=')) {
-                echo '<p class="warning">'.sprintf(__('<strong>PROBLEM:</strong> This feature requires PHP 5.6 (or higher). You\'re currently running PHP v%1$s.', SLUG_TD), esc_html(PHP_VERSION)).'</p>'."\n";
+                echo '<p class="error">'.sprintf(__('<strong>PHP Version:</strong> This feature requires PHP v5.6 (or higher). You\'re currently running PHP v%1$s. Please contact your web hosting company for assistance.', SLUG_TD), esc_html(PHP_VERSION)).'</p>'."\n";
             }
 
             echo '      <h4 style="margin-bottom:0;">'.__('What\'s the Difference Between Responsive and Adaptive?', SLUG_TD).'</h4>'."\n";
