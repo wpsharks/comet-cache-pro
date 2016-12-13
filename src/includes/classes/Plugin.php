@@ -62,7 +62,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var bool If `FALSE`, run without hooks.
+     * @type bool If `FALSE`, run without hooks.
      */
     public $enable_hooks = true;
 
@@ -71,7 +71,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var array Pro-only option keys.
+     * @type array Pro-only option keys.
      */
     public $pro_only_option_keys = [];
 
@@ -80,7 +80,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var array Default options.
+     * @type array Default options.
      */
     public $default_options = [];
 
@@ -89,7 +89,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var array Configured options.
+     * @type array Configured options.
      */
     public $options = [];
 
@@ -98,7 +98,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string WordPress capability.
+     * @type string WordPress capability.
      */
     public $cap = 'activate_plugins';
 
@@ -107,7 +107,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string WordPress capability.
+     * @type string WordPress capability.
      */
     public $update_cap = 'update_plugins';
 
@@ -116,7 +116,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string WordPress capability.
+     * @type string WordPress capability.
      */
     public $network_cap = 'manage_network_plugins';
 
@@ -125,7 +125,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string WordPress capability.
+     * @type string WordPress capability.
      */
     public $uninstall_cap = 'delete_plugins';
 
@@ -135,7 +135,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 151002 Cache clearing cap.
      *
-     * @var string WordPress capability.
+     * @type string WordPress capability.
      */
     public $clear_min_cap = 'edit_posts';
     /*[/pro]*/
@@ -146,7 +146,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 151002 Cache clearing cap.
      *
-     * @var string WordPress capability.
+     * @type string WordPress capability.
      */
     public $stats_min_cap = 'edit_posts';
     /*[/pro]*/
@@ -156,9 +156,20 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string Cache directory; relative to the configured base directory.
+     * @type string Cache directory; relative to the configured base directory.
      */
     public $cache_sub_dir = 'cache';
+
+    /*[pro strip-from="lite"]*/
+    /**
+     * UA info directory.
+     *
+     * @since 16xxxx UA info directory.
+     *
+     * @type string Public UA info directory; relative to the configured base directory.
+     */
+    public $ua_info_sub_dir = 'ua-info';
+    /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
     /**
@@ -166,7 +177,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string Public HTML Compressor cache directory; relative to the configured base directory.
+     * @type string Public HTML Compressor cache directory; relative to the configured base directory.
      */
     public $htmlc_cache_sub_dir_public = 'htmlc/public';
     /*[/pro]*/
@@ -177,7 +188,7 @@ class Plugin extends AbsBaseAp
      *
      * @since 150422 Rewrite.
      *
-     * @var string Private HTML Compressor cache directory; relative to the configured base directory.
+     * @type string Private HTML Compressor cache directory; relative to the configured base directory.
      */
     public $htmlc_cache_sub_dir_private = 'htmlc/private';
     /*[/pro]*/
@@ -243,6 +254,9 @@ class Plugin extends AbsBaseAp
             'when_logged_in',
 
             'version_salt',
+            'mobile_adaptive_salt',
+            'mobile_adaptive_salt_enable',
+            'ua_info_last_data_update',
 
             'htmlc_enable',
             'htmlc_css_exclusions',
@@ -385,7 +399,15 @@ class Plugin extends AbsBaseAp
 
             /* Related to version salt. */
 
-            'version_salt' => '', // Any string value.
+            'version_salt' => '', // Any string value as a cache path component.
+
+            // This should be set to a `+` delimited string containing any of these tokens:
+            // `os.name + device.type + browser.name + browser.version` (version should be avoided).
+            // There is one additional token (`device.is_mobile`) that can be used stand-alone.
+            // i.e., to indicate that being mobile is the only factor worth considering.
+            'mobile_adaptive_salt'        => 'os.name + device.type + browser.name',
+            'mobile_adaptive_salt_enable' => '0', // `0|1` Enable the mobile adaptive salt?
+            'ua_info_last_data_update'    => '0', // Timestamp.
 
             /* Related to HTML compressor. */
 

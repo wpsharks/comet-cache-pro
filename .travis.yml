@@ -26,9 +26,6 @@ matrix: # Tests for Comet Cache WordPress plugin.
     - env: CI_RUN=PHP_VERSION=7.0,WP=standard,WP_VERSION=latest
     - env: CI_RUN=PHP_VERSION=7.0,WP=multisite,WP_VERSION=latest
 
-    - env: CI_RUN=PHP_VERSION=5.5,WP=standard,WP_VERSION=latest
-    - env: CI_RUN=PHP_VERSION=5.5,WP=multisite,WP_VERSION=latest
-
   fast_finish: true # Before allowed failures.
 
 # </custom>

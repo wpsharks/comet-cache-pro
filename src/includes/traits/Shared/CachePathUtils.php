@@ -179,7 +179,6 @@ trait CachePathUtils
         if (!($flags & $this::CACHE_PATH_NO_QUV)) {
             if (!($flags & $this::CACHE_PATH_NO_QUERY)) {
                 if (isset($url_parts['query']) && $url_parts['query'] !== '') {
-
                     // Support for ignored GET vars.
                     parse_str($url_parts['query'], $_query_vars);
                     $_query_vars = $this->filterQueryVars($_query_vars);
@@ -204,11 +203,11 @@ trait CachePathUtils
         $cache_path = trim(preg_replace(['/\/+/u', '/\.+/u'], ['/', '.'], $cache_path), '/');
 
         if ($flags & $this::CACHE_PATH_ALLOW_WD_REGEX) {
-            $cache_path = preg_replace('/[^a-z0-9\/.*\^$]/ui', '-', $cache_path);
+            $cache_path = preg_replace('/[^a-z0-9\/.+*\^$]/ui', '-', $cache_path);
         } elseif ($flags & $this::CACHE_PATH_ALLOW_WILDCARDS) {
-            $cache_path = preg_replace('/[^a-z0-9\/.*]/ui', '-', $cache_path);
+            $cache_path = preg_replace('/[^a-z0-9\/.+*]/ui', '-', $cache_path);
         } else {
-            $cache_path = preg_replace('/[^a-z0-9\/.]/ui', '-', $cache_path);
+            $cache_path = preg_replace('/[^a-z0-9\/.+]/ui', '-', $cache_path);
         }
         if (!($flags & $this::CACHE_PATH_NO_EXT)) {
             $cache_path .= '.html';

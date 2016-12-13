@@ -167,7 +167,6 @@ trait CacheDirUtils
                 // Actual `http|https/...` cache links/files are nested. Links/files in the immediate directory are for other purposes.
             }
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
-
                 case 'link': // Symbolic links; i.e., 404 errors.
 
                     if ($check_max_age && !empty($max_age) && is_file($_resource->getLinkTarget())) {
@@ -202,7 +201,7 @@ trait CacheDirUtils
 
                 case 'dir': // A regular directory; i.e., not a symlink.
 
-                    if (!in_array(rtrim($regex, 'ui'), ['/.*/', '/.+/'], true)) {
+                    if (!in_array(rtrim(str_replace(['^', '$'], '', $regex), 'ui'), ['/.*/', '/.+/'], true)) {
                         break; // Not deleting everything.
                     }
                     if ($check_max_age && !empty($max_age)) {
@@ -345,7 +344,6 @@ trait CacheDirUtils
                     // Actual `http|https/...` cache links/files are nested. Links/files in the immediate directory are for other purposes.
                 }
                 switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
-
                     case 'link': // Symbolic links; i.e., 404 errors.
 
                         if ($check_max_age && !empty($max_age) && is_file($_resource->getLinkTarget())) {
@@ -380,7 +378,7 @@ trait CacheDirUtils
 
                     case 'dir': // A regular directory; i.e., not a symlink.
 
-                        if (!in_array(rtrim($regex, 'ui'), ['/.*/', '/.+/'], true)) {
+                        if (!in_array(rtrim(str_replace(['^', '$'], '', $regex), 'ui'), ['/.*/', '/.+/'], true)) {
                             break; // Not deleting everything.
                         }
                         if ($check_max_age && !empty($max_age)) {
@@ -492,7 +490,6 @@ trait CacheDirUtils
             $_path_name     = $_resource->getPathname();
 
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
-
                 case 'link': // Symbolic links; i.e., 404 errors.
 
                     if (!unlink($_path_name)) {
@@ -591,7 +588,6 @@ trait CacheDirUtils
             $_path_name     = $_resource->getPathname();
 
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
-
                 case 'link': // Symbolic links; i.e., 404 errors.
 
                     if (!unlink($_path_name)) {
