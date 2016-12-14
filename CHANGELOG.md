@@ -2,7 +2,7 @@
 
 - **Bug Fix:** Improving OPcache detection. Now considering INI option `opcache.restrict_api`. Comet Cache is now smart enough to avoid the error: _PHP Warning: Zend OPcache API is restricted by "restrict_api" configuration directive_. See [Issue #733](https://github.com/websharks/comet-cache/issues/733).
 
-- **New Feature (Pro): Mobile Mode.** This release adds a new feature that is designed to improve compatibility with Adaptive themes for mobile devices. To learn more, please see: **Dashboard → Comet Cache Pro → Plugin Options → Mobile-Adaptive Mode**. See also: [Issue #471](https://github.com/websharks/comet-cache/issues/471) and the screenshots [here](https://github.com/websharks/comet-cache-pro/pull/303#issuecomment-266230409).
+- **New Feature (Pro): Mobile Mode.** This release adds a new feature that is designed to improve compatibility with Adaptive themes for mobile devices. To learn more, please see: **Dashboard → Comet Cache Pro → Plugin Options → Mobile Mode**. See also: [Issue #471](https://github.com/websharks/comet-cache/issues/471) and the screenshots [here](https://github.com/websharks/comet-cache-pro/pull/303#issuecomment-266230409).
 
 - **Enhancement: Auto-Clearing Author Page Cache.** This release makes Comet Cache smart enough to detect when a user is deleted (or removed from a child blog in a Network), at which time the Author page for that user will be cleared from the cache so it can be regenerated automatically. See [Issue #304](https://github.com/websharks/comet-cache/issues/304).
 
