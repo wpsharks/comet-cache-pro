@@ -2,7 +2,7 @@
 
 Stable tag: 161214-RC
 Requires at least: 4.2
-Tested up to: 4.7
+Tested up to: 4.8-alpha
 Text Domain: comet-cache
 
 License: GPLv2 or later
