@@ -58,13 +58,16 @@ class ApiBase
      *
      * The array will contain the following keys:
      *
-     * - `os.name` = iOS, Android, WinPhone10, WinPhone8.1.
+     * - `os.name` = iOS, Android, WinPhone10, WinPhone8.1, etc.
      *
-     * - `device.type` = Tablet, Mobile Device, Mobile Phone.
+     * - `device.type` = Tablet, Mobile Device, Mobile Phone, etc.
      * - `device.is_mobile` = True if a mobile device (e.g., tablet|phone).
      *
-     * - `browser.name` = Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast.
-     * - `browser.version` = 55.0, 1.3, 9383242.2392, etc.
+     * - `browser.name` = Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast, etc.
+     * - `browser.version.major` = 55, 1, 9383242, etc. Only the major version number.
+     * - `browser.version` = 55.0, 1.3, 9383242.2392, etc. Major & minor versions.
+     *
+     * @note Use of this utility requires PHP 5.6+ (7.0+ suggested).
      */
     public static function uaInfo($ua = null)
     {
@@ -80,6 +83,8 @@ class ApiBase
      * @since 16xxxx Mobile-adaptive salt.
      *
      * @return true True if is mobile.
+     *
+     * @note Requires PHP 5.6+ (7.0+ suggested).
      */
     public static function uaIsMobile($ua = null)
     {

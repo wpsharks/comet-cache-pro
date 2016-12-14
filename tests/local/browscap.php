@@ -35,4 +35,5 @@ echo 'device.type = '.$UserAgent->getDevice()->getType()."\n";
 echo 'device.is_mobile = '.$UserAgent->getDevice()->getIsMobile()."\n\n";
 
 echo 'browser.name = '.$UserAgent->getBrowser()->getName()."\n";
-echo 'browser.version = '.$UserAgent->getBrowser()->getVersion()->getComplete()."\n";
+echo 'browser.version.major = '.$UserAgent->getBrowser()->getVersion()->getMajor()."\n";
+echo 'browser.version = '.trim($UserAgent->getBrowser()->getVersion()->getMajor().'.'.$UserAgent->getBrowser()->getVersion()->getMinor())."\n";

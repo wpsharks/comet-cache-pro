@@ -52,15 +52,16 @@ trait UaUtils
      *
      * The array will contain the following keys:
      *
-     * - `os.name` = iOS, Android, WinPhone10, WinPhone8.1
+     * - `os.name` = iOS, Android, WinPhone10, WinPhone8.1, etc.
      *
-     * - `device.type` = Tablet, Mobile Device, Mobile Phone
+     * - `device.type` = Tablet, Mobile Device, Mobile Phone, etc.
      * - `device.is_mobile` = True if a mobile device (e.g., tablet|phone).
      *
-     * - `browser.name` = Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast
-     * - `browser.version` = 55.0, 1.3, 9383242.2392, etc.
+     * - `browser.name` = Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast, etc.
+     * - `browser.version.major` = 55, 1, 9383242, etc. Only the major version number.
+     * - `browser.version` = 55.0, 1.3, 9383242.2392, etc. Major & minor versions.
      *
-     * @note Requires PHP 5.6+ (7.0+ suggested).
+     * @note Use of this utility requires PHP 5.6+ (7.0+ suggested).
      */
     public function getUaInfo($ua = null, $throw_exception_on_failure = false)
     {
@@ -84,14 +85,15 @@ trait UaUtils
             $BrowscapLiteParser = new BrowscapLiteParser($Browscap);
             $UserAgent          = $BrowscapLiteParser->parse($_SERVER['HTTP_USER_AGENT']);
 
-            return $info = [ // `token` => `value` (string|bool).
+            return $info = [ // `token` => `value` (array|bool|string).
                 'os.name' => (string) $UserAgent->getOperatingSystem()->getName(),
 
                 'device.type'      => (string) $UserAgent->getDevice()->getType(),
                 'device.is_mobile' => (bool) $UserAgent->getDevice()->getIsMobile(),
 
-                'browser.name'    => (string) $UserAgent->getBrowser()->getName(),
-                'browser.version' => (string) $UserAgent->getBrowser()->getVersion()->getComplete(),
+                'browser.name'          => (string) $UserAgent->getBrowser()->getName(),
+                'browser.version.major' => (string) $UserAgent->getBrowser()->getVersion()->getMajor(),
+                'browser.version'       => trim($UserAgent->getBrowser()->getVersion()->getMajor().'.'.$UserAgent->getBrowser()->getVersion()->getMinor(), '.'),
             ];
         } catch (\Exception $Exception) {
             if ($throw_exception_on_failure) {
@@ -113,7 +115,7 @@ trait UaUtils
      *
      * @return bool True if UA is mobile.
      *
-     * @note Requires PHP 5.6+ (7.0+ suggested).
+     * @note Use of this utility requires PHP 5.6+ (7.0+ suggested).
      */
     public function uaIsMobile($ua = null, $throw_exception_on_failure = false)
     {
@@ -135,7 +137,7 @@ trait UaUtils
      *
      * @return string The `$tokens` having been filled in.
      *
-     * @note Requires PHP 5.6+ (7.0+ suggested).
+     * @note Use of this utility requires PHP 5.6+ (7.0+ suggested).
      */
     public function fillUaTokens($tokens, $as_path = true, $ua = null, $throw_exception_on_failure = false)
     {
@@ -178,10 +180,10 @@ trait UaUtils
      *
      * @throws \Exception If unable to get info directory.
      *
-     * @note Requires PHP 5.6+ (7.0+ suggested).
-     *
      * @note This downloads, compiles, and caches the latest:
      * <https://browscap.org/stream?q=Lite_PHP_BrowsCapINI>
+     *
+     * @note Use of this utility requires PHP 5.6+ (7.0+ suggested).
      */
     public function populateUaInfoDirectory($throw_exception_on_failure = false)
     {
