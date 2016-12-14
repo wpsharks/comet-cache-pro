@@ -1201,11 +1201,12 @@ class MenuPageOptions extends MenuPage
             echo '          <ul style="list-style-type:disc; margin-left: 1.5em;">'."\n";
             echo '              <li>'.__('<code>os.name</code> e.g., <em>iOS, Android, WinPhone10, WinPhone8.1, etc.</em>', SLUG_TD).'</li>'."\n";
             echo '              <li>'.__('<code>device.type</code> e.g., <em>Tablet, Mobile Device, Mobile Phone, etc.</em>', SLUG_TD).'</li>'."\n";
-            echo '              <li>'.__('<code>browser.name</code> e.g., <em>Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge Mobile, IEMobile, IE, Coast, etc.</em>', SLUG_TD).'</li>'."\n";
-            echo '              <li>'.__('<code>browser.version</code> e.g., <em>55.0, 1.3, 9383242.2392, etc.</em> — <small>we suggest avoiding this token because there are many permutations</small>.', SLUG_TD).'</li>'."\n";
+            echo '              <li>'.__('<code>browser.name</code> e.g., <em>Safari, Mobile Safari UIWebView, Chrome, Android WebView, Firefox, Edge, etc.</em>', SLUG_TD).'</li>'."\n";
+            echo '              <li>'.__('<code>browser.version</code> Major &amp; minor version. e.g., <em>55.0, 1.3, 9383242.2392, etc.</em> — <small>Not recommended. There are many permutations.</small>', SLUG_TD).'</li>'."\n";
+            echo '              <li>'.__('<code>browser.version.major</code> Major version only. e.g., <em>55, 1, 9383242, etc.</em> — <small>Not recommended, but this has fewer permutations, making it more feasible.</small>', SLUG_TD).'</li>'."\n";
             echo '          </ul>'."\n";
             echo '          <p><input type="text" name="'.esc_attr(GLOBAL_NS).'[saveOptions][mobile_adaptive_salt]" value="'.esc_attr($this->plugin->options['mobile_adaptive_salt']).'" /></p>'."\n";
-            echo '          <p>'.sprintf(__('The suggested default value is: <code>%2$s</code>.<br />However, just: <code>os.name + device.type</code> is better, if that will do.', SLUG_TD), esc_html(NAME), esc_html($this->plugin->default_options['mobile_adaptive_salt'])).'</p>'."\n";
+            echo '          <p>'.sprintf(__('The suggested default value is: <code>%2$s</code><br />However, just: <code>os.name + device.type</code> is better, if that will do.', SLUG_TD), esc_html(NAME), esc_html($this->plugin->default_options['mobile_adaptive_salt'])).'</p>'."\n";
             echo '          <p class="info">'.__('The special token: <code>device.is_mobile</code> (i.e., any mobile device, including tablets, excluding laptops) can be used by itself. For example, if you simply want to break the cache down into mobile vs. NOT mobile.', SLUG_TD).'</p>'."\n";
             echo '          <p><small><em>'.sprintf(__('<strong>Note:</strong> The underlying logic behind mobile detection is accomplished using a faster, precompiled version of <a href="https://cometcache.com/r/browscap/" target="_blank">Browscap Lite</a>, and Browcap data is automatically updated (and recompiled) whenever you save %1$s options and/or when upgrading %1$s to a new version.', SLUG_TD), esc_html(NAME)).'</em></small></p>'."\n";
             echo '      </div>'."\n";

@@ -279,8 +279,9 @@ if (!defined('COMET_CACHE_MOBILE_ADAPTIVE_SALT')) {
      *
      * @since 16xxxx Mobile-adaptive salt.
      *
-     * @var string Set this to a `+` delimited string containing any of these tokens:
-     * `os.name + device.is_mobile + device.type + browser.name + browser.version` (version should be avoided).
+     * @var string Set this to a `+` delimited string containing any of these tokens: `os.name + device.type + browser.name + browser.version.major`.
+     * There is an additional token (`browser.version`) that contains both the major and minor versions, but this token is not recommended due to many permutations.
+     * There is an additional token (`device.is_mobile`) that can be used stand-alone; i.e., to indicate that being mobile is the only factor worth considering.
      */
     define('COMET_CACHE_MOBILE_ADAPTIVE_SALT', '%%COMET_CACHE_MOBILE_ADAPTIVE_SALT%%');
 }
