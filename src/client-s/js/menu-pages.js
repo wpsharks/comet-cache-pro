@@ -141,7 +141,7 @@
 
   /*![pro strip-from='lite']*/
   plugin.validateMobileAdaptiveSalt = function (event) {
-    var defaultTokens = ['os.name', 'device.type']; // Suggested defaults.
+    var defaultTokens = ['os.name', 'device.type', 'browser.name']; // Suggested defaults.
     var validTokens = ['os.name', 'device.type', 'device.is_mobile', 'browser.name', 'browser.version', 'browser.version.major'];
     var $salt = $('#' + plugin.namespace + '-mobile-adaptive-salt', plugin.$menuPage);
     var salt, saltParts, _i; // Initialize.
