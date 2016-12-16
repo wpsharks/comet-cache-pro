@@ -25,6 +25,11 @@
     $('select[name$="_enable\\]"], select[data-toggle~="enable-disable"]', plugin.$menuPage).not('.-no-if-enabled').on('change', plugin.enableDisable).trigger('change');
 
     /*![pro strip-from='lite']*/
+    $('#' + plugin.namespace + '-mobile-adaptive-salt', plugin.$menuPage).on('blur', plugin.validateMobileAdaptiveSalt);
+    plugin.$menuPage.on('submit', plugin.validateMobileAdaptiveSalt);
+    /*[/pro]*/
+
+    /*![pro strip-from='lite']*/
     $('textarea[name$="\[cdn_hosts\]"]', plugin.$menuPage).on('input propertychange', plugin.handleCdnHostsChange);
     $('.plugin-menu-page-clear-cdn-cache', plugin.$menuPage).on('click', plugin.clearCdnCacheViaAjax);
     /*[/pro]*/
@@ -133,6 +138,28 @@
       $ss = $('.-clear-cache-ops-ss', plugin.$menuPage);
     $ss.attr('src', $ss.attr('src').replace(/ops[0-9]\-ss\.png$/, 'ops' + val + '-ss.png'));
   };
+
+  /*![pro strip-from='lite']*/
+  plugin.validateMobileAdaptiveSalt = function (event) {
+    var defaultTokens = ['os.name', 'device.type']; // Suggested defaults.
+    var validTokens = ['os.name', 'device.type', 'device.is_mobile', 'browser.name', 'browser.version', 'browser.version.major'];
+    var $salt = $('#' + plugin.namespace + '-mobile-adaptive-salt', plugin.$menuPage);
+    var salt, saltParts, _i; // Initialize.
+
+    if ($salt.length && (salt = $.trim($salt.val()))) {
+      for (_i = 0, saltParts = salt.split(/[+\s]+/); _i < saltParts.length; _i++) {
+        if ($.inArray(saltParts[_i], validTokens) === -1) {
+          if (event && event.type === 'submit') {
+            $salt.val(defaultTokens.join(' + '));
+          } else { // Notify site owner about problem.
+            alert(plugin.vars.i18n.mobileAdaptiveSaltError);
+          }
+          return; // Nothing more to do here.
+        }
+      }
+    }
+  };
+  /*[/pro]*/
 
   plugin.handleCdnHostsChange = function (event) {
     var $cdnHosts = $(this),
