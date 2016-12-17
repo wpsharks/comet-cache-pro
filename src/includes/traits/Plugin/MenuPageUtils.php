@@ -54,15 +54,16 @@ trait MenuPageUtils
                 'emptyStatsCountsImageUrl' => $this->url('/src/client-s/images/stats-fc-empty.png'),
                 'emptyStatsFilesImageUrl'  => $this->url('/src/client-s/images/stats-fs-empty.png'),
                 'i18n'                     => [
-                    'name'           => NAME,
-                    'perSymbol'      => __('%', SLUG_TD),
-                    'file'           => __('file', SLUG_TD),
-                    'files'          => __('files', SLUG_TD),
-                    'pageCache'      => __('Page Cache', SLUG_TD),
-                    'htmlCompressor' => __('HTML Compressor', SLUG_TD),
-                    'currentTotal'   => __('Current Total', SLUG_TD),
-                    'currentSite'    => __('Current Site', SLUG_TD),
-                    'xDayHigh'       => __('%s Day High', SLUG_TD),
+                    'name'                    => NAME,
+                    'perSymbol'               => __('%', SLUG_TD),
+                    'file'                    => __('file', SLUG_TD),
+                    'files'                   => __('files', SLUG_TD),
+                    'pageCache'               => __('Page Cache', SLUG_TD),
+                    'htmlCompressor'          => __('HTML Compressor', SLUG_TD),
+                    'currentTotal'            => __('Current Total', SLUG_TD),
+                    'currentSite'             => __('Current Site', SLUG_TD),
+                    'xDayHigh'                => __('%s Day High', SLUG_TD),
+                    'mobileAdaptiveSaltError' => __('Invalid Mobile-Adaptive Tokens. This field must contain one or more of the listed Tokens (separated by a + sign). Please use Tokens only, NOT string literals.', SLUG_TD),
                 ],
             ]
         );
@@ -181,6 +182,7 @@ trait MenuPageUtils
     }
 
     /*[pro strip-from="lite"]*/
+
     /**
      * Loads admin menu page for stats.
      *
@@ -190,6 +192,7 @@ trait MenuPageUtils
     {
         new Classes\MenuPage('stats');
     }
+
     /*[/pro]*/
 
     /**
@@ -197,7 +200,7 @@ trait MenuPageUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var array WP admin icon colors.
+     * @type array WP admin icon colors.
      *
      * @note These must be hard-coded, because they don't become available
      *    in core until `admin_init`; i.e., too late for `admin_menu`.
