@@ -152,6 +152,10 @@ trait ConditionalUtils
         $regex_logged_in_cookies .= '/'; // Close regex.
 
         foreach ($_COOKIE as $_key => $_value) {
+			if (!is_string($_value)) {
+				continue; // See https://git.io/v1dTw
+			}
+
             $_key   = (string) $_key;
             $_value = (string) $_value;
 
