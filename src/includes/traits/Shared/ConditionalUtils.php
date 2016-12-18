@@ -8,7 +8,7 @@ trait ConditionalUtils
     /**
      * PHP's language constructs.
      *
-     * @var array PHP's language constructs.
+     * @type array PHP's language constructs.
      * @note Keys unimportant; subject to change.
      *
      * @since 160222 First documented version.
@@ -152,9 +152,9 @@ trait ConditionalUtils
         $regex_logged_in_cookies .= '/'; // Close regex.
 
         foreach ($_COOKIE as $_key => $_value) {
-			if (!is_string($_value)) {
-				continue; // See https://git.io/v1dTw
-			}
+            if (!is_scalar($_value)) {
+                continue; // See https://git.io/v1dTw
+            }
 
             $_key   = (string) $_key;
             $_value = (string) $_value;
@@ -189,6 +189,7 @@ trait ConditionalUtils
     }
 
     /*[pro strip-from="lite"]*/
+
     /**
      * Is the current request for the Auto-Cache Engine?
      *
@@ -207,6 +208,7 @@ trait ConditionalUtils
         }
         return $is = false;
     }
+
     /*[/pro]*/
 
     /**
