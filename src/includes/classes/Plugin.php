@@ -164,7 +164,7 @@ class Plugin extends AbsBaseAp
     /**
      * UA info directory.
      *
-     * @since 16xxxx UA info directory.
+     * @since 161221 UA info directory.
      *
      * @type string Public UA info directory; relative to the configured base directory.
      */

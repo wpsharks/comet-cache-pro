@@ -327,11 +327,11 @@ class CdnFilters extends AbsBase
     /**
      * Filters an image's 'srcset' sources.
      *
-     * @since 16xxxx Adding support for `srcset`.
+     * @since 161221 Adding support for `srcset`.
      *
      * @param array $sources An array of all sources.
      *
-     * return array $sources Possibly filtered by this handler.
+     * @return array $sources Possibly filtered by this handler.
      */
     public function srcSetFilter($sources)
     {

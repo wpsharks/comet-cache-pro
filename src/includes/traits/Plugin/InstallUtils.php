@@ -557,7 +557,7 @@ trait InstallUtils
     /**
      * Maybe populate the UA info directory.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @return bool True on success, false on failure.
      */

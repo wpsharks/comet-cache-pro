@@ -36,7 +36,7 @@ trait ObUtils
     /**
      * Mobile-adaptive salt.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @type string Mobile-adaptive salt.
      */

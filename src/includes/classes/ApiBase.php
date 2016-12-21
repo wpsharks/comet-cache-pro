@@ -49,7 +49,7 @@ class ApiBase
     /**
      * UA (User-Agent) info.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @param string|null $ua User-Agent (optional).
      * @note Defaults to `$_SERVER['HTTP_USER_AGENT']`.
@@ -80,7 +80,7 @@ class ApiBase
      * @param string|null $ua User-Agent (optional).
      * @note Defaults to `$_SERVER['HTTP_USER_AGENT']`.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @return true True if is mobile.
      *

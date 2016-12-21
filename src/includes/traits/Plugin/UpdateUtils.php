@@ -198,7 +198,7 @@ trait UpdateUtils
     /**
      * Auto-update filter.
      *
-     * @since 16xxxx Adding auto-update option.
+     * @since 161221 Adding auto-update option.
      *
      * @attaches-to `auto_update_plugin` filter.
      *

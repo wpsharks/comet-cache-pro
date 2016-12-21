@@ -15,7 +15,7 @@ trait UaUtils
     /**
      * UA info directory.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @param string $rel_path Relative path inside directory.
      *
@@ -41,7 +41,7 @@ trait UaUtils
     /**
      * Gets UA info.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @param string|null $ua                         User-Agent (optional).
      * @param bool        $throw_exception_on_failure Throw on failure?
@@ -106,7 +106,7 @@ trait UaUtils
     /**
      * UA is mobile?
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @param string|null $ua                         User-Agent (optional).
      * @param bool        $throw_exception_on_failure Throw on failure?
@@ -126,7 +126,7 @@ trait UaUtils
     /**
      * Fills UA string tokens.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @param string      $tokens                     UA info tokens.
      * @param bool        $as_path                    As path component?
@@ -174,7 +174,7 @@ trait UaUtils
     /**
      * Creates/populates UA info directory.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @param bool $throw_exception_on_failure Throw on failure?
      *

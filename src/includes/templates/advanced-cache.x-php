@@ -169,7 +169,7 @@ if (!defined('COMET_CACHE_UA_INFO_DIR')) {
     /*
      * Directory used to store UA info; relative to `WP_CONTENT_DIR`.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @var string Absolute server directory path.
      */
@@ -277,7 +277,7 @@ if (!defined('COMET_CACHE_MOBILE_ADAPTIVE_SALT')) {
     /*
      * Mobile-adaptive salt.
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @var string Set this to a `+` delimited string containing any of these tokens: `os.name + device.type + browser.name + browser.version.major`.
      * There is an additional token (`browser.version`) that contains both the major and minor versions, but this token is not recommended due to many permutations.
@@ -291,7 +291,7 @@ if (!defined('COMET_CACHE_MOBILE_ADAPTIVE_SALT_ENABLE')) {
     /*
      * Mobile-adaptive salt enable?
      *
-     * @since 16xxxx Mobile-adaptive salt.
+     * @since 161221 Mobile-adaptive salt.
      *
      * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
      */
@@ -494,7 +494,7 @@ if (!defined('COMET_CACHE_HTMLC_AMP_EXCLUSIONS_ENABLE')) {
     /*
      * Enable automatic AMP exclusions?
      *
-     * @since 16xxxx First documented version.
+     * @since 161221 First documented version.
      *
      * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
      */
