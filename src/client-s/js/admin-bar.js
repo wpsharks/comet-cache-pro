@@ -8,55 +8,61 @@
     $document = $(document);
 
   plugin.onReady = function () {
-    /*[pro strip-from="lite"]*/
+    /*![pro strip-from="lite"]*/
     plugin.statsData = null;
     plugin.statsRunning = false;
-    /*[/pro]*/
+    /*![/pro]*/
     plugin.hideAJAXResponseTimeout = null;
     plugin.vars = $('#' + plugin.namespace + '-admin-bar-vars').data('json');
 
     $('#wp-admin-bar-' + plugin.namespace + '-wipe > a').on('click', plugin.wipeCache);
     $('#wp-admin-bar-' + plugin.namespace + '-clear > a').on('click', plugin.clearCache);
-    /*[pro strip-from="lite"]*/
+
+    /*![pro strip-from="lite"]*/
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-home-url-only > a').on('click', plugin.clearCacheHomeUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-current-url-only > a').on('click', plugin.clearCacheCurrentUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-specific-url-only > a').on('click', plugin.clearCacheSpecificUrlOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-opcache-only > a').on('click', plugin.clearCacheOpCacheOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-cdn-only > a').on('click', plugin.clearCacheCdnOnly);
     $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-transients-only > a').on('click', plugin.clearExpiredTransientsOnly);
-    /*[/pro]*/
+    /*![/pro]*/
     $document.on('click', '.' + plugin.namespace + '-ajax-response', plugin.hideAJAXResponse);
-    /*[pro strip-from="lite"]*/
+
+    /*![pro strip-from="lite"]*/
     var $stats = $('#wp-admin-bar-' + plugin.namespace + '-stats'),
       $statsWrapper = $stats.find('.-wrapper'),
       $statsContainer = $statsWrapper.find('.-container');
+    /*![/pro]*/
 
-    if ($stats.length && plugin.MutationObserver) { // Possible?
-      (new plugin.MutationObserver(function (mutations) {
-        $.each(mutations, function (index, mutation) {
-          if (mutation.type !== 'attributes') {
-            return; // Not applicable.
-          }
-          if (mutation.attributeName !== 'class') {
-            return; // Not applicable.
-          }
-          var oldValue = mutation.oldValue, // Provided by event.
-            newValue = $(mutation.target).prop(mutation.attributeName);
+    /*![pro strip-from="lite"]*/
+    (function () {
+      if ($stats.length && plugin.MutationObserver) {
+        (new plugin.MutationObserver(function (mutations) {
+          $.each(mutations, function (index, mutation) {
+            if (mutation.type !== 'attributes') {
+              return; // Not applicable.
+            }
+            if (mutation.attributeName !== 'class') {
+              return; // Not applicable.
+            }
+            var oldValue = mutation.oldValue, // Provided by event.
+              newValue = $(mutation.target).prop(mutation.attributeName);
 
-          if (!/\bhover\b/i.test(oldValue) && /\bhover\b/i.test(newValue)) {
-            plugin.stats(); // Received `hover` class.
-          }
-          return false; // Stop iterating now.
-        });
-      }))
-      .observe($stats[0], {
-        attributes: true,
-        attributeOldValue: true,
-        childList: true,
-        characterData: true
-      }); // See: <http://jas.xyz/1JlzCdi>
-    }
-    /*[/pro]*/
+            if (!/\bhover\b/i.test(oldValue) && /\bhover\b/i.test(newValue)) {
+              plugin.stats(); // Received `hover` class.
+            }
+            return false; // Stop iterating now.
+          });
+        }))
+        .observe($stats[0], {
+          attributes: true,
+          attributeOldValue: true,
+          childList: true,
+          characterData: true
+        }); // See: <http://jas.xyz/1JlzCdi>
+      }
+    })();
+    /*![/pro]*/
   };
 
   plugin.wipeCache = function (event) {
@@ -90,24 +96,30 @@
 
   plugin.clearCache = function (event, options) {
     plugin.preventDefault(event);
-    /*[pro strip-from="lite"]*/
-    plugin.statsData = null;
 
-    options = options || {};
+    /*![pro strip-from="lite"]*/
+    plugin.statsData = null;
+    /*![/pro]*/
+
+    /*![pro strip-from="lite"]*/
     var o = $.extend({}, {
       urlOnly: '',
       opCacheOnly: false,
       cdnOnly: false,
       transientsOnly: false
-    }, options);
-    /*[/pro]*/
+    }, options || {});
+    /*![/pro]*/
 
     var postVars = {
       _wpnonce: plugin.vars._wpnonce
     }; // HTTP post vars.
 
-    var isClearOption = false;
-    /*[pro strip-from="lite"]*/
+    var isClearOption = false,
+      $clear, // See below.
+      $clearOptionsLabel = $(),
+      $clearOptions = $();
+
+    /*![pro strip-from="lite"]*/
     if (o.urlOnly) {
       isClearOption = true;
       postVars[plugin.namespace] = {
@@ -128,18 +140,20 @@
       postVars[plugin.namespace] = {
         ajaxClearExpiredTransients: '1'
       };
-    } else
-     /*[/pro]*/
-     {
+    } else {
+      /*![/pro]*/
       postVars[plugin.namespace] = {
         ajaxClearCache: '1'
       };
+      /*![pro strip-from="lite"]*/
     }
-    var $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a');
-    /*[pro strip-from="lite"]*/
-    var $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-label');
-    var $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper  .-options');
-    /*[/pro]*/
+    /*![/pro]*/
+
+    $clear = $('#wp-admin-bar-' + plugin.namespace + '-clear > a'); /*![pro strip-from="lite"]*/
+    $clearOptionsLabel = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper .-label');
+    $clearOptions = $('#wp-admin-bar-' + plugin.namespace + '-clear-options-wrapper  .-options');
+    /*![/pro]*/
+
     plugin.removeAJAXResponse();
 
     if (isClearOption && $clearOptionsLabel.length) {
@@ -164,19 +178,24 @@
       plugin.showAJAXResponse(); // Show response.
     });
   };
-  /*[pro strip-from="lite"]*/
+
+  /*![pro strip-from="lite"]*/
   plugin.clearCacheHomeUrlOnly = function (event) {
     plugin.clearCache(event, {
       urlOnly: 'home'
     });
   };
+  /*![/pro]*/
 
+  /*![pro strip-from="lite"]*/
   plugin.clearCacheCurrentUrlOnly = function (event) {
     plugin.clearCache(event, {
       urlOnly: document.URL
     });
   };
+  /*![/pro]*/
 
+  /*![pro strip-from="lite"]*/
   plugin.clearCacheSpecificUrlOnly = function (event) {
     var url = $.trim(prompt(plugin.vars.i18n.enterSpecificUrl, 'http://'));
 
@@ -188,25 +207,31 @@
       plugin.preventDefault(event);
     }
   };
+  /*![/pro]*/
 
+  /*![pro strip-from="lite"]*/
   plugin.clearCacheOpCacheOnly = function (event) {
     plugin.clearCache(event, {
       opCacheOnly: true
     });
   };
+  /*![/pro]*/
 
+  /*![pro strip-from="lite"]*/
   plugin.clearCacheCdnOnly = function (event) {
     plugin.clearCache(event, {
       cdnOnly: true
     });
   };
+  /*![/pro]*/
 
+  /*![pro strip-from="lite"]*/
   plugin.clearExpiredTransientsOnly = function (event) {
     plugin.clearCache(event, {
       transientsOnly: true
     });
   };
-  /*[/pro]*/
+  /*![/pro]*/
 
   plugin.showAJAXResponse = function () {
     clearTimeout(plugin.hideAJAXResponseTimeout);
@@ -242,7 +267,8 @@
     $('.' + plugin.namespace + '-ajax-response')
       .off(plugin.animationEndEvents).remove();
   };
-  /*[pro strip-from="lite"]*/
+
+  /*![pro strip-from="lite"]*/
   plugin.stats = function () {
     if (plugin.statsRunning) {
       return; // Still running.
@@ -520,7 +546,7 @@
       };
     beforeData(); // Begin w/ data acquisition.
   };
-
+  /*![/pro]*/
 
   plugin.bytesToSizeLabel = function (bytes, decimals) {
     if (typeof bytes !== 'number' || bytes <= 1) {
@@ -583,7 +609,7 @@
     });
     return observer; // See: <http://caniuse.com/#feat=mutationobserver>
   }());
-  /*[/pro]*/
+
   plugin.animationEndEvents = // All vendor prefixes.
     'webkitAnimationEnd mozAnimationEnd msAnimationEnd oAnimationEnd animationEnd';
 
