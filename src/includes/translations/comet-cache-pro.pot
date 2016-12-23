@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Comet Cache Pro package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Comet Cache Pro 161221\n"
+"Project-Id-Version: Comet Cache Pro 161223-RC\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/comet-cache-pro\n"
-"POT-Creation-Date: 2016-12-21 01:51:58+00:00\n"
+"POT-Creation-Date: 2016-12-23 23:33:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1321,7 +1321,7 @@ msgid "<strong>Tip:</strong> if you wanted to exclude iPhones put this line into
 msgstr ""
 
 #: src/includes/classes/MenuPageOptions.php:851
-#: src/includes/traits/Ac/ObUtils.php:406
+#: src/includes/traits/Ac/ObUtils.php:415
 msgid "Auto-Cache Engine"
 msgstr ""
 
@@ -2213,107 +2213,107 @@ msgstr ""
 msgid "%1$s is NOT caching this page, %2$s"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:254
-#: src/includes/traits/Ac/PostloadUtils.php:208
+#: src/includes/traits/Ac/ObUtils.php:263
+#: src/includes/traits/Ac/PostloadUtils.php:213
 msgid "%1$s is Fully Functional"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:257
-#: src/includes/traits/Ac/PostloadUtils.php:211
+#: src/includes/traits/Ac/ObUtils.php:266
+#: src/includes/traits/Ac/PostloadUtils.php:216
 msgid "Loaded via Cache On"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:258
-#: src/includes/traits/Ac/PostloadUtils.php:212
+#: src/includes/traits/Ac/ObUtils.php:267
+#: src/includes/traits/Ac/PostloadUtils.php:217
 msgid "Loaded via Cache In"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:258
-#: src/includes/traits/Ac/ObUtils.php:408
-#: src/includes/traits/Ac/PostloadUtils.php:212
+#: src/includes/traits/Ac/ObUtils.php:267
+#: src/includes/traits/Ac/ObUtils.php:417
+#: src/includes/traits/Ac/PostloadUtils.php:217
 msgid "%1$s seconds"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:289
+#: src/includes/traits/Ac/ObUtils.php:298
 msgid "Unexpected OB phase: `%1$s`."
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:365
+#: src/includes/traits/Ac/ObUtils.php:374
 msgid "Cache directory not writable. %1$s needs this directory please: `%2$s`. Set permissions to `755` or higher; `777` might be needed in some cases."
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:371
-#: src/includes/traits/Ac/ObUtils.php:426
+#: src/includes/traits/Ac/ObUtils.php:380
+#: src/includes/traits/Ac/ObUtils.php:434
 msgid "Unable to create symlink: `%1$s` » `%2$s`. Possible permissions issue (or race condition), please check your cache directory: `%3$s`."
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:387
+#: src/includes/traits/Ac/ObUtils.php:396
 msgid "%1$s Notes"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:391
+#: src/includes/traits/Ac/ObUtils.php:400
 msgid "Cache File User Token"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:395
+#: src/includes/traits/Ac/ObUtils.php:404
 msgid "Cache File for Mobile Device"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:397
+#: src/includes/traits/Ac/ObUtils.php:406
 msgid "Cache File Version Salt"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:397
+#: src/includes/traits/Ac/ObUtils.php:406
 msgid "n/a"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:401
+#: src/includes/traits/Ac/ObUtils.php:410
 msgid "Cache File URL"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:401
+#: src/includes/traits/Ac/ObUtils.php:410
 msgid "404 [error document]"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:402
+#: src/includes/traits/Ac/ObUtils.php:411
 msgid "Cache File Path"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:406
+#: src/includes/traits/Ac/ObUtils.php:415
 msgid "Cache File Generated Via"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:406
+#: src/includes/traits/Ac/ObUtils.php:415
 msgid "HTTP request"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:407
+#: src/includes/traits/Ac/ObUtils.php:416
 msgid "Cache File Generated On"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:408
+#: src/includes/traits/Ac/ObUtils.php:417
 msgid "Cache File Generated In"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:414
+#: src/includes/traits/Ac/ObUtils.php:422
 msgid "Cache File Expires Early"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:414
+#: src/includes/traits/Ac/ObUtils.php:422
 msgid "yes, due to nonce in markup"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:415
-#: src/includes/traits/Ac/ObUtils.php:418
+#: src/includes/traits/Ac/ObUtils.php:423
+#: src/includes/traits/Ac/ObUtils.php:426
 msgid "Cache File Expires On"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:416
-#: src/includes/traits/Ac/ObUtils.php:419
+#: src/includes/traits/Ac/ObUtils.php:424
+#: src/includes/traits/Ac/ObUtils.php:427
 msgid "Cache File Auto-Rebuild On"
 msgstr ""
 
-#: src/includes/traits/Ac/ObUtils.php:436
+#: src/includes/traits/Ac/ObUtils.php:444
 msgid "%1$s: failed to write cache file for: `%2$s`; possible permissions issue (or race condition), please check your cache directory: `%3$s`."
 msgstr ""
 
@@ -2484,11 +2484,11 @@ msgstr ""
 msgid "<strong>%1$s</strong> successfully installed! :-) <strong>Please <a href=\"%2$s\">enable caching and review options</a>.</strong>"
 msgstr ""
 
-#: src/includes/traits/Plugin/InstallUtils.php:81
+#: src/includes/traits/Plugin/InstallUtils.php:83
 msgid "<strong>%1$s:</strong> detected a new version of itself. Recompiling w/ latest version... wiping the cache... all done :-)"
 msgstr ""
 
-#: src/includes/traits/Plugin/InstallUtils.php:337
+#: src/includes/traits/Plugin/InstallUtils.php:341
 msgid "<strong>%1$s</strong>: ignoring your Version Salt; it seems to contain PHP syntax errors."
 msgstr ""
 
@@ -2526,7 +2526,7 @@ msgstr ""
 msgid "<strong>%1$s</strong> detected changes and intelligently cleared the cache to keep your site up-to-date."
 msgstr ""
 
-#: src/includes/traits/Plugin/UpdateUtils.php:122
+#: src/includes/traits/Plugin/UpdateUtils.php:91
 msgid "<strong>Comet Cache Pro:</strong> An error occurred while checking for updates: <code>%1$s</code><br/><br/>Please review <strong><a href=\"%2$s\">Comet Cache Pro → Plugin Options → Update Credentials</a></strong>."
 msgstr ""
 
