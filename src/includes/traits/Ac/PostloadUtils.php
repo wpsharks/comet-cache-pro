@@ -10,7 +10,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var bool `TRUE` if main query has been loaded; else `FALSE`.
+     * @type bool `TRUE` if main query has been loaded; else `FALSE`.
      *
      * @see wpMainQueryPostload()
      */
@@ -21,7 +21,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var bool `TRUE` if is a 404 error; else `FALSE`.
+     * @type bool `TRUE` if is a 404 error; else `FALSE`.
      *
      * @see wpMainQueryPostload()
      */
@@ -32,7 +32,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var int Last HTTP status code (if applicable).
+     * @type int Last HTTP status code (if applicable).
      *
      * @see maybeFilterStatusHeaderPostload()
      */
@@ -43,7 +43,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var bool `TRUE` if is a WP content type.
+     * @type bool `TRUE` if is a WP content type.
      *
      * @see wpMainQueryPostload()
      */
@@ -54,7 +54,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var string Current WordPress {@link \content_url()}.
+     * @type string Current WordPress {@link \content_url()}.
      *
      * @see wpMainQueryPostload()
      */
@@ -65,7 +65,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var bool `TRUE` if {@link \is_user_loged_in()} else `FALSE`.
+     * @type bool `TRUE` if {@link \is_user_loged_in()} else `FALSE`.
      *
      * @see wpMainQueryPostload()
      */
@@ -76,7 +76,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var bool `TRUE` if {@link \is_maintenance()} else `FALSE`.
+     * @type bool `TRUE` if {@link \is_maintenance()} else `FALSE`.
      *
      * @see wpMainQueryPostload()
      */
@@ -87,7 +87,7 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var array Data and/or flags that work with various postload handlers.
+     * @type array Data and/or flags that work with various postload handlers.
      */
     public $postload = [
         /*[pro strip-from="lite"]*/
@@ -105,12 +105,13 @@ trait PostloadUtils
      *
      * @since 150422 Rewrite.
      *
-     * @var string|int An MD5 hash token; or a specific WP user ID.
+     * @type string|int An MD5 hash token; or a specific WP user ID.
      */
     public $user_token = '';
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
+
     /**
      * Sets a flag for possible invalidation upon certain actions in the postload phase.
      *
@@ -136,9 +137,11 @@ trait PostloadUtils
             $this->postload['invalidate_when_logged_in'] = true;
         }
     }
+
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
+
     /**
      * Invalidates cache files for a user (if applicable).
      *
@@ -161,9 +164,11 @@ trait PostloadUtils
         $regex = $this->assembleCachePathRegex('', '.*?\.u\/'.preg_quote($this->user_token, '/').'[.\/]');
         $this->wipeFilesFromCacheDir($regex); // Wipe matching files.
     }
+
     /*[/pro]*/
 
     /*[pro strip-from="lite"]*/
+
     /**
      * Starts output buffering in the postload phase (i.e. a bit later);
      *    when/if user caching is enabled; and if applicable.
@@ -186,14 +191,14 @@ trait PostloadUtils
         $this->cache_path = $this->buildCachePath($this->protocol.$this->host_token.$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
         $this->cache_file = COMET_CACHE_DIR.'/'.$this->cache_path; // Now considering a user token.
 
-        if (is_file($this->cache_file) && (!$this->cache_max_age || filemtime($this->cache_file) >= $this->cache_max_age)) {
+        if (is_file($this->cache_file) && ($this->cache_max_age_disabled || filemtime($this->cache_file) >= $this->cache_max_age)) {
             list($headers, $cache) = explode('<!--headers-->', file_get_contents($this->cache_file), 2);
 
-            if ($this->cache_max_age < $this->nonce_cache_max_age && filemtime($this->cache_file) < $this->nonce_cache_max_age
-                    && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
-                ob_start([$this, 'outputBufferCallbackHandler']);
+            if (filemtime($this->cache_file) < $this->nonce_cache_max_age && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
+                ob_start([$this, 'outputBufferCallbackHandler']); // This ignores `cache_max_age_disabled` in favor of better security.
             } else {
-                $headers_list = $this->headersList();
+                $headers_list = $this->headersList(); // Headers that are enqueued already.
+
                 foreach (unserialize($headers) as $_header) {
                     if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'last-modified:') !== 0) {
                         header($_header); // Only cacheable/safe headers are stored in the cache.
@@ -219,6 +224,7 @@ trait PostloadUtils
             ob_start([$this, 'outputBufferCallbackHandler']);
         }
     }
+
     /*[/pro]*/
 
     /**
