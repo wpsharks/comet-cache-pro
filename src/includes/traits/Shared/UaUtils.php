@@ -27,9 +27,9 @@ trait UaUtils
     {
         $rel_path = (string) $rel_path;
 
-        if ($this->isAdvancedCache()) {
-            $info_dir = defined('COMET_CACHE_UA_INFO_DIR') ? COMET_CACHE_UA_INFO_DIR : '';
-        } elseif (!empty($this->ua_info_sub_dir)) {
+        if ($this->isAdvancedCache() && defined('COMET_CACHE_UA_INFO_DIR')) {
+            $info_dir = COMET_CACHE_UA_INFO_DIR;
+        } elseif ($this->isPlugin() && !empty($this->ua_info_sub_dir)) {
             $info_dir = $this->wpContentBaseDirTo($this->ua_info_sub_dir);
         }
         if (empty($info_dir)) {

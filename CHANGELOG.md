@@ -1,3 +1,9 @@
+= $v =
+
+- **Bug Fix:** Resolves error `Unable to determine UA info directory location` when upgrading to latest release. See [Issue #862](https://github.com/websharks/comet-cache/issues/862).
+- **Bug Fix:** Enhancing compatibility with InfiniteWP, ManageWP, and other remote management tools for WordPress. See [Issue #862](https://github.com/websharks/comet-cache/issues/862).
+- **Cleanup:** Removed an old API call that checked for a newer lite version. No longer necessary.
+
 = v161221 =
 
 - **Bug Fix:** Improving PHP OPcache detection. Now considering the INI option `opcache.restrict_api`. Comet Cache is now smart enough to avoid generating the PHP Warning: _PHP Warning: Zend OPcache API is restricted by "restrict_api" configuration directive_. See [Issue #733](https://github.com/websharks/comet-cache/issues/733).
