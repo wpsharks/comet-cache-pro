@@ -485,12 +485,8 @@ class Plugin extends AbsBaseAp
 
             /* Related to automatic pro updates. */
 
-            'lite_update_check'      => '0', // `0|1`; enable?
-            'latest_lite_version'    => VERSION, // Latest version.
-            'last_lite_update_check' => '0', // Timestamp.
-
             'pro_update_check'        => '1', // `0|1`; enable?
-            'pro_update_check_stable' => '1', // `0` for beta/RC checks; defaults to `1`
+            'pro_update_check_stable' => '1', // `0` for beta/RC checks.
             'last_pro_update_check'   => '0', // Timestamp.
 
             'latest_pro_version' => VERSION, // Latest version.
@@ -527,24 +523,29 @@ class Plugin extends AbsBaseAp
         }
         /* -------------------------------------------------------------- */
 
+        add_action('init', [$this, 'checkVersion']);
         add_action('init', [$this, 'checkAdvancedCache']);
         add_action('init', [$this, 'checkBlogPaths']);
         add_action('init', [$this, 'checkCronSetup'], PHP_INT_MAX);
+
         add_action('wp_loaded', [$this, 'actions']);
 
-        add_action('admin_init', [$this, 'checkVersion']);
-        add_action('admin_init', [$this, 'maybeCheckLatestLiteVersion']);
-
         /*[pro strip-from="lite"]*/
-        add_action('admin_init', [$this, 'autoCacheMaybeClearPrimaryXmlSitemapError']);
-        add_action('admin_init', [$this, 'autoCacheMaybeClearPhpReqsError']);
         add_action('admin_init', [$this, 'statsLogPinger']);
         /*[/pro]*/
 
         /*[pro strip-from="lite"]*/
         add_action('admin_init', [$this, 'maybeCheckLatestProVersion']);
         add_action('admin_init', [$this, 'maybeShowLatestProVersionChangelog']);
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
         add_action('site_transient_update_plugins', [$this, 'onGetSiteTransientUpdatePlugins']);
+        /*[/pro]*/
+
+        /*[pro strip-from="lite"]*/
+        add_action('admin_init', [$this, 'autoCacheMaybeClearPrimaryXmlSitemapError']);
+        add_action('admin_init', [$this, 'autoCacheMaybeClearPhpReqsError']);
         /*[/pro]*/
 
         add_action('admin_bar_menu', [$this, 'adminBarMenu']);
@@ -568,10 +569,13 @@ class Plugin extends AbsBaseAp
 
         add_filter('enable_live_network_counts', [$this, 'updateBlogPaths']);
 
+        add_action('admin_init', [$this, 'autoClearCacheOnSettingChanges']);
+
+        add_action('safecss_save_pre', [$this, 'autoClearCacheOnJetpackCustomCss'], 10, 1);
+
         add_action('activated_plugin', [$this, 'autoClearOnPluginActivationDeactivation'], 10, 2);
         add_action('deactivated_plugin', [$this, 'autoClearOnPluginActivationDeactivation'], 10, 2);
-        add_action('admin_init', [$this, 'autoClearCacheOnSettingChanges']);
-        add_action('safecss_save_pre', [$this, 'autoClearCacheOnJetpackCustomCss'], 10, 1);
+
         add_action('upgrader_process_complete', [$this, 'autoClearOnUpgraderProcessComplete'], 10, 2);
         add_action('upgrader_process_complete', [$this, 'wipeOpcacheByForce'], PHP_INT_MAX);
 
