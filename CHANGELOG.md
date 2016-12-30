@@ -1,3 +1,7 @@
+= $v =
+
+- **Bug Fix:** This release resolves empty directories being left in the cache folder, in some scenarios. See [Thread #866](https://forums.wpsharks.com/t/cache-folders-not-removed-during-clean-up-process/866).
+
 = v161227 =
 
 _**Note:** This is a Comet Cache Pro maintenance release._
