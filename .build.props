@@ -18,7 +18,7 @@ project_php_tested_up_to_version                        = ${php.version}
 project_wp_required_version                             = 4.2
 project_wp_tested_up_to_version                         = 4.8-alpha
 
-project_other_zip_tgz_fileset_exclusions                = README.md, **/composer.lock, **/composer.json
+project_other_zip_tgz_fileset_exclusions                = README.md, **/composer.lock, **/composer.json, **/src/vendor/bin/, **/src/vendor/browscap/browscap-php/bin/, **/src/vendor/symfony/console/Resources/bin/
 
 project_lite_title                                      = Comet Cache
 project_lite_slug                                       = comet-cache
