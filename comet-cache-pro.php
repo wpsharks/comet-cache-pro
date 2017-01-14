@@ -12,6 +12,6 @@ Plugin URI: http://cometcache.com/
 Description: Comet Cache is an advanced WordPress caching plugin inspired by simplicity.
 */
 if (!defined('WPINC')) {
-    exit('Do NOT access this file directly: '.basename(__FILE__));
+    exit('Do NOT access this file directly.');
 }
 require_once dirname(__FILE__).'/plugin.php';

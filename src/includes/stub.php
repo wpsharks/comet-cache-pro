@@ -8,7 +8,7 @@
 namespace WebSharks\CometCache\Pro;
 
 if (!defined('WPINC')) {
-    exit('Do NOT access this file directly: '.basename(__FILE__));
+    exit('Do NOT access this file directly.');
 }
 require_once dirname(__DIR__).'/vendor/autoload.php';
 require_once __DIR__.'/functions/i18n-utils.php';

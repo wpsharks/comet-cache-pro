@@ -1,5 +1,6 @@
 = $v =
 
+- Enhancing security by removing `basename(__FILE__)` from direct access notices.
 - **Bug Fix:** This release resolves empty directories being left in the cache folder, in some scenarios. See [Thread #866](https://forums.wpsharks.com/t/cache-folders-not-removed-during-clean-up-process/866).
 
 = v161227 =
