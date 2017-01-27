@@ -424,10 +424,10 @@ class MenuPageOptions extends MenuPage
 
         echo '      <h4 style="margin-bottom:0;">'.__('Auto-Clear "Date-Based Archives" Too?', SLUG_TD).'</h4>'."\n";
         echo '      <p style="margin-top:2px;">'.sprintf(__('Date-Based Archives allow visitors to browse Posts by the year, month, or day they were originally published. If a single Post (of any type) is changed in some way; and %1$s clears/resets the cache for that Post, would you like %1$s to also clear any existing cache files for Dated-Based Archives that match the publication time?', SLUG_TD), esc_html(NAME)).'</p>'."\n";
-        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_custom_post_type_enable]" class="-no-if-enabled">'."\n";
+        echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][cache_clear_date_archives_enable]" class="-no-if-enabled">'."\n";
         echo '            <option value="1"'.selected($this->plugin->options['cache_clear_date_archives_enable'], '1', false).'>'.__('Yes, if any single Post is cleared/reset, also clear the associated Date archive views.', SLUG_TD).'</option>'."\n";
-        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_date_archives_enable'], '2', false).'>'.__('Yes, but only clear the associated Day and Month archive views.', SLUG_TD).'</option>'."\n";
-        echo '            <option value="0"'.selected($this->plugin->options['cache_clear_date_archives_enable'], '3', false).'>'.__('Yes, but only clear the associated Day archive view.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="2"'.selected($this->plugin->options['cache_clear_date_archives_enable'], '2', false).'>'.__('Yes, but only clear the associated Day and Month archive views.', SLUG_TD).'</option>'."\n";
+        echo '            <option value="3"'.selected($this->plugin->options['cache_clear_date_archives_enable'], '3', false).'>'.__('Yes, but only clear the associated Day archive view.', SLUG_TD).'</option>'."\n";
         echo '            <option value="0"'.selected($this->plugin->options['cache_clear_date_archives_enable'], '0', false).'>'.__('No, don\'t clear any associated Date archive views.', SLUG_TD).'</option>'."\n";
         echo '         </select></p>'."\n";
 
@@ -1089,7 +1089,7 @@ class MenuPageOptions extends MenuPage
         }
         /* ----------------------------------------------------------------------------------------- */
 
-        if ($this->plugin->isApache() || $this->plugin->isProPreview()) {
+        if (!$this->plugin->isApache() || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading" data-additional-pro-features="'.(!IS_PRO && $this->plugin->isProPreview() ? __('additional pro features', SLUG_TD) : '').'">'."\n";
@@ -1141,7 +1141,7 @@ class MenuPageOptions extends MenuPage
                 echo '      <hr />'."\n";
                 echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Enforce an Exact Host Name?', SLUG_TD).'</h3>'."\n";
                 echo '      <p>'.sprintf(__('By enforcing an exact host name you avoid duplicate cache files, which saves disk space and improves cache performance. For example, if a bot or crawler accesses your site using your server\'s IP address instead of using your domain name (e.g., <code>http://123.456.789/path</code>), this results in duplicate cache files, because the host was an IP address. The \'host\' being an important factor in any cache storage system. The same would be true if a visitor attempted to access your site using a made-up sub-domain; e.g., <code>http://foo.bar.%1$s/path</code>. This sort of thing can be avoided by explicitly enforcing an exact host name in the request. One that matches exactly what you\'ve configured in <strong>WordPress Settings → General</strong>.', SLUG_TD), esc_html(parse_url(network_home_url(), PHP_URL_HOST))).'</p>'."\n";
-                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_exact_host_name]" data-target=".-htaccess-enforce-exact-host-name-options">'."\n";
                 echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_exact_host_name'], '0', false)).'>'.__('No, do NOT enforce an exact host name (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
                 echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_enforce_exact_host_name'], '1', false)).'>'.sprintf(__('Yes, enforce the exact host name: %1$s', SLUG_TD), esc_html(parse_url(network_home_url(), PHP_URL_HOST))).'</option>'."\n";
                 echo '         </select></p>'."\n";
