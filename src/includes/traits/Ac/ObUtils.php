@@ -126,9 +126,12 @@ trait ObUtils
     /**
      * Start output buffering or serve cache.
      *
-     * @since 150422 Rewrite. This is a vital part of Comet Cache.
-     * This method serves existing (fresh) cache files. It is also responsible
-     * for beginning the process of collecting the output buffer.
+     * @since 150422 Rewrite.
+     * @since 17xxxx Adding API request constants.
+     *
+     * @note This is a vital part of Comet Cache.
+     *       This method serves existing (fresh) cache files. It is also responsible
+     *       for beginning the process of collecting the output buffer.
      */
     public function maybeStartOutputBuffering()
     {
@@ -152,6 +155,12 @@ trait ObUtils
         }
         if (isset($_SERVER['DONOTCACHEPAGE'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+        }
+        if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_XMLRPC_REQUEST_CONSTANT);
+        }
+        if (defined('REST_REQUEST') && REST_REQUEST) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_REST_REQUEST_CONSTANT);
         }
         if (isset($_GET[mb_strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[mb_strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_AC_GET_VAR);
@@ -260,9 +269,6 @@ trait ObUtils
 
                 $DebugNotes = new Classes\Notes();
 
-                $DebugNotes->addAsciiArt(sprintf(__('%1$s is Fully Functional', SLUG_TD), NAME));
-                $DebugNotes->addLineBreak();
-
                 $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
                 $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
 
@@ -278,10 +284,8 @@ trait ObUtils
     /**
      * Output buffer handler; i.e. the cache file generator.
      *
-     * @note We CANNOT depend on any WP functionality here; it will cause problems.
-     *    Anything we need from WP should be saved in the postload phase as a scalar value.
-     *
      * @since 150422 Rewrite.
+     * @since 17xxxx Adding API request constants.
      *
      * @param string $buffer The buffer from {@link \ob_start()}.
      * @param int    $phase  A set of bitmask flags.
@@ -289,6 +293,9 @@ trait ObUtils
      * @throws \Exception If unable to handle output buffering for any reason.
      *
      * @return string|bool The output buffer, or `FALSE` to indicate no change.
+     *
+     * @note We CANNOT depend on any WP functionality here; it will cause problems.
+     *    Anything we need from WP should be saved in the postload phase as a scalar value.
      *
      * @attaches-to {@link \ob_start()}
      */
@@ -318,6 +325,12 @@ trait ObUtils
         }
         if (isset($_SERVER['DONOTCACHEPAGE'])) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+        }
+        if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_XMLRPC_REQUEST_CONSTANT);
+        }
+        if (defined('REST_REQUEST') && REST_REQUEST) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_REST_REQUEST_CONSTANT);
         }
         if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->is_user_logged_in) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LOGGED_IN_USER);
@@ -393,7 +406,7 @@ trait ObUtils
             $time       = time(); // Needed below for expiration calculation.
 
             $DebugNotes = new Classes\Notes();
-            $DebugNotes->addAsciiArt(sprintf(__('%1$s Notes', SLUG_TD), NAME));
+            $DebugNotes->addAsciiArt(sprintf(__('%1$s is Fully Functional', SLUG_TD), NAME));
             $DebugNotes->addLineBreak();
 
             if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->user_token) {
