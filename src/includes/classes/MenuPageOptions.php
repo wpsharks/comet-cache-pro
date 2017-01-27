@@ -1128,6 +1128,20 @@ class MenuPageOptions extends MenuPage
                 echo '        <pre class="code"><code>'.esc_html($this->plugin->fillReplacementCodes(file_get_contents(dirname(__DIR__).'/templates/htaccess/browser-caching-enable.txt'))).'</code></pre>'."\n";
                 echo '      </div>'."\n";
             }
+            if (IS_PRO || $this->plugin->isProPreview()) {
+                echo '      <hr />'."\n";
+                echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Enforce an Exact Host Name?', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.sprintf(__('By enforcing an exact host name you avoid duplicate cache files, which saves disk space and improves cache performance. For example, if a bot or crawler accesses your site using your server\'s IP address instead of using your domain name (e.g., <code>http://123.456.789/path</code>), this results in duplicate cache files, because the host was an IP address. The \'host\' being an important factor in any cache storage system. The same would be true if a visitor attempted to access your site using a made-up sub-domain; e.g., <code>http://foo.bar.%1$s/path</code>. This sort of thing can be avoided by explicitly enforcing an exact host name in the request. One that matches exactly what you\'ve configured in <strong>WordPress Settings → General</strong>.', SLUG_TD), esc_html(parse_url(network_home_url(), PHP_URL_HOST))).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
+                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_exact_host_name'], '0', false)).'>'.__('No, do NOT enforce an exact host name (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_enforce_exact_host_name'], '1', false)).'>'.sprintf(__('Yes, enforce the exact host name: %1$s', SLUG_TD), esc_html(parse_url(network_home_url(), PHP_URL_HOST))).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-exact-host-name').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
+                echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-exact-host-name').'" style="display:none; margin-top:1em;">'."\n";
+                echo '        <p>'.__('<strong>To enforce an exact host name:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+                echo '        <pre class="code"><code>'.esc_html($this->plugin->fillReplacementCodes(file_get_contents(dirname(__DIR__).'/templates/htaccess/enforce-exact-host-name.txt'))).'</code></pre>'."\n";
+                echo '      </div>'."\n";
+            }
             if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
                 echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Enforce Canonical URLs?', SLUG_TD).'</h3>'."\n";
