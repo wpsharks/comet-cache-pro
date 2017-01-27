@@ -66,6 +66,7 @@ trait HtaccessUtils
                 'gzip-enable.txt',
                 'access-control-allow-origin-enable.txt',
                 'browser-caching-enable.txt',
+                'enforce-exact-host-name.txt',
                 'canonical-urls-ts-enable.txt',
                 'canonical-urls-no-ts-enable.txt',
             ] as $_template) {
@@ -95,6 +96,12 @@ trait HtaccessUtils
                     if ($this->options['htaccess_browser_caching_enable']) {
                         $template_blocks .= $_template_file_contents."\n\n";
                     } // ↑ Only if browser caching is enabled at this time.
+                    break;
+
+                case 'enforce-exact-host-name.txt':
+                    if ($this->options['htaccess_enforce_exact_host_name']) {
+                        $template_blocks .= $_template_file_contents."\n\n";
+                    } // ↑ Only if enforce canonical URLs enabled at this time.
                     break;
 
                 case 'canonical-urls-ts-enable.txt':
@@ -242,9 +249,9 @@ trait HtaccessUtils
         if (mb_stripos($template_blocks, '%%') === false) {
             return $template_blocks; // No replacement codes to fill.
         }
-        $home_url          = is_multisite() ? network_home_url() : home_url();
         $replacement_codes = [
-            '%%REWRITE_BASE%%'                      => trailingslashit(parse_url($home_url, PHP_URL_PATH)),
+            '%%REWRITE_BASE%%'                      => trailingslashit(parse_url(network_home_url(), PHP_URL_PATH)),
+            '%%HOST_NAME_AS_REGEX_FRAG%%'           => mb_strtolower(parse_url(network_home_url(), PHP_URL_HOST)),
             '%%REST_REQUEST_PREFIX_AS_REGEX_FRAG%%' => rest_get_url_prefix(),
         ];
         foreach ($replacement_codes as $_code => $_replacement) {

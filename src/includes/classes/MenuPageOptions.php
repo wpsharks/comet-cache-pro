@@ -17,9 +17,6 @@ class MenuPageOptions extends MenuPage
     {
         parent::__construct(); // Parent constructor.
 
-        global $is_nginx; // WP global for web server checks below.
-        global $is_apache; // WP global for web server checks below.
-
         echo '<form id="plugin-menu-page" class="plugin-menu-page" method="post" enctype="multipart/form-data" autocomplete="off"'.
              ' action="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, '_wpnonce' => wp_create_nonce()]), self_admin_url('/admin.php'))).'">'."\n";
 
@@ -993,7 +990,7 @@ class MenuPageOptions extends MenuPage
             echo '      <h3>'.__('Enable Static CDN Filters (e.g., MaxCDN/CloudFront)?', SLUG_TD).'</h3>'."\n";
             echo '      <p>'.sprintf(__('This feature allows you to serve some and/or ALL static files on your site from a CDN of your choosing. This is made possible through content/URL filters exposed by WordPress and implemented by %1$s. All it requires is that you setup a CDN host name sourced by your WordPress installation domain. You enter that CDN host name below and %1$s will do the rest! Super easy, and it doesn\'t require any DNS changes either. :-) Please <a href="http://cometcache.com/r/static-cdn-filters-general-instructions/" target="_blank">click here</a> for a general set of instructions.', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             echo '      <p>'.__('<strong>What\'s a CDN?</strong> It\'s a Content Delivery Network (i.e., a network of optimized servers) designed to cache static resources served from your site (e.g., JS/CSS/images and other static files) onto it\'s own servers, which are located strategically in various geographic areas around the world. Integrating a CDN for static files can dramatically improve the speed and performance of your site, lower the burden on your own server, and reduce latency associated with visitors attempting to access your site from geographic areas of the world that might be very far away from the primary location of your own web servers.', SLUG_TD).'</p>'."\n";
-            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true) && (!isset($_SERVER['WP_NGINX_CONFIG']) || $_SERVER['WP_NGINX_CONFIG'] !== 'done')) {
+            if ($this->plugin->isNginx() && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true) && (!isset($_SERVER['WP_NGINX_CONFIG']) || $_SERVER['WP_NGINX_CONFIG'] !== 'done')) {
                 echo '<div class="plugin-menu-page-notice error">'."\n";
                 echo '   <i class="si si-thumbs-down"></i> '.__('It appears that your server is running NGINX and does not support <code>.htaccess</code> rules. Please <a href="http://cometcache.com/r/kb-article-recommended-nginx-server-configuration/" target="_new">update your server configuration manually</a>. Note that updating your NGINX server configuration <em>before</em> enabling Static CDN Filters is recommended to prevent any <a href="http://cometcache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/" target="_new">CORS errors</a> with your CDN. If you\'ve already updated your NGINX configuration, you can safely <a href="http://cometcache.com/r/kb-article-how-do-i-disable-the-nginx-htaccess-notice/" target="_new">ignore this message</a>.', SLUG_TD)."\n";
                 echo '</div>'."\n";
@@ -1002,7 +999,7 @@ class MenuPageOptions extends MenuPage
             echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['cdn_enable'], '0', false)).'>'.__('No, I do NOT want CDN filters applied at runtime.', SLUG_TD).'</option>'."\n";
             echo '            <option value="1"'.(!IS_PRO ? ' selected' : selected($this->plugin->options['cdn_enable'], '1', false)).'>'.__('Yes, I want CDN filters applied w/ my configuration below.', SLUG_TD).'</option>'."\n";
             echo '         </select></p>'."\n";
-            if ($is_apache && $this->plugin->options['cdn_enable'] && !$this->plugin->options['htaccess_access_control_allow_origin']) {
+            if ($this->plugin->isApache() && $this->plugin->options['cdn_enable'] && !$this->plugin->options['htaccess_access_control_allow_origin']) {
                 echo '        <p class="warning" style="display:block;">'.__('<strong>Warning:</strong> Static CDN Filters are enabled above but the <strong>Comet Cache → Plugin Options → Apache Optimizations → Send Access-Control-Allow-Origin Header</strong> option has been disabled. We recommend sending the <code>Access-Control-Allow-Origin</code> header to avoid <a href="https://cometcache.com/r/kb-article-what-are-cross-origin-request-blocked-cors-errors/" target="_blank">CORS errors</a> when a CDN is configured.', SLUG_TD).'</p>'."\n";
             }
             echo '      <hr />'."\n";
@@ -1083,7 +1080,7 @@ class MenuPageOptions extends MenuPage
         }
         /* ----------------------------------------------------------------------------------------- */
 
-        if ($is_apache || $this->plugin->isProPreview()) {
+        if ($this->plugin->isApache() || $this->plugin->isProPreview()) {
             echo '<div class="plugin-menu-page-panel'.(!IS_PRO && $this->plugin->isProPreview() ? ' pro-preview' : '').'">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading" data-additional-pro-features="'.(!IS_PRO && $this->plugin->isProPreview() ? __('additional pro features', SLUG_TD) : '').'">'."\n";
@@ -1112,7 +1109,7 @@ class MenuPageOptions extends MenuPage
             echo '        <p class="info" style="display:block;">'.__('<strong>Or</strong>, if your server is missing <code>mod_deflate</code>/<code>mod_filter</code>; open your <code>php.ini</code> file and add this line: <a href="http://php.net/manual/en/zlib.configuration.php" target="_blank" style="text-decoration:none;"><code>zlib.output_compression = on</code></a>', SLUG_TD).'</p>'."\n";
             echo '      </div>'."\n";
 
-            if ((!IS_PRO && $is_apache) && !$this->plugin->isProPreview()) {
+            if ((!IS_PRO && $this->plugin->isApache()) && !$this->plugin->isProPreview()) {
                 echo '      <hr />'."\n";
                 echo '      <p class="warning" style="display:block;">'.sprintf(__('<a href="%1$s">Enable the Pro Preview</a> to see <strong>Leverage Browser Caching</strong>, <strong>Enforce Canonical URLs</strong>, and more!', SLUG_TD), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS, GLOBAL_NS.'_pro_preview' => '1']), self_admin_url('/admin.php')))).'</p>'."\n";
             }
@@ -1129,6 +1126,20 @@ class MenuPageOptions extends MenuPage
                 echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--leverage-browser-caching').'" style="display:none; margin-top:1em;">'."\n";
                 echo '        <p>'.__('<strong>To enable Browser Caching:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
                 echo '        <pre class="code"><code>'.esc_html($this->plugin->fillReplacementCodes(file_get_contents(dirname(__DIR__).'/templates/htaccess/browser-caching-enable.txt'))).'</code></pre>'."\n";
+                echo '      </div>'."\n";
+            }
+            if (IS_PRO || $this->plugin->isProPreview()) {
+                echo '      <hr />'."\n";
+                echo '      <h3 data-pro-version-only="'.(!IS_PRO ? __('pro version only', SLUG_TD) : '').'">'.__('Enforce an Exact Host Name?', SLUG_TD).'</h3>'."\n";
+                echo '      <p>'.sprintf(__('By enforcing an exact host name you avoid duplicate cache files, which saves disk space and improves cache performance. For example, if a bot or crawler accesses your site using your server\'s IP address instead of using your domain name (e.g., <code>http://123.456.789/path</code>), this results in duplicate cache files, because the host was an IP address. The \'host\' being an important factor in any cache storage system. The same would be true if a visitor attempted to access your site using a made-up sub-domain; e.g., <code>http://foo.bar.%1$s/path</code>. This sort of thing can be avoided by explicitly enforcing an exact host name in the request. One that matches exactly what you\'ve configured in <strong>WordPress Settings → General</strong>.', SLUG_TD), esc_html(parse_url(network_home_url(), PHP_URL_HOST))).'</p>'."\n";
+                echo '      <p><select name="'.esc_attr(GLOBAL_NS).'[saveOptions][htaccess_enforce_canonical_urls]" data-target=".-htaccess-enforce-canonical-urls-options">'."\n";
+                echo '            <option value="0"'.(!IS_PRO ? '' : selected($this->plugin->options['htaccess_enforce_exact_host_name'], '0', false)).'>'.__('No, do NOT enforce an exact host name (or I\'ll update my configuration manually; see below)', SLUG_TD).'</option>'."\n";
+                echo '            <option value="1"'.(!IS_PRO ? 'selected' : selected($this->plugin->options['htaccess_enforce_exact_host_name'], '1', false)).'>'.sprintf(__('Yes, enforce the exact host name: %1$s', SLUG_TD), esc_html(parse_url(network_home_url(), PHP_URL_HOST))).'</option>'."\n";
+                echo '         </select></p>'."\n";
+                echo '      <p>'.__('Or, you can update your configuration manually: [<a href="#" data-toggle-target=".'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-exact-host-name').'"><i class="si si-eye"></i> .htaccess configuration <i class="si si-eye"></i></a>]', SLUG_TD).'</p>'."\n";
+                echo '      <div class="'.esc_attr(GLOBAL_NS.'-apache-optimizations--enforce-exact-host-name').'" style="display:none; margin-top:1em;">'."\n";
+                echo '        <p>'.__('<strong>To enforce an exact host name:</strong> Create or edit the <code>.htaccess</code> file in your WordPress installation directory and add the following lines to the top:', SLUG_TD).'</p>'."\n";
+                echo '        <pre class="code"><code>'.esc_html($this->plugin->fillReplacementCodes(file_get_contents(dirname(__DIR__).'/templates/htaccess/enforce-exact-host-name.txt'))).'</code></pre>'."\n";
                 echo '      </div>'."\n";
             }
             if ((IS_PRO && !empty($GLOBALS['wp_rewrite']->permalink_structure)) || $this->plugin->isProPreview()) {

@@ -82,6 +82,7 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function wipeCache($args)
     {
@@ -112,6 +113,7 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function clearCache($args)
     {
@@ -142,6 +144,7 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxWipeCache($args)
     {
@@ -184,6 +187,7 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxClearCache($args)
     {
@@ -231,6 +235,7 @@ class Actions extends AbsBase
      * @since 151114 Adding URL clear handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxClearCacheUrl($args)
     {
@@ -278,6 +283,7 @@ class Actions extends AbsBase
      * @since 151114 Adding opcache wipe handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxWipeOpCache($args)
     {
@@ -304,6 +310,7 @@ class Actions extends AbsBase
      * @since 151002 Adding opcache clear handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxClearOpCache($args)
     {
@@ -330,6 +337,7 @@ class Actions extends AbsBase
      * @since 151002 Adding CDN cache wipe handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxWipeCdnCache($args)
     {
@@ -356,6 +364,7 @@ class Actions extends AbsBase
      * @since 151002 Adding CDN cache clear handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxClearCdnCache($args)
     {
@@ -382,6 +391,7 @@ class Actions extends AbsBase
      * @since 151220 Adding transient cache wipe handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxWipeExpiredTransients($args)
     {
@@ -408,6 +418,7 @@ class Actions extends AbsBase
      * @since 151220 Adding transient cache clear handler.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxClearExpiredTransients($args)
     {
@@ -434,6 +445,7 @@ class Actions extends AbsBase
      * @since 151002 Directory stats.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxStats($args)
     {
@@ -487,6 +499,7 @@ class Actions extends AbsBase
      * @since 151002 Directory stats.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function ajaxDirStats($args)
     {
@@ -534,11 +547,10 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function saveOptions($args)
     {
-        global $is_apache, $is_nginx;
-
         if (!current_user_can($this->plugin->cap)) {
             return; // Nothing to do.
         } elseif (empty($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'])) {
@@ -581,10 +593,10 @@ class Actions extends AbsBase
             if (!($add_wp_cache_to_wp_config = $this->plugin->addWpCacheToWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
-            if ($is_apache && !($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
+            if ($this->plugin->isApache() && !($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_add_failure'] = '1';
             }
-            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true)
+            if ($this->plugin->isNginx() && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true)
                     && (!isset($_SERVER['WP_NGINX_CONFIG']) || $_SERVER['WP_NGINX_CONFIG'] !== 'done')) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_nginx_notice'] = '1';
             }
@@ -609,7 +621,7 @@ class Actions extends AbsBase
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
             }
-            if ($is_apache && !($remove_wp_htaccess = $this->plugin->removeWpHtaccess())) {
+            if ($this->plugin->isApache() && !($remove_wp_htaccess = $this->plugin->removeWpHtaccess())) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_remove_failure'] = '1';
             }
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
@@ -632,11 +644,10 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function restoreDefaultOptions($args)
     {
-        global $is_apache, $is_nginx;
-
         if (!current_user_can($this->plugin->cap)) {
             return; // Nothing to do.
         } elseif (is_multisite() && !current_user_can($this->plugin->network_cap)) {
@@ -655,10 +666,10 @@ class Actions extends AbsBase
             if (!($add_wp_cache_to_wp_config = $this->plugin->addWpCacheToWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_add_failure'] = '1';
             }
-            if ($is_apache && !($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
+            if ($this->plugin->isApache() && !($add_wp_htaccess = $this->plugin->addWpHtaccess())) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_add_failure'] = '1';
             }
-            if ($is_nginx && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true)
+            if ($this->plugin->isNginx() && $this->plugin->applyWpFilters(GLOBAL_NS.'_wp_htaccess_nginx_notice', true)
                     && (!isset($_SERVER['WP_NGINX_CONFIG']) || $_SERVER['WP_NGINX_CONFIG'] !== 'done')) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_nginx_notice'] = '1';
             }
@@ -683,7 +694,7 @@ class Actions extends AbsBase
             if (!($remove_wp_cache_from_wp_config = $this->plugin->removeWpCacheFromWpConfig())) {
                 $query_args[GLOBAL_NS.'_wp_config_wp_cache_remove_failure'] = '1';
             }
-            if ($is_apache && !($remove_wp_htaccess = $this->plugin->removeWpHtaccess())) {
+            if ($this->plugin->isApache() && !($remove_wp_htaccess = $this->plugin->removeWpHtaccess())) {
                 $query_args[GLOBAL_NS.'_wp_htaccess_remove_failure'] = '1';
             }
             if (!($remove_advanced_cache = $this->plugin->removeAdvancedCache())) {
@@ -708,6 +719,7 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function exportOptions($args)
     {
@@ -748,6 +760,7 @@ class Actions extends AbsBase
      * @since 150422 Rewrite.
      *
      * @param mixed Input action argument(s).
+     * @param mixed $args
      */
     protected function dismissNotice($args)
     {
