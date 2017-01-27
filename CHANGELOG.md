@@ -1,6 +1,6 @@
 = $v =
 
-- **New Pro Feature:** Apache Optimizations now include a new teak that allows site owners to enforce an exact host name for all requests. See: **Dashboard → Comet Cache Pro → Plugin Options → Apache Optimizations → Enforce an Exact Host Name?**. See also: [Issue #101](https://github.com/websharks/comet-cache/issues/101).
+- **New Pro Feature:** Apache Optimizations now include a new option that allows site owners to enforce an exact host name for all requests. See: **Dashboard → Comet Cache Pro → Plugin Options → Apache Optimizations → Enforce an Exact Host Name?**. See also: [Issue #101](https://github.com/websharks/comet-cache/issues/101).
 - **Bug Fix:** Apache detection sometimes inaccurate. So instead of using default WP core globals for server detection, Comet Cache now uses it's own set of Apache/Nginx/IIS detection functions. And, this release enhances our Apache and Nginx detection routines; making them smart enough to catch additional edge cases; i.e., to further reduce the likelihood of there being a false-positive. See [Issue #748](https://github.com/websharks/comet-cache/issues/748).
 - **Bug Fix:** Some Jetpack API calls were being cached inadvertently. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
 - **Bug Fix:** Some XML-RPC and REST API requests were being cached inadvertently. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
