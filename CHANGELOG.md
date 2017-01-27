@@ -1,6 +1,12 @@
 = $v =
 
-- Enhancing security by removing `basename(__FILE__)` from direct access notices.
+- **Bug Fix:** Apache detection sometimes inaccurate. So instead of using default WP core globals for server detection, Comet Cache now uses it's own set of Apache/Nginx/IIS detection functions. And, this release enhances our Apache and Nginx detection routines; making them smart enough to catch additional edge cases; i.e., to further reduce the likelihood of there being a false-positive. See [Issue #748](https://github.com/websharks/comet-cache/issues/748).
+- **Bug Fix:** Some Jetpack API calls were being cached inadvertently. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
+- **Bug Fix:** Some XML-RPC and REST API requests were being cached inadvertently. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
+- **Bug Fix:** Some REST requests were being redirected incorrectly whenever Apache Optimizations were enabled. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
+- **Bug Fix:** Broken textarea field due to `white-space:nowrap` in Firefox. See [Issue #866](https://github.com/websharks/comet-cache/issues/866).
+- **Enhancement:** Notes in HTML source now indicate fully functional on first load for improved clarity. See [Issue #860](https://github.com/websharks/comet-cache/issues/860).
+- **Code Cleanup:** Enhancing security by removing `basename(__FILE__)` from direct access notices.
 - **Bug Fix:** This release resolves empty directories being left in the cache folder, in some scenarios. See [Thread #866](https://forums.wpsharks.com/t/cache-folders-not-removed-during-clean-up-process/866).
 
 = v161227 =

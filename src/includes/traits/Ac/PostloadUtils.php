@@ -210,9 +210,6 @@ trait PostloadUtils
 
                     $DebugNotes = new Classes\Notes();
 
-                    $DebugNotes->addAsciiArt(sprintf(__('%1$s is Fully Functional', SLUG_TD), NAME));
-                    $DebugNotes->addLineBreak();
-
                     $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
                     $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
 
