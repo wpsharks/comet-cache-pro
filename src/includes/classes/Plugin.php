@@ -36,6 +36,7 @@ class Plugin extends AbsBaseAp
     use Traits\Plugin\WcpAuthorUtils;
     use Traits\Plugin\WcpCdnUtils;
     use Traits\Plugin\WcpCommentUtils;
+    use Traits\Plugin\WcpDateArchiveUtils;
     use Traits\Plugin\WcpEvalUtils;
     use Traits\Plugin\WcpFeedUtils;
     use Traits\Plugin\WcpHomeBlogUtils;
@@ -378,6 +379,12 @@ class Plugin extends AbsBaseAp
             'cache_clear_term_category_enable' => '1', // `0|1`.
             'cache_clear_term_post_tag_enable' => '1', // `0|1`.
             'cache_clear_term_other_enable'    => '1', // `0|1`.
+
+            'cache_clear_date_archives_enable' => '1', // `0|1|2|3`.
+            // 0 = No, don't clear any associated Date archive views.
+            // 1 = Yes, if any single Post is cleared/reset, also clear the associated Date archive views.
+            // 2 = Yes, but only clear the associated Day and Month Date archive views.
+            // 3 = Yes, but only clear the associated Day Date archive view.
 
             /* Misc. cache behaviors. */
 
