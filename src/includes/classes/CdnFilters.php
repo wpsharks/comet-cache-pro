@@ -13,7 +13,7 @@ class CdnFilters extends AbsBase
     /**
      * @since 150422 Rewrite.
      *
-     * @var string Local host name.
+     * @var string Local hostname.
      */
     protected $local_host;
 
@@ -484,10 +484,10 @@ class CdnFilters extends AbsBase
             return; // Unparseable.
         }
         if (empty($parsed['host']) && empty($this->cdn_hosts[$this->local_host])) {
-            return; // Not on this host name.
+            return; // Not on this hostname.
         }
         if (!empty($parsed['host']) && empty($this->cdn_hosts[mb_strtolower($parsed['host'])])) {
-            return; // Not on this host name.
+            return; // Not on this hostname.
         }
         if (!isset($parsed['path'][0]) || $parsed['path'][0] !== '/') {
             return; // Missing or unexpected path.
@@ -499,7 +499,7 @@ class CdnFilters extends AbsBase
             return; // A relative path that is not absolute.
         }
         $scheme = null; // Default scheme handling.
-        $host   = $this->local_host; // Default host name.
+        $host   = $this->local_host; // Default hostname.
         $uri    = $parsed['path']; // Put URI together.
 
         if (!empty($parsed['scheme'])) {

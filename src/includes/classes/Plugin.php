@@ -452,7 +452,7 @@ class Plugin extends AbsBaseAp
 
             'htaccess_browser_caching_enable'      => '0', // `0|1`; enable browser caching?
             'htaccess_gzip_enable'                 => '0', // `0|1`; enable GZIP compression?
-            'htaccess_enforce_exact_host_name'     => '0', // `0|1`; enforce exact host name?
+            'htaccess_enforce_exact_host_name'     => '0', // `0|1`; enforce exact hostname?
             'htaccess_enforce_canonical_urls'      => '0', // `0|1`; enforce canonical URLs?
             'htaccess_access_control_allow_origin' => '0', // `0|1`; send Access-Control-Allow-Origin header?
 

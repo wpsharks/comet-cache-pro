@@ -211,7 +211,7 @@ interface NcDebugConsts
     const NC_DEBUG_PREVIEW = 'nc_debug_preview';
 
     /**
-     * No-cache because the current request is excluded by its host name.
+     * No-cache because the current request is excluded by its hostname.
      *
      * @since 160706 Host exclusions.
      *
