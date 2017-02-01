@@ -9,7 +9,7 @@
 - **Bug Fix** (Pro): Some REST requests were being redirected incorrectly whenever Apache Optimizations were enabled. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
 - **Compatibility Bug Fix:** Some Jetpack API calls were being cached inadvertently. See [Issue #855](https://github.com/websharks/comet-cache/issues/855).
 - **Enhancement:** Notes in HTML source now indicate fully functional on first load for improved clarity. See [Issue #860](https://github.com/websharks/comet-cache/issues/860).
-- **Code Cleanup:** Enhancing security by removing `basename(__FILE__)` from direct access notices.
+- **Enhancement:** Enhancing security by removing `basename(__FILE__)` from direct access notices.
 
 = v161227 =
 
