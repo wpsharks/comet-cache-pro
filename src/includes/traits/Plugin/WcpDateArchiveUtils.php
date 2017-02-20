@@ -8,7 +8,7 @@ trait WcpDateArchiveUtils
     /**
      * Automatically clears date archives.
      *
-     * @since 17xxxx Date archive clearing.
+     * @since 170220 Date archive clearing.
      *
      * @param int  $post_id A WordPress post ID.
      * @param bool $force   Defaults to a `FALSE` value.
