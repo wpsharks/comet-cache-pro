@@ -99,11 +99,13 @@ class MenuPageStats extends MenuPage
         echo '                  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$this->plugin->options['base_dir'].'/*').'</div>'."\n";
         echo '              </div>'."\n";
 
-        echo '              <div class="-disk">'."\n";
-        echo '                  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'."\n";
-        echo '                  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'."\n";
-        echo '                  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'."\n";
-        echo '              </div>'."\n";
+        if ($this->plugin->functionIsPossible('disk_total_space') && $this->plugin->functionIsPossible('disk_free_space')) {
+            echo '              <div class="-disk">' . "\n";
+            echo '                  <div class="-heading">' . __('Current Disk Health', SLUG_TD) . '</div>' . "\n";
+            echo '                  <div class="-size"><span class="-value">&nbsp;</span> ' . __('total capacity', SLUG_TD)  . '</div>' . "\n";
+            echo '                  <div class="-free"><span class="-value">&nbsp;</span> ' . __('available', SLUG_TD) . '</div>' . "\n";
+            echo '              </div>' . "\n";
+        }
 
         echo '              <div class="-system">'."\n";
         echo '                  <div class="-heading">'.__('Current System Health', SLUG_TD).'</div>'."\n";
