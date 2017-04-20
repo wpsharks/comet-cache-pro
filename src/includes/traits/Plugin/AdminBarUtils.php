@@ -240,36 +240,64 @@ trait AdminBarUtils
                     ],
                 ]
             );
-            $wp_admin_bar->add_menu(
-                [
-                    'parent' => GLOBAL_NS.'-stats-wrapper',
-                    'id'     => GLOBAL_NS.'-stats-container',
-                    'title'  => '<div class="-refreshing"></div>'.
-                               '<canvas class="-chart-a"></canvas>'.
-                               // '<canvas class="-chart-b"></canvas>'.
-                               '<div class="-totals">'.
-                               '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
-                               '  <div class="-files"><span class="-value">&nbsp;</span></div>'.
-                               '  <div class="-size"><span class="-value">&nbsp;</span></div>'.
-                               '  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$this->options['base_dir'].'/*').'</div>'.
-                               '</div>'.
-                               '<div class="-disk">'.
-                               '  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'.
-                               '  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
-                               '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
-                               '</div>'.
-                               (current_user_can($this->cap) ?
-                                   '<div class="-more-info">'.
-                                   '  <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
-                                   '</div>'
-                                   : '').
-                               '<div class="-spacer"></div>',
-                    'meta' => [
-                        'class'    => '-container',
-                        'tabindex' => -1,
-                    ],
-                ]
-            );
+            if ($this->plugin->functionIsPossible('disk_total_space') && $this->plugin->functionIsPossible('disk_free_space')) {
+                $wp_admin_bar->add_menu(
+                    [
+                        'parent' => GLOBAL_NS.'-stats-wrapper',
+                        'id'     => GLOBAL_NS.'-stats-container',
+                        'title'  => '<div class="-refreshing"></div>'.
+                                    '<canvas class="-chart-a"></canvas>'.
+                                    // '<canvas class="-chart-b"></canvas>'.
+                                    '<div class="-totals">'.
+                                    '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
+                                    '  <div class="-files"><span class="-value">&nbsp;</span></div>'.
+                                    '  <div class="-size"><span class="-value">&nbsp;</span></div>'.
+                                    '  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$this->options['base_dir'].'/*').'</div>'.
+                                    '</div>'.
+                                    '<div class="-disk">'.
+                                    '  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'.
+                                    '  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'.
+                                    '  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'.
+                                    '</div>'.
+                                    (current_user_can($this->cap) ?
+                                        '<div class="-more-info">'.
+                                        '  <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
+                                        '</div>'
+                                        : '').
+                                    '<div class="-spacer"></div>',
+                        'meta' => [
+                            'class'    => '-container',
+                            'tabindex' => -1,
+                        ],
+                    ]
+                );
+            } else {
+                $wp_admin_bar->add_menu(
+                    [
+                        'parent' => GLOBAL_NS.'-stats-wrapper',
+                        'id'     => GLOBAL_NS.'-stats-container',
+                        'title'  => '<div class="-refreshing"></div>'.
+                                   '<canvas class="-chart-a"></canvas>'.
+                                   // '<canvas class="-chart-b"></canvas>'.
+                                   '<div class="-totals">'.
+                                   '  <div class="-heading">'.__('Current Cache Totals', SLUG_TD).'</div>'.
+                                   '  <div class="-files"><span class="-value">&nbsp;</span></div>'.
+                                   '  <div class="-size"><span class="-value">&nbsp;</span></div>'.
+                                   '  <div class="-dir">'.esc_html(basename(WP_CONTENT_DIR).'/'.$this->options['base_dir'].'/*').'</div>'.
+                                   '</div>'.
+                                   (current_user_can($this->cap) ?
+                                       '<div class="-more-info">'.
+                                       '  <a href="'.esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS.'-stats']), network_admin_url('/admin.php'))).'">'.__('More Info', SLUG_TD).'</a>'.
+                                       '</div>'
+                                       : '').
+                                   '<div class="-spacer"></div>',
+                        'meta' => [
+                            'class'    => '-container',
+                            'tabindex' => -1,
+                        ],
+                    ]
+                );
+            }
         }
         /*[/pro]*/
     }
