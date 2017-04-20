@@ -1,3 +1,7 @@
+= $v =
+
+- **Bug Fix**: The Statistics feature was broken when the PHP `disk_total_space()` and/or `disk_free_space()` functions were disabled by the PHP configuration. Comet Cache now handles this scenario gracefully by hiding disk-related stats when those functions are not allowed. See [Issue #775](https://github.com/websharks/comet-cache/issues/775)
+
 = v170220 =
 
 - **New Feature:** Comet Cache can now be configured to automatically clear the cache for date-based archive views whenever any single post is cleared due to changes in content, title, etc. See: **Dashboard → Comet Cache → Plugin Options → Automatic Cache Clearing → Auto-Clear "Date-Based Archives" Too?**. See also: [Issue #724](https://github.com/websharks/comet-cache/issues/724).
