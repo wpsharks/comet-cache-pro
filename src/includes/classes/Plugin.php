@@ -300,6 +300,9 @@ class Plugin extends AbsBaseAp
             'cdn_whitelisted_uri_patterns',
             'cdn_blacklisted_uri_patterns',
 
+            'memcached_enable',
+            'memcached_servers',
+
             'stats_enable',
             'stats_admin_bar_enable',
             'stats_admin_bar_roles_caps',
@@ -481,6 +484,12 @@ class Plugin extends AbsBaseAp
 
             'cdn_blacklisted_uri_patterns' => '', // A line-delimited list of exclusion patterns.
             // Wildcards `*` are supported here. Matched against local file URIs.
+
+            /* Related to Memcached. */
+
+            'memcached_enable'  => '0', // `0|1`; enable Memcached?
+            'memcached_servers' => '', // Line-delimited list of servers: [host] [port] [priority]
+            // If empty, this defaults to localhost running on port `11211` w/ no special priority.
 
             /* Related to statistics/charts. */
 
