@@ -53,6 +53,26 @@ trait MemoryUtils
     }
 
     /**
+     * Get cache value by key.
+     *
+     * @since 17xxxx Memory utils.
+     *
+     * @param string     $primary_key Primary key.
+     * @param string|int $sub_key     Sub-key to get.
+     *
+     * @return mixed|null Null if missing, or on failure.
+     */
+    public function memGet($primary_key, $sub_key)
+    {
+        $instance = $this->memInstance();
+
+        if ($instance instanceof Memcached && $instance->enabled) {
+            return $instance->get($primary_key, $sub_key);
+        }
+        return null; // Not possible.
+    }
+
+    /**
      * Set|update cache key.
      *
      * @since 17xxxx Memory utils.
@@ -72,26 +92,6 @@ trait MemoryUtils
             return $instance->set($primary_key, $sub_key, $value, $expires_in);
         }
         return false; // Not possible.
-    }
-
-    /**
-     * Get cache value by key.
-     *
-     * @since 17xxxx Memory utils.
-     *
-     * @param string     $primary_key Primary key.
-     * @param string|int $sub_key     Sub-key to get.
-     *
-     * @return mixed|null Null if missing, or on failure.
-     */
-    public function memGet($primary_key, $sub_key)
-    {
-        $instance = $this->memInstance();
-
-        if ($instance instanceof Memcached && $instance->enabled) {
-            return $instance->get($primary_key, $sub_key);
-        }
-        return null; // Not possible.
     }
 }
 /*[/pro]*/
