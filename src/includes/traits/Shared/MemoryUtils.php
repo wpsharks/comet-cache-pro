@@ -41,6 +41,18 @@ trait MemoryUtils
     }
 
     /**
+     * Memory enabled?
+     *
+     * @since 17xxxx Memory utils.
+     *
+     * @return bool True if enabled.
+     */
+    public function memEnabled()
+    {
+        return (bool) $this->memInstance();
+    }
+
+    /**
      * Set|update cache key.
      *
      * @since 17xxxx Memory utils.
