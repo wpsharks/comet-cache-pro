@@ -80,6 +80,30 @@ if (!defined('COMET_CACHE_DEBUGGING_ENABLE')) {
      */
     define('COMET_CACHE_DEBUGGING_ENABLE', '%%COMET_CACHE_DEBUGGING_ENABLE%%');
 }
+/*[pro strip-from="lite"]*/
+if (!defined('COMET_CACHE_MEMCACHED_ENABLE')) {
+    /*
+     * Enable a memory-based RAM cache using Memcached?
+     *
+     * @since 17xxxx Memory-based RAM cache using Memcached?
+     *
+     * @var string|integer|boolean A boolean-ish value; e.g. `1` or `0`.
+     */
+    define('COMET_CACHE_MEMCACHED_ENABLE', '%%COMET_CACHE_MEMCACHED_ENABLE%%');
+}
+/*[/pro]*/
+/*[pro strip-from="lite"]*/
+if (!defined('COMET_CACHE_MEMCACHED_SERVERS')) {
+    /*
+     * Comma-delimited list of Memcached servers.
+     *
+     * @since 17xxxx Memory-based RAM cache using Memcached?
+     *
+     * @var string Line-delimited list of servers.
+     */
+    define('COMET_CACHE_MEMCACHED_SERVERS', '%%COMET_CACHE_MEMCACHED_SERVERS%%');
+}
+/*[/pro]*/
 if (!defined('COMET_CACHE_ALLOW_CLIENT_SIDE_CACHE')) {
     /*
      * Allow browsers to cache each document?

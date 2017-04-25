@@ -1,4 +1,6 @@
 <?php
+/*[pro exclude-file-from="lite"]*/
+/*[pro strip-from="lite"]*/
 namespace WebSharks\CometCache\Pro\Classes;
 
 /**
@@ -57,28 +59,35 @@ class Memcached extends AbsBase
      * Class constructor.
      *
      * @since 17xxxx Memcache utils.
+     *
+     * @param string $servers Line-delimited servers.
      */
-    public function __construct()
+    public function __construct($servers = '')
     {
         parent::__construct();
+
+        $this->enabled   = true;
+        $this->servers   = [];
+        $this->namespace = GLOBAL_NS;
 
         if (!($extension_loaded = extension_loaded('memcached'))) {
             $this->enabled = false; // Not possible.
             return; // Not possible; extension missing.
         }
-        // @TODO Make configurable.
-        $this->enabled   = true;
-        $this->namespace = GLOBAL_NS;
-        $this->servers   = $active_servers = [];
-        $servers         = $this->App->Config->©memcache['servers'];
+        $servers = (string) $servers; // Force string.
+        $servers = preg_split('/['."\r\n".']+/u', $servers, -1, PREG_SPLIT_NO_EMPTY);
 
         foreach ($servers as $_server) {
-            $_host                            = (string) $_server['host'];
-            $_port                            = (int) ($_server['port'] ?: 11211);
-            $_weight                          = (int) ($_server['weight'] ?: 0);
+            $_server                          = preg_split('/[\s,]+/u', $_server);
+            $_host                            = !empty($_server[0]) ? $_server[0] : '127.0.0.1';
+            $_port                            = (int) (!empty($_server[1]) ? $_server[1] : 11211);
+            $_weight                          = (int) (!empty($_server[2]) ? $_server[2] : 0);
             $this->servers[$_host.':'.$_port] = [$_host, $_port, $_weight];
         } // unset($_server, $_host, $_port, $_weight);
 
+        if (!$this->servers) { // Use default server?
+            $this->servers['127.0.0.1:11211'] = ['127.0.0.1', 11211, 0];
+        }
         if (!$this->enabled || !$this->namespace || !$this->servers) {
             $this->enabled = false; // Not possible.
             return; // Disabled or lacking config values.
@@ -491,3 +500,4 @@ class Memcached extends AbsBase
     'GET_ERROR_RETURN_VALUE'               => false
     */
 }
+/*[/pro]*/
