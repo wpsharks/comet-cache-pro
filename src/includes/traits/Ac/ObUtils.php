@@ -128,92 +128,84 @@ trait ObUtils
      *
      * @since 150422 Rewrite.
      * @since 170220 Adding API request constants.
-     *
-     * @note This is a vital part of Comet Cache.
-     *       This method serves existing (fresh) cache files. It is also responsible
-     *       for beginning the process of collecting the output buffer.
+     * @since 17xxxx Condense using `elseif` chains.
+     * @since 17xxxx Polishing a little.
      */
     public function maybeStartOutputBuffering()
     {
+        $lc_short_name = mb_strtolower(SHORT_NAME);
+
         if (strcasecmp(PHP_SAPI, 'cli') === 0) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_PHP_SAPI_CLI);
-        }
-        if (empty($_SERVER['HTTP_HOST']) || !$this->hostToken()) {
+            //
+        } elseif (empty($_SERVER['HTTP_HOST']) || !$this->hostToken()) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_NO_SERVER_HTTP_HOST);
-        }
-        if (empty($_SERVER['REQUEST_URI'])) {
+            //
+        } elseif (empty($_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_NO_SERVER_REQUEST_URI);
-        }
-        if (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
+            //
+        } elseif (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
-        }
-        if (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
+            //
+        } elseif (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
-        }
-        if (defined('DONOTCACHEPAGE')) { // Common to most WP cache plugins.
+            //
+        } elseif (defined('DONOTCACHEPAGE')) { // Common to most WP cache plugins.
             return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
-        }
-        if (isset($_SERVER['DONOTCACHEPAGE'])) {
+            //
+        } elseif (isset($_SERVER['DONOTCACHEPAGE'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
-        }
-        if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_XMLRPC_REQUEST_CONSTANT);
-        }
-        if (defined('REST_REQUEST') && REST_REQUEST) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_REST_REQUEST_CONSTANT);
-        }
-        if (isset($_GET[mb_strtolower(SHORT_NAME).'AC']) && !filter_var($_GET[mb_strtolower(SHORT_NAME).'AC'], FILTER_VALIDATE_BOOLEAN)) {
+            //
+        } elseif (isset($_GET[$lc_short_name.'AC']) && !filter_var($_GET[$lc_short_name.'AC'], FILTER_VALIDATE_BOOLEAN)) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_AC_GET_VAR);
-        }
-        if ($this->isUncacheableRequestMethod()) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_REQUEST);
-        }
-        if (isset($_SERVER['SERVER_ADDR']) && $this->currentIp() === $_SERVER['SERVER_ADDR']) {
-            if ((!IS_PRO || !$this->isAutoCacheEngine()) && !$this->isLocalhost()) {
-                return $this->maybeSetDebugInfo($this::NC_DEBUG_SELF_SERVE_REQUEST);
-            } // Don't trip on requests by the auto-cache engine.
-        }
-        if (!COMET_CACHE_FEEDS_ENABLE && $this->isFeed()) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_FEED_REQUEST);
-        }
-        if (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/ui', $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_SYSTEMATICS);
-        }
-        if (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ADMIN);
-        }
-        if (is_multisite() && preg_match('/\/files(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_MS_FILES);
-        }
-        if ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
-        }
-        if (!COMET_CACHE_GET_REQUESTS && $this->requestContainsUncacheableQueryVars()) {
-            return $this->maybeSetDebugInfo($this::NC_DEBUG_GET_REQUEST_QUERIES);
-        }
-        if (!empty($_REQUEST['preview'])) { // Don't cache previews under any circumstance.
+            //
+        } elseif (!empty($_REQUEST['preview'])) { // Don't cache previews.
             return $this->maybeSetDebugInfo($this::NC_DEBUG_PREVIEW);
-        }
-        if (COMET_CACHE_EXCLUDE_HOSTS && preg_match(COMET_CACHE_EXCLUDE_HOSTS, $_SERVER['HTTP_HOST'])) {
+            //
+        } elseif (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_XMLRPC_REQUEST_CONSTANT);
+            //
+        } elseif (defined('REST_REQUEST') && REST_REQUEST) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_REST_REQUEST_CONSTANT);
+            //
+        } elseif ($this->isUncacheableRequestMethod()) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_REQUEST);
+            //
+        } elseif (!COMET_CACHE_FEEDS_ENABLE && $this->isFeed()) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_FEED_REQUEST);
+            //
+        } elseif (preg_match('/\/(?:wp\-[^\/]+|xmlrpc)\.php(?:[?]|$)/ui', $_SERVER['REQUEST_URI'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_SYSTEMATICS);
+            //
+        } elseif (is_admin() || preg_match('/\/wp-admin(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ADMIN);
+            //
+        } elseif (is_multisite() && preg_match('/\/files(?:[\/?]|$)/ui', $_SERVER['REQUEST_URI'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_MS_FILES);
+            //
+        } elseif ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
+            //
+        } elseif (!COMET_CACHE_GET_REQUESTS && $this->requestContainsUncacheableQueryVars()) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_GET_REQUEST_QUERIES);
+            //
+        } elseif (COMET_CACHE_EXCLUDE_HOSTS && preg_match(COMET_CACHE_EXCLUDE_HOSTS, $_SERVER['HTTP_HOST'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_HOSTS);
-        }
-        if (COMET_CACHE_EXCLUDE_URIS && preg_match(COMET_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
+            //
+        } elseif (COMET_CACHE_EXCLUDE_URIS && preg_match(COMET_CACHE_EXCLUDE_URIS, $_SERVER['REQUEST_URI'])) {
             return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_URIS);
-        }
-        if (COMET_CACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$this->isAutoCacheEngine())) {
-            if (preg_match(COMET_CACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
-                return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_AGENTS);
-            } // Don't trip on requests by the auto-cache engine.
-        }
-        if (COMET_CACHE_EXCLUDE_REFS && !empty($_REQUEST['_wp_http_referer'])) {
-            if (preg_match(COMET_CACHE_EXCLUDE_REFS, stripslashes($_REQUEST['_wp_http_referer']))) {
-                return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
-            } // This variable is set by WordPress core in some cases.
-        }
-        if (COMET_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER'])) {
-            if (preg_match(COMET_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) {
-                return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
-            } // Based on the HTTP referrer in this case.
+            //
+        } elseif (isset($_SERVER['SERVER_ADDR']) && $this->currentIp() === $_SERVER['SERVER_ADDR'] && (!IS_PRO || !$this->isAutoCacheEngine()) && !$this->isLocalhost()) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_SELF_SERVE_REQUEST);
+            //
+        } elseif (COMET_CACHE_EXCLUDE_AGENTS && !empty($_SERVER['HTTP_USER_AGENT']) && (!IS_PRO || !$this->isAutoCacheEngine()) && preg_match(COMET_CACHE_EXCLUDE_AGENTS, $_SERVER['HTTP_USER_AGENT'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_AGENTS);
+            //
+        } elseif (COMET_CACHE_EXCLUDE_REFS && !empty($_REQUEST['_wp_http_referer']) && preg_match(COMET_CACHE_EXCLUDE_REFS, stripslashes($_REQUEST['_wp_http_referer']))) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
+            //
+        } elseif (COMET_CACHE_EXCLUDE_REFS && !empty($_SERVER['HTTP_REFERER']) && preg_match(COMET_CACHE_EXCLUDE_REFS, $_SERVER['HTTP_REFERER'])) {
+            return $this->maybeSetDebugInfo($this::NC_DEBUG_EXCLUDED_REFS);
         }
         $this->host_token           = $this->hostToken();
         $this->host_base_dir_tokens = $this->hostBaseDirTokens();
@@ -257,7 +249,7 @@ trait ObUtils
         } elseif (extract($this->cacheRead())) { // `['headers' => [], 'output' => '']`
             $headers_list = $this->headersList(); // Headers enqueued already.
 
-            foreach ($headers as $_header) {
+            foreach ($headers as $_header) { // Only send nonexistent headers.
                 if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'Last-Modified:') !== 0) {
                     header($_header); // Only cacheable/safe headers are stored in the cache.
                 }
@@ -286,49 +278,75 @@ trait ObUtils
      * @since 150422 Rewrite.
      * @since 170220 Adding API request constants.
      * @since 17xxxx Implementing `cacheWrite()` utility.
-     * @since 17xxxx Condense using `elseif` conditional chains.
+     * @since 17xxxx Condense using `elseif` chains.
+     * @since 17xxxx Polishing a little.
+     *
+     * @attaches-to {@link \ob_start()}
      *
      * @param string $buffer The buffer from {@link \ob_start()}.
      * @param int    $phase  A set of bitmask flags.
      *
-     * @throws \Exception If unable to handle output buffering for any reason.
+     * @throws \Exception If unable to handle output buffering.
      *
-     * @return string|bool The output buffer, or `FALSE` to indicate no change.
+     * @return string|bool The output buffer, or `false` to indicate no change.
      *
-     * @note We CANNOT depend on any WP functionality here; it will cause problems.
+     * @note Cannot depend on WP functionality here; it will cause problems.
      *    Anything we need from WP should be saved in the postload phase as a scalar value.
-     *
-     * @attaches-to {@link \ob_start()}
      */
     public function outputBufferCallbackHandler($buffer, $phase)
     {
-        $output = trim((string) $buffer);
-
-        if (!($phase & PHP_OUTPUT_HANDLER_END)) {
-            throw new \Exception(sprintf(__('Unexpected OB phase: `%1$s`.', SLUG_TD), $phase));
-        }
         Classes\AdvCacheBackCompat::zenCacheConstants();
 
-        if (!isset($output[0])) {
-            return false; // Don't cache an empty buffer.
+        if (!($phase & PHP_OUTPUT_HANDLER_END)) {
+            throw new \Exception('Unexpected OB phase.');
+        }
+        if (!($output = trim((string) $buffer))) {
+            return false; // Empty buffer.
+            //
         } elseif (!isset($GLOBALS[GLOBAL_NS.'_shutdown_flag'])) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_EARLY_BUFFER_TERMINATION);
+            //
         } elseif (defined('COMET_CACHE_ALLOWED') && !COMET_CACHE_ALLOWED) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_CONSTANT);
+            //
         } elseif (isset($_SERVER['COMET_CACHE_ALLOWED']) && !$_SERVER['COMET_CACHE_ALLOWED']) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_COMET_CACHE_ALLOWED_SERVER_VAR);
+            //
         } elseif (defined('DONOTCACHEPAGE')) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_CONSTANT);
+            //
         } elseif (isset($_SERVER['DONOTCACHEPAGE'])) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_DONOTCACHEPAGE_SERVER_VAR);
+            //
+        } elseif ($this->is_maintenance) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_MAINTENANCE_PLUGIN);
+            //
         } elseif (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_XMLRPC_REQUEST_CONSTANT);
+            //
         } elseif (defined('REST_REQUEST') && REST_REQUEST) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_REST_REQUEST_CONSTANT);
+            //
         } elseif ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->is_user_logged_in) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LOGGED_IN_USER);
+            //
         } elseif ((!IS_PRO || !COMET_CACHE_WHEN_LOGGED_IN) && $this->isLikeUserLoggedIn()) {
             return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_IS_LIKE_LOGGED_IN_USER);
+            //
+        } elseif ($this->is_404 && !COMET_CACHE_CACHE_404_REQUESTS) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_404_REQUEST);
+            //
+        } elseif (mb_stripos($output, '<body id="error-page">') !== false) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
+            //
+        } elseif (!$this->hasACacheableContentType()) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_CONTENT_TYPE);
+            //
+        } elseif (!$this->hasACacheableStatus()) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_STATUS);
+            //
+        } elseif ($this->functionIsPossible('zlib_get_coding_type') && zlib_get_coding_type() && (!($zlib_oc = ini_get('zlib.output_compression')) || !filter_var($zlib_oc, FILTER_VALIDATE_BOOLEAN))) {
+            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_OB_ZLIB_CODING_TYPE);
         }
         if (!COMET_CACHE_CACHE_NONCE_VALUES && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $output)) {
             if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN && $this->isLikeUserLoggedIn()) {
@@ -338,21 +356,6 @@ trait ObUtils
             } else { // Use the default debug notice for nonce conflicts.
                 return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_PAGE_CONTAINS_NONCE);
             } // An nonce makes the page dynamic; i.e., NOT cache compatible.
-        }
-        if ($this->is_404 && !COMET_CACHE_CACHE_404_REQUESTS) {
-            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_404_REQUEST);
-        } elseif (mb_stripos($output, '<body id="error-page">') !== false) {
-            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_WP_ERROR_PAGE);
-        } elseif (!$this->hasACacheableContentType()) {
-            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_CONTENT_TYPE);
-        } elseif (!$this->hasACacheableStatus()) {
-            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_UNCACHEABLE_STATUS);
-        } elseif ($this->is_maintenance) {
-            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_MAINTENANCE_PLUGIN);
-        } elseif ($this->functionIsPossible('zlib_get_coding_type') && zlib_get_coding_type()
-            && (!($zlib_oc = ini_get('zlib.output_compression')) || !filter_var($zlib_oc, FILTER_VALIDATE_BOOLEAN))
-        ) {
-            return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_OB_ZLIB_CODING_TYPE);
         }
     }
 }
