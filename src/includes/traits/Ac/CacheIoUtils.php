@@ -10,7 +10,7 @@ trait CacheIoUtils
      *
      * @since 17xxxx IO utils.
      *
-     * @return array `['headers' => [], 'output' => '']`
+     * @return array `['headers' => [], 'output' => '', 'via' => '']`
      */
     public function cacheRead()
     {
@@ -26,7 +26,8 @@ trait CacheIoUtils
         if ($this->memEnabled() && ($cache = $this->memGet('cache', sha1($this->cache_file)))) {
             list($headers, $output) = explode('<!--headers-->', $cache, 2);
             $headers                = (array) unserialize($headers);
-            return compact('headers', 'output');
+            $via                    = 'memory';
+            return compact('headers', 'output', 'via');
         } /*[/pro]*/
 
         # Check the filesystem next; slightly more expensive.
@@ -35,6 +36,7 @@ trait CacheIoUtils
         if (is_file($this->cache_file) && ($this->cache_max_age_disabled || filemtime($this->cache_file) >= $this->cache_max_age)) {
             list($headers, $output) = explode('<!--headers-->', (string) file_get_contents($this->cache_file), 2);
             $headers                = (array) unserialize($headers);
+            $via                    = 'filesystem';
 
             // NOTE: There is no need to look at `$nonce_expires_early` when reading from RAM above.
             // This is because an early expiration of nonce data is already baked into the memory cache entry.
@@ -43,7 +45,7 @@ trait CacheIoUtils
             if ($nonce_expires_early) {  // Ignoring `cache_max_age_disabled` in favor of better security.
                 return [];  // This refuses to read a cache file that contains possibly expired nonce tokens.
             }
-            return compact('headers', 'output');
+            return compact('headers', 'output', 'via');
         }
         # Otherwise, failure.
 

@@ -246,7 +246,7 @@ trait ObUtils
         if (IS_PRO && COMET_CACHE_WHEN_LOGGED_IN === 'postload' && $this->isLikeUserLoggedIn()) {
             $this->postload['when_logged_in'] = true; // Enable postload check.
             //
-        } elseif (extract($this->cacheRead())) { // `['headers' => [], 'output' => '']`
+        } elseif (extract($this->cacheRead())) { // `['headers' => [], 'output' => '', 'via' => '']`
             $headers_list = $this->headersList(); // Headers enqueued already.
 
             foreach ($headers as $_header) { // Only send nonexistent headers.
@@ -260,8 +260,9 @@ trait ObUtils
 
                 $DebugNotes = new Classes\Notes();
 
-                $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
-                $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
+                $DebugNotes->add(__('Loaded From Cache', SLUG_TD), $via);
+                $DebugNotes->add(__('Loaded From Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
+                $DebugNotes->add(__('Loaded From Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
 
                 $output .= "\n\n".$DebugNotes->asHtmlComments();
             }
