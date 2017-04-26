@@ -166,7 +166,7 @@ trait CacheIoUtils
             }
         } elseif (file_put_contents($tmp, $cache) && rename($tmp, $this->cache_file)) {
             /*[pro strip-from="lite"]*/
-            if ($this->memEnabled()) { // Save time on future cache reads.
+            if ($this->memEnabled() && strlen($cache) < 524288) { // Don't store anything > .5MB in RAM.
                 $this->memSet('cache', sha1($this->cache_file), $cache, $time - ($nonce_expires_early ? $this->nonce_cache_max_age : $this->cache_max_age));
             } /*[/pro]*/
             $this->cacheUnlock($lock);
