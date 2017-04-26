@@ -210,7 +210,7 @@ trait PostloadUtils
 
                 $output .= "\n\n".$DebugNotes->asHtmlComments();
             }
-            exit($output); // Exit with cache contents.
+            exit($output); // Exit with output contents.
         } else {
             ob_start([$this, 'outputBufferCallbackHandler']);
         }
