@@ -109,7 +109,6 @@ trait CacheDirUtils
      *
      * @return int Total files deleted by this routine (if any).
      *
-     *
      * @TODO Optimize this for multisite networks w/ a LOT of child blogs.
      * @TODO Optimize this for extremely large sites. A LOT of files here could slow things down.
      *  This class member is currently used in wiping and purging for a network. So there is the potential for a LOT of files in a single scan.
@@ -118,6 +117,11 @@ trait CacheDirUtils
     public function deleteFilesFromCacheDir($regex, $check_max_age = false)
     {
         $counter = 0; // Initialize.
+
+        /*[pro strip-from="lite"]*/
+        if ($this->memEnabled()) {
+            $this->memClear('cache');
+        } /*[/pro]*/
 
         if (!($regex = (string) $regex)) {
             return $counter; // Nothing to do.
@@ -168,7 +172,6 @@ trait CacheDirUtils
             }
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
                 case 'link': // Symbolic links; i.e., 404 errors.
-
                     if ($check_max_age && !empty($max_age) && is_file($_resource->getLinkTarget())) {
                         if (($_lstat = lstat($_path_name)) && !empty($_lstat['mtime'])) {
                             if ($_lstat['mtime'] >= $max_age) {
@@ -185,7 +188,6 @@ trait CacheDirUtils
                     break; // Break switch handler.
 
                 case 'file': // Regular files; i.e., not symlinks.
-
                     if ($check_max_age && !empty($max_age)) {
                         if ($_resource->getMTime() >= $max_age) {
                             break; // Break switch.
@@ -200,7 +202,6 @@ trait CacheDirUtils
                     break; // Break switch handler.
 
                 case 'dir': // A regular directory; i.e., not a symlink.
-
                     if (!in_array(rtrim(str_replace(['^', '$'], '', $regex), 'ui'), ['/.*/', '/.+/'], true)) {
                         break; // Not deleting everything.
                     }
@@ -262,6 +263,11 @@ trait CacheDirUtils
         $___consider_domain_mapping_host_base_dir_tokens = null
     ) {
         $counter = 0; // Initialize.
+
+        /*[pro strip-from="lite"]*/
+        if ($this->memEnabled()) {
+            $this->memClear('cache');
+        } /*[/pro]*/
 
         if (!($regex = (string) $regex)) {
             return $counter; // Nothing to do.
@@ -350,7 +356,6 @@ trait CacheDirUtils
                 }
                 switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
                     case 'link': // Symbolic links; i.e., 404 errors.
-
                         if ($check_max_age && !empty($max_age) && is_file($_resource->getLinkTarget())) {
                             if (($_lstat = lstat($_path_name)) && !empty($_lstat['mtime'])) {
                                 if ($_lstat['mtime'] >= $max_age) {
@@ -367,7 +372,6 @@ trait CacheDirUtils
                         break; // Break switch handler.
 
                     case 'file': // Regular files; i.e., not symlinks.
-
                         if ($check_max_age && !empty($max_age)) {
                             if ($_resource->getMTime() >= $max_age) {
                                 break; // Break switch handler.
@@ -382,7 +386,6 @@ trait CacheDirUtils
                         break; // Break switch handler.
 
                     case 'dir': // A regular directory; i.e., not a symlink.
-
                         if (!in_array(rtrim(str_replace(['^', '$'], '', $regex), 'ui'), ['/.*/', '/.+/'], true)) {
                             break; // Not deleting everything.
                         }
@@ -466,6 +469,11 @@ trait CacheDirUtils
     {
         $counter = 0; // Initialize.
 
+        /*[pro strip-from="lite"]*/
+        if ($this->memEnabled()) {
+            $this->memClear('cache');
+        } /*[/pro]*/
+
         if (!($dir = trim((string) $dir)) || !is_dir($dir)) {
             return $counter; // Nothing to do.
         }
@@ -496,7 +504,6 @@ trait CacheDirUtils
 
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
                 case 'link': // Symbolic links; i.e., 404 errors.
-
                     if (!unlink($_path_name)) {
                         $this->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                         throw new \Exception(sprintf(__('Unable to delete symlink: `%1$s`.', SLUG_TD), $_path_name));
@@ -506,7 +513,6 @@ trait CacheDirUtils
                     break; // Break switch handler.
 
                 case 'file': // Regular files; i.e., not symlinks.
-
                     if (!unlink($_path_name)) {
                         $this->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                         throw new \Exception(sprintf(__('Unable to delete file: `%1$s`.', SLUG_TD), $_path_name));
@@ -516,7 +522,6 @@ trait CacheDirUtils
                     break; // Break switch handler.
 
                 case 'dir': // A regular directory; i.e., not a symlink.
-
                     if (!rmdir($_path_name)) {
                         $this->tryErasingAllFilesDirsIn($dir_temp, true); // Cleanup if possible.
                         throw new \Exception(sprintf(__('Unable to delete dir: `%1$s`.', SLUG_TD), $_path_name));
@@ -572,6 +577,11 @@ trait CacheDirUtils
     {
         $counter = 0; // Initialize.
 
+        /*[pro strip-from="lite"]*/
+        if ($this->memEnabled()) {
+            $this->memClear('cache');
+        } /*[/pro]*/
+
         if (!($dir = trim((string) $dir)) || !is_dir($dir)) {
             return $counter; // Nothing to do.
         }
@@ -594,7 +604,6 @@ trait CacheDirUtils
 
             switch ($_resource_type) {// Based on type; i.e., `link`, `file`, `dir`.
                 case 'link': // Symbolic links; i.e., 404 errors.
-
                     if (!unlink($_path_name)) {
                         throw new \Exception(sprintf(__('Unable to erase symlink: `%1$s`.', SLUG_TD), $_path_name));
                     }
@@ -603,7 +612,6 @@ trait CacheDirUtils
                     break; // Break switch handler.
 
                 case 'file': // Regular files; i.e., not symlinks.
-
                     if (!unlink($_path_name)) {
                         throw new \Exception(sprintf(__('Unable to erase file: `%1$s`.', SLUG_TD), $_path_name));
                     }
@@ -612,7 +620,6 @@ trait CacheDirUtils
                     break; // Break switch handler.
 
                 case 'dir': // A regular directory; i.e., not a symlink.
-
                     if (!rmdir($_path_name)) {
                         throw new \Exception(sprintf(__('Unable to erase dir: `%1$s`.', SLUG_TD), $_path_name));
                     }
