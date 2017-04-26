@@ -94,5 +94,26 @@ trait MemoryUtils
         }
         return false; // Not possible.
     }
+
+    /**
+     * Clear the cache.
+     *
+     * @since 17xxxx Memory utils.
+     *
+     * @param string          $primary_key Primary key.
+     * @param string|int|null $sub_key     Sub-key (optional).
+     * @param int             $delay       Delay (in seconds).
+     *
+     * @return bool True on success.
+     */
+    public function memClear($primary_key, $sub_key = null, $delay = 0)
+    {
+        $instance = $this->memInstance();
+
+        if ($instance instanceof Classes\Memcached && $instance->enabled()) {
+            return $instance->clear($primary_key, $sub_key, $delay);
+        }
+        return false; // Not possible.
+    }
 }
 /*[/pro]*/
