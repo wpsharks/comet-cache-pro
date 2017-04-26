@@ -25,7 +25,7 @@ trait CacheIoUtils
         /*[pro strip-from="lite"]*/
         if ($this->memEnabled() && ($cache = $this->memGet('cache', md5($this->cache_file)))) {
             list($headers, $output) = explode('<!--headers-->', $cache, 2);
-            $headers                = unserialize($headers);
+            $headers                = (array) unserialize($headers);
             return compact('headers', 'output');
         } /*[/pro]*/
 
@@ -34,7 +34,7 @@ trait CacheIoUtils
 
         if (is_file($this->cache_file) && ($this->cache_max_age_disabled || filemtime($this->cache_file) >= $this->cache_max_age)) {
             list($headers, $output) = explode('<!--headers-->', (string) file_get_contents($this->cache_file), 2);
-            $headers                = unserialize($headers);
+            $headers                = (array) unserialize($headers);
             return compact('headers', 'output');
         }
         # Otherwise, failure.
