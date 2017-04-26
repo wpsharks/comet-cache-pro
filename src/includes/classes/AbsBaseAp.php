@@ -24,6 +24,7 @@ abstract class AbsBaseAp extends AbsBase
     use Traits\Shared\HttpUtils;
     use Traits\Shared\I18nUtils;
     use Traits\Shared\IpAddrUtils;
+    use Traits\Shared\MemoryUtils;
     use Traits\Shared\PatternUtils;
     use Traits\Shared\ReplaceUtils;
     use Traits\Shared\ServerUtils;

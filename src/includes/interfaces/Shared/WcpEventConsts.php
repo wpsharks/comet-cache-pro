@@ -6,7 +6,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -15,7 +15,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -24,7 +24,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -33,7 +33,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -42,7 +42,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -51,7 +51,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -60,7 +60,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -69,7 +69,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -78,7 +78,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -87,7 +87,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -96,7 +96,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -105,7 +105,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -114,7 +114,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -123,7 +123,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -132,7 +132,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -141,7 +141,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -150,7 +150,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -159,7 +159,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -168,7 +168,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -177,7 +177,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -186,7 +186,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -195,7 +195,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -204,7 +204,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -213,7 +213,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -222,7 +222,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -231,7 +231,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
@@ -240,7 +240,7 @@ interface WcpEventConsts
     /**
      * WCP event/reason constant.
      *
-     * @since 17xxxx First documented version.
+     * @since 17xxxx WCP event constants.
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
