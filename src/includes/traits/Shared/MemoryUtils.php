@@ -14,7 +14,7 @@ trait MemoryUtils
      *
      * @type Memcached
      */
-    protected $memcached;
+    protected static $memcached;
 
     /**
      * Memcached instance.
@@ -25,19 +25,19 @@ trait MemoryUtils
      */
     protected function memInstance()
     {
-        if (isset($this->memcached)) {
-            return $this->memcached;
+        if (isset(static::$memcached)) {
+            return static::$memcached;
         }
         if ($this->isAdvancedCache()) {
             if (COMET_CACHE_MEMCACHED_ENABLE) {
-                $this->memcached = new Classes\Memcached(COMET_CACHE_MEMCACHED_SERVERS);
+                static::$memcached = new Classes\Memcached(COMET_CACHE_MEMCACHED_SERVERS);
             }
         } elseif ($this->isPlugin()) {
             if ($this->options['memcached_enable']) {
-                $this->memcached = new Classes\Memcached($this->options['memcached_servers']);
+                static::$memcached = new Classes\Memcached($this->options['memcached_servers']);
             }
         }
-        return $this->memcached = isset($this->memcached) ? $this->memcached : false;
+        return static::$memcached = isset(static::$memcached) ? static::$memcached : false;
     }
 
     /**
