@@ -19,22 +19,30 @@ trait CacheIoUtils
         if (!$this->cache_file) {
             return []; // Not possible.
         }
-        # Checks memory first, if applicable.
+        # Check memory first, if applicable.
         # This avoids repeated disk reads in favor of RAM.
 
         /*[pro strip-from="lite"]*/
-        if ($this->memEnabled() && ($cache = $this->memGet('cache', md5($this->cache_file)))) {
+        if ($this->memEnabled() && ($cache = $this->memGet('cache', sha1($this->cache_file)))) {
             list($headers, $output) = explode('<!--headers-->', $cache, 2);
             $headers                = (array) unserialize($headers);
             return compact('headers', 'output');
         } /*[/pro]*/
 
-        # Checks the filesystem next; slightly more expensive.
-        # This requires repeated disk reads. On a busy site that can add up.
+        # Check the filesystem next; slightly more expensive.
+        # This requires repeated disk reads; on a busy site it can add up.
 
         if (is_file($this->cache_file) && ($this->cache_max_age_disabled || filemtime($this->cache_file) >= $this->cache_max_age)) {
             list($headers, $output) = explode('<!--headers-->', (string) file_get_contents($this->cache_file), 2);
             $headers                = (array) unserialize($headers);
+
+            // NOTE: There is no need to look at `$nonce_expires_early` when reading from RAM above.
+            // This is because an early expiration of nonce data is already baked into the memory cache entry.
+            $nonce_expires_early = !COMET_CACHE_CACHE_NONCE_VALUES && filemtime($this->cache_file) < $this->nonce_cache_max_age && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $output);
+
+            if ($nonce_expires_early) {  // Ignoring `cache_max_age_disabled` in favor of better security.
+                return [];  // This refuses to read a cache file that contains possibly expired nonce tokens.
+            }
             return compact('headers', 'output');
         }
         # Otherwise, failure.
@@ -159,7 +167,7 @@ trait CacheIoUtils
         } elseif (file_put_contents($tmp, $cache) && rename($tmp, $this->cache_file)) {
             /*[pro strip-from="lite"]*/
             if ($this->memEnabled()) { // Save time on future cache reads.
-                $this->memSet('cache', md5($this->cache_file), $cache, $time - ($nonce_expires_early ? $this->nonce_cache_max_age : $this->cache_max_age));
+                $this->memSet('cache', sha1($this->cache_file), $cache, $time - ($nonce_expires_early ? $this->nonce_cache_max_age : $this->cache_max_age));
             } /*[/pro]*/
             $this->cacheUnlock($lock);
             return $output;
