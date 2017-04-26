@@ -357,5 +357,6 @@ trait ObUtils
                 return (bool) $this->maybeSetDebugInfo($this::NC_DEBUG_PAGE_CONTAINS_NONCE);
             } // An nonce makes the page dynamic; i.e., NOT cache compatible.
         }
+        return $this->cacheWrite($output);
     }
 }
