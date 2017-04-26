@@ -191,32 +191,26 @@ trait PostloadUtils
         $this->cache_path = $this->buildCachePath($this->protocol.$this->host_token.$_SERVER['REQUEST_URI'], $this->user_token, $this->version_salt);
         $this->cache_file = COMET_CACHE_DIR.'/'.$this->cache_path; // Now considering a user token.
 
-        if (is_file($this->cache_file) && ($this->cache_max_age_disabled || filemtime($this->cache_file) >= $this->cache_max_age)) {
-            list($headers, $cache) = explode('<!--headers-->', file_get_contents($this->cache_file), 2);
+        if (extract($this->cacheRead())) { // `['headers' => [], 'output' => '']`
+            $headers_list = $this->headersList(); // Headers enqueued already.
 
-            if (filemtime($this->cache_file) < $this->nonce_cache_max_age && preg_match('/\b(?:_wpnonce|akismet_comment_nonce)\b/u', $cache)) {
-                ob_start([$this, 'outputBufferCallbackHandler']); // This ignores `cache_max_age_disabled` in favor of better security.
-            } else {
-                $headers_list = $this->headersList(); // Headers that are enqueued already.
-
-                foreach (unserialize($headers) as $_header) {
-                    if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'last-modified:') !== 0) {
-                        header($_header); // Only cacheable/safe headers are stored in the cache.
-                    }
-                } // unset($_header); // Just a little housekeeping.
-
-                if (COMET_CACHE_DEBUGGING_ENABLE && $this->isHtmlXmlDoc($cache)) {
-                    $total_time = number_format(microtime(true) - $this->timer, 5, '.', '');
-
-                    $DebugNotes = new Classes\Notes();
-
-                    $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
-                    $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
-
-                    $cache .= "\n\n".$DebugNotes->asHtmlComments();
+            foreach ($headers as $_header) {// Only send nonexistent headers.
+                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'last-modified:') !== 0) {
+                    header($_header); // Only cacheable/safe headers are stored in the cache.
                 }
-                exit($cache); // Exit with cache contents.
+            } // unset($_header); // Just a little housekeeping.
+
+            if (COMET_CACHE_DEBUGGING_ENABLE && $this->isHtmlXmlDoc($output)) {
+                $total_time = number_format(microtime(true) - $this->timer, 5, '.', '');
+
+                $DebugNotes = new Classes\Notes();
+
+                $DebugNotes->add(__('Loaded via Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
+                $DebugNotes->add(__('Loaded via Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
+
+                $output .= "\n\n".$DebugNotes->asHtmlComments();
             }
+            exit($output); // Exit with cache contents.
         } else {
             ob_start([$this, 'outputBufferCallbackHandler']);
         }

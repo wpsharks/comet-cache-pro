@@ -250,7 +250,7 @@ trait ObUtils
             $headers_list = $this->headersList(); // Headers enqueued already.
 
             foreach ($headers as $_header) { // Only send nonexistent headers.
-                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'Last-Modified:') !== 0) {
+                if (!in_array($_header, $headers_list, true) && mb_stripos($_header, 'last-modified:') !== 0) {
                     header($_header); // Only cacheable/safe headers are stored in the cache.
                 }
             } // unset($_header); // Just a little housekeeping.

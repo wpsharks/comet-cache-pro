@@ -65,9 +65,7 @@ trait CacheIoUtils
     {
         # Validation.
 
-        $output = (string) $output;
-
-        if (!isset($output[0])) {
+        if (!($output = (string) $output)) {
             return false; // Not possible.
         } elseif (!$this->cache_file) {
             return false; // Not possible.
