@@ -3,6 +3,8 @@
 /*[pro strip-from="lite"]*/
 namespace WebSharks\CometCache\Pro\Classes;
 
+use Ramsey\Uuid\Uuid as UuidGen;
+
 /**
  * Memcached.
  *
@@ -290,14 +292,15 @@ class Memcached extends AbsBase
 
         do { // Avoid race issues.
             $attempts = isset($attempts) ? $attempts : 0;
-            ++$attempts; // Counter.
+            ++$attempts; // Increment counter.
 
             if (($existing_namespaced_primary_key_uuid = (string) $this->Pool->get($namespaced_primary_key))) {
                 $namespaced_primary_key_uuid = $existing_namespaced_primary_key_uuid;
                 break; // All good; stop here.
             }
             if (!isset($new_namespaced_primary_key_uuid)) {
-                $new_namespaced_primary_key_uuid = $this->c::uuidV4();
+                $new_namespaced_primary_key_uuid = UuidGen::uuid4()->toString();
+                $new_namespaced_primary_key_uuid = str_replace('-', '', $new_namespaced_primary_key_uuid);
             }
             if ($this->Pool->add($namespaced_primary_key, $new_namespaced_primary_key_uuid)) {
                 $namespaced_primary_key_uuid = $new_namespaced_primary_key_uuid;

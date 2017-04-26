@@ -21,7 +21,7 @@ trait MemoryUtils
      *
      * @since 17xxxx Memory utils.
      *
-     * @return Memcached|false
+     * @return Classes\Memcached|false
      */
     protected function memInstance()
     {
@@ -30,11 +30,11 @@ trait MemoryUtils
         }
         if ($this->isAdvancedCache()) {
             if (COMET_CACHE_MEMCACHED_ENABLE) {
-                $this->memcached = new Memcached(COMET_CACHE_MEMCACHED_SERVERS);
+                $this->memcached = new Classes\Memcached(COMET_CACHE_MEMCACHED_SERVERS);
             }
         } elseif ($this->isPlugin()) {
             if ($this->options['memcached_enable']) {
-                $this->memcached = new Memcached($this->options['memcached_servers']);
+                $this->memcached = new Classes\Memcached($this->options['memcached_servers']);
             }
         }
         return $this->memcached = isset($this->memcached) ? $this->memcached : false;
@@ -49,7 +49,8 @@ trait MemoryUtils
      */
     public function memEnabled()
     {
-        return (bool) $this->memInstance();
+        $instance       = $this->memInstance();
+        return $enabled = $instance instanceof Classes\Memcached && $instance->enabled();
     }
 
     /**
@@ -66,7 +67,7 @@ trait MemoryUtils
     {
         $instance = $this->memInstance();
 
-        if ($instance instanceof Memcached && $instance->enabled) {
+        if ($instance instanceof Classes\Memcached && $instance->enabled()) {
             return $instance->get($primary_key, $sub_key);
         }
         return null; // Not possible.
@@ -88,7 +89,7 @@ trait MemoryUtils
     {
         $instance = $this->memInstance();
 
-        if ($instance instanceof Memcached && $instance->enabled) {
+        if ($instance instanceof Classes\Memcached && $instance->enabled()) {
             return $instance->set($primary_key, $sub_key, $value, $expires_in);
         }
         return false; // Not possible.
