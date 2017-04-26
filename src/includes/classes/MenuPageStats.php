@@ -8,7 +8,7 @@ namespace WebSharks\CometCache\Pro\Classes;
  *
  * @since 151002 Directory stats.
  */
-class MenuPageStats extends MenuPage
+class MenuPageStats extends AbsBase
 {
     /**
      * Constructor.
@@ -100,13 +100,12 @@ class MenuPageStats extends MenuPage
         echo '              </div>'."\n";
 
         if ($this->plugin->functionIsPossible('disk_total_space') && $this->plugin->functionIsPossible('disk_free_space')) {
-            echo '              <div class="-disk">' . "\n";
-            echo '                  <div class="-heading">' . __('Current Disk Health', SLUG_TD) . '</div>' . "\n";
-            echo '                  <div class="-size"><span class="-value">&nbsp;</span> ' . __('total capacity', SLUG_TD)  . '</div>' . "\n";
-            echo '                  <div class="-free"><span class="-value">&nbsp;</span> ' . __('available', SLUG_TD) . '</div>' . "\n";
-            echo '              </div>' . "\n";
+            echo '              <div class="-disk">'."\n";
+            echo '                  <div class="-heading">'.__('Current Disk Health', SLUG_TD).'</div>'."\n";
+            echo '                  <div class="-size"><span class="-value">&nbsp;</span> '.__('total capacity', SLUG_TD).'</div>'."\n";
+            echo '                  <div class="-free"><span class="-value">&nbsp;</span> '.__('available', SLUG_TD).'</div>'."\n";
+            echo '              </div>'."\n";
         }
-
         echo '              <div class="-system">'."\n";
         echo '                  <div class="-heading">'.__('Current System Health', SLUG_TD).'</div>'."\n";
         echo '                  <div class="-memory-usage">'.__('Memory Usage:', SLUG_TD).' <span class="-value">&nbsp;</span></div>'."\n";
