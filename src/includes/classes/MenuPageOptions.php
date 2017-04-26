@@ -50,6 +50,7 @@ class MenuPageOptions extends AbsBase
 
         new MenuPage\Options\Statistics();
         new MenuPage\Options\Directory();
+        new MenuPage\Options\Memcached();
         new MenuPage\Options\Expiration();
 
         new MenuPage\Options\ClientSide();

@@ -21,12 +21,12 @@ class MenuPage extends AbsBase
 
         switch ($menu_page) {
             case 'options':
-                new Classes\MenuPageOptions();
+                new MenuPageOptions();
                 break;
 
             /*[pro strip-from="lite"]*/
             case 'stats':
-                new Classes\MenuPageStats();
+                new MenuPageStats();
                 break;
             /*[/pro]*/
         }

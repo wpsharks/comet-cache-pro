@@ -80,7 +80,7 @@ class Memcached extends AbsBase
         $servers = preg_split('/['."\r\n".']+/u', $servers, -1, PREG_SPLIT_NO_EMPTY);
 
         foreach ($servers as $_server) {
-            $_server                          = preg_split('/[\s,]+/u', $_server);
+            $_server                          = preg_split('/[:\s]+/u', $_server);
             $_host                            = !empty($_server[0]) ? $_server[0] : '127.0.0.1';
             $_port                            = (int) (!empty($_server[1]) ? $_server[1] : 11211);
             $_weight                          = (int) (!empty($_server[2]) ? $_server[2] : 0);

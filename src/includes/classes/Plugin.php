@@ -488,7 +488,7 @@ class Plugin extends AbsBaseAp
             /* Related to Memcached. */
 
             'memcached_enable'  => '0', // `0|1`; enable Memcached?
-            'memcached_servers' => '', // Line-delimited list of servers; e.g., [host] [port] [priority]
+            'memcached_servers' => '', // Line-delimited list of servers; e.g., [host]:[port]:[priority]
             // If empty, this defaults to localhost running on port `11211` w/ no special priority.
 
             /* Related to statistics/charts. */
