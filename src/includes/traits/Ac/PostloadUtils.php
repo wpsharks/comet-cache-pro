@@ -205,7 +205,7 @@ trait PostloadUtils
 
                 $DebugNotes = new Classes\Notes();
 
-                $DebugNotes->add(__('Loaded From Cache', SLUG_TD), $via);
+                $DebugNotes->add(__('Loaded From Cache', SLUG_TD), 'via '.$via);
                 $DebugNotes->add(__('Loaded From Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
                 $DebugNotes->add(__('Loaded From Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
 
@@ -229,7 +229,6 @@ trait PostloadUtils
         if (empty($this->postload['filter_status_header'])) {
             return; // Nothing to do in this case.
         }
-
         add_filter(
             'status_header',
             function ($status_header, $status_code) {

@@ -260,7 +260,7 @@ trait ObUtils
 
                 $DebugNotes = new Classes\Notes();
 
-                $DebugNotes->add(__('Loaded From Cache', SLUG_TD), $via);
+                $DebugNotes->add(__('Loaded From Cache', SLUG_TD), 'via '.$via);
                 $DebugNotes->add(__('Loaded From Cache On', SLUG_TD), date('M jS, Y @ g:i a T'));
                 $DebugNotes->add(__('Loaded From Cache In', SLUG_TD), sprintf(__('%1$s seconds', SLUG_TD), $total_time));
 

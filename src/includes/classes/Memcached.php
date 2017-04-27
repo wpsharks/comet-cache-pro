@@ -98,17 +98,6 @@ class Memcached extends AbsBase
             // This also covers a scenario where the extension is loaded in PHP,
             // but the `memcached` binary is not actually available on the server.
             $this->Pool = new \Memcached($this->namespace);
-
-            $this->Pool->setOption(\Memcached::OPT_NO_BLOCK, true);
-            $this->Pool->setOption(\Memcached::OPT_SEND_TIMEOUT, 5);
-            $this->Pool->setOption(\Memcached::OPT_RECV_TIMEOUT, 5);
-
-            $this->Pool->setOption(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
-
-            if (\Memcached::HAVE_IGBINARY) { // Size and speed gains.
-                $this->Pool->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
-                $this->Pool->setOption(\Memcached::OPT_SERIALIZER, \Memcached::SERIALIZER_IGBINARY);
-            }
             $this->maybeAddServerConnections();
             //
         } catch (\Exception $Exception) {
@@ -395,112 +384,23 @@ class Memcached extends AbsBase
         if ($this->serversDiffer()) {
             $this->Pool->quit();
             $this->Pool->resetServerList();
+
+            $this->Pool->setOption(\Memcached::OPT_NO_BLOCK, true);
+            $this->Pool->setOption(\Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
+
+            if (\Memcached::HAVE_IGBINARY) { // Size and speed gains.
+                $this->Pool->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
+                $this->Pool->setOption(\Memcached::OPT_SERIALIZER, \Memcached::SERIALIZER_IGBINARY);
+            }
+            $this->Pool->setOption(\Memcached::OPT_CONNECT_TIMEOUT, 1000);
+            $this->Pool->setOption(\Memcached::OPT_POLL_TIMEOUT, 1000);
+            $this->Pool->setOption(\Memcached::OPT_RETRY_TIMEOUT, 1);
+
+            $this->Pool->setOption(\Memcached::OPT_SEND_TIMEOUT, 1000000);
+            $this->Pool->setOption(\Memcached::OPT_RECV_TIMEOUT, 1000000);
+
             $this->Pool->addServers($this->servers);
         }
     }
-
-    /*
-    Memcached class constants in PHP v7.0.
-
-    'LIBMEMCACHED_VERSION_HEX'             => 16777240
-    'OPT_COMPRESSION'                      => -1001
-    'OPT_COMPRESSION_TYPE'                 => -1004
-    'OPT_PREFIX_KEY'                       => -1002
-    'OPT_SERIALIZER'                       => -1003
-    'OPT_STORE_RETRY_COUNT'                => -1005
-    'HAVE_IGBINARY'                        => 0
-    'HAVE_JSON'                            => 0
-    'HAVE_MSGPACK'                         => 0
-    'HAVE_SESSION'                         => 1
-    'HAVE_SASL'                            => 1
-    'OPT_HASH'                             => 2
-    'HASH_DEFAULT'                         => 0
-    'HASH_MD5'                             => 1
-    'HASH_CRC'                             => 2
-    'HASH_FNV1_64'                         => 3
-    'HASH_FNV1A_64'                        => 4
-    'HASH_FNV1_32'                         => 5
-    'HASH_FNV1A_32'                        => 6
-    'HASH_HSIEH'                           => 7
-    'HASH_MURMUR'                          => 8
-    'OPT_DISTRIBUTION'                     => 9
-    'DISTRIBUTION_MODULA'                  => 0
-    'DISTRIBUTION_CONSISTENT'              => 1
-    'DISTRIBUTION_VIRTUAL_BUCKET'          => 6
-    'OPT_LIBKETAMA_COMPATIBLE'             => 16
-    'OPT_LIBKETAMA_HASH'                   => 17
-    'OPT_TCP_KEEPALIVE'                    => 32
-    'OPT_BUFFER_WRITES'                    => 10
-    'OPT_BINARY_PROTOCOL'                  => 18
-    'OPT_NO_BLOCK'                         => 0
-    'OPT_TCP_NODELAY'                      => 1
-    'OPT_SOCKET_SEND_SIZE'                 => 4
-    'OPT_SOCKET_RECV_SIZE'                 => 5
-    'OPT_CONNECT_TIMEOUT'                  => 14
-    'OPT_RETRY_TIMEOUT'                    => 15
-    'OPT_DEAD_TIMEOUT'                     => 36
-    'OPT_SEND_TIMEOUT'                     => 19
-    'OPT_RECV_TIMEOUT'                     => 20
-    'OPT_POLL_TIMEOUT'                     => 8
-    'OPT_CACHE_LOOKUPS'                    => 6
-    'OPT_SERVER_FAILURE_LIMIT'             => 21
-    'OPT_AUTO_EJECT_HOSTS'                 => 28
-    'OPT_HASH_WITH_PREFIX_KEY'             => 25
-    'OPT_NOREPLY'                          => 26
-    'OPT_SORT_HOSTS'                       => 12
-    'OPT_VERIFY_KEY'                       => 13
-    'OPT_USE_UDP'                          => 27
-    'OPT_NUMBER_OF_REPLICAS'               => 29
-    'OPT_RANDOMIZE_REPLICA_READ'           => 30
-    'OPT_REMOVE_FAILED_SERVERS'            => 35
-    'OPT_SERVER_TIMEOUT_LIMIT'             => 37
-    'RES_SUCCESS'                          => 0
-    'RES_FAILURE'                          => 1
-    'RES_HOST_LOOKUP_FAILURE'              => 2
-    'RES_UNKNOWN_READ_FAILURE'             => 7
-    'RES_PROTOCOL_ERROR'                   => 8
-    'RES_CLIENT_ERROR'                     => 9
-    'RES_SERVER_ERROR'                     => 10
-    'RES_WRITE_FAILURE'                    => 5
-    'RES_DATA_EXISTS'                      => 12
-    'RES_NOTSTORED'                        => 14
-    'RES_NOTFOUND'                         => 16
-    'RES_PARTIAL_READ'                     => 18
-    'RES_SOME_ERRORS'                      => 19
-    'RES_NO_SERVERS'                       => 20
-    'RES_END'                              => 21
-    'RES_ERRNO'                            => 26
-    'RES_BUFFERED'                         => 32
-    'RES_TIMEOUT'                          => 31
-    'RES_BAD_KEY_PROVIDED'                 => 33
-    'RES_STORED'                           => 15
-    'RES_DELETED'                          => 22
-    'RES_STAT'                             => 24
-    'RES_ITEM'                             => 25
-    'RES_NOT_SUPPORTED'                    => 28
-    'RES_FETCH_NOTFINISHED'                => 30
-    'RES_SERVER_MARKED_DEAD'               => 35
-    'RES_UNKNOWN_STAT_KEY'                 => 36
-    'RES_INVALID_HOST_PROTOCOL'            => 34
-    'RES_MEMORY_ALLOCATION_FAILURE'        => 17
-    'RES_CONNECTION_SOCKET_CREATE_FAILURE' => 11
-    'RES_E2BIG'                            => 37
-    'RES_KEY_TOO_BIG'                      => 39
-    'RES_SERVER_TEMPORARILY_DISABLED'      => 47
-    'RES_SERVER_MEMORY_ALLOCATION_FAILURE' => 48
-    'RES_AUTH_PROBLEM'                     => 40
-    'RES_AUTH_FAILURE'                     => 41
-    'RES_AUTH_CONTINUE'                    => 42
-    'RES_PAYLOAD_FAILURE'                  => -1001
-    'SERIALIZER_PHP'                       => 1
-    'SERIALIZER_IGBINARY'                  => 2
-    'SERIALIZER_JSON'                      => 3
-    'SERIALIZER_JSON_ARRAY'                => 4
-    'SERIALIZER_MSGPACK'                   => 5
-    'COMPRESSION_FASTLZ'                   => 2
-    'COMPRESSION_ZLIB'                     => 1
-    'GET_PRESERVE_ORDER'                   => 1
-    'GET_ERROR_RETURN_VALUE'               => false
-    */
 }
 /*[/pro]*/

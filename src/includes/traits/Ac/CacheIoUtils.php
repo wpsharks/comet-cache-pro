@@ -26,7 +26,7 @@ trait CacheIoUtils
         if ($this->memEnabled() && ($cache = $this->memGet('cache', sha1($this->cache_file)))) {
             list($headers, $output) = explode('<!--headers-->', $cache, 2);
             $headers                = (array) unserialize($headers);
-            $via                    = 'via-memory';
+            $via                    = 'memory';
             return compact('headers', 'output', 'via');
         } /*[/pro]*/
 
@@ -36,7 +36,7 @@ trait CacheIoUtils
         if (is_file($this->cache_file) && ($this->cache_max_age_disabled || filemtime($this->cache_file) >= $this->cache_max_age)) {
             list($headers, $output) = explode('<!--headers-->', (string) file_get_contents($this->cache_file), 2);
             $headers                = (array) unserialize($headers);
-            $via                    = 'via-filesystem';
+            $via                    = 'filesystem';
 
             // NOTE: There is no need to look at `$nonce_expires_early` when reading from RAM above.
             // This is because an early expiration of nonce data is already baked into the memory cache entry.
