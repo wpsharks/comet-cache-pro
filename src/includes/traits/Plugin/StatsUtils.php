@@ -25,25 +25,17 @@ trait StatsUtils
         }
         $this->updateOptions(['last_pro_stats_log' => time()]);
 
-        $wpdb               = $this->wpdb(); // WordPress DB.
-        $stats_api_url      = 'https://stats.wpsharks.io/log';
+        $stats_api_endpoint = 'https://stats.wpsharks.io/log';
         $stats_api_url_args = [ // See: <https://cometcache.com/?p=2426>
-                                'os'              => PHP_OS,
-                                'php_version'     => PHP_VERSION,
-                                'mysql_version'   => $wpdb->db_version(),
-                                'wp_version'      => get_bloginfo('version'),
-                                'product_version' => VERSION, // Plugin version.
-                                'product'         => SLUG_TD.(IS_PRO ? '-pro' : ''),
+            'os'              => PHP_OS,
+            'php_version'     => PHP_VERSION,
+            'wp_version'      => get_bloginfo('version'),
+            'mysql_version'   => $this->wpdb()->db_version(),
+            'product_version' => VERSION, // Plugin version.
+            'product'         => SLUG_TD.(IS_PRO ? '-pro' : ''),
         ];
-        $stats_api_url = add_query_arg(urlencode_deep($stats_api_url_args), $stats_api_url);
-
-        wp_remote_get(
-            $stats_api_url,
-            [
-                'blocking'  => false,
-                'sslverify' => false,
-            ]
-        );
+        $stats_api_url = add_query_arg(urlencode_deep($stats_api_url_args), $stats_api_endpoint);
+        wp_remote_get($stats_api_url, ['blocking' => false, 'sslverify' => false]);
     }
 }
 /*[/pro]*/

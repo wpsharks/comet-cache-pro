@@ -18,41 +18,31 @@ trait UpdateUtils
     public function maybeCheckLatestProVersion()
     {
         if (!$this->options['pro_update_check']) {
-            return; // Nothing to do.
-        } elseif ($this->options['last_pro_update_check'] >= strtotime('-1 hour')) {
-            if (empty($_REQUEST['force-check'])) {
-                return; // Nothing to do.
-            }
+            return; // Nothing to do; not enabled right now.
+        } elseif ($this->options['last_pro_update_check'] >= strtotime('-1 hour') && empty($_REQUEST['force-check'])) {
+            return; // Already did this recently & not forcing a new check.
         }
         $this->updateOptions(['last_pro_update_check' => time()]);
+        $pro_slug = str_replace('_', '-', GLOBAL_NS).'-pro';
 
-        $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
-        $product_api_input_vars = [
-            'product_api' => [
-                'action' => 'latest_pro_version',
-                'stable' => (string) $this->options['pro_update_check_stable'],
-            ],
-        ];
-        $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
-        $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
+        // This is the most common type of update check, which occurs quite frequently.
+        // Instead of connecting to our server all the time, we use CDN endpoints that are faster.
 
-        if (is_object($product_api_response) && !empty($product_api_response->pro_version)) {
-            $this->updateOptions(['latest_pro_version' => $product_api_response->pro_version]);
+        // The CDN has simple static text files containing version info in two different flavors:
+        // 1.) `version.txt` returns the latest stable version; i.e., stable release only (default).
+        // 2.) `version-ars.txt` returns (a)ny (r)elease (s)tate; i.e., considers beta/RC versions also.
 
-            if (version_compare($product_api_response->pro_version, VERSION, '>')) {
+        if (!$this->options['pro_update_check_stable']) {
+            $wp_remote_response = wp_remote_get('http://cdn.wpsharks.com/software/latest/'.urlencode($pro_slug).'/version-ars.txt');
+            $latest_pro_version = trim(wp_remote_retrieve_body($wp_remote_response));
+        } else {
+            $wp_remote_response = wp_remote_get('http://cdn.wpsharks.com/software/latest/'.urlencode($pro_slug).'/version.txt');
+            $latest_pro_version = trim(wp_remote_retrieve_body($wp_remote_response));
+        }
+        if ($latest_pro_version && preg_match('/^[0-9]{6}/u', $latest_pro_version)) {
+            $this->updateOptions(['latest_pro_version' => $latest_pro_version]);
+            if (version_compare($latest_pro_version, VERSION, '>')) {
                 $this->maybeCheckLatestProPackage();
-            }
-        } else { // Let's try the proxy server as a fallback.
-            $product_api_url      = 'http://proxy.websharks-inc.net/'.urlencode(SLUG_TD).'/';
-            $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars, 'timeout' => 15]);
-            $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
-
-            if (is_object($product_api_response) && !empty($product_api_response->pro_version)) {
-                $this->updateOptions(['latest_pro_version' => $product_api_response->pro_version]);
-
-                if (version_compare($product_api_response->pro_version, VERSION, '>')) {
-                    $this->maybeCheckLatestProPackage();
-                }
             }
         }
     }
@@ -65,42 +55,54 @@ trait UpdateUtils
     protected function maybeCheckLatestProPackage()
     {
         if (!$this->options['pro_update_check']) {
-            return; // Nothing to do.
+            return; // Not enabled right now.
         } elseif (!$this->options['pro_update_username']) {
-            return; // Not possible.
+            return; // Not possible; missing username.
         } elseif (!$this->options['pro_update_password']) {
-            return; // Not possible.
+            return; // Not possible; missing license key.
         }
+        $this->dismissMainNotice('pro_update_error');
         $this->updateOptions(['last_pro_update_check' => time()]);
+        $pro_slug = str_replace('_', '-', GLOBAL_NS).'-pro';
 
-        $product_api_url        = 'https://'.urlencode(DOMAIN).'/';
-        $product_api_input_vars = [
+        $product_api_endpoint          = 'https://'.urlencode(DOMAIN).'/';
+        $product_api_endpoint_fallback = 'http://update-fallback.wpsharks.io/cc-proxy';
+
+        $product_api_headers      = ['x-via-software: '.__FUNCTION__];
+        $product_api_request_vars = [
             'product_api' => [
                 'action'   => 'latest_pro_update',
-                'stable'   => (string) $this->options['pro_update_check_stable'],
                 'username' => (string) $this->options['pro_update_username'],
                 'password' => (string) $this->options['pro_update_password'],
+                'stable'   => (string) $this->options['pro_update_check_stable'],
             ],
         ];
-        $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars]);
-        $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
+        $wp_remote_response = wp_remote_post($product_api_endpoint, [
+            'timeout' => 5, // Plenty.
+            'headers' => $product_api_headers,
+            'body'    => $product_api_request_vars,
+        ]); // Attempt using the primary API endpoint first!
 
-        $this->dismissMainNotice('pro_update_error'); // Clear any previous error notice in case a previous issue has been fixed.
+        // Try fallback only when there is an error related to SSL in some way.
+        // NOTE: If the update server is simply busy, retrying via the proxy will only make the problem worse.
+        // For that reason, avoid using the fallback when the error is something other than an SSL-related issue.
+        if (is_wp_error($wp_remote_response) && preg_match('/\b(?:ssl|https|certif|verif|cipher|proto)/ui', $wp_remote_response->get_error_message())) {
+            $wp_remote_response = wp_remote_post($product_api_endpoint_fallback, [
+                'timeout' => 5, // Plenty.
+                'headers' => $product_api_headers,
+                'body'    => $product_api_request_vars,
+            ]);
+        } // Now let's go with whichever response we ended up with above.
+        $product_api_response = json_decode(wp_remote_retrieve_body($wp_remote_response));
 
-        if (!empty($product_api_response->error)) {
-            $this->enqueueMainNotice(sprintf(__('<strong>Comet Cache Pro:</strong> An error occurred while checking for updates: <code>%1$s</code><br/><br/>Please review <strong><a href="%2$s">Comet Cache Pro → Plugin Options → Update Credentials</a></strong>.', SLUG_TD), esc_attr($product_api_response->error), esc_attr(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))), ['class' => 'error', 'persistent_key' => 'pro_update_error', 'dismissable' => false]);
-            return; // Nothing more we can do.
-        }
-        if (is_object($product_api_response) && !empty($product_api_response->pro_version) && !empty($product_api_response->pro_zip)) {
+        if (!empty($product_api_response->error)) { // Error returned by our API response?
+            $this->enqueueMainNotice(
+                sprintf(__('<strong>%1$s:</strong> An error occurred while checking for updates: <code>%2$s</code><br/>', SLUG_TD), esc_html(NAME), esc_html($product_api_response->error)).
+                sprintf(__('Please review <strong><a href="%2$s">%1$s → Plugin Options → Update Credentials</a></strong>', SLUG_TD), esc_html(NAME), esc_url(add_query_arg(urlencode_deep(['page' => GLOBAL_NS]), self_admin_url('/admin.php')))),
+                ['class' => 'error', 'persistent_key' => 'pro_update_error', 'dismissable' => false]
+            ); // Inform site owner when an update error occurs.
+        } elseif (!empty($product_api_response->pro_version) && !empty($product_api_response->pro_zip)) {
             $this->updateOptions(['latest_pro_version' => $product_api_response->pro_version, 'latest_pro_package' => $product_api_response->pro_zip]);
-        } else { // Let's try the proxy server as a fallback.
-            $product_api_url      = 'http://proxy.websharks-inc.net/'.urlencode(SLUG_TD).'/';
-            $product_api_response = wp_remote_post($product_api_url, ['body' => $product_api_input_vars, 'timeout' => 15]);
-            $product_api_response = json_decode(wp_remote_retrieve_body($product_api_response));
-
-            if (is_object($product_api_response) && !empty($product_api_response->pro_version) && !empty($product_api_response->pro_zip)) {
-                $this->updateOptions(['latest_pro_version' => $product_api_response->pro_version, 'latest_pro_package' => $product_api_response->pro_zip]);
-            }
         }
     }
 
@@ -113,10 +115,13 @@ trait UpdateUtils
      */
     public function maybeShowLatestProVersionChangelog()
     {
+        $pro_slug = str_replace('_', '-', GLOBAL_NS).'-pro';
+
         if (!empty($GLOBALS['pagenow']) && $GLOBALS['pagenow'] === 'plugin-install.php'
-                && !empty($_REQUEST['plugin']) && $_REQUEST['plugin'] === SLUG_TD.'-pro'
+                && !empty($_REQUEST['plugin']) && $_REQUEST['plugin'] === $pro_slug
                 && !empty($_REQUEST['tab']) && $_REQUEST['tab'] === 'plugin-information') {
-            wp_redirect('https://'.urlencode(DOMAIN).'/changelog/?in-wp').exit();
+            wp_redirect('https://'.urlencode(DOMAIN).'/changelog/?in-wp');
+            exit(); // Stop upon redirecting.
         }
     }
 
@@ -178,7 +183,9 @@ trait UpdateUtils
      */
     public function maybeAutoUpdateInBackground($update, $item)
     {
-        if (!empty($item->slug) && $item->slug === str_replace('_', '-', GLOBAL_NS).'-pro') {
+        $pro_slug = str_replace('_', '-', GLOBAL_NS).'-pro';
+
+        if (!empty($item->slug) && $item->slug === $pro_slug) {
             return $update = true; // Auto-update.
         } else {
             return $update; // Unchanged in this case.
