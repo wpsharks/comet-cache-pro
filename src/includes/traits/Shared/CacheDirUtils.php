@@ -119,7 +119,8 @@ trait CacheDirUtils
         $counter = 0; // Initialize.
 
         /*[pro strip-from="lite"]*/
-        if ($this->memEnabled()) {
+        if (mb_stripos($regex, '.*?\.u\/') === false
+            && $this->memEnabled()) {
             $this->memClear('cache');
         } /*[/pro]*/
 
@@ -265,7 +266,9 @@ trait CacheDirUtils
         $counter = 0; // Initialize.
 
         /*[pro strip-from="lite"]*/
-        if ($this->memEnabled()) {
+        if (mb_stripos($regex, '.*?\.u\/') === false
+            && !$___considering_domain_mapping
+            && $this->memEnabled()) {
             $this->memClear('cache');
         } /*[/pro]*/
 

@@ -23,7 +23,7 @@ trait CacheIoUtils
         # This avoids repeated disk reads in favor of RAM.
 
         /*[pro strip-from="lite"]*/
-        if ($this->memEnabled() && ($cache = $this->memGet('cache', sha1($this->cache_file)))) {
+        if ((!COMET_CACHE_WHEN_LOGGED_IN || !$this->user_token) && $this->memEnabled() && ($cache = $this->memGet('cache', sha1($this->cache_file)))) {
             list($headers, $output) = explode('<!--headers-->', $cache, 2);
             $headers                = (array) unserialize($headers);
             $via                    = 'memory';
@@ -166,7 +166,7 @@ trait CacheIoUtils
             }
         } elseif (file_put_contents($tmp, $cache) && rename($tmp, $this->cache_file)) {
             /*[pro strip-from="lite"]*/
-            if ($this->memEnabled() && strlen($cache) < 524288) { // Don't store anything > .5MB in RAM.
+            if ((!COMET_CACHE_WHEN_LOGGED_IN || !$this->user_token) && $this->memEnabled() && strlen($cache) < 524288) {
                 $this->memSet('cache', sha1($this->cache_file), $cache, $time - ($nonce_expires_early ? $this->nonce_cache_max_age : $this->cache_max_age));
             } /*[/pro]*/
             $this->cacheUnlock($lock);
