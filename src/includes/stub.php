@@ -28,7 +28,7 @@ define(__NAMESPACE__.'\\VERSION', ${__FILE__}['version']);
 define(__NAMESPACE__.'\\PLUGIN_FILE', ${__FILE__}['plugin']);
 define(__NAMESPACE__.'\\IS_PRO', ${__FILE__}['is_pro']);
 
-foreach (['Classes', 'Traits\\Shared', 'Traits\\Ac', 'Traits\\Plugin', 'Interfaces\\Shared'] as ${__FILE__}['_sub_namespace']) {
+foreach (['Classes', 'Classes\\MenuPage\\Options', 'Traits\\Shared', 'Traits\\Ac', 'Traits\\Plugin', 'Interfaces\\Shared'] as ${__FILE__}['_sub_namespace']) {
     define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\SHORT_NAME', SHORT_NAME);
     define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\NAME', NAME);
     define(__NAMESPACE__.'\\'.${__FILE__}['_sub_namespace'].'\\DOMAIN', DOMAIN);
@@ -40,7 +40,7 @@ foreach (['Classes', 'Traits\\Shared', 'Traits\\Ac', 'Traits\\Plugin', 'Interfac
 }
 unset(${__FILE__}); // Housekeeping.
 
-// Fixes PHP Fatal error with upgrades from v160211
+// Fixes PHP Fatal error with upgrades from v160211.
 class_alias(__NAMESPACE__.'\\Classes\\AdvCacheBackCompat', 'WebSharks\\Comet_Cache\\AdvCacheBackCompat');
 class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\Comet_Cache\\AdvancedCache');
 /*[pro strip-from="lite"]*/
@@ -48,7 +48,7 @@ class_alias(__NAMESPACE__.'\\Classes\\AdvCacheBackCompat', 'WebSharks\\Comet_Cac
 class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\Comet_Cache\\Pro\\AdvancedCache');
 /*[/pro]*/
 
-// Fixes PHP Fatal error with upgrades from v160227
+// Fixes PHP Fatal error with upgrades from v160227.
 class_alias(__NAMESPACE__.'\\Classes\\AdvCacheBackCompat', 'WebSharks\\CometCache\\AdvCacheBackCompat');
 class_alias(__NAMESPACE__.'\\Classes\\AdvancedCache', 'WebSharks\\CometCache\\AdvancedCache');
 /*[pro strip-from="lite"]*/
