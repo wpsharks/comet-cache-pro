@@ -89,6 +89,7 @@ trait HttpUtils
             'Pragma',
             'Proxy-Authenticate',
             'Refresh',
+            'Referrer-Policy',
             'Retry-After',
             'Server',
             'Status',
