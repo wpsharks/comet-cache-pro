@@ -307,7 +307,7 @@ trait InstallUtils
                 'ac_file_version' => VERSION,  // Version when AC file was built.
             ]
         );
-        if ($this->applyWpFilters(GLOBAL_NS.'_exclude_uris_client_side_too', true)) {
+        if (apply_filters(GLOBAL_NS.'_exclude_uris_client_side_too', true)) {
             $possible_advanced_cache_constant_key_values['exclude_client_side_uris'] .= "\n".$this->options['exclude_uris'];
         }
         foreach ($possible_advanced_cache_constant_key_values as $_option => $_value) {

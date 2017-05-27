@@ -523,16 +523,16 @@ class Plugin extends AbsBaseAp
 
             'uninstall_on_deletion' => '0', // `0|1`.
         ];
-        $this->default_options = $this->applyWpFilters(GLOBAL_NS.'_default_options', $this->default_options);
+        $this->default_options = apply_filters(GLOBAL_NS.'_default_options', $this->default_options);
         $this->options         = $this->getOptions(); // Filters, validates, and returns plugin options.
 
-        $this->cap           = $this->applyWpFilters(GLOBAL_NS.'_cap', $this->cap);
-        $this->update_cap    = $this->applyWpFilters(GLOBAL_NS.'_update_cap', $this->update_cap);
-        $this->network_cap   = $this->applyWpFilters(GLOBAL_NS.'_network_cap', $this->network_cap);
-        $this->uninstall_cap = $this->applyWpFilters(GLOBAL_NS.'_uninstall_cap', $this->uninstall_cap);
+        $this->cap           = apply_filters(GLOBAL_NS.'_cap', $this->cap);
+        $this->update_cap    = apply_filters(GLOBAL_NS.'_update_cap', $this->update_cap);
+        $this->network_cap   = apply_filters(GLOBAL_NS.'_network_cap', $this->network_cap);
+        $this->uninstall_cap = apply_filters(GLOBAL_NS.'_uninstall_cap', $this->uninstall_cap);
         /*[pro strip-from="lite"]*/
-        $this->clear_min_cap = $this->applyWpFilters(GLOBAL_NS.'_clear_min_cap', $this->clear_min_cap);
-        $this->stats_min_cap = $this->applyWpFilters(GLOBAL_NS.'_stats_min_cap', $this->stats_min_cap);
+        $this->clear_min_cap = apply_filters(GLOBAL_NS.'_clear_min_cap', $this->clear_min_cap);
+        $this->stats_min_cap = apply_filters(GLOBAL_NS.'_stats_min_cap', $this->stats_min_cap);
         /*[/pro]*/
         /* -------------------------------------------------------------- */
 
@@ -641,7 +641,7 @@ class Plugin extends AbsBaseAp
         add_action('delete_user', [$this, 'autoClearAuthorPageCacheOnUserDeletion'], 10, 2);
         add_action('remove_user_from_blog', [$this, 'autoClearAuthorPageCacheOnUserDeletion'], 10, 1);
 
-        if ($this->options['enable'] && $this->applyWpFilters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
+        if ($this->options['enable'] && apply_filters(GLOBAL_NS.'_disable_akismet_comment_nonce', true)) {
             add_filter('akismet_comment_nonce', function () {
                 return 'disabled-by-'.SLUG_TD; // MUST return a string literal that is not 'true' or '' (an empty string). See <http://bit.ly/1YItpdE>
             }); // See also why the Akismet nonce should be disabled: <http://jas.xyz/1R23f5c>

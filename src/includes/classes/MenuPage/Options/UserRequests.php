@@ -40,7 +40,7 @@ class UserRequests extends Classes\AbsBase
                 echo '            <option value="1"'.selected($this->plugin->options['when_logged_in'], '1', false).'>'.__('Yes, but DON\'T maintain a separate cache for each user (I know what I\'m doing).', SLUG_TD).'</option>'."\n";
             }
             echo '         </select></p>'."\n";
-            if ($this->plugin->options['when_logged_in'] === '1' && $this->plugin->applyWpFilters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
+            if ($this->plugin->options['when_logged_in'] === '1' && apply_filters(GLOBAL_NS.'_when_logged_in_no_admin_bar', true)) {
                 echo '<p class="warning">'.sprintf(__('<strong>Warning:</strong> Whenever you enable caching for logged-in users (without a separate cache for each user), the WordPress Admin Bar <em>must</em> be disabled to prevent one user from seeing another user\'s details in the Admin Bar. <strong>Given your current configuration, %1$s will automatically hide the WordPress Admin Bar on the front-end of your site.</strong>', SLUG_TD), esc_html(NAME)).'</p>'."\n";
             }
             echo '      <p class="info">'.sprintf(__('<strong>Note:</strong> %1$s includes comment authors as part of it\'s logged-in user check. This way comment authors will be able to see updates to comment threads immediately. And, so that any dynamically-generated messages displayed by your theme will work as intended. In short, %1$s thinks of a comment author as a logged-in user, even though technically they are not. Users who gain access to password-protected Posts/Pages are also considered by the logged-in user check.', SLUG_TD), esc_html(NAME)).'</p>'."\n";

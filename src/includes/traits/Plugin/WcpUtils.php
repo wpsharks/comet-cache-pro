@@ -360,7 +360,7 @@ trait WcpUtils
      */
     public function disableAutoWipeCacheRoutines()
     {
-        $is_disabled = (boolean) $this->applyWpFilters(GLOBAL_NS.'_disable_auto_wipe_cache_routines', false);
+        $is_disabled = (boolean) apply_filters(GLOBAL_NS.'_disable_auto_wipe_cache_routines', false);
 
         if ($is_disabled && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
             $this->enqueueMainNotice(
@@ -383,7 +383,7 @@ trait WcpUtils
      */
     public function disableAutoClearCacheRoutines()
     {
-        $is_disabled = (boolean) $this->applyWpFilters(GLOBAL_NS.'_disable_auto_clear_cache_routines', false);
+        $is_disabled = (boolean) apply_filters(GLOBAL_NS.'_disable_auto_clear_cache_routines', false);
 
         if ($is_disabled && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
             $this->enqueueMainNotice(
@@ -406,7 +406,7 @@ trait WcpUtils
      */
     public function disableAutoPurgeCacheRoutines()
     {
-        $is_disabled = (boolean) $this->applyWpFilters(GLOBAL_NS.'_disable_auto_purge_cache_routines', false);
+        $is_disabled = (boolean) apply_filters(GLOBAL_NS.'_disable_auto_purge_cache_routines', false);
 
         if ($is_disabled && is_admin() && (!IS_PRO || $this->options['change_notifications_enable'])) {
             $this->enqueueMainNotice(

@@ -46,7 +46,7 @@ trait OptionUtils
         } // End the collection of all plugin options.
 
         $this->options = array_merge($this->default_options, $options);
-        $this->options = $this->applyWpFilters(GLOBAL_NS.'_options', $this->options);
+        $this->options = apply_filters(GLOBAL_NS.'_options', $this->options);
         $this->options = $intersect ? array_intersect_key($this->options, $this->default_options) : $this->options;
         $this->options = array_map('trim', array_map('strval', $this->options));
 

@@ -102,7 +102,7 @@ trait WcpFeedUtils
         if (!($variation_regex_frags = $utils->convertVariationsToHostCachePathRegexFrags($variations))) {
             return $counter; // Nothing to do here.
         }
-        $in_sets_of = $this->applyWpFilters(GLOBAL_NS.'_autoClearXmlFeedsCache_in_sets_of', 10, get_defined_vars());
+        $in_sets_of = apply_filters(GLOBAL_NS.'_autoClearXmlFeedsCache_in_sets_of', 10, get_defined_vars());
 
         for ($_i = 0; $_i < count($variation_regex_frags); $_i = $_i + $in_sets_of) {
             $_variation_regex_frags = array_slice($variation_regex_frags, $_i, $in_sets_of);

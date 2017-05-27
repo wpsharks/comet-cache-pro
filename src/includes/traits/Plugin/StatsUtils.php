@@ -18,7 +18,7 @@ trait StatsUtils
      */
     public function statsLogPinger()
     {
-        if (!$this->applyWpFilters(GLOBAL_NS.'_statsLogPinger_enable', IS_PRO)) {
+        if (!apply_filters(GLOBAL_NS.'_statsLogPinger_enable', IS_PRO)) {
             return; // Stats collection disabled by site.
         } elseif ($this->options['last_pro_stats_log'] >= strtotime('-1 week')) {
             return; // No reason to keep pinging.

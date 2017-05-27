@@ -22,7 +22,7 @@ trait WcpPluginUtils
      */
     public function autoClearOnPluginActivationDeactivation($plugin, $network_wide = false)
     {
-        if (!$this->applyWpFilters(GLOBAL_NS.'_auto_clear_on_plugin_activation_deactivation', true)) {
+        if (!apply_filters(GLOBAL_NS.'_auto_clear_on_plugin_activation_deactivation', true)) {
             return 0; // Nothing to do here.
         }
 

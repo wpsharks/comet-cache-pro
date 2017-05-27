@@ -21,8 +21,8 @@ trait CacheLockUtils
      */
     public function cacheLock()
     {
-        if ($this->applyWpFilters(GLOBAL_NS.'\\share::disable_cache_locking', false)
-            || $this->applyWpFilters(GLOBAL_NS.'_disable_cache_locking', false)
+        if (apply_filters(GLOBAL_NS.'\\share::disable_cache_locking', false)
+            || apply_filters(GLOBAL_NS.'_disable_cache_locking', false)
         ) {
             return false; // Disabled cache locking.
         }
@@ -30,8 +30,8 @@ trait CacheLockUtils
             throw new \Exception(__('Unable to find the wp-config.php file.', SLUG_TD));
         }
         $lock_type = 'flock'; // Default lock type.
-        $lock_type = $this->applyWpFilters(GLOBAL_NS.'\\share::cache_lock_lock_type', $lock_type);
-        $lock_type = $this->applyWpFilters(GLOBAL_NS.'_cache_lock_type', $lock_type);
+        $lock_type = apply_filters(GLOBAL_NS.'\\share::cache_lock_lock_type', $lock_type);
+        $lock_type = apply_filters(GLOBAL_NS.'_cache_lock_type', $lock_type);
 
         if (!in_array($lock_type, ['flock', 'sem'], true)) {
             $lock_type = 'flock'; // Default lock type.

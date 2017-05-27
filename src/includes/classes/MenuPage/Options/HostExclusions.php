@@ -22,7 +22,7 @@ class HostExclusions extends Classes\AbsBase
         $exclude_hosts_option_enable = is_multisite() &&
             ((defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL) || $this->plugin->canConsiderDomainMapping());
 
-        if ($this->plugin->applyWpFilters(GLOBAL_NS.'_exclude_hosts_option_enable', $exclude_hosts_option_enable)) {
+        if (apply_filters(GLOBAL_NS.'_exclude_hosts_option_enable', $exclude_hosts_option_enable)) {
             echo '<div class="plugin-menu-page-panel">'."\n";
 
             echo '   <a href="#" class="plugin-menu-page-panel-heading">'."\n";

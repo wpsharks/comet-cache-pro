@@ -253,29 +253,4 @@ trait HookUtils
             call_user_func_array('do_action', $zencache_args);
         }
     }
-
-    /**
-     * Applies filters w/ back compat. for ZenCache.
-     *
-     * @since 150422 Rewrite.
-     *
-     * @param string $hook The hook to apply.
-     *
-     * @return mixed The filtered value.
-     */
-    public function applyWpFilters($hook)
-    {
-        $hook  = (string) $hook;
-        $args  = func_get_args();
-        $value = call_user_func_array('apply_filters', $args);
-
-        if (mb_stripos($hook, GLOBAL_NS) === 0) {
-            $zencache_hook    = 'zencache'.mb_substr($hook, mb_strlen(GLOBAL_NS));
-            $zencache_args    = $args; // Use a copy of the args.
-            $zencache_args[0] = $zencache_hook;
-            $zencache_args[1] = $value; // Filtered value.
-            $value            = call_user_func_array('apply_filters', $zencache_args);
-        }
-        return $value; // Filtered value.
-    }
 }
