@@ -229,7 +229,7 @@ class Plugin extends AbsBaseAp
         $setup = -1; // Flag as having been setup.
 
         if ($this->enable_hooks) {
-            $this->doWpAction('before_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
+            do_action('before_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
         }
         /* -------------------------------------------------------------- */
 
@@ -677,7 +677,7 @@ class Plugin extends AbsBaseAp
         }
         /* -------------------------------------------------------------- */
 
-        $this->doWpAction('after_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
-        $this->doWpAction(GLOBAL_NS.'_'.__FUNCTION__.'_complete', get_defined_vars());
+        do_action('after_'.GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
+        do_action(GLOBAL_NS.'_'.__FUNCTION__.'_complete', get_defined_vars());
     }
 }

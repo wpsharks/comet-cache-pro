@@ -16,7 +16,7 @@ function wp_cache_postload()
     if (!$advanced_cache->is_running) {
         return; // Not applicable.
     }
-    $advanced_cache->doWpAction('before_'.$GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
+    do_action('before_'.$GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
 
     /*[pro strip-from="lite"]*/
     if (!empty($advanced_cache->postload['invalidate_when_logged_in'])) {
@@ -34,6 +34,6 @@ function wp_cache_postload()
     if (!empty($advanced_cache->postload['wp_main_query'])) {
         add_action('wp', [$advanced_cache, 'wpMainQueryPostload'], PHP_INT_MAX);
     }
-    $advanced_cache->doWpAction('after_'.$GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
-    $advanced_cache->doWpAction($GLOBAL_NS.'_'.__FUNCTION__.'_complete', get_defined_vars());
+    do_action('after_'.$GLOBAL_NS.'_'.__FUNCTION__, get_defined_vars());
+    do_action($GLOBAL_NS.'_'.__FUNCTION__.'_complete', get_defined_vars());
 }
