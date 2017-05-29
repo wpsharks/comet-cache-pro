@@ -1,9 +1,10 @@
 = $v =
 
-- **New Feature: Memcached / RAM:** Comet Cache Pro now includes support for Memcached / AWS ElastiCache to serve the cache directly from RAM. This allows for a faster cache delivery than what is possible when serving the cache via disk. Memcached / AWS ElastiCache can be configured from **Dashboard → Comet Cache Pro → Plugin Options → RAM / Memcached**. See [Issue #47](https://github.com/websharks/comet-cache/issues/47)
-- **Bug Fix:** The Cache Statistics feature was broken when the PHP `disk_total_space()` and/or `disk_free_space()` functions were disabled by the PHP configuration. Comet Cache now handles this scenario gracefully by hiding disk-related stats when those functions are not allowed. See [Issue #775](https://github.com/websharks/comet-cache/issues/775)
-- **Bug Fix:** The HTML Compressor was returning an empty string upon encountering an invalid UTF-8 sequence. See [Issue #871](https://github.com/websharks/comet-cache/issues/871) reported by a Comet Cache user.
-- **Compatibility:** Many improvements to the Pro software update system, including changes to the API Endpoints and the Proxy Fallback endpoint. See [Issue #879](https://github.com/websharks/comet-cache/issues/879) and [Issue #315](https://github.com/websharks/comet-cache-pro/pull/315) for full details.
+- **New Feature: Memcached / RAM** (Pro): Comet Cache Pro now includes support for Memcached / AWS ElastiCache to serve the cache directly from RAM. This allows for a faster cache delivery than what is possible when serving the cache via disk. Memcached / AWS ElastiCache can be configured from **Dashboard → Comet Cache Pro → Plugin Options → RAM / Memcached**. See [Issue #47](https://github.com/websharks/comet-cache/issues/47)
+- **Enhancement**: Added `Referrer-Policy` to whitelist for cachable HTTP headers. See [Issue #892](https://github.com/websharks/comet-cache/issues/892).
+- **Bug Fix** (Pro): The Cache Statistics feature was broken when the PHP `disk_total_space()` and/or `disk_free_space()` functions were disabled by the PHP configuration. Comet Cache now handles this scenario gracefully by hiding disk-related stats when those functions are not allowed. See [Issue #775](https://github.com/websharks/comet-cache/issues/775)
+- **Bug Fix** (Pro): The HTML Compressor was returning an empty string upon encountering an invalid UTF-8 sequence. See [Issue #871](https://github.com/websharks/comet-cache/issues/871) reported by a Comet Cache user.
+- **Compatibility** (Pro): Many improvements to the Pro software update system, including changes to the API Endpoints and the Proxy Fallback endpoint. See [Issue #879](https://github.com/websharks/comet-cache/issues/879) and [Issue #315](https://github.com/websharks/comet-cache-pro/pull/315) for full details.
 
 = v170220 =
 
