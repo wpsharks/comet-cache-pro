@@ -5,6 +5,7 @@
 - **Bug Fix** (Pro): The Cache Statistics feature was broken when the PHP `disk_total_space()` and/or `disk_free_space()` functions were disabled by the PHP configuration. Comet Cache now handles this scenario gracefully by hiding disk-related stats when those functions are not allowed. See [Issue #775](https://github.com/websharks/comet-cache/issues/775)
 - **Bug Fix** (Pro): The HTML Compressor was returning an empty string upon encountering an invalid UTF-8 sequence. See [Issue #871](https://github.com/websharks/comet-cache/issues/871) reported by a Comet Cache user.
 - **Compatibility** (Pro): Many improvements to the Pro software update system, including changes to the API Endpoints and the Proxy Fallback endpoint. See [Issue #879](https://github.com/websharks/comet-cache/issues/879) and [Issue #315](https://github.com/websharks/comet-cache-pro/pull/315) for full details.
+- **Compatibility**: Fixed a WooCommerce compatibility issue that was generating a "Notice: id was called incorrectly. Product properties should not be accessed directly." Props @vestaxpdx. See [Issue #896](https://github.com/websharks/comet-cache/issues/896).
 
 = v170220 =
 
