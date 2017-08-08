@@ -1,4 +1,4 @@
-= $v =
+= v170808-RC =
 
 - **New Feature: Memcached / RAM** (Pro): Comet Cache Pro now includes support for Memcached / AWS ElastiCache to serve the cache directly from RAM. This allows for a faster cache delivery than what is possible when serving the cache via disk. Memcached / AWS ElastiCache can be configured from **Dashboard → Comet Cache Pro → Plugin Options → RAM / Memcached**. See [Issue #47](https://github.com/websharks/comet-cache/issues/47)
 - **Enhancement**: Added `Referrer-Policy` to whitelist for cachable HTTP headers. See [Issue #892](https://github.com/websharks/comet-cache/issues/892).
