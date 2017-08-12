@@ -41,7 +41,7 @@ trait UpdateUtils
         }
         if ($latest_pro_version && preg_match('/^[0-9]{6}/u', $latest_pro_version)) {
             $this->updateOptions(['latest_pro_version' => $latest_pro_version]);
-            if (version_compare($latest_pro_version, VERSION, '>')) {
+            if ($this->versionCompare($latest_pro_version, VERSION, '>', true)) {
                 $this->maybeCheckLatestProPackage();
             }
         }
@@ -155,7 +155,7 @@ trait UpdateUtils
         $latest_version = $this->options['latest_pro_version'];
         $latest_package = $this->options['latest_pro_package'];
 
-        if ($latest_version && $latest_package && version_compare($latest_version, VERSION, '>')) {
+        if ($latest_version && $latest_package && $this->versionCompare($latest_version, VERSION, '>', true)) {
             $report->response[$plugin_basename] = (object) [
                 'id'          => 0,
                 'url'         => $plugin_url,
@@ -190,6 +190,36 @@ trait UpdateUtils
         } else {
             return $update; // Unchanged in this case.
         }
+    }
+
+    /**
+     * Version compare.
+     *
+     * @since 17xxxx Version compare.
+     *
+     * @param string $one                   Version one.
+     * @param string $two                   Version two.
+     * @param string $operator              Comparison operator.
+     * @param bool   $maybe_strip_dev_state Maybe strip dev-state.
+     *
+     * @return bool True or false.
+     */
+    public function versionCompare($one, $two, $operator, $maybe_strip_dev_state = false)
+    {
+        $one      = (string) $one;
+        $two      = (string) $two;
+        $operator = (string) $operator;
+
+        // NOTE: Stripping dev-state suffix.
+        // The method must be called with `$maybe_strip_dev_state = true`,
+        // AND, the site owner must have explicitly enabled beta releases.
+
+        if ($maybe_strip_dev_state && !$this->options['pro_update_check_stable']) {
+            $regex = '/\-(?:dev|rc|alpha|beta|pl).*$/ui';
+            $one   = preg_replace($regex, '', $one);
+            $two   = preg_replace($regex, '', $two);
+        }
+        return (bool) version_compare($one, $two, $operator);
     }
 }
 /*[/pro]*/
