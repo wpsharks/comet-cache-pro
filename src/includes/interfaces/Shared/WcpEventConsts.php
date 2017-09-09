@@ -46,15 +46,6 @@ interface WcpEventConsts
      *
      * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
      */
-    const WCP_EVENT_POST_CACHE_CLEANED = 'wcp_event_post_cache_cleaned';
-
-    /**
-     * WCP event/reason constant.
-     *
-     * @since 17xxxx WCP event constants.
-     *
-     * @type string A unique string identifier in the set of `WCP_EVENT_` constants.
-     */
     const WCP_EVENT_TERM_RELATIONSHIP_ADDED = 'wcp_event_term_relationship_added';
 
     /**
