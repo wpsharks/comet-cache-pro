@@ -53,7 +53,7 @@ trait InstallUtils
     {
         $prev_version = $this->options['version'];
 
-        if (version_compare($prev_version, VERSION, '>=')) {
+        if ($this->versionCompare($prev_version, VERSION, '>=', true)) {
             return; // Nothing to do; up-to-date.
         }
         $this->options = $this->getOptions(false, true);

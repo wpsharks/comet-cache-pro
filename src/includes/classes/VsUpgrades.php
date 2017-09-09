@@ -54,7 +54,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte150807()
     {
-        if (version_compare($this->prev_version, '150807', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '150807', '<=', true)) {
             delete_site_option(GLOBAL_NS.'_errors'); // No longer necessary.
 
             if (is_multisite() && is_array($child_blogs = $this->plugin->getBlogs())) {
@@ -92,7 +92,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte151107()
     {
-        if (version_compare($this->prev_version, '151107', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '151107', '<=', true)) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (!empty($existing_options['cache_clear_xml_sitemap_patterns']) && mb_strpos($existing_options['cache_clear_xml_sitemap_patterns'], '**') === false) {
                     $this->plugin->options['cache_clear_xml_sitemap_patterns'] = str_replace('*', '**', $existing_options['cache_clear_xml_sitemap_patterns']);
@@ -131,7 +131,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte151114()
     {
-        if (version_compare($this->prev_version, '151114', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '151114', '<=', true)) {
             if (!$this->plugin->isApache()) {
                 return; // Not running the Apache web server.
             }
@@ -214,7 +214,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte160227()
     {
-        if (version_compare($this->prev_version, '160227', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '160227', '<=', true)) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 $this->plugin->options['cache_clear_term_other_enable'] = $this->plugin->default_options['cache_clear_term_other_enable'];
                 if ($this->plugin->options !== $existing_options) {
@@ -235,7 +235,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte160521()
     {
-        if (version_compare($this->prev_version, '160521', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '160521', '<=', true)) {
             $this->plugin->dismissMainNotice('allow_url_fopen_disabled');
             $this->plugin->removeAdvancedCache();
 
@@ -264,7 +264,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte160709()
     {
-        if (version_compare($this->prev_version, '160709', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '160709', '<=', true)) {
             $this->plugin->dismissMainNotice('new-pro-version-available'); // Dismiss any existing notices like this; upgrade notices are handled by WordPress now.
         }
     }
@@ -275,7 +275,7 @@ class VsUpgrades extends AbsBase
      */
     protected function fromLte161108()
     {
-        if (version_compare($this->prev_version, '161108', '<=')) {
+        if ($this->plugin->versionCompare($this->prev_version, '161108', '<=', true)) {
             if (is_array($existing_options = get_site_option(GLOBAL_NS.'_options'))) {
                 if (IS_PRO && isset($existing_options['htmlc_css_exclusions']) && empty($existing_options['htmlc_css_exclusions'])) {
                     $this->plugin->options['htmlc_css_exclusions'] = $this->plugin->default_options['htmlc_css_exclusions'];
