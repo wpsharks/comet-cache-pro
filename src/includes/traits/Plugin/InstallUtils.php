@@ -88,6 +88,36 @@ trait InstallUtils
     }
 
     /**
+     * Version compare.
+     *
+     * @since 17xxxx Version compare.
+     *
+     * @param string $one                   Version one.
+     * @param string $two                   Version two.
+     * @param string $operator              Comparison operator.
+     * @param bool   $maybe_strip_dev_state Maybe strip dev-state.
+     *
+     * @return bool True or false.
+     */
+    public function versionCompare($one, $two, $operator, $maybe_strip_dev_state = false)
+    {
+        $one      = (string) $one;
+        $two      = (string) $two;
+        $operator = (string) $operator;
+
+        // NOTE: Stripping dev-state suffix.
+        // The method must be called with `$maybe_strip_dev_state = true`,
+        // AND, the site owner must have explicitly enabled beta releases.
+
+        if ($maybe_strip_dev_state && !$this->options['pro_update_check_stable']) {
+            $regex = '/\-(?:dev|rc|alpha|beta|pl).*$/ui';
+            $one   = preg_replace($regex, '', $one);
+            $two   = preg_replace($regex, '', $two);
+        }
+        return (bool) version_compare($one, $two, $operator);
+    }
+
+    /**
      * Plugin deactivation hook.
      *
      * @since 150422 Rewrite.
