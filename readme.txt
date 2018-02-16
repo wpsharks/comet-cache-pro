@@ -1,27 +1,22 @@
-=== Comet Cache ===
-
-Stable tag: 170808-RC
-Requires at least: 4.2
-Requires PHP: 5.4
-Tested up to: 4.9-alpha
-Text Domain: comet-cache
-
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
-Contributors: WebSharks, jaswrks, raamdev
-Donate link: http://websharks-inc.com/r/wp-theme-plugin-donation/
-Tags: cache, speed, performance, fast, caching, advanced cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
+# Comet Cache #
+* Contributors: WebSharks, jaswrks, raamdev
+* Tags: cache, speed, performance, fast, caching, advanced cache, static, client-side cache, rss cache, feed cache, gzip compression, page cache
+* Donate link: https://cometcache.com/r/donate/
+* Requires at least: 4.2
+* Tested up to: 4.9.4
+* Requires PHP: 5.4
+* Stable tag: 170808-RC
+* License: GPLv2 or later
+* License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Comet Cache is an advanced WordPress caching plugin inspired by simplicity. Speed up your site (BIG time!) with an intelligent and easy-to-use cache.
 
-== Description ==
-
+## Description ##
 If you care about the speed of your site, Comet Cache is one of those plugins that you absolutely MUST have installed. :-) Comet Cache takes a real-time snapshot (building a cache) of every Page, Post, Category, Link, etc. These snapshots are then stored (cached) intuitively, so they can be referenced later, in order to save all of that processing time that has been dragging your site down and costing you money.
 
 The Comet Cache plugin uses configuration options that you select from the options panel. See: **Comet Cache -› Options** in your Dashboard. Once a file has been cached, Comet Cache uses advanced techniques that allow it to recognize when it should and should not serve a cached version of the file. By default, Comet Cache does not serve cached pages to users who are logged in, or to users who have left comments recently. Comet Cache also excludes administrative pages, login pages, POST/PUT/DELETE/GET(w/ query string) requests and/or CLI processes.
 
-= Features =
+### Features ###
 
 - SIMPLE and well-documented configuration (just enable and you're all set!).
 - Fully compatible with PHP 7 and PHP 5.4+.
@@ -38,7 +33,7 @@ The Comet Cache plugin uses configuration options that you select from the optio
 - WP-CLI Compatibility.
 - An Advanced Cache Plugin system for theme and plugin developers.
 
-= Pro Features =
+### Pro Features ###
 
 - The ability to cache logged-in users too! (VERY powerful, particularly for membership sites).
 - A new improved "Clear Cache" button in the admin bar (along with an option to enable/disable this feature).
@@ -67,7 +62,7 @@ The Comet Cache plugin uses configuration options that you select from the optio
 
 TIP: you can preview Pro features in the free version by clicking the "Preview Pro Features" link at the top of your Comet Cache options.
 
-== Screenshots ==
+## Screenshots ##
 
 1. Step 1: Enable Comet Cache
 2. Step 2: Save All Changes; that's it!
@@ -86,31 +81,26 @@ TIP: you can preview Pro features in the free version by clicking the "Preview P
 15. Apache Optimizations
 16. Theme/Plugin Developers
 
-== Installation ==
-
-**Quick Tip:** WordPress® can only deal with one cache plugin being activated at a time. Please uninstall any existing cache plugins that you've tried in the past. In other words, if you've installed W3 Total Cache, WP Super Cache, DB Cache Reloaded, or any other caching plugin, uninstall them all before installing Comet Cache. One way to check, is to make sure this file: `wp-content/advanced-cache.php` and/or `wp-content/object-cache.php` are NOT present; and if they are, delete these files BEFORE installing Comet Cache. Those files will only be present if you have a caching plugin already installed. If you've previously installed another caching plugin, you may also want to review your `.htaccess` file to make sure there are no rewrite rules related to the old caching plugin—some caching plugins don't completely clean up after themselves when uninstalled. If you don't see anything related to the old caching plugin, you're ready to install Comet Cache. :-)
-
-**A note for existing ZenCache users:** Comet Cache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate that options over to Comet Cache. For further details, please see the [migration FAQ](https://cometcache.com/r/zencache-migration-faq/).
-
-= Comet Cache is Very Easy to Install =
+## Installation ##
 
 1. Upload the `/comet-cache` folder to your `/wp-content/plugins/` directory.
-2. Activate the plugin through the Plugins menu in WordPress®.
+2. Activate the plugin through the Plugins menu in WordPress.
 3. Navigate to the **Comet Cache** panel & enable it.
 
-= How will I know Comet Cache is Working? =
+#### Software Requirements ####
 
-First of all, make sure that you've enabled Comet Cache. After you activate the plugin in WordPress, go to the Comet Cache options panel and enable caching (you can't miss the big yellow checkbox). Then scroll to the bottom and click Save All Changes. All of the other options on that page are already pre-configured for typical usage. Skip them all for now. You can go back through all of these later and fine-tune things the way you like them.
+In addition to the [WordPress Requirements](http://wordpress.org/about/requirements/), Comet Cache requires the following minimum versions:
 
-Once Comet Cache has been enabled, **you'll need to log out** (and/or clear browser cookies). Cache files are NOT served to visitors who are logged in, and that includes you too. :-) Cache files are NOT served to recent commenters either. If you've commented (or replied to a comment lately); please clear your browser cookies before testing.
+- PHP 5.4+
+- Apache 2.1+ or Nginx
 
-**To verify that Comet Cache is working**, navigate your site like a normal visitor would. Right-click on any page (choose View Source), then scroll to the very bottom of the document. At the bottom, you'll find comments that show Comet Cache stats and information. You should also notice that page-to-page navigation is lightning fast compared to what you experienced prior to installing Comet Cache.
+**Quick Tip:** WordPress can only deal with one cache plugin being activated at a time. Please uninstall any existing cache plugins that you've tried in the past. In other words, if you've installed W3 Total Cache, WP Super Cache, DB Cache Reloaded, or any other caching plugin, uninstall them all before installing Comet Cache. One way to check, is to make sure this file: `wp-content/advanced-cache.php` and/or `wp-content/object-cache.php` are NOT present; and if they are, delete these files BEFORE installing Comet Cache. Those files will only be present if you have a caching plugin already installed. If you've previously installed another caching plugin, you may also want to review your `.htaccess` file to make sure there are no rewrite rules related to the old caching plugin—some caching plugins don't completely clean up after themselves when uninstalled. If you don't see anything related to the old caching plugin, you're ready to install Comet Cache. :-)
 
-= Running Comet Cache On A WordPress® Multisite Installation =
+#### Running Comet Cache On A WordPress Multisite Installation ####
 
-WordPress® Multisite Networking is a special consideration in WordPress®. If Comet Cache is installed under a Multisite Network installation, it will be enabled for ALL blogs the same way. The centralized config options for Comet Cache, can only be modified by a Super Administrator operating on the main site. Comet Cache has internal processing routines that prevent configuration changes, including menu displays; for anyone other than a Super Administrator operating on the main site.
+WordPress Multisite Networking is a special consideration in WordPress. If Comet Cache is installed under a Multisite Network installation, it will be enabled for ALL blogs the same way. The centralized config options for Comet Cache, can only be modified by a Super Administrator operating on the main site. Comet Cache has internal processing routines that prevent configuration changes, including menu displays; for anyone other than a Super Administrator operating on the main site.
 
-= EMERGENCY: If All Else Fails (How-To Remove Comet Cache) =
+#### EMERGENCY: If All Else Fails (How-To Remove Comet Cache) ####
 
 Ordinarily you can just deactivate Comet Cache from the plugins menu in WordPress. However, if you're having a more serious issue, please follow the instructions here.
 
@@ -121,9 +111,9 @@ Ordinarily you can just deactivate Comet Cache from the plugins menu in WordPres
 
 Comet Cache is now completely uninstalled and you can start fresh. :-)
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions ##
 
-= How do I know that Comet Cache is working? =
+### How do I know that Comet Cache is working? ###
 
 First of all, make sure that you've enabled Comet Cache. After you activate the plugin, go to the Comet Cache options panel and enable it, then scroll to the bottom and click Save All Changes. All of the other options on that page are already pre-configured for typical usage. Skip them all for now. You can go back through all of them later and fine-tune things the way you like them.
 
@@ -131,65 +121,33 @@ Once Comet Cache has been enabled, **you'll need to log out** (and/or clear brow
 
 **To verify that Comet Cache is working**, navigate your site like a normal visitor would. Right-click on any page (choose View Source), then scroll to the very bottom of the document. At the bottom, you'll find comments that show Comet Cache stats and information. You should also notice that page-to-page navigation is lightning fast compared to what you experienced prior to installing Comet Cache.
 
-= What is the downside to running Comet Cache? =
+### What is the downside to running Comet Cache? ###
 
-There is NOT one! Comet Cache is a MUST HAVE for every WordPress® powered site. In fact, we really can't think of any site running WordPress® that would want to be without it. To put it another way, the WordPress® software itself comes with a built in action reference for an `advanced-cache.php` file, because WordPress® developers realize the importance of such as plugin. The `/wp-content/advanced-cache.php` file is named as such, because the WordPress® developers expect it to be there when caching is enabled by a plugin. If you don't have the `/wp-content/advanced-cache.php` file yet, it is because you have not enabled Comet Cache from the options panel yet.
+There is NOT one! Comet Cache is a MUST HAVE for every WordPress powered site. In fact, we really can't think of any site running WordPress that would want to be without it. To put it another way, the WordPress software itself comes with a built in action reference for an `advanced-cache.php` file, because WordPress developers realize the importance of such as plugin. The `/wp-content/advanced-cache.php` file is named as such, because the WordPress developers expect it to be there when caching is enabled by a plugin. If you don't have the `/wp-content/advanced-cache.php` file yet, it is because you have not enabled Comet Cache from the options panel yet.
 
-= So why does WordPress® need to be cached? =
+### So why does WordPress need to be cached? ###
 
-To understand how Comet Cache works, first you have to understand what a cached file is, and why it is absolutely necessary for your site and every visitor that comes to it. WordPress® (by its very definition) is a database-driven publishing platform. That means you have all these great tools on the back-end of your site to work with, but it also means that every time a Post/Page/Category is accessed on your site, dozens of connections to the database have to be made, and literally thousands of PHP routines run in harmony behind-the-scenes to make everything jive. The problem is, for every request that a browser sends to your site, all of these routines and connections have to be made (yes, every single time). Geesh, what a waste of processing power, memory, and other system resources. After all, most of the content on your site remains the same for at least a few minutes at a time. If you've been using WordPress® for very long, you've probably noticed that (on average) your site does not load up as fast as other sites on the web. Now you know why!
+To understand how Comet Cache works, first you have to understand what a cached file is, and why it is absolutely necessary for your site and every visitor that comes to it. WordPress (by its very definition) is a database-driven publishing platform. That means you have all these great tools on the back-end of your site to work with, but it also means that every time a Post/Page/Category is accessed on your site, dozens of connections to the database have to be made, and literally thousands of PHP routines run in harmony behind-the-scenes to make everything jive. The problem is, for every request that a browser sends to your site, all of these routines and connections have to be made (yes, every single time). Geesh, what a waste of processing power, memory, and other system resources. After all, most of the content on your site remains the same for at least a few minutes at a time. If you've been using WordPress for very long, you've probably noticed that (on average) your site does not load up as fast as other sites on the web. Now you know why!
 
 In computer science, a cache (pronounced /kash/) is a collection of data duplicating original values stored elsewhere or computed earlier, where the original data is expensive to fetch (owing to longer access time) or to compute, compared to the cost of reading the cache. In other words, a cache is a temporary storage area where frequently accessed data can be stored for rapid access. Once the data is stored in the cache, it can be used in the future by accessing the cached copy rather than re-fetching or recomputing the original data.
 
-= Where & why are the cache files stored on my server? =
+### Where & why are the cache files stored on my server? ###
 
-The cache files are stored in a special directory: `/wp-content/cache/comet-cache`. This directory needs to remain writable, just like the `/wp-content/uploads` directory on many WordPress® installations. The `/comet-cache/cache` directory is where cache files reside. These files are stored using an intutive directory structure that named based on the request URL (`HTTPS/HTTP_HOST/REQUEST_URI`). See also: **Dashboard -› Comet Cache -› Cache Directory/Expiration Time** for further details.
+The cache files are stored in a special directory: `/wp-content/cache/comet-cache`. This directory needs to remain writable, just like the `/wp-content/uploads` directory on many WordPress installations. The `/comet-cache/cache` directory is where cache files reside. These files are stored using an intutive directory structure that named based on the request URL (`HTTPS/HTTP_HOST/REQUEST_URI`). See also: **Dashboard -› Comet Cache -› Cache Directory/Expiration Time** for further details.
 
-Whenever a request comes in from someone on the web, Comet Cache checks to see if it can serve a cached file; e.g. it looks at the `HTTPS/HTTP_HOST/REQUEST_URI` environent variables, then it checks the `/comet-cache/cache` directory. If a cache file has been built already, and it matches an existing `HTTPS.HTTP_HOST.REQUEST_URI` combination; and it is not too old (see: **Dashboard -› Comet Cache -› Cache Directory/Expiration Time**), then it will serve that file instead of asking WordPress® to regenerate it. This adds tremendous speed to your site and reduces server load.
+Whenever a request comes in from someone on the web, Comet Cache checks to see if it can serve a cached file; e.g. it looks at the `HTTPS/HTTP_HOST/REQUEST_URI` environent variables, then it checks the `/comet-cache/cache` directory. If a cache file has been built already, and it matches an existing `HTTPS.HTTP_HOST.REQUEST_URI` combination; and it is not too old (see: **Dashboard -› Comet Cache -› Cache Directory/Expiration Time**), then it will serve that file instead of asking WordPress to regenerate it. This adds tremendous speed to your site and reduces server load.
 
-= What happens if a user logs in? Are cache files used then? =
+### What happens if a user logs in? Are cache files used then? ###
 
 By default, Comet Cache does NOT serve cached pages to users who are logged in, or to users who have left comments recently. Comet Cache also excludes administrative pages, login pages, POST/PUT/DELETE/GET(w/ query string) requests and/or CLI processes. That being said, the Pro version of Comet Cache DOES make it possible to cache pages even when users ARE logged-in; adding even more speed! This is particularly helpful on membership sites; e.g. sites that run plugins like s2Member™ for instance.
 
-= Will comments and other dynamic parts of my blog update immediately? =
+### Will comments and other dynamic parts of my blog update immediately? ###
 
-It depends on your configuration of Comet Cache. There is an automatic expiration system (the garbage collector), which runs through WordPress® behind-the-scene, according to your Expiration setting (see: **Dashboard -› Comet Cache -› Cache Directory/Expiration Time**). There is also a built-in expiration time on existing files that is checked before any cache file is served up, which also uses your Expiration setting. In addition; whenever you update a Post or a Page, Comet Cache can automatically prune that particular file from the cache so it instantly becomes fresh again. Otherwise, your visitors would need to wait for the previous cached version to expire.
+It depends on your configuration of Comet Cache. There is an automatic expiration system (the garbage collector), which runs through WordPress behind-the-scene, according to your Expiration setting (see: **Dashboard -› Comet Cache -› Cache Directory/Expiration Time**). There is also a built-in expiration time on existing files that is checked before any cache file is served up, which also uses your Expiration setting. In addition; whenever you update a Post or a Page, Comet Cache can automatically prune that particular file from the cache so it instantly becomes fresh again. Otherwise, your visitors would need to wait for the previous cached version to expire.
 
 By default, Comet Cache does NOT serve cached pages to users who are logged in, or to users who have left comments recently. Comet Cache also excludes administrative pages, login pages, POST/PUT/DELETE/GET(w/ query string) requests and/or CLI processes.
 
-= How do I enable GZIP compression? Is GZIP supported? =
-
-There is no need to use an `.htaccess` file with this plugin; caching is handled by WordPress®/PHP alone. That being said, if you also want to take advantage of GZIP compression (and we do recommend this), then you WILL need an `.htaccess` file to accomplish that part. This plugin fully supports GZIP compression on its output. However, it does not handle GZIP compression directly. We purposely left GZIP compression out of this plugin, because GZIP compression is something that should really be enabled at the Apache level or inside your `php.ini` file. GZIP compression can be used for things like JavaScript and CSS files as well, so why bother turning it on for only WordPress-generated pages when you can enable GZIP at the server level and cover all the bases!
-
-If you want to enable GZIP and your site is running on the Apache web server, visit **Dashboard -> Comet Cache -> Apache Optimizations -> Enable GZIP Compression?**; or to enable GZIP compression manually create an `.htaccess` file in your WordPress® installation directory (or edit the one that's already there) and put the following few lines in it. That is all there is to it. GZIP is now enabled!
-
-	<IfModule deflate_module>
-		<IfModule filter_module>
-			AddOutputFilterByType DEFLATE text/plain text/html
-			AddOutputFilterByType DEFLATE text/xml application/xml application/xhtml+xml application/xml-dtd
-			AddOutputFilterByType DEFLATE application/rdf+xml application/rss+xml application/atom+xml image/svg+xml
-			AddOutputFilterByType DEFLATE text/css text/javascript application/javascript application/x-javascript
-			AddOutputFilterByType DEFLATE font/otf font/opentype application/font-otf application/x-font-otf
-			AddOutputFilterByType DEFLATE font/ttf font/truetype application/font-ttf application/x-font-ttf
-		</IfModule>
-	</IfModule>
-
-If your installation of Apache does not have `mod_deflate` installed. You can also enable gzip compression using PHP configuration alone. In your `php.ini` file, you can simply add the following line anywhere: `zlib.output_compression = on`
-
-= I'm a plugin developer. How can I prevent certain files from being cached? =
-
-You can conditionally set the `COMET_CACHE_ALLOWED` PHP constant to `FALSE` to tell Comet Cache not to cache a given page. Comet Cache also supports the industry standard `DONOTCACHEPAGE` constant that all other WordPress caching plugins support.
-
-	<?php
-	define('COMET_CACHE_ALLOWED', FALSE); // The easiest way.
-	// or $_SERVER['COMET_CACHE_ALLOWED'] = FALSE; // Also very easy.
-	// or define('DONOTCACHEPAGE', TRUE); // For compatibility with other cache plugins.
-
-When your script finishes execution, Comet Cache will know that it should NOT cache that particular page. It does not matter where or when you define this Constant; e.g. `define('COMET_CACHE_ALLOWED', FALSE);` because Comet Cache is the last thing to run during execution. So as long as you define this Constant at some point in your routines, everything will be fine.
-
-Comet Cache also provides support for `define('DONOTCACHEPAGE', TRUE)`, which is used by the WP Super Cache plugin as well. Another option is: `$_SERVER['COMET_CACHE_ALLOWED'] = FALSE`. The `$_SERVER` array method is useful if you need to disable caching at the Apache level using `mod_rewrite`. The `$_SERVER` array is filled with all environment variables, so if you use `mod_rewrite` to set the `COMET_CACHE_ALLOWED` environment variable, that will end up in `$_SERVER['COMET_CACHE_ALLOWED']`. All of these methods have the same end result, so it's up to you which one you'd like to use.
-
-= What should my Cache Expiration setting be? =
+### What should my Cache Expiration setting be? ###
 
 If you don't update your site much, you could set this to `6 months`; optimizing everything even further. The longer the cache expiration time is, the greater your performance gain. Alternatively, the shorter the expiration time, the fresher everything will remain on your site. A default value of `7 days` (recommended expiration time), is a good conservative middle-ground.
 
@@ -197,82 +155,15 @@ Keep in mind that your expiration setting is only one part of the big picture. C
 
 That being said, you could set this to just `60 seconds` and you would still see huge differences in speed and performance. If you're just starting out with Comet Cache (perhaps a bit nervous about old cache files being served to your visitors); you could set this to something like `30 minutes` and experiment with it while you build confidence in Comet Cache. It's not necessary, but many site owners have reported this makes them feel like they're more-in-control when the cache has a short expiration time. All-in-all, it's a matter of preference. :-)
 
-= I already have ZenCache installed; how do I install Comet Cache? =
+## Upgrade Notice ##
 
-Comet Cache is the successor to ZenCache and will automatically detect any existing ZenCache options and migrate those options over to Comet Cache. For further details, please see the [migration FAQ](https://cometcache.com/r/zencache-migration-faq/).
-
-= EMERGENCY: If all else fails, how can I remove Comet Cache? =
-
-Ordinarily you can just deactivate Comet Cache from the plugins menu in WordPress. However, if you're having a more serious issue, please follow the instructions here.
-
-1. Log into your site via FTP; perhaps using [FileZilla](http://www.youtube.com/watch?v=joXUMhr8PhU).
-2. Delete this file: `/wp-content/advanced-cache.php`
-3. Delete this directory: `/wp-content/plugins/comet-cache/`
-4. Remove this line from your `/wp-config.php` file: `define('WP_CACHE', TRUE);`
-
-Comet Cache is now completely uninstalled and you can start fresh. :-)
-
-== Further Details ==
-
-= So Why Does WordPress® Need To Be Cached? =
-
-To understand how Comet Cache works, first you have to understand what a cached file is, and why it is absolutely necessary for your site and every visitor that comes to it. WordPress® (by its very definition) is a database-driven publishing platform. That means you have all these great tools on the back-end of your site to work with, but it also means that every time a Post/Page/Category is accessed on your site, dozens of connections to the database have to be made, and literally thousands of PHP routines run in harmony behind-the-scenes to make everything jive. The problem is, for every request that a browser sends to your site, all of these routines and connections have to be made (yes, every single time). Geesh, what a waste of processing power, memory, and other system resources. After all, most of the content on your site remains the same for at least a few minutes at a time. If you've been using WordPress® for very long, you've probably noticed that (on average) your site does not load up as fast as other sites on the web. Now you know why!
-
-= The Definition Of A Cached File (from the Wikipedia) =
-
-In computer science, a cache (pronounced /kash/) is a collection of data duplicating original values stored elsewhere or computed earlier, where the original data is expensive to fetch (owing to longer access time) or to compute, compared to the cost of reading the cache. In other words, a cache is a temporary storage area where frequently accessed data can be stored for rapid access. Once the data is stored in the cache, it can be used in the future by accessing the cached copy rather than re-fetching or recomputing the original data.
-
-= Prepare To Be Amazed / It's Time To Speed Things Up =
-
-Comet Cache is extremely reliable, because it runs completely in PHP code, and does not hand important decisions off to the `mod_rewrite` engine, which makes Comet Cache MUCH easier to setup and configure.
-
-In addition, Comet Cache actually sends a no-cache header (yes, a no-cache header); which allows it to remain in control at all times. It might seem weird that a caching plugin would send a no-cache header. :-) Well, no-cache headers are a key component in this plugin, and they will NOT affect performance negatively. On the contrary, this is how the system can accurately serve cache files to public users vs. users who are logged-in, commenters, etc.
-
-If you care about the speed of your site, Comet Cache is one of those plugins that you absolutely MUST have installed. :-) Comet Cache takes a real-time snapshot (building a cache) of every Page, Post, Category, Link, etc. These snapshots are then stored (cached) intuitively, so they can be referenced later, in order to save all of that processing time that has been dragging your site down and costing you money.
-
-The Comet Cache plugin uses configuration options that you select from the options panel. See: **Comet Cache -› Options** in your Dashboard. Once a file has been cached, Comet Cache uses advanced techniques that allow it to recognize when it should and should not serve a cached version of the file. By default, Comet Cache does not serve cached pages to users who are logged in, or to users who have left comments recently. Comet Cache also excludes administrative pages, login pages, POST/PUT/DELETE/GET(w/ query string) requests and/or CLI processes.
-
-= Running Comet Cache On A WordPress® Multisite Installation =
-
-WordPress® Multisite Networking is a special consideration in WordPress®. If Comet Cache is installed under a Multisite Network installation, it will be enabled for ALL blogs the same way. The centralized config options for Comet Cache can only be modified by a Super Administrator operating on the main site. Comet Cache has internal processing routines that prevent configuration changes, including menu displays; for anyone other than a Super Administrator operating on the main site.
-
-== Software Requirements ==
-
-In addition to the [WordPress Requirements](http://wordpress.org/about/requirements/), Comet Cache requires the following minimum versions:
-
-- PHP 5.4+
-- Apache 2.1+
-
-== License ==
-
-Copyright: © 2017 [WebSharks, Inc.](http://www.websharks-inc.com/bizdev/) (coded in the USA)
-
-Released under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl-2.0.html).
-
-= Credits / Additional Acknowledgments =
-
-* Software designed for WordPress®.
-	- GPL License <http://codex.wordpress.org/GPL>
-	- WordPress® <http://wordpress.org>
-* Some JavaScript extensions require jQuery.
-	- GPL-Compatible License <http://jquery.org/license>
-	- jQuery <http://jquery.com/>
-* CSS framework and some JavaScript functionality provided by Bootstrap.
-	- GPL-Compatible License <http://getbootstrap.com/getting-started/#license-faqs>
-	- Bootstrap <http://getbootstrap.com/>
-* Icons provided by Font Awesome.
-	- GPL-Compatible License <http://fortawesome.github.io/Font-Awesome/license/>
-	- Font Awesome <http://fortawesome.github.io/Font-Awesome/>
-
-== Upgrade Notice ==
-
-= v160416 =
+### v160416 ###
 
 Requires WordPress v4.2+.
 
-== Changelog ==
+## Changelog ##
 
-= v170220 =
+### v170220 ###
 
 - **New Feature:** Comet Cache can now be configured to automatically clear the cache for date-based archive views whenever any single post is cleared due to changes in content, title, etc. See: **Dashboard → Comet Cache → Plugin Options → Automatic Cache Clearing → Auto-Clear "Date-Based Archives" Too?**. See also: [Issue #724](https://github.com/websharks/comet-cache/issues/724).
 - **New Pro Feature:** Apache Optimizations now include a new option that allows site owners to enforce an exact host name for all requests. See: **Dashboard → Comet Cache Pro → Plugin Options → Apache Optimizations → Enforce an Exact Host Name?**. See also: [Issue #101](https://github.com/websharks/comet-cache/issues/101).
@@ -285,13 +176,13 @@ Requires WordPress v4.2+.
 - **Enhancement:** Notes in HTML source now indicate fully functional on first load for improved clarity. See [Issue #860](https://github.com/websharks/comet-cache/issues/860).
 - **Enhancement:** Enhancing security by removing `basename(__FILE__)` from direct access notices.
 
-= v161227 =
+### v161227 ###
 
 _**Note:** This is a Comet Cache Pro maintenance release._
 
 - **Bug Fix** (Pro): Resolves an issue with the previous Pro maintenance release (v161226) where `admin-bar.min.css` was missing, which caused issues with the Admin Bar buttons. This was due to a glitch in our build system. See [Issue #864](https://github.com/websharks/comet-cache/issues/864).
 
-= v161226 =
+### v161226 ###
 
 _**Note:** This is a Comet Cache Pro maintenance release._
 
@@ -300,7 +191,7 @@ _**Note:** This is a Comet Cache Pro maintenance release._
 - **Bug Fix** (Pro): Incorrect time calculations whenever load average checks are enabled in Comet Cache configuration options. See [Issue #853](https://github.com/websharks/comet-cache/issues/853).
 - **Cleanup:** Removed an old API call that checked for a newer lite version. No longer necessary.
 
-= v161221 =
+### v161221 ###
 
 - **Bug Fix:** Improving PHP OPcache detection. Now considering the INI option `opcache.restrict_api`. Comet Cache is now smart enough to avoid generating the PHP Warning: _PHP Warning: Zend OPcache API is restricted by "restrict_api" configuration directive_. See [Issue #733](https://github.com/websharks/comet-cache/issues/733).
 - **New Feature (Pro): Mobile Mode.** This release adds a new feature that is designed to improve compatibility with Adaptive themes for mobile devices. To learn more, please see: **Dashboard → Comet Cache Pro → Plugin Options → Mobile Mode**. See also: [Issue #471](https://github.com/websharks/comet-cache/issues/471).
@@ -314,42 +205,4 @@ _**Note:** This is a Comet Cache Pro maintenance release._
 - **Compatibility:** Avoid deprecated `wp_get_sites()` and use `get_sites()` instead. See [Issue #848](https://github.com/websharks/comet-cache/issues/848).
 - **Documentation:** Added Watered-Down Regex documentation notes to the inline documentation (in the software) about the use of `^` and `$` in some places where these special characters are not fully supported. Also adding the same notes to the [Watered-Down Regex KB Article](https://cometcache.com/r/watered-down-regex-syntax/). See also: [Issue #611](https://github.com/websharks/comet-cache/issues/611).
 
-= v161119 =
-
-- **Bug Fix:** Avoid browser autocomplete in configuration fields by adding `autocomplete="off"` to all form tags in Comet Cache menu pages. See [Issue #832](https://github.com/websharks/comet-cache/issues/832).
-- **Bug Fix:** Fixed a broken link to the [Static CDN Filters tutorial for MaxCDN integration](http://cometcache.com/r/static-cdn-filters-maxcdn/). Props @kristineds. See [Issue #842](https://github.com/websharks/comet-cache/issues/842).
-- **Bug Fix:** Multisite installations inside a subdirectory were broken by Apache Optimizations via `.htaccess` in some scenarios. Fixed in this release. See [Issue #798](https://github.com/websharks/comet-cache/issues/798).
-- **Bug Fix:** Don't enqueue `Chart.js` unnecessarily in lite version of the software. See [Issue #830](https://github.com/websharks/comet-cache/issues/830).
-- **Bug Fix:** Enhancing WooCommerce integration by listening to the `woocommerce_product_set_stock_status` hook in addition to the `woocommerce_product_set_stock` hook. See [Issue #674](https://github.com/websharks/comet-cache/issues/674).
-- **Bug Fix** (Pro): Automatically dismiss any persistent update notifications whenever a new version of the software is recompiled; i.e., don't continue to show an upgrade notice whenever the software has just been updated by a site owner. See [Issue #806](https://github.com/websharks/comet-cache/issues/806).
-- **Enhancement:** This version enhances the HTML comments left in the source code (HTML Debug Notes). When debug notes are enabled (i.e., HTML comments) they are now broken down into key/value pairs and tabulated for a cleaner display and easier debugging. See [Issue #790](https://github.com/websharks/comet-cache/issues/790).
-- **Performance Enhancement:** For sites configured to allow query string variables into the cache, those variables are now sorted by key name internally to avoid duplicate cache files; i.e., whenever the order of query string variables changes from request to another, but with the same exact values. In short, Comet Cache now knows how to serve the same underlying cache file; i.e., from a previous request that may have had the same query string, just in a slightly different order. See [Issue #639](https://github.com/websharks/comet-cache/issues/639).
-- **UI Enhancement:** The Comet Cache UI is now fully Responsive with an improved UI on laptop and mobile devices. Props @renzms. See [Issue #699](https://github.com/websharks/comet-cache/issues/699).
-- **UI Enhancement:** This release improves the toggle link that allows you to see additional details whenever Comet Cache automatically clears more than one facet of the cache. See [Issue #837](https://github.com/websharks/comet-cache/issues/837) and [Issue #831](https://github.com/websharks/comet-cache/issues/831).
-- **UI Enhancement** (Pro): Following improvements to the update API in a previous release of Comet Cache that made it possible to update both the lite and pro versions of the software through normal WordPress update mechanisms, this release removes some clutter from the menu pages for Comet Cache. In short, now that we have a tighter integration with WordPress core, it's no longer necessary for Comet Cache to display update notifications in a custom way. See [Issue #829](https://github.com/websharks/comet-cache/issues/829).
-- **UI Enhancement** (Pro): On pro version activation, display a notice that reminds site owners to configure their Pro Update Credentials so they'll be notified by WordPress about new versions of the pro software. See [Issue #477](https://github.com/websharks/comet-cache/issues/477).
-- **New Pro Feature:** In the pro version it is now possible to define a list of GET request variable names that should be ignored entirely by Comet Cache. See: **Dashboard → Comet Cache → Plugin Options → GET Requests → List of GET Variable Names to Ignore**. As an example, this new feature makes it possible for site owners to pass query string variables associated with Google Analytics (i.e., `utm_*` variable names) without incurring a cache performance hit. See [Issue #639](https://github.com/websharks/comet-cache/issues/639).
-- **Nonce Support** (Pro): In the pro version, when logged-in user caching is enabled, Comet Cache is now capable of intelligently caching pages that contain Nonce values ([numbers used once](https://cometcache.com/r/numbers-used-once-nonce/)). This allows for pages containing the WordPress Admin Bar to be cached without issue. It also improves compatibility with plugins like bbPress and BuddyPress, resulting in better performance and faster speeds for logged-in users. See [Issue #793](https://github.com/websharks/comet-cache/issues/793).
-- **RevSlider Compat.:** This release includes a built-in exclusion rule for the HTML Compressor to allow for improved compatibility with the popular RevSlider plugin for WordPress. The new built-in exclusion rule looks for and automatically bypasses an important style tag that must be preserved for the RevSlider plugin to work in all scenarios; i.e., `<style id='rs-plugin-settings-inline-css'`. See [Issue #614](https://github.com/websharks/comet-cache/issues/614).
-- **i18n Compat.** (Lite): This release makes all pro preview labels translatable by moving the labels that were previously defined in CSS only into HTML attribute values. See [Issue #808](https://github.com/websharks/comet-cache/issues/808).
-
-= v160917 =
-
-- **New Feature** (Lite): The Clear Cache button is now available in the Admin Toolbar for the Lite version of Comet Cache.
-- **New Feature** (Pro): Comet Cache Pro is now fully compatible with [WordPress Automatic Background Updates](https://codex.wordpress.org/Configuring_Automatic_Background_Updates#Plugin_.26_Theme_Updates_via_Filter). If you enable automatic background updates for plugins, and you save valid Comet Cache Pro License Credentials in the _Comet Cache Pro → Plugin Options → Update Credentials_ panel, you will automatically receive Pro plugin updates. Props @jaswsinc. See [Issue #289](https://github.com/websharks/comet-cache/issues/289).
-- **Bug Fix**: In some scenarios Comet Cache might produce a false-positive "Warning: mkdir(): File exists" message when checking if the cache directory exists. Comet Cache now calls `clearstatcache()` and uses `file_exists()` instead of `is_dir()` to help make this check more robust. See [Issue #786](https://github.com/websharks/comet-cache/issues/786).
-- **Bug Fix**: Fixed a bug where the Comet Cache PHP requirements check would fail and produce a fatal error when upgrading from a version of Comet Cache that did not require an extension that is now required by newer releases. This would occur when, for example, the required PHP `mbstring` extension was missing. Props @jaswsinc for finding the bug. See [Issue #817](https://github.com/websharks/comet-cache/issues/817).
-- **Bug Fix**: Fixed a bug where upgrading from v160521 would result in the Client-Side Cache option being reset to the default (disabled). If you enabled the Client-Side Cache at some point, now is a good time to double-check that it's still enabled. This bug fix also improves the reliability of all version upgrade routines that Comet Cache runs during upgrades. See [Issue #807](https://github.com/websharks/comet-cache/issues/807).
-- **Compatibility / Bug Fix**: The automatic Clear Cache routines that cleared the entire cache automatically whenever _WordPress Dashboard → Settings → General_ was updated, were being too aggressive and not taking into consideration other plugins that might also be using the same `options-general.php` URL. As a result, the entire cache was being unnecessarily cleared when the settings for those other plugins were saved. Props to @futtta from Autoptimize for reporting. See [Issue #825](https://github.com/websharks/comet-cache/issues/825).
-- **UI Enhancement**: Adjusted option page font styles for WordPress v4.6 to better match existing style. See [Issue #271](https://github.com/websharks/comet-cache-pro/pull/271).
-- **ManageWP Compatibility** (Pro): Comet Cache Pro is now compatible with ManageWP, a service that allows remote management of multiple WordPress sites. Comet Cache Pro Plugin Updates will now appear in the ManageWP dashboard and, assuming you have saved valid license credentials in _Dashboard → Comet Cache Pro → Plugin Options → Update Credentials_, you will be able to upgrade Comet Cache Pro remotely from the ManageWP Dashboard. Props @jaswsinc. See [Issue #465](https://github.com/websharks/comet-cache/issues/465).
-- **InfiniteWP Compatibility** (Pro): Comet Cache Pro is now compatible with InfiniteWP, an application that allows you to manage multiple WordPress sites from a single location. Comet Cache Pro Plugin Updates will now appear in the InfiniteWP dashboard and, assuming you have saved valid license credentials in _Dashboard → Comet Cache Pro → Plugin Options → Update Credentials_, you will be able to upgrade Comet Cache Pro remotely from the InfiniteWP Dashboard. See [Issue #394](https://github.com/websharks/comet-cache/issues/394).
-- **Rewritten Pro Plugin Updater**: The Comet Cache Pro Plugin Updater has been redesigned to use the built-in WordPress plugin updater system. When a Comet Cache Pro update is available, it now appears in the WordPress Updates section and in the Plugins list, like other WordPress plugins and can be updated normally like other WordPress plugins, as long as you have saved valid Comet Cache Pro license details in the new "Update Credentials" options panel. Props @jaswsinc. See [Issue #272](https://github.com/websharks/comet-cache-pro/issues/272).
-- **Code Style**: The `WP_CACHE` line that gets inserted into the `wp-config.php` file to enable caching now follows the [WordPress PHP Code Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/). Props @szepeviktor. See [Issue #799](https://github.com/websharks/comet-cache/pull/799).
-- **Compatibility** (Pro): When the Autoptimize plugin is active, the Comet Cache Pro HTML Compressor panel now shows a friendly notice explaining that both the HTML Compressor and Autoptimize should not be enabled at the same time because they both address the same performance improvements. The rest of Comet Cache works great alongside Autoptimize and whether you use the HTML Compressor or Autoptimize is a matter of preference. Props to @futtta from Autoptimize for the continued collaboration.
-
-= v160709 =
-
-- **Bug Fix** (Pro): Fixed a bug in the Auto-Cache Engine that was introduced by the previous release (v160706). The bug produced an error whenever the Auto-Cache Engine ran: "PHP Fatal error: Call to undefined method applyWpFilters()". This had no visible affect on the front-end of the site or in the WordPress Dashboard, but it prevented the Auto-Cache Engine from working behind the scenes. Props @Peter-FB for reporting. See [Issue #795](https://github.com/websharks/comet-cache/issues/795).
-
-For older changelog history going back more than 7 years, please see [CHANGELOG.md](https://github.com/websharks/comet-cache/blob/master/CHANGELOG.md).
+For older changelog history going back more than 8 years, please see [CHANGELOG.md](https://github.com/websharks/comet-cache/blob/master/CHANGELOG.md).
